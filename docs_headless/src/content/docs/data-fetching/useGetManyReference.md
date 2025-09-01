@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useGetManyReference"
 ---
-
-# `useGetManyReference`
 
 This hook calls `dataProvider.getManyReference()` when the component mounts. It queries the data provider for a list of records related to another one (e.g. all the comments for a post). It supports filtering, sorting, and pagination.
 
@@ -20,7 +17,7 @@ const { data, total, isPending, error, refetch, meta } = useGetManyReference(
 ## Usage
 
 ```jsx
-import { useGetManyReference, useRecordContext } from 'react-admin';
+import { useGetManyReference, useRecordContext } from 'ra-core';
 
 const PostComments = () => {
     const record = useRecordContext();
@@ -34,7 +31,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>
@@ -52,7 +49,7 @@ If your data provider doesn't return the `total` number of records (see [Partial
 
 ```jsx
 import { useState } from 'react';
-import { useGetManyReference, useRecordContext } from 'react-admin';
+import { useGetManyReference, useRecordContext } from 'ra-core';
 
 const PostComments = () => {
     const record = useRecordContext();
@@ -66,7 +63,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     const { hasNextPage, hasPreviousPage } = pageInfo;
 
@@ -90,7 +87,7 @@ const PostComments = () => {
 The `useGetManyReference` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { useGetManyReference, useRecordContext } from 'react-admin';
+import { useGetManyReference, useRecordContext } from 'ra-core';
 
 type Post = {
     id: number;
@@ -116,7 +113,7 @@ const PostComments = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>

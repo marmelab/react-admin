@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "withLifecycleCallbacks"
 ---
-
-# `withLifecycleCallbacks`
 
 This helper function adds logic to an existing [`dataProvider`](./DataProviders.md) for particular resources, using pre- and post- event handlers like `beforeGetOne` and `afterSave`.
 
@@ -19,7 +16,7 @@ For instance, to delete the comments related to a post before deleting the post 
 
 ```jsx
 // in src/dataProvider.js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
@@ -44,17 +41,17 @@ export const dataProvider = withLifecycleCallbacks(baseDataProvider, [
 ]);
 ```
 
-Then, inject the decorated data provider in the `<Admin>` component:
+Then, inject the decorated data provider in the `<CoreAdmin>` component:
 
 ```jsx
 // in src/App.js
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 import { dataProvider } from './dataProvider';
 
 export const App = () => (
-    <Admin dataProvider={dataProvider}>
+    <CoreAdmin dataProvider={dataProvider}>
         {/* ... */}
-    </Admin>
+    </CoreAdmin>
 )
 ```
 
@@ -62,7 +59,7 @@ Lifecycle callbacks are a good way to:
 
 - Add custom parameters before a `dataProvider` method is called (e.g. to set the query `meta` parameter based on the user profile),
 - Clean up the data before it's sent to the API (e.g. to transform two `lat` and `long` values into a single `location` field),
-- Add or rename fields in the data returned by the API before using it in react-admin (e.g. to add a `fullName` field based on the `firstName` and `lastName` fields),
+- Add or rename fields in the data returned by the API before using it in ra-core (e.g. to add a `fullName` field based on the `firstName` and `lastName` fields),
 - Update related records when a record is created, updated, or deleted (e.g. update the `post.nb_comments` field after a `comment` is created or deleted)
 - Remove related records when a record is deleted (similar to a server-side `ON DELETE CASCADE`)
 
@@ -129,11 +126,11 @@ const dataProvider = withLifecycleCallbacks(
 
 ## `dataProvider`
 
-The first argument must be a valid `dataProvider` object - for instance, [any third-party data provider](./DataProviderList.md). 
+The first argument must be a valid `dataProvider` object - for instance, [any third-party data provider](../data-fetching/DataProviderList.md).
 
 ```jsx
 // in src/dataProvider.js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'ra-core';
 import simpleRestProvider from 'ra-data-simple-rest';
 
 const baseDataProvider = simpleRestProvider('http://path.to.my.api/');
@@ -228,7 +225,7 @@ The `afterGetList`, `afterGetOne`, `afterGetMany `, `afterGetManyReference`, `af
 
 ### `afterRead` 
 
-Called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before react-admin uses them. It receives the following arguments:
+Called after any dataProvider method that reads data (`getList`, `getOne`, `getMany`, `getManyReference`), letting you modify the records before ra-core uses them. It receives the following arguments:
 
 - `record`: the record returned by the backend 
 - `dataProvider`: the dataProvider itself, so you can call other dataProvider methods
@@ -300,9 +297,9 @@ For methods that return many records (`updateMany`), the callback is called once
 As explained above, lifecycle callbacks are a fallback for business logic that you can't put on the server side. But they have some serious limitations:
 
 - They execute outside of the React context, and therefore cannot use hooks. 
-- As queries issued in the callbacks are not done through `react-query`, any change in the data will not be automatically reflected in the UI. If you need to update the UI, prefer putting the logic in [the `onSuccess` property of the mutation](./Actions.md#success-and-error-side-effects). 
+- As queries issued in the callbacks are not done through `react-query`, any change in the data will not be automatically reflected in the UI. If you need to update the UI, prefer putting the logic in [the `onSuccess` property of the mutation](../data-fetching/Actions.md#success-and-error-side-effects). 
 - The callbacks are not executed in a transaction. In case of an error, the backend may be left in an inconsistent state.
-- When another client than react-admin calls the API, the callbacks will not be executed. If you depend on these callbacks for data consistency, this prevents you from exposing the API to other clients
+- When another client than ra-core calls the API, the callbacks will not be executed. If you depend on these callbacks for data consistency, this prevents you from exposing the API to other clients
 - If a callback triggers the event it's listening to (e.g. if you update the record received in an `afterSave`), this will lead to an infinite loop.
 - Do not use lifecycle callbacks to implement authorization logic, as the JS code can be altered in the browser using development tools. Check this [tutorial on multi-tenant single-page apps](https://marmelab.com/blog/2022/12/14/multitenant-spa.html) for more details.
 
@@ -365,7 +362,7 @@ You can test isolated lifecycle callbacks by mocking the `dataProvider`:
 
 ```jsx
 // in src/posts/index.test.js
-import { withLifecycleCallbacks } from 'react-admin';
+import { withLifecycleCallbacks } from 'ra-core';
 
 import { postLifecycleCallbacks } from './index';
 

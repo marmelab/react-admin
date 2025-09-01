@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useGetMany"
 ---
-
-# `useGetMany`
 
 This hook calls `dataProvider.getMany()` when the component mounts. It queries the data provider for several records, based on an array of `ids`.
 
@@ -20,7 +17,7 @@ const { data, isPending, error, refetch } = useGetMany(
 ## Usage
 
 ```jsx
-import { useGetMany, useRecordContext } from 'react-admin';
+import { useGetMany, useRecordContext } from 'ra-core';
 
 const PostTags = () => {
     const record = useRecordContext();
@@ -28,7 +25,7 @@ const PostTags = () => {
         'tags',
         { ids: record.tagIds }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
          <ul>
@@ -40,7 +37,7 @@ const PostTags = () => {
 };
 ```
 
-`useGetMany` deduplicates and aggregates the calls made for a given resource during a render pass. This means that if a page makes several calls to `useGetMany` for a given resource, react-admin will only call the `dataProvider.getMany()` once.
+`useGetMany` deduplicates and aggregates the calls made for a given resource during a render pass. This means that if a page makes several calls to `useGetMany` for a given resource, ra-core will only call the `dataProvider.getMany()` once.
 
 ```jsx
 // three calls to useGetMany on the same resource
@@ -52,14 +49,14 @@ useGetMany('tags', { ids: [5, 6, 7] });
 dataProvider.getMany('tags', { ids: [1, 2, 3, 4, 5, 6, 7] });
 ```
 
-React-admin uses `useGetMany` in [the `<ReferenceField>` component](./ReferenceField.md), to overcome the n+1 problem when using this component in a list. 
+Ra-core uses `useGetMany` in [the `<ReferenceFieldBase>` component](../fields/ReferenceFieldBase.md), to overcome the n+1 problem when using this component in a list. 
 
 ## TypeScript
 
 The `useGetMany` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { useGetMany, useRecordContext } from 'react-admin';
+import { useGetMany, useRecordContext } from 'ra-core';
 
 type Post = {
     id: number;
@@ -79,7 +76,7 @@ const PostTags = () => {
         'tags',
         { ids: post.tagIds }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <ul>

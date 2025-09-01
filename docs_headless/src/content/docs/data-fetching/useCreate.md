@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useCreate"
-storybook_path: ra-core-dataprovider-usecreate-optimistic--success-case
 ---
-
-# `useCreate`
 
 This hook allows to call `dataProvider.create()` when the callback is executed.
 
@@ -34,7 +30,7 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```tsx
 // set params when calling the hook
-import { useCreate, useRecordContext } from 'react-admin';
+import { useCreate, useRecordContext } from 'ra-core';
 
 const LikeButton = () => {
     const record = useRecordContext();
@@ -48,7 +44,7 @@ const LikeButton = () => {
 };
 
 // set params when calling the create callback
-import { useCreate, useRecordContext } from 'react-admin';
+import { useCreate, useRecordContext } from 'ra-core';
 
 const LikeButton = () => {
     const record = useRecordContext();
@@ -97,6 +93,8 @@ const LikeButton = () => {
 - `returnPromise`.
 
 ```tsx
+import { useNotify, useRedirect } from 'ra-core';
+
 const notify = useNotify();
 const redirect = useRedirect();
 
@@ -128,14 +126,13 @@ Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s
 
 Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options.
 
-**Tip**: In react-admin components that use `useCreate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useCreate`, e.g., to display a notification or redirect to another page.
+**Tip**: In ra-core components that use `useCreate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useCreate`, e.g., to display a notification or redirect to another page.
 
-For instance, here is a button using `<Create mutationOptions>` to notify the user of success using the bottom notification banner:
+For instance, here is a button using `<CreateBase mutationOptions>` to notify the user of success using the bottom notification banner:
 
-{% raw %}
 ```tsx
 import * as React from 'react';
-import { useNotify, useRedirect, Create, SimpleForm } from 'react-admin';
+import { useNotify, useRedirect, CreateBase, Form } from 'ra-core';
 
 const PostCreate = () => {
     const notify = useNotify();
@@ -147,15 +144,14 @@ const PostCreate = () => {
     };
 
     return (
-        <Create mutationOptions={{ onSuccess }}>
-            <SimpleForm>
+        <CreateBase mutationOptions={{ onSuccess }}>
+            <Form>
                 ...
-            </SimpleForm>
-        </Create>
+            </Form>
+        </CreateBase>
     );
 }
 ```
-{% endraw %}
 
 ## Return Value
 
@@ -240,6 +236,8 @@ See [Optimistic Rendering and Undo](./Actions.md#optimistic-rendering-and-undo) 
 The `onError` callback is called when the mutation fails. It's the perfect place to display an error message to the user.
 
 ```jsx
+import { useCreate, useNotify } from 'ra-core';
+
 const notify = useNotify();
 const [create, { data, isPending, error }] = useCreate(
     'comments',
@@ -259,6 +257,8 @@ const [create, { data, isPending, error }] = useCreate(
 The `onSettled` callback is called at the end of the mutation, whether it succeeds or fails. It will receive either the `data` or the `error`.
 
 ```jsx
+import { useCreate, useNotify } from 'ra-core';
+
 const notify = useNotify();
 const [create, { data, isPending, error }] = useCreate(
     'comments',
@@ -278,6 +278,8 @@ const [create, { data, isPending, error }] = useCreate(
 The `onSuccess` callback is called when the mutation succeeds. It's the perfect place to display a notification or to redirect the user to another page.
 
 ```jsx
+import { useCreate, useNotify, useRedirect } from 'ra-core';
+
 const notify = useNotify();
 const redirect = useRedirect();
 const [create, { data, isPending, error }] = useCreate(
@@ -292,7 +294,7 @@ const [create, { data, isPending, error }] = useCreate(
 );
 ```
 
-In `pessimistic` mutation mode, `onSuccess` executes *after* the `dataProvider.create()` responds. React-admin passes the result of the `dataProvider.create()` call as the first argument to the `onSuccess` callback.
+In `pessimistic` mutation mode, `onSuccess` executes *after* the `dataProvider.create()` responds. Ra-core passes the result of the `dataProvider.create()` call as the first argument to the `onSuccess` callback.
 
 In `optimistic` mutation mode, `onSuccess` executes *before* the `dataProvider.create()` is called, without waiting for the response. The callback receives no argument.
 

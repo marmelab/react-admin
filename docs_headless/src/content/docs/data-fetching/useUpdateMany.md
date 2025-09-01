@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useUpdateMany"
-storybook_path: ra-core-dataprovider-useupdatemany--undefined-values
 ---
-
-# `useUpdateMany`
 
 This hook allows to call `dataProvider.updateMany()` when the callback is executed, and update an array of records based on their `ids` and a `data` argument.
 
@@ -34,7 +30,7 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useUpdateMany, useListContext } from 'react-admin';
+import { useUpdateMany, useListContext } from 'ra-core';
 
 const BulkResetViewsButton = () => {
     const { selectedIds } = useListContext();
@@ -50,7 +46,7 @@ const BulkResetViewsButton = () => {
 };
 
 // set params when calling the updateMany callback
-import { useUpdateMany, useListContext } from 'react-admin';
+import { useUpdateMany, useListContext } from 'ra-core';
 
 const BulkResetViewsButton = () => {
     const { selectedIds } = useListContext();

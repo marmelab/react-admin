@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useUpdate"
 ---
-
-# `useUpdate`
 
 `useUpdate` provides a callback to call `dataProvider.update()` on demand and update a single record based on its `id` and a `data` argument. It uses React-query's [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook under the hood.
 
@@ -42,7 +39,7 @@ The `options` argument is optional.
 Here is an example of a `LikeButton` component that increments the `likes` field of a record when clicked:
 
 ```jsx
-import { useUpdate, useRecordContext } from 'react-admin';
+import { useUpdate, useRecordContext, useNotify } from 'ra-core';
 
 const LikeButton = () => {
     const record = useRecordContext();
@@ -53,7 +50,7 @@ const LikeButton = () => {
         const data = { likes: record.likes + 1 };
         update(
             'posts',
-            { id: record.id, data, previousData: record };
+            { id: record.id, data, previousData: record },
             {
                 onSuccess: () => {
                     notify('Like updated');
@@ -98,7 +95,7 @@ const IncreaseLikeButton = () => {
 
 `data` can be the complete record or just the fields to update. The data provider will merge the new data with the existing record.
 
-`previousData` should be the current record value. It's useful for data providers that need to compute a diff to use a `PATCH` request instead of a `PUT` request. React-admin components systematically include this parameter when calling the `update` callback.
+`previousData` should be the current record value. It's useful for data providers that need to compute a diff to use a `PATCH` request instead of a `PUT` request. Ra-core components systematically include this parameter when calling the `update` callback.
 
 `meta` is helpful for passing additional information to the dataProvider. For instance, you can pass the current user to let a server-side audit system know who made the change.
 
@@ -143,52 +140,44 @@ Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s
 
 Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options.
 
-**Tip**: In react-admin components that use `useUpdate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g., to display a notification or redirect to another page.
+**Tip**: In ra-core components that use `useUpdate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g., to display a notification or redirect to another page.
 
-For instance, here is a button using `<UpdateButton mutationOptions>` to notify the user of success or failure using the bottom notification banner:
+For instance, here is a button using the `mutationOptions` to notify the user of success or failure using the bottom notification banner:
 
-{% raw %}
 ```jsx
 import * as React from 'react';
-import { UpdateButton, useNotify, useRedirect } from 'react-admin';
+import { useUpdate, useRecordContext, useNotify, useRedirect } from 'ra-core';
 
 const ApproveButton = () => {
     const notify = useNotify();
     const redirect = useRedirect();
-    return <UpdateButton
-        label="Approve"
-        data={{ isApproved: true }}
-        mutationOptions={{
-            mutationMode: 'optimistic',
-            onSuccess: () => {
-                notify('Comment approved');
-                redirect('/comments');
-            },
-            onError: (error) => {
-                notify(`Comment approval error: ${error.message}`, { type: 'error' });
-            },
-        }}
-    />;
+    const record = useRecordContext();
+    const [update, { isPending }] = useUpdate();
+    
+    const handleClick = () => {
+        update(
+            'comments',
+            { id: record?.id, data: { isApproved: true } },
+            {
+                mutationMode: 'optimistic',
+                onSuccess: () => {
+                    notify('Comment approved');
+                    redirect('/comments');
+                },
+                onError: (error) => {
+                    notify(`Comment approval error: ${error.message}`, { type: 'error' });
+                },
+            }
+        );
+    };
+    
+    return (
+        <button disabled={isPending} onClick={handleClick}>
+            Approve
+        </button>
+    );
 };
 ```
-{% endraw %}
-
-The components that support mutation options are:
-
-- [`<Edit>`](./Edit.md),
-- [`<EditBase>`](./EditBase.md),
-- [`<EditDialog>`](./EditDialog.md),
-- [`<EditInDialogButton>`](./EditInDialogButton.md),
-- [`<Create>`](./Create.md),
-- [`<CreateBase>`](./CreateBase.md),
-- [`<CreateDialog>`](./CreateDialog.md),
-- [`<CreateInDialogButton>`](./CreateInDialogButton.md),
-- [`<SaveButton>`](./SaveButton.md),
-- [`<UpdateButton>`](./UpdateButton.md),
-- [`<Calendar>`](./Calendar.md#calendar),
-- [`<CompleteCalendar>`](./Calendar.md#completecalendar),
-- [`<DatagridAG>`](./DatagridAG.md),
-- [`<TreeWithDetails>`](./TreeWithDetails.md).
 
 ## Return Value
 
@@ -321,7 +310,7 @@ const [update, { data, isPending, error }] = useUpdate(
 );
 ```
 
-In `pessimistic` mutation mode, `onSuccess` executes *after* the `dataProvider.update()` responds. React-admin passes the result of the `dataProvider.update()` call as the first argument to the `onSuccess` callback.
+In `pessimistic` mutation mode, `onSuccess` executes *after* the `dataProvider.update()` responds. Ra-core passes the result of the `dataProvider.update()` call as the first argument to the `onSuccess` callback.
 
 In `optimistic` mutation mode, `onSuccess` executes *before* the `dataProvider.update()` is called, without waiting for the response. The callback receives no argument.
 

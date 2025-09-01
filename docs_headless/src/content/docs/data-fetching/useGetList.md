@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useGetList"
-storybook_path: ra-core-dataprovider-usegetlist--no-args
 ---
-
-# `useGetList`
 
 This hook calls `dataProvider.getList()` when the component mounts. It's ideal for getting a list of records. It supports filtering, sorting, and pagination.
 
@@ -65,7 +61,7 @@ The react-query [query key](https://tanstack.com/query/v5/docs/react/guides/quer
 Call the `useGetList` hook when you need to fetch a list of records from the data provider.
 
 ```jsx
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 
 const LatestNews = () => {
     const { data, total, isPending, error } = useGetList(
@@ -75,7 +71,7 @@ const LatestNews = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -93,17 +89,17 @@ const LatestNews = () => {
 
 ## Rendering Data
 
-If you want to use the result in a react-admin iterator component like [`<DataTable>`](./DataTable.md), [`<SimpleList>`](./SimpleList.md), or [`<SingleFieldList>`](./SingleFieldList.md), you must first create a [`ListContext`](./useListContext.md) with the data. The [`useList`](./useList.md) hook does that for you:
+If you want to use the result in a ra-core iterator component, you must first create a [`ListContext`](../list/useListContext.md) with the data. The [`useList`](../list/useList.md) hook does that for you:
 
 ```jsx
 import {
     useGetList,
     useList,
     ListContextProvider,
-    DataTable,
-    DateField,
-    Pagination
-} from 'react-admin';
+} from 'ra-core';
+import { DataTable } from './DataTable';
+import { DateField } from './DateField';
+import { Pagination } from './Pagination';
 
 const LatestNews = () => {
     const { data, isPending, error } = useGetList(
@@ -131,7 +127,7 @@ const LatestNews = () => {
 };
 ```
 
-In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a `<DataTable>`. The `<Pagination>` component allows the user to navigate through the list. Users can also sort the list by clicking on the column headers.
+In this example, the `useGetList` hook fetches all the posts, and displays a list of the 10 most recent posts in a custom layout. The pagination controls allow the user to navigate through the list. Users can also implement sorting by extending the example.
 
 ## Passing Additional Arguments
 
@@ -176,7 +172,7 @@ If your data provider doesn't return the `total` number of records (see [Partial
 
 ```jsx
 import { useState } from 'react';
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 
 const LatestNews = () => {
     const [page, setPage] = useState(1);
@@ -187,7 +183,7 @@ const LatestNews = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     const { hasNextPage, hasPreviousPage } = pageInfo;
 
@@ -211,20 +207,18 @@ Alternately, you can use [the `useInfiniteGetList` hook](./useInfiniteGetList.md
 
 ## Fetching Related Records
 
-If you plan on using `useGetList` to fetch a list of records related to another one (e.g. the comments for a post), you're better off using [the `<ReferenceManyField>` component](./ReferenceManyField.md). It will handle the loading state for you, and display a loading spinner while the data is being fetched.
+If you plan on using `useGetList` to fetch a list of records related to another one (e.g. the comments for a post), you're better off using [the `<ReferenceManyFieldBase>` component](../fields/ReferenceManyFieldBase.md). It will handle the data fetching, and empty and loading states for you.
 
 ```jsx
-import { ReferenceManyField } from 'react-admin';
+import { ReferenceManyFieldBase } from 'ra-core';
 
 const PostComments = () => {
     return (
-        <ReferenceManyField reference="comments" target="post_id">
-            <DataTable>
-                <DataTable.Col source="created_at" field={DateField} />
-                <DataTable.Col source="author" />
-                <DataTable.Col source="body" />
-            </DataTable>
-        </ReferenceManyField>
+        <ReferenceManyFieldBase reference="comments" target="post_id">
+            <div>
+                {/* Your custom iterator */}
+            </div>
+        </ReferenceManyFieldBase>
     );
 };
 ```
@@ -232,7 +226,7 @@ const PostComments = () => {
 is the equivalent of:
 
 ```jsx
-import { useGetList } from 'react-admin';
+import { useGetList, useRecordContext, useList, ListContextProvider } from 'ra-core';
 
 const PostComments = () => {
     const record = useRecordContext();
@@ -240,16 +234,15 @@ const PostComments = () => {
         'comments',
         { filter: { post_id: record.id } }
     );
-    if (isPending) { return <Loading />; }
-    if (error) { return <p>ERROR</p>; }
     const listContext = useList({ data });
+    if (isPending) { return null; }
+    if (error) { return null; }
+    if (!data || !data.length) { return null; }
     return (
         <ListContextProvider value={listContext}>
-            <DataTable>
-                <DataTable.Col source="created_at" field={DateField} />
-                <DataTable.Col source="author" />
-                <DataTable.Col source="body" />
-            </DataTable>
+            <div>
+                {/* Your custom iterator */}
+            </div>
         </ListContextProvider>
     );
 };
@@ -260,11 +253,11 @@ const PostComments = () => {
 If you want to refresh the list, you can use the `refetch` function returned by the hook:
 
 ```jsx
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 
 const LatestNews = () => {
     const { data, total, isPending, error, refetch } = useGetList(/* ... */);
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>
@@ -281,45 +274,12 @@ const LatestNews = () => {
 };
 ```
 
-## Live Updates
-
-If you want to subscribe to live updates on the list of records (topic: `resource/[resource]`), use [the `useGetListLive` hook](./useGetListLive.md) instead.
-
-```diff
--import { useGetList } from 'react-admin';
-+import { useGetListLive } from '@react-admin/ra-realtime';
-
-const LatestNews = () => {
--   const { data, total, isPending, error } = useGetList('posts', {
-+   const { data, total, isPending, error } = useGetListLive('posts', {
-        pagination: { page: 1, perPage: 10 },
-        sort: { field: 'published_at', order: 'DESC' },
-    });
-    if (isPending) {
-        return <Loading />;
-    }
-    if (error) {
-        return <p>ERROR</p>;
-    }
-
-    return (
-        <ul>
-            {data.map(item => (
-                <li key={item.id}>{item.title}</li>
-            ))}
-        </ul>
-    );
-};
-```
-
-The `data` will automatically update when a new record is created, or an existing record is updated or deleted.
-
 ## TypeScript
 
 The `useGetList` hook accepts a generic parameter for the record type:
 
 ```tsx
-import { useGetList } from 'react-admin';
+import { useGetList } from 'ra-core';
 
 type Post = {
     id: number;
@@ -334,7 +294,7 @@ const LatestNews = () => {
             sort: { field: 'published_at', order: 'DESC' }
         }
     );
-    if (isPending) { return <Loading />; }
+    if (isPending) { return <div>Loading...</div>; }
     if (error) { return <p>ERROR</p>; }
     return (
         <>

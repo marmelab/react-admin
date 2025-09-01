@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "useDeleteMany"
 ---
-
-# `useDeleteMany`
 
 This hook allows to call `dataProvider.deleteMany()` when the callback is executed, and delete an array of records based on their `ids`.
 
@@ -33,7 +30,7 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useListContext, useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'ra-core';
 
 const BulkDeletePostsButton = () => {
     const { selectedIds } = useListContext();
@@ -49,7 +46,7 @@ const BulkDeletePostsButton = () => {
 };
 
 // set params when calling the deleteMany callback
-import { useListContext, useDeleteMany } from 'react-admin';
+import { useListContext, useDeleteMany } from 'ra-core';
 
 const BulkDeletePostsButton = () => {
     const { selectedIds } = useListContext();

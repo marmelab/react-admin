@@ -1,12 +1,8 @@
 ---
-layout: default
 title: "useDataProvider"
-storybook_path: ra-core-dataprovider-usedataprovider--prefetching
 ---
 
-# `useDataProvider`
-
-React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook exposes the Data Provider to let you call it directly.
+Ra-core stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook exposes the Data Provider to let you call it directly.
 
 ## Syntax
 
@@ -34,7 +30,7 @@ Here is how to query the Data Provider for the current user profile:
 
 ```jsx
 import { useState, useEffect } from 'react';
-import { useDataProvider } from 'react-admin';
+import { useDataProvider } from 'ra-core';
 import { Loading, Error } from './MyComponents';
 
 const UserProfile = ({ userId }) => {
@@ -94,7 +90,7 @@ const dataProvider = {
 It is necessary to use `useDataProvider` in conjunction with React Query's `useMutation` to call this method when the user clicks on a button:
 
 ```jsx
-import { useDataProvider, Button } from 'react-admin';
+import { useDataProvider } from 'ra-core';
 import { useMutation } from '@tanstack/react-query';
 
 const BanUserButton = ({ userId }) => {
@@ -102,7 +98,7 @@ const BanUserButton = ({ userId }) => {
     const { mutate, isPending } = useMutation({
         mutationFn: () => dataProvider.banUser(userId)
     });
-    return <Button label="Ban" onClick={() => mutate()} disabled={isPending} />;
+    return <button onClick={() => mutate()} disabled={isPending}>Ban</button>;
 };
 ```
 
@@ -112,7 +108,7 @@ The `useDataProvider` hook accepts a generic parameter for the `dataProvider` ty
 
 ```tsx
 // In src/dataProvider.ts
-import { DataProvider } from 'react-admin';
+import { DataProvider } from 'ra-core';
 
 export interface DataProviderWithCustomMethods extends DataProvider {
     archive: (resource: string, params: {
@@ -128,24 +124,22 @@ export const dataProvider: DataProviderWithCustomMethods = {
 }
 
 // In src/ArchiveButton.tsx
-import { Button, useDataProvider } from 'react-admin';
-import ArchiveIcon from '@mui/icons-material/Archive';
+import { useDataProvider, useRecordContext } from 'ra-core';
 import { DataProviderWithCustomMethods } from './src/dataProvider';
 
 export const ArchiveButton = () => {
     const dataProvider = useDataProvider<DataProviderWithCustomMethods>();
-    const record = useRecord();
+    const record = useRecordContext();
 
     return (
-        <Button
-            label="Archive"
+        <button
             onClick={() => {
                 // TypeScript knows the archive method
                 dataProvider.archive('resource', { id: record.id })
             }}
         >
-            <ArchiveIcon />
-        </Button>
+            📁 Archive
+        </button>
     );
 };
 ```

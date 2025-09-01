@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useDelete"
-storybook_path: ra-core-dataprovider-usedelete-optimistic--success-case
 ---
-
-# `useDelete`
 
 This hook allows calling `dataProvider.delete()` when the callback is executed and deleting a single record based on its `id`.
 
@@ -34,7 +30,7 @@ So, should you pass the parameters when calling the hook, or when executing the 
 
 ```jsx
 // set params when calling the hook
-import { useDelete, useRecordContext } from 'react-admin';
+import { useDelete, useRecordContext } from 'ra-core';
 
 const DeleteButton = () => {
     const record = useRecordContext();
@@ -50,7 +46,7 @@ const DeleteButton = () => {
 };
 
 // set params when calling the deleteOne callback
-import { useDelete, useRecordContext } from 'react-admin';
+import { useDelete, useRecordContext } from 'ra-core';
 
 const DeleteButton = () => {
     const record = useRecordContext();

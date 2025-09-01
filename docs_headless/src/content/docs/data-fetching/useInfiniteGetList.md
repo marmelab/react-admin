@@ -1,10 +1,6 @@
 ---
-layout: default
 title: "useInfiniteGetList"
-storybook_path: ra-core-dataprovider-useinfinitegetlist--basic
 ---
-
-# `useInfiniteGetList`
 
 This hook calls `dataProvider.getList()` when the component mounts. It returns a list of "pages" of records, and a callback to fetch the previous or next page. It's ideal to render a feed of events or messages, where the total number of records is unknown, and the user requires the next page via a button (or a scroll listener).
 
@@ -51,7 +47,7 @@ If your data provider doesn't return the `total` number of records (see [Partial
 For instance, to render the latest news:
 
 ```jsx
-import { useInfiniteGetList } from 'react-admin';
+import { useInfiniteGetList } from 'ra-core';
 
 const LatestNews = () => {
     const { 
@@ -176,18 +172,9 @@ Additional options are passed to react-query's `useQuery` hook. Check the [react
 
 Combining `useInfiniteGetList` and [the Intersection Observer API](https://developer.mozilla.org/en-US/docs/Web/API/Intersection_Observer_API), you can implement an infinite scrolling list, where the next page loads automatically when the user scrolls down.
 
-{% raw %}
 ```jsx
 import { useRef, useCallback, useEffect } from 'react';
-import {
-    List,
-    ListItem,
-    ListItemText,
-    ListItemIcon,
-    Button,
-    Typography,
-} from '@mui/material';
-import { useInfiniteGetList } from 'react-admin';
+import { useInfiniteGetList } from 'ra-core';
 
 const LatestNews = () => {
     const {
@@ -221,28 +208,24 @@ const LatestNews = () => {
 
     return (
         <>
-            <List dense>
+            <ul style={{ listStyle: 'none', padding: 0 }}>
                 {data?.pages.map(page => {
                     return page.data.map(post => (
-                        <ListItem disablePadding key={post.id}>
-                            <ListItemText>
-                                {post.title}
-                            </ListItemText>
-                        </ListItem>
+                        <li key={post.id} style={{ padding: '8px 0' }}>
+                            {post.title}
+                        </li>
                     ));
                 })}
-            </List>
-            <Typography
+            </ul>
+            <div
                 ref={observerElem}
-                variant="body2"
-                sx={{ color: "grey.500" }}
+                style={{ color: '#666', fontSize: '14px', padding: '10px' }}
             >
                 {isFetchingNextPage && hasNextPage
                     ? 'Loading...'
                     : 'No search left'}
-            </Typography>
+            </div>
         </>
     );
 };
 ```
-{% endraw %}
