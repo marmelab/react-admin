@@ -79,6 +79,8 @@ const useDeleteWithConfirmController = <
         record,
         redirect: redirectTo = 'list',
         successMessage,
+        mutationOptions = {},
+        ...rest
     } = props;
     const [open, setOpen] = useState(false);
     const resource = useResourceContext(props);
@@ -89,6 +91,7 @@ const useDeleteWithConfirmController = <
 
     const { isPending, handleDelete: controllerHandleDelete } =
         useDeleteController({
+            mutationMode,
             mutationOptions: {
                 onSuccess: () => {
                     setOpen(false);
@@ -130,8 +133,12 @@ const useDeleteWithConfirmController = <
                         }
                     );
                 },
+                ...mutationOptions,
             },
-            ...props,
+            record,
+            redirect: redirectTo,
+            successMessage,
+            ...rest,
         });
 
     const handleDialogOpen = useEvent((e: any) => {
