@@ -107,7 +107,6 @@ export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<ReferenceManyCountBaseProps, 'source' | 'record'>,
         Omit<TypographyProps, 'textAlign'> {
-    source?: string;
     link?: boolean;
 }
 
