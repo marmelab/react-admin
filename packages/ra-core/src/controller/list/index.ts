@@ -9,7 +9,6 @@ export * from './ListIterator';
 export * from './ListPaginationContext';
 export * from './ListSortContext';
 export * from './queryReducer';
-export * from '../../export/useBulkExport';
 export * from './useExpanded';
 export * from './useInfiniteListController';
 export * from './useInfinitePaginationContext';
