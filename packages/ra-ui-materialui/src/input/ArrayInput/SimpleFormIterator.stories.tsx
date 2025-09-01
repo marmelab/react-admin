@@ -8,11 +8,11 @@ import { SimpleFormIterator } from './SimpleFormIterator';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
 import { defaultTheme } from '../../theme/defaultTheme';
-import { useSimpleFormIteratorItem } from './useSimpleFormIteratorItem';
 import {
     FormDataConsumer,
     ResourceContextProvider,
     testDataProvider,
+    useSimpleFormIteratorItem,
 } from 'ra-core';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };

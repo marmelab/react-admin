@@ -1,9 +1,4 @@
-import {
-    getStatusForInput,
-    getSelectedReferencesStatus,
-    getStatusForArrayInput,
-} from './referenceDataStatus';
-
+export * from './referenceDataStatus';
 export * from './useReferenceArrayInputController';
 export * from './useReferenceInputController';
 export * from './ReferenceInputBase';
@@ -11,9 +6,7 @@ export * from './ReferenceArrayInputBase';
 export * from './ArrayInputContext';
 export * from './useArrayInput';
 export * from './sanitizeInputRestProps';
-
-export {
-    getStatusForInput,
-    getSelectedReferencesStatus,
-    getStatusForArrayInput,
-};
+export * from './SimpleFormIteratorContext';
+export * from './SimpleFormIteratorItemContext';
+export * from './useSimpleFormIterator';
+export * from './useSimpleFormIteratorItem';

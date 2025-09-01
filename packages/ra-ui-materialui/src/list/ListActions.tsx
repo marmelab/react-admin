@@ -1,17 +1,17 @@
 import * as React from 'react';
-import { cloneElement, useMemo, useContext, ReactElement } from 'react';
+import { cloneElement, useMemo, ReactElement } from 'react';
 import {
     sanitizeListRestProps,
     Exporter,
     useListContext,
     useResourceContext,
     useResourceDefinition,
+    useFilterContext,
 } from 'ra-core';
 import { ToolbarProps } from '@mui/material';
 
 import TopToolbar from '../layout/TopToolbar';
 import { CreateButton, ExportButton } from '../button';
-import { FilterContext } from './FilterContext';
 import { FilterButton } from './filter';
 
 /**
@@ -49,7 +49,7 @@ export const ListActions = (props: ListActionsProps) => {
         useListContext();
     const resource = useResourceContext(props);
     const { hasCreate } = useResourceDefinition(props);
-    const filters = useContext(FilterContext) || filtersProp;
+    const filters = useFilterContext() || filtersProp;
     return useMemo(
         () => (
             <TopToolbar className={className} {...sanitizeListRestProps(rest)}>

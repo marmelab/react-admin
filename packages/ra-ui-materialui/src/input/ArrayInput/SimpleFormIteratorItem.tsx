@@ -3,20 +3,18 @@ import { ReactElement, ReactNode, useMemo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
-    ArrayInputContextValue,
-    RaRecord,
+    type ArrayInputContextValue,
+    type RaRecord,
     RecordContextProvider,
+    SimpleFormIteratorItemContext,
+    type SimpleFormIteratorItemContextValue,
     SourceContextProvider,
     useResourceContext,
+    useSimpleFormIterator,
     useSourceContext,
 } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
-import { useSimpleFormIterator } from './useSimpleFormIterator';
-import {
-    SimpleFormIteratorItemContext,
-    SimpleFormIteratorItemContextValue,
-} from './SimpleFormIteratorItemContext';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
