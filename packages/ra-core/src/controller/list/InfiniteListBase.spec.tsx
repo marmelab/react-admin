@@ -73,6 +73,29 @@ describe('InfiniteListBase', () => {
         resolveAuth!();
         await screen.findByText('Hello');
     });
+    it('should not wait for the authentication resolution before loading data when disableAuthentication is true', async () => {
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: jest.fn(),
+        };
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            ),
+        });
+        render(
+            <WithAuthProviderNoAccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+                InfiniteListProps={{ disableAuthentication: true }}
+            />
+        );
+        await screen.findByText('Hello');
+        expect(authProvider.checkAuth).not.toHaveBeenCalled();
+    });
     it('should wait for both the authentication and authorization resolution before loading data', async () => {
         let resolveAuth: () => void;
         let resolveCanAccess: (value: boolean) => void;

@@ -72,6 +72,7 @@ The props are the same as [the `<List>` component](./List.md):
 | `filters`                  | Optional | `ReactElement` | -                       | The filters to display in the toolbar.                                                       |
 | `filter`                   | Optional | `object`       | -                       | The permanent filter values.                                                                 |
 | `filter DefaultValues`     | Optional | `object`       | -                       | The default filter values.                                                                   |
+| `offline`                  | Optional | `ReactNode`    | `<Offline>`             | The component to render when there is no connectivity and there is no data in the cache      |
 | `pagination`               | Optional | `ReactElement` | `<Infinite Pagination>` | The pagination component to use.                                                             |
 | `perPage`                  | Optional | `number`       | `10`                    | The number of records to fetch per page.                                                     |
 | `queryOptions`             | Optional | `object`       | -                       | The options to pass to the `useQuery` hook.                                                  |
@@ -84,6 +85,49 @@ The props are the same as [the `<List>` component](./List.md):
 Check the [`<List>` component](./List.md) for details about each prop.
 
 Additional props are passed down to the root component (a MUI `<Card>` by default).
+
+## `offline`
+
+By default, `<InfiniteList>` renders the `<Offline>` component when there is no connectivity and there are no records in the cache yet for the current parameters (page, sort, etc.). You can provide your own component via the `offline` prop:
+
+```jsx
+import { InfiniteList, InfinitePagination } from 'react-admin';
+import { Alert } from '@mui/material';
+
+const offline = <Alert severity="warning">No network. Could not load the posts.</Alert>;
+// The offline component may be displayed at the bottom of the page if the network connectivity is lost
+// when loading new pages. Make sure you pass your custom offline component here too
+const pagination = <InfinitePagination offline={offline} />;
+
+export const PostList = () => (
+    <InfiniteList offline={offline} pagination={pagination}>
+        ...
+    </InfiniteList>
+);
+```
+
+**Tip**: If the record is in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { InfiniteList, InfinitePagination, IsOffline } from 'react-admin';
+import { Alert } from '@mui/material';
+
+const offline = <Alert severity="warning">No network. Could not load the posts.</Alert>;
+// The offline component may be displayed at the bottom of the page if the network connectivity is lost
+// when loading new pages. Make sure you pass your custom offline component here too
+const pagination = <InfinitePagination offline={offline} />;
+
+export const PostList = () => (
+    <InfiniteList offline={offline} pagination={pagination}>
+        <IsOffline>
+           <Alert severity="warning">
+                You are offline, the data may be outdated
+            </Alert>
+        </IsOffline>
+        ...
+    </InfiniteList>
+);
+```
 
 ## `pagination`
 

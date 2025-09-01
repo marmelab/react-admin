@@ -24,7 +24,9 @@ import {
     SelectAllLimit,
     Themed,
     WithRenderProp,
+    Offline,
 } from './List.stories';
+import { Alert } from '@mui/material';
 
 const theme = createTheme(defaultTheme);
 
@@ -507,5 +509,38 @@ describe('<List />', () => {
                 'There are too many elements to select them all. Only the first 11 elements were selected.'
             );
         });
+    });
+    it('should render the default offline component node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('No connectivity. Could not fetch data.');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('War and Peace (1869)');
+        expect(
+            screen.queryByText('No connectivity. Could not fetch data.')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByLabelText('Go to page 2'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(screen.getByLabelText('Go to page 1'));
+        await screen.findByText('War and Peace (1869)');
+    });
+    it('should render the custom offline component node when offline', async () => {
+        const CustomOffline = () => {
+            return <Alert severity="warning">You are offline!</Alert>;
+        };
+        const { rerender } = render(
+            <Offline isOnline={false} offline={<CustomOffline />} />
+        );
+        await screen.findByText('You are offline!');
+        rerender(<Offline isOnline={true} offline={<CustomOffline />} />);
+        await screen.findByText('War and Peace (1869)');
+        expect(screen.queryByText('You are offline!')).toBeNull();
+        rerender(<Offline isOnline={false} offline={<CustomOffline />} />);
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByLabelText('Go to page 2'));
+        await screen.findByText('You are offline!');
+        fireEvent.click(screen.getByLabelText('Go to page 1'));
+        await screen.findByText('War and Peace (1869)');
     });
 });
