@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 
 import {
     Basic,
     ErrorState,
+    Offline,
     Themed,
     WithFilter,
     Wrapper,
@@ -51,5 +52,20 @@ describe('<ReferenceManyCount />', () => {
     it('should be customized by a theme', async () => {
         render(<Themed />);
         expect(screen.getByTestId('themed')).toBeDefined();
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('3');
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        expect(
+            screen.queryByText('No connectivity. Could not fetch data.')
+        ).toBeNull();
+        await screen.findByText('3');
+        fireEvent.click(await screen.findByText('Simulate online'));
     });
 });
