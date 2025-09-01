@@ -105,7 +105,7 @@ const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
-        Omit<ReferenceManyCountBaseProps, 'source' | 'record'>,
+        Omit<ReferenceManyCountBaseProps, 'record'>,
         Omit<TypographyProps, 'textAlign'> {
     link?: boolean;
 }
