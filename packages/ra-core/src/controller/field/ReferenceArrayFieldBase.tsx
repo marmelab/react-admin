@@ -108,12 +108,20 @@ export const ReferenceArrayFieldBase = <
             "<ReferenceArrayFieldBase> requires either a 'render' prop or 'children' prop"
         );
     }
-    const { error: controllerError, isPending, isPaused } = controllerProps;
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        isPlaceholderData,
+    } = controllerProps;
 
     const shouldRenderLoading =
         isPending && !isPaused && loading !== undefined && loading !== false;
     const shouldRenderOffline =
-        isPending && isPaused && offline !== undefined && offline !== false;
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== undefined &&
+        offline !== false;
     const shouldRenderError =
         !isPending &&
         !isPaused &&
