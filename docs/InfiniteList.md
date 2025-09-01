@@ -88,7 +88,7 @@ Additional props are passed down to the root component (a MUI `<Card>` by defaul
 
 ## `offline`
 
-By default, `<List>` renders the `<Offline>` component when there is no connectivity and there are no records in the cache yet for the current parameters (page, sort, etc.). You can provide your own component via the `offline` prop:
+By default, `<InfiniteList>` renders the `<Offline>` component when there is no connectivity and there are no records in the cache yet for the current parameters (page, sort, etc.). You can provide your own component via the `offline` prop:
 
 ```jsx
 import { InfiniteList, InfinitePagination } from 'react-admin';
