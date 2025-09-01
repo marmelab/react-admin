@@ -119,7 +119,7 @@ export const ReferenceManyFieldBase = <
 
     const shouldRenderLoading =
         isPending && !isPaused && loading !== false && loading !== undefined;
-    const showOffline =
+    const shouldRenderOffline =
         isPaused &&
         (isPending || isPlaceholderData) &&
         offline !== false &&
@@ -150,7 +150,7 @@ export const ReferenceManyFieldBase = <
             <ListContextProvider value={controllerProps}>
                 {shouldRenderLoading
                     ? loading
-                    : showOffline
+                    : shouldRenderOffline
                       ? offline
                       : shouldRenderError
                         ? error

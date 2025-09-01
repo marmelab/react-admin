@@ -310,7 +310,7 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 
 ## `offline`
 
-Use `offline` to customize the text displayed when there are no related records because of lack of network connectivity.
+By default, `<ReferenceManyField>` renders the `<Offline variant="inline">` when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
 <ReferenceManyField
