@@ -61,28 +61,15 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         filter = defaultFilter,
         isFetching = false,
         isLoading = false,
+        isPaused = false,
         isPending = false,
+        isPlaceholderData = false,
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
         filterCallback = (record: RecordType) => Boolean(record),
     } = props;
     const resource = useResourceContext(props);
-
-    const [fetchingState, setFetchingState] = useState<boolean>(isFetching) as [
-        boolean,
-        (isFetching: boolean) => void,
-    ];
-
-    const [loadingState, setLoadingState] = useState<boolean>(isLoading) as [
-        boolean,
-        (isLoading: boolean) => void,
-    ];
-
-    const [pendingState, setPendingState] = useState<boolean>(isPending) as [
-        boolean,
-        (isPending: boolean) => void,
-    ];
 
     const [finalItems, setFinalItems] = useState<{
         data?: RecordType[];
@@ -250,24 +237,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         ]
     );
 
-    useEffect(() => {
-        if (isFetching !== fetchingState) {
-            setFetchingState(isFetching);
-        }
-    }, [isFetching, fetchingState, setFetchingState]);
-
-    useEffect(() => {
-        if (isLoading !== loadingState) {
-            setLoadingState(isLoading);
-        }
-    }, [isLoading, loadingState, setLoadingState]);
-
-    useEffect(() => {
-        if (isPending !== pendingState) {
-            setPendingState(isPending);
-        }
-    }, [isPending, pendingState, setPendingState]);
-
     const onSelectAll = useCallback(() => {
         const allIds = data?.map(({ id }) => id) || [];
         selectionModifiers.select(allIds);
@@ -275,7 +244,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
 
     return {
         sort,
-        data: pendingState ? undefined : finalItems?.data ?? [],
+        data: isPending ? undefined : finalItems?.data ?? [],
         defaultTitle: '',
         error: error ?? null,
         displayedFilters,
@@ -286,9 +255,11 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
                 : page * perPage < finalItems.total,
         hasPreviousPage: page > 1,
         hideFilter,
-        isFetching: fetchingState,
-        isLoading: loadingState,
-        isPending: pendingState,
+        isFetching,
+        isLoading,
+        isPaused,
+        isPending,
+        isPlaceholderData,
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
@@ -316,7 +287,9 @@ export interface UseListOptions<
     filter?: FilterPayload;
     isFetching?: boolean;
     isLoading?: boolean;
+    isPaused?: boolean;
     isPending?: boolean;
+    isPlaceholderData?: boolean;
     page?: number;
     perPage?: number;
     sort?: SortPayload;

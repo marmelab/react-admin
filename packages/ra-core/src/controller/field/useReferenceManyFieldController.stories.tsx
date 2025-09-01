@@ -110,6 +110,6 @@ export const Basic = ({
 );
 
 export default {
-    title: 'ra-core/controller/useReferenceManyFieldController',
+    title: 'ra-core/controller/field/useReferenceManyFieldController',
     excludeStories: ['defaultDataProvider'],
 };

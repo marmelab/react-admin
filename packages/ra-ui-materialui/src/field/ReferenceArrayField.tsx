@@ -1,8 +1,6 @@
 import * as React from 'react';
-import { memo } from 'react';
 import {
     useListContext,
-    type ListControllerProps,
     ReferenceArrayFieldBase,
     type RaRecord,
     ReferenceArrayFieldBaseProps,
@@ -18,6 +16,8 @@ import {
 import type { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
+import { genericMemo } from './genericMemo';
+import { Offline } from '../Offline';
 
 /**
  * A container component that fetches records from another resource specified
@@ -85,52 +85,78 @@ export const ReferenceArrayField = <
         props: inProps,
         name: PREFIX,
     });
-    const { pagination, children, className, sx, render, ...controllerProps } =
-        props;
+    const {
+        pagination,
+        children,
+        className,
+        sx,
+        render,
+        offline = defaultOffline,
+        ...controllerProps
+    } = props;
     return (
         <ReferenceArrayFieldBase {...controllerProps}>
-            <PureReferenceArrayFieldView
-                pagination={pagination}
+            <PureReferenceArrayFieldView<RecordType, ReferenceRecordType>
                 className={className}
-                sx={sx}
+                offline={offline}
+                pagination={pagination}
                 render={render}
+                sx={sx}
             >
                 {children}
             </PureReferenceArrayFieldView>
         </ReferenceArrayFieldBase>
     );
 };
+
+const defaultOffline = <Offline variant="inline" />;
+
 export interface ReferenceArrayFieldProps<
     RecordType extends RaRecord = RaRecord,
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>,
-        FieldProps<RecordType> {
-    sx?: SxProps<Theme>;
-    pagination?: React.ReactElement;
-}
+        ReferenceArrayFieldViewProps<RecordType, ReferenceRecordType>,
+        FieldProps<RecordType> {}
 
-export interface ReferenceArrayFieldViewProps {
-    pagination?: React.ReactElement;
-    children?: React.ReactNode;
-    render?: (props: ListControllerProps) => React.ReactNode;
+export interface ReferenceArrayFieldViewProps<
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord,
+> extends Omit<
+        ReferenceArrayFieldBaseProps<RecordType, ReferenceRecordType>,
+        'source' | 'reference'
+    > {
+    offline?: React.ReactNode;
+    pagination?: React.ReactNode;
     className?: string;
     sx?: SxProps<Theme>;
 }
 
-export const ReferenceArrayFieldView = (
-    props: ReferenceArrayFieldViewProps
+export const ReferenceArrayFieldView = <
+    RecordType extends RaRecord = RaRecord,
+    ReferenceRecordType extends RaRecord = RaRecord,
+>(
+    props: ReferenceArrayFieldViewProps<RecordType, ReferenceRecordType>
 ) => {
-    const { children, render, pagination, className, sx } = props;
+    const { children, render, offline, pagination, className, sx } = props;
     const listContext = useListContext();
 
-    const { isPending, total } = listContext;
+    const { isPaused, isPending, isPlaceholderData, total } = listContext;
+
+    const shouldRenderPending = isPending && !isPaused;
+    const shouldRenderOffline =
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== undefined &&
+        offline !== false;
 
     return (
         <Root className={className} sx={sx}>
-            {isPending ? (
+            {shouldRenderPending ? (
                 <LinearProgress
                     className={ReferenceArrayFieldClasses.progress}
                 />
+            ) : shouldRenderOffline ? (
+                offline
             ) : (
                 <span>
                     {(render ? render(listContext) : children) || (
@@ -159,7 +185,7 @@ const Root = styled('span', {
     },
 }));
 
-const PureReferenceArrayFieldView = memo(ReferenceArrayFieldView);
+const PureReferenceArrayFieldView = genericMemo(ReferenceArrayFieldView);
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
