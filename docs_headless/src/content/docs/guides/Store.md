@@ -1,60 +1,59 @@
 ---
-layout: default
 title: "Preferences"
 ---
 
-# Preferences
+Ra-core contains a global, synchronous, persistent store for storing user preferences. Think of the Store as a key-value database that persists between page loads.
 
-React-admin contains a global, synchronous, persistent store for storing user preferences. Think of the Store as a key-value database that persists between page loads.
-
-Users expect that UI choices, like changing the interface language or theme, should only be made once. Let's call these choices "preferences". The react-admin Store is the perfect place to store preferences.
+Users expect that UI choices, like changing the interface language or theme, should only be made once. Let's call these choices "preferences". The ra-core Store is the perfect place to store preferences.
 
 The store uses the browser local storage (or a memory storage when `localStorage` isn't available). The store is emptied when the user logs out.
 
-It requires no setup, and is available via [the `useStore` hook](./useStore.md). 
+It requires no setup, and is available via [the `useStore` hook](../preferences/useStore.md).
 
 ## Usage
 
-React-admin provides the following hooks to interact with the Store: 
+Ra-core provides the following hooks to interact with the Store: 
 
-* [`useStore`](./useStore.md)
-* [`useRemoveFromStore`](./useRemoveFromStore.md)
-* [`useResetStore`](./useResetStore.md)
-* [`useStoreContext`](./useStoreContext.md)
+* [`useStore`](../preferences/useStore.md)
+* [`useRemoveFromStore`](../preferences/useRemoveFromStore.md)
+* [`useResetStore`](../preferences/useResetStore.md)
+* [`useStoreContext`](../preferences/useStoreContext.md)
 
-Some react-admin components use the Store internally:
-
-* [`<ToggleThemeButton>`](./ToggleThemeButton.md)
-* [`<LocalesMenuButton>`](./LocalesMenuButton.md)
+Some ra-core components use the Store internally. For example the [list controller](../list/useListController.md) stores the list parameters (like pagination and filters) in it.
 
 For instance, here is how to use it to show or hide a help panel:
 
 ```jsx
-import { useStore } from 'react-admin';
-import { Button, Popover } from '@mui/material';
+import { useStore } from 'ra-core';
 
 const HelpButton = () => {
     const [helpOpen, setHelpOpen] = useStore('help.open', false);
     return (
-        <>
-            <Button onClick={() => setHelpOpen(v => !v)}>
+        <div>
+            <button onClick={() => setHelpOpen(v => !v)}>
                 {helpOpen ? 'Hide' : 'Show'} help
-            </Button>
-            <Popover open={helpOpen} onClose={() => setHelpOpen(false)}>
-                French
-            </Popover>
-        </>
+            </button>
+            {helpOpen && (
+                <div style={{ 
+                    position: 'absolute', 
+                    background: 'white', 
+                    border: '1px solid #ccc', 
+                    padding: '1rem',
+                    borderRadius: '4px'
+                }}>
+                    Help content goes here
+                </div>
+            )}
+        </div>
     );
 };
 ```
 
 ## Store-Based Hooks
 
-React-admin components don't access the store directly ; instead, they use purpose-driven hooks, which you can use, too:
+Ra-core components don't access the store directly ; instead, they use purpose-driven hooks, which you can use, too:
 
-- `useSidebarState()` for the open/closed sidebar state
 - `useLocaleState()` for the locale
-- [`useTheme()`](./useTheme.md) for the theme
 - `useUnselect()`, `useUnselectAll()`, `useRecordSelection()` for the selected records for a resource
 - `useExpanded()` for the expanded rows in a datatable
 
@@ -115,17 +114,17 @@ If your application cannot check the shape of a stored object, react-admin provi
 
 The idea is that you can specify a version number for your Store. If the Store contains data with a different version number than the code, the Store resets all preferences.
 
-To create a Store with a different version number, call the `localStorageStore()` function with a version identifier, then pass the resulting object as the `<Admin store>` prop:
+To create a Store with a different version number, call the `localStorageStore()` function with a version identifier, then pass the resulting object as the `<CoreAdmin store>` prop:
 
 ```jsx
-import { Admin, Resource, localStorageStore } from 'react-admin';
+import { CoreAdmin, Resource, localStorageStore } from 'ra-core';
 
 const STORE_VERSION = "2";
 
 const App = () => (
-    <Admin dataProvider={dataProvider} store={localStorageStore(STORE_VERSION)}>
+    <CoreAdmin dataProvider={dataProvider} store={localStorageStore(STORE_VERSION)}>
         <Resource name="posts" />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -133,32 +132,32 @@ Increase the version number each time you push code that isn't compatible with t
 
 ## Share/separate Store data between same domain instances
 
-If you are running multiple instances of react-admin on the same domain, you can distinguish their stored objects by defining different application keys. By default, the application key is empty to allow configuration sharing between instances.
+If you are running multiple instances of ra-core applications on the same domain, you can distinguish their stored objects by defining different application keys. By default, the application key is empty to allow configuration sharing between instances.
 
 ```jsx
-import { Admin, Resource, localStorageStore } from 'react-admin';
+import { CoreAdmin, Resource, localStorageStore } from 'ra-core';
 
 const APP_KEY = 'blog';
 
 const App = () => (
-    <Admin dataProvider={dataProvider} store={localStorageStore(undefined, APP_KEY)}>
+    <CoreAdmin dataProvider={dataProvider} store={localStorageStore(undefined, APP_KEY)}>
         <Resource name="posts" />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 
 ## Transient Store
 
-If you don't want the store to be persisted between sessions, you can override the default `<Admin store>` component:
+If you don't want the store to be persisted between sessions, you can override the default `<CoreAdmin store>` component:
 
 ```jsx
-import { Admin, Resource, memoryStore } from 'react-admin';
+import { CoreAdmin, Resource, memoryStore } from 'ra-core';
 
 const App = () => (
-    <Admin dataProvider={dataProvider} store={memoryStore()}>
+    <CoreAdmin dataProvider={dataProvider} store={memoryStore()}>
         <Resource name="posts" />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
@@ -166,28 +165,28 @@ This way, each time the application is loaded, the store will be reset to an emp
 
 ## Testing Components Using The Store
 
-The react-admin Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. `<DataTable>` row selection, sidebar state, language selection).
+The ra-core Store is persistent. This means that if a unit test modifies an item in the store, the value will be changed for the next test. This will cause random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. row selection, sidebar state, language selection).
 
 To isolate your unit tests, pass a new `memoryStore` for each test:
 
 ```jsx
-import { AdminContext, memoryStore } from 'react-admin';
+import { CoreAdminContext, memoryStore } from 'ra-core';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(
-        <AdminContext store={memoryStore()}>
+        <CoreAdminContext store={memoryStore()}>
             <MyComponent />
-        </AdminContext>
+        </CoreAdminContext>
     );
     const items = await screen.findAllByText(/Item #[0-9]: /)
     expect(items).toHaveLength(10)
 })
 ```
 
-If you don't need `<AdminContext>`, you can just wrap your component with a `<StoreContextProvider>`:
+If you don't need `<CoreAdminContext>`, you can just wrap your component with a `<StoreContextProvider>`:
 
 ```jsx
-import { StoreContextProvider, memoryStore } from 'react-admin';
+import { StoreContextProvider, memoryStore } from 'ra-core';
 
 test('<MyComponent>', async () => {
     const { getByText } = render(

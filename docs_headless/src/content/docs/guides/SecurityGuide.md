@@ -1,9 +1,6 @@
 ---
-layout: default
 title: "Security"
 ---
-
-# Security
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/login.mp4" type="video/mp4"/>
@@ -12,20 +9,20 @@ title: "Security"
 
 Web applications often need to limit access to specific pages or resources to authenticated users ("**authentication**") and ensure that users can only perform permitted actions ("**authorization**").
 
-React-admin supports both authentication and authorization, allowing you to secure your admin app with your preferred authentication strategy. Since there are many strategies (e.g., OAuth, MFA, passwordless, magic link), react-admin delegates this logic to an `authProvider`.
+Ra-core supports both authentication and authorization, allowing you to secure your admin app with your preferred authentication strategy. Since there are many strategies (e.g., OAuth, MFA, passwordless, magic link), ra-core delegates this logic to an `authProvider`.
 
 ## The Auth Provider
 
-Authentication and authorization features rely on an **authentication backend** (e.g., OAuth server, API server, or SAML server). The `authProvider` acts as a bridge between react-admin and this authentication backend.
+Authentication and authorization features rely on an **authentication backend** (e.g., OAuth server, API server, or SAML server). The `authProvider` acts as a bridge between ra-core and this authentication backend.
 
-For example, when the user accesses a page component (`<List>`, `<Edit>`, `<Create>`, `<Show>`), react-admin checks if the user is authenticated by calling the `authProvider.checkAuth()` method. If the user is not authenticated, they are redirected to the login page:
+For example, when the user accesses a page component (`<ListBase>`, `<EditBase>`, `<CreateBase>`, `<ShowBase>`), ra-core checks if the user is authenticated by calling the `authProvider.checkAuth()` method. If the user is not authenticated, they are redirected to the login page:
 
 ```tsx
 try {
     await authProvider.checkAuth();
 } catch (error) {
     // The user is not authenticated
-    return <Redirect to="/login" />;
+    return <Navigate to="/login" />;
 }
 ```
 
@@ -50,41 +47,41 @@ const authProvider = {
 };
 ```
 
-You can use an existing Auth Provider from the [List of Available Auth Providers](./AuthProviderList.md) or create your own following the [Building Your Own Auth Provider](./AuthProviderWriting.md) guide.
+You can use an existing Auth Provider from the [List of Available Auth Providers](../security/AuthProviderList.md) or create your own following the [Building Your Own Auth Provider](../security/AuthProviderWriting.md) guide.
 
 ## Authentication
 
-Once you set an `<Admin authProvider>`, react-admin enables authentication automatically.
+Once you set a `<CoreAdmin authProvider>`, ra-core enables authentication automatically.
 
 ```tsx
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <CoreAdmin authProvider={authProvider}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-For page components (`<List>`, `<Edit>`, `<Create>`, `<Show>`) and the dashboard, anonymous users are redirected to the login screen. To allow anonymous access on a page, use the `disableAuthentication` prop. For example, in a list view:
+For page components (`<ListBase>`, `<EditBase>`, `<CreateBase>`, `<ShowBase>`) and the dashboard, anonymous users are redirected to the login screen. To allow anonymous access on a page, use the `disableAuthentication` prop. For example, in a list view:
 
 ```tsx
-import { List } from 'react-admin';
+import { ListBase } from 'ra-core';
 
 const PostList = () => (
-    <List disableAuthentication>
+    <ListBase disableAuthentication>
         ...
-    </List>
+    </ListBase>
 );
 ```
 
 For custom routes, anonymous users have access by default. To require authentication on a custom route, wrap the page component in an `<Authenticated>` component:
 
 ```tsx
-import { Admin, Resource, CustomRoutes, Authenticated } from 'react-admin';
+import { CoreAdmin, Resource, CustomRoutes, Authenticated } from 'ra-core';
 import { Route } from "react-router-dom";
 import { MyCustomPage } from './MyCustomPage';
 
 const App = () => (
-    <Admin authProvider={authProvider}>
+    <CoreAdmin authProvider={authProvider}>
         ...
         <CustomRoutes>
             <Route path="/my-custom-page" element={
@@ -93,25 +90,25 @@ const App = () => (
                 </Authenticated>
             } />
         </CustomRoutes>
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-If all your custom routes require authentication, use the `<Admin requireAuth>` prop instead of wrapping each route in `<Authenticated>`:
+If all your custom routes require authentication, use the `<CoreAdmin requireAuth>` prop instead of wrapping each route in `<Authenticated>`:
 
 ```tsx
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         authProvider={authProvider}
         requireAuth
     >
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-Check the [Auth Provider Setup Guide](./Authentication.md) for more details.
+Check the [Auth Provider Setup Guide](../security/Authentication.md) for more details.
 
 ## Authorization
 
@@ -128,9 +125,9 @@ The `authProvider.canAccess()` method determines if the user can access a resour
 - Attribute-Based Access Control (ABAC)
 - Access Control List (ACL).
 
-Since the auth logic is abstracted by the Auth Provider, you can integrate react-admin with popular authorization solutions like Okta, Casbin, Cerbos, and others.
+Since the auth logic is abstracted by the Auth Provider, you can integrate ra-core with popular authorization solutions like Okta, Casbin, Cerbos, and others.
 
-Page components (`<List>`, `<Create>`, `<Edit>`, `<Show>`) have built-in access control. Before rendering them, react-admin calls `authProvider.canAccess()` with the relevant action and resource parameters.
+Page components (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) have built-in access control. Before rendering them, ra-core calls `authProvider.canAccess()` with the relevant action and resource parameters.
 
 ```tsx
 <Resource
@@ -151,49 +148,31 @@ To control access in your own components, use the `useCanAccess()` hook or the `
 In the following example, only users who can access the `delete` action on the `comments` resource can see the `DeleteCommentButton`:
 
 ```tsx
-import Stack from '@mui/material/Stack';
-import { CanAccess } from 'react-admin';
+import { CanAccess } from 'ra-core';
 
 const CommentsToolbar = ({ record }) => (
-    <Stack direction="row" spacing={2}>
+    <div style={{ display: 'flex', gap: '8px' }}>
         <ApproveCommentButton record={record} />
         <RejectCommentButton record={record} />
         <CanAccess action="delete" resource="comments" record={record}>
             <DeleteCommentButton record={record} />
         </CanAccess>
-    </Stack>
+    </div>
 );
 ```
 
-Check the [Authorization Guide](./Permissions.md) for more details.
+Check the [Authorization Guide](../security/Permissions.md) for more details.
 
 ## Login Page
 
-React-admin displays a login page when the user is not authenticated. The login page is a simple form with username and password fields.
+Ra-core displays a login page when the user is not authenticated. Since ra-core is headless, you need to provide your own login page implementation by setting the `<CoreAdmin loginPage>` prop.
 
-![Login form](../img/login-form.png)
-
-You can customize the login page by setting the `<Admin loginPage>` prop.
-
-For example, to use an email field instead of a username field, use the `LoginWithEmail` component:
-
-```tsx
-import { Admin, LoginWithEmail } from 'react-admin';
-import authProvider from './authProvider';
-
-const App = () => (
-    <Admin loginPage={LoginWithEmail} authProvider={authProvider}>
-        ...
-    </Admin>
-);
-```
-
-If you need other login options (magic link, Email OTP, OAuth provider, etc), you can pass a custom login component, leveraging the `useLogin` hook to call `authProvider.login()`::
+You can create a custom login component, leveraging the `useLogin` hook to call `authProvider.login()`:
 
 ```tsx
 // in src/MyLoginPage.js
 import { useState } from 'react';
-import { useLogin, useNotify, Notification } from 'react-admin';
+import { useLogin, useNotify } from 'ra-core';
 
 const MyLoginPage = ({ theme }) => {
     const [email, setEmail] = useState('');
@@ -229,19 +208,19 @@ const MyLoginPage = ({ theme }) => {
 export default MyLoginPage;
 
 // in src/App.js
-import { Admin } from "react-admin";
+import { CoreAdmin } from "ra-core";
 import { dataProvider } from "./dataProvider";
 import { authProvider } from "./authProvider";
 import MyLoginPage from "./MyLoginPage";
 
 const App = () => (
-    <Admin loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider}>
+    <CoreAdmin loginPage={MyLoginPage} authProvider={authProvider} dataProvider={dataProvider}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
-You can also entirely turn off the `/login` route by passing `false` to this prop. In this case, the `authProvider` must handle redirecting unauthenticated users to a custom login page by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](./AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app may end up in an infinite loop.
+You can also entirely turn off the `/login` route by passing `false` to this prop. In this case, the `authProvider` must handle redirecting unauthenticated users to a custom login page by returning a `redirectTo` field in response to `checkAuth` (see [`authProvider.checkAuth()`](../security/AuthProviderWriting.md#checkauth) for details). If you fail to customize the redirection, the app may end up in an infinite loop.
 
 ```tsx
 const authProvider = {
@@ -255,22 +234,22 @@ const authProvider = {
 };
 
 const App = () => (
-    <Admin authProvider={authProvider} loginPage={false}>
+    <CoreAdmin authProvider={authProvider} loginPage={false}>
         ...
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 ## Calling The Auth Provider
 
-React-admin provides several ways to call authentication provider methods in your components:
+Ra-core provides several ways to call authentication provider methods in your components:
 
-- [`useLogin`](./useLogin.md): Calls the `authProvider.login()` method. Use it in custom login screens.
-- [`useLogout`](./useLogout.md): Calls the `authProvider.logout()` method. Use it in custom logout buttons.
-- [`<Authenticated>`](./Authenticated.md): Redirects to the login page if the user is not authenticated. Use it to protect custom routes.
-- [`useAuthState`](./useAuthState.md): Calls the `authProvider.checkAuth()` method. Use it to display different UI elements based on the user's authentication state.
-- [`useAuthenticated`](./useAuthenticated.md): Calls the `authProvider.checkAuth()` method and redirect to the login page if the user is not authenticated. Use it to protect custom routes.
-- [`useGetIdentity`](./useGetIdentity.md): Calls the `authProvider.getIdentity()` method. Use it to display the user's profile information.
-- [`useCanAccess`](./useCanAccess.md): Calls the `authProvider.canAccess()` method. Use it to display different UI elements based on the user's permissions.
-- [`<CanAccess>`](./CanAccess.md): Renders its children only of `authProvider.canAccess()` method returns true.
-- [`useAuthProvider`](./useAuthProvider.md): Returns the `authProvider` instance. Use it to call other methods of the `authProvider`.
+- [`useLogin`](../security/useLogin.md): Calls the `authProvider.login()` method. Use it in custom login screens.
+- [`useLogout`](../security/useLogout.md): Calls the `authProvider.logout()` method. Use it in custom logout buttons.
+- [`<Authenticated>`](../security/Authenticated.md): Redirects to the login page if the user is not authenticated. Use it to protect custom routes.
+- [`useAuthState`](../security/useAuthState.md): Calls the `authProvider.checkAuth()` method. Use it to display different UI elements based on the user's authentication state.
+- [`useAuthenticated`](../security/useAuthenticated.md): Calls the `authProvider.checkAuth()` method and redirect to the login page if the user is not authenticated. Use it to protect custom routes.
+- [`useGetIdentity`](../security/useGetIdentity.md): Calls the `authProvider.getIdentity()` method. Use it to display the user's profile information.
+- [`useCanAccess`](../security/useCanAccess.md): Calls the `authProvider.canAccess()` method. Use it to display different UI elements based on the user's permissions.
+- [`<CanAccess>`](../security/CanAccess.md): Renders its children only of `authProvider.canAccess()` method returns true.
+- [`useAuthProvider`](../security/useAuthProvider.md): Returns the `authProvider` instance. Use it to call other methods of the `authProvider`.
