@@ -125,15 +125,17 @@ const UserCreateForm = () => {
 Additional filters to pass to the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) method. This is useful when the value should be unique across a subset of the resource records, for instance, usernames in an organization:
 
 ```jsx
-import { FormDataConsumer, Form, useUnique } from 'ra-core';
-import { ReferenceInput, TextInput } from '../components';
+import { FormDataConsumer, Form, useUnique, ReferenceInputBase } from 'ra-core';
+import { SelectInput, TextInput } from '../components';
 
 const UserCreateForm = () => {
     const unique = useUnique();
     return (
         <Form>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                <ReferenceInput source="organization_id" reference="organizations" />
+                <ReferenceInputBase source="organization_id" reference="organizations">
+                    <SelectInput source="name" />
+                </ReferenceInputBase>
                 <FormDataConsumer>
                     {({ formData }) => (
                         <TextInput
