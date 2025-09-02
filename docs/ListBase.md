@@ -93,6 +93,7 @@ The `<ListBase>` component accepts the following props:
 * `render`
 * [`resource`](./List.md#resource)
 * [`sort`](./List.md#sort)
+* [`storeKey`](./List.md#storeKey)
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
 

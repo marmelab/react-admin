@@ -1,11 +1,13 @@
 import fakeRestProvider from 'ra-data-fakerest';
 import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
 import get from 'lodash/get';
-import data from './data';
 import addUploadFeature from './addUploadFeature';
 import { queryClient } from './queryClient';
+import data from './data';
 
-const dataProvider = withLifecycleCallbacks(fakeRestProvider(data, true, 300), [
+const defaultDataProvider = fakeRestProvider(data, true, 300);
+
+const dataProvider = withLifecycleCallbacks(defaultDataProvider, [
     {
         resource: 'posts',
         beforeDelete: async ({ id }, dp) => {

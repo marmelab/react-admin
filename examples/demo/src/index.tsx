@@ -1,6 +1,7 @@
 import { createRoot } from 'react-dom/client';
 
 import App from './App';
+import fakeServerWorker from './fakeServer';
 
 const container = document.getElementById('root');
 if (!container) {
@@ -8,4 +9,14 @@ if (!container) {
 }
 const root = createRoot(container);
 
-root.render(<App />);
+fakeServerWorker(process.env.REACT_APP_DATA_PROVIDER ?? '')
+    .then(worker =>
+        worker.start({
+            onUnhandledRequest: 'bypass',
+            quiet: true,
+            serviceWorker: { url: './mockServiceWorker.js' },
+        })
+    )
+    .then(() => {
+        root.render(<App />);
+    });

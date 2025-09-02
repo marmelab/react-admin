@@ -75,6 +75,40 @@ export const EncodedIdWithPercentage = ({
     );
 };
 
+export const WarningLogWithDifferentMeta = () => (
+    <TestMemoryRouter initialEntries={['/posts/5']}>
+        <CoreAdminContext
+            dataProvider={testDataProvider({
+                getOne: (_resource, { id }) =>
+                    Promise.resolve({
+                        data: { id, title: 'hello' } as any,
+                    }),
+            })}
+        >
+            <Routes>
+                <Route
+                    path="/posts/:id"
+                    element={
+                        <EditController
+                            resource="posts"
+                            queryOptions={{ meta: { foo: 'bar' } }}
+                            redirect={false}
+                        >
+                            {({ record }) => (
+                                <>
+                                    <LocationInspector />
+                                    <p>Id: {record && record.id}</p>
+                                    <p>Title: {record && record.title}</p>
+                                </>
+                            )}
+                        </EditController>
+                    }
+                />
+            </Routes>
+        </CoreAdminContext>
+    </TestMemoryRouter>
+);
+
 const LocationInspector = () => {
     const location = useLocation();
     return (

@@ -62,22 +62,21 @@ const useAuthState = <ErrorType = Error>(
 
     const queryResult = useQuery<boolean, any>({
         queryKey: ['auth', 'checkAuth', params],
-        queryFn: ({ signal }) => {
+        queryFn: async ({ signal }) => {
             // The authProvider is optional in react-admin
             if (!authProvider) {
                 return true;
             }
-            return authProvider
-                .checkAuth({ ...params, signal })
-                .then(() => true)
-                .catch(error => {
-                    // This is necessary because react-query requires the error to be defined
-                    if (error != null) {
-                        throw error;
-                    }
-
-                    throw new Error();
-                });
+            try {
+                await authProvider.checkAuth({ ...params, signal });
+                return true;
+            } catch (error) {
+                // This is necessary because react-query requires the error to be defined
+                if (error != null) {
+                    throw error;
+                }
+                throw new Error();
+            }
         },
         retry: false,
         ...options,

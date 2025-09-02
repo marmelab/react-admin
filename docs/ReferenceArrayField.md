@@ -10,7 +10,7 @@ Use `<ReferenceArrayField>` to display a list of related records, via a one-to-m
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md). 
+`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md).
 
 **Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
 
@@ -101,7 +101,7 @@ You can change how the list of related records is rendered by passing a custom c
 
 ## `children`
 
-By default, `<ReferenceArrayField>` renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) using the resource [`recordRepresentation`](./Resource.md#recordrepresentation). 
+By default, `<ReferenceArrayField>` renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) using the resource [`recordRepresentation`](./Resource.md#recordrepresentation).
 
 ![ReferenceArrayField with default children](./img/ReferenceArrayField-default-child.png)
 
@@ -131,7 +131,7 @@ Is equivalent to:
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
-- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
+- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how).
 
 For instance, use a `<DataTable>` to render the related records in a table:
 
@@ -189,20 +189,11 @@ export const PostShow = () => (
 ## `filter`
 
 `<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
-                )} />
-            <EditButton />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-## `filter`
-
-`<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
 
 For instance, to render only tags that are 'published', you can use the following code:
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -211,6 +202,7 @@ For instance, to render only tags that are 'published', you can use the followin
     filter={{ is_published: true }}
 />
 ```
+
 {% endraw %}
 
 ## `label`
@@ -314,9 +306,11 @@ Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` que
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField queryOptions={{ meta: { foo: 'bar' } }} />
 ```
+
 {% endraw %}
 
 ## `render`
@@ -367,6 +361,7 @@ By default, the related records are displayed in the order in which they appear 
 For instance, to sort tags by title in ascending order, you can use the following code:
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -375,6 +370,7 @@ For instance, to sort tags by title in ascending order, you can use the followin
     sort={{ field: 'title', order: 'ASC' }}
 />
 ```
+
 {% endraw %}
 
 ## `sx`: CSS API
@@ -386,4 +382,3 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 | `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isPending` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
-

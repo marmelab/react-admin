@@ -8,8 +8,7 @@ import { CreateBase } from '../../controller/create/CreateBase';
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { DataProvider } from '../../types';
 import { Form } from '../../form/Form';
-import { useInput } from '../../form/useInput';
-import { InputProps } from '../../form/types';
+import { InputProps, useInput } from '../../form/useInput';
 import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
 import {
     ReferenceArrayInputBase,
