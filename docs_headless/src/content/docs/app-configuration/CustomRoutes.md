@@ -1,5 +1,7 @@
 ---
 title: "<CustomRoutes>"
+sidebar:
+  order: 3
 ---
 
 Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Routes>` elements.

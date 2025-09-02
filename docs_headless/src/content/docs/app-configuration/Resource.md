@@ -1,5 +1,7 @@
 ---
 title: "<Resource>"
+sidebar:
+  order: 2
 ---
 
 `<Resource>` components define the CRUD routes of a react-admin application. 

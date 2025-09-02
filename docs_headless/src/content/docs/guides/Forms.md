@@ -1,5 +1,7 @@
 ---
 title: "Forms"
+sidebar:
+  order: 4
 ---
 
 Ra-core offers a set of hooks and components to help you build fully-featured forms with minimal code. Ra-core forms are powered by a powerful third-party form library, [`react-hook-form`](https://react-hook-form.com/).

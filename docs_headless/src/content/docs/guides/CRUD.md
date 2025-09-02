@@ -1,5 +1,7 @@
 ---
 title: "CRUD Pages"
+sidebar:
+  order: 3
 ---
 
 Most admin and B2B apps start with a few basic screens to manipulate records:

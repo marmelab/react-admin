@@ -1,5 +1,7 @@
 ---
 title: "Introduction"
+sidebar:
+  order: 1
 ---
 
 React-admin headless (`ra-core`) provides hooks and components to let you build custom user experiences for editing and creating records, leveraging react-hook-form.

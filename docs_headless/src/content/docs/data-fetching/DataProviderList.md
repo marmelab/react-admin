@@ -1,5 +1,7 @@
 ---
 title: "Supported Data Provider Backends"
+sidebar:
+  label: Supported Backends
 ---
 
 Thanks to the Data Provider architecture, ra-core supports a lot of API backends. Check the list below for open-source packages developed and maintained by the core team and developers from the ra-core community.

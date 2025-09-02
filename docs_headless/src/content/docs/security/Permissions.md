@@ -1,5 +1,7 @@
 ---
 title: "Authorization"
+sidebar:
+  order: 4
 ---
 
 <iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>

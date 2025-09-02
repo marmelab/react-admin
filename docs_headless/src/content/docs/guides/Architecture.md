@@ -1,5 +1,7 @@
 ---
 title: "General Concepts"
+sidebar:
+  order: 1
 ---
 
 React-admin relies on a several design decisions that structure its codebase.

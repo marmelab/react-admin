@@ -1,5 +1,7 @@
 ---
 title: "Translating UI Components"
+sidebar:
+  order: 3
 ---
 
 The messages returned by the `polyglotI18nProvider` function argument should be a dictionary where the keys identify interface components, and values are the translated string. This dictionary is a simple JavaScript object looking like the following:

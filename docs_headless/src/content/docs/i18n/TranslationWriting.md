@@ -1,6 +1,8 @@
 ---
 layout: default
 title: "Writing An I18nProvider"
+sidebar:
+  order: 4
 ---
 
 An `i18nProvider` should be an object with three required methods and one optional method:

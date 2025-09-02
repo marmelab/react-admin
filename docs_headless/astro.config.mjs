@@ -102,7 +102,7 @@ export default defineConfig({
                     },
                 },
                 {
-                    label: 'Other Hooks & Components',
+                    label: 'Other Components & Hooks',
                     autogenerate: {
                         directory: 'other',
                     },

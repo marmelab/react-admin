@@ -1,5 +1,7 @@
 ---
 title: "I18N"
+sidebar:
+  order: 7
 ---
 
 <video controls autoplay playsinline muted loop>

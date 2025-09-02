@@ -1,5 +1,7 @@
 ---
 title: "Form Validation"
+sidebar:
+  order: 2
 ---
 
 ![Validation example](../img/validation.png)

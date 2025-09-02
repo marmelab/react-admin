@@ -1,5 +1,7 @@
 ---
 title: "Data Fetching"
+sidebar:
+  order: 2
 ---
 
 You can use ra-core to build an admin app on top of any API, whether it uses REST, GraphQL, RPC, or even SOAP, regardless of the dialect it uses. This works because ra-core doesn't use `fetch` directly. Instead, it uses a Data Provider object to interface with your API and [React Query](https://tanstack.com/query/v5/docs/react/overview) to handle data fetching.

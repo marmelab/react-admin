@@ -1,5 +1,7 @@
 ---
 title: "<CoreAdmin>"
+sidebar:
+  order: 1
 ---
 
 The `<CoreAdmin>` component is the root component of a react-admin app. It allows to configure the application adapters, routes, and core functionalities.

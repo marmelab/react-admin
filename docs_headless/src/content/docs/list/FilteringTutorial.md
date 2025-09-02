@@ -1,5 +1,7 @@
 ---
 title: "Filtering the List"
+sidebar:
+  order: 2
 ---
 
 One of the most important features of the List page is the ability to filter the results. React-admin offers powerful filter components, and gets out of the way when you want to go further.

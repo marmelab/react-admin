@@ -1,6 +1,8 @@
 ---
 layout: default
 title: "Supported Locales"
+sidebar:
+  order: 2
 ---
 
 You can find translation packages for the following languages:

@@ -1,5 +1,7 @@
 ---
 title: "Writing An Auth Provider"
+sidebar:
+  order: 3
 ---
 
 React-admin can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that react-admin calls to handle authentication and authorization.

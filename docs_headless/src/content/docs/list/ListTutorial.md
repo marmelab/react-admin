@@ -1,5 +1,7 @@
 ---
 title: "Introduction"
+sidebar:
+  order: 1
 ---
 
 The List view displays a list of records, and lets users search for specific records using filters, sorting, and pagination.

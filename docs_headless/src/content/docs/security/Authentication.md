@@ -1,5 +1,7 @@
 ---
 title: "Auth Provider Setup"
+sidebar:
+  order: 1
 ---
 
 <video controls autoplay playsinline muted loop>

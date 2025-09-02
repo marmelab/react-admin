@@ -1,5 +1,7 @@
 ---
 title: "Preferences"
+sidebar:
+  order: 8
 ---
 
 Ra-core contains a global, synchronous, persistent store for storing user preferences. Think of the Store as a key-value database that persists between page loads.

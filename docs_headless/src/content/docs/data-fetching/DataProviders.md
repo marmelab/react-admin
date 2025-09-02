@@ -1,5 +1,7 @@
 ---
 title: "Data Provider Setup"
+sidebar:
+  order: 1
 ---
 
 The Data Provider is the interface between ra-core and your API. It's where you write the API calls to fetch and save data.

@@ -1,5 +1,8 @@
 ---
 title: "Setting Up Translations"
+sidebar:
+  order: 1
+  label: Setting Up
 ---
 
 If you want to add or update translations, you'll have to provide your own `i18nProvider`.

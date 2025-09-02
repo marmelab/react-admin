@@ -1,5 +1,8 @@
 ---
 title: "Features"
+sidebar:
+  order: 9
+  label: All Features
 ---
 
 React-admin is a **rich framework** that covers most of the needs of typical admin & B2B applications. Its headless core (ra-core) provides powerful business logic and data management capabilities without being tied to any specific UI library. This flexibility unlocks your creativity and helps you build great apps with your preferred UI library.

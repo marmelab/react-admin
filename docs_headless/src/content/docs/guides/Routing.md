@@ -1,5 +1,7 @@
 ---
 title: "Routing"
+sidebar:
+  order: 6
 ---
 
 Ra-core uses [the react-router library](https://reactrouter.com/) to handle routing. This allows to use different routing strategies, and to integrate an ra-core app inside another app.
