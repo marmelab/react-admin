@@ -3,16 +3,11 @@ import { useParams } from 'react-router-dom';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
-import {
-    useRedirect,
-    RedirectionSideEffect,
-    useCreatePath,
-} from '../../routing';
+import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,
     useUpdate,
-    useRefresh,
     UseGetOneHookValue,
     HttpError,
     UseGetOneOptions,
@@ -86,9 +81,7 @@ export const useEditController = <
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
     const notify = useNotify();
-    const createPath = useCreatePath();
     const redirect = useRedirect();
-    const refresh = useRefresh();
     const { id: routeId } = useParams<'id'>();
     if (!routeId && !propsId) {
         throw new Error(
@@ -96,6 +89,7 @@ export const useEditController = <
         );
     }
     const id = propsId ?? routeId;
+
     const { meta: queryMeta, ...otherQueryOptions } = queryOptions;
     const {
         meta: mutationMeta,
@@ -103,6 +97,17 @@ export const useEditController = <
         onError,
         ...otherMutationOptions
     } = mutationOptions;
+
+    if (
+        (queryMeta || mutationMeta) &&
+        JSON.stringify(queryMeta) !== JSON.stringify(mutationMeta) &&
+        redirectTo === false
+    ) {
+        console.warn(
+            'When not redirecting after editing, query meta and mutation meta should be the same, or you will have data update issues.'
+        );
+    }
+
     const {
         registerMutationMiddleware,
         getMutateWithMiddlewares,
@@ -128,16 +133,7 @@ export const useEditController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                // We need to flushSync to ensure the redirect happens before the refresh
-                // Otherwise this can cause an infinite loop when the record is not found
-                redirect(() => ({
-                    pathname: createPath({
-                        resource,
-                        type: 'list',
-                    }),
-                    flushSync: true,
-                }));
-                refresh();
+                redirect('list', resource);
             },
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
@@ -322,6 +318,7 @@ export interface EditControllerProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
+
     [key: string]: any;
 }
 
@@ -344,6 +341,7 @@ export interface EditControllerLoadingResult<RecordType extends RaRecord = any>
     error: null;
     isPending: true;
 }
+
 export interface EditControllerLoadingErrorResult<
     RecordType extends RaRecord = any,
     TError = Error,
@@ -352,6 +350,7 @@ export interface EditControllerLoadingErrorResult<
     error: TError;
     isPending: false;
 }
+
 export interface EditControllerRefetchErrorResult<
     RecordType extends RaRecord = any,
     TError = Error,
@@ -360,6 +359,7 @@ export interface EditControllerRefetchErrorResult<
     error: TError;
     isPending: false;
 }
+
 export interface EditControllerSuccessResult<RecordType extends RaRecord = any>
     extends EditControllerBaseResult<RecordType> {
     record: RecordType;

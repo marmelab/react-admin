@@ -51,38 +51,43 @@ export const useCheckAuth = (): CheckAuth => {
         `${basename}/${defaultAuthParams.loginUrl}`
     );
 
-    const checkAuth = useCallback(
-        (params: any = {}, logoutOnFailure = true, redirectTo = loginUrl) =>
-            authProvider
-                ? authProvider.checkAuth(params).catch(error => {
-                      if (logoutOnFailure) {
-                          logout(
-                              {},
-                              error && error.redirectTo != null
-                                  ? error.redirectTo
-                                  : redirectTo
-                          );
-                          const shouldSkipNotify =
-                              error && error.message === false;
-                          !shouldSkipNotify &&
-                              notify(
-                                  getErrorMessage(
-                                      error,
-                                      'ra.auth.auth_check_error'
-                                  ),
-                                  { type: 'error' }
-                              );
-                      }
-                      throw error;
-                  })
-                : checkAuthWithoutAuthProvider(),
+    const checkAuth = useCallback<CheckAuth>(
+        async (
+            params: any = {},
+            logoutOnFailure = true,
+            redirectTo = loginUrl
+        ) => {
+            // The authProvider is optional in react-admin
+            if (!authProvider) {
+                return checkAuthWithoutAuthProvider();
+            }
+            try {
+                return await authProvider.checkAuth(params);
+            } catch (error: any) {
+                if (logoutOnFailure) {
+                    logout(
+                        {},
+                        error && error.redirectTo != null
+                            ? error.redirectTo
+                            : redirectTo
+                    );
+                    const shouldSkipNotify = error && error.message === false;
+                    !shouldSkipNotify &&
+                        notify(
+                            getErrorMessage(error, 'ra.auth.auth_check_error'),
+                            { type: 'error' }
+                        );
+                }
+                throw error;
+            }
+        },
         [authProvider, logout, notify, loginUrl]
     );
 
     return checkAuth;
 };
 
-const checkAuthWithoutAuthProvider = () => Promise.resolve();
+const checkAuthWithoutAuthProvider = async () => undefined;
 
 /**
  * Check if the current user is authenticated by calling authProvider.checkAuth().
