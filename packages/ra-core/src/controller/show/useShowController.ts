@@ -171,8 +171,8 @@ export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
-    isPaused: boolean;
-    isPlaceholderData: boolean;
+    isPaused?: boolean;
+    isPlaceholderData?: boolean;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
