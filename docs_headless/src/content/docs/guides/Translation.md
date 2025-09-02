@@ -5,8 +5,8 @@ sidebar:
 ---
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/translation.webm" type="video/webm"/>
-  <source src="../img/translation.mp4" type="video/mp4"/>
+  <source src="../../img/translation.webm" type="video/webm"/>
+  <source src="../../img/translation.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

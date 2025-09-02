@@ -10,7 +10,7 @@ You can use ra-core to build an admin app on top of any API, whether it uses RES
 
 In an ra-core app, you don't write API calls using `fetch` or `axios`. Instead, you communicate with your API through an object called the `dataProvider`.
 
-<img src="../img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
+<img src="../../img/data-provider.png" class="no-shadow" alt="Backend agnostic" />
 
 The `dataProvider` exposes a predefined interface that allows ra-core to query any API in a normalized way.
 
@@ -146,7 +146,7 @@ Ra-core caches query data locally in the browser and automatically reuses it to 
 For example, when a user deletes a book in a list, React-admin immediately removes it, making the row disappear. After the API confirms the deletion, React-admin invalidates the list’s cache, refreshes it, and another record appears at the end of the list.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="../img/AutoRefresh.mp4" type="video/mp4" />
+  <source src="../../img/AutoRefresh.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -24,7 +24,7 @@ With Access Control, the `authProvider`is responsible for checking if the user c
 Use the `authProvider` to integrate ra-core with popular authorization solutions like Okta, Casbin, Cerbos, and more.
 
 <video controls autoplay muted loop>
-  <source src="../img/AccessControl.mp4" type="video/mp4"/>
+  <source src="../../img/AccessControl.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

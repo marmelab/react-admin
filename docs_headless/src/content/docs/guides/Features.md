@@ -336,8 +336,8 @@ const BookList = () => (
 ```
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="../img/reference-input-filter.webm" type="video/webm" />
-  <source src="../img/reference-input-filter.mp4" type="video/mp4" />
+  <source src="../../img/reference-input-filter.webm" type="video/webm" />
+  <source src="../../img/reference-input-filter.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -478,8 +478,8 @@ React-admin takes advantage of the Single-Page-Application architecture, impleme
 When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/tutorial_post_edit_undo.webm" type="video/webm"/>
-  <source src="../img/tutorial_post_edit_undo.mp4" type="video/mp4"/>
+  <source src="../../img/tutorial_post_edit_undo.webm" type="video/webm"/>
+  <source src="../../img/tutorial_post_edit_undo.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -494,7 +494,7 @@ It's the server's responsibility to check that an action is allowed for a given 
 React-admin lets you **customize the user interface based on a simple set of rules**, and to define the permissions for each role in a centralized place. Whether you need to have custom pages for specific roles, or to change the props of a component based on the user's role, react-admin lets you do it. This feature uses the same adapter approach as for the `dataProvider`, which means you can use any authentication backend you want.
 
 <video controls="controls" style="max-width: 100%">
-    <source src="../img/ra-rbac.mp4" type="video/mp4" />
+    <source src="../../img/ra-rbac.mp4" type="video/mp4" />
 </video>
 
 You can define permissions for pages, fields, buttons, etc. Roles and permissions are managed by the `authProvider`, which means you can use any data source you want (including an ActiveDirectory server).
@@ -580,8 +580,8 @@ To learn more about the `Store` and how to use it, check the following sections:
 React-admin is **fully internationalized**.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/LocalesMenuButton.webm" type="video/webm"/>
-  <source src="../img/LocalesMenuButton.mp4" type="video/mp4"/>
+  <source src="../../img/LocalesMenuButton.webm" type="video/webm"/>
+  <source src="../../img/LocalesMenuButton.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -634,8 +634,8 @@ React-admin is written in TypeScript. That doesn't mean you have to use TypeScri
 And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="../img/typescript.webm" type="video/webm" />
-  <source src="../img/typescript.mp4" type="video/mp4" />
+  <source src="../../img/typescript.webm" type="video/webm" />
+  <source src="../../img/typescript.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

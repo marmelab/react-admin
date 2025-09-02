@@ -43,8 +43,8 @@ const ContactEdit = () => (
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/reference-input.webm" type="video/webm"/>
-  <source src="../img/reference-input.mp4" type="video/mp4"/>
+  <source src="../../img/reference-input.webm" type="video/webm"/>
+  <source src="../../img/reference-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -407,8 +407,8 @@ You can learn more about the `create` prop in the documentation of the selection
 If the reference resource is a tree, use [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) instead of `<ReferenceInput>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
-  <source src="../img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  <source src="../../img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="../../img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

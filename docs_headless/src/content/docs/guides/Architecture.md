@@ -10,7 +10,7 @@ React-admin relies on a several design decisions that structure its codebase.
 
 React-admin is specifically designed to build [Single-Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application). In a react-admin app, the browser fetches the required HTML, CSS, and JavaScript to render the application only once. Subsequently, data is fetched from APIs through AJAX calls. This is in contrast to traditional web applications, where the browser fetches a new HTML page for each screen.
 
-<img class="no-shadow" src="../img/SPA-lifecycle.png" alt="SPA lifecycle" />
+<img class="no-shadow" src="../../img/SPA-lifecycle.png" alt="SPA lifecycle" />
 
 The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 
@@ -58,7 +58,7 @@ The `<Resource>` component allows react-admin to automatically link CRUD pages b
 
 React-admin does not make any assumptions about the specific structure of your API. Instead, it defines its own syntax for data fetching, authentication, internationalization, and preferences. To interact with your API, react-admin relies on adapters called **providers**.
 
-<img class="no-shadow" src="../img/providers.png" alt="Providers" />
+<img class="no-shadow" src="../../img/providers.png" alt="Providers" />
 
 For example, to fetch a list of records from the API, you would use the `dataProvider` object as follows:
 

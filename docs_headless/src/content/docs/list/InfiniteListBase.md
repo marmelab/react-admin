@@ -5,7 +5,7 @@ title: "<InfiniteListBase>"
 The `<InfiniteListBase>` component is a headless version of the infinite list functionality. It fetches records from the data provider and provides infinite scrolling capabilities through a [`ListContext`](./useListContext.md), but doesn't render any UI by itself. This allows you to create fully custom list layouts with infinite loading.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="../img/infinite-book-list.webm" poster="../img/infinite-book-list.webp" type="video/webm">
+  <source src="../../img/infinite-book-list.webm" poster="../img/infinite-book-list.webp" type="video/webm">
   Your browser does not support the video tag.
 </video>
 

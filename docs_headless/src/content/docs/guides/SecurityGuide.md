@@ -5,7 +5,7 @@ sidebar:
 ---
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/login.mp4" type="video/mp4"/>
+  <source src="../../img/login.mp4" type="video/mp4"/>
  Your browser does not support the video tag.
 </video>
 
@@ -117,7 +117,7 @@ Check the [Auth Provider Setup Guide](../security/Authentication.md) for more de
 After a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform an action.
 
 <video controls autoplay muted loop>
-  <source src="../img/AccessControl.mp4" type="video/mp4"/>
+  <source src="../../img/AccessControl.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

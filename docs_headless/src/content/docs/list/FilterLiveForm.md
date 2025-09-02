@@ -7,7 +7,7 @@ This component offers a convenient way to create a form that automatically updat
 It fits nicely alongside a filter list component, but you can also use it at other places to create your own filter UI.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/FilterLiveForm.mp4" type="video/mp4"/>
+  <source src="../../img/FilterLiveForm.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

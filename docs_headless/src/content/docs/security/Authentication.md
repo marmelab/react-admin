@@ -5,7 +5,7 @@ sidebar:
 ---
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/login.mp4" type="video/mp4"/>
+  <source src="../../img/login.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -423,6 +423,6 @@ export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refre
 Access control and permissions allow you to restrict certain pages and features to specific users. React-admin provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Permissions.md) documentation.
 
 <video controls autoplay muted loop>
-  <source src="../img/AccessControl.mp4" type="video/mp4"/>
+  <source src="../../img/AccessControl.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>

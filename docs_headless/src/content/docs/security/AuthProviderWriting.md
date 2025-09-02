@@ -273,7 +273,7 @@ const authProvider = {
 If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](../guides/Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/logout.mp4" type="video/mp4"/>
+  <source src="../../img/logout.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

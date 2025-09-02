@@ -132,8 +132,8 @@ export default {
 ## Building a Custom Filter
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/filter_with_submit.webm" type="video/webm"/>
-  <source src="../img/filter_with_submit.mp4" type="video/mp4"/>
+  <source src="../../img/filter_with_submit.webm" type="video/webm"/>
+  <source src="../../img/filter_with_submit.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

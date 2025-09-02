@@ -7,8 +7,8 @@ Validating the uniqueness of a field is a common requirement so React-admin prov
 It will call the [`dataProvider.getList`](../data-fetching/DataProviderWriting.md#getlist) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
 
 <video controls autoplay playsinline muted loop>
-  <source src="../img/useUnique.webm" type="video/webm"/>
-  <source src="../img/useUnique.mp4" type="video/mp4"/>
+  <source src="../../img/useUnique.webm" type="video/webm"/>
+  <source src="../../img/useUnique.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
