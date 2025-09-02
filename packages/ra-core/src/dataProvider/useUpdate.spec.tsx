@@ -303,6 +303,7 @@ describe('useUpdate', () => {
         });
         it('when optimistic, displays result and success side effects right away', async () => {
             render(<SuccessCaseOptimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -318,6 +319,7 @@ describe('useUpdate', () => {
         it('when optimistic, displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<ErrorCaseOptimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -342,6 +344,7 @@ describe('useUpdate', () => {
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
+            await screen.findByText('Hello');
             act(() => {
                 screen.getByText('Update title').click();
             });
@@ -923,6 +926,7 @@ describe('useUpdate', () => {
     describe('middlewares', () => {
         it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
             render(<WithMiddlewaresSuccessPessimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -943,6 +947,7 @@ describe('useUpdate', () => {
         it('when pessimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorPessimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -966,6 +971,7 @@ describe('useUpdate', () => {
 
         it('when optimistic, it accepts middlewares and displays result and success side effects right away', async () => {
             render(<WithMiddlewaresSuccessOptimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -984,6 +990,7 @@ describe('useUpdate', () => {
         it('when optimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresErrorOptimistic timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -1005,6 +1012,7 @@ describe('useUpdate', () => {
 
         it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
             render(<WithMiddlewaresSuccessUndoable timeout={10} />);
+            await screen.findByText('Hello');
             act(() => {
                 screen.getByText('Update title').click();
             });
