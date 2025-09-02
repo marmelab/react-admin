@@ -14,7 +14,7 @@ import rehypeAstroRelativeMarkdownLinks from 'astro-rehype-relative-markdown-lin
 export default defineConfig({
     integrations: [
         starlight({
-            title: 'React Admin Headless',
+            title: 'ra-core',
             customCss: ['./src/styles/global.css'],
             favicon: '/favicon.ico',
             social: [
