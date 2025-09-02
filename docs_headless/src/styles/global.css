@@ -70,3 +70,20 @@ img.icon {
     border-radius: 100%;
     font-size: 12px;
 }
+
+/* 
+   Improve props table layout
+*/
+.sl-markdown-content table {
+    font-size: 0.8rem;
+}
+.sl-markdown-content table code {
+    font-size: 0.8rem;
+}
+.sl-markdown-content table tr td:has(code) {
+    max-width: 140px;
+}
+.sl-markdown-content table tr td code {
+    overflow-wrap: break-word;
+}
+
