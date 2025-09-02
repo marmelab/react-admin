@@ -89,104 +89,161 @@ export const useCreate = <
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
 
-    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        getMutateWithMiddlewares,
+        ...mutationOptions
+    } = options;
 
-    const updateCache = useEvent(
+    const dataProviderCreate = useEvent((resource: string, params) =>
+        dataProvider
+            .create<
+                RecordType,
+                ResultRecordType
+            >(resource, params as CreateParams<RecordType>)
+            .then(({ data }) => data)
+    );
+
+    const [mutate, mutationResult] = useMutationWithMutationMode<
+        MutationError,
+        ResultRecordType,
+        UseCreateMutateParams<RecordType>
+    >(
+        { resource, ...params },
+        {
+            ...mutationOptions,
+            mutationKey: [resource, 'create', params],
+            mutationMode,
+            mutationFn: ({ resource, ...params }) => {
+                if (resource == null) {
+                    throw new Error('useCreate mutation requires a resource');
+                }
+                if (params == null) {
+                    throw new Error('useCreate mutation requires parameters');
+                }
+                return dataProviderCreate(resource, params);
+            },
+            updateCache: (
+                { resource, ...params },
+                { mutationMode },
+                result
+            ) => {
+                const id =
+                    mutationMode === 'pessimistic'
+                        ? result?.id
+                        : params.data?.id;
+                if (!id) {
+                    return undefined;
+                }
+                // hack: only way to tell react-query not to fetch this query for the next 5 seconds
+                // because setQueryData doesn't accept a stale time option
+                const now = Date.now();
+                const updatedAt =
+                    mutationMode === 'undoable' ? now + 5 * 1000 : now;
+                // Stringify and parse the data to remove undefined values.
+                // If we don't do this, an update with { id: undefined } as payload
+                // would remove the id from the record, which no real data provider does.
+                const clonedData = JSON.parse(
+                    JSON.stringify(
+                        mutationMode === 'pessimistic' ? result : params.data
+                    )
+                );
+
+                queryClient.setQueryData(
+                    [resource, 'getOne', { id: String(id), meta: params.meta }],
+                    (record: RecordType) => ({ ...record, ...clonedData }),
+                    { updatedAt }
+                );
+
+                return clonedData;
+            },
+            getSnapshot: ({ resource, ...params }, { mutationMode }) => {
+                const queryKeys: any[] = [
+                    [resource, 'getList'],
+                    [resource, 'getInfiniteList'],
+                    [resource, 'getMany'],
+                    [resource, 'getManyReference'],
+                ];
+
+                if (mutationMode !== 'pessimistic' && params.data?.id) {
+                    queryKeys.push([
+                        resource,
+                        'getOne',
+                        { id: String(params.data.id), meta: params.meta },
+                    ]);
+                }
+
+                /**
+                 * Snapshot the previous values via queryClient.getQueriesData()
+                 *
+                 * The snapshotData ref will contain an array of tuples [query key, associated data]
+                 *
+                 * @example
+                 * [
+                 *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
+                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
+                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
+                 * ]
+                 *
+                 * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+                 */
+                const snapshot = queryKeys.reduce(
+                    (prev, queryKey) =>
+                        prev.concat(queryClient.getQueriesData({ queryKey })),
+                    [] as Snapshot
+                );
+
+                return snapshot;
+            },
+            getMutateWithMiddlewares: mutationFn => args => {
+                // This is necessary to avoid breaking changes in useCreate:
+                // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+                if (getMutateWithMiddlewares) {
+                    const { resource, ...params } = args;
+                    return getMutateWithMiddlewares(
+                        dataProviderCreate.bind(dataProvider)
+                    )(resource, params);
+                }
+                return mutationFn(args);
+            },
+            onUndo: ({ resource, data, meta }) => {
+                queryClient.removeQueries({
+                    queryKey: [
+                        resource,
+                        'getOne',
+                        { id: String(data?.id), meta },
+                    ],
+                    exact: true,
+                });
+            },
+        }
+    );
+
+    const create = useEvent(
         (
-            resource: string,
-            { data, meta }: Partial<CreateParams<RecordType>>,
-            { mutationMode }: { mutationMode: MutationMode },
-            result: ResultRecordType
+            callTimeResource: string | undefined = resource,
+            callTimeParams: Partial<CreateParams<RecordType>> = {},
+            callTimeOptions: MutateOptions<
+                ResultRecordType,
+                MutationError,
+                Partial<UseCreateMutateParams<RecordType>>,
+                unknown
+            > & {
+                mutationMode?: MutationMode;
+                returnPromise?: boolean;
+            } = {}
         ) => {
-            const id = mutationMode === 'pessimistic' ? result.id : data?.id;
-            if (!id) {
-                return undefined;
-            }
-            // hack: only way to tell react-query not to fetch this query for the next 5 seconds
-            // because setQueryData doesn't accept a stale time option
-            const now = Date.now();
-            const updatedAt =
-                mutationMode === 'undoable' ? now + 5 * 1000 : now;
-            // Stringify and parse the data to remove undefined values.
-            // If we don't do this, an update with { id: undefined } as payload
-            // would remove the id from the record, which no real data provider does.
-            const clonedData = JSON.parse(
-                JSON.stringify(mutationMode === 'pessimistic' ? result : data)
+            return mutate(
+                {
+                    resource: callTimeResource,
+                    ...callTimeParams,
+                },
+                callTimeOptions
             );
-
-            queryClient.setQueryData(
-                [resource, 'getOne', { id: String(id), meta }],
-                (record: RecordType) => ({ ...record, ...clonedData }),
-                { updatedAt }
-            );
-
-            return clonedData;
         }
     );
 
-    const getSnapshot = useEvent(
-        (
-            resource: string,
-            { data, meta }: Partial<CreateParams<RecordType>>,
-            { mutationMode }: { mutationMode: MutationMode }
-        ) => {
-            const queryKeys: any[] = [
-                [resource, 'getList'],
-                [resource, 'getInfiniteList'],
-                [resource, 'getMany'],
-                [resource, 'getManyReference'],
-            ];
-
-            if (mutationMode !== 'pessimistic' && data?.id) {
-                queryKeys.push([
-                    resource,
-                    'getOne',
-                    { id: String(data.id), meta },
-                ]);
-            }
-
-            /**
-             * Snapshot the previous values via queryClient.getQueriesData()
-             *
-             * The snapshotData ref will contain an array of tuples [query key, associated data]
-             *
-             * @example
-             * [
-             *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
-             *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-             *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-             * ]
-             *
-             * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
-             */
-            const snapshot = queryKeys.reduce(
-                (prev, queryKey) =>
-                    prev.concat(queryClient.getQueriesData({ queryKey })),
-                [] as Snapshot
-            );
-
-            return snapshot;
-        }
-    );
-
-    const onUndo = useEvent(
-        (resource: string, { data, meta }: CreateParams<RecordType>) => {
-            queryClient.removeQueries({
-                queryKey: [resource, 'getOne', { id: String(data.id), meta }],
-                exact: true,
-            });
-        }
-    );
-
-    return useMutationWithMutationMode(resource, params, {
-        ...mutationOptions,
-        mutationKey: [resource, 'create', params],
-        mutationMode,
-        mutationFn: dataProvider.create.bind(dataProvider),
-        updateCache,
-        getSnapshot,
-        onUndo,
-    });
+    return [create, mutationResult];
 };
 
 export interface UseCreateMutateParams<

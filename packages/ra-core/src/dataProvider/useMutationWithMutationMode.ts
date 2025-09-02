@@ -12,93 +12,14 @@ import { useAddUndoableMutation } from './undo/useAddUndoableMutation';
 import { MutationMode } from '../types';
 import { useEvent } from '../util';
 
-/**
- * Get a callback to call the dataProvider.update() method, the result and the loading state.
- *
- * @param {string} resource
- * @param {Params} params The update parameters { id, data, previousData, meta }
- * @param {Object} options Options object to pass to the queryClient.
- * May include side effects to be executed upon success or failure, e.g. { onSuccess: () => { refresh(); } }
- * May include a mutation mode (optimistic/pessimistic/undoable), e.g. { mutationMode: 'undoable' }
- *
- * @typedef Params
- * @prop params.id The resource identifier, e.g. 123
- * @prop params.data The updates to merge into the record, e.g. { views: 10 }
- * @prop params.previousData The record before the update is applied
- * @prop params.meta Optional meta data
- *
- * @returns The current mutation state. Destructure as [update, { data, error, isPending }].
- *
- * The return value updates according to the request state:
- *
- * - initial: [update, { isPending: false, isIdle: true }]
- * - start:   [update, { isPending: true }]
- * - success: [update, { data: [data from response], isPending: false, isSuccess: true }]
- * - error:   [update, { error: [error from response], isPending: false, isError: true }]
- *
- * The update() function must be called with a resource and a parameter object: update(resource, { id, data, previousData }, options)
- *
- * This hook uses react-query useMutation under the hood.
- * This means the state object contains mutate, isIdle, reset and other react-query methods.
- *
- * @see https://react-query-v3.tanstack.com/reference/useMutation
- *
- * @example // set params when calling the update callback
- *
- * import { useUpdate, useRecordContext } from 'react-admin';
- *
- * const IncreaseLikeButton = () => {
- *     const record = useRecordContext();
- *     const diff = { likes: record.likes + 1 };
- *     const [update, { isPending, error }] = useUpdate();
- *     const handleClick = () => {
- *         update('likes', { id: record.id, data: diff, previousData: record })
- *     }
- *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isPending} onClick={handleClick}>Like</div>;
- * };
- *
- * @example // set params when calling the hook
- *
- * import { useUpdate, useRecordContext } from 'react-admin';
- *
- * const IncreaseLikeButton = () => {
- *     const record = useRecordContext();
- *     const diff = { likes: record.likes + 1 };
- *     const [update, { isPending, error }] = useUpdate('likes', { id: record.id, data: diff, previousData: record });
- *     if (error) { return <p>ERROR</p>; }
- *     return <button disabled={isPending} onClick={() => update()}>Like</button>;
- * };
- *
- * @example // TypeScript
- * const [update, { data }] = useUpdate<Product>('products', { id, data: diff, previousData: product });
- *                    \-- data is Product
- */
 export const useMutationWithMutationMode = <
     ErrorType = Error,
-    DataProviderMutationFunctionParams extends BaseParams = BaseParams,
-    DataProviderMutationFunction extends
-        DataProviderMutationFunctionBase<DataProviderMutationFunctionParams> = DataProviderMutationFunctionBase<DataProviderMutationFunctionParams>,
+    TData = unknown,
+    TVariables = unknown,
 >(
-    resource?: string,
-    params: DataProviderMutationFunctionParams = {} as DataProviderMutationFunctionParams,
-    options: UseMutationWithMutationModeOptions<
-        ErrorType,
-        DataProviderMutationFunctionParams,
-        DataProviderMutationFunction
-    > = {
-        updateCache: () => {
-            throw new Error(
-                'updateCache must be provided to useMutationWithMutationMode'
-            );
-        },
-        getSnapshot: () => {
-            throw new Error(
-                'getSnapshot must be provided to useMutationWithMutationMode'
-            );
-        },
-    }
-): UseMutationWithMutationModeResult<boolean, ErrorType> => {
+    params: TVariables = {} as TVariables,
+    options: UseMutationWithMutationModeOptions<ErrorType, TData, TVariables>
+): UseMutationWithMutationModeResult<boolean, ErrorType, TData, TVariables> => {
     const queryClient = useQueryClient();
     const addUndoableMutation = useAddUndoableMutation();
     const {
@@ -117,34 +38,42 @@ export const useMutationWithMutationMode = <
             'useMutationWithMutationMode mutation requires a mutationFn'
         );
     }
+
+    const mutationFnEvent = useEvent(mutationFn);
+    const updateCacheEvent = useEvent(updateCache);
+    const getSnapshotEvent = useEvent(getSnapshot);
+    const onUndoEvent = useEvent(onUndo ?? noop);
+    const getMutateWithMiddlewaresEvent = useEvent(
+        getMutateWithMiddlewares ??
+            (noop as unknown as (
+                mutate: MutationFunction<TData, TVariables>
+            ) => (params: TVariables) => Promise<TData>)
+    );
+
     const mode = useRef<MutationMode>(mutationMode);
-    const paramsRef =
-        useRef<Partial<DataProviderMutationFunctionParams>>(params);
+    const paramsRef = useRef<Partial<TVariables>>(params);
     const snapshot = useRef<Snapshot>([]);
     // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
     const mutateWithMiddlewares = useRef<
-        | DataProviderMutationFunction
-        | DataProviderMutationWithMiddlewareFunction<
-              DataProviderMutationFunctionParams,
-              DataProviderMutationFunction
-          >
-    >(mutationFn);
+        | MutationFunction<TData, TVariables>
+        | DataProviderMutationWithMiddlewareFunction<TData, TVariables>
+    >(mutationFnEvent);
     // We need to store the call-time onError and onSettled in refs to be able to call them in the useMutation hook even
     // when the calling component is unmounted
     const callTimeOnError =
         useRef<
             UseMutationWithMutationModeOptions<
                 ErrorType,
-                DataProviderMutationFunctionParams,
-                DataProviderMutationFunction
+                TData,
+                TVariables
             >['onError']
         >();
     const callTimeOnSettled =
         useRef<
             UseMutationWithMutationModeOptions<
                 ErrorType,
-                DataProviderMutationFunctionParams,
-                DataProviderMutationFunction
+                TData,
+                TVariables
             >['onSettled']
         >();
 
@@ -154,39 +83,17 @@ export const useMutationWithMutationMode = <
     // otherwise the other side effects may not applied.
     const hasCallTimeOnSuccess = useRef(false);
 
-    const mutation = useMutation<
-        Awaited<ReturnType<DataProviderMutationFunction>>,
-        ErrorType,
-        Partial<DataProviderMutationFunctionParams>
-    >({
+    const mutation = useMutation<TData, ErrorType, Partial<TVariables>>({
         mutationKey,
-        mutationFn: async ({
-            resource: callTimeResource = resource,
-            ...otherCallTimeParams
-        } = {}) => {
-            if (!callTimeResource) {
-                throw new Error(
-                    'useMutationWithMutationMode mutation requires a non-empty resource'
-                );
-            }
-            const callTimeParams = {
-                ...paramsRef.current,
-                ...otherCallTimeParams,
-            };
-            if (callTimeParams == null) {
+        mutationFn: async params => {
+            const callTimeParams = { ...paramsRef.current, ...params };
+            if (params == null) {
                 throw new Error(
                     'useMutationWithMutationMode mutation requires parameters'
                 );
             }
 
-            const result = await mutateWithMiddlewares
-                .current(
-                    callTimeResource,
-                    callTimeParams as DataProviderMutationFunctionParams
-                )
-                .then(({ data }) => data);
-
-            return result;
+            return mutateWithMiddlewares.current(callTimeParams as TVariables);
         },
         ...mutationOptions,
         onMutate: async variables => {
@@ -222,14 +129,8 @@ export const useMutationWithMutationMode = <
         onSuccess: (data, variables = {}, context) => {
             if (mode.current === 'pessimistic') {
                 // update the getOne and getList query cache with the new result
-                const {
-                    resource: callTimeResource = resource,
-                    ...callTimeParams
-                } = variables;
-
-                updateCache(
-                    callTimeResource as string,
-                    { ...paramsRef.current, ...callTimeParams },
+                updateCacheEvent(
+                    { ...paramsRef.current, ...variables },
                     {
                         mutationMode: mode.current,
                     },
@@ -274,13 +175,12 @@ export const useMutationWithMutationMode = <
         },
     });
 
-    const update = async (
-        callTimeResource: string | undefined = resource,
-        callTimeParams: Partial<DataProviderMutationFunctionParams> = {},
+    const mutate = async (
+        callTimeParams: Partial<TVariables> = {},
         callTimeOptions: MutateOptions<
-            Awaited<ReturnType<DataProviderMutationFunction>>,
+            TData,
             ErrorType,
-            Partial<DataProviderMutationFunctionParams>,
+            Partial<TVariables>,
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: boolean } = {}
     ) => {
@@ -295,16 +195,15 @@ export const useMutationWithMutationMode = <
 
         // Store the mutation with middlewares to avoid losing them if the calling component is unmounted
         if (getMutateWithMiddlewares) {
-            mutateWithMiddlewares.current = getMutateWithMiddlewares(
-                // @ts-expect-error
-                (resource: string, params: any, options: any) => {
+            mutateWithMiddlewares.current = getMutateWithMiddlewaresEvent(
+                (params: TVariables) => {
                     // Store the final parameters which might have been changed by middlewares
                     paramsRef.current = params;
-                    return mutationFn(resource, params, options);
+                    return mutationFnEvent(params);
                 }
             );
         } else {
-            mutateWithMiddlewares.current = mutationFn;
+            mutateWithMiddlewares.current = mutationFnEvent;
         }
 
         // We need to keep the onSuccess callback here and not in the useMutation for undoable mutations
@@ -329,8 +228,7 @@ export const useMutationWithMutationMode = <
             );
         }
 
-        snapshot.current = getSnapshot(
-            callTimeResource as string,
+        snapshot.current = getSnapshotEvent(
             { ...paramsRef.current, ...callTimeParams },
             {
                 mutationMode: mode.current,
@@ -340,13 +238,13 @@ export const useMutationWithMutationMode = <
         if (mode.current === 'pessimistic') {
             if (returnPromise) {
                 return mutation.mutateAsync(
-                    { resource: callTimeResource, ...callTimeParams },
+                    { ...paramsRef.current, ...callTimeParams },
                     // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
                     { onSuccess, ...otherCallTimeOptions }
                 );
             }
             return mutation.mutate(
-                { resource: callTimeResource, ...callTimeParams },
+                { ...paramsRef.current, ...callTimeParams },
                 // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
                 { onSuccess, ...otherCallTimeOptions }
             );
@@ -360,8 +258,7 @@ export const useMutationWithMutationMode = <
         );
 
         // Optimistically update to the new value
-        const optimisticResult = updateCache(
-            callTimeResource as string,
+        const optimisticResult = updateCacheEvent(
             { ...paramsRef.current, ...callTimeParams },
             {
                 mutationMode: mode.current,
@@ -372,37 +269,29 @@ export const useMutationWithMutationMode = <
         // run the success callbacks during the next tick
         setTimeout(() => {
             if (onSuccess) {
-                onSuccess(
-                    optimisticResult,
-                    { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
-                );
+                onSuccess(optimisticResult, callTimeParams, {
+                    snapshot: snapshot.current,
+                });
             } else if (
                 mutationOptions.onSuccess &&
                 !hasCallTimeOnSuccess.current
             ) {
-                mutationOptions.onSuccess(
-                    optimisticResult,
-                    { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
-                );
+                mutationOptions.onSuccess(optimisticResult, callTimeParams, {
+                    snapshot: snapshot.current,
+                });
             }
         }, 0);
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects
-            return mutation.mutate({
-                resource: callTimeResource,
-                // We don't pass onError and onSettled here as we will call them in the useMutation hook side effects
-                ...callTimeParams,
-            });
+            return mutation.mutate(callTimeParams);
         } else {
             // Undoable mutation: add the mutation to the undoable queue.
             // The Notification component will dequeue it when the user confirms or cancels the message.
             addUndoableMutation(({ isUndo }) => {
                 if (isUndo) {
                     if (onUndo) {
-                        onUndo(callTimeResource!, callTimeParams, {
+                        onUndoEvent(callTimeParams, {
                             mutationMode: mode.current,
                         });
                     }
@@ -412,10 +301,7 @@ export const useMutationWithMutationMode = <
                     });
                 } else {
                     // call the mutate method without success side effects
-                    mutation.mutate({
-                        resource: callTimeResource,
-                        ...callTimeParams,
-                    });
+                    mutation.mutate(callTimeParams);
                 }
             });
         }
@@ -429,108 +315,72 @@ export const useMutationWithMutationMode = <
         [mutation]
     );
 
-    return [useEvent(update), mutationResult];
+    return [useEvent(mutate), mutationResult];
 };
+
+const noop = () => {};
 
 export type Snapshot = [key: QueryKey, value: any][];
 
-type BaseParams = Record<string, any>;
-type DataProviderMutationFunctionBase<Params extends BaseParams> = (
-    resource: string,
-    params: Params,
-    options?: any
-) => Promise<any>;
+type MutationFunction<TData = unknown, TVariables = unknown> = (
+    variables: TVariables
+) => Promise<TData>;
 
 export type UseMutationWithMutationModeOptions<
     ErrorType = Error,
-    DataProviderMutationFunctionParams extends BaseParams = BaseParams,
-    DataProviderMutationFunction extends
-        DataProviderMutationFunctionBase<DataProviderMutationFunctionParams> = DataProviderMutationFunctionBase<DataProviderMutationFunctionParams>,
+    TData = unknown,
+    TVariables = unknown,
 > = Omit<
-    UseMutationOptions<
-        Awaited<ReturnType<DataProviderMutationFunction>>,
-        ErrorType,
-        Partial<DataProviderMutationFunctionParams>
-    >,
+    UseMutationOptions<TData, ErrorType, Partial<TVariables>>,
     'mutationFn'
 > & {
     getMutateWithMiddlewares?: (
-        mutate: DataProviderMutationFunction
-    ) => (
-        resource: string,
-        params: DataProviderMutationFunctionParams,
-        options?: any
-    ) => ReturnType<DataProviderMutationFunction>;
-    mutationFn?: DataProviderMutationFunction;
+        mutate: MutationFunction<TData, TVariables>
+    ) => (params: TVariables) => Promise<TData>;
+    mutationFn?: MutationFunction<TData, TVariables>;
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     updateCache: <OptionsType extends { mutationMode: MutationMode }>(
-        resource: string,
-        params: Partial<DataProviderMutationFunctionParams>,
+        params: Partial<TVariables>,
         options: OptionsType,
-        mutationResult:
-            | Awaited<ReturnType<DataProviderMutationFunction>>
-            | undefined
-    ) => Awaited<ReturnType<DataProviderMutationFunction>>;
+        mutationResult: TData | undefined
+    ) => TData;
     getSnapshot: <OptionsType extends { mutationMode: MutationMode }>(
-        resource: string,
-        params: Partial<DataProviderMutationFunctionParams>,
+        params: Partial<TVariables>,
         options: OptionsType
     ) => Snapshot;
     onUndo?: <OptionsType extends { mutationMode: MutationMode }>(
-        resource: string,
-        params: Partial<DataProviderMutationFunctionParams>,
+        params: Partial<TVariables>,
         options: OptionsType
     ) => void;
 };
 
 type DataProviderMutationWithMiddlewareFunction<
-    DataProviderMutationFunctionParams extends BaseParams = BaseParams,
-    DataProviderMutationFunction extends
-        DataProviderMutationFunctionBase<DataProviderMutationFunctionParams> = DataProviderMutationFunctionBase<DataProviderMutationFunctionParams>,
-> = (
-    resource: string,
-    params: Partial<DataProviderMutationFunctionParams>,
-    options?: any
-) => ReturnType<DataProviderMutationFunction>;
+    TData = unknown,
+    TVariables = unknown,
+> = (params: Partial<TVariables>, options?: any) => Promise<TData>;
 
 export type UpdateMutationFunction<
     TReturnPromise extends boolean = boolean,
     ErrorType = Error,
-    DataProviderMutationFunctionParams extends BaseParams = BaseParams,
-    DataProviderMutationFunction extends
-        DataProviderMutationFunctionBase<DataProviderMutationFunctionParams> = DataProviderMutationFunctionBase<DataProviderMutationFunctionParams>,
+    TData = unknown,
+    TVariables = unknown,
 > = (
-    resource?: string,
-    params?: Partial<DataProviderMutationFunctionParams>,
-    options?: MutateOptions<
-        Awaited<ReturnType<DataProviderMutationFunction>>,
-        ErrorType,
-        Partial<DataProviderMutationFunctionParams>,
-        unknown
-    > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
-) => Promise<
-    TReturnPromise extends true
-        ? Awaited<ReturnType<DataProviderMutationFunction>>
-        : void
->;
+    params?: Partial<TVariables>,
+    options?: MutateOptions<TData, ErrorType, Partial<TVariables>, unknown> & {
+        mutationMode?: MutationMode;
+        returnPromise?: TReturnPromise;
+    }
+) => Promise<TReturnPromise extends true ? TData : void>;
 
 export type UseMutationWithMutationModeResult<
     TReturnPromise extends boolean = boolean,
     ErrorType = Error,
-    DataProviderMutationFunctionParams extends BaseParams = BaseParams,
-    DataProviderMutationFunction extends
-        DataProviderMutationFunctionBase<DataProviderMutationFunctionParams> = DataProviderMutationFunctionBase<DataProviderMutationFunctionParams>,
+    TData = unknown,
+    TVariables = unknown,
 > = [
-    UpdateMutationFunction<
-        TReturnPromise,
-        ErrorType,
-        DataProviderMutationFunctionParams
-    >,
-    UseMutationResult<
-        Awaited<ReturnType<DataProviderMutationFunction>>,
-        ErrorType,
-        Partial<DataProviderMutationFunctionParams & { resource?: string }>,
-        unknown
-    > & { isLoading: boolean },
+    UpdateMutationFunction<TReturnPromise, ErrorType, TData, TVariables>,
+    UseMutationResult<TData, ErrorType, Partial<TVariables>, unknown> & {
+        isLoading: boolean;
+    },
 ];

@@ -1,10 +1,10 @@
 import {
     useQueryClient,
-    type UseMutationOptions,
     type UseMutationResult,
     type MutateOptions,
     type UseInfiniteQueryResult,
     type InfiniteData,
+    UseMutationOptions,
 } from '@tanstack/react-query';
 
 import { useDataProvider } from './useDataProvider';
@@ -91,150 +91,220 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 ): UseUpdateResult<RecordType, boolean, ErrorType> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        getMutateWithMiddlewares,
+        ...mutationOptions
+    } = options;
 
-    const updateCache = useEvent(
-        (
-            resource: string,
-            { id, data, meta }: Partial<UpdateParams<RecordType>>,
-            { mutationMode }: { mutationMode: MutationMode },
-            result
-        ) => {
-            // hack: only way to tell react-query not to fetch this query for the next 5 seconds
-            // because setQueryData doesn't accept a stale time option
-            const now = Date.now();
-            const updatedAt =
-                mutationMode === 'undoable' ? now + 5 * 1000 : now;
-            // Stringify and parse the data to remove undefined values.
-            // If we don't do this, an update with { id: undefined } as payload
-            // would remove the id from the record, which no real data provider does.
-            const clonedData = JSON.parse(
-                JSON.stringify(mutationMode === 'pessimistic' ? result : data)
-            );
+    const dataProviderUpdate = useEvent(
+        (resource: string, params: UpdateParams<RecordType>) =>
+            dataProvider
+                .update<RecordType>(resource, params)
+                .then(({ data }) => data)
+    );
 
-            const updateColl = (old: RecordType[]) => {
-                if (!old) return old;
-                const index = old.findIndex(
-                    // eslint-disable-next-line eqeqeq
-                    record => record.id == id
-                );
-                if (index === -1) {
-                    return old;
+    const [mutate, mutationResult] = useMutationWithMutationMode<
+        ErrorType,
+        RecordType,
+        UseUpdateMutateParams<RecordType>
+    >(
+        { resource, ...params },
+        {
+            ...mutationOptions,
+            mutationKey: [resource, 'update', params],
+            mutationMode,
+            mutationFn: ({ resource, ...params }) => {
+                if (resource == null) {
+                    throw new Error('useUpdate mutation requires a resource');
                 }
-                return [
-                    ...old.slice(0, index),
-                    { ...old[index], ...clonedData } as RecordType,
-                    ...old.slice(index + 1),
-                ];
-            };
+                if (params == null) {
+                    throw new Error('useUpdate mutation requires parameters');
+                }
+                return dataProviderUpdate(
+                    resource,
+                    params as UpdateParams<RecordType>
+                );
+            },
+            updateCache: (
+                { resource, ...params },
+                { mutationMode },
+                result
+            ) => {
+                // hack: only way to tell react-query not to fetch this query for the next 5 seconds
+                // because setQueryData doesn't accept a stale time option
+                const now = Date.now();
+                const updatedAt =
+                    mutationMode === 'undoable' ? now + 5 * 1000 : now;
+                // Stringify and parse the data to remove undefined values.
+                // If we don't do this, an update with { id: undefined } as payload
+                // would remove the id from the record, which no real data provider does.
+                const clonedData = JSON.parse(
+                    JSON.stringify(
+                        mutationMode === 'pessimistic' ? result : params?.data
+                    )
+                );
 
-            type GetListResult = Omit<OriginalGetListResult, 'data'> & {
-                data?: RecordType[];
-            };
+                const updateColl = (old: RecordType[]) => {
+                    if (!old) return old;
+                    const index = old.findIndex(
+                        // eslint-disable-next-line eqeqeq
+                        record => record.id == params?.id
+                    );
+                    if (index === -1) {
+                        return old;
+                    }
+                    return [
+                        ...old.slice(0, index),
+                        { ...old[index], ...clonedData } as RecordType,
+                        ...old.slice(index + 1),
+                    ];
+                };
 
-            const previousRecord = queryClient.getQueryData<RecordType>([
-                resource,
-                'getOne',
-                { id: String(id), meta: meta },
-            ]);
+                type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+                    data?: RecordType[];
+                };
 
-            queryClient.setQueryData(
-                [resource, 'getOne', { id: String(id), meta }],
-                (record: RecordType) => ({
-                    ...record,
+                const previousRecord = queryClient.getQueryData<RecordType>([
+                    resource,
+                    'getOne',
+                    { id: String(params?.id), meta: params?.meta },
+                ]);
+
+                queryClient.setQueryData(
+                    [
+                        resource,
+                        'getOne',
+                        { id: String(params?.id), meta: params?.meta },
+                    ],
+                    (record: RecordType) => ({
+                        ...record,
+                        ...clonedData,
+                    }),
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getList'] },
+                    (res: GetListResult) =>
+                        res && res.data
+                            ? { ...res, data: updateColl(res.data) }
+                            : res,
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getInfiniteList'] },
+                    (
+                        res: UseInfiniteQueryResult<
+                            InfiniteData<GetInfiniteListResult>
+                        >['data']
+                    ) =>
+                        res && res.pages
+                            ? {
+                                  ...res,
+                                  pages: res.pages.map(page => ({
+                                      ...page,
+                                      data: updateColl(page.data),
+                                  })),
+                              }
+                            : res,
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getMany'] },
+                    (coll: RecordType[]) =>
+                        coll && coll.length > 0 ? updateColl(coll) : coll,
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getManyReference'] },
+                    (res: GetListResult) =>
+                        res && res.data
+                            ? {
+                                  data: updateColl(res.data),
+                                  total: res.total,
+                              }
+                            : res,
+                    { updatedAt }
+                );
+
+                const optimisticResult = {
+                    ...previousRecord,
                     ...clonedData,
-                }),
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getList'] },
-                (res: GetListResult) =>
-                    res && res.data
-                        ? { ...res, data: updateColl(res.data) }
-                        : res,
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getInfiniteList'] },
-                (
-                    res: UseInfiniteQueryResult<
-                        InfiniteData<GetInfiniteListResult>
-                    >['data']
-                ) =>
-                    res && res.pages
-                        ? {
-                              ...res,
-                              pages: res.pages.map(page => ({
-                                  ...page,
-                                  data: updateColl(page.data),
-                              })),
-                          }
-                        : res,
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getMany'] },
-                (coll: RecordType[]) =>
-                    coll && coll.length > 0 ? updateColl(coll) : coll,
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getManyReference'] },
-                (res: GetListResult) =>
-                    res && res.data
-                        ? { data: updateColl(res.data), total: res.total }
-                        : res,
-                { updatedAt }
-            );
+                };
+                return optimisticResult;
+            },
+            getSnapshot: ({ resource, ...params }) => {
+                /**
+                 * Snapshot the previous values via queryClient.getQueriesData()
+                 *
+                 * The snapshotData ref will contain an array of tuples [query key, associated data]
+                 *
+                 * @example
+                 * [
+                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
+                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
+                 * ]
+                 *
+                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
+                 */
+                const queryKeys = [
+                    [
+                        resource,
+                        'getOne',
+                        { id: String(params?.id), meta: params?.meta },
+                    ],
+                    [resource, 'getList'],
+                    [resource, 'getInfiniteList'],
+                    [resource, 'getMany'],
+                    [resource, 'getManyReference'],
+                ];
 
-            const optimisticResult = {
-                ...previousRecord,
-                ...clonedData,
-            };
-            return optimisticResult;
+                const snapshot = queryKeys.reduce(
+                    (prev, queryKey) =>
+                        prev.concat(queryClient.getQueriesData({ queryKey })),
+                    [] as Snapshot
+                );
+                return snapshot;
+            },
+            getMutateWithMiddlewares: mutationFn => args => {
+                // This is necessary to avoid breaking changes in useUpdate:
+                // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+                if (getMutateWithMiddlewares) {
+                    const { resource, ...params } = args;
+                    return getMutateWithMiddlewares(
+                        dataProviderUpdate.bind(dataProvider)
+                    )(resource, params);
+                }
+                return mutationFn(args);
+            },
         }
     );
 
-    const getSnapshot = useEvent(
-        (resource: string, { id, meta }: Partial<UpdateParams<RecordType>>) => {
-            /**
-             * Snapshot the previous values via queryClient.getQueriesData()
-             *
-             * The snapshotData ref will contain an array of tuples [query key, associated data]
-             *
-             * @example
-             * [
-             *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-             *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-             * ]
-             *
-             * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-             */
-            const queryKeys = [
-                [resource, 'getOne', { id: String(id), meta }],
-                [resource, 'getList'],
-                [resource, 'getInfiniteList'],
-                [resource, 'getMany'],
-                [resource, 'getManyReference'],
-            ];
-
-            const snapshot = queryKeys.reduce(
-                (prev, queryKey) =>
-                    prev.concat(queryClient.getQueriesData({ queryKey })),
-                [] as Snapshot
+    const update = useEvent(
+        (
+            callTimeResource: string | undefined = resource,
+            callTimeParams: Partial<UpdateParams<RecordType>> = {},
+            callTimeOptions: MutateOptions<
+                RecordType,
+                ErrorType,
+                Partial<UseUpdateMutateParams<RecordType>>,
+                unknown
+            > & {
+                mutationMode?: MutationMode;
+                returnPromise?: boolean;
+            } = {}
+        ) => {
+            return mutate(
+                {
+                    resource: callTimeResource,
+                    ...callTimeParams,
+                },
+                callTimeOptions
             );
-            return snapshot;
         }
     );
 
-    return useMutationWithMutationMode(resource, params, {
-        ...mutationOptions,
-        mutationKey: [resource, 'update', params],
-        mutationMode,
-        mutationFn: dataProvider.update.bind(dataProvider),
-        updateCache,
-        getSnapshot,
-    });
+    return [update, mutationResult];
 };
 
 export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {

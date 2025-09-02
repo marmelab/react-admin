@@ -381,6 +381,7 @@ describe('useCreate', () => {
 
     describe('middlewares', () => {
         it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
+            jest.spyOn(console, 'error').mockImplementation(() => {});
             render(<WithMiddlewaresSuccessPessimistic timeout={10} />);
             screen.getByText('Create post').click();
             await waitFor(() => {

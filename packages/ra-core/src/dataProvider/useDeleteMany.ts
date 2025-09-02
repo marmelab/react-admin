@@ -91,201 +91,247 @@ export const useDeleteMany = <
     const queryClient = useQueryClient();
     const { mutationMode = 'pessimistic', ...mutationOptions } = options;
 
-    const updateCache = useEvent(
-        (
-            resource: string,
-            { ids }: Partial<DeleteManyParams<RecordType>>,
-            { mutationMode }: { mutationMode: MutationMode }
-        ) => {
-            // hack: only way to tell react-query not to fetch this query for the next 5 seconds
-            // because setQueryData doesn't accept a stale time option
-            const now = Date.now();
-            const updatedAt =
-                mutationMode === 'undoable' ? now + 5 * 1000 : now;
-
-            const updateColl = (old: RecordType[]) => {
-                if (!old) return old;
-                let newCollection = [...old];
-                (ids || []).forEach(id => {
-                    const index = newCollection.findIndex(
-                        // eslint-disable-next-line eqeqeq
-                        record => record.id == id
-                    );
-                    if (index === -1) {
-                        return;
-                    }
-                    newCollection = [
-                        ...newCollection.slice(0, index),
-                        ...newCollection.slice(index + 1),
-                    ];
-                });
-                return newCollection;
-            };
-
-            type GetListResult = Omit<OriginalGetListResult, 'data'> & {
-                data?: RecordType[];
-            };
-
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getList'] },
-                (res: GetListResult) => {
-                    if (!res || !res.data) return res;
-                    const newCollection = updateColl(res.data);
-                    const recordWasFound =
-                        newCollection.length < res.data.length;
-                    return recordWasFound
-                        ? {
-                              data: newCollection,
-                              total: res.total
-                                  ? res.total -
-                                    (res.data.length - newCollection.length)
-                                  : undefined,
-                              pageInfo: res.pageInfo,
-                          }
-                        : res;
-                },
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getInfiniteList'] },
-                (
-                    res: UseInfiniteQueryResult<
-                        InfiniteData<GetInfiniteListResult>
-                    >['data']
-                ) => {
-                    if (!res || !res.pages) return res;
-                    return {
-                        ...res,
-                        pages: res.pages.map(page => {
-                            const newCollection = updateColl(page.data);
-                            const recordWasFound =
-                                newCollection.length < page.data.length;
-                            return recordWasFound
-                                ? {
-                                      ...page,
-                                      data: newCollection,
-                                      total: page.total
-                                          ? page.total -
-                                            (page.data.length -
-                                                newCollection.length)
-                                          : undefined,
-                                      pageInfo: page.pageInfo,
-                                  }
-                                : page;
-                        }),
-                    };
-                },
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getMany'] },
-                (coll: RecordType[]) =>
-                    coll && coll.length > 0 ? updateColl(coll) : coll,
-                { updatedAt }
-            );
-            queryClient.setQueriesData(
-                { queryKey: [resource, 'getManyReference'] },
-                (res: GetListResult) => {
-                    if (!res || !res.data) return res;
-                    const newCollection = updateColl(res.data);
-                    const recordWasFound =
-                        newCollection.length < res.data.length;
-                    if (!recordWasFound) {
-                        return res;
-                    }
-                    if (res.total) {
-                        return {
-                            data: newCollection,
-                            total:
-                                res.total -
-                                (res.data.length - newCollection.length),
-                        };
-                    }
-                    if (res.pageInfo) {
-                        return {
-                            data: newCollection,
-                            pageInfo: res.pageInfo,
-                        };
-                    }
+    const [mutate, mutationResult] = useMutationWithMutationMode<
+        MutationError,
+        Array<RecordType['id']> | undefined,
+        UseDeleteManyMutateParams<RecordType>
+    >(
+        { resource, ...params },
+        {
+            ...mutationOptions,
+            mutationKey: [resource, 'deleteMany', params],
+            mutationMode,
+            mutationFn: ({ resource, ...params }) => {
+                if (resource == null) {
                     throw new Error(
-                        'Found getList result in cache without total or pageInfo'
+                        'useDeleteMany mutation requires a resource'
                     );
+                }
+                if (params == null) {
+                    throw new Error(
+                        'useDeleteMany mutation requires parameters'
+                    );
+                }
+                return dataProvider
+                    .deleteMany<RecordType>(
+                        resource,
+                        params as DeleteManyParams<RecordType>
+                    )
+                    .then(({ data }) => data);
+            },
+            updateCache: ({ resource, ...params }, { mutationMode }) => {
+                // hack: only way to tell react-query not to fetch this query for the next 5 seconds
+                // because setQueryData doesn't accept a stale time option
+                const now = Date.now();
+                const updatedAt =
+                    mutationMode === 'undoable' ? now + 5 * 1000 : now;
+
+                const updateColl = (old: RecordType[]) => {
+                    if (!old) return old;
+                    let newCollection = [...old];
+                    params.ids?.forEach(id => {
+                        const index = newCollection.findIndex(
+                            // eslint-disable-next-line eqeqeq
+                            record => record.id == id
+                        );
+                        if (index === -1) {
+                            return;
+                        }
+                        newCollection = [
+                            ...newCollection.slice(0, index),
+                            ...newCollection.slice(index + 1),
+                        ];
+                    });
+                    return newCollection;
+                };
+
+                type GetListResult = Omit<OriginalGetListResult, 'data'> & {
+                    data?: RecordType[];
+                };
+
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getList'] },
+                    (res: GetListResult) => {
+                        if (!res || !res.data) return res;
+                        const newCollection = updateColl(res.data);
+                        const recordWasFound =
+                            newCollection.length < res.data.length;
+                        return recordWasFound
+                            ? {
+                                  data: newCollection,
+                                  total: res.total
+                                      ? res.total -
+                                        (res.data.length - newCollection.length)
+                                      : undefined,
+                                  pageInfo: res.pageInfo,
+                              }
+                            : res;
+                    },
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getInfiniteList'] },
+                    (
+                        res: UseInfiniteQueryResult<
+                            InfiniteData<GetInfiniteListResult>
+                        >['data']
+                    ) => {
+                        if (!res || !res.pages) return res;
+                        return {
+                            ...res,
+                            pages: res.pages.map(page => {
+                                const newCollection = updateColl(page.data);
+                                const recordWasFound =
+                                    newCollection.length < page.data.length;
+                                return recordWasFound
+                                    ? {
+                                          ...page,
+                                          data: newCollection,
+                                          total: page.total
+                                              ? page.total -
+                                                (page.data.length -
+                                                    newCollection.length)
+                                              : undefined,
+                                          pageInfo: page.pageInfo,
+                                      }
+                                    : page;
+                            }),
+                        };
+                    },
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getMany'] },
+                    (coll: RecordType[]) =>
+                        coll && coll.length > 0 ? updateColl(coll) : coll,
+                    { updatedAt }
+                );
+                queryClient.setQueriesData(
+                    { queryKey: [resource, 'getManyReference'] },
+                    (res: GetListResult) => {
+                        if (!res || !res.data) return res;
+                        const newCollection = updateColl(res.data);
+                        const recordWasFound =
+                            newCollection.length < res.data.length;
+                        if (!recordWasFound) {
+                            return res;
+                        }
+                        if (res.total) {
+                            return {
+                                data: newCollection,
+                                total:
+                                    res.total -
+                                    (res.data.length - newCollection.length),
+                            };
+                        }
+                        if (res.pageInfo) {
+                            return {
+                                data: newCollection,
+                                pageInfo: res.pageInfo,
+                            };
+                        }
+                        throw new Error(
+                            'Found getList result in cache without total or pageInfo'
+                        );
+                    },
+                    { updatedAt }
+                );
+
+                return params.ids;
+            },
+            getSnapshot: ({ resource }) => {
+                const queryKeys = [
+                    [resource, 'getList'],
+                    [resource, 'getInfiniteList'],
+                    [resource, 'getMany'],
+                    [resource, 'getManyReference'],
+                ];
+
+                /**
+                 * Snapshot the previous values via queryClient.getQueriesData()
+                 *
+                 * The snapshotData ref will contain an array of tuples [query key, associated data]
+                 *
+                 * @example
+                 * [
+                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
+                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
+                 * ]
+                 *
+                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
+                 */
+                const snapshot = queryKeys.reduce(
+                    (prev, queryKey) =>
+                        prev.concat(queryClient.getQueriesData({ queryKey })),
+                    [] as Snapshot
+                );
+                return snapshot;
+            },
+        }
+    );
+
+    const deleteMany = useEvent(
+        (
+            callTimeResource: string | undefined = resource,
+            callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
+            callTimeOptions: MutateOptions<
+                Array<RecordType['id']>,
+                MutationError,
+                Partial<UseDeleteManyMutateParams<RecordType>>,
+                unknown
+            > & {
+                mutationMode?: MutationMode;
+                returnPromise?: boolean;
+            } = {}
+        ) => {
+            return mutate(
+                {
+                    resource: callTimeResource,
+                    ...callTimeParams,
                 },
-                { updatedAt }
+                callTimeOptions
             );
         }
     );
 
-    const getSnapshot = useEvent((resource: string) => {
-        const queryKeys = [
-            [resource, 'getList'],
-            [resource, 'getInfiniteList'],
-            [resource, 'getMany'],
-            [resource, 'getManyReference'],
-        ];
-
-        /**
-         * Snapshot the previous values via queryClient.getQueriesData()
-         *
-         * The snapshotData ref will contain an array of tuples [query key, associated data]
-         *
-         * @example
-         * [
-         *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-         *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-         * ]
-         *
-         * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-         */
-        const snapshot = queryKeys.reduce(
-            (prev, queryKey) =>
-                prev.concat(queryClient.getQueriesData({ queryKey })),
-            [] as Snapshot
-        );
-        return snapshot;
-    });
-
-    return useMutationWithMutationMode(resource, params, {
-        ...mutationOptions,
-        mutationKey: [resource, 'deleteMany', params],
-        mutationMode,
-        mutationFn: dataProvider.deleteMany.bind(dataProvider),
-        updateCache,
-        getSnapshot,
-    });
+    return [deleteMany, mutationResult];
 };
 
 export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
     resource?: string;
-    ids?: RecordType['id'][];
+    ids?: Array<RecordType['id']>;
     meta?: any;
 }
 
 export type UseDeleteManyOptions<
     RecordType extends RaRecord = any,
     MutationError = unknown,
+    TReturnPromise extends boolean = boolean,
 > = UseMutationOptions<
-    RecordType['id'][],
+    Array<RecordType['id']> | undefined,
     MutationError,
     Partial<UseDeleteManyMutateParams<RecordType>>
-> & { mutationMode?: MutationMode };
+> & { mutationMode?: MutationMode; returnPromise?: TReturnPromise };
 
 export type UseDeleteManyResult<
     RecordType extends RaRecord = any,
     MutationError = unknown,
+    TReturnPromise extends boolean = boolean,
 > = [
     (
         resource?: string,
         params?: Partial<DeleteManyParams<RecordType>>,
         options?: MutateOptions<
-            RecordType['id'][],
+            Array<RecordType['id']> | undefined,
             MutationError,
             Partial<UseDeleteManyMutateParams<RecordType>>,
             unknown
-        > & { mutationMode?: MutationMode }
-    ) => Promise<void>,
+        > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
+    ) => Promise<
+        TReturnPromise extends true ? Array<RecordType['id']> | undefined : void
+    >,
     UseMutationResult<
-        RecordType['id'][],
+        Array<RecordType['id']> | undefined,
         MutationError,
         Partial<DeleteManyParams<RecordType> & { resource?: string }>,
         unknown
