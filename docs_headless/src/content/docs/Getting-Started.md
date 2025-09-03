@@ -189,7 +189,7 @@ Ra-core provides the foundation; you build the interface. Here's a suggested dev
 
 10. **Input Components**: Create form inputs like `TextInput`, `DateInput`, `SelectInput` and `AutocompleteInput` using [`useInput`](./inputs/useInput.md). Build specialized inputs for different data types including rich text editors, file uploads, and date pickers. See the [Inputs documentation](./inputs/Inputs.md) for implementation patterns.
 
-11. **Relational Inputs**: Build `ReferenceInput`, `ReferenceArrayInput` using their Base components: [`ReferenceInputBase`](./inputs/ReferenceInputBase.md) and [`ReferenceArrayInputBase`](./inputs/ReferenceArrayInputBase.md). These provide autocomplete functionality and relationship management in forms.
+11. **Relational Inputs**: Build `ReferenceInput`, `ReferenceArrayInput` using their Base components: `ReferenceInputBase` and `ReferenceArrayInputBase`. These provide autocomplete functionality and relationship management in forms.
 
 ### Advanced Features (Go Further)
 

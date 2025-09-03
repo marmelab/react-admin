@@ -449,9 +449,9 @@ A good way to test your data provider is to build a ra-core app with components 
 
 | Method             | Components |
 | ------------------ | --------- |
-| `getList`          | [`<ListBase>`](../list/ListBase.md), [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md), [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md) |
+| `getList`          | [`<ListBase>`](../list/ListBase.md), `<ReferenceInputBase>`, `<ReferenceArrayInputBase>` |
 | `getOne`           | [`<ShowBase>`](../show/ShowBase.md), [`<EditBase>`](../create-edit/EditBase.md) |
-| `getMany`          | [`<ReferenceFieldBase>`](../fields/ReferenceFieldBase.md), [`<ReferenceArrayFieldBase>`](../fields/ReferenceArrayFieldBase.md), [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md), [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md) |
+| `getMany`          | [`<ReferenceFieldBase>`](../fields/ReferenceFieldBase.md), [`<ReferenceArrayFieldBase>`](../fields/ReferenceArrayFieldBase.md),`<ReferenceInputBase>`, `<ReferenceArrayInputBase>` |
 | `getManyReference` | [`<ReferenceManyFieldBase>`](../fields/ReferenceManyFieldBase.md), [`<ReferenceOneFieldBase>`](../fields/ReferenceOneFieldBase.md) |
 | `create`           | [`<CreateBase>`](../create-edit/CreateBase.md) |
 | `update`           | [`<EditBase>`](../create-edit/EditBase.md) |

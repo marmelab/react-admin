@@ -351,8 +351,8 @@ Here is a list of react-admin's [relationship components](./Features.md#relation
 - [`<ReferenceManyFieldBase>`](../fields/ReferenceManyFieldBase.md)
 - [`<ReferenceOneFieldBase>`](../fields/ReferenceOneFieldBase.md)
 - [`<ReferenceManyCountBase>`](../fields/ReferenceManyCountBase.md)
-- [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md)
-- [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md)
+- `<ReferenceInputBase>`
+- `<ReferenceArrayInputBase>`
 
 To learn more about relationships, check out this tutorial: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html).
 

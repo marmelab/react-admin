@@ -348,8 +348,8 @@ React-admin supports **one-to-many**, **many-to-one** and **one-to-one relations
 - [`<ReferenceManyFieldBase>`](../fields/ReferenceManyFieldBase.md)
 - [`<ReferenceOneFieldBase>`](../fields/ReferenceOneFieldBase.md)
 - [`<ReferenceManyCountBase>`](../fields/ReferenceManyCountBase.md)
-- [`<ReferenceInputBase>`](../inputs/ReferenceInputBase.md)
-- [`<ReferenceArrayInputBase>`](../inputs/ReferenceArrayInputBase.md)
+- `<ReferenceInputBase>`
+- `<ReferenceArrayInputBase>`
 
 Reference components are a tremendous development accelerator for complex frontend features. They also liberate the backend developers from the burden of implementing complex joins.
 
