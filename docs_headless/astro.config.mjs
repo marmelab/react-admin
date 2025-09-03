@@ -132,6 +132,7 @@ export default defineConfig({
                 {
                     base: '/ra-core/',
                     collectionBase: false,
+                    trailingSlash: 'always',
                 },
             ],
         ],
