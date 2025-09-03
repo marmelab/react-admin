@@ -14,7 +14,8 @@ You have two options to read them:
 
 ## v5
 
-- [v5.10](https://github.com/marmelab/react-admin/blob/master/docs/Admin.md)
+- [v5.11](https://github.com/marmelab/react-admin/blob/master/docs/Admin.md)
+- [v5.10](https://github.com/marmelab/react-admin/blob/v5.10.2/docs/Admin.md)
 - [v5.9](https://github.com/marmelab/react-admin/blob/v5.9.2/docs/Admin.md)
 - [v5.8](https://github.com/marmelab/react-admin/blob/v5.8.4/docs/Admin.md)
 - [v5.7](https://github.com/marmelab/react-admin/blob/v5.7.4/docs/Admin.md)

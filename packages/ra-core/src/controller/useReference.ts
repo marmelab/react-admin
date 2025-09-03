@@ -21,9 +21,9 @@ export interface UseReferenceResult<
     ErrorType = Error,
 > {
     isLoading: boolean;
-    isPaused: boolean;
+    isPaused?: boolean;
     isPending: boolean;
-    isPlaceholderData: boolean;
+    isPlaceholderData?: boolean;
     isFetching: boolean;
     referenceRecord?: RecordType;
     error?: ErrorType | null;

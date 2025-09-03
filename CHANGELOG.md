@@ -1,5 +1,37 @@
 # Changelog
 
+## 5.11.0
+
+* Add ability to use a `ReactNode` as create label in `<AutocompleteInput>` and `<SelectInput>` ([#10883](https://github.com/marmelab/react-admin/pull/10883)) ([Madeorsk](https://github.com/Madeorsk))
+* Add `<SelectArrayInput InputLabelProps>` prop to support label configuration ([#10872](https://github.com/marmelab/react-admin/pull/10872)) ([antoinefricker](https://github.com/antoinefricker))
+* Add support for embedded resources in ra-data-simple-rest ([#10898](https://github.com/marmelab/react-admin/pull/10898)) ([fzaninotto](https://github.com/fzaninotto))
+* Use bulk export ([#10908](https://github.com/marmelab/react-admin/pull/10908)) ([djhi](https://github.com/djhi))
+* Introduce `useDeleteController` ([#10876](https://github.com/marmelab/react-admin/pull/10876)) ([djhi](https://github.com/djhi))
+* Move more primitives from `ra-ui-materialui` to `ra-core` ([#10907](https://github.com/marmelab/react-admin/pull/10907)) ([djhi](https://github.com/djhi))
+* Make all mutations react to their declaration time options changes ([#10857](https://github.com/marmelab/react-admin/pull/10857)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceManyCountBase>` and `<ReferenceManyCount>` ([#10903](https://github.com/marmelab/react-admin/pull/10903)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceManyFieldBase>` and `<ReferenceManyField>` ([#10902](https://github.com/marmelab/react-admin/pull/10902)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceArrayFieldBase>` and `<ReferenceArrayField>` ([#10901](https://github.com/marmelab/react-admin/pull/10901)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ListBase>` and `<List>` ([#10896](https://github.com/marmelab/react-admin/pull/10896)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceArrayInputBase>` and `<ReferenceArrayInput>` ([#10895](https://github.com/marmelab/react-admin/pull/10895)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceManyFieldBase>` ([#10865](https://github.com/marmelab/react-admin/pull/10865)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceInputBase>`, `<ReferenceInput>` and `<AutocompleteInput>` ([#10864](https://github.com/marmelab/react-admin/pull/10864)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceOneFieldBase>` and `<ReferenceOneField>` ([#10861](https://github.com/marmelab/react-admin/pull/10861)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ReferenceFieldBase>` and `<ReferenceField>` ([#10860](https://github.com/marmelab/react-admin/pull/10860)) ([djhi](https://github.com/djhi))
+* Add offline support to `<EditBase>` and `<Edit>` ([#10858](https://github.com/marmelab/react-admin/pull/10858)) ([djhi](https://github.com/djhi))
+* Add offline support to `<ShowBase>` and `<Show>` ([#10852](https://github.com/marmelab/react-admin/pull/10852)) ([djhi](https://github.com/djhi))
+* Improve offline detection in Edit, Show, ReferenceField and ReferenceOneField ([#10899](https://github.com/marmelab/react-admin/pull/10899)) ([djhi](https://github.com/djhi))
+* Add `mutationKey` to all mutations to allow offline mutations ([#10851](https://github.com/marmelab/react-admin/pull/10851)) ([djhi](https://github.com/djhi))
+* Fix `<Link>` cannot be styled through MUI theme ([#10905](https://github.com/marmelab/react-admin/pull/10905)) ([djhi](https://github.com/djhi))
+* Fix regression regarding `disableAuthentication` in `EditBase` and `ShowBase` ([#10906](https://github.com/marmelab/react-admin/pull/10906)) ([djhi](https://github.com/djhi))
+* Fix security vulnerabilities affecting `devalue` and `form-data` ([#10911](https://github.com/marmelab/react-admin/pull/10911)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<ListBase>` is missing the `storeKey` prop ([#10894](https://github.com/marmelab/react-admin/pull/10894)) ([slax57](https://github.com/slax57))
+* [TypeScript] Export `ValidationMessageFuncParams` and `ValidationMessageFunc` types ([#10867](https://github.com/marmelab/react-admin/pull/10867)) ([djhi](https://github.com/djhi))
+* [chore] move `sanitizeFieldRestProps` and `sanitizeInputRestProps` to `ra-core` ([#10874](https://github.com/marmelab/react-admin/pull/10874)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Chore] Move `ArrayInputContext` to `ra-core` ([#10873](https://github.com/marmelab/react-admin/pull/10873)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [chore] Fix CRM demo cannot load MSW when deployed on a sub URL ([#10897](https://github.com/marmelab/react-admin/pull/10897)) ([djhi](https://github.com/djhi))
+* [chore] Revert MSW usage on simple example ([#10893](https://github.com/marmelab/react-admin/pull/10893)) ([djhi](https://github.com/djhi))
+
 ## 5.10.2
 
 * Add warning when using `queryOptions` to add a `meta` in `<Edit>` and `<EditBase>` ([#10882](https://github.com/marmelab/react-admin/pull/10882)) ([Madeorsk](https://github.com/Madeorsk))
