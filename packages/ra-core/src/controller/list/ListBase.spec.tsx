@@ -4,6 +4,7 @@ import {
     AccessControl,
     DefaultTitle,
     NoAuthProvider,
+    Offline,
     WithAuthProviderNoAccessControl,
     WithRenderProps,
 } from './ListBase.stories';
@@ -20,6 +21,29 @@ describe('ListBase', () => {
         render(<NoAuthProvider dataProvider={dataProvider} />);
         expect(dataProvider.getList).toHaveBeenCalled();
         await screen.findByText('Hello');
+    });
+    it('should not wait for the authentication resolution before loading data when disableAuthentication is true', async () => {
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: jest.fn(),
+        };
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getList: jest.fn(() =>
+                Promise.resolve({ data: [{ id: 1, title: 'Hello' }], total: 1 })
+            ),
+        });
+        render(
+            <WithAuthProviderNoAccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+                ListProps={{ disableAuthentication: true }}
+            />
+        );
+        await screen.findByText('Hello');
+        expect(authProvider.checkAuth).not.toHaveBeenCalled();
     });
     it('should wait for the authentication resolution before loading data', async () => {
         let resolveAuth: () => void;
@@ -115,5 +139,25 @@ describe('ListBase', () => {
         render(<WithRenderProps dataProvider={dataProvider} />);
         expect(dataProvider.getList).toHaveBeenCalled();
         await screen.findByText('Hello');
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        const { rerender } = render(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('War and Peace');
+        expect(
+            screen.queryByText('You are offline, cannot load data')
+        ).toBeNull();
+        rerender(<Offline isOnline={false} />);
+        await screen.findByText('You are offline, the data may be outdated');
+        fireEvent.click(screen.getByText('next'));
+        await screen.findByText('You are offline, cannot load data');
+        rerender(<Offline isOnline={true} />);
+        await screen.findByText('And Then There Were None');
+        rerender(<Offline isOnline={false} />);
+        fireEvent.click(screen.getByText('previous'));
+        await screen.findByText('War and Peace');
+        await screen.findByText('You are offline, the data may be outdated');
     });
 });

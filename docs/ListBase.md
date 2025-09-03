@@ -87,11 +87,13 @@ The `<ListBase>` component accepts the following props:
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
 * [`filterDefaultValues`](./List.md#filterdefaultvalues)
+* [`offline`](./List.md#offline)
 * [`perPage`](./List.md#perpage)
 * [`queryOptions`](./List.md#queryoptions)
 * `render`
 * [`resource`](./List.md#resource)
 * [`sort`](./List.md#sort)
+* [`storeKey`](./List.md#storeKey)
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. Check [the `<List children>` documentation](./List.md#children) for usage examples.
 

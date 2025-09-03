@@ -24,6 +24,29 @@ describe('ShowBase', () => {
         expect(dataProvider.getOne).toHaveBeenCalled();
         await screen.findByText('Hello');
     });
+    it('should not wait for the authentication resolution before loading data when disableAuthentication is true', async () => {
+        const authProvider = {
+            login: () => Promise.resolve(),
+            logout: () => Promise.resolve(),
+            checkError: () => Promise.resolve(),
+            checkAuth: jest.fn(),
+        };
+        const dataProvider = testDataProvider({
+            // @ts-ignore
+            getOne: jest.fn(() =>
+                Promise.resolve({ data: { id: 12, test: 'Hello' } })
+            ),
+        });
+        render(
+            <WithAuthProviderNoAccessControl
+                authProvider={authProvider}
+                dataProvider={dataProvider}
+                ShowProps={{ disableAuthentication: true }}
+            />
+        );
+        await screen.findByText('Hello');
+        expect(authProvider.checkAuth).not.toHaveBeenCalled();
+    });
     it('should wait for the authentication resolution before loading data', async () => {
         let resolveAuth: () => void;
         const authProvider = {
@@ -130,5 +153,8 @@ describe('ShowBase', () => {
         ).toBeNull();
         rerender(<Offline isOnline={false} />);
         await screen.findByText('You are offline, the data may be outdated');
+        // Ensure the data is still displayed when going offline after it was loaded
+        await screen.findByText('You are offline, the data may be outdated');
+        await screen.findByText('Hello');
     });
 });

@@ -8,8 +8,7 @@ import { CreateBase } from '../../controller/create/CreateBase';
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { DataProvider } from '../../types';
 import { Form } from '../../form/Form';
-import { useInput } from '../../form/useInput';
-import { InputProps } from '../../form/types';
+import { InputProps, useInput } from '../../form/useInput';
 import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
 import {
     ReferenceArrayInputBase,
@@ -20,9 +19,10 @@ import {
     ChoicesProps,
     useChoicesContext,
 } from '../../form';
-import { useGetRecordRepresentation } from '../..';
+import { useGetRecordRepresentation, useIsOffline } from '../..';
+import { onlineManager } from '@tanstack/react-query';
 
-export default { title: 'ra-core/controller/ReferenceArrayInputBase' };
+export default { title: 'ra-core/controller/input/ReferenceArrayInputBase' };
 
 const tags = [
     { id: 0, name: '3D' },
@@ -234,3 +234,80 @@ export const WithError = () => (
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+export const Offline = () => (
+    <TestMemoryRouter initialEntries={['/posts/create']}>
+        <CoreAdmin
+            dataProvider={defaultDataProvider}
+            i18nProvider={i18nProvider}
+        >
+            <Resource
+                name="posts"
+                create={
+                    <CreateBase resource="posts" record={{ tags_ids: [1, 3] }}>
+                        <h1>Create Post</h1>
+                        <Form>
+                            <div
+                                style={{
+                                    width: '200px',
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    gap: '10px',
+                                }}
+                            >
+                                <RenderChildOnDemand>
+                                    <ReferenceArrayInputBase
+                                        reference="tags"
+                                        resource="posts"
+                                        source="tags_ids"
+                                        offline={
+                                            <p>
+                                                You are offline, cannot load
+                                                data
+                                            </p>
+                                        }
+                                    >
+                                        <CheckboxGroupInput optionText="name" />
+                                    </ReferenceArrayInputBase>
+                                </RenderChildOnDemand>
+                                <SimulateOfflineButton />
+                            </div>
+                        </Form>
+                    </CreateBase>
+                }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={event => {
+                event.preventDefault();
+                onlineManager.setOnline(isOffline);
+            }}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button
+                onClick={event => {
+                    event.preventDefault();
+                    setShowChild(!showChild);
+                }}
+            >
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};

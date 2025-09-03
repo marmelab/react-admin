@@ -7,6 +7,7 @@ import { useGetList } from './useGetList';
 import { useState } from 'react';
 import { useGetOne } from './useGetOne';
 import { useTakeUndoableMutation } from './undo';
+import type { DataProvider, MutationMode as MutationModeType } from '../types';
 
 export default { title: 'ra-core/dataProvider/useUpdateMany' };
 
@@ -199,6 +200,112 @@ const WithMiddlewaresCore = ({
             {success && <div>{success}</div>}
             {error && <div>{error.message}</div>}
             {isMutating !== 0 && <div>mutating</div>}
+        </>
+    );
+};
+
+export const MutationMode = () => {
+    const data = [
+        { id: 1, title: 'foo' },
+        { id: 2, title: 'bar' },
+    ];
+    const dataProvider = {
+        getList: async () => ({ data, total: 2 }),
+        updateMany: () => new Promise(() => {}), // never resolve to see only optimistic update
+    } as any;
+    return (
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            dataProvider={dataProvider}
+        >
+            <MutationModeCore />
+        </CoreAdminContext>
+    );
+};
+
+const MutationModeCore = () => {
+    const { data } = useGetList('posts');
+    const [mutationMode, setMutationMode] =
+        React.useState<MutationModeType>('pessimistic');
+    const [updateMany, { isPending }] = useUpdateMany(
+        'posts',
+        {
+            ids: [1, 2],
+            data: { id: undefined, title: 'world' },
+        },
+        { mutationMode }
+    );
+    const handleClick = () => {
+        updateMany();
+    };
+    return (
+        <>
+            <pre>{JSON.stringify(data)}</pre>
+            <div>
+                <button onClick={handleClick} disabled={isPending}>
+                    Update title
+                </button>
+                &nbsp;
+                <button
+                    onClick={() => setMutationMode('optimistic')}
+                    disabled={isPending}
+                >
+                    Change mutation mode to optimistic
+                </button>
+            </div>
+        </>
+    );
+};
+
+export const Params = ({ dataProvider }: { dataProvider?: DataProvider }) => {
+    const data = [
+        { id: 1, title: 'foo' },
+        { id: 2, title: 'bar' },
+    ];
+    const defaultDataProvider = {
+        getList: async () => ({ data, total: 2 }),
+        updateMany: () => new Promise(() => {}), // never resolve to see only optimistic update
+    } as any;
+    return (
+        <CoreAdminContext
+            queryClient={new QueryClient()}
+            dataProvider={dataProvider ?? defaultDataProvider}
+        >
+            <ParamsCore />
+        </CoreAdminContext>
+    );
+};
+
+const ParamsCore = () => {
+    const { data } = useGetList('posts');
+    const [params, setParams] = React.useState<any>({});
+    const [updateMany, { isPending }] = useUpdateMany(
+        'posts',
+        {
+            ids: [1, 2],
+            data: { id: undefined, title: 'world' },
+            meta: params.meta,
+        },
+        { mutationMode: 'optimistic' }
+    );
+    const handleClick = () => {
+        updateMany();
+    };
+    return (
+        <>
+            <pre>{JSON.stringify(data)}</pre>
+            <div>
+                <button onClick={handleClick} disabled={isPending}>
+                    Update title
+                </button>
+                &nbsp;
+                <button
+                    onClick={() => setParams({ meta: 'test' })}
+                    disabled={isPending}
+                >
+                    Change params
+                </button>
+            </div>
         </>
     );
 };

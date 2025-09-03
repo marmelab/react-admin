@@ -175,5 +175,9 @@ describe('<ReferenceFieldBase />', () => {
         await screen.findByText('You are offline, cannot load data');
         fireEvent.click(await screen.findByText('Simulate online'));
         await screen.findByText('Leo');
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        // Ensure the data is still displayed when going offline after it was loaded
+        await screen.findByText('You are offline, the data may be outdated');
+        await screen.findByText('Leo');
     });
 });

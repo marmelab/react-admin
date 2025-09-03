@@ -1,6 +1,6 @@
 {
     "name": "react-admin",
-    "version": "5.10.0",
+    "version": "5.11.0",
     "description": "A frontend Framework for building admin applications on top of REST services, using ES6, React and Material UI",
     "files": [
         "*.md",
@@ -42,10 +42,10 @@
         "@mui/icons-material": "^5.16.12 || ^6.0.0 || ^7.0.0",
         "@mui/material": "^5.16.12 || ^6.0.0 || ^7.0.0",
         "@tanstack/react-query": "^5.83.0",
-        "ra-core": "^5.10.0",
-        "ra-i18n-polyglot": "^5.10.0",
-        "ra-language-english": "^5.10.0",
-        "ra-ui-materialui": "^5.10.0",
+        "ra-core": "^5.11.0",
+        "ra-i18n-polyglot": "^5.11.0",
+        "ra-language-english": "^5.11.0",
+        "ra-ui-materialui": "^5.11.0",
         "react-hook-form": "^7.53.0",
         "react-router": "^6.28.1 || ^7.1.1",
         "react-router-dom": "^6.28.1 || ^7.1.1"

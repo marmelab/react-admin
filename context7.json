@@ -1,0 +1,22 @@
+{
+  "$schema": "https://context7.com/schema/context7.json",
+  "projectTitle": "React-admin",
+  "description": "A frontend Framework for building single-page applications running in the browser on top of REST/GraphQL APIs, using TypeScript, React, react-router, react-hook-form, react-query, and Material Design.",
+  "folders": ["docs"],
+  "excludeFolders": ["src"],
+  "excludeFiles": ["*.html","*.js","*.css"],
+  "previousVersions": [
+    {
+      "tag": "v4.16.0",
+      "title": "version 4.16"
+    },
+    {
+      "tag": "v3.19.0",
+      "title": "version 3.19"
+    },
+    {
+      "tag": "v2.9.0",
+      "title": "version 2.9"
+    }
+  ]
+}

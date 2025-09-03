@@ -8,7 +8,7 @@ import {
     useTranslate,
     DataTableColumnFilterContext,
 } from 'ra-core';
-import { Box, InputAdornment } from '@mui/material';
+import { Box, InputAdornment, MenuList } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
 import { Button } from '../../button';
@@ -67,34 +67,36 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     const shouldDisplaySearchInput = childrenArray.length > 5;
 
     return createPortal(
-        <>
+        <MenuList>
             {shouldDisplaySearchInput ? (
-                <ResettableTextField
-                    hiddenLabel
-                    label=""
-                    value={columnFilter}
-                    onChange={e => {
-                        if (typeof e === 'string') {
-                            setColumnFilter(e);
-                            return;
-                        }
-                        setColumnFilter(e.target.value);
-                    }}
-                    placeholder={translate('ra.action.search_columns', {
-                        _: 'Search columns',
-                    })}
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchIcon color="disabled" />
-                            </InputAdornment>
-                        ),
-                    }}
-                    resettable
-                    autoFocus
-                    size="small"
-                    sx={{ mb: 1 }}
-                />
+                <Box component="li" tabIndex={-1}>
+                    <ResettableTextField
+                        hiddenLabel
+                        label=""
+                        value={columnFilter}
+                        onChange={e => {
+                            if (typeof e === 'string') {
+                                setColumnFilter(e);
+                                return;
+                            }
+                            setColumnFilter(e.target.value);
+                        }}
+                        placeholder={translate('ra.action.search_columns', {
+                            _: 'Search columns',
+                        })}
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon color="disabled" />
+                                </InputAdornment>
+                            ),
+                        }}
+                        resettable
+                        autoFocus
+                        size="small"
+                        sx={{ mb: 1 }}
+                    />
+                </Box>
             ) : null}
             {paddedColumnRanks.map((position, index) => (
                 <DataTableColumnRankContext.Provider
@@ -123,7 +125,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                     Reset
                 </Button>
             </Box>
-        </>,
+        </MenuList>,
         container
     );
 };

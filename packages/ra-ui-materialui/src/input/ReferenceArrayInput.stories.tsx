@@ -5,6 +5,7 @@ import {
     Resource,
     testDataProvider,
     TestMemoryRouter,
+    useIsOffline,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -20,6 +21,8 @@ import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
+import { onlineManager } from '@tanstack/react-query';
+import { List, Datagrid } from '../list';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -76,6 +79,51 @@ export const Basic = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const AsFilters = () => {
+    const fakeData = {
+        bands: [
+            { id: 1, name: 'band_1', members: [2] },
+            { id: 2, name: 'band_2', members: [3] },
+        ],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/bands']}>
+            <AdminContext
+                dataProvider={fakeRestProvider(fakeData, false)}
+                i18nProvider={i18nProvider}
+            >
+                <AdminUI>
+                    <Resource name="tags" recordRepresentation={'name'} />
+                    <Resource
+                        name="bands"
+                        list={() => (
+                            <List
+                                filters={[
+                                    <ReferenceArrayInput
+                                        alwaysOn
+                                        key="test"
+                                        reference="artists"
+                                        source="members"
+                                    />,
+                                ]}
+                            >
+                                <Datagrid>
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </List>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const WithAutocompleteInput = () => (
     <AdminContext
@@ -272,5 +320,67 @@ export const DifferentIdTypes = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
+    );
+};
+
+export const Offline = () => {
+    const fakeData = {
+        bands: [{ id: 1, name: 'band_1', members: [1, '2'] }],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    return (
+        <TestMemoryRouter>
+            <AdminContext
+                dataProvider={fakeRestProvider(
+                    fakeData,
+                    process.env.NODE_ENV !== 'test'
+                )}
+                i18nProvider={i18nProvider}
+            >
+                <>
+                    <Edit resource="bands" id={1} sx={{ width: 600 }}>
+                        <SimpleForm>
+                            <RenderChildOnDemand>
+                                <ReferenceArrayInput
+                                    source="members"
+                                    reference="artists"
+                                />
+                            </RenderChildOnDemand>
+                        </SimpleForm>
+                    </Edit>
+                    <p>
+                        <SimulateOfflineButton />
+                    </p>
+                </>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button type="button" onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
     );
 };

@@ -67,8 +67,12 @@ describe('ReferenceOneFieldBase', () => {
         render(<Offline />);
         fireEvent.click(await screen.findByText('Simulate offline'));
         fireEvent.click(await screen.findByText('Toggle Child'));
-        await screen.findByText('Offline');
+        await screen.findByText('You are offline, cannot load data');
         fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('9780393966473');
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        // Ensure the data is still displayed when going offline after it was loaded
+        await screen.findByText('You are offline, the data may be outdated');
         await screen.findByText('9780393966473');
     });
 });

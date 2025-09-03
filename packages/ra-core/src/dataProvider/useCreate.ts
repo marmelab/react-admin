@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useMutation,
     UseMutationOptions,
@@ -97,9 +97,16 @@ export const useCreate = <
         ...mutationOptions
     } = options;
     const mode = useRef<MutationMode>(mutationMode);
+    useEffect(() => {
+        mode.current = mutationMode;
+    }, [mutationMode]);
 
     const paramsRef =
         useRef<Partial<CreateParams<Partial<RecordType>>>>(params);
+    useEffect(() => {
+        paramsRef.current = params;
+    }, [params]);
+
     const snapshot = useRef<Snapshot>([]);
 
     // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted

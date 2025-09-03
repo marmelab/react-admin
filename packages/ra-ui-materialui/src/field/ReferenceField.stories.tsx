@@ -13,12 +13,13 @@ import {
     TestMemoryRouter,
     AuthProvider,
     useIsOffline,
+    IsOffline,
 } from 'ra-core';
 
 import fakeRestDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { createTheme, Stack, ThemeOptions } from '@mui/material';
+import { createTheme, Stack, ThemeOptions, Typography } from '@mui/material';
 import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { deepmerge } from '@mui/utils';
 
@@ -967,7 +968,7 @@ export const WithRenderProp = () => (
                 if (error) {
                     return <p style={{ color: 'red' }}>{error.message}</p>;
                 }
-                return referenceRecord.ISBN;
+                return referenceRecord?.ISBN;
             }}
         ></ReferenceField>
     </Wrapper>
@@ -978,7 +979,16 @@ export const Offline = () => (
         <I18nContextProvider value={i18nProvider}>
             <div>
                 <RenderChildOnDemand>
-                    <ReferenceField source="detail_id" reference="book_details">
+                    <ReferenceField
+                        source="detail_id"
+                        reference="book_details"
+                        link={false}
+                    >
+                        <IsOffline>
+                            <Typography color="warning">
+                                You are offline, the data may be outdated
+                            </Typography>
+                        </IsOffline>
                         <TextField source="ISBN" />
                     </ReferenceField>
                 </RenderChildOnDemand>

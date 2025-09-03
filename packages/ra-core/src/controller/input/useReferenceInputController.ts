@@ -84,12 +84,14 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // fetch possible values
     const {
-        data: possibleValuesData = [],
+        data: possibleValuesData,
         total,
         pageInfo,
         isFetching: isFetchingPossibleValues,
         isLoading: isLoadingPossibleValues,
+        isPaused: isPausedPossibleValues,
         isPending: isPendingPossibleValues,
+        isPlaceholderData: isPlaceholderDataPossibleValues,
         error: errorPossibleValues,
         refetch: refetchGetList,
     } = useGetList<RecordType>(
@@ -119,7 +121,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         error: errorReference,
         isLoading: isLoadingReference,
         isFetching: isFetchingReference,
+        isPaused: isPausedReference,
         isPending: isPendingReference,
+        isPlaceholderData: isPlaceholderDataReference,
     } = useReference<RecordType>({
         id: currentValue,
         reference,
@@ -136,6 +140,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         (currentValue != null && currentValue !== '' && isPendingReference) ||
         isPendingPossibleValues;
 
+    const isPaused = isPausedReference || isPausedPossibleValues;
+
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
     // with AutocompleteInput saying the current value is not in the list of choices
@@ -147,17 +153,31 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     }, [currentReferenceRecord]);
 
     // add current value to possible sources
-    let finalData: RecordType[], finalTotal: number | undefined;
-    if (
-        !referenceRecord ||
-        possibleValuesData.find(record => record.id === referenceRecord.id)
-    ) {
-        finalData = possibleValuesData;
-        finalTotal = total;
-    } else {
-        finalData = [referenceRecord, ...possibleValuesData];
-        finalTotal = total == null ? undefined : total + 1;
-    }
+    const { finalData, finalTotal } = useMemo(() => {
+        if (isPaused && possibleValuesData == null) {
+            return {
+                finalData: null,
+                finalTotal: null,
+            };
+        }
+        if (
+            !referenceRecord ||
+            possibleValuesData == null ||
+            (possibleValuesData ?? []).find(
+                record => record.id === referenceRecord.id
+            )
+        ) {
+            return {
+                finalData: possibleValuesData,
+                finalTotal: total,
+            };
+        } else {
+            return {
+                finalData: [referenceRecord, ...(possibleValuesData ?? [])],
+                finalTotal: total == null ? undefined : total + 1,
+            };
+        }
+    }, [isPaused, referenceRecord, possibleValuesData, total]);
 
     const refetch = useCallback(() => {
         refetchGetList();
@@ -171,39 +191,85 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         }),
         [params.sort, params.order]
     );
-    return {
-        sort: currentSort,
-        allChoices: finalData,
-        availableChoices: possibleValuesData,
-        selectedChoices: referenceRecord ? [referenceRecord] : [],
-        displayedFilters: params.displayedFilters,
-        error: errorReference || errorPossibleValues,
-        filter: params.filter,
-        filterValues: params.filterValues,
-        hideFilter: paramsModifiers.hideFilter,
-        isFetching: isFetchingReference || isFetchingPossibleValues,
-        isLoading: isLoadingReference || isLoadingPossibleValues,
-        isPending: isPending,
-        page: params.page,
-        perPage: params.perPage,
-        refetch,
-        resource: reference,
-        setFilters: paramsModifiers.setFilters,
-        setPage: paramsModifiers.setPage,
-        setPerPage: paramsModifiers.setPerPage,
-        setSort: paramsModifiers.setSort,
-        showFilter: paramsModifiers.showFilter,
-        // we return source and not finalSource because child inputs (e.g. AutocompleteInput) already call useInput and compute the final source
-        source,
-        total: finalTotal,
-        hasNextPage: pageInfo
-            ? pageInfo.hasNextPage
-            : total != null
-              ? params.page * params.perPage < total
-              : undefined,
-        hasPreviousPage: pageInfo ? pageInfo.hasPreviousPage : params.page > 1,
-        isFromReference: true,
-    } as ChoicesContextValue<RecordType>;
+    return useMemo(
+        () =>
+            ({
+                sort: currentSort,
+                // TODO v6: we shouldn't return a default empty array. This is actually enforced at the type level in other hooks such as useListController
+                allChoices: finalData ?? [],
+                // TODO v6: same as above
+                availableChoices: possibleValuesData ?? [],
+                // TODO v6: same as above
+                selectedChoices: referenceRecord ? [referenceRecord] : [],
+                displayedFilters: params.displayedFilters,
+                error: errorReference || errorPossibleValues,
+                filter: params.filter,
+                filterValues: params.filterValues,
+                hideFilter: paramsModifiers.hideFilter,
+                isFetching: isFetchingReference || isFetchingPossibleValues,
+                isLoading: isLoadingReference || isLoadingPossibleValues,
+                isPaused: isPausedReference || isPausedPossibleValues,
+                isPending,
+                isPlaceholderData:
+                    isPlaceholderDataReference ||
+                    isPlaceholderDataPossibleValues,
+                page: params.page,
+                perPage: params.perPage,
+                refetch,
+                resource: reference,
+                setFilters: paramsModifiers.setFilters,
+                setPage: paramsModifiers.setPage,
+                setPerPage: paramsModifiers.setPerPage,
+                setSort: paramsModifiers.setSort,
+                showFilter: paramsModifiers.showFilter,
+                // we return source and not finalSource because child inputs (e.g. AutocompleteInput) already call useInput and compute the final source
+                source,
+                total: finalTotal,
+                hasNextPage: pageInfo
+                    ? pageInfo.hasNextPage
+                    : total != null
+                      ? params.page * params.perPage < total
+                      : undefined,
+                hasPreviousPage: pageInfo
+                    ? pageInfo.hasPreviousPage
+                    : params.page > 1,
+                isFromReference: true,
+            }) as ChoicesContextValue<RecordType>,
+        [
+            currentSort,
+            errorPossibleValues,
+            errorReference,
+            finalData,
+            finalTotal,
+            isFetchingPossibleValues,
+            isFetchingReference,
+            isLoadingPossibleValues,
+            isLoadingReference,
+            isPausedPossibleValues,
+            isPausedReference,
+            isPending,
+            isPlaceholderDataReference,
+            isPlaceholderDataPossibleValues,
+            pageInfo,
+            params.displayedFilters,
+            params.filter,
+            params.filterValues,
+            params.page,
+            params.perPage,
+            paramsModifiers.hideFilter,
+            paramsModifiers.setFilters,
+            paramsModifiers.setPage,
+            paramsModifiers.setPerPage,
+            paramsModifiers.setSort,
+            paramsModifiers.showFilter,
+            possibleValuesData,
+            reference,
+            referenceRecord,
+            refetch,
+            source,
+            total,
+        ]
+    );
 };
 
 export interface UseReferenceInputControllerParams<

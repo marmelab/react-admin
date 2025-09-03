@@ -115,13 +115,16 @@ export const WithAuthProviderNoAccessControl = ({
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
     },
     dataProvider = defaultDataProvider,
+    EditProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    EditProps?: Partial<EditBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <EditBase
             {...defaultProps}
+            {...EditProps}
             loading={<div>Authentication loading...</div>}
         >
             <Child />
@@ -198,7 +201,11 @@ export const Offline = ({
                 {...defaultProps}
                 {...props}
                 mutationMode="pessimistic"
-                offline={<p>You are offline, cannot load data</p>}
+                offline={
+                    <p style={{ color: 'orange' }}>
+                        You are offline, cannot load data
+                    </p>
+                }
             >
                 <OfflineChild />
             </EditBase>

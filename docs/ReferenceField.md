@@ -6,7 +6,7 @@ storybook_path: ra-ui-materialui-fields-referencefield--basic
 
 # `<ReferenceField>`
 
-`<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user. 
+`<ReferenceField>` is useful for displaying many-to-one and one-to-one relationships, e.g. the details of a user when rendering a post authored by that user.
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -46,7 +46,7 @@ export const PostShow = () => (
 
 ![ReferenceField](./img/reference_field_show.png)
 
-So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningul way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
+So it's a good idea to configure the `<Resource recordRepresentation>` to render related records in a meaningful way. For instance, for the `users` resource, if you want the `<ReferenceField>` to display the full name of the author:
 
 ```jsx
 <Resource
@@ -64,24 +64,24 @@ Alternately, if you pass a child component, `<ReferenceField>` will render it in
 </ReferenceField>
 ```
 
-This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child. 
+This component fetches a referenced record (`users` in this example) using the `dataProvider.getMany()` method, and passes it to its child.
 
-It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row. 
+It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for performance reasons](#performance). When using several `<ReferenceField>` in the same page (e.g. in a `<DataTable>`), this allows to call the `dataProvider` once instead of once per row.
 
 ## Props
 
-| Prop        | Required | Type                | Default  | Description                                                                                                         |
-| ----------- | -------- | ------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- |
-| `source`    | Required | `string`            | -        | Name of the property to display |
-| `reference` | Required | `string`            | -        | The name of the resource for the referenced records, e.g. 'posts' |
-| `children`  | Optional&nbsp;* | `ReactNode`         | -        | One or more Field elements used to render the referenced record |
-| `render`  | Optional&nbsp;* | (referenceFieldContext) => `ReactNode`         | -        | A function used to render the referenced record, receive the reference field context as its argument |
-| `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
-| `label`     | Optional | `string | Function` | `resources. [resource]. fields.[source]`   | Label to use for the field when rendered in layout components  |
-| `link`      | Optional | `string | Function` | `edit`   | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
-| `offline`   | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when loading the record |
-| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
-| `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
+| Prop           | Required        | Type                                                                              | Default   | Description                                                                                          |
+| -------------- | --------------- | --------------------------------------------------------------------------------- | --------- | ---------------------------------------------------------------------------------------------------- |
+| `source`       | Required        | `string`                                                                          | -         | Name of the property to display                                                                      |
+| `reference`    | Required        | `string`                                                                          | -         | The name of the resource for the referenced records, e.g. 'posts'                                    |
+| `children`     | Optional&nbsp;* | `ReactNode`                                                                       | -         | One or more Field elements used to render the referenced record                                      |
+| `render`       | Optional&nbsp;* | (referenceFieldContext) => `ReactNode`                                            | -         | A function used to render the referenced record, receive the reference field context as its argument |
+| `empty`        | Optional        | `ReactNode`                                                                       | -         | What to render when the field has no value or when the reference is missing                          |
+| `label`        | Optional        | `string                                                                           | Function` | `resources. [resource]. fields.[source]`                                                             | Label to use for the field when rendered in layout components                       |
+| `link`         | Optional        | `string                                                                           | Function` | `edit`                                                                                               | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
+| `offline`      | Optional        | `ReactNode`                                                                       | -         | What to render when there is no network connectivity when loading the record                         |
+| `queryOptions` | Optional        | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`      | `react-query` client options                                                                         |
+| `sortBy`       | Optional        | `string                                                                           | Function` | `source`                                                                                             | Name of the field to use for sorting when used in a Datagrid                        |
 
 `*` You must provide either `children` or `render`.
 
@@ -196,6 +196,7 @@ Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` que
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceField 
     source="user_id"
@@ -205,6 +206,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
     <TextField source="name" />
 </ReferenceField>
 ```
+
 {% endraw %}
 
 ## `reference`
@@ -254,7 +256,7 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 The `<ReferenceField>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
 | Rule name                  | Description                   |
-|----------------------------|-------------------------------|
+| -------------------------- | ----------------------------- |
 | `& .RaReferenceField-link` | Applied to each child element |
 
 To override the style of all instances of `<ReferenceField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceField` key.
@@ -263,7 +265,7 @@ To override the style of all instances of `<ReferenceField>` using the [applicat
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table. 
+When used in a `<DataTable>`, `<ReferenceField>` fetches the referenced record only once for the entire table.
 
 ![ReferenceField](./img/reference-field.png)
 
@@ -319,6 +321,7 @@ When you know that a page will contain a `<ReferenceField>`, you can configure t
 For example, the following code prefetches the authors referenced by the posts:
 
 {% raw %}
+
 ```jsx
 const PostList = () => (
     <List queryOptions={{ meta: { prefetch: ['author'] } }}>
@@ -332,6 +335,7 @@ const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 **Note**: For prefetching to function correctly, your data provider must support [Prefetching Relationships](./DataProviders.md#prefetching-relationships). Refer to your data provider's documentation to verify if this feature is supported.
@@ -423,5 +427,6 @@ For instance, given the following `ReferenceField`:
 ```
 
 React-Admin will call `canAccess` with the following parameters:
+
 - If the `users` resource has a Show view: `{ action: "show", resource: 'posts', record: Object }`
 - If the `users` resource has an Edit view: `{ action: "edit", resource: 'posts', record: Object }`

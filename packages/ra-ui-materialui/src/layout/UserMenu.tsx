@@ -14,11 +14,15 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useAuthProvider, useGetIdentity, useTranslate } from 'ra-core';
+import {
+    useAuthProvider,
+    useGetIdentity,
+    UserMenuContextProvider,
+    useTranslate,
+} from 'ra-core';
 import * as React from 'react';
 import { type ReactNode, useCallback, useMemo, useState } from 'react';
 import { Logout } from '../auth/Logout';
-import { UserMenuContextProvider } from './UserMenuContextProvider';
 
 /**
  * The UserMenu component renders a Mui Button that shows a Menu.

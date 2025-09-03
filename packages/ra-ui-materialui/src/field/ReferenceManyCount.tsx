@@ -3,8 +3,8 @@ import {
     useRecordContext,
     useCreatePath,
     ReferenceManyCountBase,
-    SortPayload,
     RaRecord,
+    ReferenceManyCountBaseProps,
 } from 'ra-core';
 import clsx from 'clsx';
 import { Typography, TypographyProps, CircularProgress } from '@mui/material';
@@ -19,6 +19,7 @@ import get from 'lodash/get';
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
+import { Offline } from '../Offline';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -51,6 +52,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         link,
         resource,
         source = 'id',
+        offline = defaultOffline,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -63,6 +65,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
             error={
                 <ErrorIcon color="error" fontSize="small" titleAccess="error" />
             }
+            offline={offline}
         />
     );
     return (
@@ -98,17 +101,13 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
 
 // This is a hack that replaces react support for defaultProps. We currently need this for the Datagrid.
 ReferenceManyCount.textAlign = 'right';
+const defaultOffline = <Offline variant="inline" />;
 
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
+        Omit<ReferenceManyCountBaseProps, 'record'>,
         Omit<TypographyProps, 'textAlign'> {
-    reference: string;
-    source?: string;
-    target: string;
-    sort?: SortPayload;
-    filter?: any;
     link?: boolean;
-    timeout?: number;
 }
 
 const PREFIX = 'RaReferenceManyCount';

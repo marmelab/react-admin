@@ -36,13 +36,13 @@ export const ShowView = (props: ShowViewProps) => {
     } = props;
 
     const showContext = useShowContext();
-    const { resource, defaultTitle, isPaused, record } = showContext;
+    const { resource, defaultTitle, isPaused, isPending, record } = showContext;
     const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
-    if (!record && offline !== false && isPaused) {
+    if (isPaused && isPending && offline !== undefined && offline !== false) {
         return (
             <Root className={clsx('show-page', className)} {...rest}>
                 <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from 'ra-core';
-import { Basic, WithError } from './ReferenceArrayInputBase.stories';
+import { Basic, Offline, WithError } from './ReferenceArrayInputBase.stories';
 
 describe('<ReferenceArrayInputBase>', () => {
     afterEach(async () => {
@@ -50,5 +50,14 @@ describe('<ReferenceArrayInputBase>', () => {
                 signal: undefined,
             });
         });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline, cannot load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('Architecture');
     });
 });

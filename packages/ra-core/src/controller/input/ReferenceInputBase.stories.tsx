@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
@@ -22,12 +22,13 @@ import {
     ListBase,
     Resource,
     testDataProvider,
+    useIsOffline,
     useListContext,
     useRedirect,
 } from '../..';
 
 export default {
-    title: 'ra-core/input/ReferenceInputBase',
+    title: 'ra-core/controller/input/ReferenceInputBase',
     excludeStories: ['dataProviderWithAuthors'],
 };
 
@@ -213,7 +214,7 @@ const dataProvider = testDataProvider({
                         data: tags,
                         total: tags.length,
                     }),
-                1500
+                process.env.NODE_ENV === 'test' ? 0 : 1500
             );
         }),
     // @ts-ignore
@@ -522,3 +523,54 @@ export const Meta = ({
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+export const Offline = () => (
+    <CoreAdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+        <Form onSubmit={() => {}} defaultValues={{ tag_ids: 5 }}>
+            <div
+                style={{
+                    width: '200px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '10px',
+                }}
+            >
+                <RenderChildOnDemand>
+                    <ReferenceInputBase
+                        reference="tags"
+                        resource="posts"
+                        source="tag_ids"
+                        offline={<p>You are offline, cannot load data</p>}
+                    >
+                        <SelectInput optionText="name" />
+                    </ReferenceInputBase>
+                </RenderChildOnDemand>
+                <SimulateOfflineButton />
+            </div>
+        </Form>
+    </CoreAdminContext>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};

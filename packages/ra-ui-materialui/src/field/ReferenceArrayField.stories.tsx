@@ -1,7 +1,11 @@
 import * as React from 'react';
 import fakeRestProvider from 'ra-data-fakerest';
-import { CardContent } from '@mui/material';
-import { ResourceDefinitionContextProvider } from 'ra-core';
+import { Alert, CardContent } from '@mui/material';
+import {
+    IsOffline,
+    ResourceDefinitionContextProvider,
+    useIsOffline,
+} from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -10,6 +14,7 @@ import { DataTable, Pagination } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
+import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
 
@@ -26,7 +31,10 @@ const fakeData = {
         { id: 8, name: 'Charlie Watts' },
     ],
 };
-const dataProvider = fakeRestProvider(fakeData, false);
+const dataProvider = fakeRestProvider(
+    fakeData,
+    process.env.NODE_ENV !== 'test'
+);
 
 const resouceDefs = {
     artists: {
@@ -201,3 +209,62 @@ export const WithRenderProp = () => (
         </ResourceDefinitionContextProvider>
     </AdminContext>
 );
+
+export const Offline = () => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => englishMessages)}
+        defaultTheme="light"
+    >
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <RenderChildOnDemand>
+                        <ReferenceArrayField
+                            source="members"
+                            reference="artists"
+                            pagination={<Pagination />}
+                            perPage={5}
+                        >
+                            <IsOffline>
+                                <Alert severity="warning">
+                                    You are offline, the data may be outdated
+                                </Alert>
+                            </IsOffline>
+                            <DataTable>
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="name" />
+                            </DataTable>
+                        </ReferenceArrayField>
+                    </RenderChildOnDemand>
+                </SimpleShowLayout>
+                <SimulateOfflineButton />
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);
+
+const SimulateOfflineButton = () => {
+    const isOffline = useIsOffline();
+    return (
+        <button
+            type="button"
+            onClick={() => onlineManager.setOnline(isOffline)}
+        >
+            {isOffline ? 'Simulate online' : 'Simulate offline'}
+        </button>
+    );
+};
+
+const RenderChildOnDemand = ({ children }) => {
+    const [showChild, setShowChild] = React.useState(false);
+    return (
+        <>
+            <button onClick={() => setShowChild(!showChild)}>
+                Toggle Child
+            </button>
+            {showChild && <div>{children}</div>}
+        </>
+    );
+};

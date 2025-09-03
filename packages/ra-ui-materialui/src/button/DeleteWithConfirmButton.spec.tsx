@@ -96,8 +96,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the resource', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -137,8 +137,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allows to undo the deletion after confirmation if mutationMode is undoable', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -182,8 +182,8 @@ describe('<DeleteWithConfirmButton />', () => {
 
     it('should allow to override the success side effects', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -226,13 +226,17 @@ describe('<DeleteWithConfirmButton />', () => {
                 { snapshot: [] }
             );
         });
+        await waitFor(() => {
+            // Check that the dialog is closed
+            expect(screen.queryByText('ra.action.confirm')).toBeNull();
+        });
     });
 
     it('should allow to override the error side effects', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -275,12 +279,16 @@ describe('<DeleteWithConfirmButton />', () => {
                 { snapshot: [] }
             );
         });
+        await waitFor(() => {
+            // Check that the dialog is closed
+            expect(screen.queryByText('ra.action.confirm')).toBeNull();
+        });
     });
 
     it('should allow to override the translateOptions props', async () => {
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),
@@ -322,8 +330,8 @@ describe('<DeleteWithConfirmButton />', () => {
     it('should display success message after successful deletion', async () => {
         const successMessage = 'Test Message';
         const dataProvider = testDataProvider({
-            // @ts-ignore
             getOne: () =>
+                // @ts-ignore
                 Promise.resolve({
                     data: { id: 123, title: 'lorem' },
                 }),

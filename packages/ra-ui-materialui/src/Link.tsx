@@ -37,10 +37,10 @@ export const LinkClasses = {
     link: `${PREFIX}-link`,
 };
 
-const StyledMuiLink = styled(MuiLink)({
+const StyledMuiLink = styled(MuiLink, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
-}) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
+})({}) as typeof MuiLink; // @see https://mui.com/material-ui/guides/typescript/#complications-with-the-component-prop
 
 // @see https://mui.com/material-ui/guides/composition/#with-typescript
 export interface LinkProps
@@ -50,19 +50,19 @@ export interface LinkProps
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaLink: 'root' | 'link';
+        [PREFIX]: 'root';
     }
 
     interface ComponentsPropsList {
-        RaLink: Partial<LinkProps>;
+        [PREFIX]: Partial<LinkProps>;
     }
 
     interface Components {
         RaLink?: {
-            defaultProps?: ComponentsPropsList['RaLink'];
+            defaultProps?: ComponentsPropsList[typeof PREFIX];
             styleOverrides?: ComponentsOverrides<
                 Omit<Theme, 'components'>
-            >['RaLink'];
+            >[typeof PREFIX];
         };
     }
 }
