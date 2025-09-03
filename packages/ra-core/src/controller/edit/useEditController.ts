@@ -327,8 +327,8 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     defaultTitle?: string;
     isFetching: boolean;
     isLoading: boolean;
-    isPaused: boolean;
-    isPlaceholderData: boolean;
+    isPaused?: boolean;
+    isPlaceholderData?: boolean;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
     resource: string;
