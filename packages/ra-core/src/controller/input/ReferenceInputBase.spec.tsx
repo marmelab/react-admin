@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor, fireEvent } from '@testing-library/react';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { CoreAdminContext } from '../../core';
 import {
     ChoicesProps,
@@ -29,6 +29,9 @@ describe('<ReferenceInputBase />', () => {
 
     beforeAll(() => {
         window.scrollTo = jest.fn();
+    });
+    beforeEach(() => {
+        onlineManager.setOnline(true);
     });
 
     it('should display an error if error is defined', async () => {

@@ -11,8 +11,12 @@ import {
     WithAuthProviderNoAccessControl,
     WithRenderProps,
 } from './EditBase.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('EditBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should give access to the save function', async () => {
         const dataProvider = testDataProvider({
             getOne: () =>

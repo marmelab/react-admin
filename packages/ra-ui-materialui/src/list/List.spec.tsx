@@ -27,10 +27,14 @@ import {
     Offline,
 } from './List.stories';
 import { Alert } from '@mui/material';
+import { onlineManager } from '@tanstack/react-query';
 
 const theme = createTheme(defaultTheme);
 
 describe('<List />', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should render a list page', () => {
         const Datagrid = () => <div>datagrid</div>;
         const { container } = render(

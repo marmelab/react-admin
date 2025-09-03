@@ -18,10 +18,14 @@ import {
     WithRenderProp,
 } from './ReferenceManyField.stories';
 import { Alert } from '@mui/material';
+import { onlineManager } from '@tanstack/react-query';
 
 const theme = createTheme();
 
 describe('<ReferenceManyField />', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     const defaultProps = {
         // resource and reference are the same because useReferenceManyFieldController
         // set the reference as the current resource

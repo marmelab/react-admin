@@ -9,7 +9,7 @@ import {
     ResourceDefinitionContextProvider,
     AuthProvider,
 } from 'ra-core';
-import { QueryClient } from '@tanstack/react-query';
+import { onlineManager, QueryClient } from '@tanstack/react-query';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import { ReferenceField } from './ReferenceField';
@@ -36,6 +36,10 @@ const theme = createTheme({});
 
 describe('<ReferenceField />', () => {
     const record = { id: 123, postId: 123 };
+
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
 
     describe('Progress bar', () => {
         it("should not display a loader on mount if the reference is not in the store and a second hasn't passed yet", async () => {
