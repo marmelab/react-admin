@@ -360,7 +360,7 @@ type DataProviderMutationWithMiddlewareFunction<
     TVariables = unknown,
 > = (params: Partial<TVariables>, options?: any) => Promise<TData>;
 
-export type UpdateMutationFunction<
+export type MutationFunctionWithOptions<
     TReturnPromise extends boolean = boolean,
     ErrorType = Error,
     TData = unknown,
@@ -379,7 +379,7 @@ export type UseMutationWithMutationModeResult<
     TData = unknown,
     TVariables = unknown,
 > = [
-    UpdateMutationFunction<TReturnPromise, ErrorType, TData, TVariables>,
+    MutationFunctionWithOptions<TReturnPromise, ErrorType, TData, TVariables>,
     UseMutationResult<TData, ErrorType, Partial<TVariables>, unknown> & {
         isLoading: boolean;
     },
