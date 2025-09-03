@@ -106,7 +106,7 @@ export const ReferenceFieldBase = <
 
 export interface ReferenceFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
 > {
     children?: ReactNode;
     render?: (
