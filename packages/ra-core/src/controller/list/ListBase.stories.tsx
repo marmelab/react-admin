@@ -467,6 +467,46 @@ export const EmptyWhileLoading = () => {
     );
 };
 
+export const EmptyWhileLoadingRender = () => {
+    let resolveGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () =>
+                    resolve(baseProvider.getList(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <ListBase
+                resource="books"
+                perPage={5}
+                emptyWhileLoading
+                render={({ data }) => {
+                    return (
+                        <ul>
+                            {data.map((record: any) => (
+                                <li key={record.id}>{record.title}</li>
+                            ))}
+                        </ul>
+                    );
+                }}
+            />
+        </CoreAdminContext>
+    );
+};
+
 const Title = () => {
     const { defaultTitle } = useListContext();
     const [locale, setLocale] = useLocaleState();

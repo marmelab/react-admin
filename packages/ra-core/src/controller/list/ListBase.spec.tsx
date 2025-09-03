@@ -4,6 +4,7 @@ import {
     AccessControl,
     DefaultTitle,
     EmptyWhileLoading,
+    EmptyWhileLoadingRender,
     NoAuthProvider,
     Offline,
     WithAuthProviderNoAccessControl,
@@ -167,6 +168,12 @@ describe('ListBase', () => {
     });
     it('should render nothing while loading if emptyWhileLoading is set to true', async () => {
         render(<EmptyWhileLoading />);
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('War and Peace');
+    });
+    it('should render nothing while loading if emptyWhileLoading is set to true and using the render prop', async () => {
+        render(<EmptyWhileLoadingRender />);
         expect(screen.queryByText('War and Peace')).toBeNull();
         fireEvent.click(screen.getByText('Resolve books loading'));
         await screen.findByText('War and Peace');
