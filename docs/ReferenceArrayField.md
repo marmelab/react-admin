@@ -10,7 +10,7 @@ Use `<ReferenceArrayField>` to display a list of related records, via a one-to-m
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md). 
+`<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md).
 
 **Tip**: If the relationship is materialized by a foreign key on the referenced resource, use [the `<ReferenceManyField>` component](./ReferenceManyField.md) instead.
 
@@ -85,10 +85,11 @@ You can change how the list of related records is rendered by passing a custom c
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
-| `children`     | Optional&nbsp;* | `Element`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
+| `children`     | Optional&nbsp;* | `ReactNode`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
 | `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | `<SingleFieldList>`              | A function that takes a list context and render a list of records                         |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
-| `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
+| `offline`      | Optional | `ReactNode`                                                              | `<Offline variant="inline" />` | The component to render when there is no connectivity and the record isn't in the cache |
+| `pagination`   | Optional | `ReactNode`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
@@ -100,7 +101,7 @@ You can change how the list of related records is rendered by passing a custom c
 
 ## `children`
 
-By default, `<ReferenceArrayField>` renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) using the resource [`recordRepresentation`](./Resource.md#recordrepresentation). 
+By default, `<ReferenceArrayField>` renders one string by related record, via a [`<SingleFieldList>`](./SingleFieldList.md) with a [`<ChipField>`](./ChipField.md) using the resource [`recordRepresentation`](./Resource.md#recordrepresentation).
 
 ![ReferenceArrayField with default children](./img/ReferenceArrayField-default-child.png)
 
@@ -130,7 +131,7 @@ Is equivalent to:
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
-- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
+- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how).
 
 For instance, use a `<DataTable>` to render the related records in a table:
 
@@ -188,20 +189,11 @@ export const PostShow = () => (
 ## `filter`
 
 `<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
-                )} />
-            <EditButton />
-        </SimpleShowLayout>
-    </Show>
-);
-```
-
-## `filter`
-
-`<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
 
 For instance, to render only tags that are 'published', you can use the following code:
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -210,6 +202,7 @@ For instance, to render only tags that are 'published', you can use the followin
     filter={{ is_published: true }}
 />
 ```
+
 {% endraw %}
 
 ## `label`
@@ -233,6 +226,47 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 
 ```jsx
 <ReferenceArrayField label="resource.posts.fields.tags" source="tag_ids" reference="tags" />
+```
+
+## `offline`
+
+By default, `<ReferenceArrayField>` renders the `<Offline variant="inline">` when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+import { ReferenceArrayField, Show } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <ReferenceArrayField
+            source="tag_ids"
+            reference="tags"
+            offline={<Alert severity="warning">No network. Could not load the tags.</Alert>}
+        >
+            ...
+        </ReferenceArrayField>
+    </Show>
+);
+```
+
+**Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+import { IsOffline, ReferenceArrayField, Show } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <ReferenceArrayField source="tag_ids" reference="tags">
+            <IsOffline>
+                <Alert severity="warning">
+                    You are offline, tags may be outdated
+                </Alert>
+            </IsOffline>
+            ...
+        </ReferenceArrayField>
+    </Show>
+);
 ```
 
 ## `pagination`
@@ -272,9 +306,11 @@ Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` que
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField queryOptions={{ meta: { foo: 'bar' } }} />
 ```
+
 {% endraw %}
 
 ## `render`
@@ -325,6 +361,7 @@ By default, the related records are displayed in the order in which they appear 
 For instance, to sort tags by title in ascending order, you can use the following code:
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayField 
     label="Tags"
@@ -333,6 +370,7 @@ For instance, to sort tags by title in ascending order, you can use the followin
     sort={{ field: 'title', order: 'ASC' }}
 />
 ```
+
 {% endraw %}
 
 ## `sx`: CSS API
@@ -344,4 +382,3 @@ The `<ReferenceArrayField>` component accepts the usual `className` prop. You ca
 | `& .RaReferenceArrayField-progress` | Applied to the Material UI's `LinearProgress` component while `isPending` prop is `true` |
 
 To override the style of all instances of `<ReferenceArrayField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaReferenceArrayField` key.
-

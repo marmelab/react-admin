@@ -103,7 +103,7 @@ const Wrapper = ({ children, themeName, themeType }) => {
     );
 };
 
-export const ThemeTester = ({ themeName, themeType }) => (
+export const ThemeTester = ({ themeName, themeType, inputVariant }) => (
     <Wrapper themeName={themeName} themeType={themeType}>
         <Snackbar
             open
@@ -159,14 +159,15 @@ export const ThemeTester = ({ themeName, themeType }) => (
             <Section title="Form Inputs">
                 <ResourceContextProvider value="posts">
                     <SimpleForm>
-                        <TextInput source="text" />
-                        <DateInput source="date" />
+                        <TextInput source="text" variant={inputVariant} />
+                        <DateInput source="date" variant={inputVariant} />
                         <SelectInput
                             source="select"
                             choices={[
                                 { id: 1, name: 'One' },
                                 { id: 2, name: 'Two' },
                             ]}
+                            variant={inputVariant}
                         />
                         <SelectInput
                             source="select2"
@@ -175,6 +176,7 @@ export const ThemeTester = ({ themeName, themeType }) => (
                                 { id: 2, name: 'Two' },
                             ]}
                             isPending
+                            variant={inputVariant}
                         />
                         <RadioButtonGroupInput
                             source="radio"
@@ -182,6 +184,7 @@ export const ThemeTester = ({ themeName, themeType }) => (
                                 { id: 1, name: 'One' },
                                 { id: 2, name: 'Two' },
                             ]}
+                            variant={inputVariant}
                         />
                         <CheckboxGroupInput
                             source="checkbox"
@@ -189,10 +192,14 @@ export const ThemeTester = ({ themeName, themeType }) => (
                                 { id: 1, name: 'One' },
                                 { id: 2, name: 'Two' },
                             ]}
+                            variant={inputVariant}
                         />
-                        <BooleanInput source="boolean" />
-                        <PasswordInput source="password" />
-                        <SearchInput source="search" />
+                        <BooleanInput source="boolean" variant={inputVariant} />
+                        <PasswordInput
+                            source="password"
+                            variant={inputVariant}
+                        />
+                        <SearchInput source="search" variant={inputVariant} />
                     </SimpleForm>
                 </ResourceContextProvider>
             </Section>
@@ -228,6 +235,7 @@ export const ThemeTester = ({ themeName, themeType }) => (
 ThemeTester.args = {
     themeName: 'Default',
     themeType: 'light',
+    inputVariant: 'filled',
 };
 ThemeTester.argTypes = {
     themeName: {
@@ -237,6 +245,10 @@ ThemeTester.argTypes = {
     themeType: {
         control: 'select',
         options: ['light', 'dark'],
+    },
+    inputVariant: {
+        control: 'select',
+        options: ['standard', 'filled', 'outlined'],
     },
 };
 

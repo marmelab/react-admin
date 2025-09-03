@@ -10,9 +10,12 @@ import {
     AuthProvider,
     DataProvider,
     I18nProvider,
+    IsOffline,
+    ListBaseProps,
     mergeTranslations,
     useLocaleState,
 } from '../..';
+import { onlineManager } from '@tanstack/react-query';
 
 export default {
     title: 'ra-core/controller/list/ListBase',
@@ -48,7 +51,11 @@ const data = {
     ],
 };
 
-const defaultDataProvider = fakeRestProvider(data, true, 300);
+const defaultDataProvider = fakeRestProvider(
+    data,
+    process.env.NODE_ENV !== 'test',
+    300
+);
 
 const BookListView = () => {
     const {
@@ -140,15 +147,18 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
     },
     dataProvider = defaultDataProvider,
+    ListProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    ListProps?: Partial<ListBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <ListBase
             resource="books"
             perPage={5}
             loading={<div>Authentication loading...</div>}
+            {...ListProps}
         >
             <BookListView />
         </ListBase>
@@ -333,7 +343,7 @@ export const WithRenderProps = ({
                     </div>
                 );
             }}
-        ></ListBase>
+        />
     </CoreAdminContext>
 );
 
@@ -344,6 +354,89 @@ DefaultTitle.argTypes = {
     translations: {
         options: ['default', 'resource specific'],
         control: { type: 'radio' },
+    },
+};
+
+export const Offline = ({
+    dataProvider = defaultDataProvider,
+    isOnline = true,
+    ...props
+}: {
+    dataProvider?: DataProvider;
+    isOnline?: boolean;
+} & Partial<ListBaseProps>) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <ListBase
+                resource="books"
+                perPage={5}
+                {...props}
+                offline={<p>You are offline, cannot load data</p>}
+                render={controllerProps => {
+                    const {
+                        data,
+                        error,
+                        isPending,
+                        page,
+                        perPage,
+                        setPage,
+                        total,
+                    } = controllerProps;
+                    if (isPending) {
+                        return <div>Loading...</div>;
+                    }
+                    if (error) {
+                        return <div>Error...</div>;
+                    }
+
+                    return (
+                        <div>
+                            <p>
+                                Use the story controls to simulate offline mode:
+                            </p>
+                            <IsOffline>
+                                <p style={{ color: 'orange' }}>
+                                    You are offline, the data may be outdated
+                                </p>
+                            </IsOffline>
+                            <button
+                                disabled={page <= 1}
+                                onClick={() => setPage(page - 1)}
+                            >
+                                previous
+                            </button>
+                            <span>
+                                Page {page} of {Math.ceil(total / perPage)}
+                            </span>
+                            <button
+                                disabled={page >= total / perPage}
+                                onClick={() => setPage(page + 1)}
+                            >
+                                next
+                            </button>
+                            <ul>
+                                {data.map((record: any) => (
+                                    <li key={record.id}>{record.title}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    );
+                }}
+            />
+        </CoreAdminContext>
+    );
+};
+
+Offline.args = {
+    isOnline: true,
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
     },
 };
 

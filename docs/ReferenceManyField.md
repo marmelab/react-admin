@@ -96,6 +96,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
@@ -304,6 +305,49 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
     <DataTable.Col source="title" />
     <DataTable.Col source="published_at" field={DateField} />
   </DataTable>
+</ReferenceManyField>
+```
+
+## `offline`
+
+By default, `<ReferenceManyField>` renders the `<Offline variant="inline">` when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    offline="Offline, could not load data"
+>
+    ...
+</ReferenceManyField>
+```
+
+`offline` also accepts a `ReactNode`.
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    empty={<Alert severity="warning">Offline, could not load data</Alert>}
+>
+    ...
+</ReferenceManyField>
+```
+
+**Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    empty={<Alert severity="warning">Offline, could not load data</Alert>}
+>
+  <IsOffline>
+      <Alert severity="warning">
+          You are offline, the data may be outdated
+      </Alert>
+  </IsOffline>
+    ...
 </ReferenceManyField>
 ```
 

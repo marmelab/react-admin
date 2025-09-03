@@ -1,4 +1,4 @@
-import { useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import {
     useMutation,
     useQueryClient,
@@ -51,7 +51,16 @@ export const useMutationWithMutationMode = <
     );
 
     const mode = useRef<MutationMode>(mutationMode);
+    useEffect(() => {
+        mode.current = mutationMode;
+    }, [mutationMode]);
+
     const paramsRef = useRef<Partial<TVariables>>(params);
+    useEffect(() => {
+        paramsRef.current = params;
+    }, [params]);
+
+    // Ref that stores the snapshot of the state before the mutation to allow reverting it
     const snapshot = useRef<Snapshot>([]);
     // Ref that stores the mutation with middlewares to avoid losing them if the calling component is unmounted
     const mutateWithMiddlewares = useRef<

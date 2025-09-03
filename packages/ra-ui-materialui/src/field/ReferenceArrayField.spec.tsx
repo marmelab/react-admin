@@ -27,6 +27,7 @@ import { SingleFieldList } from '../list';
 import { AdminContext } from '../AdminContext';
 import {
     DifferentIdTypes,
+    Offline,
     WithPagination,
     WithRenderProp,
 } from './ReferenceArrayField.stories';
@@ -401,5 +402,18 @@ describe('<ReferenceArrayField />', () => {
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('8 items selected');
         });
+    });
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        await screen.findByText('The Beatles');
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('No connectivity. Could not fetch data.');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('John Lennon');
+        // Ensure the data is still displayed when going offline after it was loaded
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        await screen.findByText('You are offline, the data may be outdated');
+        await screen.findByText('John Lennon');
     });
 });

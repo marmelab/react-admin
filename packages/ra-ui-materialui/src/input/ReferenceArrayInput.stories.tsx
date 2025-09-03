@@ -22,6 +22,7 @@ import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { onlineManager } from '@tanstack/react-query';
+import { List, Datagrid } from '../list';
 
 export default { title: 'ra-ui-materialui/input/ReferenceArrayInput' };
 
@@ -78,6 +79,51 @@ export const Basic = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const AsFilters = () => {
+    const fakeData = {
+        bands: [
+            { id: 1, name: 'band_1', members: [2] },
+            { id: 2, name: 'band_2', members: [3] },
+        ],
+        artists: [
+            { id: 1, name: 'artist_1' },
+            { id: 2, name: 'artist_2' },
+            { id: 3, name: 'artist_3' },
+        ],
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/bands']}>
+            <AdminContext
+                dataProvider={fakeRestProvider(fakeData, false)}
+                i18nProvider={i18nProvider}
+            >
+                <AdminUI>
+                    <Resource name="tags" recordRepresentation={'name'} />
+                    <Resource
+                        name="bands"
+                        list={() => (
+                            <List
+                                filters={[
+                                    <ReferenceArrayInput
+                                        alwaysOn
+                                        key="test"
+                                        reference="artists"
+                                        source="members"
+                                    />,
+                                ]}
+                            >
+                                <Datagrid>
+                                    <TextField source="name" />
+                                </Datagrid>
+                            </List>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const WithAutocompleteInput = () => (
     <AdminContext

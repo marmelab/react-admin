@@ -20,13 +20,13 @@ import {
     StoreContextProvider,
     TestMemoryRouter,
     memoryStore,
+    useUserMenu,
 } from 'ra-core';
 
 import { AppBar } from './AppBar';
 import { Title } from './Title';
 import { TitlePortal } from './TitlePortal';
 import { UserMenu } from './UserMenu';
-import { useUserMenu } from './useUserMenu';
 import { defaultTheme } from '../theme/defaultTheme';
 import { ThemesContext, ThemeProvider } from '../theme';
 import { Logout } from '../auth';

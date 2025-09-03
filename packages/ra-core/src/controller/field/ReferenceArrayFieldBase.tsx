@@ -78,6 +78,7 @@ export const ReferenceArrayFieldBase = <
         loading,
         empty,
         filter,
+        offline,
         page = 1,
         perPage,
         reference,
@@ -107,25 +108,27 @@ export const ReferenceArrayFieldBase = <
             "<ReferenceArrayFieldBase> requires either a 'render' prop or 'children' prop"
         );
     }
+    const {
+        error: controllerError,
+        isPending,
+        isPaused,
+        isPlaceholderData,
+    } = controllerProps;
 
-    if (controllerProps.isPending && loading) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {loading}
-            </ResourceContextProvider>
-        );
-    }
-    if (controllerProps.error && error) {
-        return (
-            <ResourceContextProvider value={reference}>
-                <ListContextProvider value={controllerProps}>
-                    {error}
-                </ListContextProvider>
-            </ResourceContextProvider>
-        );
-    }
-    if (
-        // there is an empty page component
+    const shouldRenderLoading =
+        isPending && !isPaused && loading !== undefined && loading !== false;
+    const shouldRenderOffline =
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== undefined &&
+        offline !== false;
+    const shouldRenderError =
+        !isPending &&
+        !isPaused &&
+        controllerError &&
+        error !== undefined &&
+        error !== false;
+    const shouldRenderEmpty = // there is an empty page component
         empty &&
         // there is no error
         !controllerProps.error &&
@@ -141,19 +144,22 @@ export const ReferenceArrayFieldBase = <
                 // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
                 controllerProps.data.length === 0)) &&
         // the user didn't set any filters
-        !Object.keys(controllerProps.filterValues).length
-    ) {
-        return (
-            <ResourceContextProvider value={reference}>
-                {empty}
-            </ResourceContextProvider>
-        );
-    }
+        !Object.keys(controllerProps.filterValues).length;
 
     return (
         <ResourceContextProvider value={reference}>
             <ListContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {shouldRenderLoading
+                    ? loading
+                    : shouldRenderOffline
+                      ? offline
+                      : shouldRenderError
+                        ? error
+                        : shouldRenderEmpty
+                          ? empty
+                          : render
+                            ? render(controllerProps)
+                            : children}
             </ListContextProvider>
         </ResourceContextProvider>
     );
@@ -169,6 +175,7 @@ export interface ReferenceArrayFieldBaseProps<
     loading?: ReactNode;
     empty?: ReactNode;
     filter?: FilterPayload;
+    offline?: ReactNode;
     page?: number;
     perPage?: number;
     reference: string;

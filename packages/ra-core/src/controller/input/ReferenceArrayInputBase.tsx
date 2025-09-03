@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { InputProps } from '../../form/types';
+import { InputProps } from '../../form/useInput';
 import {
     useReferenceArrayInputController,
     type UseReferenceArrayInputParams,

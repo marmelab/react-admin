@@ -48,7 +48,8 @@ import { useIsAuthPending } from '../../auth';
 export const InfiniteListBase = <RecordType extends RaRecord = any>({
     children,
     render,
-    loading = null,
+    loading,
+    offline,
     ...props
 }: InfiniteListBaseProps<RecordType>) => {
     const controllerProps = useInfiniteListController<RecordType>(props);
@@ -57,15 +58,26 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
         action: 'list',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
-    }
-
     if (!render && !children) {
         throw new Error(
             "<InfiniteListBase> requires either a 'render' prop or 'children' prop"
         );
     }
+
+    const showLoading =
+        isAuthPending &&
+        !props.disableAuthentication &&
+        loading !== undefined &&
+        loading !== false;
+
+    const { isPaused, isPending, isPlaceholderData } = controllerProps;
+    const showOffline =
+        isPaused &&
+        // If isPending and isPaused are true, we are offline and couldn't even load the initial data
+        // If isPaused and isPlaceholderData are true, we are offline and couldn't even load data with different parameters on the same useQuery observer
+        (isPending || isPlaceholderData) &&
+        offline !== undefined &&
+        offline !== false;
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
@@ -82,7 +94,13 @@ export const InfiniteListBase = <RecordType extends RaRecord = any>({
                             controllerProps.isFetchingPreviousPage,
                     }}
                 >
-                    {render ? render(controllerProps) : children}
+                    {showLoading
+                        ? loading
+                        : showOffline
+                          ? offline
+                          : render
+                            ? render(controllerProps)
+                            : children}
                 </InfinitePaginationContext.Provider>
             </ListContextProvider>
         </OptionalResourceContextProvider>
@@ -93,5 +111,6 @@ export interface InfiniteListBaseProps<RecordType extends RaRecord = any>
     extends InfiniteListControllerProps<RecordType> {
     loading?: ReactNode;
     children?: ReactNode;
+    offline?: ReactNode;
     render?: (props: InfiniteListControllerResult<RecordType>) => ReactNode;
 }

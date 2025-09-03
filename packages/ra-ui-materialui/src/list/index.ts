@@ -5,7 +5,6 @@ export * from './datatable';
 export * from './Empty';
 export * from './InfiniteList';
 export * from './filter';
-export * from './FilterContext';
 export * from './List';
 export * from './ListActions';
 export * from './listFieldTypes';

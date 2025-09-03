@@ -1,9 +1,10 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     Basic,
     Errored,
     Loading,
+    Offline,
     WithRenderProp,
 } from './ReferenceArrayFieldBase.stories';
 
@@ -82,5 +83,19 @@ describe('ReferenceArrayFieldBase', () => {
             expect(screen.queryByText('Ronnie Wood')).not.toBeNull();
             expect(screen.queryByText('Charlie Watts')).not.toBeNull();
         });
+    });
+
+    it('should render the offline prop node when offline', async () => {
+        render(<Offline />);
+        await screen.findByText('The Beatles');
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        fireEvent.click(await screen.findByText('Toggle Child'));
+        await screen.findByText('You are offline, cannot load data');
+        fireEvent.click(await screen.findByText('Simulate online'));
+        await screen.findByText('John Lennon');
+        // Ensure the data is still displayed when going offline after it was loaded
+        fireEvent.click(await screen.findByText('Simulate offline'));
+        await screen.findByText('You are offline, the data may be outdated');
+        await screen.findByText('John Lennon');
     });
 });

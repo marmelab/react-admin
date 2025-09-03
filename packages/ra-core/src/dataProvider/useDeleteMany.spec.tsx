@@ -1,11 +1,12 @@
 import * as React from 'react';
-import { waitFor, render, screen } from '@testing-library/react';
+import { waitFor, render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
+import { QueryClient, useMutationState } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
 import { useDeleteMany } from './useDeleteMany';
-import { QueryClient, useMutationState } from '@tanstack/react-query';
+import { MutationMode, Params } from './useDeleteMany.stories';
 
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -53,6 +54,75 @@ describe('useDeleteMany', () => {
             expect(dataProvider.deleteMany).toHaveBeenCalledWith('foo', {
                 ids: [1, 2],
             });
+        });
+    });
+
+    it('uses the latest declaration time mutationMode', async () => {
+        // This story uses the pessimistic mode by default
+        render(<MutationMode />);
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        fireEvent.click(screen.getByText('Change mutation mode to optimistic'));
+        fireEvent.click(screen.getByText('Delete posts'));
+        // Should display the optimistic result right away if the change was handled
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+    });
+
+    it('uses the latest declaration time params', async () => {
+        let posts = [
+            { id: 1, title: 'Hello' },
+            { id: 2, title: 'World' },
+        ];
+        const dataProvider = {
+            getList: () => {
+                return Promise.resolve({
+                    data: posts,
+                    total: posts.length,
+                });
+            },
+            deleteMany: jest.fn((_, params) => {
+                return new Promise(resolve => {
+                    setTimeout(() => {
+                        posts = posts.filter(
+                            post => !params.ids.includes(post.id)
+                        );
+                        resolve({ data: params.previousData });
+                    }, 1000);
+                });
+            }),
+        } as any;
+        // This story has no meta by default
+        render(<Params dataProvider={dataProvider} />);
+        await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
+        fireEvent.click(screen.getByText('Change params'));
+        fireEvent.click(screen.getByText('Delete posts'));
+        // Should display the optimistic result right away if the change was handled
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).not.toBeNull();
+        });
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
+
+        expect(dataProvider.deleteMany).toHaveBeenCalledWith('posts', {
+            ids: [1],
+            meta: 'test',
         });
     });
 

@@ -3,7 +3,7 @@ import fakeRestProvider from 'ra-data-fakerest';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { InfiniteListBase } from './InfiniteListBase';
+import { InfiniteListBase, InfiniteListBaseProps } from './InfiniteListBase';
 import { CoreAdminContext } from '../../core';
 import { useListContext } from './useListContext';
 import { useInfinitePaginationContext } from './useInfinitePaginationContext';
@@ -11,9 +11,12 @@ import {
     AuthProvider,
     DataProvider,
     I18nProvider,
+    IsOffline,
     mergeTranslations,
+    TestMemoryRouter,
     useLocaleState,
 } from '../..';
+import { onlineManager } from '@tanstack/react-query';
 
 export default {
     title: 'ra-core/controller/list/InfiniteListBase',
@@ -140,15 +143,18 @@ export const WithAuthProviderNoAccessControl = ({
         checkError: () => Promise.resolve(),
     },
     dataProvider = defaultDataProvider,
+    InfiniteListProps,
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
+    InfiniteListProps?: Partial<InfiniteListBaseProps>;
 }) => (
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <InfiniteListBase
             resource="books"
             perPage={5}
             loading={<div>Authentication loading...</div>}
+            {...InfiniteListProps}
         >
             <BookListView />
         </InfiniteListBase>
@@ -313,6 +319,93 @@ export const WithRenderProps = () => (
         />
     </CoreAdminContext>
 );
+
+export const Offline = ({
+    dataProvider = defaultDataProvider,
+    isOnline = true,
+    ...props
+}: {
+    dataProvider?: DataProvider;
+    isOnline?: boolean;
+} & Partial<InfiniteListBaseProps>) => {
+    React.useEffect(() => {
+        onlineManager.setOnline(isOnline);
+    }, [isOnline]);
+    return (
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider}>
+                <InfiniteListBase
+                    resource="books"
+                    perPage={5}
+                    {...props}
+                    offline={<p>You are offline, cannot load data</p>}
+                    render={controllerProps => {
+                        const {
+                            data,
+                            error,
+                            isPending,
+                            page,
+                            perPage,
+                            setPage,
+                            total,
+                        } = controllerProps;
+                        if (isPending) {
+                            return <div>Loading...</div>;
+                        }
+                        if (error) {
+                            return <div>Error...</div>;
+                        }
+
+                        return (
+                            <div>
+                                <p>
+                                    Use the story controls to simulate offline
+                                    mode:
+                                </p>
+                                <IsOffline>
+                                    <p style={{ color: 'orange' }}>
+                                        You are offline, the data may be
+                                        outdated
+                                    </p>
+                                </IsOffline>
+                                <button
+                                    disabled={page <= 1}
+                                    onClick={() => setPage(page - 1)}
+                                >
+                                    previous
+                                </button>
+                                <span>
+                                    Page {page} of {Math.ceil(total / perPage)}
+                                </span>
+                                <button
+                                    disabled={page >= total / perPage}
+                                    onClick={() => setPage(page + 1)}
+                                >
+                                    next
+                                </button>
+                                <ul>
+                                    {data.map((record: any) => (
+                                        <li key={record.id}>{record.title}</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        );
+                    }}
+                />
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+Offline.args = {
+    isOnline: true,
+};
+
+Offline.argTypes = {
+    isOnline: {
+        control: { type: 'boolean' },
+    },
+};
 
 const Title = () => {
     const { defaultTitle } = useListContext();
