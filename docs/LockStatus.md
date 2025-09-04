@@ -5,7 +5,7 @@ title: "LockStatus"
 
 # `<LockStatus>`
 
-`<LockStatus>` is a component that displays the lock status of the current record. It allows to visually indicate whether the record is locked or not, by the current user or not, and provides an easy way to lock or unlock the record.
+`<LockStatus>` is an [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component that displays the lock status of the current record. It allows to visually indicate whether the record is locked or not, by the current user or not, and provides an easy way to lock or unlock the record.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://registry.marmelab.com/assets/LockStatus.mp4" type="video/mp4"/>
