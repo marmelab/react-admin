@@ -4,6 +4,7 @@ import vitePreprocessor from 'cypress-vite';
 export default defineConfig({
     fixturesFolder: 'fixtures',
     screenshotsFolder: 'screenshots',
+    downloadsFolder: 'downloads',
     videosFolder: 'videos',
     viewportWidth: 1280,
     viewportHeight: 720,
