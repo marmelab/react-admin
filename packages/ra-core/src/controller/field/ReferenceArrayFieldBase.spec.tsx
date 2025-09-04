@@ -12,8 +12,12 @@ import { ReferenceArrayFieldBase } from './ReferenceArrayFieldBase';
 import { useResourceContext } from '../../core/useResourceContext';
 import { testDataProvider } from '../../dataProvider/testDataProvider';
 import { CoreAdminContext } from '../../core/CoreAdminContext';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ReferenceArrayFieldBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})

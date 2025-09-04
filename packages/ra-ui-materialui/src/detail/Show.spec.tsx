@@ -30,9 +30,11 @@ import {
 } from './Show.stories';
 import { Show } from './Show';
 import { Alert } from '@mui/material';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('<Show />', () => {
     beforeEach(async () => {
+        onlineManager.setOnline(true);
         // Why is this required? No idea, but without is the tests are flaky
         await new Promise(res => setTimeout(res, 100));
     });

@@ -9,6 +9,7 @@ import { useListContext } from './useListContext';
 import {
     AuthProvider,
     DataProvider,
+    GetListResult,
     I18nProvider,
     IsOffline,
     ListBaseProps,
@@ -51,11 +52,8 @@ const data = {
     ],
 };
 
-const defaultDataProvider = fakeRestProvider(
-    data,
-    process.env.NODE_ENV !== 'test',
-    300
-);
+const defaultDataProvider = (delay = 300) =>
+    fakeRestProvider(data, process.env.NODE_ENV !== 'test', delay);
 
 const BookListView = () => {
     const {
@@ -128,7 +126,7 @@ const BookListView = () => {
 };
 
 export const NoAuthProvider = ({
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
 }: {
     dataProvider?: DataProvider;
 }) => (
@@ -146,7 +144,7 @@ export const WithAuthProviderNoAccessControl = ({
         checkAuth: () => new Promise(resolve => setTimeout(resolve, 300)),
         checkError: () => Promise.resolve(),
     },
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
     ListProps,
 }: {
     authProvider?: AuthProvider;
@@ -173,7 +171,7 @@ export const AccessControl = ({
         checkError: () => Promise.resolve(),
         canAccess: () => new Promise(resolve => setTimeout(resolve, 300, true)),
     },
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
 }: {
     authProvider?: AuthProvider;
     dataProvider?: DataProvider;
@@ -190,7 +188,7 @@ export const AccessControl = ({
 );
 
 export const SetParams = () => (
-    <CoreAdminContext dataProvider={defaultDataProvider}>
+    <CoreAdminContext dataProvider={defaultDataProvider()}>
         <ListBase resource="books" perPage={5}>
             <BookListView />
         </ListBase>
@@ -207,33 +205,33 @@ const ListMetadataInspector = () => {
     );
 };
 
-export const WithResponseMetadata = () => (
-    <CoreAdminContext
-        dataProvider={{
-            ...defaultDataProvider,
-            getList: async (resource, params) => {
-                const result = await defaultDataProvider.getList(
-                    resource,
-                    params
-                );
-                return {
-                    ...result,
-                    meta: {
-                        facets: [
-                            { value: 'bar', count: 2 },
-                            { value: 'baz', count: 1 },
-                        ],
-                    },
-                };
-            },
-        }}
-    >
-        <ListBase resource="books" perPage={5}>
-            <BookListView />
-            <ListMetadataInspector />
-        </ListBase>
-    </CoreAdminContext>
-);
+export const WithResponseMetadata = () => {
+    const dataProvider = defaultDataProvider();
+    return (
+        <CoreAdminContext
+            dataProvider={{
+                ...dataProvider,
+                getList: async (resource, params) => {
+                    const result = await dataProvider.getList(resource, params);
+                    return {
+                        ...result,
+                        meta: {
+                            facets: [
+                                { value: 'bar', count: 2 },
+                                { value: 'baz', count: 1 },
+                            ],
+                        },
+                    };
+                },
+            }}
+        >
+            <ListBase resource="books" perPage={5}>
+                <BookListView />
+                <ListMetadataInspector />
+            </ListBase>
+        </CoreAdminContext>
+    );
+};
 
 const defaultI18nProvider = polyglotI18nProvider(
     locale =>
@@ -283,7 +281,7 @@ export const DefaultTitle = ({
     translations?: 'default' | 'resource specific';
 }) => (
     <CoreAdminContext
-        dataProvider={defaultDataProvider}
+        dataProvider={defaultDataProvider()}
         i18nProvider={i18nProvider}
     >
         <ListBase resource="books" perPage={5}>
@@ -293,7 +291,7 @@ export const DefaultTitle = ({
 );
 
 export const WithRenderProps = ({
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
 }: {
     dataProvider?: DataProvider;
 }) => (
@@ -358,7 +356,7 @@ DefaultTitle.argTypes = {
 };
 
 export const Offline = ({
-    dataProvider = defaultDataProvider,
+    dataProvider = defaultDataProvider(),
     isOnline = true,
     ...props
 }: {
@@ -438,6 +436,77 @@ Offline.argTypes = {
     isOnline: {
         control: { type: 'boolean' },
     },
+};
+
+export const EmptyWhileLoading = () => {
+    let resolveGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () =>
+                    resolve(baseProvider.getList(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <ListBase resource="books" perPage={5} emptyWhileLoading>
+                <BookListView />
+            </ListBase>
+        </CoreAdminContext>
+    );
+};
+
+export const EmptyWhileLoadingRender = () => {
+    let resolveGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () =>
+                    resolve(baseProvider.getList(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <ListBase
+                resource="books"
+                perPage={5}
+                emptyWhileLoading
+                render={({ isPending, data }) =>
+                    isPending ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <ul>
+                            {data.map((record: any) => (
+                                <li key={record.id}>{record.title}</li>
+                            ))}
+                        </ul>
+                    )
+                }
+            />
+        </CoreAdminContext>
+    );
 };
 
 const Title = () => {

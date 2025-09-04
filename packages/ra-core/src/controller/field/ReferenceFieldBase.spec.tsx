@@ -14,10 +14,14 @@ import {
     WithRenderProp,
 } from './ReferenceFieldBase.stories';
 import { RecordContextProvider } from '../record';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('<ReferenceFieldBase />', () => {
     beforeAll(() => {
         window.scrollTo = jest.fn();
+    });
+    beforeEach(() => {
+        onlineManager.setOnline(true);
     });
 
     it('should display an error if error is defined', async () => {

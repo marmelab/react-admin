@@ -11,8 +11,12 @@ import {
     WithAuthProviderNoAccessControl,
     WithRenderProp,
 } from './ShowBase.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ShowBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore

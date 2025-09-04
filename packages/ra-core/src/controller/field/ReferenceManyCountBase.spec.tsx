@@ -6,8 +6,12 @@ import {
     LoadingState,
     Offline,
 } from './ReferenceManyCountBase.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ReferenceManyCountBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should display an error if error is defined', async () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})

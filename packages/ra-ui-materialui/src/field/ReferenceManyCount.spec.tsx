@@ -10,8 +10,12 @@ import {
     Wrapper,
 } from './ReferenceManyCount.stories';
 import { ReferenceManyCount } from './ReferenceManyCount';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('<ReferenceManyCount />', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should return the number of related records of a given reference', async () => {
         render(<Basic />);
         await screen.findByText('3');
