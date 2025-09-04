@@ -175,6 +175,7 @@ describe('ListBase', () => {
     });
     it('should render nothing while loading if emptyWhileLoading is set to true and using the render prop', async () => {
         render(<EmptyWhileLoadingRender />);
+        expect(screen.queryByText('Loading...')).toBeNull();
         expect(screen.queryByText('War and Peace')).toBeNull();
         fireEvent.click(screen.getByText('Resolve books loading'));
         await screen.findByText('War and Peace');

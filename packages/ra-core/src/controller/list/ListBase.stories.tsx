@@ -493,13 +493,17 @@ export const EmptyWhileLoadingRender = () => {
                 resource="books"
                 perPage={5}
                 emptyWhileLoading
-                render={({ data }) => (
-                    <ul>
-                        {data.map((record: any) => (
-                            <li key={record.id}>{record.title}</li>
-                        ))}
-                    </ul>
-                )}
+                render={({ isPending, data }) =>
+                    isPending ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <ul>
+                            {data.map((record: any) => (
+                                <li key={record.id}>{record.title}</li>
+                            ))}
+                        </ul>
+                    )
+                }
             />
         </CoreAdminContext>
     );
