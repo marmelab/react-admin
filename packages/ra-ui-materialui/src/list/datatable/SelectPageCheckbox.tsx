@@ -32,7 +32,10 @@ export const SelectPageCheckbox = () => {
                               )
                               .map(record => record.id)
                       )
-                    : []
+                    : // We should only unselect the ids present in the current page
+                      selectedIds.filter(
+                          id => !data.map(record => record.id).includes(id)
+                      )
             );
         },
         [data, onSelect, isRowSelectable, selectedIds]
