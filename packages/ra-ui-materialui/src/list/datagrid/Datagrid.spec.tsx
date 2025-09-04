@@ -10,7 +10,7 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from './Datagrid';
-import { AccessControl, SelectAllButton } from './Datagrid.stories';
+import { AccessControl, FullApp, SelectAllButton } from './Datagrid.stories';
 
 const TitleField = () => {
     const record = useRecordContext();
@@ -124,6 +124,36 @@ describe('<Datagrid />', () => {
         render(<SelectAllButton onlyDisplay="disabled" />);
         fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select All')).toBeNull();
+    });
+
+    describe('row selection', () => {
+        it('should reveal bulk delete button by default on row selection', async () => {
+            render(<FullApp />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[1]);
+            await screen.findByLabelText('Delete');
+            await screen.findByText('1 item selected');
+            fireEvent.click(checkboxes[2]);
+            await screen.findByText('2 items selected');
+        });
+        it('should reveal select all button when selecting the entire page', async () => {
+            render(<FullApp perPage={5} />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[0]);
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+        });
+        it('should only unselect the current page records', async () => {
+            render(<FullApp perPage={5} />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[0]);
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+            fireEvent.click(checkboxes[0]);
+            await screen.findByText('2 items selected');
+        });
     });
 
     describe('selecting items with the shift key', () => {
