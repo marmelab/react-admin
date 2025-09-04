@@ -58,10 +58,8 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 event.target.checked
                     ? selectedIds.concat(
                           data
-                              .filter(
-                                  record => !selectedIds.includes(record.id)
-                              )
                               .filter(record =>
+                                  !selectedIds.includes(record.id) &&
                                   isRowSelectable
                                       ? isRowSelectable(record)
                                       : true
@@ -70,7 +68,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                       )
                     : // We should only unselect the ids present in the current page
                       selectedIds.filter(
-                          id => !data.map(record => record.id).includes(id)
+                          id => !data.some(record => record.id === id)
                       )
             );
         },
