@@ -4,7 +4,7 @@ title: "Getting Started"
 
 Welcome to ra-core, the headless foundation of react-admin! This documentation will guide you through building powerful admin applications using your preferred UI library.
 
-![ra-core examples using various UI libraries](./img/ra-core-quick-start-guide-hero.png)
+![ra-core examples using various UI libraries](../../img/ra-core-quick-start-guide-hero.png)
 
 ## What is ra-core?
 
@@ -33,7 +33,7 @@ Ra-core accelerates admin application development by providing:
 - **Type Safety**: Full TypeScript support
 - **Long-term Sustainability**: Mature, well-maintained framework
 
-For a complete feature overview, see our [Features Guide](./guides/Features.md).
+For a complete feature overview, see our [Features Guide](./Features.md).
 
 ## Installation
 
@@ -161,7 +161,7 @@ export default App;
 
 Here is the result you should get:
 
-![Ra-core quick start example](./img/ra-core-quick-start-example.png)
+![Ra-core quick start example](../../img/ra-core-quick-start-example.png)
 
 ## Building Your UI Layer
 
@@ -169,43 +169,43 @@ Ra-core provides the foundation; you build the interface. Here's a suggested dev
 
 ### Essential Components (Start Here)
 
-1. **Admin Component**: Extend [`CoreAdmin`](./app-configuration/CoreAdmin.md) with your branding, global settings, and custom providers. Configure your data provider, auth provider, i18n provider, and global theme settings.
+1. **Admin Component**: Extend [`CoreAdmin`](./CoreAdmin.md) with your branding, global settings, and custom providers. Configure your data provider, auth provider, i18n provider, and global theme settings.
 
-2. **Layout**: Create a layout component with navigation, header, and user menu. Your layout wraps all pages and typically includes a sidebar, top bar, breadcrumbs, and main content area. See the [Layout documentation](./app-configuration/CoreAdmin.md#layout) for implementation patterns.
+2. **Layout**: Create a layout component with navigation, header, and user menu. Your layout wraps all pages and typically includes a sidebar, top bar, breadcrumbs, and main content area. See the [Layout documentation](./CoreAdmin.md#layout) for implementation patterns.
 
 3. **Navigation**: Build a sidebar or menu using `useResourceDefinitions` to list available resources and `useHasDashboard` to conditionally show a dashboard link. Create navigation items with proper routing and active states.
 
-4. **List View**: Create list pages with titles and action buttons (like Create). Use [`ListBase`](./list/ListBase.md) as your foundation and build custom headers with search, filters, and bulk actions. See the [List Introduction](./list/ListTutorial.md) for step-by-step guidance.
+4. **List View**: Create list pages with titles and action buttons (like Create). Use [`ListBase`](./ListBase.md) as your foundation and build custom headers with search, filters, and bulk actions. See the [List Introduction](./ListTutorial.md) for step-by-step guidance.
 
-5. **Data Table**: Build table components with filtering, sorting, and pagination. Leverage [`useListContext`](./list/useListContext.md) to access data and state. Implement column sorting, row selection, and responsive design. Consider creating reusable table components for different data types.
+5. **Data Table**: Build table components with filtering, sorting, and pagination. Leverage [`useListContext`](./useListContext.md) to access data and state. Implement column sorting, row selection, and responsive design. Consider creating reusable table components for different data types.
 
-6. **Show View**: Design detail pages with navigation buttons using [`ShowBase`](./show/ShowBase.md). Create layouts that display record details clearly, with navigation to edit mode and related resources. Add action buttons for common operations.
+6. **Show View**: Design detail pages with navigation buttons using [`ShowBase`](./ShowBase.md). Create layouts that display record details clearly, with navigation to edit mode and related resources. Add action buttons for common operations.
 
-7. **Field Components**: Create display components like `TextField`, `DateField`, `NumberField` using [`useFieldValue`](./fields/useFieldValue.md). Build specialized fields for different data types including email, URL, image, and rich text content. See the [Fields documentation](./fields/Fields.md) for comprehensive examples.
+7. **Field Components**: Create display components like `TextField`, `DateField`, `NumberField` using [`useFieldValue`](./useFieldValue.md). Build specialized fields for different data types including email, URL, image, and rich text content. See the [Fields documentation](./Fields.md) for comprehensive examples.
 
-8. **Relational Fields**: Build `ReferenceField`, `ReferenceArrayField`, `ReferenceManyField` using their Base counterparts: [`ReferenceFieldBase`](./fields/ReferenceFieldBase.md), [`ReferenceArrayFieldBase`](./fields/ReferenceArrayFieldBase.md), and [`ReferenceManyFieldBase`](./fields/ReferenceManyFieldBase.md). These handle complex relationships and foreign key displays.
+8. **Relational Fields**: Build `ReferenceField`, `ReferenceArrayField`, `ReferenceManyField` using their Base counterparts: [`ReferenceFieldBase`](./ReferenceFieldBase.md), [`ReferenceArrayFieldBase`](./ReferenceArrayFieldBase.md), and [`ReferenceManyFieldBase`](./ReferenceManyFieldBase.md). These handle complex relationships and foreign key displays.
 
-9. **Edit & Create Views**: Design form pages with navigation and actions using [`EditBase`](./create-edit/EditBase.md) and [`CreateBase`](./create-edit/CreateBase.md). Implement form layouts, validation feedback, and success/error handling. See the [Forms Guide](./guides/Forms.md) for comprehensive form building strategies.
+9. **Edit & Create Views**: Design form pages with navigation and actions using [`EditBase`](./EditBase.md) and [`CreateBase`](./CreateBase.md). Implement form layouts, validation feedback, and success/error handling. See the [Forms Guide](./Forms.md) for comprehensive form building strategies.
 
-10. **Input Components**: Create form inputs like `TextInput`, `DateInput`, `SelectInput` and `AutocompleteInput` using [`useInput`](./inputs/useInput.md). Build specialized inputs for different data types including rich text editors, file uploads, and date pickers. See the [Inputs documentation](./inputs/Inputs.md) for implementation patterns.
+10. **Input Components**: Create form inputs like `TextInput`, `DateInput`, `SelectInput` and `AutocompleteInput` using [`useInput`](./useInput.md). Build specialized inputs for different data types including rich text editors, file uploads, and date pickers. See the [Inputs documentation](./Inputs.md) for implementation patterns.
 
 11. **Relational Inputs**: Build `ReferenceInput`, `ReferenceArrayInput` using their Base components: `ReferenceInputBase` and `ReferenceArrayInputBase`. These provide autocomplete functionality and relationship management in forms.
 
 ### Advanced Features (Go Further)
 
-1. **Action Buttons**: Create `SaveButton` and `DeleteButton` components with loading states and custom side effects. Implement optimistic updates, confirmation dialogs, and custom success/error handlers. Use [`useCreate`](./data-fetching/useCreate.md), [`useUpdate`](./data-fetching/useUpdate.md), and [`useDelete`](./data-fetching/useDelete.md) hooks for data mutations.
+1. **Action Buttons**: Create `SaveButton` and `DeleteButton` components with loading states and custom side effects. Implement optimistic updates, confirmation dialogs, and custom success/error handlers. Use [`useCreate`](./useCreate.md), [`useUpdate`](./useUpdate.md), and [`useDelete`](./useDelete.md) hooks for data mutations.
 
-2. **Bulk Actions**: Add toolbar for bulk operations on list selections. Implement batch delete, export, and custom bulk operations using [`useListContext`](./list/useListContext.md) for selection state and [`useUpdateMany`](./data-fetching/useUpdateMany.md) for batch operations.
+2. **Bulk Actions**: Add toolbar for bulk operations on list selections. Implement batch delete, export, and custom bulk operations using [`useListContext`](./useListContext.md) for selection state and [`useUpdateMany`](./useUpdateMany.md) for batch operations.
 
 3. **Notifications**: Implement toast notifications for errors and undo functionality using `useNotificationContext` and `useTakeUndoableMutation`. Create notification components that support different types (success, error, warning) and undoable actions.
 
-4. **Authentication**: Design a [login page](./app-configuration/CoreAdmin.md#loginpage) and protected routes using the [Authentication system](./security/Authentication.md). Implement login forms, password reset, and protected page components using [`useLogin`](./security/useLogin.md), [`useLogout`](./security/useLogout.md), and [`Authenticated`](./security/Authenticated.md).
+4. **Authentication**: Design a [login page](./CoreAdmin.md#loginpage) and protected routes using the [Authentication system](./Authentication.md). Implement login forms, password reset, and protected page components using [`useLogin`](./useLogin.md), [`useLogout`](./useLogout.md), and [`Authenticated`](./Authenticated.md).
 
-5. **Theme Switching**: Add dark/light mode toggles using [`useStore`](./preferences/useStore.md) for persistence. Create theme provider components and implement CSS variable switching or styled-components themes.
+5. **Theme Switching**: Add dark/light mode toggles using [`useStore`](./useStore.md) for persistence. Create theme provider components and implement CSS variable switching or styled-components themes.
 
-6. **Internationalization**: Create language switcher components using [`useLocaleState`](./i18n/useLocaleState.md) and [`useTranslate`](./i18n/useTranslate.md). Implement translation loading, locale switching, and RTL support. See the [Translation Guide](./guides/Translation.md) for complete i18n implementation.
+6. **Internationalization**: Create language switcher components using [`useLocaleState`](./useLocaleState.md) and [`useTranslate`](./useTranslate.md). Implement translation loading, locale switching, and RTL support. See the [Translation Guide](./Translation.md) for complete i18n implementation.
 
-7. **Error Handling**: Customize the [error page](./app-configuration/CoreAdmin.md#error). Implement global error boundaries and API error handling with user-friendly messages and recovery actions.
+7. **Error Handling**: Customize the [error page](./CoreAdmin.md#error). Implement global error boundaries and API error handling with user-friendly messages and recovery actions.
 
 8. **Advanced Layouts**: Build tabbed forms, filter panels, breadcrumbs, and responsive designs. Create specialized layouts for different screen sizes, implement advanced form patterns like wizard flows, and enhance navigation with breadcrumbs.
 
@@ -221,20 +221,20 @@ See ra-core in action with different UI libraries:
 
 This documentation is organized to help you build effectively:
 
-- **[Guides & Concepts](./guides/Architecture.md)**: Core concepts like architecture, data fetching, and security
-- **[App Configuration](./app-configuration/CoreAdmin.md)**: Setting up CoreAdmin, resources, and routing
-- **[Data Fetching](./data-fetching/DataProviders.md)**: Working with APIs, data providers, and queries
-- **[Security](./security/Authentication.md)**: Authentication, authorization, and access control
-- **[List Pages](./list/FilteringTutorial.md)**: Building list views, filtering, and pagination
-- **[Creation & Edition](./create-edit/EditTutorial.md)**: Forms, validation, and input components
-- **[Show Pages](./show/ShowBase.md)**: Detail views and field components
-- **[Fields](./fields/Fields.md)**: Display components for different data types
-- **[Inputs](./inputs/Inputs.md)**: Form input components and validation
-- **[Internationalization](./i18n/TranslationSetup.md)**: Multi-language support and localization
-- **[Common Components](./common/useGetRecordId.md)**: Shared utilities and patterns
+- **[Guides & Concepts](./Architecture.md)**: Core concepts like architecture, data fetching, and security
+- **[App Configuration](./CoreAdmin.md)**: Setting up CoreAdmin, resources, and routing
+- **[Data Fetching](./DataProviders.md)**: Working with APIs, data providers, and queries
+- **[Security](./Authentication.md)**: Authentication, authorization, and access control
+- **[List Pages](./FilteringTutorial.md)**: Building list views, filtering, and pagination
+- **[Creation & Edition](./EditTutorial.md)**: Forms, validation, and input components
+- **[Show Pages](./ShowBase.md)**: Detail views and field components
+- **[Fields](./Fields.md)**: Display components for different data types
+- **[Inputs](./Inputs.md)**: Form input components and validation
+- **[Internationalization](./TranslationSetup.md)**: Multi-language support and localization
+- **[Common Components](./useGetRecordId.md)**: Shared utilities and patterns
 
 ## Next Steps
 
-Ready to dive deeper? Start with the [General Concepts](./guides/Architecture.md) to understand ra-core's fundamental architecture, then explore the specific areas that match your development needs.
+Ready to dive deeper? Start with the [General Concepts](./Architecture.md) to understand ra-core's fundamental architecture, then explore the specific areas that match your development needs.
 
 Happy building! 🚀
