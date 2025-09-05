@@ -57,7 +57,11 @@ export const WithListContext = <RecordType extends RaRecord>({
         return empty;
     }
 
-    return render(context) || children;
+    if (render) {
+        return render(context);
+    }
+
+    return children;
 };
 
 export interface WithListContextProps<RecordType extends RaRecord>
@@ -69,7 +73,7 @@ export interface WithListContextProps<RecordType extends RaRecord>
             >
         >
     > {
-    render: (
+    render?: (
         context: Partial<ListControllerResult<RecordType>>
     ) => ReactElement | false | null;
     loading?: React.ReactNode;
