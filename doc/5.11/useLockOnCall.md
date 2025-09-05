@@ -42,7 +42,7 @@ const PostAside = () => {
                     <AlertTitle>Post locked</AlertTitle> Only you can edit it.
                 </Alert>
             ) : (
-                <Button onClick={() => doLock()} fullWidth>
+                <Button onClick={() => { doLock(); }} fullWidth>
                     Lock post
                 </Button>
             )}
@@ -61,6 +61,8 @@ const PostEdit = () => (
 ```
 {% endraw %}
 
+**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnCall` will block the navigation and show a notification until the record is unlocked. Hence it's a good practice to give them a way to unlock the record manually, e.g. by using the `doUnlock` callback returned by the [`useLockCallbacks`](./useLockCallbacks.md) hook or the [`<LockStatus>`](./LockStatus.md) component.
+
 ## Parameters
 
 `useLockOnCall` accepts a single options parameter, with the following properties (all optional):
@@ -76,7 +78,7 @@ const PostEdit = () => (
 const LockButton = ({ resource, id, identity }) => {
     const [doLock, lockMutation] = useLockOnCall({ resource, id, identity });
     return (
-        <button onClick={() => doLock()} disabled={lockMutation.isLoading}>
+        <button onClick={() => { doLock(); }} disabled={lockMutation.isLoading}>
             Lock
         </button>
     );
