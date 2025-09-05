@@ -49,7 +49,7 @@ import { ListBase, RecordsIterator, ReferenceArrayFieldBase, WithListContext } f
 
 export const PostList = () => (
     <ListBase>
-        <WithListContext loading={null}>
+        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
             <RecordsIterator>
                 <ReferenceArrayFieldBase reference="tags" source="tag_ids">
                     <TagList />
