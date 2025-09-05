@@ -111,6 +111,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                 />
             }
             empty={empty ?? null}
+            // We need to keep passing data explicitly as it may have been passed down through props.
             render={({ data }) => (
                 <Root className={className} {...sanitizeListRestProps(rest)}>
                     <RecordsIterator
