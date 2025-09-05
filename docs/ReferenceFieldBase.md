@@ -223,15 +223,17 @@ When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced reco
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
+import { ListBase, RecordsIterator, ReferenceFieldBase, WithListContext } from 'react-admin';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
-            <ReferenceFieldBase source="user_id" reference="users">
-                <AuthorView />
-            </ReferenceFieldBase>
-        </ListIterator>
+        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
+            <RecordsIterator>
+                <ReferenceFieldBase source="user_id" reference="users">
+                    <AuthorView />
+                </ReferenceFieldBase>
+            </RecordsIterator>
+        </WithListContext>
     </ListBase>
 );
 ```
@@ -270,16 +272,16 @@ For example, the following code prefetches the authors referenced by the posts:
 ```jsx
 const PostList = () => (
     <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <ListIterator
-            render={({ title, author_id }) => (
+        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
+            <RecordsIterator render={(author) => (
                 <div>
-                    <h3>{title}</h3>
+                    <h3>{author.title}</h3>
                     <ReferenceFieldBase source="author_id" reference="authors">
                         <AuthorView />
                     </ReferenceFieldBase>
                 </div>
-            )}
-        />
+            )} />
+        </WithListContext>
     </ListBase>
 );
 ```
