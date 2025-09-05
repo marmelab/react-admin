@@ -13,11 +13,11 @@ Most admin and B2B apps start with a few basic screens to manipulate records:
 
 We call this type of interface a "CRUD" interface because it allows us to Create, Read, Update, and Delete records.
 
-React-admin's headless architecture provides powerful hooks and Base components to build CRUD interfaces with any UI library.
+Ra-core's headless architecture provides powerful hooks and Base components to build CRUD interfaces with any UI library.
 
 ## Page Components
 
-React-admin provides headless Base components for CRUD operations:
+Ra-core provides headless Base components for CRUD operations:
 
 - [`<ListBase>`](./ListBase.md) fetches and manages a list of records
 - [`<ShowBase>`](./ShowBase.md) fetches and manages a single record for display
@@ -101,7 +101,7 @@ const {
 
 ## CRUD Routes
 
-You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a typical pattern that react-admin provides a shortcut: the [`<Resource>`](./Resource.md) component.
+You could declare the CRUD routes manually using react-router's `<Route>` component. But it's such a typical pattern that ra-core provides a shortcut: the [`<Resource>`](./Resource.md) component.
 
 ```jsx
 <Resource

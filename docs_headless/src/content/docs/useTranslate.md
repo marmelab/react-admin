@@ -3,7 +3,7 @@ layout: default
 title: "useTranslate"
 ---
 
-If you need to translate messages in your own components, React-admin provides a `useTranslate` hook, which returns the `translate` function.
+If you need to translate messages in your own components, Ra-core provides a `useTranslate` hook, which returns the `translate` function.
 
 ## Syntax
 
@@ -49,7 +49,7 @@ export default MyHelloButton;
 
 ## Using Pluralization and Interpolation
 
-Polyglot.js provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+Polyglot.js provides some nice features such as interpolation and pluralization, that you can use in ra-core.
 
 ```js
 const messages = {

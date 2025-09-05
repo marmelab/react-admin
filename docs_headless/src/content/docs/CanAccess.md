@@ -101,7 +101,7 @@ export const MyMenu = () => (
 );
 ```
 
-**Note**: You don't need to use `<CanAccess>` on the core react-admin page components (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) because they already have built-in access control.
+**Note**: You don't need to use `<CanAccess>` on the core ra-core page components (`<ListBase>`, `<CreateBase>`, `<EditBase>`, `<ShowBase>`) because they already have built-in access control.
 
 **Note**: You don't need to use `<Authenticated>` on custom pages if your admin uses [`requireAuth`](./CoreAdmin.md#requireauth).
 

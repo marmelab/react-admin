@@ -4,11 +4,11 @@ sidebar:
   order: 2
 ---
 
-`<Resource>` components define the CRUD routes of a react-admin application. 
+`<Resource>` components define the CRUD routes of a ra-core application. 
 
 <iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
+In ra-core terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
 A `<Resource>` component has 3 responsibilities:
 
@@ -70,13 +70,13 @@ The routes call the following `dataProvider` methods:
 
 ## `name`
 
-`name` is the only required prop for a `<Resource>`. React-admin uses the `name` prop both to determine the API endpoint (passed to the `dataProvider`), and to form the URL for the resource.
+`name` is the only required prop for a `<Resource>`. Ra-core uses the `name` prop both to determine the API endpoint (passed to the `dataProvider`), and to form the URL for the resource.
 
 ```jsx
 <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
 ```
 
-For this resource react-admin will fetch the `https://jsonplaceholder.typicode.com/posts` endpoint for data.
+For this resource ra-core will fetch the `https://jsonplaceholder.typicode.com/posts` endpoint for data.
 
 The routing will map the component as follows:
 
@@ -85,7 +85,7 @@ The routing will map the component as follows:
 * `/posts/:id` maps to `PostEdit`
 * `/posts/:id/show` maps to `PostShow`
 
-**Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the react-admin application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./CoreAdmin.md#dataprovider).
+**Tip**: If you want to use a special API endpoint (e.g. 'https://jsonplaceholder.typicode.com/my-custom-posts-endpoint') without altering the URL in the ra-core application (so still use `/posts`), write the mapping from the resource `name` (`posts`) to the API endpoint (`my-custom-posts-endpoint`) in your own [`dataProvider`](./CoreAdmin.md#dataprovider).
 
 ## `list`, `create`, `edit`, `show`
 
@@ -195,7 +195,7 @@ export const AuthorList = () => (
 
 ## `icon`
 
-React-admin will render the `icon` prop component in the menu:
+Ra-core will render the `icon` prop component in the menu:
 
 ```jsx
 // in src/App.js
@@ -225,7 +225,7 @@ const App = () => (
 
 ## `recordRepresentation`
 
-Whenever react-admin needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, react-admin will use the first available field among the following:
+Whenever ra-core needs to render a record (e.g. in the title of an edition view, or in a `<ReferenceField>`), it uses the `recordRepresentation` to do it. By default, ra-core will use the first available field among the following:
 - `name`
 - `title`
 - `label`
@@ -254,7 +254,7 @@ If you want to display this record representation somewhere, you can leverage th
 
 ## `hasCreate`, `hasEdit`, `hasShow`
 
-You can use the `hasCreate`, `hasEdit` and `hasShow` props to tell react-admin which CRUD components are available for a given resource. This is useful for components that need to know about available actions without the CRUD components being declared in the `<Resource>`.
+You can use the `hasCreate`, `hasEdit` and `hasShow` props to tell ra-core which CRUD components are available for a given resource. This is useful for components that need to know about available actions without the CRUD components being declared in the `<Resource>`.
 
 ```jsx
 // in src/App.js
@@ -334,7 +334,7 @@ const MyComponent = () => (
 
 ## Nested Resources
 
-React-admin doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
+Ra-core doesn't support nested resources, but you can use [the `children` prop](#children) to render a custom component for a given sub-route. For instance, to display a list of songs for a given artist:
 
 ```jsx
 import { CoreAdmin, Resource } from 'ra-core';
@@ -435,7 +435,7 @@ export const SongDetail = () => {
 
 ## Lazy Loading
 
-If you need to speed up the initial loading of your application, you may want to enable code splitting using [`React.lazy()`](https://react.dev/reference/react/lazy#suspense-for-code-splitting). The default react-admin layout uses Suspense, so there is no special setup required to use lazy loaded components in `<Resource>`.
+If you need to speed up the initial loading of your application, you may want to enable code splitting using [`React.lazy()`](https://react.dev/reference/react/lazy#suspense-for-code-splitting). The default ra-core layout uses Suspense, so there is no special setup required to use lazy loaded components in `<Resource>`.
 
 ```jsx
 // in src/App.js
@@ -456,7 +456,7 @@ const App = () => (
 );
 ```
 
-When users navigate to the `/posts` route, react-admin will display a loading indicator while the `PostList` component is being loaded.
+When users navigate to the `/posts` route, ra-core will display a loading indicator while the `PostList` component is being loaded.
 
 ![Loading indicator](../../img/lazy-resource.png)
 
@@ -480,7 +480,7 @@ For instance, given the following resource:
 />
 ```
 
-React-admin will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
+Ra-core will call the `authProvider.canAccess` method when users try to access the pages with the following parameters:
 
 - For the list page: `{ action: "list", resource: "posts" }`
 - For the create page: `{ action: "create", resource: "posts" }`

@@ -143,7 +143,7 @@ Ra-core caches query data locally in the browser and automatically reuses it to 
 - **Optimistic Updates**: When a user deletes or updates a record, ra-core immediately updates the local cache to reflect the change, providing instant UI feedback. The server request follows, and if it fails, ra-core reverts the local data and notifies the user.
 - **Auto Refresh**: Ra-core invalidates dependent queries after a successful mutation. TanStack Query then refetches the necessary data, ensuring the UI remains up-to-date automatically.
 
-For example, when a user deletes a book in a list, React-admin immediately removes it, making the row disappear. After the API confirms the deletion, React-admin invalidates the list’s cache, refreshes it, and another record appears at the end of the list.
+For example, when a user deletes a book in a list, Ra-core immediately removes it, making the row disappear. After the API confirms the deletion, Ra-core invalidates the list’s cache, refreshes it, and another record appears at the end of the list.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="../img/AutoRefresh.mp4" type="video/mp4" />
@@ -344,7 +344,7 @@ Even on complex pages that aggregate data from multiple resources, Reference com
 
 Relationship support in ra-core works out of the box with any API that provides foreign keys. No special configuration is required for your API or Data Provider.
 
-Here is a list of react-admin's [relationship components](./Features.md#relationships):
+Here is a list of ra-core's [relationship components](./Features.md#relationships):
 
 - [`<ReferenceFieldBase>`](./ReferenceFieldBase.md)
 - [`<ReferenceArrayFieldBase>`](./ReferenceArrayFieldBase.md)

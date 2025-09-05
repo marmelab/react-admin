@@ -4,7 +4,7 @@ sidebar:
   order: 2
 ---
 
-One of the most important features of the List page is the ability to filter the results. React-admin offers powerful filter components, and gets out of the way when you want to go further.
+One of the most important features of the List page is the ability to filter the results. Ra-core offers powerful filter components, and gets out of the way when you want to go further.
 
 With headless components from ra-core, you can build custom filter interfaces tailored to your specific needs. The key patterns include:
 
@@ -13,14 +13,14 @@ With headless components from ra-core, you can build custom filter interfaces ta
 - **Filter Sidebars**: Panel-based filters for categorical data
 - **Dynamic Filters**: Interfaces that allow users to add/remove filters on demand
 
-All filter implementations use the `useListContext` hook to access and modify filter state, ensuring seamless integration with react-admin's data fetching and URL synchronization.
+All filter implementations use the `useListContext` hook to access and modify filter state, ensuring seamless integration with ra-core's data fetching and URL synchronization.
 
 
 ## Filter Query Parameter
 
-React-admin uses the `filter` query parameter from the URL to determine the filters to apply to the list.
+Ra-core uses the `filter` query parameter from the URL to determine the filters to apply to the list.
 
-Here is a typical List page URL in a react-admin application:
+Here is a typical List page URL in a ra-core application:
 
 > <https://myadmin.dev/#/posts?displayedFilters=%7B%22commentable%22%3Atrue%7D&filter=%7B%22commentable%22%3Atrue%2C%22q%22%3A%22lorem%20%22%7D&order=DESC&page=1&perPage=10&sort=published_at>
 
@@ -40,9 +40,9 @@ dataProvider.getList('posts', {
 });
 ```
 
-When a user adds or remove a filter, react-admin changes the `filter` query parameter in the URL, and the `<List>` components fetches `dataProvider.getList()` again with the new filters.
+When a user adds or remove a filter, ra-core changes the `filter` query parameter in the URL, and the `<List>` components fetches `dataProvider.getList()` again with the new filters.
 
-**Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
+**Tip**: Once a user sets a filter, ra-core persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
 
 **Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`.
 
@@ -83,7 +83,7 @@ The internal format for storing filters and sending them to the dataProvider is 
 
 This is fine for equality filters, but how can you do more complex filters, like "between", "contains", "starts with", "greater than", etc.?
 
-As there is no standard way to pass such complex filters to APIs, react-admin makes no decision about it. It's up to you to decide how to store them in the filter object.
+As there is no standard way to pass such complex filters to APIs, ra-core makes no decision about it. It's up to you to decide how to store them in the filter object.
 
 The demos show one possible way: suffix the filter name with an operator, e.g. "_gte" for "greater than or equal to".
 
@@ -137,7 +137,7 @@ export default {
   Your browser does not support the video tag.
 </video>
 
-With headless components, you have complete control over how filters are built and submitted. React-admin provides two main approaches for building custom filter forms:
+With headless components, you have complete control over how filters are built and submitted. Ra-core provides two main approaches for building custom filter forms:
 
 1. **Using `<FilterLiveForm>`**: A headless component that automatically updates the filter when the form input values change
 2. **Using Filter Callbacks**: Manual control using `useListContext` callbacks for custom behavior like submit-on-click

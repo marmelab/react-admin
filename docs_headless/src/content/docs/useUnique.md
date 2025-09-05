@@ -2,7 +2,7 @@
 title: "useUnique"
 ---
 
-Validating the uniqueness of a field is a common requirement so React-admin provides the `useUnique` hook that returns a validator for this use case.
+Validating the uniqueness of a field is a common requirement so Ra-core provides the `useUnique` hook that returns a validator for this use case.
 
 It will call the [`dataProvider.getList`](./DataProviderWriting.md#getlist) method with a filter to check whether a record exists with the current value of the input for the field matching the input source.
 

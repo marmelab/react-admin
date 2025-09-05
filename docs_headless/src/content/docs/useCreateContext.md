@@ -2,7 +2,7 @@
 title: "useCreateContext"
 ---
 
-Whenever react-admin displays a creation page, it creates a `CreateContext` to store the submit callback.
+Whenever ra-core displays a creation page, it creates a `CreateContext` to store the submit callback.
 
 The `CreateContext` is available to descendants of:
 

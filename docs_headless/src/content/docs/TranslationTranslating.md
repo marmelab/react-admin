@@ -23,7 +23,7 @@ The messages returned by the `polyglotI18nProvider` function argument should be 
 }
 ```
 
-All react-admin core components use keys starting with the `ra` prefix, to prevent collisions with your own custom translations.
+All ra-core core components use keys starting with the `ra` prefix, to prevent collisions with your own custom translations.
 
 The default (English) messages are available in [the `ra-language-english` package source](https://github.com/marmelab/react-admin/blob/master/packages/ra-language-english/src/index.ts).
 
@@ -49,9 +49,9 @@ const App = () => (
 
 ## Translating Resource and Field Names
 
-When react-admin needs to render a resource name ("post", "comment", etc.) or a field name ("title", "first_name", etc.), it "humanizes" the technical identifier to make it look better (e.g. "first_name" becomes "First name").
+When ra-core needs to render a resource name ("post", "comment", etc.) or a field name ("title", "first_name", etc.), it "humanizes" the technical identifier to make it look better (e.g. "first_name" becomes "First name").
 
-However, before humanizing names, react-admin checks the `messages` dictionary for a possible translation, with the following keys:
+However, before humanizing names, ra-core checks the `messages` dictionary for a possible translation, with the following keys:
 
 - `resources.${resourceName}.name` for resource names (used for the menu and page titles)
 - `resources.${resourceName}.fields.${fieldName}` for field names (used for `<DataTable>` header and form input labels)
@@ -94,7 +94,7 @@ What's with the strange `||||` syntax? `ra-i18n-polyglot` comes with [a pluraliz
 
 ## Translating Custom Components
 
-If you need to translate messages in your own components, React-admin provides [the `useTranslate` hook](./useTranslate.md), which returns the `translate` function. 
+If you need to translate messages in your own components, Ra-core provides [the `useTranslate` hook](./useTranslate.md), which returns the `translate` function. 
 
 Imagine a translation key for the text to translate, e.g. 'myroot.hello.world' for a 'Hello, World' button, and call the `translate` function with this key:
 
@@ -146,7 +146,7 @@ export const en = {
 
 ## Translating Form Validation Errors
 
-In Create and Edit views, forms can use [custom validators](./Validation.md#per-input-validation-custom-function-validator). These validator functions should return translation keys rather than translated messages. React-admin automatically passes these identifiers to the translation function.
+In Create and Edit views, forms can use [custom validators](./Validation.md#per-input-validation-custom-function-validator). These validator functions should return translation keys rather than translated messages. Ra-core automatically passes these identifiers to the translation function.
 
 For instance, here is a validator function that only allows numbers greater than 10:
 
@@ -198,7 +198,7 @@ export default {
 
 ## Translating Notification Messages
 
-If you use [the `useNotify` hook](./useNotify.md) to display a notification to the user, you can use a translation key for the notification text. React-admin will translate it automatically - no need to call `translate`.
+If you use [the `useNotify` hook](./useNotify.md) to display a notification to the user, you can use a translation key for the notification text. Ra-core will translate it automatically - no need to call `translate`.
 
 ```jsx
 const ValidateCommentButton = ({ id }) => {
@@ -217,7 +217,7 @@ const ValidateCommentButton = ({ id }) => {
 
 ## Interpolation, Pluralization and Default Translation
 
-If you're using [`ra-i18n-polyglot`](./Translation.md#ra-i18n-polyglot) (the default `i18nProvider`), you can leverage the advanced features of its `translate` function. [Polyglot.js](https://airbnb.io/polyglot.js/), the library behind `ra-i18n-polyglot`, provides some nice features such as interpolation and pluralization, that you can use in react-admin.
+If you're using [`ra-i18n-polyglot`](./Translation.md#ra-i18n-polyglot) (the default `i18nProvider`), you can leverage the advanced features of its `translate` function. [Polyglot.js](https://airbnb.io/polyglot.js/), the library behind `ra-i18n-polyglot`, provides some nice features such as interpolation and pluralization, that you can use in ra-core.
 
 ```js
 const messages = {
@@ -247,7 +247,7 @@ Check out the [Polyglot.js documentation](https://airbnb.io/polyglot.js/) for mo
 
 ## Forcing The Case in Confirm messages and Empty Page
 
-In confirmation messages and on the empty page, the resource name appears in the middle of sentences, and react-admin automatically sets the resource name translation to lower case.
+In confirmation messages and on the empty page, the resource name appears in the middle of sentences, and ra-core automatically sets the resource name translation to lower case.
 
 > Are you sure you want to delete this comment?
 

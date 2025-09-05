@@ -135,13 +135,13 @@ export const PostEdit = () => (
 
 ## `mutationMode`
 
-The `<EditBase>` component exposes a save method, which perform a "mutation" (i.e. they alter the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
+The `<EditBase>` component exposes a save method, which perform a "mutation" (i.e. they alter the data). Ra-core offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
 
 * `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed.
 * `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 * `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
-By default, pages using `<EditBase>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive.
+By default, pages using `<EditBase>` use the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of ra-core ; it makes user interactions more reactive.
 
 You can change this default by setting the `mutationMode` prop - and this affects both the Save and Delete buttons. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
@@ -189,7 +189,7 @@ const PostEdit = () => (
 
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
-Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
+Let's see an example with the success side effect. By default, when the save action succeeds, ra-core shows a notification, and redirects to the list page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 ```jsx
 import * as React from 'react';
@@ -258,7 +258,7 @@ const PostEdit = () => {
 }
 ```
 
-Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows a notification error.
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, ra-core shows a notification error.
 
 
 ```jsx
@@ -333,7 +333,7 @@ export const PostEdit = () => (
 
 `<EditBase>` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, ra-core shows an error notification and refreshes the page.
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 

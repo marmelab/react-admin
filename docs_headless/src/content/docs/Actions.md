@@ -2,13 +2,13 @@
 title: "Querying the API"
 ---
 
-React-admin provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [React Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
+Ra-core provides special hooks to emit read and write queries to the [`dataProvider`](./DataProviders.md), which in turn sends requests to your API. Under the hood, it uses [React Query](https://tanstack.com/query/v5/) to call the `dataProvider` and cache the results.
 
 <iframe src="https://www.youtube-nocookie.com/embed/c8tw2sUhKgc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
 ## Getting The `dataProvider` Instance
 
-React-admin stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly. 
+Ra-core stores the `dataProvider` object in a React context, so it's available from anywhere in your application code. The `useDataProvider` hook grabs the Data Provider from that context, so you can call it directly. 
 
 As `dataProvider` methods are asynchronous, it's common to call them in a React `useEffect` (for queries) or in an event handler (for mutations).
 
@@ -55,7 +55,7 @@ Refer to [the `useDataProvider` hook documentation](./useDataProvider.md) for mo
 
 ## Query Hooks
 
-React-admin provides one query hook for each of the Data Provider read methods. They are useful shortcuts that make your code more readable and more robust. The query hooks execute on mount. They return an object with the following properties: `{ data, isPending, error }`. Query hooks are:
+Ra-core provides one query hook for each of the Data Provider read methods. They are useful shortcuts that make your code more readable and more robust. The query hooks execute on mount. They return an object with the following properties: `{ data, isPending, error }`. Query hooks are:
 
 * [`useGetList`](./useGetList.md) calls `dataProvider.getList()`
 * [`useGetOne`](./useGetOne.md) calls `dataProvider.getOne()`
@@ -141,7 +141,7 @@ Check [the useQuery documentation](https://tanstack.com/query/v5/docs/react/refe
 - `structuralSharing`,
 - `throwOnError`.
 
-In addition to the `useQuery` options, react-admin query hooks also accept callbacks props in the `options` argument:
+In addition to the `useQuery` options, ra-core query hooks also accept callbacks props in the `options` argument:
 
 - `onError`
 - `onSettled`
@@ -149,7 +149,7 @@ In addition to the `useQuery` options, react-admin query hooks also accept callb
 
 See the [Success and Error Side Effects](#success-and-error-side-effects) below for more details.
 
-**Tip**: In react-admin components that use the query hooks, you can override the query options using the `queryOptions` prop. For instance, to log the dataProvider calls, in the `<ListBase>` component, you can do the following:
+**Tip**: In ra-core components that use the query hooks, you can override the query options using the `queryOptions` prop. For instance, to log the dataProvider calls, in the `<ListBase>` component, you can do the following:
 
 ```jsx
 import { ListBase } from 'ra-core';
@@ -167,7 +167,7 @@ const PostList = () => (
 
 ## Mutation Hooks
 
-React-admin provides one mutation hook for each of the Data Provider write methods. These hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isPending, error }]`. `mutate` is a callback that you can call to execute the mutation.
+Ra-core provides one mutation hook for each of the Data Provider write methods. These hooks execute the query when you call a callback. They return an array with the following items: `[mutate, { data, isPending, error }]`. `mutate` is a callback that you can call to execute the mutation.
 
 Mutation hooks are:
 
@@ -237,7 +237,7 @@ Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/r
 - `retryDelay`,
 - `throwOnError`.
 
-In addition to the `useMutation` options, react-admin mutation hooks also accept the `mutationMode` option, letting you switch between `pessimistic` rendering, `optimistic` rendering and `undoable` modes. By default, side effect callbacks (`onSuccess`, `onError`, `onSettled`) are "pessimistic", i.e. react-admin executes them after the dataProvider responds. You can switch to "optimistic" to execute them right when the dataProvider is called, without waiting for the response.
+In addition to the `useMutation` options, ra-core mutation hooks also accept the `mutationMode` option, letting you switch between `pessimistic` rendering, `optimistic` rendering and `undoable` modes. By default, side effect callbacks (`onSuccess`, `onError`, `onSettled`) are "pessimistic", i.e. ra-core executes them after the dataProvider responds. You can switch to "optimistic" to execute them right when the dataProvider is called, without waiting for the response.
 
 ```jsx
 const [update, { data, isPending, error }] = useUpdate(
@@ -253,7 +253,7 @@ const [update, { data, isPending, error }] = useUpdate(
 
 See [Optimistic Rendering and Undo](#optimistic-rendering-and-undo) below for more details.
 
-**Tip**: In react-admin components that use the mutation hooks, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. 
+**Tip**: In ra-core components that use the mutation hooks, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g. to display a notification, or redirect to another page. 
 
 For instance, here is a button to approve the current comment that notifies the user of success or failure using the bottom notification banner:
 
@@ -293,7 +293,7 @@ All query and mutation hooks accept a `meta` key in they second argument, in add
 useGetOne('books', { id, meta: /* ... */ });
 ```
 
-It's the responsibility of your Data Provider to interpret this parameter. React-admin doesn't set this `meta` parameter in its queries, but you can use it in your components to pass special arguments or metadata to an API call.
+It's the responsibility of your Data Provider to interpret this parameter. Ra-core doesn't set this `meta` parameter in its queries, but you can use it in your components to pass special arguments or metadata to an API call.
 
 A common usage is to require additional information from the API. For instance, the following code fetches a book and its author in one call:
 
@@ -306,9 +306,9 @@ const { isPending, error, data } = useGetOne(
 
 ## Success and Error Side Effects
 
-To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. Such logic can be showing a notification, redirecting to another page, refreshing the data, etc. React-admin uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
+To execute some logic after a query or a mutation is complete, use the `onSuccess`, `onError` and `onSettled` options. Such logic can be showing a notification, redirecting to another page, refreshing the data, etc. Ra-core uses the term "side effects" for this type of logic, as it's usually modifying another part of the UI.
 
-**Tip**: React-admin provides the various hooks to handle the most common side effects:
+**Tip**: Ra-core provides the various hooks to handle the most common side effects:
 
 - [`useNotify`](./useNotify.md): Return a function to display a notification.
 - [`useRedirect`](./useRedirect.md): Return a function to redirect the user to another page.
@@ -322,7 +322,7 @@ The `onSuccess` function is called when the query returns. It receives the query
 onSuccess(data, variables, context) { /* ... */ }
 ``` 
 
-This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid react-admin to prefill the cache.
+This could be useful when you have different shapes for a resource in lists and single record views. In those cases, you might want to avoid ra-core to prefill the cache.
 
 ```tsx
 import { useGetList } from 'ra-core';
@@ -407,7 +407,7 @@ const UserProfile = () => {
 
 ## `useQuery` and `useMutation`
 
-Internally, react-admin uses [React Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the [query hooks](#query-hooks) and [mutation hooks](#mutation-hooks), you should use that library, too.
+Internally, ra-core uses [React Query](https://tanstack.com/query/v5/) to call the dataProvider. When fetching data from the dataProvider in your components, if you can't use any of the [query hooks](#query-hooks) and [mutation hooks](#mutation-hooks), you should use that library, too.
 
 It brings several benefits to [manual data fetching](#getting-the-dataprovider-instance):
 
@@ -424,7 +424,7 @@ React Query offers 2 main hooks to interact with the `dataProvider`:
 * [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
 * [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
 
-Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as the query key.
+Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, ra-core uses an array of arguments as the query key.
 
 For instance, the initial code snippet of this chapter can be rewritten with `useQuery` as follows:
 
@@ -620,9 +620,9 @@ But in most cases, the server returns a successful response, so the user waits f
 
 This is called **pessimistic rendering**, as all users are forced to wait because of the (usually rare) possibility of server failure. 
 
-An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the react-query cache), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, react-admin applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with success, react-admin does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the react-query cache and the data from the `dataProvider` are the same). If the fetch fails, react-admin shows an error notification and reverts the mutation.
+An alternative mode for mutations is **optimistic rendering**. The idea is to handle the calls to the `dataProvider` on the client side first (i.e. updating entities in the react-query cache), and re-render the screen immediately. The user sees the effect of their action with no delay. Then, ra-core applies the success side effects, and only after that, it triggers the call to the data provider. If the fetch ends with success, ra-core does nothing more than a refresh to grab the latest data from the server. In most cases, the user sees no difference (the data in the react-query cache and the data from the `dataProvider` are the same). If the fetch fails, ra-core shows an error notification and reverts the mutation.
 
-A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, react-admin *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end-user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
+A third mutation mode is called **undoable**. It's like optimistic rendering, but with an added feature: after applying the changes and the side effects locally, ra-core *waits* for a few seconds before triggering the call to the `dataProvider`. During this delay, the end-user sees an "undo" button that, when clicked, cancels the call to the `dataProvider` and refreshes the screen.
 
 Here is a quick recap of the three mutation modes:
 
@@ -634,9 +634,9 @@ Here is a quick recap of the three mutation modes:
 | cancellable       | no                        | no         | yes       |
 
 
-By default, react-admin uses the `undoable` mode for the Edit view. As for the data provider method hooks, they default to the `pessimistic` mode.
+By default, ra-core uses the `undoable` mode for the Edit view. As for the data provider method hooks, they default to the `pessimistic` mode.
 
-**Tip**: For the Create view, react-admin needs to wait for the response to know the id of the resource to redirect to, so the mutation mode is pessimistic.  
+**Tip**: For the Create view, ra-core needs to wait for the response to know the id of the resource to redirect to, so the mutation mode is pessimistic.  
 
 You can benefit from optimistic and undoable modes when you call the `useUpdate` hook, too. You just need to pass a `mutationMode` option:
 
@@ -731,9 +731,9 @@ export const OrderCancelButton = ({ order }) => {
 
 ## Querying The API With `fetch`
 
-Data Provider method hooks are "the react-admin way" to query the API. But nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
+Data Provider method hooks are "the ra-core way" to query the API. But nothing prevents you from using `fetch` if you want. For instance, when you don't want to add some routing logic to the data provider for an RPC method on your API, that makes perfect sense.
 
-There is no special react-admin sauce in that case. Here is an example implementation of calling `fetch` in a component:
+There is no special ra-core sauce in that case. Here is an example implementation of calling `fetch` in a component:
 
 ```jsx
 // in src/comments/ApproveButton.js

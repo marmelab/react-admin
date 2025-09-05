@@ -61,7 +61,7 @@ const BookDetails = () => {
 }
 ```
 
-**Tip**: As with `<ReferenceFieldBase>`, you can call `<ReferenceOneFieldBase>` as many times as you need in the same component, react-admin will only make one call to `dataProvider.getManyReference()` per reference.
+**Tip**: As with `<ReferenceFieldBase>`, you can call `<ReferenceOneFieldBase>` as many times as you need in the same component, ra-core will only make one call to `dataProvider.getManyReference()` per reference.
 
 ## Props
 

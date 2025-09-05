@@ -4,7 +4,7 @@ sidebar:
   order: 1
 ---
 
-The `<CoreAdmin>` component is the root component of a react-admin app. It allows to configure the application adapters, routes, and core functionalities.
+The `<CoreAdmin>` component is the root component of a ra-core app. It allows to configure the application adapters, routes, and core functionalities.
 
 `<CoreAdmin>` creates a series of context providers to allow its children to access the app configuration. It renders the main routes and delegates the rendering of the content area to its `<Resource>` children.
 
@@ -146,7 +146,7 @@ Here are all the props accepted by the component:
 
 ## `dataProvider`
 
-`dataProvider` is the only required prop. It must be an object allowing to communicate with the API. React-admin uses the data provider everywhere it needs to fetch or save data.
+`dataProvider` is the only required prop. It must be an object allowing to communicate with the API. Ra-core uses the data provider everywhere it needs to fetch or save data.
 
 In many cases, you won't have to write a data provider, as one of the [50+ existing data providers](./DataProviderList.md) will probably fit your needs. For instance, if your API is REST-based, you can use the [Simple REST Data Provider](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest) as follows:
 
@@ -227,7 +227,7 @@ With these children, the `<CoreAdmin>` component will generate the following rou
 
 ## `accessDenied`
 
-When using [Access Control](./Permissions.md#access-control), react-admin checks whether users can access a resource page and display the `accessDenied` component when they can't.
+When using [Access Control](./Permissions.md#access-control), ra-core checks whether users can access a resource page and display the `accessDenied` component when they can't.
 
 You can replace this default page by passing a custom component as the `accessDenied` prop:
 
@@ -251,7 +251,7 @@ const App = () => (
 
 ## `authCallbackPage`
 
-React-admin apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback()`. 
+Ra-core apps contain a special route called `/auth-callback` to let external authentication providers (like Auth0, Cognito, OIDC servers) redirect users after login. This route renders the `AuthCallback` component by default, which in turn calls `authProvider.handleCallback()`. 
 
 If you need a different behavior for this route, you can render a custom component by passing it as the `authCallbackPage` prop.
 
@@ -280,7 +280,7 @@ See The [Authentication documentation](./Authentication.md#using-external-authen
 
 ## `authenticationError`
 
-When using [Access Control](./Permissions.md#access-control), if the `authProvider.canAccess()` method throws an error, react-admin redirects the user to the `/authentication-error` page.
+When using [Access Control](./Permissions.md#access-control), if the `authProvider.canAccess()` method throws an error, ra-core redirects the user to the `/authentication-error` page.
 
 ![Default authenticationError component](../../img/authenticationError.png)
 
@@ -306,7 +306,7 @@ const App = () => (
 
 ## `authProvider`
 
-The `authProvider` is responsible for managing authentication and permissions, usually based on an authentication backend. React-admin uses it to check for authentication status, redirect to the login page when the user is not authenticated, check for permissions, display the user identity, and more.
+The `authProvider` is responsible for managing authentication and permissions, usually based on an authentication backend. Ra-core uses it to check for authentication status, redirect to the login page when the user is not authenticated, check for permissions, display the user identity, and more.
 
 If you use a standard authentication strategy, you can use one of the [existing auth providers](./AuthProviderList.md). For instance, to use [Auth0](https://auth0.com/), you can use [`ra-auth-auth0`](https://github.com/marmelab/ra-auth-auth0):
 
@@ -369,7 +369,7 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 
 ## `basename`
 
-Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
+Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding ra-core inside a single-page app with its own routing.
 
 ```tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
@@ -386,7 +386,7 @@ export const App = () => (
 );
 ```
 
-React-admin will have to prefix all the internal links with `/admin`. Use the `<CoreAdmin basename>` prop for that:
+Ra-core will have to prefix all the internal links with `/admin`. Use the `<CoreAdmin basename>` prop for that:
 
 ```jsx
 // in src/StoreAdmin.js
@@ -435,7 +435,7 @@ const App = () => (
 );
 ```
 
-**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the react-admin layout easily. Note that these routes will match *after* all the react-admin resource routes have been tested. To add custom routes *before* the react-admin ones, and therefore override the default resource routes, see the [`custom pages`](./CustomRoutes.md) section instead.
+**Tip**: If your custom `catchAll` component contains react-router `<Route>` components, this allows you to register new routes displayed within the ra-core layout easily. Note that these routes will match *after* all the ra-core resource routes have been tested. To add custom routes *before* the ra-core ones, and therefore override the default resource routes, see the [`custom pages`](./CustomRoutes.md) section instead.
 
 ## `dashboard`
 
@@ -518,11 +518,11 @@ const App = () => (
 
 ## `disableTelemetry`
 
-In production, react-admin applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
+In production, ra-core applications send an anonymous request on mount to a telemetry server operated by marmelab. You can see this request by looking at the Network tab of your browser DevTools:
 
 `https://react-admin-telemetry.marmelab.com/react-admin-telemetry`
 
-The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The react-admin team uses these domains to track the usage of the framework.
+The only data sent to the telemetry server is the admin domain (e.g. "example.com") - no personal data is ever sent, and no cookie is included in the response. The ra-core team uses these domains to track the usage of the framework.
 
 You can opt out of telemetry by simply adding `disableTelemetry` to the `<CoreAdmin>` component:
 
@@ -541,7 +541,7 @@ const App = () => (
 
 ## `error`
 
-React-admin uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a user-friendly error page in case of client-side JavaScript error, using an internal component called `<Error>`. In production mode, it only displays a generic error message. In development mode, this error page contains the error message and stack trace. 
+Ra-core uses [React's Error Boundaries](https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary) to render a user-friendly error page in case of client-side JavaScript error, using an internal component called `<Error>`. In production mode, it only displays a generic error message. In development mode, this error page contains the error message and stack trace. 
 
 ![Default error page](../../img/adminError.png)
 
@@ -559,7 +559,7 @@ export const MyLayout = ({ children }) => (
 );
 ```
 
-React-admin relies on [the `react-error-boundary` package](https://github.com/bvaughn/react-error-boundary) for handling error boundaries. So your custom error component will receive the error, the error info, and a `resetErrorBoundary` function as props. You should call `resetErrorBoundary` upon navigation to remove the error screen.
+Ra-core relies on [the `react-error-boundary` package](https://github.com/bvaughn/react-error-boundary) for handling error boundaries. So your custom error component will receive the error, the error info, and a `resetErrorBoundary` function as props. You should call `resetErrorBoundary` upon navigation to remove the error screen.
 
 Here is an example of a custom error component:
 
@@ -626,7 +626,7 @@ The [Translation Documentation](./Translation.md) details this process.
 
 If you want to add components for the app header, the menu, or the notifications, the best way is to provide a custom layout component.
 
-Unlike the full react-admin package, `<CoreAdmin>` doesn't come with any built-in layout components, giving you complete freedom to design your own.
+Unlike the full ra-core package, `<CoreAdmin>` doesn't come with any built-in layout components, giving you complete freedom to design your own.
 
 You can create a custom layout component that wraps your pages:
 
@@ -668,7 +668,7 @@ Your layout component will receive the page content as `children` and can wrap i
 
 ## `loginPage`
 
-If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. React-admin will display this component whenever the `/login` route is called.
+If you want to customize the Login page, or switch to another authentication strategy than a username/password form, pass a component of your own as the `loginPage` prop. Ra-core will display this component whenever the `/login` route is called.
 
 ```tsx
 import { CoreAdmin } from 'ra-core';
@@ -711,7 +711,7 @@ const App = () => (
 
 ## `queryClient`
 
-React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
+Ra-core uses [React Query](https://tanstack.com/query/v5/) to fetch, cache and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -752,7 +752,7 @@ const App = () => (
 
 To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/react/reference/useMutation) sections.
 
-The common settings that react-admin developers often overwrite are:
+The common settings that ra-core developers often overwrite are:
 
 ```tsx
 import { QueryClient } from '@tanstack/react-query';
@@ -787,7 +787,7 @@ const queryClient = new QueryClient({
 
 ## `ready`
 
-When you run an `<CoreAdmin>` with no child `<Resource>` nor `<CustomRoutes>`, react-admin displays a "ready" screen:
+When you run an `<CoreAdmin>` with no child `<Resource>` nor `<CustomRoutes>`, ra-core displays a "ready" screen:
 
 ![Empty Admin](../../img/tutorial_empty.png)
 
@@ -813,7 +813,7 @@ const App = () => (
 
 ## `requireAuth`
 
-Some custom pages in react-admin apps may allow anonymous access. For this reason, react-admin starts rendering the page layout before knowing if the user is logged in. So anonymous users may see UI elements (menu, sidebar, etc.) before being redirected to the login page. This may reveal information about the app structure that you may want to keep private.
+Some custom pages in ra-core apps may allow anonymous access. For this reason, ra-core starts rendering the page layout before knowing if the user is logged in. So anonymous users may see UI elements (menu, sidebar, etc.) before being redirected to the login page. This may reveal information about the app structure that you may want to keep private.
 
 If you know your app will never accept anonymous access, you can force the app to wait for the `authProvider.checkAuth()` to resolve before rendering the page layout, by setting the `requireAuth` prop.
 
@@ -946,7 +946,7 @@ const App = () => (
 );
 ```
 
-You can use any notification library you prefer (such as react-toastify, notistack, sonner, or your own custom implementation) and integrate it with react-admin's notification hooks like `useNotify()`.
+You can use any notification library you prefer (such as react-toastify, notistack, sonner, or your own custom implementation) and integrate it with ra-core's notification hooks like `useNotify()`.
 
 ### Example Implementation Using Sonner
 
@@ -1079,9 +1079,9 @@ export default App;
 
 ## Using A Custom Router
 
-React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+Ra-core uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
 
-But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router. 
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. Ra-core will detect that it's already inside a router, and skip its own router. 
 
 ```tsx
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -1105,9 +1105,9 @@ const App = () => {
 
 ## Using React-Admin In A Sub Path
 
-React-admin links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), react-admin works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
+Ra-core links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), ra-core works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 
-However, if you serve your admin from a sub path AND use another Router (like [`createBrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) for instance), you need to set the [`opts.basename`](https://reactrouter.com/en/main/routers/create-browser-router#optsbasename) of `createBrowserRouter` function, so that react-admin routes include the basename in all links (e.g. `/admin/posts/123/show`).
+However, if you serve your admin from a sub path AND use another Router (like [`createBrowserRouter`](https://reactrouter.com/en/main/routers/create-browser-router) for instance), you need to set the [`opts.basename`](https://reactrouter.com/en/main/routers/create-browser-router#optsbasename) of `createBrowserRouter` function, so that ra-core routes include the basename in all links (e.g. `/admin/posts/123/show`).
 
 ```tsx
 import { CoreAdmin, Resource } from 'ra-core';
@@ -1136,11 +1136,11 @@ This makes all links be prefixed with `/admin`.
 
 Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
 
-If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
+If you want to use ra-core as a sub path of a larger React application, check the next section for instructions. 
 
 ## Using React-Admin Inside a Route
 
-You can include a react-admin app inside another app, using a react-router `<Route>`:
+You can include a ra-core app inside another app, using a react-router `<Route>`:
 
 ```tsx
 import { RouterProvider, Routes, Route, createBrowserRouter } from 'react-router-dom';
@@ -1165,7 +1165,7 @@ export const App = () => {
 };
 ```
 
-React-admin will have to prefix all the internal links with `/admin`. Use the `<CoreAdmin basename>` prop for that:
+Ra-core will have to prefix all the internal links with `/admin`. Use the `<CoreAdmin basename>` prop for that:
 
 ```tsx
 // in src/StoreAdmin.js
@@ -1180,7 +1180,7 @@ export const StoreAdmin = () => (
 );
 ```
 
-This will let react-admin build absolute URLs including the sub path.
+This will let ra-core build absolute URLs including the sub path.
 
 ## Declaring resources at runtime
 
@@ -1229,7 +1229,7 @@ Setting Resources dynamically using the children-as-function syntax may not be e
 
 So it's impossible, for instance, to have a dynamic list of resources based on a call to the `dataProvider` (since the `dataProvider` is only defined after the `<CoreAdmin>` component renders).
 
-To overcome this limitation, you can build your own `<CoreAdmin>` component using two lower-level components: `<CoreAdminContext>` (responsible for putting the providers in contexts) and `<CoreAdminUI>` (responsible for displaying the UI). Through this approach you'll have to bring your own i18n provider and store. Luckily react-admin provides easy to use defaults for you. Here is an example:
+To overcome this limitation, you can build your own `<CoreAdmin>` component using two lower-level components: `<CoreAdminContext>` (responsible for putting the providers in contexts) and `<CoreAdminUI>` (responsible for displaying the UI). Through this approach you'll have to bring your own i18n provider and store. Luckily ra-core provides easy to use defaults for you. Here is an example:
 
 ```tsx
 import * as React from "react";
@@ -1272,7 +1272,7 @@ function AsyncResources() {
     const dataProvider = useDataProvider<MyDataProvider>();
 
     useEffect(() => {
-        // Note that the `getResources` is not provided by react-admin. You have to implement your own custom verb.
+        // Note that the `getResources` is not provided by ra-core. You have to implement your own custom verb.
         dataProvider.getResources().then((r) => setResources(r));
     }, []);
 

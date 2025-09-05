@@ -2,14 +2,14 @@
 title: "Fields For Relationships"
 ---
 
-React-admin headless provides several base components to deal with relationships between records. These components are designed to work with any UI library, as they only handle the data fetching part. The `dataProvider` interface facilitates the implementation of relational features such as:
+Ra-core headless provides several base components to deal with relationships between records. These components are designed to work with any UI library, as they only handle the data fetching part. The `dataProvider` interface facilitates the implementation of relational features such as:
 
 - showing the comments related to a post
 - showing the author of a post
 - choosing the author of a post
 - adding tags to a post
 
-React-admin handles relationships *regardless of the capacity of the API to manage relationships*. As long as you can provide a `dataProvider` for your API, all the relational features will work.
+Ra-core handles relationships *regardless of the capacity of the API to manage relationships*. As long as you can provide a `dataProvider` for your API, all the relational features will work.
 
 The ra-core package provides helpers to fetch related records, depending on the type of relationship, and how the API implements it.
 
@@ -129,7 +129,7 @@ const BookShow = () => (
 
 `<ReferenceFieldBase>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, etc.).
 
-**Tip**: You don't need to worry about the fact that these components calls `<ReferenceFieldBase>` twice on the same table. React-admin will only make one call to the API.
+**Tip**: You don't need to worry about the fact that these components calls `<ReferenceFieldBase>` twice on the same table. Ra-core will only make one call to the API.
 
 This is fine, but what if you need to display the author details for a list of books?
 
@@ -371,6 +371,6 @@ const BookShow = () => (
 
 `<ReferenceOneFieldBase>` creates a `RecordContext` with the reference record, so you can use any component relying on this context (`<TextField>`, etc.).
 
-**Tip**: As with `<ReferenceFieldBase>`, you can call `<ReferenceOneFieldBase>` as many times as you need in the same component, react-admin will only make one call to `dataProvider.getManyReference()`.
+**Tip**: As with `<ReferenceFieldBase>`, you can call `<ReferenceOneFieldBase>` as many times as you need in the same component, ra-core will only make one call to `dataProvider.getManyReference()`.
 
 For the inverse relationships (the author linked to a biography), you can use a `<ReferenceFieldBase>`.

@@ -392,7 +392,7 @@ dataProvider.getList('posts', {
 
 When the API backend returns an error, the Data Provider should return a rejected Promise containing an `Error` object. This object should contain a `status` property with the HTTP response code (404, 500, etc.). Ra-core inspects this error code, and uses it for [authentication](./Authentication.md) (in case of 401 or 403 errors). Besides, ra-core displays the error `message` on screen in a temporary notification.
 
-If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by react-admin.
+If you use `fetchJson`, you don't need to do anything: HTTP errors are automatically decorated as expected by ra-core.
 
 If you use another HTTP client, make sure you return a rejected Promise. You can use the `HttpError` class to throw an error with status in one line:
 
@@ -949,7 +949,7 @@ There are two ways to implement a GraphQL Data Provider:
 - Write the queries and mutations by hand - that's what's described in this section.
 - Take advantage of GraphQL introspection capabilities, and let the data provider "guess" the queries and mutations. For this second case, use [ra-data-graphql](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-graphql) as the basis of your provider.
 
-Let’s say that you want to map the react-admin requests to a GraphQL backend exposing the following API (inspired by [the Hasura GraphQL syntax](https://hasura.io/docs/latest/graphql/core/api-reference/graphql-api/index/)):
+Let’s say that you want to map the ra-core requests to a GraphQL backend exposing the following API (inspired by [the Hasura GraphQL syntax](https://hasura.io/docs/latest/graphql/core/api-reference/graphql-api/index/)):
 
 **getList**
 

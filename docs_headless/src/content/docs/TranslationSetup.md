@@ -7,7 +7,7 @@ sidebar:
 
 If you want to add or update translations, you'll have to provide your own `i18nProvider`.
 
-Just like for the `dataProvider` and the `authProvider`, you can inject the `i18nProvider` to your react-admin app using the `<CoreAdminContext i18nProvider>` prop:
+Just like for the `dataProvider` and the `authProvider`, you can inject the `i18nProvider` to your ra-core app using the `<CoreAdminContext i18nProvider>` prop:
 
 ```jsx
 import { CoreAdminContext } from 'ra-core';
@@ -23,11 +23,11 @@ const App = () => (
 );
 ```
 
-In most cases, the `i18nProvider` will contain translations for both react-admin keys and your own keys.
+In most cases, the `i18nProvider` will contain translations for both ra-core keys and your own keys.
 
 ## Changing The Default Locale
 
-If you want to display the interface in another language than English by default, you have to set up an `i18nProvider` that provides the translation for all the keys used by react-admin. Fortunately, the react-admin community has already written translations for more than 40 locales. Check the [list of available locales](./TranslationLocales.md) to find the locale you're looking for.
+If you want to display the interface in another language than English by default, you have to set up an `i18nProvider` that provides the translation for all the keys used by ra-core. Fortunately, the ra-core community has already written translations for more than 40 locales. Check the [list of available locales](./TranslationLocales.md) to find the locale you're looking for.
 
 For instance, to change the interface to French, install the `ra-language-french` npm package, then use it in a custom `i18nProvider`, as follows:
 
@@ -83,11 +83,11 @@ const App = () => (
 );
 ```
 
-That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different from the default one, the react-admin app will always render using that locale (thanks to [the Store](./Store.md)).
+That's all it takes to have a multilingual UI. As an added benefit, once a user has chosen a locale different from the default one, the ra-core app will always render using that locale (thanks to [the Store](./Store.md)).
 
 ## Using The Browser Locale
 
-React-admin provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
+Ra-core provides a helper function named `resolveBrowserLocale()`, which detects the user's browser locale. To use it, simply pass the function as the `initialLocale` argument of `polyglotI18nProvider`.
 
 ```jsx
 // in src/i18nProvider.js

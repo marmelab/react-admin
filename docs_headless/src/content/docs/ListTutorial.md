@@ -8,7 +8,7 @@ The List view displays a list of records, and lets users search for specific rec
 
 ![The List View](../../img/list-view.jpg)
 
-This tutorial explains the List view from first principles, and shows how react-admin's headless components allow you to reduce the amount of boilerplate code to focus on the business logic. 
+This tutorial explains the List view from first principles, and shows how ra-core's headless components allow you to reduce the amount of boilerplate code to focus on the business logic. 
 
 ## From Pure React To React-Admin
 
@@ -18,7 +18,7 @@ To better understand how to use the various ra-core hooks and components dedicat
 
 ### A List View Built By Hand
 
-You've probably developed it a dozen times, and in fact you don't need react-admin to build, say, a book List view:
+You've probably developed it a dozen times, and in fact you don't need ra-core to build, say, a book List view:
 
 ```tsx
 import { useState } from 'react';
@@ -73,7 +73,7 @@ const BookList = () => {
 };
 ```
 
-You can pass this `BookList` component as the `list` prop of the `<Resource name="books" />`, and react-admin will render it on the `/books/` path.
+You can pass this `BookList` component as the `list` prop of the `<Resource name="books" />`, and ra-core will render it on the `/books/` path.
 
 This example uses the `useGetList` hook instead of `fetch` because `useGetList` already contains the authentication and request state logic. But you could totally write a List view with `fetch`.
 
@@ -172,7 +172,7 @@ const BookTable = () => {
 
 ### `ListContext` Exposes List Data To Descendants
 
-React-admin provides a `ListContext` to share list data between components. Creating such a context with `<ListContextProvider>` allows you to use the custom components we just created and access list data through the `useListContext` hook:
+Ra-core provides a `ListContext` to share list data between components. Creating such a context with `<ListContextProvider>` allows you to use the custom components we just created and access list data through the `useListContext` hook:
 
 ```tsx
 import { useState } from 'react';
@@ -234,7 +234,7 @@ The `useListContext` hook provides access to all list state and methods:
 
 ### `useListController` Handles Controller Logic
 
-The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and react-admin exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
+The initial logic that grabs the records from the API, handles the filter and pagination state, and creates callbacks to change them is also common, and ra-core exposes [the `useListController` hook](./useListController.md) to do it. It returns an object that fits perfectly the format expected by `<ListContextProvider>`:
 
 ```diff
 -import { useState } from 'react';
@@ -294,7 +294,7 @@ const BookList = () => {
 
 Notice that `useListController` doesn't need the 'books' resource name - it relies on the `ResourceContext`, set by the `<Resource>` component, to guess it.
 
-React-admin's List controller does much, much more than the code it replaces above:
+Ra-core's List controller does much, much more than the code it replaces above:
 
 - it uses sensible defaults for the sort and pagination state,
 - it stores the list state (sort, pagination, filters) in the URL to make the page bookmarkable,
@@ -307,7 +307,7 @@ React-admin's List controller does much, much more than the code it replaces abo
 
 ### `<ListBase>`: Component Version Of The Controller
 
-As calling the List controller and putting its result into a context is also common, react-admin provides [the `<ListBase>` component](./ListBase.md) to do it. So the example can be further simplified to the following: 
+As calling the List controller and putting its result into a context is also common, ra-core provides [the `<ListBase>` component](./ListBase.md) to do it. So the example can be further simplified to the following: 
 
 ```diff
 import { 
@@ -378,7 +378,7 @@ The code is now concise, maintainable, and contains all the necessary logic for:
 - Storing state in the URL for bookmarkability
 - Debouncing filter changes
 
-React-admin's headless components provide a robust foundation for building custom user interfaces while taking care of the complex data management logic under the hood.
+Ra-core's headless components provide a robust foundation for building custom user interfaces while taking care of the complex data management logic under the hood.
 
 ## Building a Custom List Layout
 
@@ -495,7 +495,7 @@ const SortByViews = () => (
 );
 ```
 
-**Tip**: You have to pass *all* the query string parameters - not just `sort` and `order`. That's a current limitation of react-admin.
+**Tip**: You have to pass *all* the query string parameters - not just `sort` and `order`. That's a current limitation of ra-core.
 
 ## Building a Custom Sort Control
 

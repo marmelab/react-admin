@@ -122,7 +122,7 @@ import { TextInput } from './TextInput';
 </FilterLiveForm>
 ```
 
-**Tip:** Input components must be react-admin inputs, i.e. inputs that leverage the [`useInput`](./useInput.md) hook.
+**Tip:** Input components must be ra-core inputs, i.e. inputs that leverage the [`useInput`](./useInput.md) hook.
 
 ## `debounce`
 

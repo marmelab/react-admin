@@ -91,7 +91,7 @@ const Post1234Show = () => {
 
 `useShowController` accepts a `queryOptions` prop to pass options to the react-query client. 
 
-This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, react-admin shows an error notification and refreshes the page.
+This can be useful e.g. to override the default error side effect. By default, when the `dataProvider.getOne()` call fails at the dataProvider level, ra-core shows an error notification and refreshes the page.
 
 You can override this behavior and pass custom side effects by providing a custom `queryOptions` prop:
 

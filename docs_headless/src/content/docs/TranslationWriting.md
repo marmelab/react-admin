@@ -63,11 +63,11 @@ const i18nProvider = {
 };
 ```
 
-This works, but it is too limited: react-admin expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. 
+This works, but it is too limited: ra-core expects that i18nProviders support string interpolation for translation, and asynchronous message loading for locale change. 
 
 ## Leveraging Polyglot
 
-That's why react-admin bundles an `i18nProvider` *factory* called `ra-i18n-polyglot`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as an argument. 
+That's why ra-core bundles an `i18nProvider` *factory* called `ra-i18n-polyglot`. This factory relies on [polyglot.js](https://airbnb.io/polyglot.js/), which uses JSON files for translations. It only expects one argument: a function returning a list of messages based on a locale passed as an argument. 
 
 So the previous provider can be written as:
 

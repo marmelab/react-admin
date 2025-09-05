@@ -116,7 +116,7 @@ Form validation deserves a section of its own; check [the Validation chapter](./
 
 ## Empty Values
 
-React-admin Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
+Ra-core Form components initialize the form based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty, the form will be empty.
 If a record property is not `undefined`, it is not considered empty:
 
 - An empty string is a valid value
@@ -460,7 +460,7 @@ const Form = ({ onSubmit }) => {
 
 **Tip**: You can customize the message displayed in the confirm dialog by setting the `ra.message.unsaved_changes` message in your i18nProvider.
 
-**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by ra-core, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Submit On Enter
 

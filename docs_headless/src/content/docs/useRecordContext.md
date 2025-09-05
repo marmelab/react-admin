@@ -2,7 +2,7 @@
 title: "useRecordContext"
 ---
 
-`useRecordContext` grabs the current record. It's available anywhere react-admin manipulates a record, e.g. in a Show page, in a DataTable row, or in a Reference Field.
+`useRecordContext` grabs the current record. It's available anywhere ra-core manipulates a record, e.g. in a Show page, in a DataTable row, or in a Reference Field.
 
 <iframe src="https://www.youtube-nocookie.com/embed/YLwx-EZfGFk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
@@ -29,7 +29,7 @@ const BookShow = () => (
 
 ## Optimistic Rendering
 
-As react-admin uses optimistic rendering, `useRecordContext` may be `undefined` or a cached version of the record on load (see also [Caching](./Caching.md#optimistic-rendering)). Make sure you prepare for that! 
+As ra-core uses optimistic rendering, `useRecordContext` may be `undefined` or a cached version of the record on load (see also [Caching](./Caching.md#optimistic-rendering)). Make sure you prepare for that! 
 
 ```jsx
 const BookAuthor = () => {
@@ -48,7 +48,7 @@ if (!record) return null;
 
 ## Availability
 
-As soon as there is a record available, react-admin puts it in a `RecordContext`. This means that `useRecordContext` works out of the box:
+As soon as there is a record available, ra-core puts it in a `RecordContext`. This means that `useRecordContext` works out of the box:
 
 - in descendants of the `<ShowBase>` component
 - in descendants of the `<EditBase>` component
@@ -108,7 +108,7 @@ const RecordFetcher = ({ id, resource, children }) => {
 
 ## Fallback Mode
 
-Some react-admin components accept an optional record prop. These components can be used both inside a `RecordContext`, and with a custom record prop - without creating a custom record context.
+Some ra-core components accept an optional record prop. These components can be used both inside a `RecordContext`, and with a custom record prop - without creating a custom record context.
 
 You can do the same: just accept a `record` component prop, and pass the props as parameter to the hook. If the record is undefined, `useRecordContext` will return the record from the context. If it is defined, `useRecordContext` will return the record from the props.
 

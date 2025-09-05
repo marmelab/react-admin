@@ -141,7 +141,7 @@ const PublicBookList = () => (
 
 ## `disableSyncWithLocation`
 
-By default, react-admin synchronizes the `<ListBase>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
+By default, ra-core synchronizes the `<ListBase>` parameters (sort, pagination, filters) with the query string in the URL (using `react-router` location) and the [Store](./Store.md).
 
 When you use a `<ListBase>` component anywhere else than as `<Resource list>`, you may want to disable this synchronization to keep the parameters in a local state, independent for each `<ListBase>` instance. This allows to have multiple lists on a single page. To do so, pass the `disableSyncWithLocation` prop. The drawback is that a hit on the "back" button doesn't restore the previous list parameters.
 
@@ -195,7 +195,7 @@ const Dashboard = () => (
 
 ## `exporter`
 
-Among the common list actions, react-admin includes export functionality. When using `<ListBase>`, you can provide a custom `exporter` function to handle data export.
+Among the common list actions, ra-core includes export functionality. When using `<ListBase>`, you can provide a custom `exporter` function to handle data export.
 
 By default, clicking an export button will:
 
@@ -205,7 +205,7 @@ By default, clicking an export button will:
 
 The columns of the CSV file match all the fields of the records in the `dataProvider` response. If you want to customize the result, pass a custom `exporter` function to the `<ListBase>`. This function will receive the data from the `dataProvider` and is in charge of transforming, converting, and downloading the file.
 
-**Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a JSON to CSV converter which is already a react-admin dependency. And for CSV download, take advantage of react-admin's `downloadCSV` function.
+**Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a JSON to CSV converter which is already a ra-core dependency. And for CSV download, take advantage of ra-core's `downloadCSV` function.
 
 Here is an example for a Posts exporter, omitting, adding, and reordering fields:
 
@@ -369,9 +369,9 @@ const PostList = () => (
 );
 ```
 
-With this option, react-admin will call `dataProvider.getList()` on mount with the `meta: { foo: 'bar' }` option.
+With this option, ra-core will call `dataProvider.getList()` on mount with the `meta: { foo: 'bar' }` option.
 
-You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, react-admin shows an error notification. Here is how to show a custom notification instead:
+You can also use the `queryOptions` prop to override the default error side effect. By default, when the `dataProvider.getList()` call fails, ra-core shows an error notification. Here is how to show a custom notification instead:
 
 ```jsx
 import { useNotify, useRedirect, ListBase } from 'ra-core';

@@ -97,7 +97,7 @@ Check the [Translating the UI](./TranslationTranslating.md) for example usage of
 
 ## `ra-i18n-polyglot`
 
-Although you can build an `i18nProvider` from scratch, react-admin provides a package called `ra-i18n-polyglot` that leverages [the Polyglot.js library](https://airbnb.io/polyglot.js/) to build an `i18nProvider` based on a dictionary of translations.
+Although you can build an `i18nProvider` from scratch, ra-core provides a package called `ra-i18n-polyglot` that leverages [the Polyglot.js library](https://airbnb.io/polyglot.js/) to build an `i18nProvider` based on a dictionary of translations.
 
 ```jsx
 // in src/i18nProvider.js
@@ -131,7 +131,7 @@ Check [the translation setup documentation](./TranslationSetup.md) for details a
 
 ## `ra-i18n-i18next`
 
-React-admin also provides a package called `ra-i18n-i18next` that leverages [the i18next library](https://www.i18next.com/) to build an `i18nProvider` based on a dictionary of translations.
+Ra-core also provides a package called `ra-i18n-i18next` that leverages [the i18next library](https://www.i18next.com/) to build an `i18nProvider` based on a dictionary of translations.
 
 You might prefer this package over `ra-i18n-polyglot` when:
 - you already use i18next services such as [locize](https://locize.com/)
@@ -199,7 +199,7 @@ Translation files match a translation key to a translated text. They look like t
 
 ```js
 const englishMessages = {
-    // react-admin components
+    // ra-core components
     ra: {
         action: {
             cancel: 'Cancel',

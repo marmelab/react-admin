@@ -6,7 +6,7 @@ sidebar:
 
 ![Validation example](../../img/validation.png)
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for the validation of user input in forms. React-admin supports several approaches:
+Ra-core relies on [react-hook-form](https://react-hook-form.com/) for the validation of user input in forms. Ra-core supports several approaches:
 
 - using the `validate` prop at the Form level (validation by function)
 - using the `validate` prop at the Input level
@@ -100,7 +100,7 @@ export const UserCreate = () => (
 
 ## Per Input Validation: Built-in Field Validators
 
-Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function or an array of functions. React-admin already bundles a few validator functions, that you can just require, and use as input-level validators:
+Alternatively, you can specify a `validate` prop directly in `<Input>` components, taking either a function or an array of functions. Ra-core already bundles a few validator functions, that you can just require, and use as input-level validators:
 
 * `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
@@ -153,7 +153,7 @@ export const UserCreate = () => (
 );
 ```
 
-**Tip**: If you pass a function as a message, react-admin calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
+**Tip**: If you pass a function as a message, ra-core calls this function with `{ args, value, values,translate, ...props }` as argument. For instance:
 
 ```jsx
 const message = ({ translate }) => translate('myroot.validation.email_invalid');
@@ -200,11 +200,11 @@ export const UserCreate = () => (
 );
 ```
 
-React-admin will combine all the input-level functions into a single function looking just like the previous one.
+Ra-core will combine all the input-level functions into a single function looking just like the previous one.
 
 Input validation functions receive the current field value and the values of all fields of the current record. This allows for complex validation scenarios (e.g. validate that two passwords are the same).
 
-**Tip**: If your admin has multi-language support, validator functions should return message *identifiers* rather than messages themselves. React-admin automatically passes these identifiers to the translation function: 
+**Tip**: If your admin has multi-language support, validator functions should return message *identifiers* rather than messages themselves. Ra-core automatically passes these identifiers to the translation function: 
 
 ```jsx
 // in validators/required.js

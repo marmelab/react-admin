@@ -47,14 +47,14 @@ You can find translation packages for the following languages:
 - 🇺🇦 Ukrainian (`ua`): [koresar/ra-language-ukrainian](https://github.com/koresar/ra-language-ukrainian)
 - 🇻🇳 Vietnamese (`vi`): [completejavascript/ra-language-vietnamese](https://github.com/completejavascript/ra-language-vietnamese)
 
-In addition, the previous version of react-admin, called admin-on-rest, was translated into the following languages:
+In addition, the previous version of ra-core, called admin-on-rest, was translated into the following languages:
 
 - 🇹🇼 Chinese (Traditional) (`cht`): [leesei/aor-language-chinese-traditional](https://github.com/leesei/aor-language-chinese-traditional)
 - 🇭🇷 Croatian (`hr`): [ariskemper/aor-language-croatian](https://github.com/ariskemper/aor-language-croatian)
 - 🇸🇮 Slovenian (`sl`): [ariskemper/aor-language-slovenian](https://github.com/ariskemper/aor-language-slovenian)
 - 🇹🇭 Thai (`th`): [liverbool/aor-language-thai](https://github.com/liverbool/aor-language-thai)
 
-These packages are not directly interoperable with react-admin, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for react-admin, using a different package name.
+These packages are not directly interoperable with ra-core, but the upgrade is straightforward; rename the root key from "aor" to "ra". We invite the authors of the packages listed above to republish their translations for ra-core, using a different package name.
 
 If you want to contribute a new translation, feel free to submit a pull request to update [this page](https://github.com/marmelab/react-admin/blob/master/docs/TranslationLocales.md) with a link to your package.
 

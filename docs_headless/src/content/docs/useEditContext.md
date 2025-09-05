@@ -2,7 +2,7 @@
 title: "useEditContext"
 ---
 
-Whenever react-admin displays an edition page, it creates an `EditContext` to store the record, the submit callback, and other data.
+Whenever ra-core displays an edition page, it creates an `EditContext` to store the record, the submit callback, and other data.
 
 The `EditContext` is available to descendants of:
 

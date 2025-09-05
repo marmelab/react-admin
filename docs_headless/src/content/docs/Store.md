@@ -112,7 +112,7 @@ let mode = useStore('preferences.ui.mode');
 
 ## Store Invalidation
 
-If your application cannot check the shape of a stored object, react-admin provides an escape hatch to avoid errors for users with an old value: store invalidation. 
+If your application cannot check the shape of a stored object, ra-core provides an escape hatch to avoid errors for users with an old value: store invalidation. 
 
 The idea is that you can specify a version number for your Store. If the Store contains data with a different version number than the code, the Store resets all preferences.
 

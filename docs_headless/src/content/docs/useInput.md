@@ -3,9 +3,9 @@ title: "useInput"
 storybook_path: ra-core-form-useinput--basic
 ---
 
-This hook lets you build custom inputs for react-admin. It's a wrapper around [react-hook-form's `useController`](https://react-hook-form.com/docs/usecontroller).
+This hook lets you build custom inputs for ra-core. It's a wrapper around [react-hook-form's `useController`](https://react-hook-form.com/docs/usecontroller).
 
-React-admin adds functionality to react-hook-form:
+Ra-core adds functionality to react-hook-form:
 
 - handling of custom event emitters like `onChange`,
 - support for an array of validators,
@@ -67,7 +67,7 @@ Value of the input if the record has no value for the `source`.
 </Form>
 ```
 
-React-admin will ignore these default values if the Form already defines [a form-wide `defaultValues`](./Form.md#defaultvalues):
+Ra-core will ignore these default values if the Form already defines [a form-wide `defaultValues`](./Form.md#defaultvalues):
 
 ```tsx
 import { CreateBase, Form } from 'ra-core';
@@ -156,7 +156,7 @@ form state value --> format --> form input value (string)
 
 `format` often comes in pair with [`parse`](#parse) to transform the input value before storing it in the form state. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
-**Tip:** By default, react-admin inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
+**Tip:** By default, ra-core inputs have the following `format` function, which turns any `null` or `undefined` value into an empty string. This is to avoid warnings about controlled/uncontrolled input components:
 
 ```ts
 const defaultFormat = (value: any) => value == null ? '' : value;
@@ -216,7 +216,7 @@ form input value (string) ---> parse ---> form state value
 
 `parse` often comes in pair with [`format`](#format) to transform the form value before passing it to the input. See the [Transforming Input Value](#transforming-input-value-tofrom-record) section for more details.
 
-**Tip:** By default, react-admin inputs have the following `parse` function, which transforms any empty string into `null`:
+**Tip:** By default, ra-core inputs have the following `parse` function, which transforms any empty string into `null`:
 
 ```js
 const defaultParse = (value: string) => value === '' ? null : value;
@@ -268,7 +268,7 @@ const validateAge = (value: number) => {
 <NumberInput source="age" validate={validate} />
 ```
 
-**Tip**: If your admin has [multi-language support](./Translation.md), validator functions should return message *identifiers* rather than messages themselves. React-admin automatically passes these identifiers to the translation function:
+**Tip**: If your admin has [multi-language support](./Translation.md), validator functions should return message *identifiers* rather than messages themselves. Ra-core automatically passes these identifiers to the translation function:
 
 ```tsx
 // in validators/required.js
@@ -278,7 +278,7 @@ const required = () => (value: any) =>
         : 'myroot.validation.required';
 ```
 
-React-admin comes with a set of built-in validators:
+Ra-core comes with a set of built-in validators:
 
 * `required(message)` if the field is mandatory,
 * `minValue(min, message)` to specify a minimum value for integers,
@@ -491,13 +491,13 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
+**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all ra-core inputs will store the value `null` when the HTML input value is `''`. 
 
 **Tip**: If you need to do this globally, including for custom input components that do not use the `useInput` hook, have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
 ## Empty Values
 
-React-admin Form components initialize the input based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty or the matching property for this input is empty, the input will be empty.
+Ra-core Form components initialize the input based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty or the matching property for this input is empty, the input will be empty.
 If a record property is not `undefined`, it is not considered empty:
 
 - An empty string is a valid value

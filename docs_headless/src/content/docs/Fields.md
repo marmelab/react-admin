@@ -6,7 +6,7 @@ A `Field` component displays a given property of a record. Such components are u
 
 ## Anatomy Of A Field
 
-`Field` components read the current `record` from the current `RecordContext` (set by react-admin). There is nothing magic there - you can easily write your own:
+`Field` components read the current `record` from the current `RecordContext` (set by ra-core). There is nothing magic there - you can easily write your own:
 
 ```jsx
 import { useRecordContext } from 'ra-core';
@@ -17,9 +17,9 @@ const PurpleTextField = ({ source }) => {
 };
 ```
 
-**Tip**: Every time it renders a record, react-admin creates a `RecordContext`. This includes `<DataTable>` rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use react-admin Fields in custom pages.
+**Tip**: Every time it renders a record, ra-core creates a `RecordContext`. This includes `<DataTable>` rows, simple list items, reference fields, show, and edit pages. You can even create a `RecordContext` yourself and use ra-core Fields in custom pages.
 
-React-admin Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
+Ra-core Field components also accept a `record` prop. This allows you to use them outside a `RecordContext`, or to use another `record` than the one in the current context.
 
 ```jsx
 // a post looks like
@@ -85,7 +85,7 @@ If you don't find what you need in the list of available Fields, you can write y
 
 <iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-A custom field must be a regular React component retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. If you pass a `source`, the field component needs to find the corresponding value in the `record` and render it.
+A custom field must be a regular React component retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. Ra-core will set the `record` in this context based on the API response data at render time. If you pass a `source`, the field component needs to find the corresponding value in the `record` and render it.
 
 Let's see an example for an API returning user records with `firstName` and `lastName` properties.
 
@@ -108,9 +108,9 @@ export const FullNameField = (props) => {
 }
 ```
 
-**Tip**: Always check the `record` is defined before inspecting its properties, as react-admin may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
+**Tip**: Always check the `record` is defined before inspecting its properties, as ra-core may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
-You can now use this field like any other react-admin field:
+You can now use this field like any other ra-core field:
 
 ```jsx
 import { ShowBase } from 'ra-core';

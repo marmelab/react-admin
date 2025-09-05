@@ -11,11 +11,11 @@ sidebar:
 
 Web applications often need to limit access to specific pages or resources to authenticated users ("Authentication") and ensure that users can only execute actions they are permitted to ("Authorization").
 
-React-admin supports both authentication and authorization, allowing you to secure your admin app with your preferred authentication strategy. Since there are many strategies (OAuth, MFA, passwordless, magic link, etc.), react-admin delegates this logic to an `authProvider`.
+Ra-core supports both authentication and authorization, allowing you to secure your admin app with your preferred authentication strategy. Since there are many strategies (OAuth, MFA, passwordless, magic link, etc.), ra-core delegates this logic to an `authProvider`.
 
 ## Enabling Authentication
 
-By default, react-admin apps do not require authentication. To restrict access to the admin, pass an `authProvider` to the `<CoreAdmin>` component.
+By default, ra-core apps do not require authentication. To restrict access to the admin, pass an `authProvider` to the `<CoreAdmin>` component.
 
 ```jsx
 // in src/App.js
@@ -28,15 +28,15 @@ const App = () => (
 );
 ```
 
-An `authProvider` is an object that handles authentication and authorization logic, similar to a `dataProvider`. It exposes methods that react-admin calls when needed, and you can also call these methods manually through specialized hooks.
+An `authProvider` is an object that handles authentication and authorization logic, similar to a `dataProvider`. It exposes methods that ra-core calls when needed, and you can also call these methods manually through specialized hooks.
 
-Once an admin has an `authProvider`, react-admin will restrict CRUD pages (the `list`, `edit`, `create`, and `show` components of your `Resources`) to authenticated users and redirect anonymous users to the `/login` page, displaying a login form for a username and password.
+Once an admin has an `authProvider`, ra-core will restrict CRUD pages (the `list`, `edit`, `create`, and `show` components of your `Resources`) to authenticated users and redirect anonymous users to the `/login` page, displaying a login form for a username and password.
 
 ![Login form](../../img/login-form.png)
 
-React-admin offers several built-in `authProvider` implementations for popular authentication services like **Google Identity**, **Microsoft Entra ID**, **AWS Cognito**, **Auth0**, **Keycloak**, and others. Refer to the [List of Available Auth Providers](./AuthProviderList.md) to find one that suits your requirements.
+Ra-core offers several built-in `authProvider` implementations for popular authentication services like **Google Identity**, **Microsoft Entra ID**, **AWS Cognito**, **Auth0**, **Keycloak**, and others. Refer to the [List of Available Auth Providers](./AuthProviderList.md) to find one that suits your requirements.
 
-If you need to implement a custom authentication strategy, the [Building Your Own Auth Provider](./AuthProviderWriting.md) offers a step-by-step guide. It boils down to implementing a few methods that react-admin calls when needed:
+If you need to implement a custom authentication strategy, the [Building Your Own Auth Provider](./AuthProviderWriting.md) offers a step-by-step guide. It boils down to implementing a few methods that ra-core calls when needed:
 
 ```js
 const authProvider = {
@@ -201,7 +201,7 @@ const App = () => (
 
 ## Allowing Anonymous Access
 
-If you add an `authProvider`, react-admin restricts access to all pages declared in `<Resource>` components. To allow anonymous access to some of these pages, set the `disableAuthentication` prop in the page component.
+If you add an `authProvider`, ra-core restricts access to all pages declared in `<Resource>` components. To allow anonymous access to some of these pages, set the `disableAuthentication` prop in the page component.
 
 For example, to let anonymous users access the post list view:
 
@@ -318,7 +318,7 @@ const MyLogoutButton = () => {
 };
 ```
 
-**Tip**: By default, react-admin redirects to `/login` after logout. This can be changed by passing a custom URL to the `logout()` function:
+**Tip**: By default, ra-core redirects to `/login` after logout. This can be changed by passing a custom URL to the `logout()` function:
 
 ```diff
 -const handleClick = () => logout();
@@ -329,7 +329,7 @@ const MyLogoutButton = () => {
 
 Instead of the built-in Login page, you can use an external authentication provider, like Auth0, Cognito, or any other OAuth-based service. These services require a callback URL to redirect users after login.
 
-React-admin provides a default callback URL at `/auth-callback`. This route calls the `authProvider.handleCallback` method on mount, which means it's up to the `authProvider` to use the received params for authenticating future API calls.
+Ra-core provides a default callback URL at `/auth-callback`. This route calls the `authProvider.handleCallback` method on mount, which means it's up to the `authProvider` to use the received params for authenticating future API calls.
 
 For example, here's a simple authProvider for Auth0:
 
@@ -369,7 +369,7 @@ export const authProvider = {
     },
     async logout() {
         const isAuthenticated = await client.isAuthenticated();
-            // need to check for this as react-admin calls logout in case checkAuth failed
+            // need to check for this as ra-core calls logout in case checkAuth failed
         if (isAuthenticated) {
             return Auth0Client.logout({
                 returnTo: window.location.origin,
@@ -420,7 +420,7 @@ export const dataProvider = addRefreshAuthToDataProvider(baseDataProvider, refre
 
 ## Authorization
 
-Access control and permissions allow you to restrict certain pages and features to specific users. React-admin provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Permissions.md) documentation.
+Access control and permissions allow you to restrict certain pages and features to specific users. Ra-core provides powerful primitives for implementing authorization logic. For detailed guidance, check out the [Authorization](./Permissions.md) documentation.
 
 <video controls autoplay muted loop>
   <source src="../img/AccessControl.mp4" type="video/mp4"/>

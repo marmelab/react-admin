@@ -95,14 +95,14 @@ export default LatLngInput;
 
 ### The `useInput()` Hook
 
-React-admin adds functionality to react-hook-form:
+Ra-core adds functionality to react-hook-form:
 
 - handling of custom event emitters like `onChange`,
 - support for an array of validators,
 - detection of required fields to add an asterisk to the field label,
 - parse and format to translate record values to form values and vice-versa.
 
-So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()`; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
+So internally, ra-core components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()`; use it instead of `useController()` to create form inputs that have the exact same API as ra-core Input components:
 
 ```tsx
 // in LatLongInput.js
@@ -233,7 +233,7 @@ Refer to the [`useInput`](./useInput.md) documentation for more details.
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+Ra-core relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
 
 ```tsx
 import * as React from "react";
@@ -272,7 +272,7 @@ const OrderEdit = () => (
 export default OrderEdit;
 ```
 
-Alternatively, you can use the react-admin `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
+Alternatively, you can use the ra-core `<FormDataConsumer>` component, which grabs the form values, and passes them to a child function. As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
 
 ```tsx
 import * as React from "react";

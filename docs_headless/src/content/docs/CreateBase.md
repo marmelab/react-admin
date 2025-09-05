@@ -88,7 +88,7 @@ const PostCreate = () => (
 
 ## `mutationMode`
 
-The `<CreateBase>` view exposes a Save button, which perform a "mutation" (i.e. it creates the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
+The `<CreateBase>` view exposes a Save button, which perform a "mutation" (i.e. it creates the data). Ra-core offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
 
 * `pessimistic` (default): The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed.
 * `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
@@ -136,7 +136,7 @@ const PostCreate = () => (
 
 You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
 
-Let's see an example with the success side effect. By default, when the save action succeeds, react-admin shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
+Let's see an example with the success side effect. By default, when the save action succeeds, ra-core shows a notification, and redirects to the new record edit page. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 
 ```jsx
 import * as React from 'react';
@@ -161,7 +161,7 @@ const PostCreate = () => {
 }
 ```
 
-Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, react-admin shows an error notification.
+Similarly, you can override the failure side effects with an `onError` option. By default, when the save action fails at the dataProvider level, ra-core shows an error notification.
 
 ```jsx
 import * as React from 'react';

@@ -3,13 +3,13 @@ layout: default
 title: "Unit Testing"
 ---
 
-React-admin relies heavily on unit tests (powered by [Jest](https://facebook.github.io/jest/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)) to ensure that its code is working as expected.
+Ra-core relies heavily on unit tests (powered by [Jest](https://facebook.github.io/jest/) and [react-testing-library](https://testing-library.com/docs/react-testing-library/intro)) to ensure that its code is working as expected.
 
-That means that each individual component and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on react-admin, this should be straightforward.
+That means that each individual component and hook can be tested in isolation. That also means that if you have to test your own components and hooks based on ra-core, this should be straightforward.
 
 ## CoreAdminContext Wrapper
 
-Some of react-admin's components depend on a context for translation, data fetching, etc. If you write a component that depends on a react-admin component, chances are the test runner will complain about a missing context.
+Some of ra-core's components depend on a context for translation, data fetching, etc. If you write a component that depends on a ra-core component, chances are the test runner will complain about a missing context.
 
 Wrap your tested component inside `<CoreAdminContext>` to avoid this problem:
 
@@ -100,7 +100,7 @@ test('<MyComponent>', async () => {
 
 ## Resetting The Store
 
-The react-admin Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. row selection, sidebar state, language selection).
+The ra-core Store is persistent. This means that if a test modifies an item in the store, the updated value will be changed in the next test. This will cause seemingly random test failures when you use `useStore()` in your tests, or any feature depending on the store (e.g. row selection, sidebar state, language selection).
 
 To isolate your unit tests, pass a new `memoryStore` at each test:
 

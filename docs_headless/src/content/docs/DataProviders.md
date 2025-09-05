@@ -39,7 +39,7 @@ const App = () => (
 export default App;
 ```
 
-That's all it takes to make all react-admin components work with your API. They will call the data provider methods, which will in turn call the API. Here's how the Simple REST data provider maps react-admin calls to API calls:
+That's all it takes to make all ra-core components work with your API. They will call the data provider methods, which will in turn call the API. Here's how the Simple REST data provider maps ra-core calls to API calls:
 
 | Method name        | API call                                                                                |
 | ------------------ | --------------------------------------------------------------------------------------- |
@@ -57,7 +57,7 @@ For your own API, look for a compatible data provider in the list of [supported 
 
 ## React-Query Options
 
-React-admin uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
+Ra-core uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -97,7 +97,7 @@ const App = () => (
 
 To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/react/reference/useMutation) sections.
 
-The settings that react-admin developers often overwrite are:
+The settings that ra-core developers often overwrite are:
 
 ```jsx
 import { QueryClient } from '@tanstack/react-query';
@@ -142,7 +142,7 @@ const [update] = useUpdate(
 
 Refer to the documentation of each data provider hook for more details on the options you can pass.
 
-React-admin components using the data provider also accept a `queryOptions` prop to pass options to the underlying react-query hooks. For instance, specify a custom `staleTime` for a `<ListBase>` component:
+Ra-core components using the data provider also accept a `queryOptions` prop to pass options to the underlying react-query hooks. For instance, specify a custom `staleTime` for a `<ListBase>` component:
 
 ```jsx
 import { ListBase } from 'ra-core';
@@ -154,11 +154,11 @@ const PostList = () => (
 );
 ```
 
-Look for the `queryOptions` and `mutationOptions` props in the documentation of each react-admin component to know which options you can pass.
+Look for the `queryOptions` and `mutationOptions` props in the documentation of each ra-core component to know which options you can pass.
 
 ## Enabling Query Logs
 
-React-admin uses `react-query` to call the Data Provider. You can view all `react-query` calls in the browser using the [react-query devtools](https://tanstack.com/query/v5/docs/react/devtools).
+Ra-core uses `react-query` to call the Data Provider. You can view all `react-query` calls in the browser using the [react-query devtools](https://tanstack.com/query/v5/docs/react/devtools).
 
 ![React-Query DevTools](../../img/react-query-devtools.png)
 
@@ -211,7 +211,7 @@ const App = () => (
 
 ## Handling Authentication
 
-React-admin uses the `dataProvider` to fetch data and the [`authProvider`](./Authentication.md) to handle authentication. The `authProvider` typically stores an authentication token, shares it with the `dataProvider` (often via `localStorage`), which then adds it to HTTP headers for API requests.
+Ra-core uses the `dataProvider` to fetch data and the [`authProvider`](./Authentication.md) to handle authentication. The `authProvider` typically stores an authentication token, shares it with the `dataProvider` (often via `localStorage`), which then adds it to HTTP headers for API requests.
 
 For example, here's how to use a token returned during the login process to authenticate all requests to the API via a Bearer token, using the Simple REST data provider:
 
@@ -266,7 +266,7 @@ In this example, the `simpleRestProvider` accepts a second parameter to set auth
 
 The `dataProvider` doesn't "speak" HTTP, so it doesn't have the concept of HTTP headers. If you need to pass custom headers to the API, the syntax depends on the Data Provider you use.
 
-For instance, the `simpleRestProvider` function accepts an HTTP client function as its second argument. By default, it uses react-admin's [`fetchUtils.fetchJson()`](./fetchJson.md) function as the HTTP client. It's similar to the HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
+For instance, the `simpleRestProvider` function accepts an HTTP client function as its second argument. By default, it uses ra-core's [`fetchUtils.fetchJson()`](./fetchJson.md) function as the HTTP client. It's similar to the HTML5 `fetch()`, except it handles JSON decoding and HTTP error codes automatically.
 
 To add custom headers to your requests, you can *wrap* the `fetchJson()` call inside your own function:
 
@@ -348,7 +348,7 @@ Data providers implementing this feature often use the `meta` key in the query p
 const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
 ```
 
-Leveraging embeds can reduce the number of requests made by react-admin to the API, and thus improve the app's performance.
+Leveraging embeds can reduce the number of requests made by ra-core to the API, and thus improve the app's performance.
 
 For example, this allows you to display data from a related resource without making an additional request (and without using a `<ReferenceFieldBase>`).
 
@@ -398,7 +398,7 @@ const { data, meta } = useGetOne('posts', { id: 123, meta: { prefetch: ['author'
 
 This is called *prefetching* or *preloading*.
 
-React-admin can use this feature to populate its cache with related records, and avoid subsequent requests to the API. The prefetched records must be returned in the `meta.prefetched` key of the data provider response.
+Ra-core can use this feature to populate its cache with related records, and avoid subsequent requests to the API. The prefetched records must be returned in the `meta.prefetched` key of the data provider response.
 
 For example, you can use prefetching to display the author's name in a post list without making an additional request:
 
@@ -424,7 +424,7 @@ The way to *ask* for embedded resources isn't normalized and depends on the API.
 
 ## Query Cancellation
 
-React-admin supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). When a component unmounts, any pending query is canceled, preventing outdated side effects and unnecessary network requests.
+Ra-core supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation). When a component unmounts, any pending query is canceled, preventing outdated side effects and unnecessary network requests.
 
 To enable this feature, set the `supportAbortSignal` property to `true` on your data provider:
 
@@ -485,7 +485,7 @@ const dataProvider = {
 }
 ```
 
-But the `dataProvider` code quickly becomes hard to read and maintain. React-admin provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
+But the `dataProvider` code quickly becomes hard to read and maintain. Ra-core provides a helper function to make it easier to add lifecycle callbacks to the dataProvider: `withLifecycleCallbacks`:
 
 ```jsx
 import { withLifecycleCallbacks } from 'ra-core';
@@ -840,7 +840,7 @@ Refer to the [Cloudinary Get Started doc](https://cloudinary.com/documentation/p
 
 ## Async Initialization
 
-Some Data Providers need an asynchronous initialization phase (e.g., to connect to the API). To use such Data Providers, initialize them *before* rendering react-admin resources, leveraging React's `useState` and `useEffect`.
+Some Data Providers need an asynchronous initialization phase (e.g., to connect to the API). To use such Data Providers, initialize them *before* rendering ra-core resources, leveraging React's `useState` and `useEffect`.
 
 For instance, the `ra-data-hasura` data provider needs to be initialized:
 

@@ -4,19 +4,19 @@ sidebar:
   order: 1
 ---
 
-React-admin relies on a several design decisions that structure its codebase.
+Ra-core relies on a several design decisions that structure its codebase.
 
 ## Single-Page Application
 
-React-admin is specifically designed to build [Single-Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application). In a react-admin app, the browser fetches the required HTML, CSS, and JavaScript to render the application only once. Subsequently, data is fetched from APIs through AJAX calls. This is in contrast to traditional web applications, where the browser fetches a new HTML page for each screen.
+Ra-core is specifically designed to build [Single-Page Applications (SPA)](https://en.wikipedia.org/wiki/Single-page_application). In a ra-core app, the browser fetches the required HTML, CSS, and JavaScript to render the application only once. Subsequently, data is fetched from APIs through AJAX calls. This is in contrast to traditional web applications, where the browser fetches a new HTML page for each screen.
 
 <img class="no-shadow" src="../img/SPA-lifecycle.png" alt="SPA lifecycle" />
 
-The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
+The SPA architecture ensures that ra-core apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 
-To achieve this, react-admin utilizes an internal router, powered by `react-router`, to display the appropriate screen when the user clicks on a link. Developers can define routes using the [`<Resource>`](./Resource.md) component for CRUD routes and the [`<CustomRoutes>`](./CustomRoutes.md) component for other routes.
+To achieve this, ra-core utilizes an internal router, powered by `react-router`, to display the appropriate screen when the user clicks on a link. Developers can define routes using the [`<Resource>`](./Resource.md) component for CRUD routes and the [`<CustomRoutes>`](./CustomRoutes.md) component for other routes.
 
-For example, the following react-admin application:
+For example, the following ra-core application:
 
 ```jsx
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
@@ -52,11 +52,11 @@ Declares the following routes:
 -  `/profile`: `<Profile>`
 -  `/organization`: `<Organization>`
 
-The `<Resource>` component allows react-admin to automatically link CRUD pages between them, including those for related entities. This approach allows you to think about your application in terms of entities, rather than getting bogged down by managing routes.
+The `<Resource>` component allows ra-core to automatically link CRUD pages between them, including those for related entities. This approach allows you to think about your application in terms of entities, rather than getting bogged down by managing routes.
 
 ## Providers
 
-React-admin does not make any assumptions about the specific structure of your API. Instead, it defines its own syntax for data fetching, authentication, internationalization, and preferences. To interact with your API, react-admin relies on adapters called **providers**.
+Ra-core does not make any assumptions about the specific structure of your API. Instead, it defines its own syntax for data fetching, authentication, internationalization, and preferences. To interact with your API, ra-core relies on adapters called **providers**.
 
 <img class="no-shadow" src="../img/providers.png" alt="Providers" />
 
@@ -99,9 +99,9 @@ Content-Range: posts 0-4/27
 ]
 ```
 
-React-admin comes with [more than 50 data providers](./DataProviderList.md) for various backends, including REST, GraphQL, Firebase, Django REST Framework, API Platform, and more. If these providers do not suit your API, you have the flexibility to [develop a custom provider](./DataProviderWriting.md).
+Ra-core comes with [more than 50 data providers](./DataProviderList.md) for various backends, including REST, GraphQL, Firebase, Django REST Framework, API Platform, and more. If these providers do not suit your API, you have the flexibility to [develop a custom provider](./DataProviderWriting.md).
 
-This approach is why react-admin components do not call `fetch` or `axios` directly. Instead, they rely on the data provider to fetch data from the API. Similarly, it is recommended that your custom components follow the same pattern and utilize [data provider hooks](./Actions.md), such as [`useGetList`](./useGetList.md):
+This approach is why ra-core components do not call `fetch` or `axios` directly. Instead, they rely on the data provider to fetch data from the API. Similarly, it is recommended that your custom components follow the same pattern and utilize [data provider hooks](./Actions.md), such as [`useGetList`](./useGetList.md):
 
 ```jsx
 import { useGetList } from 'ra-core';
@@ -130,11 +130,11 @@ const MyComponent = () => {
 
 By using `useGetList`, you gain various benefits beyond a simple `fetch`: it handles user credentials, triggers loading indicators, manages loading states, handles errors, caches results for future use, and controls the data shape, among other things.
 
-Whenever you need to communicate with a server, you will use these providers. Since they are specialized for their respective domains and tightly integrated with react-admin, they will save you a significant amount of time and effort.
+Whenever you need to communicate with a server, you will use these providers. Since they are specialized for their respective domains and tightly integrated with ra-core, they will save you a significant amount of time and effort.
 
 ## Composition
 
-React-admin avoids components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, react-admin encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
+Ra-core avoids components that accept an overwhelming number of props, which are often referred to as "God Components." Instead, ra-core encourages the use of composition, where components accept subcomponents (either through children or specific props) to handle a share of the logic.
 
 For example, while you cannot directly pass a custom menu to the `<CoreAdmin>` component, you can achieve the same result by passing a `layout` component, containing the menu:
 
@@ -170,9 +170,9 @@ const App = () => (
 
 This approach enables you to override specific parts of the logic of a component by composing it with another component.
 
-The trade-off with this approach is that sometimes react-admin may require you to override several components just to enable one specific feature.
+The trade-off with this approach is that sometimes ra-core may require you to override several components just to enable one specific feature.
 
-Although this drawback exists, we accept it because the use of composition in react-admin makes the components highly extensible, and it significantly improves the readability and maintainability of the code.
+Although this drawback exists, we accept it because the use of composition in ra-core makes the components highly extensible, and it significantly improves the readability and maintainability of the code.
 
 ## Hooks
 
@@ -214,15 +214,15 @@ const DeleteButton = () => {
 };
 ```
 
-The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in react-admin. 
+The fact that hook names often end with `Controller` is intentional and reflects the use of [the Model-View-Controller (MVC) pattern](https://en.wikipedia.org/wiki/Model%E2%80%93view%E2%80%93controller) for complex components in ra-core. 
 
 Ra-core exposes dozens of hooks to assist you in building your own components. You can construct an entire admin application using only the headless ra-core package and any UI library of your choice (see for instance [shadcn-admin-kit](https://github.com/marmelab/shadcn-admin-kit), a library for building admin apps with Shadcn UI). This flexibility allows you to tailor the application to your specific needs and preferences.
 
 ## Context: Pull, Don't Push
 
-Communication between components can be challenging, especially in large React applications, where passing props down several levels can become cumbersome. React-admin addresses this issue using a pull model, where components expose props to their descendants via a context, and descendants can consume these props using custom hooks.
+Communication between components can be challenging, especially in large React applications, where passing props down several levels can become cumbersome. Ra-core addresses this issue using a pull model, where components expose props to their descendants via a context, and descendants can consume these props using custom hooks.
 
-Whenever a react-admin component fetches data or defines a callback, it creates a context and places the data and callback in it.
+Whenever a ra-core component fetches data or defines a callback, it creates a context and places the data and callback in it.
 
 For instance, the `<CoreAdmin>` component creates an `I18NProviderContext`, which exposes the `translate` function. All components in the application can utilize the `useTranslate` hook, which reads the `I18NProviderContext`, for translating labels and messages. 
 
@@ -274,4 +274,4 @@ This approach eliminates the need for a dependency injection system and provides
 
 So when you write a component that needs to access data or callbacks defined higher in the render tree, you can always find a context to get it. 
 
-Contexts are fundamental concepts in React Admin. If you are not familiar with them, don't hesitate to read the [React documentation on Context](https://react.dev/learn/passing-data-deeply-with-context). Understanding contexts will greatly enhance your understanding of how react-admin leverages them to create a powerful and flexible framework.
+Contexts are fundamental concepts in React Admin. If you are not familiar with them, don't hesitate to read the [React documentation on Context](https://react.dev/learn/passing-data-deeply-with-context). Understanding contexts will greatly enhance your understanding of how ra-core leverages them to create a powerful and flexible framework.

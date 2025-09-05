@@ -22,7 +22,7 @@ Note that if `record` is undefined, `<WithRecord>` doesn't call the `render` cal
 
 ## Availability
 
-As soon as there is a record available, react-admin puts it in a `RecordContext`. This means that `<WithRecord>` works out of the box:
+As soon as there is a record available, ra-core puts it in a `RecordContext`. This means that `<WithRecord>` works out of the box:
 
 - in descendants of the `<ShowBase>` component
 - in descendants of the `<EditBase>` component

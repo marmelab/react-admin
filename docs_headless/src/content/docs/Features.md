@@ -5,19 +5,19 @@ sidebar:
   label: All Features
 ---
 
-React-admin is a **rich framework** that covers most of the needs of typical admin & B2B applications. Its headless core (ra-core) provides powerful business logic and data management capabilities without being tied to any specific UI library. This flexibility unlocks your creativity and helps you build great apps with your preferred UI library.
+Ra-core is a **rich framework** that covers most of the needs of typical admin & B2B applications. Its headless core (ra-core) provides powerful business logic and data management capabilities without being tied to any specific UI library. This flexibility unlocks your creativity and helps you build great apps with your preferred UI library.
 
 ## Headless Core
 
-React-admin's strength lies in its **headless architecture**. The ra-core package provides all the business logic, data management, and state handling without being tied to any specific UI library. This allows you to use react-admin's powerful features with [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), [Shadcn UI](https://ui.shadcn.com/), or any custom UI library.
+Ra-core's strength lies in its **headless architecture**. The ra-core package provides all the business logic, data management, and state handling without being tied to any specific UI library. This allows you to use ra-core's powerful features with [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), [Shadcn UI](https://ui.shadcn.com/), or any custom UI library.
 
-The **headless logic** behind react-admin is exposed via `...Base` components and controller hooks that you can use with any UI framework.
+The **headless logic** behind ra-core is exposed via `...Base` components and controller hooks that you can use with any UI framework.
 
-For instance, [`shadcn-admin-kit`](https://github.com/marmelab/shadcn-admin-kit) is a react-admin distribution that uses [Shadcn UI](https://ui.shadcn.com/) with react-admin's headless core.
+For instance, [`shadcn-admin-kit`](https://github.com/marmelab/shadcn-admin-kit) is a ra-core distribution that uses [Shadcn UI](https://ui.shadcn.com/) with ra-core's headless core.
 
 [![Shadcn admin kit](https://github.com/marmelab/shadcn-admin-kit/raw/main/public/shadcn-admin-kit.webp)](https://github.com/marmelab/shadcn-admin-kit)
 
-`shadcn-admin-kit` follows the same syntax conventions as react-admin, so most of the react-admin documentation still applies. For example, the `<ProductEdit>` component looks like this:
+`shadcn-admin-kit` follows the same syntax conventions as ra-core, so most of the ra-core documentation still applies. For example, the `<ProductEdit>` component looks like this:
 
 ```tsx
 import {
@@ -124,20 +124,20 @@ Check the following hooks to learn more about headless controllers:
 - [`useCreateController`](./useCreateController.md)
 - [`useShowController`](./useShowController.md)
 
-And for a more in-depth tutorial about using react-admin with your favorite UI library, check the following article: [Building an admin with DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html).
+And for a more in-depth tutorial about using ra-core with your favorite UI library, check the following article: [Building an admin with DaisyUI, Tailwind CSS, Tanstack Table and React-Aria](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html).
 
 
 ## Awesome Developer Experience
 
-With react-admin's headless core, developers assemble application components focusing on business logic rather than low-level data management details. The ra-core package provides all the essential hooks and controllers you need to build admin interfaces with any UI library.
+With ra-core's headless core, developers assemble application components focusing on business logic rather than low-level data management details. The ra-core package provides all the essential hooks and controllers you need to build admin interfaces with any UI library.
 
-We've crafted the API of react-admin's components and hooks to be as **intuitive** as possible. The react-admin core team uses react-admin every day, and we're always looking for ways to improve the developer experience.
+We've crafted the API of ra-core's components and hooks to be as **intuitive** as possible. The ra-core core team uses ra-core every day, and we're always looking for ways to improve the developer experience.
 
-React-admin provides the **best-in-class documentation**, demo apps, and support. Error messages are clear and actionable. Thanks to extensive TypeScript types and JSDoc, it's easy to use react-admin in any IDE. The API is stable and **breaking changes are very rare**. You can debug your app with the [query](./DataProviders.md#enabling-query-logs) and [form](https://react-hook-form.com/dev-tools) developer tools, and inspect the react-admin code right in your browser.
+Ra-core provides the **best-in-class documentation**, demo apps, and support. Error messages are clear and actionable. Thanks to extensive TypeScript types and JSDoc, it's easy to use ra-core in any IDE. The API is stable and **breaking changes are very rare**. You can debug your app with the [query](./DataProviders.md#enabling-query-logs) and [form](https://react-hook-form.com/dev-tools) developer tools, and inspect the ra-core code right in your browser.
 
-That probably explains why more than 3,000 new apps are published every month using react-admin.
+That probably explains why more than 3,000 new apps are published every month using ra-core.
 
-So react-admin is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), and [react-router](https://reacttraining.com/react-router/). It's a **framework** made to speed up and facilitate the development of single-page apps in React, with a headless core that can work with any UI library.
+So ra-core is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), and [react-router](https://reacttraining.com/react-router/). It's a **framework** made to speed up and facilitate the development of single-page apps in React, with a headless core that can work with any UI library.
 
 ## Basic CRUD
 
@@ -150,7 +150,7 @@ Most admin and B2B apps start with a few basic screens to manipulate records:
 
 We call this type of interface a "CRUD" interface because it allows us to Create, Read, Update and Delete records.
 
-React-admin's headless core provides powerful components to generate such CRUD interfaces with any UI library. These components and hooks are tailored to be very easy to customize.
+Ra-core's headless core provides powerful components to generate such CRUD interfaces with any UI library. These components and hooks are tailored to be very easy to customize.
 
 The basic building blocks of a CRUD interface in ra-core are:
 
@@ -166,13 +166,13 @@ Of course, ra-core is not limited to CRUD interfaces. It also provides component
 
 ## Backend Agnostic
 
-React-admin apps run in the browser - they are "Single-Page Apps". They rely on APIs to fetch and update data.
+Ra-core apps run in the browser - they are "Single-Page Apps". They rely on APIs to fetch and update data.
 
-Which kind of API? **All kinds**. React-admin is backend agnostic. It doesn't care if your API is a REST API, a GraphQL API, a SOAP API, a JSON-RPC API, or even a local API. It doesn't care if your API is written in PHP, Python, Ruby, Java, or even JavaScript. It doesn't care if your API is a third-party API or a home-grown API.
+Which kind of API? **All kinds**. Ra-core is backend agnostic. It doesn't care if your API is a REST API, a GraphQL API, a SOAP API, a JSON-RPC API, or even a local API. It doesn't care if your API is written in PHP, Python, Ruby, Java, or even JavaScript. It doesn't care if your API is a third-party API or a home-grown API.
 
-React-admin ships with [more than 50 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviders.md).
+Ra-core ships with [more than 50 adapters](./DataProviderList.md) for popular API flavors, and gives you all the tools to build your own adapter. This works thanks to a powerful abstraction layer called the [Data Provider](./DataProviders.md).
 
-In a react-admin app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters.
+In a ra-core app, you don't write API Calls. Instead, you communicate with your API using a set of high-level functions, called "Data Provider methods". For instance, to fetch a list of posts, you call the `getList()` method, passing the resource name and the query parameters.
 
 ```jsx
 import { useState, useEffect } from 'react';
@@ -230,7 +230,7 @@ const PostList = () => {
 };
 ```
 
-React-admin is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Microsoft Entra ID, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
+Ra-core is also **backend agnostic for authentication and authorization**. Whether your API uses JWT, OAuth, a third-party provider like Auth0 or Cognito, or even Microsoft Entra ID, you can communicate with the authentication backend through an adapter object called [the Auth Provider](./Authentication.md).
 
 You can then use specialized hooks on your components to restrict access. For instance, to forbid anonymous access, use `useAuthenticated`:
 
@@ -251,7 +251,7 @@ export default MyPage;
 
 ## Relationships
 
-APIs often expose a relational model, i.e. endpoints returning foreign keys to other endpoints. **React-admin leverages relational APIs** to provide smart components that display related records and components that allow editing of related records.
+APIs often expose a relational model, i.e. endpoints returning foreign keys to other endpoints. **Ra-core leverages relational APIs** to provide smart components that display related records and components that allow editing of related records.
 
 ```
 ┌──────────────┐       ┌────────────────┐
@@ -341,7 +341,7 @@ const BookList = () => (
   Your browser does not support the video tag.
 </video>
 
-React-admin supports **one-to-many**, **many-to-one** and **one-to-one relationships** through headless components available in ra-core:
+Ra-core supports **one-to-many**, **many-to-one** and **one-to-one relationships** through headless components available in ra-core:
 
 - [`<ReferenceFieldBase>`](./ReferenceFieldBase.md)
 - [`<ReferenceArrayFieldBase>`](./ReferenceArrayFieldBase.md)
@@ -363,11 +363,11 @@ Ra-core offers a **set of components and hooks** to build forms, powered by [rea
 
 ### Validation
 
-React-admin ships with a powerful and versatile validation engine.
+Ra-core ships with a powerful and versatile validation engine.
 
 ![Validation example](../../img/validation.png)
 
-React-admin forms support the most common validation strategies:
+Ra-core forms support the most common validation strategies:
 
 - [per field validators](./Validation.md#per-input-validation-built-in-field-validators),
 - [form validation](./Validation.md#global-validation),
@@ -462,20 +462,20 @@ export default OrderEdit;
 
 ## Fast
 
-React-admin takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make react-admin apps incredibly fast by default.
+Ra-core takes advantage of the Single-Page-Application architecture, implementing various performance optimizations that make ra-core apps incredibly fast by default.
 
-- **Non-Blocking Data Fetching**: Instead of waiting for API data before starting to render the UI, React-admin initiates the rendering process immediately. This strategy ensures a snappy application where user interactions receive instant feedback, outperforming Server-side Rendered apps by eliminating waiting times for server responses.
+- **Non-Blocking Data Fetching**: Instead of waiting for API data before starting to render the UI, Ra-core initiates the rendering process immediately. This strategy ensures a snappy application where user interactions receive instant feedback, outperforming Server-side Rendered apps by eliminating waiting times for server responses.
 - **Stale While Revalidate**: This technique allows pages to display data from previous requests while newer data is being fetched. In most instances, the fresh data remains the same (e.g., when revisiting a list page), ensuring users won't notice any delays due to network requests.
-- **Local Database Mirror**: React-admin populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, React-admin leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
-- **Optimistic Updates**: When a user edits a record and hits the "Save" button, React-admin immediately updates its local database and displays the revised data, prior to sending the update query to the server. The resulting UI changes are instant - no server response wait time required. The same logic applies to record deletions.
-- **Query Deduplication**: React-admin identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
-- **Query Aggregation**: React-admin intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
-- **Opt-In Query Cache**: React-admin provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
-- **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. React-admin uses this feature to avoid additional network requests and to display related data immediately.
+- **Local Database Mirror**: Ra-core populates its internal cache with individual records fetched using `dataProvider.getList()`. When a user views a specific record, Ra-core leverages its internal database to pre-fill the `dataProvider.getOne()` query response. As a result, record details are displayed instantaneously, without any wait time for server responses.
+- **Optimistic Updates**: When a user edits a record and hits the "Save" button, Ra-core immediately updates its local database and displays the revised data, prior to sending the update query to the server. The resulting UI changes are instant - no server response wait time required. The same logic applies to record deletions.
+- **Query Deduplication**: Ra-core identifies instances where multiple components on a page call the same data provider query for identical data. In such cases, it ensures only a single call to the data provider is made.
+- **Query Aggregation**: Ra-core intercepts all calls to `dataProvider.getOne()` for related data when a `<ReferenceField>` is used in a list. It aggregates and deduplicates the requested ids, and issues a single `dataProvider.getMany()` request. This technique effectively addresses the n+1 query problem, reduces server queries, and accelerates list view rendering.
+- **Opt-In Query Cache**: Ra-core provides an option to prevent refetching an API endpoint for a specified duration, which can be used when you're confident that the API response will remain consistent over time.
+- **Embedded Data** and **Prefetching**: Data providers can return data from related resources in the same response as the requested resource. Ra-core uses this feature to avoid additional network requests and to display related data immediately.
 
 ## Undo
 
-When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), react-admin reverts to the previous state and cancels the call to the data provider.
+When users submit a form, or delete a record, the UI reflects their change immediately. They also see a confirmation message for the change, containing an "Undo" button. If they click on it before the confirmation slides out (the default delay is 5s), ra-core reverts to the previous state and cancels the call to the data provider.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/tutorial_post_edit_undo.webm" type="video/webm"/>
@@ -483,7 +483,7 @@ When users submit a form, or delete a record, the UI reflects their change immed
   Your browser does not support the video tag.
 </video>
 
-This undo feature is enabled by default, and requires no particular setup on the server side. In fact, react-admin delays the call to the data provider for mutations, to give users a "grace" period. That's why the actual call to `dataProvider.update()` occurs 5 seconds after the user submits an update form - even though the UI reflects the changes immediately.
+This undo feature is enabled by default, and requires no particular setup on the server side. In fact, ra-core delays the call to the data provider for mutations, to give users a "grace" period. That's why the actual call to `dataProvider.update()` occurs 5 seconds after the user submits an update form - even though the UI reflects the changes immediately.
 
 You can disable this feature page by page, by choosing a different [mutationMode](./EditBase.md#mutationmode).
 
@@ -491,7 +491,7 @@ You can disable this feature page by page, by choosing a different [mutationMode
 
 It's the server's responsibility to check that an action is allowed for a given user, and to filter the content based on user permissions. But roles and permissions are also a client-side concern, because you want to hide or disable actions based on the user's role. For example, you may not want to show a "Delete" button for users who don't have the `admin` role.
 
-React-admin lets you **customize the user interface based on a simple set of rules**, and to define the permissions for each role in a centralized place. Whether you need to have custom pages for specific roles, or to change the props of a component based on the user's role, react-admin lets you do it. This feature uses the same adapter approach as for the `dataProvider`, which means you can use any authentication backend you want.
+Ra-core lets you **customize the user interface based on a simple set of rules**, and to define the permissions for each role in a centralized place. Whether you need to have custom pages for specific roles, or to change the props of a component based on the user's role, ra-core lets you do it. This feature uses the same adapter approach as for the `dataProvider`, which means you can use any authentication backend you want.
 
 <video controls="controls" style="max-width: 100%">
     <source src="../img/ra-rbac.mp4" type="video/mp4" />
@@ -563,7 +563,7 @@ To learn more about authentication, roles, and permissions, check out the follow
 
 ## Preferences
 
-End-users tweak the UI to their liking, and **they expect these preferences to be saved** so that they don't need to do it again the next time they visit the app. React-admin provides a persistent `Store` for user preferences and uses it in many components.
+End-users tweak the UI to their liking, and **they expect these preferences to be saved** so that they don't need to do it again the next time they visit the app. Ra-core provides a persistent `Store` for user preferences and uses it in many components.
 
 For instance, the list parameters (like current filters, sorting order and pagination preferences) are automatically saved and restored when the user revisits the app.
 
@@ -577,7 +577,7 @@ To learn more about the `Store` and how to use it, check the following sections:
 
 ## I18n
 
-React-admin is **fully internationalized**.
+Ra-core is **fully internationalized**.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/LocalesMenuButton.webm" type="video/webm"/>
@@ -585,7 +585,7 @@ React-admin is **fully internationalized**.
   Your browser does not support the video tag.
 </video>
 
-The default interface messages (for buttons, tooltips, input labels, etc.) are in English. You can translate them to any of [the 30+ languages supported by react-admin](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
+The default interface messages (for buttons, tooltips, input labels, etc.) are in English. You can translate them to any of [the 30+ languages supported by ra-core](./TranslationLocales.md) by importing the appropriate translation package. For instance, to translate to French:
 
 ```jsx
 import { CoreAdmin } from 'ra-core';
@@ -601,7 +601,7 @@ export const App = () => (
 );
 ```
 
-If you need to translate to a language not yet supported by react-admin, you can write a custom translation package. Check the [Writing a Custom Translation Package](./TranslationWriting.md) page for details.
+If you need to translate to a language not yet supported by ra-core, you can write a custom translation package. Check the [Writing a Custom Translation Package](./TranslationWriting.md) page for details.
 
 In your components, to translate a message, use the `useTranslate` hook:
 
@@ -620,7 +620,7 @@ export default MyHelloButton;
 
 The underlying translation library, [polyglot.js](https://airbnb.io/polyglot.js/), supports [pluralization](https://airbnb.io/polyglot.js/#pluralization) and [interpolation](https://airbnb.io/polyglot.js/#interpolation). It is popular, fast, and lightweight. But if you prefer to store your translations in GETTEXT or YAML files rather than JSON, the adapter approach lets you use any translation library you want.
 
-React-admin is used by thousands of companies across the world, so the internationalization support is mature and well-tested. Check the following sections to learn more about react-admin's i18n support:
+Ra-core is used by thousands of companies across the world, so the internationalization support is mature and well-tested. Check the following sections to learn more about ra-core's i18n support:
 
 - [The `i18nProvider` prop](./Translation.md)
 - [Translation messages](./TranslationTranslating.md)
@@ -629,9 +629,9 @@ React-admin is used by thousands of companies across the world, so the internati
 
 ## Type-Safe
 
-React-admin is written in TypeScript. That doesn't mean you have to use TypeScript to use react-admin - **you can write react-admin apps in JavaScript**. But if you do, you get compile-time type checking for your components, hooks, data providers, auth providers, translation messages, and more.
+Ra-core is written in TypeScript. That doesn't mean you have to use TypeScript to use ra-core - **you can write ra-core apps in JavaScript**. But if you do, you get compile-time type checking for your components, hooks, data providers, auth providers, translation messages, and more.
 
-And if your IDE supports TypeScript, you get autocompletion and inline documentation for all react-admin components and hooks.
+And if your IDE supports TypeScript, you get autocompletion and inline documentation for all ra-core components and hooks.
 
 <video controls autoplay playsinline muted loop width="100%">
   <source src="../img/typescript.webm" type="video/webm" />
@@ -639,15 +639,15 @@ And if your IDE supports TypeScript, you get autocompletion and inline documenta
   Your browser does not support the video tag.
 </video>
 
-Building react-admin apps with TypeScript brings more safety and productivity to your development workflow.
+Building ra-core apps with TypeScript brings more safety and productivity to your development workflow.
 
 ## Sustainable
 
-Last but not least, react-admin is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://react-admin-ee.marmelab.com/).
+Last but not least, ra-core is here to stay. That's because the development of the open-source project is **funded by the customers** of the [Enterprise Edition](https://react-admin-ee.marmelab.com/).
 
-Maintaining a large open-source project in the long term is a challenge. But the react-admin core team, hosted by [Marmelab](https://marmelab.com), doesn't have to worry about the next funding round, or about paying back venture capital by raising prices. React-admin has zero debt, has already **passed the break-even point**, and the team will only grow as the number of customers grows.
+Maintaining a large open-source project in the long term is a challenge. But the ra-core core team, hosted by [Marmelab](https://marmelab.com), doesn't have to worry about the next funding round, or about paying back venture capital by raising prices. Ra-core has zero debt, has already **passed the break-even point**, and the team will only grow as the number of customers grows.
 
-The core team is fortunate to be able to work full-time on react-admin, and this allows us to:
+The core team is fortunate to be able to work full-time on ra-core, and this allows us to:
 
 - release bug fixes every week
 - release new features every month
@@ -658,10 +658,10 @@ The core team is fortunate to be able to work full-time on react-admin, and this
 - stay up-to-date with the latest React and libraries versions
 - contribute to the open-source community
 
-At Marmelab, "sustainable" also means **low carbon footprint**. React-admin is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://tanstack.com/query/v5/) for caching data in react-admin reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
+At Marmelab, "sustainable" also means **low carbon footprint**. Ra-core is regularly audited with [GreenFrame](https://greenframe.io/), a tool that measures the carbon footprint of software projects. Technical choices are also made with the environment in mind. For instance, the use of [React Query](https://tanstack.com/query/v5/) for caching data in ra-core reduces the number of HTTP requests, and thus reduces the carbon footprint of the application.
 
 ## Conclusion
 
-React-admin's headless architecture provides the data management, authentication, authorization, internationalization, caching, and validation features you need to build modern admin applications with any UI library of your choice. By using the `ra-core` package and controller hooks, you get all the power of react-admin without being tied to Material UI.
+Ra-core's headless architecture provides the data management, authentication, authorization, internationalization, caching, and validation features you need to build modern admin applications with any UI library of your choice. By using the `ra-core` package and controller hooks, you get all the power of ra-core without being tied to Material UI.
 
 The framework is actively maintained by the team at [Marmelab](https://marmelab.com/) with regular updates and improvements to the headless capabilities.

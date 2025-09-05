@@ -4,11 +4,11 @@ sidebar:
   order: 3
 ---
 
-React-admin can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that react-admin calls to handle authentication and authorization.
+Ra-core can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that ra-core calls to handle authentication and authorization.
 
 ## AuthProvider Interface Overview
 
-React-admin expect an `authProvider` to implement the following methods:
+Ra-core expect an `authProvider` to implement the following methods:
 
 ```tsx
 const authProvider = {
@@ -76,11 +76,11 @@ If you have to implement your own auth provider, here is a step-by-step guide to
 
 ### `login`
 
-Once an admin has an `authProvider`, react-admin enables a new page on the `/login` route, which displays a login form.
+Once an admin has an `authProvider`, ra-core enables a new page on the `/login` route, which displays a login form.
 
 ![Default Login Form](../../img/login-form.png)
 
-Upon submission, the login page calls the `authProvider.login()` method with the login data as parameter. React-admin expects this async method to return if the login data is correct, and to throw an error if it's not.
+Upon submission, the login page calls the `authProvider.login()` method with the login data as parameter. Ra-core expects this async method to return if the login data is correct, and to throw an error if it's not.
 
 For instance, to query an authentication route via HTTPS and store the user credentials (a token) in local storage, configure the `authProvider` as follows:
 
@@ -111,11 +111,11 @@ const authProvider = {
 
 Once the `login()` method returns, the login form redirects to the previous page, or to the admin index if the user just arrived.
 
-If the `login()` method throws an Error, react-admin displays the error message to the user in a notification.
+If the `login()` method throws an Error, ra-core displays the error message to the user in a notification.
 
 **Tip**: Storing credentials in `localStorage`, as in this example, avoids asking the user to log in again after a page refresh, or after a browser tab change. But this makes your application [open to XSS attacks](https://www.redotheweb.com/2015/11/09/api-security.html), so you'd better double down on security, and add an `httpOnly` cookie on the server side, too.
 
-If the `login()` method returns an object with a `redirectTo` path, react-admin will redirect the user to that path after login. You can use this feature to redirect the user to a specific page, or to disable redirection by returning `false`.
+If the `login()` method returns an object with a `redirectTo` path, ra-core will redirect the user to that path after login. You can use this feature to redirect the user to a specific page, or to disable redirection by returning `false`.
 
 ```tsx
 // in src/authProvider.js
@@ -132,7 +132,7 @@ const authProvider = {
 
 When the user credentials are missing or become invalid, a secure API usually responds with an HTTP error code 401 or 403.
 
-Fortunately, each time the `dataProvider` returns an error, react-admin calls `authProvider.checkError()` to check if the error is an authentication error. If this method throws an error itself, react-admin calls the `authProvider.logout()` method immediately, and redirects the user to the login page.
+Fortunately, each time the `dataProvider` returns an error, ra-core calls `authProvider.checkError()` to check if the error is an authentication error. If this method throws an error itself, ra-core calls the `authProvider.logout()` method immediately, and redirects the user to the login page.
 
 So it's up to you to decide which HTTP status codes should let the user continue (by returning a resolved promise) or log them out (by returning a rejected promise).
 
@@ -152,7 +152,7 @@ const authProvider = {
 };
 ```
 
-When `checkError()` throws an error, react-admin redirects to the `/login` page, or to the `error.redirectTo` url. That means you can override the default redirection as follows:
+When `checkError()` throws an error, ra-core redirects to the `/login` page, or to the `error.redirectTo` url. That means you can override the default redirection as follows:
 
 ```tsx
 const authProvider = {
@@ -187,7 +187,7 @@ const authProvider = {
 };
 ```
 
-When `checkError()` throws an error, react-admin displays a notification to the end user, unless the `error.message` is `false`. That means you can disable or customize the notification on error as follows:
+When `checkError()` throws an error, ra-core displays a notification to the end user, unless the `error.message` is `false`. That means you can disable or customize the notification on error as follows:
 
 ```tsx
 const authProvider = {
@@ -206,9 +206,9 @@ const authProvider = {
 
 ### `checkAuth`
 
-Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
+Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. Ra-core keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
-Fortunately, each time the user navigates to a list, edit, create or show page, react-admin calls the `authProvider.checkAuth()` method. If this method throws an error, react-admin calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
+Fortunately, each time the user navigates to a list, edit, create or show page, ra-core calls the `authProvider.checkAuth()` method. If this method throws an error, ra-core calls `authProvider.logout()` and redirects the user to the login page. So it's the ideal place to make sure the credentials are still valid.
 
 For instance, to check for the existence of the authentication data in local storage:
 
@@ -223,7 +223,7 @@ const authProvider = {
 };
 ```
 
-When `checkAuth()` throws an error, react-admin redirects to the `/login` page by default. You can override this path by throwing an error with a `redirectTo` property:
+When `checkAuth()` throws an error, ra-core redirects to the `/login` page by default. You can override this path by throwing an error with a `redirectTo` property:
 
 ```tsx
 const authProvider = {
@@ -240,13 +240,13 @@ const authProvider = {
 
 **Tip**: If both `authProvider.checkAuth()` and `authProvider.logout()` return a redirect URL, the one from `authProvider.checkAuth()` takes precedence.
 
-When `checkAuth()` throws an error, react-admin displays a notification to the end user. You can customize this message by throwing an error with a particular message:
+When `checkAuth()` throws an error, ra-core displays a notification to the end user. You can customize this message by throwing an error with a particular message:
 
 ```tsx
 const authProvider = {
     async checkAuth() {
         if (!localStorage.getItem('auth')) {
-            throw new Error('login.required'); // react-admin passes the error message to the translation layer
+            throw new Error('login.required'); // ra-core passes the error message to the translation layer
         }
     },
     // ...
@@ -270,7 +270,7 @@ const authProvider = {
 
 ### `logout`
 
-If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
+If you enable authentication, ra-core adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the ra-core Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that ra-core can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
 
 <video controls autoplay playsinline muted loop>
   <source src="../img/logout.mp4" type="video/mp4"/>
@@ -290,7 +290,7 @@ const authProvider = {
 
 The `authProvider.logout()` method is also a good place to notify the authentication backend that the user credentials are no longer valid after logout.
 
-After logout, react-admin redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout.
+After logout, ra-core redirects the user to the string returned by `authProvider.logout()` - or to the `/login` url if the method returns nothing. You can customize the redirection url by returning a route string, or `false` to disable redirection after logout.
 
 ```tsx
 const authProvider = {
@@ -306,7 +306,7 @@ const authProvider = {
 
 Admin components often adapt their behavior based on the current user identity. For instance, a lock system may allow edition only if the lock owner is the current user. Another example is the user menu: it has to display the current user name and avatar.
 
-React-admin delegates the storage of the connected user identity to the `authProvider`. If it exposes a `getIdentity()` method, react-admin will call it to read the user details. 
+Ra-core delegates the storage of the connected user identity to the `authProvider`. If it exposes a `getIdentity()` method, ra-core will call it to read the user details. 
 
 `getIdentity`should return an object with at least an `id` field. You can also return a `fullName` and an `avatar` field, or any other field you need in your app:
 
@@ -321,7 +321,7 @@ const authProvider = {
 };
 ```
 
-React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri) in the App Bar:
+Ra-core uses the `fullName` and the `avatar` (an image source, or a data-uri) in the App Bar:
 
 ![User identity](../../img/identity.png)
 
@@ -346,7 +346,7 @@ const PostDetail = ({ id }) => {
 
 ### `handleCallback`
 
-This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
+This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). Ra-core provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
 
 So `handleCallback` lets you process query parameters passed by the third-party authentication service, e.g. to retrieve an authentication token.
 
@@ -388,7 +388,7 @@ const authProvider = {
 }
 ```
 
-Once `handleCallback` returns, react-admin redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
+Once `handleCallback` returns, ra-core redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
 
 You can override this behavior by returning an object with a `redirectTo` property, as follows:
 
@@ -409,7 +409,7 @@ const authProvider = {
 
 ### `canAccess`
 
-React-admin has built-in [Access Control](./Permissions.md#access-control) features that you can enable by implementing the `authProvider.canAccess()` method. It receives a permissions object with the following properties:
+Ra-core has built-in [Access Control](./Permissions.md#access-control) features that you can enable by implementing the `authProvider.canAccess()` method. It receives a permissions object with the following properties:
 
 - `action`: The action to perform on the resource (e.g. `list`, `create`, `update`, `delete`, `show`)
 - `resource`: The resource name
@@ -464,24 +464,24 @@ const authProvider = {
 };
 ```
 
-React-admin doesn't use permissions by default, but it provides [the `usePermissions` hook](./usePermissions.md) to retrieve the permissions of the current user. This lets you add the permissions logic that fits your need in your components.
+Ra-core doesn't use permissions by default, but it provides [the `usePermissions` hook](./usePermissions.md) to retrieve the permissions of the current user. This lets you add the permissions logic that fits your need in your components.
 
 Check the [Access Control documentation](./Permissions.md#permissions) for more information on how to use the `getPermissions` method.
 
 ## Request Format
 
-React-admin calls the `authProvider` methods with the following params:
+Ra-core calls the `authProvider` methods with the following params:
 
 | Method           | Usage                                                               | Parameters format                                                                            |
 | ---------------- | ------------------------------------------------------------------- | -------------------------------------------------------------------------------------------- |
 | `login`          | Log a user in                                                       | `Object` whatever fields the login form contains                                             |
 | `checkError`     | Check if a dataProvider error is an authentication error            | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
-| `checkAuth`      | Check credentials before moving to a new route                      | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes   |
+| `checkAuth`      | Check credentials before moving to a new route                      | `Object` whatever params passed to `useCheckAuth()` - empty for ra-core default routes   |
 | `logout`         | Log a user out                                                      |                                                                                              |
 | `getIdentity`    | Get the current user identity                                       |                                                                                              |
 | `handleCallback` | Validate users after third party authentication service redirection |                                                                                              |
 | `canAccess`      | Check authorization for an action over a resource                   | `{ action: string, resource: string, record: object }`                                       |
-| `getPermissions` | Get the current user credentials                                    | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
+| `getPermissions` | Get the current user credentials                                    | `Object` whatever params passed to `usePermissions()` - empty for ra-core default routes |
 
 ## Response Format
 
@@ -515,7 +515,7 @@ When the auth backend returns an error, the Auth Provider should return a reject
 
 ## Query Cancellation
 
-React-admin supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation), which means that when a component is unmounted, any pending query that it initiated is cancelled. This is useful to avoid out-of-date side effects and to prevent unnecessary network requests.
+Ra-core supports [Query Cancellation](https://tanstack.com/query/latest/docs/framework/react/guides/query-cancellation), which means that when a component is unmounted, any pending query that it initiated is cancelled. This is useful to avoid out-of-date side effects and to prevent unnecessary network requests.
 
 To enable this feature, your auth provider must have a `supportAbortSignal` property set to `true`.
 

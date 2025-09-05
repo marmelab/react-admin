@@ -211,7 +211,7 @@ Use `offline` to customize the text displayed when there are no related records 
 
 ## `perPage`
 
-By default, react-admin restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
+By default, ra-core restricts the possible values to 25 and displays no pagination control. You can change the limit by setting the `perPage` prop:
 
 ```jsx
 <ReferenceManyFieldBase perPage={10} reference="comments" target="post_id">
@@ -312,7 +312,7 @@ By default, `ReferenceManyFieldBase` uses the `id` field as target for the refer
 
 ## `storeKey`
 
-By default, react-admin stores the reference list selection state in localStorage so that users can come back to the list and find it in the same state as when they left it. React-admin uses the main resource, record id and reference resource as the identifier to store the selection state (under the key `${resource}.${record.id}.${reference}.selectedIds`).
+By default, ra-core stores the reference list selection state in localStorage so that users can come back to the list and find it in the same state as when they left it. Ra-core uses the main resource, record id and reference resource as the identifier to store the selection state (under the key `${resource}.${record.id}.${reference}.selectedIds`).
 
 If you want to display multiple lists of the same reference and keep distinct selection states for each one, you must give each list a unique `storeKey` property.
 

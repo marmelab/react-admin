@@ -2,7 +2,7 @@
 title: "useResetStore"
 ---
 
-This hook allows to empty the [Store](./Store.md). React-admin uses it at logout.
+This hook allows to empty the [Store](./Store.md). Ra-core uses it at logout.
 
 ## Syntax
 

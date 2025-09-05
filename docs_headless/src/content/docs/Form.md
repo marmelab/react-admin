@@ -83,7 +83,7 @@ export const PostCreate = () => (
 
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
-**Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Form.md#default-values) section.
+**Tip**: Ra-core also allows to define default values at the input level. See the [Setting default Values](./Form.md#default-values) section.
 
 ## `id`
 
@@ -149,7 +149,7 @@ export const PostCreate = () => {
 
 ## `sanitizeEmptyValues`
 
-In HTML, the value of empty form inputs is the empty string (`''`). React-admin inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
+In HTML, the value of empty form inputs is the empty string (`''`). Ra-core inputs (like `<TextInput>`, `<NumberInput>`, etc.) automatically transform these empty values into `null`.
 
 But for your own input components based on react-hook-form, this is not the default. React-hook-form doesn't transform empty values by default. This leads to unexpected `create` and `update` payloads like:
 
@@ -228,11 +228,11 @@ export const UserCreate = () => (
 
 **Tip**: The `validate` function can return a promise for asynchronous validation. See [the Server-Side Validation section](./Validation.md#server-side-validation) in the Validation documentation.
 
-**Tip**: React-admin also allows to define validation rules at the input level. See [the Validation chapter](./Validation.md#per-input-validation-built-in-field-validators) for details.
+**Tip**: Ra-core also allows to define validation rules at the input level. See [the Validation chapter](./Validation.md#per-input-validation-built-in-field-validators) for details.
 
 ## `warnWhenUnsavedChanges`
 
-React-admin keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
+Ra-core keeps track of the form state, so it can detect when the user leaves an `Edit` or `Create` page with unsaved changes. To avoid data loss, you can use this ability to ask the user to confirm before leaving a page with unsaved changes. 
 
 ![Warn About Unsaved Changes](../../img/warn_when_unsaved_changes.png)
 
@@ -250,7 +250,7 @@ export const TagEdit = () => (
 );
 ```
 
-**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by react-admin, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
+**Note**: Due to limitations in react-router, this feature only works if you use the default router provided by ra-core, or if you use a [Data Router](https://reactrouter.com/en/6.22.3/routers/picking-a-router).
 
 ## Subscribing To Form Changes
 
@@ -269,7 +269,7 @@ const formState = useFormState(); // ❌ should deconstruct the formState
 
 Edition forms often contain linked inputs, e.g. country and city (the choices of the latter depending on the value of the former).
 
-React-admin relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
+Ra-core relies on [react-hook-form](https://react-hook-form.com/) for form handling. You can grab the current form values using react-hook-form's [useWatch](https://react-hook-form.com/docs/usewatch) hook.
 
 ```jsx
 import * as React from 'react';

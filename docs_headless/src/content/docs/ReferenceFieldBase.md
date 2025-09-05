@@ -201,7 +201,7 @@ The `render` function prop will take priority on `children` props if both are se
 
 ## `sortBy`
 
-By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceFieldBase>`, react-admin sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
+By default, when used in a `<Datagrid>`, and when the user clicks on the column header of a `<ReferenceFieldBase>`, ra-core sorts the list by the field `source`. To specify another field name to sort by, set the `sortBy` prop.
 
 ```jsx
 <ReferenceFieldBase source="user_id" reference="users" sortBy="user.name">
@@ -229,7 +229,7 @@ export const PostList = () => (
 );
 ```
 
-React-admin accumulates and deduplicates the ids of the referenced records to make *one* `dataProvider.getMany()` call for the entire list, instead of n `dataProvider.getOne()` calls. So for instance, if the API returns the following list of posts:
+Ra-core accumulates and deduplicates the ids of the referenced records to make *one* `dataProvider.getMany()` call for the entire list, instead of n `dataProvider.getOne()` calls. So for instance, if the API returns the following list of posts:
 
 ```js
 [
@@ -251,7 +251,7 @@ React-admin accumulates and deduplicates the ids of the referenced records to ma
 ]
 ```
 
-Then react-admin renders the `<PostList>` with a loader for the `<ReferenceFieldBase>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
+Then ra-core renders the `<PostList>` with a loader for the `<ReferenceFieldBase>`, fetches the API for the related users in one call (`dataProvider.getMany('users', { ids: [789,735] }`), and re-renders the list once the data arrives. This accelerates the rendering and minimizes network load.
 
 ## Prefetching
 
