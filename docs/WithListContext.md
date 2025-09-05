@@ -104,19 +104,19 @@ import { WithListContext } from 'react-admin';
 import { Chip, Stack, Typography } from '@mui/material';
 
 const TagList = ({data, isPending}) => (
-		<WithListContext
-				data={data}
-				isPending={isPending}
+    <WithListContext
+        data={data}
+        isPending={isPending}
         loading={<Typography>Loading tags...</Typography>}
-				empty={<Typography>No associated tags</Typography>}
-				render={({ data }) => (
-						<Stack direction="row" spacing={1}>
-								{data.map(tag => (
-										<Chip key={tag.id} label={tag.name} />
-								))}
-						</Stack>
-				)}
-		/>
+        empty={<Typography>No associated tags</Typography>}
+        render={({ data }) => (
+            <Stack direction="row" spacing={1}>
+                {data.map(tag => (
+                    <Chip key={tag.id} label={tag.name} />
+                ))}
+            </Stack>
+        )}
+    />
 );
 ```
 
@@ -124,16 +124,17 @@ const TagList = ({data, isPending}) => (
 
 `<WithListContext>` accepts a single `render` prop, which should be a function.
 
-| Prop           | Required | Type           | Default | Description                                               |
-|----------------|----------|----------------|---------|-----------------------------------------------------------|
-| `data`         | Optional | `RecordType[]` |         | The list data in standalone usage.                        |
-| `empty`        | Optional | `ReactNode`    |         | The component to display when the data is empty.          |
-| `error`        | Optional | `Error`        |         | The error in standalone usage.                            |
-| `errorElement` | Optional | `ReactNode`    |         | The component to display in case of error.                |
-| `isPending`    | Optional | `boolean`      |         | Determine if the list is loading in standalone usage.     |
-| `loading`      | Optional | `ReactNode`    |         | The component to display while checking authorizations.   |
-| `render`       | Required | `function`     |         | The function to render the data                           |
-| `total`        | Optional | `number`       |         | The total number of data in the list in standalone usage. |
+| Prop           | Required | Type           | Default | Description                                                                               |
+|----------------|----------|----------------|---------|-------------------------------------------------------------------------------------------|
+| `data`         | Optional | `RecordType[]` |         | The list data in standalone usage.                                                        |
+| `empty`        | Optional | `ReactNode`    |         | The component to display when the data is empty.                                          |
+| `error`        | Optional | `Error`        |         | The error in standalone usage.                                                            |
+| `errorElement` | Optional | `ReactNode`    |         | The component to display in case of error.                                                |
+| `isPending`    | Optional | `boolean`      |         | Determine if the list is loading in standalone usage.                                     |
+| `loading`      | Optional | `ReactNode`    |         | The component to display while checking authorizations.                                   |
+| `offline`      | Optional | `ReactNode`    |         | The component to display when there is no connectivity to load data and no data in cache. |
+| `render`       | Required | `function`     |         | The function to render the data                                                           |
+| `total`        | Optional | `number`       |         | The total number of data in the list in standalone usage.                                 |
 
 ## `empty`
 
@@ -143,18 +144,18 @@ If `empty` is not provided, the render function will be called with empty data.
 
 ```jsx
 <WithListContext
-  empty={<p>no books</p>}
-  render={({ data }) => (
-      <ul>
-          {data.map(book => (
-              <li key={book.id}>
-                  <i>{book.title}</i>, published on
-                  {book.published_at}
-              </li>
-          ))}
-      </ul>
-  )}
-  loading={<p>Loading...</p>}
+    empty={<p>no books</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+    loading={<p>Loading...</p>}
 />
 ```
 
@@ -189,17 +190,39 @@ If `loading` is not provided, the render function will be called with `isPending
 
 ```jsx
 <WithListContext
-  loading={<p>loading...</p>}
-  render={({ data }) => (
-      <ul>
-          {data.map(book => (
-              <li key={book.id}>
-                  <i>{book.title}</i>, published on
-                  {book.published_at}
-              </li>
-          ))}
-      </ul>
-  )}
+    loading={<p>loading...</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+/>
+```
+
+## `offline`
+
+Use `offline` to display a component when there is no connectivity to load data and no data in cache.
+
+If `offline` is not provided, the render function will be called with `isPaused` as true and no data.
+
+```jsx
+<WithListContext
+    offline={<p>Offline</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
 />
 ```
 

@@ -22,38 +22,58 @@ import { useListContextWithProps } from './useListContextWithProps';
 export const WithListContext = <RecordType extends RaRecord>({
     empty,
     loading,
+    offline,
     errorElement,
     render,
+    children,
     ...props
 }: WithListContextProps<RecordType>) => {
     const context = useListContextWithProps<RecordType>(props);
-    const { data, total, isPending, error } = context;
+    const { data, total, isPaused, isPending, isPlaceholderData, error } =
+        context;
 
-    if (isPending === true && loading) {
+    if (!isPaused && isPending && loading !== false && loading !== undefined) {
         return loading;
     }
 
-    if (error && errorElement) {
+    if (
+        isPaused &&
+        (isPending || isPlaceholderData) &&
+        offline !== false &&
+        offline !== undefined
+    ) {
+        return offline;
+    }
+
+    if (error && errorElement !== false && errorElement !== undefined) {
         return errorElement;
     }
 
-    if ((data == null || data.length === 0 || total === 0) && empty) {
+    if (
+        (data == null || data.length === 0 || total === 0) &&
+        empty !== false &&
+        empty !== undefined
+    ) {
         return empty;
     }
 
-    return render(context) || null;
+    return render(context) || children;
 };
 
-export type WithListContextProps<RecordType extends RaRecord> = Partial<
-    Pick<
-        ListControllerResult<RecordType>,
-        'data' | 'total' | 'isPending' | 'error'
-    >
-> & {
+export interface WithListContextProps<RecordType extends RaRecord>
+    extends React.PropsWithChildren<
+        Partial<
+            Pick<
+                ListControllerResult<RecordType>,
+                'data' | 'total' | 'isPending' | 'error'
+            >
+        >
+    > {
     render: (
         context: Partial<ListControllerResult<RecordType>>
     ) => ReactElement | false | null;
-    empty?: React.ReactNode;
     loading?: React.ReactNode;
+    offline?: React.ReactNode;
     errorElement?: React.ReactNode;
-};
+    empty?: React.ReactNode;
+}
