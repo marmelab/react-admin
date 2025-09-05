@@ -26,6 +26,7 @@ export * from './useDelete';
 export * from './useDeleteMany';
 export * from './useInfiniteGetList';
 export * from './undo/';
+export * from './useMutationWithMutationMode';
 
 export type { Options } from './fetch';
 
