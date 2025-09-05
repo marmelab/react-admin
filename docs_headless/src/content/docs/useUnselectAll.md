@@ -2,7 +2,7 @@
 title: "useUnselectAll"
 ---
 
-This hook returns a function that unselects all lines in the current data table (see [`<DataTableBase>`](./DataTableBase.md)). Pass the name of the resource as argument.
+This hook returns a function that unselects all lines in the current data table (see `<DataTableBase>`). Pass the name of the resource as argument.
 
 ```jsx
 import { useUnselectAll } from 'ra-core';
