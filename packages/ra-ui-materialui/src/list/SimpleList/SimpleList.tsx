@@ -110,7 +110,7 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                     hasTertiaryText={!!tertiaryText}
                 />
             }
-            empty={empty ?? <></>}
+            empty={empty ?? null}
             render={({ data }) => (
                 <Root className={className} {...sanitizeListRestProps(rest)}>
                     <RecordsIterator
