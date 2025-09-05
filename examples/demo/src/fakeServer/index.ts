@@ -18,6 +18,8 @@ export default async (type: string) => {
                 );
         }
     }
-    const worker = setupWorker(http.all(/http:\/\/localhost:4000/, fakeServer));
+    const worker = setupWorker(
+        http.all(/https:\/\/localhost:4000/, fakeServer)
+    );
     return worker;
 };
