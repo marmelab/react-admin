@@ -14,7 +14,7 @@ import rehypeAstroRelativeMarkdownLinks from 'astro-rehype-relative-markdown-lin
 export default defineConfig({
     integrations: [
         starlight({
-            title: 'React Admin Headless',
+            title: 'ra-core',
             customCss: ['./src/styles/global.css'],
             favicon: '/favicon.ico',
             social: [
@@ -26,36 +26,168 @@ export default defineConfig({
             ],
             sidebar: [
                 {
+                    label: 'Getting Started',
+                    slug: 'getting-started',
+                },
+                {
                     label: 'Guides & Concepts',
                     items: [
-                        // Each item here is one entry in the navigation menu.
-                        {
-                            label: 'General Concepts',
-                            slug: 'guides/architecture',
-                        },
-                        {
-                            label: 'Data Fetching',
-                            slug: 'guides/datafetchingguide',
-                        },
-                        {
-                            label: 'CRUD pages',
-                            slug: 'guides/crud',
-                            attrs: {
-                                class: 'flex items-center',
-                            },
-                            badge: {
-                                text: '',
-                                variant: 'default',
-                                class: 'ee-badge',
-                            },
-                        },
+                        'architecture',
+                        'datafetchingguide',
+                        'crud',
+                        'forms',
+                        'securityguide',
+                        'routing',
+                        'translation',
+                        'store',
+                        'features',
                     ],
                 },
                 {
-                    label: 'Reference',
-                    autogenerate: {
-                        directory: 'reference',
-                    },
+                    label: 'App Configuration',
+                    items: ['coreadmin', 'resource', 'customroutes'],
+                },
+                {
+                    label: 'Data Fetching',
+                    items: [
+                        'dataproviders',
+                        'actions',
+                        'dataproviderlist',
+                        'dataproviderwriting',
+                        'fetchjson',
+                        'usecreate',
+                        'usedataprovider',
+                        'usedelete',
+                        'usedeletemany',
+                        'usegetlist',
+                        'usegetmany',
+                        'usegetmanyreference',
+                        'usegetone',
+                        'useinfinitegetlist',
+                        'useupdate',
+                        'useupdatemany',
+                        'withlifecyclecallbacks',
+                    ],
+                },
+                {
+                    label: 'Security',
+                    items: [
+                        'authentication',
+                        'authproviderlist',
+                        'authproviderwriting',
+                        'permissions',
+                        'authenticated',
+                        'canaccess',
+                        'useauthenticated',
+                        'useauthprovider',
+                        'useauthstate',
+                        'usecanaccess',
+                        'usegetidentity',
+                        'uselogin',
+                        'uselogout',
+                        'usepermissions',
+                        'addrefreshauthtoauthprovider',
+                        'addrefreshauthtodataprovider',
+                    ],
+                },
+                {
+                    label: 'List Page',
+                    items: [
+                        'listtutorial',
+                        'filteringtutorial',
+                        'listbase',
+                        'infinitelistbase',
+                        'listiterator',
+                        'filterliveform',
+                        'withlistcontext',
+                        'uselist',
+                        'uselistcontext',
+                        'uselistcontroller',
+                        'useunselect',
+                        'useunselectall',
+                    ],
+                },
+                {
+                    label: 'Creation & Edition Pages',
+                    items: [
+                        'edittutorial',
+                        'validation',
+                        'createbase',
+                        'editbase',
+                        'form',
+                        'usecreatecontext',
+                        'usecreatecontroller',
+                        'useeditcontext',
+                        'useeditcontroller',
+                        'userecordfromlocation',
+                        'useregistermutationmiddleware',
+                        'usesavecontext',
+                        'useunique',
+                    ],
+                },
+                {
+                    label: 'Show Page',
+                    items: ['showbase', 'useshowcontext', 'useshowcontroller'],
+                },
+                {
+                    label: 'Common',
+                    items: [
+                        'withrecord',
+                        'usegetrecordid',
+                        'usenotify',
+                        'userecordcontext',
+                        'useredirect',
+                        'userefresh',
+                    ],
+                },
+                {
+                    label: 'Fields',
+                    items: [
+                        'fields',
+                        'fieldsforrelationships',
+                        'referencearrayfieldbase',
+                        'referencefieldbase',
+                        'referencemanycountbase',
+                        'referencemanyfieldbase',
+                        'referenceonefieldbase',
+                        'usefieldvalue',
+                    ],
+                },
+                {
+                    label: 'Inputs',
+                    items: ['inputs', 'useinput'],
+                },
+                {
+                    label: 'Preferences',
+                    items: [
+                        'usestore',
+                        'useremovefromstore',
+                        'useresetstore',
+                        'usestorecontext',
+                    ],
+                },
+                {
+                    label: 'I18N Provider & Translations',
+                    items: [
+                        'translationsetup',
+                        'translationlocales',
+                        'translationtranslating',
+                        'translationwriting',
+                        'translate',
+                        'uselocalestate',
+                        'usetranslate',
+                    ],
+                },
+                {
+                    label: 'Other Components & Hooks',
+                    items: [
+                        'recordrepresentation',
+                        'usegetrecordrepresentation',
+                    ],
+                },
+                {
+                    label: 'Recipes',
+                    items: ['caching', 'unittesting'],
                 },
             ],
             components: {
@@ -76,6 +208,7 @@ export default defineConfig({
                 {
                     base: '/ra-core/',
                     collectionBase: false,
+                    trailingSlash: 'always',
                 },
             ],
         ],
