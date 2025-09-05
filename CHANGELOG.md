@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.11.1
+
+* Fix `<Datagrid>` and `<DataTable>` bulk selection ([#10918](https://github.com/marmelab/react-admin/pull/10918)) ([djhi](https://github.com/djhi))
+* Revert usage on `<ListIterator>` in `ra-ui-materialui` ([#10919](https://github.com/marmelab/react-admin/pull/10919)) ([djhi](https://github.com/djhi))
+* [Doc] Update ra-realtime documentation for 5.2.0 ([#10914](https://github.com/marmelab/react-admin/pull/10914)) ([djhi](https://github.com/djhi))
+* [chore] Upgrade Cypress ([#10913](https://github.com/marmelab/react-admin/pull/10913)) ([djhi](https://github.com/djhi))
+
 ## 5.11.0
 
 * Add ability to use a `ReactNode` as create label in `<AutocompleteInput>` and `<SelectInput>` ([#10883](https://github.com/marmelab/react-admin/pull/10883)) ([Madeorsk](https://github.com/Madeorsk))
