@@ -45,21 +45,18 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```jsx
-import { ListBase, ReferenceArrayFieldBase, RecordsIterator } from 'react-admin';
+import { ListBase, RecordsIterator, ReferenceArrayFieldBase, WithListContext } from 'react-admin'; 
 
 export const PostList = () => (
-    <ListBase
-        render={({ data, isPending }) => (
-            <>
-                {!isPending &&
-                    <RecordsIterator data={data}>
-                        <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                            <TagList />
-                        </ReferenceArrayFieldBase>
-                    </RecordsIterator>
-            </>
-        )}
-    />
+    <ListBase>
+        <WithListContext loading={null}>
+            <RecordsIterator>
+                <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+                    <TagList />
+                </ReferenceArrayFieldBase>
+            </RecordsIterator>
+        </WithListContext>
+    </ListBase>
 );
 
 const TagList = (props: { children: React.ReactNode }) => {
