@@ -40,8 +40,6 @@ export default App;
 
 Now, when a user browses to `/settings` or `/profile`, the components you defined will appear in the main part of the screen.
 
-**Tip**: Custom routes don't automatically appear in the menu. You have to manually [customize the menu](#adding-custom-routes-to-the-menu) if you want custom routes to be accessible from the menu.
-
 ## `children`
 
 `children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes), mapping a `path` with a custom `element`.
