@@ -2,19 +2,39 @@
 title: "Getting Started"
 ---
 
-Welcome to ra-core, the headless foundation of react-admin! This documentation will guide you through building powerful admin applications using your preferred UI library.
+Welcome to ra-core, the headless single-page application framework for React that helps you build admins panels, internal tools, dashboards, ERPs, and B2B Apps, on top of any REST or GraphQL API.
 
 ![ra-core examples using various UI libraries](../../img/ra-core-quick-start-guide-hero.png)
 
 ## What is ra-core?
 
-Ra-core is the headless version of react-admin - it provides all the business logic, data management, and state handling without being tied to any specific UI library. While react-admin comes with a complete Material UI-based interface, ra-core gives you the freedom to build your admin interface with [Ant Design](https://ant.design/), [Chakra UI](https://chakra-ui.com/), [Daisy UI](https://daisyui.com/), [Shadcn UI](https://ui.shadcn.com/), or any custom UI components.
+Ra-core provides hooks and components to manage the data fetching, data edition, navigation, security, and internationalization logic that you've probably already implemented several times and that form the base of any single-page application. It glues together powerful React libraries like [TanStack Query](https://tanstack.com/query/latest/docs/react/overview), [react-hook-form](https://react-hook-form.com/), and [react-router](https://reactrouter.com/).
+
+Ra-core has a strong emphasis on relational APIs, and lets you aggregate data from several sources directly in the frontend without the need for complex backend logic.
+
+Ra-core is headless, so it gives you the freedom to build your admin interface with [Shadcn UI](https://ui.shadcn.com/), [Material UI](https://mui.com/material-ui/), [Ant Design](https://ant.design/), [Chakra UI](https://chakra-ui.com/), [Daisy UI](https://daisyui.com/), or any custom UI components.
 
 You can use ra-core to:
 - **Create your own admin app** with your preferred design system
 - **Build your own admin framework** by adding your own UI layer on top of ra-core's business logic
 
-Throughout this documentation, we'll use the terms 'ra-core', 'react-admin headless', and 'react-admin' interchangeably when referring to concepts that apply to the headless core functionality.
+## Who Uses ra-core?
+
+Ra-core is the base of two popular admin frameworks:
+
+- **[React-Admin](https://marmelab.com/react-admin/)**: The complete Material UI implementation
+- **[Shadcn Admin Kit](https://marmelab.com/shadcn-admin-kit/)**: A modern implementation using Shadcn UI
+
+These frameworks themselves are used by thousands of developers worldwide.
+
+if you want to see demos of ra-core in action, check out the following resources:
+
+- [Atomic CRM](https://marmelab.com/atomic-crm/), a complete CRM built on top of Supabase
+- [E-commerce backend](https://marmelab.com/shadcn-admin-kit/demo/), a demo built with Shadcn UI and ra-core
+- [HelpDesk ticketing App](https://marmelab.com/react-admin-helpdesk/), a demo built with Material UI
+- [Writer's Delight](https://marmelab.com/writers-delight/), a note-taking app with AI capabilities
+- [Navidrome](https://demo.navidrome.org/app/), a Spotify clone
+- [Kanban](https://djhi.github.io/atomic-pm/#/boards/1), a Kanban board application
 
 ## Why Choose ra-core?
 
@@ -208,14 +228,6 @@ Ra-core provides the foundation; you build the interface. Here's a suggested dev
 7. **Error Handling**: Customize the [error page](./CoreAdmin.md#error). Implement global error boundaries and API error handling with user-friendly messages and recovery actions.
 
 8. **Advanced Layouts**: Build tabbed forms, filter panels, breadcrumbs, and responsive designs. Create specialized layouts for different screen sizes, implement advanced form patterns like wizard flows, and enhance navigation with breadcrumbs.
-
-## Real-World Examples
-
-See ra-core in action with different UI libraries:
-
-- **[React-Admin](https://marmelab.com/react-admin/)**: The complete Material UI implementation
-- **[Shadcn Admin Kit](https://marmelab.com/shadcn-admin-kit/)**: A modern implementation using Shadcn UI
-- **[Tutorial: React-Admin with Daisy UI](https://marmelab.com/blog/2023/11/28/using-react-admin-with-your-favorite-ui-library.html)**: Step-by-step guide using Tailwind CSS, Daisy UI, Tanstack Table, and React-Aria
 
 ## Documentation Structure
 
