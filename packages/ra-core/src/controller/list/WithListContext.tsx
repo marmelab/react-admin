@@ -76,4 +76,9 @@ export interface WithListContextProps<RecordType extends RaRecord>
     offline?: React.ReactNode;
     errorElement?: React.ReactNode;
     empty?: React.ReactNode;
+
+    /**
+     * @deprecated
+     */
+    label?: string;
 }
