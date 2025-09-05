@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onlineManager, QueryClient } from '@tanstack/react-query';
-import { RecordsIterator } from 'ra-core';
+import { RecordsIterator, WithListContext } from 'ra-core';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';
@@ -134,31 +134,29 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
             <Resource
                 name="authors"
                 list={
-                    <ListBase
-                        render={({ data, isPending }) => (
-                            <>
-                                {!isPending && (
-                                    <RecordsIterator
-                                        data={data}
-                                        render={author => (
-                                            <div>
-                                                <h3>
-                                                    {author.last_name} Books
-                                                </h3>
-                                                <ReferenceManyFieldBase
-                                                    target="author"
-                                                    source="id"
-                                                    reference="books"
-                                                >
-                                                    <AuthorList source="title" />
-                                                </ReferenceManyFieldBase>
-                                            </div>
-                                        )}
-                                    />
+                    <ListBase>
+                        <WithListContext
+                            loading={null}
+                            error={null}
+                            offline={null}
+                            empty={null}
+                        >
+                            <RecordsIterator
+                                render={author => (
+                                    <div>
+                                        <h3>{author.last_name} Books</h3>
+                                        <ReferenceManyFieldBase
+                                            target="author"
+                                            source="id"
+                                            reference="books"
+                                        >
+                                            <AuthorList source="title" />
+                                        </ReferenceManyFieldBase>
+                                    </div>
                                 )}
-                            </>
-                        )}
-                    />
+                            />
+                        </WithListContext>
+                    </ListBase>
                 }
             />
         </CoreAdmin>

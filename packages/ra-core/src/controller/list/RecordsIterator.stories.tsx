@@ -36,28 +36,29 @@ export const UsingRender = ({
         <ListContextProvider value={value}>
             <WithListContext
                 loading={<div>Loading...</div>}
+                errorElement={<div>Error</div>}
+                offline={<div>Offline</div>}
                 empty={<div>No data</div>}
-                render={() => (
-                    <ul
-                        style={{
-                            listStyleType: 'none',
-                        }}
-                    >
-                        <RecordsIterator
-                            render={record => (
-                                <li
-                                    style={{
-                                        padding: '10px',
-                                        border: '1px solid #ccc',
-                                    }}
-                                >
-                                    {record.title}
-                                </li>
-                            )}
-                        />
-                    </ul>
-                )}
-            />
+            >
+                <ul
+                    style={{
+                        listStyleType: 'none',
+                    }}
+                >
+                    <RecordsIterator
+                        render={record => (
+                            <li
+                                style={{
+                                    padding: '10px',
+                                    border: '1px solid #ccc',
+                                }}
+                            >
+                                {record.title}
+                            </li>
+                        )}
+                    />
+                </ul>
+            </WithListContext>
         </ListContextProvider>
     );
 };
@@ -100,19 +101,20 @@ export const UsingChildren = ({
         <ListContextProvider value={value}>
             <WithListContext
                 loading={<div>Loading...</div>}
+                errorElement={<div>Error</div>}
+                offline={<div>Offline</div>}
                 empty={<div>No data</div>}
-                render={() => (
-                    <ul
-                        style={{
-                            listStyleType: 'none',
-                        }}
-                    >
-                        <RecordsIterator>
-                            <ListItem />
-                        </RecordsIterator>
-                    </ul>
-                )}
-            />
+            >
+                <ul
+                    style={{
+                        listStyleType: 'none',
+                    }}
+                >
+                    <RecordsIterator>
+                        <ListItem />
+                    </RecordsIterator>
+                </ul>
+            </WithListContext>
         </ListContextProvider>
     );
 };
