@@ -126,6 +126,7 @@ const TagList = ({data, isPending}) => (
 
 | Prop           | Required | Type           | Default | Description                                                                               |
 |----------------|----------|----------------|---------|-------------------------------------------------------------------------------------------|
+| `children`     | Optional | `ReactNode`    |         | The components rendered in the list context.                                              |
 | `data`         | Optional | `RecordType[]` |         | The list data in standalone usage.                                                        |
 | `empty`        | Optional | `ReactNode`    |         | The component to display when the data is empty.                                          |
 | `error`        | Optional | `Error`        |         | The error in standalone usage.                                                            |
