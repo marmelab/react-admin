@@ -250,7 +250,7 @@ import { useListController } from 'ra-core';
 
 That's because the `react-admin` package simply re-exports components from internal packages. React-admin is a *distribution* of several packages, each dedicated to a specific feature. These packages can be found in [the `packages/` directory](https://github.com/marmelab/react-admin/tree/master/packages). Some of the more notable packages include:
     
-* `ra-core`: The core react-admin logic, without any UI.
+* [`ra-core`](https://marmelab.com/ra-core/): The core react-admin logic, without any UI.
 * `ra-ui-materialui`: The Material UI skin for react-admin.
 * `ra-data-*`: Data providers for various data backends.
 * `ra-language-*`: Interface translations for various languages.
