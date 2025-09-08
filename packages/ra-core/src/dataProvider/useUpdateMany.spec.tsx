@@ -539,6 +539,13 @@ describe('useUpdateMany', () => {
                 ).toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            await waitFor(() => {
+                expect(screen.queryByText('success')).toBeNull();
+                expect(
+                    screen.queryByText('Hello World from middleware')
+                ).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            });
             screen.getByText('Refetch').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -659,7 +666,6 @@ describe('useUpdateMany', () => {
         });
         it('when undoable, it accepts middlewares and displays result and success side effects right away and reverts on cancel', async () => {
             render(<WithMiddlewares mutationMode="undoable" timeout={10} />);
-            await screen.findByText('Hello');
             await screen.findByText('Hello');
             act(() => {
                 screen.getByText('Update title').click();
