@@ -115,7 +115,7 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
 export default () => {
     const dataProvider = buildApolloClient({
         clientOptions: {
-            uri: 'https://localhost:4000/graphql',
+            uri: 'https://demo.api.marmelab.com/graphql',
         },
         introspection: {
             operationNames: {

@@ -19,7 +19,7 @@ export default async (type: string) => {
         }
     }
     const worker = setupWorker(
-        http.all(/https:\/\/localhost:4000/, fakeServer)
+        http.all(/https:\/\/demo\.api\.marmelab\.com/, fakeServer)
     );
     return worker;
 };

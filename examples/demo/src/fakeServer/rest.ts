@@ -4,7 +4,7 @@ import generateData from 'data-generator-retail';
 export default () => {
     const data = generateData();
     const adapter = new MswAdapter({
-        baseUrl: 'https://localhost:4000',
+        baseUrl: 'https://demo.api.marmelab.com',
         data,
         loggingEnabled: true,
         middlewares: [withDelay(300)],
