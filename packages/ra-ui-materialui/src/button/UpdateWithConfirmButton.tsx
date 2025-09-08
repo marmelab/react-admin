@@ -64,6 +64,7 @@ export const UpdateWithConfirmButton = <
     };
 
     const handleConfirm = e => {
+        setOpen(false);
         handleUpdate(data);
 
         if (typeof onClick === 'function') {
@@ -147,6 +148,7 @@ export const UpdateWithConfirmButton = <
 
 const sanitizeRestProps = ({
     label,
+    mutationOptions,
     ...rest
 }: Omit<
     UpdateWithConfirmButtonProps,
