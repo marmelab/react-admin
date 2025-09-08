@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode, useMemo } from 'react';
+import { ReactElement, ReactNode, useMemo, memo } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
@@ -18,8 +18,8 @@ import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
 import { RemoveItemButton as DefaultRemoveItemButton } from './RemoveItemButton';
 import { ReOrderButtons as DefaultReOrderButtons } from './ReOrderButtons';
 
-export const SimpleFormIteratorItem = React.forwardRef(
-    (props: SimpleFormIteratorItemProps, ref: any) => {
+export const SimpleFormIteratorItem = memo(
+    React.forwardRef((props: SimpleFormIteratorItemProps, ref: any) => {
         const {
             children,
             disabled,
@@ -141,7 +141,7 @@ export const SimpleFormIteratorItem = React.forwardRef(
                 </li>
             </SimpleFormIteratorItemContext.Provider>
         );
-    }
+    })
 );
 
 export type DisableRemoveFunction = (record: RaRecord) => boolean;

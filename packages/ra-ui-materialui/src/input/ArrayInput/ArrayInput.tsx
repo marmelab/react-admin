@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { type ReactElement, useEffect } from 'react';
+import { type ReactElement, useEffect, useState } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
@@ -24,6 +24,7 @@ import {
     type ComponentsOverrides,
     useThemeProps,
 } from '@mui/material';
+import get from 'lodash/get';
 
 import { LinearProgress } from '../../layout';
 import type { CommonInputProps } from '../CommonInputProps';
@@ -99,13 +100,24 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     const formGroups = useFormGroups();
     const parentSourceContext = useSourceContext();
     const finalSource = parentSourceContext.getSource(arraySource);
+    const [error, setError] = useState<any>();
 
     const sanitizedValidate = Array.isArray(validate)
         ? composeSyncValidators(validate)
         : validate;
     const getValidationErrorMessage = useGetValidationErrorMessage();
 
-    const { getFieldState, formState, getValues } = useFormContext();
+    const { getValues, subscribe } = useFormContext();
+
+    useEffect(() => {
+        return subscribe({
+            formState: { errors: true },
+            callback: ({ errors }) => {
+                const error = get(errors ?? {}, finalSource);
+                setError(error);
+            },
+        });
+    }, [finalSource, subscribe]);
 
     const fieldProps = useFieldArray({
         name: finalSource,
@@ -141,8 +153,6 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
         isArrayInput: true,
         fieldArrayInputControl: fieldProps,
     });
-
-    const { error } = getFieldState(finalSource, formState);
 
     // The SourceContext will be read by children of ArrayInput to compute their composed source and label
     //

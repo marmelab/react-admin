@@ -33,6 +33,7 @@ export type SourceContextValue = {
 export const SourceContext = createContext<SourceContextValue | undefined>(
     undefined
 );
+SourceContext.displayName = 'SourceContextProvider';
 
 const defaultContextValue = {
     getSource: (source: string) => source,
