@@ -6,17 +6,10 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import {
-    useUpdateMany,
-    useRefresh,
-    useNotify,
-    useUnselectAll,
-    useResourceContext,
-    useListContext,
+    useBulkUpdateController,
     type RaRecord,
-    type UpdateManyParams,
-    useTranslate,
+    type UseBulkUpdateControllerParams,
 } from 'ra-core';
-import type { UseMutationOptions } from '@tanstack/react-query';
 
 import { Button, type ButtonProps } from './Button';
 
@@ -27,73 +20,23 @@ export const BulkUpdateWithUndoButton = (
         props: inProps,
         name: PREFIX,
     });
-    const { selectedIds } = useListContext();
-
-    const notify = useNotify();
-    const resource = useResourceContext(props);
-    const unselectAll = useUnselectAll(resource);
-    const refresh = useRefresh();
-    const translate = useTranslate();
 
     const {
         data,
         label = 'ra.action.update',
         icon = defaultIcon,
-        successMessage,
+        mutationMode = 'undoable',
         onClick,
-        onSuccess = () => {
-            notify(
-                successMessage ?? `resources.${resource}.notifications.updated`,
-                {
-                    type: 'info',
-                    messageArgs: {
-                        smart_count: selectedIds.length,
-                        _: translate('ra.notification.updated', {
-                            smart_count: selectedIds.length,
-                        }),
-                    },
-                    undoable: true,
-                }
-            );
-            unselectAll();
-        },
-        onError = (error: Error | string) => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'error',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                  ? error.message
-                                  : undefined,
-                    },
-                }
-            );
-            refresh();
-        },
-        mutationOptions = {},
         ...rest
     } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
 
-    const [updateMany, { isPending }] = useUpdateMany(
-        resource,
-        { ids: selectedIds, data, meta: mutationMeta },
-        {
-            onSuccess,
-            onError,
-            mutationMode: 'undoable',
-            ...otherMutationOptions,
-        }
-    );
+    const { handleUpdate, isPending } = useBulkUpdateController({
+        ...rest,
+        mutationMode,
+    });
 
     const handleClick = e => {
-        updateMany();
+        handleUpdate(data);
         if (typeof onClick === 'function') {
             onClick(e);
         }
@@ -115,25 +58,18 @@ const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
     label,
-    onSuccess,
-    onError,
+    resource,
+    successMessage,
     ...rest
-}: Omit<BulkUpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
+}: Omit<BulkUpdateWithUndoButtonProps, 'icon' | 'data'>) => rest;
 
 export interface BulkUpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseBulkUpdateControllerParams<RecordType, MutationOptionsError> {
     icon?: React.ReactNode;
     data: any;
-    onSuccess?: () => void;
-    onError?: (error: any) => void;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        UpdateManyParams<RecordType>
-    > & { meta?: any };
-    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkUpdateWithUndoButton';
