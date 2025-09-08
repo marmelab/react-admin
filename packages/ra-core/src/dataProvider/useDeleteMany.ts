@@ -107,9 +107,9 @@ export const useDeleteMany = <
                         'useDeleteMany mutation requires a resource'
                     );
                 }
-                if (params == null) {
+                if (params.ids == null) {
                     throw new Error(
-                        'useDeleteMany mutation requires parameters'
+                        'useDeleteMany mutation requires an array of ids'
                     );
                 }
                 return dataProvider

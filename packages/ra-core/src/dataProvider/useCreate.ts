@@ -118,8 +118,10 @@ export const useCreate = <
                 if (resource == null) {
                     throw new Error('useCreate mutation requires a resource');
                 }
-                if (params == null) {
-                    throw new Error('useCreate mutation requires parameters');
+                if (params.data == null) {
+                    throw new Error(
+                        'useCreate mutation requires a non-empty data object'
+                    );
                 }
                 return dataProviderCreate(resource, params);
             },

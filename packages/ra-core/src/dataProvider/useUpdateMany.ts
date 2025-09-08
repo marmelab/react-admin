@@ -117,9 +117,14 @@ export const useUpdateMany = <
                         'useUpdateMany mutation requires a resource'
                     );
                 }
-                if (params == null) {
+                if (params.ids == null) {
                     throw new Error(
-                        'useUpdateMany mutation requires parameters'
+                        'useUpdateMany mutation requires an array of ids'
+                    );
+                }
+                if (!params.data) {
+                    throw new Error(
+                        'useUpdateMany mutation requires a non-empty data object'
                     );
                 }
                 return dataProviderUpdateMany(

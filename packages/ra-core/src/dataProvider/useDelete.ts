@@ -105,8 +105,10 @@ export const useDelete = <
                 if (resource == null) {
                     throw new Error('useDelete mutation requires a resource');
                 }
-                if (params == null) {
-                    throw new Error('useDelete mutation requires parameters');
+                if (params.id == null) {
+                    throw new Error(
+                        'useDelete mutation requires a non-empty id'
+                    );
                 }
                 return dataProvider
                     .delete<RecordType>(

@@ -118,8 +118,15 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 if (resource == null) {
                     throw new Error('useUpdate mutation requires a resource');
                 }
-                if (params == null) {
-                    throw new Error('useUpdate mutation requires parameters');
+                if (params.id == null) {
+                    throw new Error(
+                        'useUpdate mutation requires a non-empty id'
+                    );
+                }
+                if (!params.data) {
+                    throw new Error(
+                        'useUpdate mutation requires a non-empty data object'
+                    );
                 }
                 return dataProviderUpdate(
                     resource,
