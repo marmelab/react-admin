@@ -110,7 +110,6 @@ export default defineConfig({
                         'filteringtutorial',
                         'listbase',
                         'infinitelistbase',
-                        'listiterator',
                         'filterliveform',
                         'withlistcontext',
                         'uselist',
