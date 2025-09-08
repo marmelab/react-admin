@@ -13,7 +13,7 @@ const TranslateLabel = ({
     resource,
 }: {
     source?: string;
-    label?: string | false | React.ReactElement;
+    label?: React.ReactNode;
     resource?: string;
 }) => {
     const translateLabel = useTranslateLabel();

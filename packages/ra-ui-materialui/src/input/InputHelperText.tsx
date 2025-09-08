@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { isValidElement, ReactElement } from 'react';
+import { isValidElement } from 'react';
 import { useTranslate, ValidationError, ValidationErrorMessage } from 'ra-core';
 
 export const InputHelperText = (props: InputHelperTextProps) => {
@@ -33,6 +33,6 @@ export const InputHelperText = (props: InputHelperTextProps) => {
 const defaultInnerHTML = { __html: '&#8203;' };
 
 export interface InputHelperTextProps {
-    helperText?: string | ReactElement | boolean;
+    helperText?: React.ReactNode;
     error?: ValidationErrorMessage;
 }
