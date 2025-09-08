@@ -64,7 +64,7 @@ export const UpdateWithConfirmButton = <
     };
 
     const handleConfirm = e => {
-        handleUpdate();
+        handleUpdate(data);
 
         if (typeof onClick === 'function') {
             onClick(e);

@@ -68,7 +68,7 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
                 'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
             );
         }
-        handleUpdate();
+        handleUpdate(data);
         if (typeof onClick === 'function') {
             onClick(e);
         }

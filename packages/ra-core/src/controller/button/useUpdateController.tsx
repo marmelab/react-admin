@@ -63,7 +63,7 @@ export const useUpdateController = <
     ErrorType = Error,
 >(
     props: UseUpdateControllerParams<RecordType, ErrorType>
-): UseUpdateControllerReturn => {
+): UseUpdateControllerReturn<RecordType> => {
     const {
         redirect: redirectTo = false,
         mutationMode,
@@ -120,32 +120,36 @@ export const useUpdateController = <
         }
     );
 
-    const handleUpdate = useCallback(() => {
-        if (!record) {
-            throw new Error(
-                'The record cannot be updated because no record has been passed'
-            );
-        }
-        updateOne(
-            resource,
-            {
-                id: record.id,
-                previousData: record,
-                meta: mutationMeta,
-            },
-            {
-                mutationMode,
-                ...otherMutationOptions,
+    const handleUpdate = useCallback(
+        (data: Partial<RecordType>) => {
+            if (!record) {
+                throw new Error(
+                    'The record cannot be updated because no record has been passed'
+                );
             }
-        );
-    }, [
-        updateOne,
-        mutationMeta,
-        mutationMode,
-        otherMutationOptions,
-        record,
-        resource,
-    ]);
+            updateOne(
+                resource,
+                {
+                    id: record.id,
+                    data,
+                    previousData: record,
+                    meta: mutationMeta,
+                },
+                {
+                    mutationMode,
+                    ...otherMutationOptions,
+                }
+            );
+        },
+        [
+            updateOne,
+            mutationMeta,
+            mutationMode,
+            otherMutationOptions,
+            record,
+            resource,
+        ]
+    );
 
     return useMemo(
         () => ({
@@ -169,8 +173,8 @@ export interface UseUpdateControllerParams<
     successMessage?: string;
 }
 
-export interface UseUpdateControllerReturn {
+export interface UseUpdateControllerReturn<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isPending: boolean;
-    handleUpdate: () => void;
+    handleUpdate: (data: Partial<RecordType>) => void;
 }
