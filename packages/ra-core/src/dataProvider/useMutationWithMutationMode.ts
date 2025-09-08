@@ -14,7 +14,7 @@ import { useEvent } from '../util';
 
 export const useMutationWithMutationMode = <
     ErrorType = Error,
-    TData = unknown,
+    TData extends { data?: unknown } = { data?: unknown },
     TVariables = unknown,
 >(
     params: TVariables = {} as TVariables,
@@ -92,102 +92,116 @@ export const useMutationWithMutationMode = <
     // otherwise the other side effects may not applied.
     const hasCallTimeOnSuccess = useRef(false);
 
-    const mutation = useMutation<TData, ErrorType, Partial<TVariables>>({
-        mutationKey,
-        mutationFn: async params => {
-            const callTimeParams = { ...paramsRef.current, ...params };
-            if (params == null) {
-                throw new Error(
-                    'useMutationWithMutationMode mutation requires parameters'
-                );
-            }
-
-            return mutateWithMiddlewares.current(callTimeParams as TVariables);
-        },
-        ...mutationOptions,
-        onMutate: async variables => {
-            if (mutationOptions.onMutate) {
-                const userContext =
-                    (await mutationOptions.onMutate(variables)) || {};
-                return {
-                    snapshot: snapshot.current,
-                    // @ts-ignore
-                    ...userContext,
-                };
-            } else {
-                // Return a context object with the snapshot value
-                return { snapshot: snapshot.current };
-            }
-        },
-        onError: (error, variables = {}, context: { snapshot: Snapshot }) => {
-            if (mode.current === 'optimistic' || mode.current === 'undoable') {
-                // If the mutation fails, use the context returned from onMutate to rollback
-                context.snapshot.forEach(([key, value]) => {
-                    queryClient.setQueryData(key, value);
-                });
-            }
-
-            if (callTimeOnError.current) {
-                return callTimeOnError.current(error, variables, context);
-            }
-            if (mutationOptions.onError) {
-                return mutationOptions.onError(error, variables, context);
-            }
-            // call-time error callback is executed by react-query
-        },
-        onSuccess: (data, variables = {}, context) => {
-            if (mode.current === 'pessimistic') {
-                // update the getOne and getList query cache with the new result
-                updateCacheEvent(
-                    { ...paramsRef.current, ...variables },
-                    {
-                        mutationMode: mode.current,
-                    },
-                    data
-                );
-
-                if (
-                    mutationOptions.onSuccess &&
-                    !hasCallTimeOnSuccess.current
-                ) {
-                    mutationOptions.onSuccess(data, variables, context);
+    const mutation = useMutation<TData['data'], ErrorType, Partial<TVariables>>(
+        {
+            mutationKey,
+            mutationFn: async params => {
+                const callTimeParams = { ...paramsRef.current, ...params };
+                if (params == null) {
+                    throw new Error(
+                        'useMutationWithMutationMode mutation requires parameters'
+                    );
                 }
-            }
-        },
-        onSettled: (
-            data,
-            error,
-            variables = {},
-            context: { snapshot: Snapshot }
-        ) => {
-            // Always refetch after error or success:
-            context.snapshot.forEach(([queryKey]) => {
-                queryClient.invalidateQueries({ queryKey });
-            });
 
-            if (callTimeOnSettled.current) {
-                return callTimeOnSettled.current(
-                    data,
-                    error,
-                    variables,
-                    context
+                return (
+                    mutateWithMiddlewares
+                        .current(callTimeParams as TVariables)
+                        // Middlewares expect the data property of the dataProvider response
+                        .then(({ data }) => data)
                 );
-            }
-            if (mutationOptions.onSettled) {
-                return mutationOptions.onSettled(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
-            }
-        },
-    });
+            },
+            ...mutationOptions,
+            onMutate: async variables => {
+                if (mutationOptions.onMutate) {
+                    const userContext =
+                        (await mutationOptions.onMutate(variables)) || {};
+                    return {
+                        snapshot: snapshot.current,
+                        // @ts-ignore
+                        ...userContext,
+                    };
+                } else {
+                    // Return a context object with the snapshot value
+                    return { snapshot: snapshot.current };
+                }
+            },
+            onError: (
+                error,
+                variables = {},
+                context: { snapshot: Snapshot }
+            ) => {
+                if (
+                    mode.current === 'optimistic' ||
+                    mode.current === 'undoable'
+                ) {
+                    // If the mutation fails, use the context returned from onMutate to rollback
+                    context.snapshot.forEach(([key, value]) => {
+                        queryClient.setQueryData(key, value);
+                    });
+                }
+
+                if (callTimeOnError.current) {
+                    return callTimeOnError.current(error, variables, context);
+                }
+                if (mutationOptions.onError) {
+                    return mutationOptions.onError(error, variables, context);
+                }
+                // call-time error callback is executed by react-query
+            },
+            onSuccess: (data, variables = {}, context) => {
+                if (mode.current === 'pessimistic') {
+                    // update the getOne and getList query cache with the new result
+                    updateCacheEvent(
+                        { ...paramsRef.current, ...variables },
+                        {
+                            mutationMode: mode.current,
+                        },
+                        data
+                    );
+
+                    if (
+                        mutationOptions.onSuccess &&
+                        !hasCallTimeOnSuccess.current
+                    ) {
+                        mutationOptions.onSuccess(data, variables, context);
+                    }
+                }
+            },
+            onSettled: (
+                data,
+                error,
+                variables = {},
+                context: { snapshot: Snapshot }
+            ) => {
+                // Always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
+                });
+
+                if (callTimeOnSettled.current) {
+                    return callTimeOnSettled.current(
+                        data,
+                        error,
+                        variables,
+                        context
+                    );
+                }
+                if (mutationOptions.onSettled) {
+                    return mutationOptions.onSettled(
+                        data,
+                        error,
+                        variables,
+                        context
+                    );
+                }
+            },
+        }
+    );
 
     const mutate = async (
         callTimeParams: Partial<TVariables> = {},
         callTimeOptions: MutateOptions<
-            TData,
+            TData['data'],
             ErrorType,
             Partial<TVariables>,
             unknown
@@ -331,16 +345,17 @@ const noop = () => {};
 
 export type Snapshot = [key: QueryKey, value: any][];
 
-type MutationFunction<TData = unknown, TVariables = unknown> = (
-    variables: TVariables
-) => Promise<TData>;
+type MutationFunction<
+    TData extends { data?: unknown } = { data?: unknown },
+    TVariables = unknown,
+> = (variables: TVariables) => Promise<TData>;
 
 export type UseMutationWithMutationModeOptions<
     ErrorType = Error,
-    TData = unknown,
+    TData extends { data?: unknown } = { data?: unknown },
     TVariables = unknown,
 > = Omit<
-    UseMutationOptions<TData, ErrorType, Partial<TVariables>>,
+    UseMutationOptions<TData['data'], ErrorType, Partial<TVariables>>,
     'mutationFn'
 > & {
     getMutateWithMiddlewares?: (
@@ -352,8 +367,8 @@ export type UseMutationWithMutationModeOptions<
     updateCache: <OptionsType extends { mutationMode: MutationMode }>(
         params: Partial<TVariables>,
         options: OptionsType,
-        mutationResult: TData | undefined
-    ) => TData;
+        mutationResult: TData['data'] | undefined
+    ) => TData['data'];
     getSnapshot: <OptionsType extends { mutationMode: MutationMode }>(
         params: Partial<TVariables>,
         options: OptionsType
@@ -365,31 +380,41 @@ export type UseMutationWithMutationModeOptions<
 };
 
 type DataProviderMutationWithMiddlewareFunction<
-    TData = unknown,
+    TData extends { data?: unknown } = { data?: unknown },
     TVariables = unknown,
 > = (params: Partial<TVariables>, options?: any) => Promise<TData>;
 
 export type MutationFunctionWithOptions<
     TReturnPromise extends boolean = boolean,
     ErrorType = Error,
-    TData = unknown,
+    TData extends { data?: unknown } = { data?: unknown },
     TVariables = unknown,
 > = (
     params?: Partial<TVariables>,
-    options?: MutateOptions<TData, ErrorType, Partial<TVariables>, unknown> & {
+    options?: MutateOptions<
+        TData['data'],
+        ErrorType,
+        Partial<TVariables>,
+        unknown
+    > & {
         mutationMode?: MutationMode;
         returnPromise?: TReturnPromise;
     }
-) => Promise<TReturnPromise extends true ? TData : void>;
+) => Promise<TReturnPromise extends true ? TData['data'] : void>;
 
 export type UseMutationWithMutationModeResult<
     TReturnPromise extends boolean = boolean,
     ErrorType = Error,
-    TData = unknown,
+    TData extends { data?: unknown } = { data?: unknown },
     TVariables = unknown,
 > = [
     MutationFunctionWithOptions<TReturnPromise, ErrorType, TData, TVariables>,
-    UseMutationResult<TData, ErrorType, Partial<TVariables>, unknown> & {
+    UseMutationResult<
+        TData['data'],
+        ErrorType,
+        Partial<TVariables>,
+        unknown
+    > & {
         isLoading: boolean;
     },
 ];

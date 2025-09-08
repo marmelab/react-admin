@@ -14,6 +14,7 @@ import type {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
+    DeleteResult,
 } from '../types';
 import {
     type Snapshot,
@@ -93,7 +94,7 @@ export const useDelete = <
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
-        RecordType | undefined,
+        DeleteResult<RecordType>,
         UseDeleteMutateParams<RecordType>
     >(
         { resource, ...params },
@@ -110,12 +111,10 @@ export const useDelete = <
                         'useDelete mutation requires a non-empty id'
                     );
                 }
-                return dataProvider
-                    .delete<RecordType>(
-                        resource,
-                        params as DeleteParams<RecordType>
-                    )
-                    .then(({ data }) => data);
+                return dataProvider.delete<RecordType>(
+                    resource,
+                    params as DeleteParams<RecordType>
+                );
             },
             updateCache: ({ resource, ...params }, { mutationMode }) => {
                 // hack: only way to tell react-query not to fetch this query for the next 5 seconds

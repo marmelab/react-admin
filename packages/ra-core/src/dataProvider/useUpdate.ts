@@ -15,6 +15,7 @@ import type {
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
     DataProvider,
+    UpdateResult,
 } from '../types';
 import {
     type Snapshot,
@@ -99,14 +100,12 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
 
     const dataProviderUpdate = useEvent(
         (resource: string, params: UpdateParams<RecordType>) =>
-            dataProvider
-                .update<RecordType>(resource, params)
-                .then(({ data }) => data)
+            dataProvider.update<RecordType>(resource, params)
     );
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         ErrorType,
-        RecordType,
+        UpdateResult<RecordType>,
         UseUpdateMutateParams<RecordType>
     >(
         { resource, ...params },

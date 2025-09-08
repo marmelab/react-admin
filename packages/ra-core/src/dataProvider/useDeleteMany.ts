@@ -14,6 +14,7 @@ import type {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
+    DeleteManyResult,
 } from '../types';
 import { useEvent } from '../util';
 import {
@@ -93,7 +94,7 @@ export const useDeleteMany = <
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
-        Array<RecordType['id']> | undefined,
+        DeleteManyResult<RecordType>,
         UseDeleteManyMutateParams<RecordType>
     >(
         { resource, ...params },
@@ -112,12 +113,10 @@ export const useDeleteMany = <
                         'useDeleteMany mutation requires an array of ids'
                     );
                 }
-                return dataProvider
-                    .deleteMany<RecordType>(
-                        resource,
-                        params as DeleteManyParams<RecordType>
-                    )
-                    .then(({ data }) => data);
+                return dataProvider.deleteMany<RecordType>(
+                    resource,
+                    params as DeleteManyParams<RecordType>
+                );
             },
             updateCache: ({ resource, ...params }, { mutationMode }) => {
                 // hack: only way to tell react-query not to fetch this query for the next 5 seconds

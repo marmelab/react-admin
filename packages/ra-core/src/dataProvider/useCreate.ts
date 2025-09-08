@@ -12,6 +12,7 @@ import type {
     Identifier,
     DataProvider,
     MutationMode,
+    CreateResult,
 } from '../types';
 import { useEvent } from '../util';
 import {
@@ -96,17 +97,15 @@ export const useCreate = <
     } = options;
 
     const dataProviderCreate = useEvent((resource: string, params) =>
-        dataProvider
-            .create<
-                RecordType,
-                ResultRecordType
-            >(resource, params as CreateParams<RecordType>)
-            .then(({ data }) => data)
+        dataProvider.create<RecordType, ResultRecordType>(
+            resource,
+            params as CreateParams<RecordType>
+        )
     );
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
-        ResultRecordType,
+        CreateResult<ResultRecordType>,
         UseCreateMutateParams<RecordType>
     >(
         { resource, ...params },
@@ -135,7 +134,9 @@ export const useCreate = <
                         ? result?.id
                         : params.data?.id;
                 if (!id) {
-                    return undefined;
+                    throw new Error(
+                        'Invalid dataProvider response for create: missing id'
+                    );
                 }
                 // hack: only way to tell react-query not to fetch this query for the next 5 seconds
                 // because setQueryData doesn't accept a stale time option

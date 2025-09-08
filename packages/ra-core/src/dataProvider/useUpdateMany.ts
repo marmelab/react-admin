@@ -9,13 +9,13 @@ import {
 
 import { useDataProvider } from './useDataProvider';
 import type {
-    Identifier,
     RaRecord,
     UpdateManyParams,
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
     DataProvider,
+    UpdateManyResult,
 } from '../types';
 import {
     type Snapshot,
@@ -96,14 +96,12 @@ export const useUpdateMany = <
 
     const dataProviderUpdateMany = useEvent(
         (resource: string, params: UpdateManyParams<RecordType>) =>
-            dataProvider
-                .updateMany<RecordType>(resource, params)
-                .then(({ data }) => data)
+            dataProvider.updateMany<RecordType>(resource, params)
     );
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
-        Array<RecordType['id']> | undefined,
+        UpdateManyResult<RecordType>,
         UseUpdateManyMutateParams<RecordType>
     >(
         { resource, ...params },
@@ -226,7 +224,7 @@ export const useUpdateMany = <
                     { updatedAt }
                 );
 
-                return params?.ids as Identifier[];
+                return params?.ids;
             },
             getSnapshot: ({ resource }) => {
                 /**
