@@ -307,10 +307,13 @@ export type UseDeleteManyOptions<
     RecordType extends RaRecord = any,
     MutationError = unknown,
     TReturnPromise extends boolean = boolean,
-> = UseMutationOptions<
-    Array<RecordType['id']> | undefined,
-    MutationError,
-    Partial<UseDeleteManyMutateParams<RecordType>>
+> = Omit<
+    UseMutationOptions<
+        Array<RecordType['id']> | undefined,
+        MutationError,
+        Partial<UseDeleteManyMutateParams<RecordType>>
+    >,
+    'mutationFn'
 > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise };
 
 export type UseDeleteManyResult<

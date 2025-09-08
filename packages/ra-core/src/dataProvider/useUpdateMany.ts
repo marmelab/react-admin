@@ -303,10 +303,13 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
 export type UseUpdateManyOptions<
     RecordType extends RaRecord = any,
     MutationError = unknown,
-> = UseMutationOptions<
-    Array<RecordType['id']>,
-    MutationError,
-    Partial<Omit<UseUpdateManyMutateParams<RecordType>, 'mutationFn'>>
+> = Omit<
+    UseMutationOptions<
+        Array<RecordType['id']>,
+        MutationError,
+        Partial<UseUpdateManyMutateParams<RecordType>>
+    >,
+    'mutationFn'
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;

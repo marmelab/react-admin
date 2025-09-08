@@ -279,10 +279,13 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
 export type UseDeleteOptions<
     RecordType extends RaRecord = any,
     MutationError = unknown,
-> = UseMutationOptions<
-    RecordType,
-    MutationError,
-    Partial<Omit<UseDeleteMutateParams<RecordType>, 'mutationFn'>>
+> = Omit<
+    UseMutationOptions<
+        RecordType,
+        MutationError,
+        Partial<UseDeleteMutateParams<RecordType>>
+    >,
+    'mutationFn'
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
