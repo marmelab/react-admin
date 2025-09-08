@@ -8,20 +8,16 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import {
-    type MutationMode,
-    useDeleteMany,
-    useListContext,
-    useNotify,
-    useRefresh,
     useResourceContext,
     useTranslate,
     type RaRecord,
-    type DeleteManyParams,
+    UseBulkDeleteControllerParams,
+    useBulkDeleteController,
+    useListContext,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const BulkDeleteWithConfirmButton = (
@@ -38,64 +34,18 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
-        mutationOptions = {},
-        successMessage,
         onClick,
         ...rest
     } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext();
+    const { selectedIds } = useListContext();
+    const { handleDelete, isPending } = useBulkDeleteController({
+        mutationMode,
+        ...rest,
+    });
+
     const [isOpen, setOpen] = useState(false);
-    const notify = useNotify();
     const resource = useResourceContext(props);
-    const refresh = useRefresh();
     const translate = useTranslate();
-    const [deleteMany, { isPending }] = useDeleteMany(
-        resource,
-        { ids: selectedIds, meta: mutationMeta },
-        {
-            onSuccess: () => {
-                refresh();
-                notify(
-                    successMessage ??
-                        `resources.${resource}.notifications.deleted`,
-                    {
-                        type: 'info',
-                        messageArgs: {
-                            smart_count: selectedIds.length,
-                            _: translate('ra.notification.deleted', {
-                                smart_count: selectedIds.length,
-                            }),
-                        },
-                        undoable: mutationMode === 'undoable',
-                    }
-                );
-                onUnselectItems();
-                setOpen(false);
-            },
-            onError: (error: Error) => {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error && error.message
-                                      ? error.message
-                                      : undefined,
-                        },
-                    }
-                );
-                setOpen(false);
-            },
-            mutationMode,
-            ...otherMutationOptions,
-        }
-    );
 
     const handleClick = e => {
         setOpen(true);
@@ -106,8 +56,9 @@ export const BulkDeleteWithConfirmButton = (
         setOpen(false);
     };
 
-    const handleDelete = e => {
-        deleteMany();
+    const handleConfirm = e => {
+        setOpen(false);
+        handleDelete();
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -159,7 +110,7 @@ export const BulkDeleteWithConfirmButton = (
                         ),
                     }),
                 }}
-                onConfirm={handleDelete}
+                onConfirm={handleConfirm}
                 onClose={handleDialogClose}
             />
         </Fragment>
@@ -169,27 +120,20 @@ export const BulkDeleteWithConfirmButton = (
 const sanitizeRestProps = ({
     classes,
     label,
+    resource,
+    successMessage,
     ...rest
-}: Omit<
-    BulkDeleteWithConfirmButtonProps,
-    'resource' | 'icon' | 'mutationMode'
->) => rest;
+}: Omit<BulkDeleteWithConfirmButtonProps, 'icon' | 'mutationMode'>) => rest;
 
 export interface BulkDeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseBulkDeleteControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     confirmColor?: 'primary' | 'warning';
     icon?: React.ReactNode;
-    mutationMode: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteManyParams<RecordType>
-    > & { meta?: any };
-    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkDeleteWithConfirmButton';

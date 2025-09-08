@@ -6,18 +6,12 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import {
-    useDeleteMany,
-    useRefresh,
-    useNotify,
-    useResourceContext,
-    useListContext,
     type RaRecord,
-    type DeleteManyParams,
-    useTranslate,
+    useBulkDeleteController,
+    UseBulkDeleteControllerParams,
 } from 'ra-core';
 
 import { Button, type ButtonProps } from './Button';
-import type { UseMutationOptions } from '@tanstack/react-query';
 
 export const BulkDeleteWithUndoButton = (
     inProps: BulkDeleteWithUndoButtonProps
@@ -30,64 +24,12 @@ export const BulkDeleteWithUndoButton = (
         label = 'ra.action.delete',
         icon = defaultIcon,
         onClick,
-        mutationOptions = {},
-        successMessage,
         ...rest
     } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
-    const { selectedIds, onUnselectItems } = useListContext();
-
-    const notify = useNotify();
-    const resource = useResourceContext(props);
-    const refresh = useRefresh();
-    const translate = useTranslate();
-    const [deleteMany, { isPending }] = useDeleteMany();
+    const { handleDelete, isPending } = useBulkDeleteController(rest);
 
     const handleClick = e => {
-        deleteMany(
-            resource,
-            { ids: selectedIds, meta: mutationMeta },
-            {
-                onSuccess: () => {
-                    notify(
-                        successMessage ??
-                            `resources.${resource}.notifications.deleted`,
-                        {
-                            type: 'info',
-                            messageArgs: {
-                                smart_count: selectedIds.length,
-                                _: translate('ra.notification.deleted', {
-                                    smart_count: selectedIds.length,
-                                }),
-                            },
-                            undoable: true,
-                        }
-                    );
-                    onUnselectItems();
-                },
-                onError: (error: Error) => {
-                    notify(
-                        typeof error === 'string'
-                            ? error
-                            : error.message || 'ra.notification.http_error',
-                        {
-                            type: 'error',
-                            messageArgs: {
-                                _:
-                                    typeof error === 'string'
-                                        ? error
-                                        : error && error.message
-                                          ? error.message
-                                          : undefined,
-                            },
-                        }
-                    );
-                    refresh();
-                },
-                mutationMode: 'undoable',
-                ...otherMutationOptions,
-            }
-        );
+        handleDelete();
         if (typeof onClick === 'function') {
             onClick(e);
         }
@@ -111,20 +53,17 @@ const defaultIcon = <ActionDelete />;
 const sanitizeRestProps = ({
     classes,
     label,
+    resource,
+    successMessage,
     ...rest
-}: Omit<BulkDeleteWithUndoButtonProps, 'resource' | 'icon'>) => rest;
+}: Omit<BulkDeleteWithUndoButtonProps, 'icon' | 'mutationMode'>) => rest;
 
 export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseBulkDeleteControllerParams<RecordType, MutationOptionsError> {
     icon?: React.ReactNode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteManyParams<RecordType>
-    > & { meta?: any };
-    successMessage?: string;
 }
 
 const PREFIX = 'RaBulkDeleteWithUndoButton';
