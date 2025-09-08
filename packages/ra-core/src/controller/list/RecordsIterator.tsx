@@ -19,7 +19,7 @@ export const RecordsIterator = <RecordType extends RaRecord = any>(
         total === 0
     ) {
         console.warn(
-            '<RecordsIterator> does not handle loading, empty and error states. Use <WithListContext>.'
+            '<RecordsIterator> does not handle loading, offline, empty and error states. Use <WithListContext>.'
         );
         return null;
     }
@@ -47,3 +47,12 @@ export interface RecordsIteratorProps<RecordType extends RaRecord = any>
     children?: React.ReactNode;
     render?: (record: RecordType, index: number) => React.ReactNode;
 }
+
+/**
+ * @deprecated use RecordsIterator instead.
+ */
+export const ListIterator = RecordsIterator;
+/**
+ * @deprecated use RecordsIteratorProps instead.
+ */
+export type ListIteratorProps = RecordsIteratorProps;
