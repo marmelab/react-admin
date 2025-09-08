@@ -94,6 +94,7 @@ const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
     label,
+    mutationOptions,
     ...rest
 }: Omit<UpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
