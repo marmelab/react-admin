@@ -10,57 +10,6 @@ import { RaRecord, MutationMode } from '../../types';
 import { useResourceContext } from '../../core/useResourceContext';
 import { useTranslate } from '../../i18n/useTranslate';
 
-/**
- * Prepare a set of callbacks for a delete button
- *
- * @example
- * const DeleteButton = ({
- *     resource,
- *     record,
- *     redirect,
- *     ...rest
- * }) => {
- *     const {
- *         isPending,
- *         handleDelete,
- *     } = useDeleteController({
- *         mutationMode: 'pessimistic',
- *         resource,
- *         record,
- *         redirect,
- *     });
- *
- *     const [open, setOpen] = useState(false);
- *
- *     return (
- *         <Fragment>
- *             <Button
- *                 onClick={() => setOpen(true)}
- *                 label="ra.action.delete"
- *                 {...rest}
- *             >
- *                 {icon}
- *             </Button>
- *             <Confirm
- *                 isOpen={open}
- *                 loading={isPending}
- *                 title="ra.message.delete_title"
- *                 content="ra.message.delete_content"
- *                 titleTranslateOptions={{
- *                     name: resource,
- *                     id: record.id,
- *                 }}
- *                 contentTranslateOptions={{
- *                     name: resource,
- *                     id: record.id,
- *                 }}
- *                 onConfirm={() => handleDelete()}
- *                 onClose={() => setOpen(false)}
- *             />
- *         </Fragment>
- *     );
- * };
- */
 export const useBulkDeleteController = <
     RecordType extends RaRecord = any,
     ErrorType = Error,
