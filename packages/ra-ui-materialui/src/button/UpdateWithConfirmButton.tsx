@@ -9,20 +9,17 @@ import {
 } from '@mui/material/styles';
 import {
     useTranslate,
-    useNotify,
     useResourceContext,
-    type MutationMode,
     type RaRecord,
-    type UpdateParams,
     useRecordContext,
-    useUpdate,
     useGetRecordRepresentation,
     useResourceTranslation,
+    useUpdateController,
+    UseUpdateControllerParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, singularize } from 'inflection';
 
 export const UpdateWithConfirmButton = <
@@ -35,7 +32,6 @@ export const UpdateWithConfirmButton = <
         props: inProps,
         name: PREFIX,
     });
-    const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
@@ -49,62 +45,14 @@ export const UpdateWithConfirmButton = <
         label: labelProp,
         mutationMode = 'pessimistic',
         onClick,
-        mutationOptions = emptyObject as UseMutationOptions<
-            RecordType,
-            MutationOptionsError,
-            UpdateParams<RecordType>
-        > & { meta?: any },
         titleTranslateOptions = emptyObject,
         contentTranslateOptions = emptyObject,
         ...rest
     } = props;
-    const {
-        meta: mutationMeta,
-        onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
-        },
-        onError = (error: MutationOptionsError) => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'error',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                  ? error.message
-                                  : undefined,
-                    },
-                }
-            );
-        },
-        onSettled = () => {
-            setOpen(false);
-        },
-        ...otherMutationOptions
-    } = mutationOptions;
-
-    const [update, { isPending }] = useUpdate<RecordType, MutationOptionsError>(
-        resource,
-        { id: record?.id, data, meta: mutationMeta, previousData: record },
-        {
-            onSuccess,
-            onError,
-            onSettled,
-            mutationMode,
-            ...otherMutationOptions,
-        }
-    );
+    const { handleUpdate, isPending } = useUpdateController({
+        ...rest,
+        mutationMode,
+    });
 
     const handleClick = (e: React.MouseEvent) => {
         setOpen(true);
@@ -115,13 +63,8 @@ export const UpdateWithConfirmButton = <
         setOpen(false);
     };
 
-    const handleUpdate = e => {
-        update(resource, {
-            id: record?.id,
-            data,
-            meta: mutationMeta,
-            previousData: record,
-        });
+    const handleConfirm = e => {
+        handleUpdate();
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -195,7 +138,7 @@ export const UpdateWithConfirmButton = <
                 loading={isPending}
                 title={<>{confirmTitle}</>}
                 content={<>{confirmContent}</>}
-                onConfirm={handleUpdate}
+                onConfirm={handleConfirm}
                 onClose={handleDialogClose}
             />
         </Fragment>
@@ -213,17 +156,12 @@ const sanitizeRestProps = ({
 export interface UpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError extends Error = Error,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseUpdateControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: React.ReactNode;
     data: any;
-    mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        UpdateParams<RecordType>
-    > & { meta?: any };
     titleTranslateOptions?: object;
     contentTranslateOptions?: object;
 }
