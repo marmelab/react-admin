@@ -66,7 +66,7 @@ export const useUpdateController = <
 ): UseUpdateControllerReturn<RecordType> => {
     const {
         redirect: redirectTo = false,
-        mutationMode,
+        mutationMode = 'undoable',
         mutationOptions = {},
         successMessage,
     } = props;
@@ -117,6 +117,8 @@ export const useUpdateController = <
                     }
                 );
             },
+            mutationMode,
+            ...otherMutationOptions,
         }
     );
 
@@ -127,28 +129,14 @@ export const useUpdateController = <
                     'The record cannot be updated because no record has been passed'
                 );
             }
-            updateOne(
-                resource,
-                {
-                    id: record.id,
-                    data,
-                    previousData: record,
-                    meta: mutationMeta,
-                },
-                {
-                    mutationMode,
-                    ...otherMutationOptions,
-                }
-            );
+            updateOne(resource, {
+                id: record.id,
+                data,
+                previousData: record,
+                meta: mutationMeta,
+            });
         },
-        [
-            updateOne,
-            mutationMeta,
-            mutationMode,
-            otherMutationOptions,
-            record,
-            resource,
-        ]
+        [updateOne, mutationMeta, record, resource]
     );
 
     return useMemo(
