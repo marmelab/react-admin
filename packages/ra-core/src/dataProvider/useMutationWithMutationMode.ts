@@ -173,10 +173,15 @@ export const useMutationWithMutationMode = <
                 variables = {},
                 context: { snapshot: Snapshot }
             ) => {
-                // Always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
+                if (
+                    mode.current === 'optimistic' ||
+                    mode.current === 'undoable'
+                ) {
+                    // Always refetch after error or success:
+                    context.snapshot.forEach(([queryKey]) => {
+                        queryClient.invalidateQueries({ queryKey });
+                    });
+                }
 
                 if (callTimeOnSettled.current) {
                     return callTimeOnSettled.current(

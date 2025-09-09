@@ -266,6 +266,17 @@ export const useDeleteMany = <
                 );
                 return snapshot;
             },
+            onSettled: (
+                result,
+                error,
+                variables,
+                context: { snapshot: Snapshot }
+            ) => {
+                // For deletion, we always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
+                });
+            },
         }
     );
 

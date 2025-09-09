@@ -158,6 +158,21 @@ export const useCreate = <
                     { updatedAt }
                 );
 
+                if (mutationMode === 'pessimistic') {
+                    queryClient.invalidateQueries({
+                        queryKey: [resource, 'getList'],
+                    });
+                    queryClient.invalidateQueries({
+                        queryKey: [resource, 'getInfiniteList'],
+                    });
+                    queryClient.invalidateQueries({
+                        queryKey: [resource, 'getMany'],
+                    });
+                    queryClient.invalidateQueries({
+                        queryKey: [resource, 'getManyReference'],
+                    });
+                }
+
                 return clonedData;
             },
             getSnapshot: ({ resource, ...params }, { mutationMode }) => {

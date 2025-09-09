@@ -542,7 +542,12 @@ describe('useUpdateMany', () => {
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(
-                    screen.queryByText('Hello World from middleware')
+                    // We could expect 'Hello World from middleware' here, but
+                    // updateMany's result only contains the ids, not the updated data
+                    // so the cache can only be updated with the call-time params,
+                    // which do not include the middleware's result.
+                    // I guess it's OK for most cases though...
+                    screen.queryByText('Hello World')
                 ).not.toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
             });
