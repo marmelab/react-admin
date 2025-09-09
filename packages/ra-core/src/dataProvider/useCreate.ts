@@ -158,21 +158,6 @@ export const useCreate = <
                     { updatedAt }
                 );
 
-                if (mutationMode === 'pessimistic') {
-                    queryClient.invalidateQueries({
-                        queryKey: [resource, 'getList'],
-                    });
-                    queryClient.invalidateQueries({
-                        queryKey: [resource, 'getInfiniteList'],
-                    });
-                    queryClient.invalidateQueries({
-                        queryKey: [resource, 'getMany'],
-                    });
-                    queryClient.invalidateQueries({
-                        queryKey: [resource, 'getManyReference'],
-                    });
-                }
-
                 return clonedData;
             },
             getSnapshot: ({ resource, ...params }, { mutationMode }) => {
@@ -232,6 +217,17 @@ export const useCreate = <
                         { id: String(data?.id), meta },
                     ],
                     exact: true,
+                });
+            },
+            onSettled: (
+                result,
+                error,
+                variables,
+                context: { snapshot: Snapshot }
+            ) => {
+                // For deletion, we always refetch after error or success:
+                context.snapshot.forEach(([queryKey]) => {
+                    queryClient.invalidateQueries({ queryKey });
                 });
             },
         }
