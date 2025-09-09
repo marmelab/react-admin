@@ -119,6 +119,7 @@ export const BulkDeleteWithConfirmButton = (
             <StyledButton
                 onClick={handleClick}
                 label={label}
+                color="error"
                 {...sanitizeRestProps(rest)}
             >
                 {icon}
