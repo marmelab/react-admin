@@ -225,7 +225,7 @@ export const useCreate = <
                 variables,
                 context: { snapshot: Snapshot }
             ) => {
-                // For deletion, we always refetch after error or success:
+                // For creation, we always refetch after error or success:
                 context.snapshot.forEach(([queryKey]) => {
                     queryClient.invalidateQueries({ queryKey });
                 });
