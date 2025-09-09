@@ -540,7 +540,7 @@ describe('useUpdateMany', () => {
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
             await waitFor(() => {
-                expect(screen.queryByText('success')).toBeNull();
+                expect(screen.queryByText('success')).not.toBeNull();
                 expect(
                     screen.queryByText('Hello World from middleware')
                 ).not.toBeNull();
