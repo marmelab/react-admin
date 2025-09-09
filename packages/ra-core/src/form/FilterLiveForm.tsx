@@ -79,8 +79,7 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
         resolver: finalResolver,
         ...rest,
     });
-    const { handleSubmit, getValues, reset, watch, formState } = formContext;
-    const { isValid } = formState;
+    const { handleSubmit, getValues, reset, watch } = formContext;
 
     // Reapply filterValues when they change externally
     useEffect(() => {
@@ -95,11 +94,9 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
     }, [JSON.stringify(filterValues), getValues, reset]);
 
     const onSubmit = (values: any): void => {
-        // Do not call setFilters if the form is invalid
-        if (!isValid) {
-            return;
-        }
-        setFilters(mergeObjNotArray(filterValues, values));
+        handleSubmit(newValues =>
+            setFilters(mergeObjNotArray(filterValues, newValues))
+        )(values);
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
