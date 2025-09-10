@@ -19784,7 +19784,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
-    react-hook-form: "npm:^7.53.0"
+    react-hook-form: "npm:^7.62.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
@@ -19795,7 +19795,7 @@ __metadata:
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
-    react-hook-form: ^7.53.0
+    react-hook-form: ^7.62.0
     react-router: ^6.28.1 || ^7.1.1
     react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
@@ -19968,7 +19968,7 @@ __metadata:
     ra-ui-materialui: "npm:^5.11.0"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
-    react-hook-form: "npm:^7.53.0"
+    react-hook-form: "npm:^7.62.0"
     rimraf: "npm:^3.0.2"
     tippy.js: "npm:^6.3.7"
     typescript: "npm:^5.1.3"
@@ -20068,7 +20068,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-error-boundary: "npm:^4.0.13"
-    react-hook-form: "npm:^7.53.0"
+    react-hook-form: "npm:^7.62.0"
     react-hotkeys-hook: "npm:^5.1.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.28.1"
@@ -20268,7 +20268,7 @@ __metadata:
     ra-i18n-polyglot: "npm:^5.11.0"
     ra-language-english: "npm:^5.11.0"
     ra-ui-materialui: "npm:^5.11.0"
-    react-hook-form: "npm:^7.53.0"
+    react-hook-form: "npm:^7.62.0"
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
     rimraf: "npm:^3.0.2"
@@ -20364,12 +20364,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-hook-form@npm:^7.53.0":
-  version: 7.53.0
-  resolution: "react-hook-form@npm:7.53.0"
+"react-hook-form@npm:^7.62.0":
+  version: 7.62.0
+  resolution: "react-hook-form@npm:7.62.0"
   peerDependencies:
     react: ^16.8.0 || ^17 || ^18 || ^19
-  checksum: 6d62b150618a833c17d59e669b707661499e2bb516a8d340ca37699f99eb448bbba7b5b78324938c8948014e21efaa32e3510c2ba246fd5e97a96fca0cfa7c98
+  checksum: 451a25a2ddf07be14f690d2ad3f2f970e0b933fd059ef141c6da9e19d0566d739e9d5cc9c482e3533f3fd01d97e658b896a01ce45a1259ad7b0d4638ba0112c6
   languageName: node
   linkType: hard
 
@@ -22144,7 +22144,7 @@ __metadata:
     react: "npm:^18.3.1"
     react-admin: "npm:^5.11.0"
     react-dom: "npm:^18.3.1"
-    react-hook-form: "npm:^7.53.0"
+    react-hook-form: "npm:^7.62.0"
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
     react-simple-animate: "npm:^3.5.3"

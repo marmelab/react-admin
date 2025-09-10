@@ -5,6 +5,7 @@ import { Edit } from '../../detail';
 import { SimpleForm } from '../../form';
 import { ArrayInput } from './ArrayInput';
 import { SimpleFormIterator } from './SimpleFormIterator';
+import { NumberInput } from '../NumberInput';
 import { TextInput } from '../TextInput';
 import { AdminContext } from '../../AdminContext';
 import { defaultTheme } from '../../theme/defaultTheme';
@@ -14,6 +15,7 @@ import {
     testDataProvider,
     useSimpleFormIteratorItem,
 } from 'ra-core';
+import { AutocompleteInput } from '../AutocompleteInput';
 
 export default { title: 'ra-ui-materialui/input/SimpleFormIterator' };
 
@@ -284,5 +286,45 @@ export const WithFormDataConsumer = () => (
                 </SimpleForm>
             </Card>
         </ResourceContextProvider>
+    </AdminContext>
+);
+
+const largeDataProvider = {
+    getOne: async () => ({
+        data: {
+            id: 1,
+            name: 'Book 1',
+            authors: Array.from({ length: 100 }, (_, i) => ({
+                id: i + 1,
+                first_name: `Author ${i + 1}`,
+                last_name: `LastName ${i + 1}`,
+                age: 30 + (i % 20),
+            })),
+        },
+    }),
+} as any;
+
+export const Large = () => (
+    <AdminContext dataProvider={largeDataProvider} defaultTheme="light">
+        <Edit resource="books" id="1">
+            <SimpleForm>
+                <TextInput source="name" />
+                <ArrayInput source="authors">
+                    <SimpleFormIterator inline>
+                        <TextInput source="first_name" helperText={false} />
+                        <TextInput source="last_name" helperText={false} />
+                        <NumberInput source="age" helperText={false} />
+                        <AutocompleteInput
+                            source="status"
+                            choices={[
+                                { id: 'active', name: 'Active' },
+                                { id: 'inactive', name: 'Inactive' },
+                            ]}
+                            helperText={false}
+                        />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Edit>
     </AdminContext>
 );
