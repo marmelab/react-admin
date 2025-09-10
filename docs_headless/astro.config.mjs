@@ -31,7 +31,7 @@ export default defineConfig({
                     attrs: {
                         src: 'https://gursikso.marmelab.com/script.js',
                         'data-website-id':
-                            '4e27e12d-187c-4d13-b8e5-947a9f1976e2',
+                            '9d1797cc-8a8f-4600-a491-264e70d86654',
                         defer: true,
                         async: true,
                     },
