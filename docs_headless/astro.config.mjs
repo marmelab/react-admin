@@ -24,6 +24,19 @@ export default defineConfig({
                     href: 'https://github.com/marmelab/react-admin',
                 },
             ],
+            head: [
+                // add Umami analytics script tag.
+                {
+                    tag: 'script',
+                    attrs: {
+                        src: 'https://gursikso.marmelab.com/script.js',
+                        'data-website-id':
+                            '4e27e12d-187c-4d13-b8e5-947a9f1976e2',
+                        defer: true,
+                        async: true,
+                    },
+                },
+            ],
             sidebar: [
                 {
                     label: 'Getting Started',
