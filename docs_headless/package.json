@@ -18,7 +18,7 @@
         "@tailwindcss/vite": "^4.1.11",
         "@types/react": "^19.1.8",
         "@types/react-dom": "^19.1.6",
-        "astro": "5.12.6",
+        "astro": "5.13.1",
         "astro-expressive-code": "^0.41.3",
         "astro-rehype-relative-markdown-links": "^0.18.1",
         "expressive-code-fullscreen": "^1.0.0",
