@@ -1,4 +1,4 @@
-import { ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { TableCellProps } from '@mui/material/TableCell';
 import { BaseFieldProps, ExtractRecordPaths, HintedString } from 'ra-core';
 
@@ -38,7 +38,7 @@ export interface FieldProps<
      *     </List>
      * );
      */
-    label?: string | ReactElement | boolean;
+    label?: ReactNode;
 
     /**
      * Set it to false to disable the click handler on the column header when used inside <Datagrid>.

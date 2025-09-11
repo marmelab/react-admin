@@ -101,7 +101,7 @@ export interface LabeledProps extends StackProps {
     fullWidth?: boolean;
     htmlFor?: string;
     isRequired?: boolean;
-    label?: string | ReactElement | boolean;
+    label?: React.ReactNode;
     resource?: string;
     source?: string;
     TypographyProps?: TypographyProps;
