@@ -41,23 +41,44 @@ export const BulkDeleteWithConfirmButton = (
     const { handleDelete, isPending } = useBulkDeleteController({
         mutationMode,
         ...rest,
+        mutationOptions: {
+            ...rest.mutationOptions,
+            onSettled(data, error, variables, context) {
+                // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
+                if (mutationMode === 'pessimistic') {
+                    setOpen(false);
+                }
+                rest.mutationOptions?.onSettled?.(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            },
+        },
     });
 
     const [isOpen, setOpen] = useState(false);
     const resource = useResourceContext(props);
     const translate = useTranslate();
 
-    const handleClick = e => {
-        setOpen(true);
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        setOpen(true);
     };
 
-    const handleDialogClose = () => {
+    const handleDialogClose = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setOpen(false);
     };
 
-    const handleConfirm = e => {
-        setOpen(false);
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        // We close the dialog immediately here for optimistic/undoable modes instead of in onSuccess/onError
+        // to avoid reimplementing the default side effects
+        if (mutationMode !== 'pessimistic') {
+            setOpen(false);
+        }
         handleDelete();
 
         if (typeof onClick === 'function') {

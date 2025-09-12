@@ -3,6 +3,7 @@ import {
     CoreAdminContext,
     testDataProvider,
     ListContextProvider,
+    MutationMode,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -13,7 +14,11 @@ export default { title: 'ra-ui-materialui/button/BulkDeleteWithConfirmButton' };
 
 const theme = createTheme();
 
-export const Default = () => {
+export const Default = ({
+    mutationMode = 'pessimistic',
+}: {
+    mutationMode?: MutationMode;
+}) => {
     const dataProvider = testDataProvider({
         deleteMany: async () => ({ data: [{ id: 123 }] as any }),
     });
@@ -31,11 +36,24 @@ export const Default = () => {
                 >
                     <BulkDeleteWithConfirmButton
                         resource="books"
-                        mutationMode="pessimistic"
+                        mutationMode={mutationMode}
                     />
                     <Notification />
                 </ListContextProvider>
             </ThemeProvider>
         </CoreAdminContext>
     );
+};
+
+Default.args = {
+    mutationMode: 'pessimistic',
+};
+
+Default.argTypes = {
+    mutationMode: {
+        options: ['pessimistic', 'optimistic', 'undoable'],
+        control: {
+            type: 'select',
+        },
+    },
 };
