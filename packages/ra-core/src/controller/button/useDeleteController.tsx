@@ -97,21 +97,18 @@ export const useDeleteController = <
                 record && unselect([record.id]);
                 redirect(redirectTo, resource);
             },
-            onError: error => {
+            onError: (error: any) => {
                 notify(
                     typeof error === 'string'
                         ? error
-                        : (error as Error)?.message ||
-                              'ra.notification.http_error',
+                        : error?.message || 'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : (error as Error)?.message
-                                      ? (error as Error).message
-                                      : undefined,
+                                    : error?.message,
                         },
                     }
                 );
