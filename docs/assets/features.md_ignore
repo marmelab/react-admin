@@ -327,7 +327,7 @@ The `<PrevNextButtons>` component renders navigation buttons linking to the next
 The `<TreeInput>` component allows to select one or several nodes from a tree. #input #tree https://marmelab.com/react-admin/TreeInput.html
 
 <video controls autoplay playsinline muted loop>
-  <source src="https://marmelab.com/react-admin/img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

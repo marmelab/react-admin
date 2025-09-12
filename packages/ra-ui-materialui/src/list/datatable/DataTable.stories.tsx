@@ -239,6 +239,9 @@ export const SX = () => (
                 '& .RaDataTable-rowOdd': {
                     backgroundColor: '#fee',
                 },
+                '& .RaDataTable-rowCell': {
+                    color: 'red',
+                },
             }}
         >
             <DataTable.Col source="id" />

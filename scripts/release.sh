@@ -104,7 +104,7 @@ if [ -d $RA_ENTERPRISE_PATH ]; then
         cd \$RA_ENTERPRISE_PATH &&
         rm -rf node_modules/react-admin/node_modules/@mui &&
         make build &&
-        CI=true make test
+        CI=true DEBUG_PRINT_LIMIT=3 make test
     "
     cd -
 else

@@ -1,5 +1,3 @@
-import 'cypress-plugin-tab';
-
 /*
  * This is a workaround for the ResizeObserver loop error that occurs in Cypress.
  * See https://github.com/cypress-io/cypress/issues/20341

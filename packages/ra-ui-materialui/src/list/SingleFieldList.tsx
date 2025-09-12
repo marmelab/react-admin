@@ -14,7 +14,7 @@ import {
     type RaRecord,
     RecordRepresentation,
     useCreatePath,
-    ListIterator,
+    RecordContextProvider,
 } from 'ra-core';
 
 import { LinearProgress } from '../layout/LinearProgress';
@@ -89,21 +89,21 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
             className={className}
             {...sanitizeListRestProps(rest)}
         >
-            <ListIterator<RecordType>
-                data={data}
-                total={total}
-                isPending={isPending}
-                render={record => {
-                    const resourceLinkPath = !linkType
-                        ? false
-                        : createPath({
-                              resource,
-                              type: linkType,
-                              id: record.id,
-                          });
+            {data.map((record, rowIndex) => {
+                const resourceLinkPath = !linkType
+                    ? false
+                    : createPath({
+                          resource,
+                          type: linkType,
+                          id: record.id,
+                      });
 
-                    if (resourceLinkPath) {
-                        return (
+                if (resourceLinkPath) {
+                    return (
+                        <RecordContextProvider
+                            value={record}
+                            key={record.id ?? `row${rowIndex}`}
+                        >
                             <Link
                                 className={SingleFieldListClasses.link}
                                 to={resourceLinkPath}
@@ -113,12 +113,19 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
                                     <DefaultChildComponent clickable />
                                 )}
                             </Link>
-                        );
-                    }
+                        </RecordContextProvider>
+                    );
+                }
 
-                    return children || <DefaultChildComponent />;
-                }}
-            />
+                return (
+                    <RecordContextProvider
+                        value={record}
+                        key={record.id ?? `row${rowIndex}`}
+                    >
+                        {children || <DefaultChildComponent />}
+                    </RecordContextProvider>
+                );
+            })}
         </Root>
     );
 };

@@ -10,6 +10,7 @@ import {
     TestMemoryRouter,
     SortPayload,
     AuthProvider,
+    memoryStore,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import defaultMessages from 'ra-language-english';
@@ -558,18 +559,21 @@ export const RowClickFalse = () => (
 
 export const FullApp = ({
     rowClick,
+    perPage = undefined,
 }: {
     rowClick?: DatagridRowProps['rowClick'];
+    perPage?: number;
 }) => (
     <AdminContext
         dataProvider={dataProvider}
         i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        store={memoryStore()}
     >
         <AdminUI>
             <Resource
                 name="books"
                 list={() => (
-                    <List>
+                    <List perPage={perPage}>
                         <Datagrid
                             expand={<ExpandDetails />}
                             rowClick={rowClick}
