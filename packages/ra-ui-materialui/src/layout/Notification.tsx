@@ -133,8 +133,6 @@ export const Notification = (inProps: NotificationProps) => {
         ...options
     } = notificationOptions || {};
 
-    console.log({ message, type: typeof message === 'string' });
-
     return (
         <CloseNotificationContext.Provider value={handleRequestClose}>
             <StyledSnackbar
