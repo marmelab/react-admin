@@ -102,7 +102,10 @@ export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps,
-        UseUpdateControllerParams<RecordType, MutationOptionsError> {
+        Omit<
+            UseUpdateControllerParams<RecordType, MutationOptionsError>,
+            'mutationMode'
+        > {
     icon?: React.ReactNode;
     data: any;
 }
