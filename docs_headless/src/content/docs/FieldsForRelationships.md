@@ -134,7 +134,7 @@ const BookShow = () => (
 This is fine, but what if you need to display the author details for a list of books?
 
 ```jsx
-import { ListBase, ReferenceFieldBase, ListIterator } from 'ra-core';
+import { ListBase, ReferenceFieldBase, RecordsIterator } from 'ra-core';
 import { TextField } from './TextField';
 import { DateField } from './DateField';
 import { FunctionField } from './FunctionField';
@@ -152,7 +152,7 @@ const BookList = () => (
                     </tr>
                 </thead>
                 <tbody>
-                    <ListIterator>
+                    <RecordsIterator>
                         <tr>
                             <td><TextField source="title" /></td>
                             <td><DateField source="published_at" /></td>
@@ -167,7 +167,7 @@ const BookList = () => (
                                 </ReferenceFieldBase>
                             </td>
                         </tr>
-                    </ListIterator>
+                    </RecordsIterator>
                 </tbody>
             </table>
         </div>
@@ -197,7 +197,7 @@ This field fetches a one-to-many relationship, e.g. the books of an author, when
 Here is an example usage:
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'ra-core';
+import { ShowBase, ReferenceManyFieldBase, RecordsIterator } from 'ra-core';
 import { TextField } from './TextField';
 import { DateField } from './DateField';
 
@@ -209,12 +209,12 @@ const AuthorShow = () => (
             <DateField source="date_of_birth" />
             <ReferenceManyFieldBase reference="books" target="author_id">
                 <ul>
-                    <ListIterator>
+                    <RecordsIterator>
                         <li>
                             <TextField source="title" />
                             <DateField source="published_at" />
                         </li>
-                    </ListIterator>
+                    </RecordsIterator>
                 </ul>
             </ReferenceManyFieldBase>
         </div>
@@ -253,7 +253,7 @@ This field fetches a one-to-many relationship, e.g. the books of an author, when
 Here is an example usage:
 
 ```jsx
-import { ShowBase, ReferenceArrayFieldBase, ListIterator } from 'ra-core';
+import { ShowBase, ReferenceArrayFieldBase, RecordsIterator } from 'ra-core';
 import { TextField } from './TextField';
 import { DateField } from './DateField';
 
@@ -265,12 +265,12 @@ const AuthorShow = () => (
             <DateField source="date_of_birth" />
             <ReferenceArrayFieldBase reference="books" source="book_ids">
                 <ul>
-                    <ListIterator>
+                    <RecordsIterator>
                         <li>
                             <TextField source="title" />
                             <DateField source="published_at" />
                         </li>
-                    </ListIterator>
+                    </RecordsIterator>
                 </ul>
             </ReferenceArrayFieldBase>
         </div>
@@ -285,7 +285,7 @@ const AuthorShow = () => (
 You can also use it in a List page:
 
 ```jsx
-import { ListBase, ReferenceArrayFieldBase, ListIterator } from 'ra-core';
+import { ListBase, ReferenceArrayFieldBase, RecordsIterator } from 'ra-core';
 import { TextField } from './TextField';
 import { DateField } from './DateField';
 
@@ -302,7 +302,7 @@ const AuthorList = () => (
                     </tr>
                 </thead>
                 <tbody>
-                    <ListIterator>
+                    <RecordsIterator>
                         <tr>
                             <td><TextField source="first_name" /></td>
                             <td><TextField source="last_name" /></td>
@@ -310,16 +310,16 @@ const AuthorList = () => (
                             <td>
                                 <ReferenceArrayFieldBase reference="books" source="book_ids">
                                     <ul>
-                                        <ListIterator>
+                                        <RecordsIterator>
                                             <li>
                                                 <TextField source="title" />
                                             </li>
-                                        </ListIterator>
+                                        </RecordsIterator>
                                     </ul>
                                 </ReferenceArrayFieldBase>
                             </td>
                         </tr>
-                    </ListIterator>
+                    </RecordsIterator>
                 </tbody>
             </table>
         </div>

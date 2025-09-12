@@ -16,7 +16,7 @@ For instance, to display the number of comments related to a post in a List view
 ```jsx
 import { 
     ListBase,
-    ListIterator,
+    RecordsIterator,
     ReferenceManyCountBase,
 } from 'ra-core';
 import { TextField } from './TextField';
@@ -34,7 +34,7 @@ export const PostList = () => (
                 </tr>
             </thead>
             <tbody>
-                <ListIterator>
+                <RecordsIterator>
                     <tr>
                         <td><TextField source="id" /></td>
                         <td><TextField source="title" /></td>
@@ -46,7 +46,7 @@ export const PostList = () => (
                             />
                         </td>
                     </tr>
-                </ListIterator>
+                </RecordsIterator>
             </tbody>
         </table>
     </ListBase>

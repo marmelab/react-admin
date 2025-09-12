@@ -53,7 +53,7 @@ As soon as there is a record available, ra-core puts it in a `RecordContext`. Th
 - in descendants of the `<ShowBase>` component
 - in descendants of the `<EditBase>` component
 - in descendants of the `<CreateBase>` component
-- in descendants of the `<ListIterator>` component
+- in descendants of the `<RecordsIterator>` component
 - in descendants of the `<ReferenceFieldBase>` component
 
 ## Inside A Form
