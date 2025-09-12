@@ -25,15 +25,11 @@ export const BulkUpdateWithUndoButton = (
         data,
         label = 'ra.action.update',
         icon = defaultIcon,
-        mutationMode = 'undoable',
         onClick,
         ...rest
     } = props;
 
-    const { handleUpdate, isPending } = useBulkUpdateController({
-        ...rest,
-        mutationMode,
-    });
+    const { handleUpdate, isPending } = useBulkUpdateController(rest);
 
     const handleClick = e => {
         handleUpdate(data);
@@ -67,7 +63,10 @@ export interface BulkUpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps,
-        UseBulkUpdateControllerParams<RecordType, MutationOptionsError> {
+        Omit<
+            UseBulkUpdateControllerParams<RecordType, MutationOptionsError>,
+            'mutationMode'
+        > {
     icon?: React.ReactNode;
     data: any;
 }
