@@ -53,16 +53,14 @@ export const useBulkUpdateController = <
                 notify(
                     typeof error === 'string'
                         ? error
-                        : error.message || 'ra.notification.http_error',
+                        : error?.message || 'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : error && error.message
-                                      ? error.message
-                                      : undefined,
+                                    : error?.message,
                         },
                     }
                 );
