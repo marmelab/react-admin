@@ -2,7 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
-import { Resource, TestMemoryRouter } from 'ra-core';
+import { MutationMode, Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Alert } from '@mui/material';
 import { UpdateWithConfirmButton } from './UpdateWithConfirmButton';
@@ -82,89 +82,93 @@ const i18nProviderDefault = polyglotI18nProvider(
     ]
 );
 
-const dataProvider = fakeRestDataProvider({
-    books: [
-        {
-            id: 1,
-            title: 'War and Peace',
-            author: 'Leo Tolstoy',
-            year: 1869,
-        },
-        {
-            id: 2,
-            title: 'Pride and Predjudice',
-            author: 'Jane Austen',
-            year: 1813,
-        },
-        {
-            id: 3,
-            title: 'The Picture of Dorian Gray',
-            author: 'Oscar Wilde',
-            year: 1890,
-        },
-        {
-            id: 4,
-            title: 'Le Petit Prince',
-            author: 'Antoine de Saint-Exupéry',
-            year: 1943,
-        },
-        {
-            id: 5,
-            title: "Alice's Adventures in Wonderland",
-            author: 'Lewis Carroll',
-            year: 1865,
-        },
-        {
-            id: 6,
-            title: 'Madame Bovary',
-            author: 'Gustave Flaubert',
-            year: 1856,
-        },
-        {
-            id: 7,
-            title: 'The Lord of the Rings',
-            author: 'J. R. R. Tolkien',
-            year: 1954,
-        },
-        {
-            id: 8,
-            title: "Harry Potter and the Philosopher's Stone",
-            author: 'J. K. Rowling',
-            year: 1997,
-        },
-        {
-            id: 9,
-            title: 'The Alchemist',
-            author: 'Paulo Coelho',
-            year: 1988,
-        },
-        {
-            id: 10,
-            title: 'A Catcher in the Rye',
-            author: 'J. D. Salinger',
-            year: 1951,
-        },
-        {
-            id: 11,
-            title: 'Ulysses',
-            author: 'James Joyce',
-            year: 1922,
-        },
-    ],
-    authors: [
-        { id: 1, fullName: 'Leo Tolstoy' },
-        { id: 2, fullName: 'Jane Austen' },
-        { id: 3, fullName: 'Oscar Wilde' },
-        { id: 4, fullName: 'Antoine de Saint-Exupéry' },
-        { id: 5, fullName: 'Lewis Carroll' },
-        { id: 6, fullName: 'Gustave Flaubert' },
-        { id: 7, fullName: 'J. R. R. Tolkien' },
-        { id: 8, fullName: 'J. K. Rowling' },
-        { id: 9, fullName: 'Paulo Coelho' },
-        { id: 10, fullName: 'J. D. Salinger' },
-        { id: 11, fullName: 'James Joyce' },
-    ],
-});
+const dataProvider = fakeRestDataProvider(
+    {
+        books: [
+            {
+                id: 1,
+                title: 'War and Peace',
+                author: 'Leo Tolstoy',
+                year: 1869,
+            },
+            {
+                id: 2,
+                title: 'Pride and Predjudice',
+                author: 'Jane Austen',
+                year: 1813,
+            },
+            {
+                id: 3,
+                title: 'The Picture of Dorian Gray',
+                author: 'Oscar Wilde',
+                year: 1890,
+            },
+            {
+                id: 4,
+                title: 'Le Petit Prince',
+                author: 'Antoine de Saint-Exupéry',
+                year: 1943,
+            },
+            {
+                id: 5,
+                title: "Alice's Adventures in Wonderland",
+                author: 'Lewis Carroll',
+                year: 1865,
+            },
+            {
+                id: 6,
+                title: 'Madame Bovary',
+                author: 'Gustave Flaubert',
+                year: 1856,
+            },
+            {
+                id: 7,
+                title: 'The Lord of the Rings',
+                author: 'J. R. R. Tolkien',
+                year: 1954,
+            },
+            {
+                id: 8,
+                title: "Harry Potter and the Philosopher's Stone",
+                author: 'J. K. Rowling',
+                year: 1997,
+            },
+            {
+                id: 9,
+                title: 'The Alchemist',
+                author: 'Paulo Coelho',
+                year: 1988,
+            },
+            {
+                id: 10,
+                title: 'A Catcher in the Rye',
+                author: 'J. D. Salinger',
+                year: 1951,
+            },
+            {
+                id: 11,
+                title: 'Ulysses',
+                author: 'James Joyce',
+                year: 1922,
+            },
+        ],
+        authors: [
+            { id: 1, fullName: 'Leo Tolstoy' },
+            { id: 2, fullName: 'Jane Austen' },
+            { id: 3, fullName: 'Oscar Wilde' },
+            { id: 4, fullName: 'Antoine de Saint-Exupéry' },
+            { id: 5, fullName: 'Lewis Carroll' },
+            { id: 6, fullName: 'Gustave Flaubert' },
+            { id: 7, fullName: 'J. R. R. Tolkien' },
+            { id: 8, fullName: 'J. K. Rowling' },
+            { id: 9, fullName: 'Paulo Coelho' },
+            { id: 10, fullName: 'J. D. Salinger' },
+            { id: 11, fullName: 'James Joyce' },
+        ],
+    },
+    process.env.NODE_ENV !== 'test',
+    process.env.NODE_ENV !== 'test' ? 300 : 0
+);
 
 const BookList = ({ children }) => {
     return (
@@ -192,7 +196,7 @@ const AuthorList = ({ children }) => {
     );
 };
 
-export const Basic = () => (
+export const Basic = ({ mutationMode }: { mutationMode?: MutationMode }) => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
             <AdminUI>
@@ -202,6 +206,7 @@ export const Basic = () => (
                         <BookList>
                             <UpdateWithConfirmButton
                                 data={{ title: 'modified' }}
+                                mutationMode={mutationMode}
                             />
                         </BookList>
                     }
@@ -210,6 +215,19 @@ export const Basic = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+Basic.args = {
+    mutationMode: 'pessimistic',
+};
+
+Basic.argTypes = {
+    mutationMode: {
+        options: ['pessimistic', 'optimistic', 'undoable'],
+        control: {
+            type: 'select',
+        },
+    },
+};
 
 export const WithCustomTitleAndContent = () => (
     <TestMemoryRouter initialEntries={['/books']}>
