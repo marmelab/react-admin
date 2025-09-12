@@ -62,7 +62,10 @@ export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > extends ButtonProps,
-        UseBulkDeleteControllerParams<RecordType, MutationOptionsError> {
+        Omit<
+            UseBulkDeleteControllerParams<RecordType, MutationOptionsError>,
+            'mutationMode'
+        > {
     icon?: React.ReactNode;
 }
 
