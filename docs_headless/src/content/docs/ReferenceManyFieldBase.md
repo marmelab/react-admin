@@ -73,7 +73,6 @@ import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase
-        loading={null}
         error={null}
         offline={null}
         emptyWhileLoading

@@ -134,12 +134,7 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
             <Resource
                 name="authors"
                 list={
-                    <ListBase
-                        loading={null}
-                        error={null}
-                        offline={null}
-                        emptyWhileLoading
-                    >
+                    <ListBase error={null} offline={null} emptyWhileLoading>
                         <RecordsIterator
                             render={author => (
                                 <div>
