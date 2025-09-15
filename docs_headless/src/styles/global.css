@@ -36,3 +36,54 @@ img.icon {
 .expressive-code button.cb-fullscreen__button {
     color: var(--ec-frm-inlBtnFg);
 }   
+
+/* Auth and Data Provider icons */
+
+.providers-list img {
+    width: 25px !important;
+    margin: 2px 10px 2px 0px !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+    display: inline;
+}
+.providers-list ul {
+    padding-left: 0;
+}
+.providers-list ul > li {
+    list-style-type: none;
+}
+.providers-list .flex {
+    display: flex !important;
+    text-align: -webkit-match-parent !important;
+    align-items: center !important;
+    flex-wrap: wrap;
+    margin: 0;
+}
+.providers-list .avatar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: DarkGray;
+    width: 25px;
+    height: 25px;
+    margin: 2px 10px 2px 0px;
+    border-radius: 100%;
+    font-size: 12px;
+}
+
+/* 
+   Improve props table layout
+*/
+.sl-markdown-content table {
+    font-size: 0.8rem;
+}
+.sl-markdown-content table code {
+    font-size: 0.8rem;
+}
+.sl-markdown-content table tr td:has(code) {
+    max-width: 140px;
+}
+.sl-markdown-content table tr td code {
+    overflow-wrap: break-word;
+}
+

@@ -484,8 +484,7 @@ export const ProductEdit = () => (
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

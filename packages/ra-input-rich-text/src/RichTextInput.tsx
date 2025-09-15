@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -289,7 +289,7 @@ export type RichTextInputContentProps = {
     className?: string;
     editor?: Editor;
     error?: any;
-    helperText?: string | ReactElement | false;
+    helperText?: ReactNode;
     id: string;
     isTouched: boolean;
     isSubmitted: boolean;

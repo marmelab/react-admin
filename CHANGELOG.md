@@ -1,5 +1,25 @@
 # Changelog
 
+## 5.11.2
+
+* Fix `<BulkDeleteWithConfirmButton>` default color ([#10928](https://github.com/marmelab/react-admin/pull/10928)) ([wmatex](https://github.com/wmatex))
+* Fix `RaDataTable-rowCell` CSS class is not applied on `<DataTable>` cells ([#10933](https://github.com/marmelab/react-admin/pull/10933)) ([djhi](https://github.com/djhi))
+* Fix passing an element to `notify` requires to wrap it in `forwardRef` ([#10935](https://github.com/marmelab/react-admin/pull/10935)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<TreeInput>` assets and doc ([#10929](https://github.com/marmelab/react-admin/pull/10929)) ([slax57](https://github.com/slax57))
+* [TypeScript] Fix inputs and fields label type ([#10922](https://github.com/marmelab/react-admin/pull/10922)) ([djhi](https://github.com/djhi))
+* [Demo] Fix demos with MSW ([#10920](https://github.com/marmelab/react-admin/pull/10920)) ([Madeorsk](https://github.com/Madeorsk))
+* [website] Remove greenframe widget ([#10934](https://github.com/marmelab/react-admin/pull/10934)) ([djhi](https://github.com/djhi))
+* [chore] Fix security vulnerabilities affecting `astro` and `ejs` ([#10937](https://github.com/marmelab/react-admin/pull/10937)) ([slax57](https://github.com/slax57))
+* [chore] Remove Greenframe CI step config ([#10936](https://github.com/marmelab/react-admin/pull/10936)) ([slax57](https://github.com/slax57))
+* [chore] Bump vite from 6.3.5 to 6.3.6 ([#10931](https://github.com/marmelab/react-admin/pull/10931)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.11.1
+
+* Fix `<Datagrid>` and `<DataTable>` bulk selection ([#10918](https://github.com/marmelab/react-admin/pull/10918)) ([djhi](https://github.com/djhi))
+* Revert usage on `<ListIterator>` in `ra-ui-materialui` ([#10919](https://github.com/marmelab/react-admin/pull/10919)) ([djhi](https://github.com/djhi))
+* [Doc] Update ra-realtime documentation for 5.2.0 ([#10914](https://github.com/marmelab/react-admin/pull/10914)) ([djhi](https://github.com/djhi))
+* [chore] Upgrade Cypress ([#10913](https://github.com/marmelab/react-admin/pull/10913)) ([djhi](https://github.com/djhi))
+
 ## 5.11.0
 
 * Add ability to use a `ReactNode` as create label in `<AutocompleteInput>` and `<SelectInput>` ([#10883](https://github.com/marmelab/react-admin/pull/10883)) ([Madeorsk](https://github.com/Madeorsk))
