@@ -10,6 +10,7 @@ import { useInfinitePaginationContext } from './useInfinitePaginationContext';
 import {
     AuthProvider,
     DataProvider,
+    GetListResult,
     I18nProvider,
     IsOffline,
     mergeTranslations,
@@ -153,7 +154,7 @@ export const WithAuthProviderNoAccessControl = ({
         <InfiniteListBase
             resource="books"
             perPage={5}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
             {...InfiniteListProps}
         >
             <BookListView />
@@ -178,12 +179,78 @@ export const AccessControl = ({
         <InfiniteListBase
             resource="books"
             perPage={5}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <BookListView />
         </InfiniteListBase>
     </CoreAdminContext>
 );
+
+export const Loading = () => {
+    let resolveGetList: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () =>
+                    resolve(defaultDataProvider.getList(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <InfiniteListBase
+                resource="books"
+                perPage={5}
+                loading={<p>Loading books...</p>}
+            >
+                <BookListView />
+                <InfinitePagination />
+            </InfiniteListBase>
+        </CoreAdminContext>
+    );
+};
+
+export const FetchError = () => {
+    let rejectGetList: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getList: () => {
+            return new Promise<GetListResult>((_, reject) => {
+                rejectGetList = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    rejectGetList && rejectGetList();
+                }}
+            >
+                Reject books loading
+            </button>
+
+            <InfiniteListBase
+                resource="books"
+                perPage={5}
+                error={<p>Cannot load books.</p>}
+            >
+                <BookListView />
+                <InfinitePagination />
+            </InfiniteListBase>
+        </CoreAdminContext>
+    );
+};
 
 const defaultI18nProvider = polyglotI18nProvider(
     locale =>

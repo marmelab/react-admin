@@ -46,7 +46,8 @@ export const CreateBase = <
 >({
     children,
     render,
-    loading = null,
+    loading,
+    authLoading = loading,
     ...props
 }: CreateBaseProps<RecordType, ResultRecordType, MutationOptionsError>) => {
     const controllerProps = useCreateController<
@@ -60,21 +61,27 @@ export const CreateBase = <
         action: 'create',
     });
 
-    if (isAuthPending && !props.disableAuthentication) {
-        return loading;
-    }
-
     if (!render && !children) {
         throw new Error(
             '<CreateBase> requires either a `render` prop or `children` prop'
         );
     }
 
+    const showAuthLoading =
+        isAuthPending &&
+        !props.disableAuthentication &&
+        authLoading !== false &&
+        authLoading !== undefined;
+
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <CreateContextProvider value={controllerProps}>
-                {render ? render(controllerProps) : children}
+                {showAuthLoading
+                    ? authLoading
+                    : render
+                      ? render(controllerProps)
+                      : children}
             </CreateContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -91,5 +98,9 @@ export interface CreateBaseProps<
     > {
     children?: ReactNode;
     render?: (props: CreateControllerResult<RecordType>) => ReactNode;
+    authLoading?: ReactNode;
+    /**
+     * @deprecated use authLoading instead
+     */
     loading?: ReactNode;
 }

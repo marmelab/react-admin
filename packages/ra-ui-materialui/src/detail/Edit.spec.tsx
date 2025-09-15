@@ -15,6 +15,7 @@ import {
     ResourceDefinitionContextProvider,
     useTakeUndoableMutation,
 } from 'ra-core';
+import { Alert } from '@mui/material';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
@@ -30,6 +31,7 @@ import {
     EmptyWhileLoading,
     Themed,
     WithRenderProp,
+    FetchError,
 } from './Edit.stories';
 
 describe('<Edit />', () => {
@@ -983,5 +985,19 @@ describe('<Edit />', () => {
             (await screen.findByText('Save')).click();
             await screen.findByText('Book updated');
         });
+    });
+
+    it('should render the custom error component when an error happens', async () => {
+        const CustomError = () => {
+            return <Alert severity="error">Something went wrong!</Alert>;
+        };
+        render(<FetchError error={<CustomError />} />);
+        fireEvent.click(await screen.findByText('Reject loading'));
+        await screen.findByText('Something went wrong!');
+    });
+    it('should redirect to list by default when an error happens', async () => {
+        render(<FetchError />);
+        fireEvent.click(await screen.findByText('Reject loading'));
+        await screen.findByText('List view');
     });
 });

@@ -5,6 +5,8 @@ import {
     DefaultTitle,
     EmptyWhileLoading,
     EmptyWhileLoadingRender,
+    FetchError,
+    Loading,
     NoAuthProvider,
     Offline,
     WithAuthProviderNoAccessControl,
@@ -179,5 +181,29 @@ describe('ListBase', () => {
         expect(screen.queryByText('War and Peace')).toBeNull();
         fireEvent.click(screen.getByText('Resolve books loading'));
         await screen.findByText('War and Peace');
+    });
+    it('should render loading component while loading', async () => {
+        render(<Loading />);
+        expect(screen.queryByText('Loading books...')).not.toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Loading books...')).toBeNull();
+        });
+        await screen.findByText('War and Peace');
+    });
+    it('should render error component on error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        render(<FetchError />);
+        expect(screen.queryByText('Cannot load books.')).toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Reject books loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Cannot load books.')).not.toBeNull();
+        });
+        expect(screen.queryByText('War and Peace')).toBeNull();
+
+        jest.spyOn(console, 'error').mockRestore();
     });
 });

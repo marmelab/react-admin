@@ -60,6 +60,7 @@ export const useEditController = <
         mutationOptions = {},
         queryOptions = {},
         redirect: redirectTo = DefaultRedirect,
+        redirectOnError = DefaultRedirectOnError,
         transform,
     } = props;
     const resource = useResourceContext(props);
@@ -133,7 +134,7 @@ export const useEditController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect('list', resource);
+                redirect(redirectOnError, resource);
             },
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
@@ -295,6 +296,7 @@ export const useEditController = <
         mutationMode,
         record,
         redirect: redirectTo,
+        redirectOnError,
         refetch,
         registerMutationMiddleware,
         resource,
@@ -305,6 +307,7 @@ export const useEditController = <
 };
 
 const DefaultRedirect = 'list';
+const DefaultRedirectOnError = 'list';
 
 export interface EditControllerProps<
     RecordType extends RaRecord = any,
@@ -316,6 +319,7 @@ export interface EditControllerProps<
     mutationOptions?: UseUpdateOptions<RecordType, ErrorType>;
     queryOptions?: UseGetOneOptions<RecordType, ErrorType>;
     redirect?: RedirectionSideEffect;
+    redirectOnError?: RedirectionSideEffect;
     resource?: string;
     transform?: TransformData;
 
@@ -331,6 +335,7 @@ export interface EditControllerBaseResult<RecordType extends RaRecord = any>
     isPlaceholderData?: boolean;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
     redirect: RedirectionSideEffect;
+    redirectOnError: RedirectionSideEffect;
     resource: string;
     saving: boolean;
 }

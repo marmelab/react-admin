@@ -8,7 +8,7 @@ import {
     UseGetOneOptions,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { useRedirect } from '../../routing';
+import { RedirectionSideEffect, useRedirect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useResourceContext,
@@ -58,6 +58,7 @@ export const useShowController = <
         disableAuthentication = false,
         id: propsId,
         queryOptions = {},
+        redirectOnError = DefaultRedirectOnError,
     } = props;
     const resource = useResourceContext(props);
     if (!resource) {
@@ -109,7 +110,7 @@ export const useShowController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect('list', resource);
+                redirect(redirectOnError, resource);
             },
             retry: false,
             ...otherQueryOptions,
@@ -152,10 +153,13 @@ export const useShowController = <
         isPending,
         isPlaceholderData,
         record,
+        redirectOnError,
         refetch,
         resource,
     } as ShowControllerResult<RecordType, ErrorType>;
 };
+
+const DefaultRedirectOnError = 'list';
 
 export interface ShowControllerProps<
     RecordType extends RaRecord = any,
@@ -165,6 +169,7 @@ export interface ShowControllerProps<
     id?: RecordType['id'];
     queryOptions?: UseGetOneOptions<RecordType, ErrorType>;
     resource?: string;
+    redirectOnError?: RedirectionSideEffect;
 }
 
 export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
@@ -173,6 +178,7 @@ export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isPaused?: boolean;
     isPlaceholderData?: boolean;
+    redirectOnError: RedirectionSideEffect;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
