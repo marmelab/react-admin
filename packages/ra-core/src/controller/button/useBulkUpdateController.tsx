@@ -17,8 +17,13 @@ export const useBulkUpdateController = <
     props: UseBulkUpdateControllerParams<RecordType, ErrorType>
 ): UseBulkUpdateControllerReturn => {
     const {
+        onSuccess,
+        onError,
         mutationMode = 'undoable',
-        mutationOptions = {},
+        mutationOptions = {
+            onSuccess,
+            onError,
+        },
         successMessage,
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
@@ -66,6 +71,7 @@ export const useBulkUpdateController = <
                 );
                 refresh();
             },
+            ...otherMutationOptions,
         }
     );
 
@@ -108,6 +114,10 @@ export interface UseBulkUpdateControllerParams<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
 > {
+    /* @deprecated use mutationOptions instead */
+    onSuccess?: () => void;
+    /* @deprecated use mutationOptions instead */
+    onError?: (error: any) => void;
     mutationMode?: MutationMode;
     mutationOptions?: UseUpdateManyOptions<RecordType, MutationOptionsError>;
     resource?: string;
