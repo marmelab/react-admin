@@ -23,14 +23,20 @@ export const WithListContext = <RecordType extends RaRecord>({
     empty,
     loading,
     offline,
-    errorElement,
+    error,
     render,
     children,
     ...props
 }: WithListContextProps<RecordType>) => {
     const context = useListContextWithProps<RecordType>(props);
-    const { data, total, isPaused, isPending, isPlaceholderData, error } =
-        context;
+    const {
+        data,
+        total,
+        isPaused,
+        isPending,
+        isPlaceholderData,
+        error: errorState,
+    } = context;
 
     if (!isPaused && isPending && loading !== false && loading !== undefined) {
         return loading;
@@ -45,8 +51,8 @@ export const WithListContext = <RecordType extends RaRecord>({
         return offline;
     }
 
-    if (error && errorElement !== false && errorElement !== undefined) {
-        return errorElement;
+    if (errorState && error !== false && error !== undefined) {
+        return error;
     }
 
     if (
@@ -69,7 +75,7 @@ export interface WithListContextProps<RecordType extends RaRecord>
         Partial<
             Pick<
                 ListControllerResult<RecordType>,
-                'data' | 'total' | 'isPending' | 'error'
+                'data' | 'total' | 'isPending'
             >
         >
     > {
@@ -78,7 +84,8 @@ export interface WithListContextProps<RecordType extends RaRecord>
     ) => ReactElement | false | null;
     loading?: React.ReactNode;
     offline?: React.ReactNode;
-    errorElement?: React.ReactNode;
+    errorState?: ListControllerResult<RecordType>['error'];
+    error?: React.ReactNode;
     empty?: React.ReactNode;
 
     /**
