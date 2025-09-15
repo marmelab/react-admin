@@ -219,7 +219,7 @@ Although this drawback exists, we accept it because the use of composition in re
 
 ## Hooks
 
-When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, the core of react-admin is a headless library called `ra-core`, which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
+When you find that you cannot tweak a react-admin component using props, you can always turn to the lower-level API: hooks. In fact, the core of react-admin is a headless library called [`ra-core`](https://marmelab.com/ra-core/), which primarily consists of hooks. These hooks hide the framework's implementation details, allowing you to focus on your business logic. It's perfectly normal to use react-admin hooks in your own components if the default UI doesn't meet your specific requirements.
 
 For example, the `<DeleteButton>` button used in `pessimistic` mode renders a confirmation dialog when clicked and then calls the `dataProvider.delete()` method for the current record. If you want the same feature but with a different UI, you can use the `useDeleteWithConfirmController` hook:
 

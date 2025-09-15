@@ -8,8 +8,7 @@ title: "The TreeInput Component"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to select one or several nodes from a tree.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -51,9 +50,13 @@ export const SimpleTreeForm = () => (
 | `source`        | Required | string           | -         | The name of the source field. Required unless when used inside `<ReferenceNodeInput>` |
 | `checkStrictly` | Optional | boolena          | `true`    | Check node precisely, parent and children nodes are not associated                    |
 | `data`          | Optional | array of objects | -         | The tree data                                                                         |
+| `id`            | Optional | string           | -         | The input id                                                                          |
 | `hideRootNodes` | Optional | boolean          | `false`   | Set to true to hide all root nodes                                                    |
+| `margin`        | Optional | string           | `dense`   | The margin of the input, can be `none`, `dense` or `normal` (see MUI Input margins)   |
 | `multiple`      | Optional | boolean          | `false`   | Set to true to allow selecting multiple nodes                                         |
+| `size`          | Optional | string           | `small`   | The size of the input, can be `small`, `medium` or `large` (see MUI Input sizes)      |
 | `titleField`    | Optional | string           | `'title'` | The name of the field holding the node title                                          |
+| `variant`       | Optional | string           | `filled`  | The variant to use, e.g. `standard`, `outlined` or `filled` (see MUI Input variants)  |
 
 `<TreeInput>` also accepts the [common input props](./Inputs.md#common-input-props) and the [rc-tree](https://tree-react-component.vercel.app/) props.
 
@@ -110,8 +113,7 @@ Use the `hideRootNodes` prop to hide all root nodes:
 Use the `multiple` prop to allow selecting multiple nodes. In that case, `<TreeInput>` renders a tree with one checkbox per line.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-multiple.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-multiple.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-multiple.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
