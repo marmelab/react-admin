@@ -32,11 +32,25 @@ const MostVisitedPosts = () => (
 
 You can use `<RecordsIterator>` as a child of any component that provides a [`ListContext`](./useListContext.md), such as:
 
-- [`<List>`](./List.md),
-- [`<ListGuesser>`](./ListGuesser.md),
-- [`<ListBase>`](./ListBase.md),
-- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
-- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ReferenceManyFieldBase>`](./ReferenceManyFieldBase.md),
+- [`<ReferenceArrayFieldBase>`](./ReferenceArrayField.md),
+- [`<ListBase>`](./ListBase.md)
+
+```jsx
+import { ShowBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
+
+const PostShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase reference="tags" target="post_id">
+            <ul>
+                <RecordsIterator
+                    render={tag => <li>#{tag.name}</li>}
+                />
+            </ul>
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
+```
 
 `<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use properties on the component providing you the list context (like [`<List loading>`](./List.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
 

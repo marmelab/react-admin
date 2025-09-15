@@ -37,11 +37,31 @@ const MostVisitedPosts = () => (
 
 You can use `<RecordsIterator>` as a child of any component that provides a [`ListContext`](./useListContext.md), such as:
 
+- [`<ReferenceManyField>`](./ReferenceManyField.md),
+- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
 - [`<List>`](./List.md),
 - [`<ListGuesser>`](./ListGuesser.md),
-- [`<ListBase>`](./ListBase.md),
-- [`<ReferenceArrayField>`](./ReferenceArrayField.md),
-- [`<ReferenceManyField>`](./ReferenceManyField.md)
+- [`<ListBase>`](./ListBase.md)
+
+```jsx
+import {
+    ChipField,
+    ShowBase,
+    RecordsIterator,
+    ReferenceManyField,
+    SingleFieldList
+} from 'react-admin';
+
+const PostShow = () => (
+    <ShowBase>
+        <ReferenceManyField reference="tags" target="post_id">
+            <SingleFieldList>
+                <ChipField source="name" />
+            </SingleFieldList>
+        </ReferenceManyField>
+    </ShowBase>
+);
+```
 
 `<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use related props on the component providing you the list context (like [`<List loading>`](./List.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
 
