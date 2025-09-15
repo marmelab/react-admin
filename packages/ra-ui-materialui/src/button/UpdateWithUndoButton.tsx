@@ -6,18 +6,15 @@ import {
 } from '@mui/material/styles';
 import ActionUpdate from '@mui/icons-material/Update';
 import {
-    useRefresh,
-    useNotify,
     useResourceContext,
     type RaRecord,
     useRecordContext,
-    useUpdate,
-    type UpdateParams,
     useTranslate,
     useGetRecordRepresentation,
     useResourceTranslation,
+    useUpdateController,
+    UseUpdateControllerParams,
 } from 'ra-core';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, singularize } from 'inflection';
 
 import { Button, type ButtonProps } from './Button';
@@ -28,18 +25,16 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
         name: PREFIX,
     });
     const record = useRecordContext(props);
-    const notify = useNotify();
     const resource = useResourceContext(props);
-    const refresh = useRefresh();
 
     const {
         data,
         label: labelProp,
         icon = defaultIcon,
         onClick,
-        mutationOptions = {},
         ...rest
     } = props;
+    const { handleUpdate, isPending } = useUpdateController(rest);
     const translate = useTranslate();
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     let recordRepresentation = getRecordRepresentation(record);
@@ -66,41 +61,6 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
         },
         userText: labelProp,
     });
-    const [updateMany, { isPending }] = useUpdate();
-
-    const {
-        meta: mutationMeta,
-        onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: true,
-            });
-        },
-        onError = (error: Error | string) => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'error',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                  ? error.message
-                                  : undefined,
-                    },
-                }
-            );
-            refresh();
-        },
-        ...otherMutationOptions
-    } = mutationOptions;
 
     const handleClick = e => {
         if (!record) {
@@ -108,16 +68,7 @@ export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
                 'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
             );
         }
-        updateMany(
-            resource,
-            { id: record.id, data, meta: mutationMeta, previousData: record },
-            {
-                onSuccess,
-                onError,
-                mutationMode: 'undoable',
-                ...otherMutationOptions,
-            }
-        );
+        handleUpdate(data);
         if (typeof onClick === 'function') {
             onClick(e);
         }
@@ -143,20 +94,20 @@ const defaultIcon = <ActionUpdate />;
 
 const sanitizeRestProps = ({
     label,
+    mutationOptions,
     ...rest
 }: Omit<UpdateWithUndoButtonProps, 'resource' | 'icon' | 'data'>) => rest;
 
 export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends ButtonProps,
+        Omit<
+            UseUpdateControllerParams<RecordType, MutationOptionsError>,
+            'mutationMode'
+        > {
     icon?: React.ReactNode;
     data: any;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        UpdateParams<RecordType>
-    > & { meta?: any };
 }
 
 const PREFIX = 'RaUpdateWithUndoButton';

@@ -9,20 +9,17 @@ import {
 } from '@mui/material/styles';
 import {
     useTranslate,
-    useNotify,
     useResourceContext,
-    type MutationMode,
     type RaRecord,
-    type UpdateParams,
     useRecordContext,
-    useUpdate,
     useGetRecordRepresentation,
     useResourceTranslation,
+    useUpdateController,
+    UseUpdateControllerParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, singularize } from 'inflection';
 
 export const UpdateWithConfirmButton = <
@@ -35,7 +32,6 @@ export const UpdateWithConfirmButton = <
         props: inProps,
         name: PREFIX,
     });
-    const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
     const [isOpen, setOpen] = useState(false);
@@ -49,79 +45,48 @@ export const UpdateWithConfirmButton = <
         label: labelProp,
         mutationMode = 'pessimistic',
         onClick,
-        mutationOptions = emptyObject as UseMutationOptions<
-            RecordType,
-            MutationOptionsError,
-            UpdateParams<RecordType>
-        > & { meta?: any },
         titleTranslateOptions = emptyObject,
         contentTranslateOptions = emptyObject,
         ...rest
     } = props;
-    const {
-        meta: mutationMeta,
-        onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: 1,
-                    _: translate('ra.notification.updated', { smart_count: 1 }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
-        },
-        onError = (error: MutationOptionsError) => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'error',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                  ? error.message
-                                  : undefined,
-                    },
+    const { handleUpdate, isPending } = useUpdateController({
+        ...rest,
+        mutationMode,
+        mutationOptions: {
+            ...rest.mutationOptions,
+            onSettled(data, error, variables, context) {
+                // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
+                if (mutationMode === 'pessimistic') {
+                    setOpen(false);
                 }
-            );
+                rest.mutationOptions?.onSettled?.(
+                    data,
+                    error,
+                    variables,
+                    context
+                );
+            },
         },
-        onSettled = () => {
-            setOpen(false);
-        },
-        ...otherMutationOptions
-    } = mutationOptions;
+    });
 
-    const [update, { isPending }] = useUpdate<RecordType, MutationOptionsError>(
-        resource,
-        { id: record?.id, data, meta: mutationMeta, previousData: record },
-        {
-            onSuccess,
-            onError,
-            onSettled,
-            mutationMode,
-            ...otherMutationOptions,
-        }
-    );
-
-    const handleClick = (e: React.MouseEvent) => {
-        setOpen(true);
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        setOpen(true);
     };
 
-    const handleDialogClose = () => {
+    const handleDialogClose = (e: React.MouseEvent) => {
+        e?.stopPropagation();
         setOpen(false);
     };
 
-    const handleUpdate = e => {
-        update(resource, {
-            id: record?.id,
-            data,
-            meta: mutationMeta,
-            previousData: record,
-        });
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        // We close the dialog immediately here for optimistic/undoable modes instead of in onSuccess/onError
+        // to avoid reimplementing the default side effects
+        if (mutationMode !== 'pessimistic') {
+            setOpen(false);
+        }
+        handleUpdate(data);
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -195,7 +160,7 @@ export const UpdateWithConfirmButton = <
                 loading={isPending}
                 title={<>{confirmTitle}</>}
                 content={<>{confirmContent}</>}
-                onConfirm={handleUpdate}
+                onConfirm={handleConfirm}
                 onClose={handleDialogClose}
             />
         </Fragment>
@@ -204,6 +169,7 @@ export const UpdateWithConfirmButton = <
 
 const sanitizeRestProps = ({
     label,
+    mutationOptions,
     ...rest
 }: Omit<
     UpdateWithConfirmButtonProps,
@@ -213,17 +179,12 @@ const sanitizeRestProps = ({
 export interface UpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError extends Error = Error,
-> extends ButtonProps {
+> extends ButtonProps,
+        UseUpdateControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: React.ReactNode;
     data: any;
-    mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        UpdateParams<RecordType>
-    > & { meta?: any };
     titleTranslateOptions?: object;
     contentTranslateOptions?: object;
 }
