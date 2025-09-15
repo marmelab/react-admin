@@ -45,7 +45,7 @@ A typical `post` record therefore looks like this:
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
 ```tsx
-import { ShowBase, ReferenceArrayFieldBase } from 'ra-core';
+import { ShowBase, ReferenceArrayFieldBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase>
@@ -179,7 +179,7 @@ For instance, to render only tags that are 'published', you can use the followin
 By default, `<ReferenceArrayFieldBase>` renders nothing when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+import { ReferenceArrayFieldBase, ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase>
@@ -197,7 +197,7 @@ export const PostShow = () => (
 **Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { IsOffline, ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+import { IsOffline, ReferenceArrayFieldBase, ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase>
