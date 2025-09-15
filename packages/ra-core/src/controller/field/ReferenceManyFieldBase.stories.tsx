@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { onlineManager, QueryClient } from '@tanstack/react-query';
-import { RecordsIterator, WithListContext } from 'ra-core';
+import { RecordsIterator } from 'ra-core';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { Resource } from '../../core/Resource';
 import { ShowBase } from '../../controller/show/ShowBase';

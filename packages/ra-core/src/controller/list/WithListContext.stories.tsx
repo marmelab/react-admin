@@ -323,38 +323,35 @@ export const Error = () => (
     <CoreAdminContext dataProvider={erroredDataProvider}>
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
-                errorElement={<p>Error loading data</p>}
-                render={({ isPending, data, total }) =>
-                    isPending ? (
-                        <>Loading...</>
-                    ) : (
-                        <table style={{ borderSpacing: '30px 5px' }}>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Apples</th>
-                                    <th>Blueberries</th>
-                                    <th>Carrots</th>
+                loading={<>Loading...</>}
+                error={<p>Error loading data</p>}
+                render={({ data, total }) => (
+                    <table style={{ borderSpacing: '30px 5px' }}>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Apples</th>
+                                <th>Blueberries</th>
+                                <th>Carrots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map(fruit => (
+                                <tr key={fruit.id}>
+                                    <td>{fruit.date}</td>
+                                    <td>{fruit.apples}</td>
+                                    <td>{fruit.blueberries}</td>
+                                    <td>{fruit.carrots}</td>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {data.map(fruit => (
-                                    <tr key={fruit.id}>
-                                        <td>{fruit.date}</td>
-                                        <td>{fruit.apples}</td>
-                                        <td>{fruit.blueberries}</td>
-                                        <td>{fruit.carrots}</td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colSpan={4}>Total: {total}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    )
-                }
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={4}>Total: {total}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                )}
             />
         </ListBase>
     </CoreAdminContext>

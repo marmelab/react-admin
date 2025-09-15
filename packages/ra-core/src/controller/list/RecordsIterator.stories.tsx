@@ -36,7 +36,7 @@ export const UsingRender = ({
         <ListContextProvider value={value}>
             <WithListContext
                 loading={<div>Loading...</div>}
-                errorElement={<div>Error</div>}
+                error={<div>Error</div>}
                 offline={<div>Offline</div>}
                 empty={<div>No data</div>}
             >
@@ -101,7 +101,7 @@ export const UsingChildren = ({
         <ListContextProvider value={value}>
             <WithListContext
                 loading={<div>Loading...</div>}
-                errorElement={<div>Error</div>}
+                error={<div>Error</div>}
                 offline={<div>Offline</div>}
                 empty={<div>No data</div>}
             >
