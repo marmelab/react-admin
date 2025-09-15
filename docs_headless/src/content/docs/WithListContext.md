@@ -26,7 +26,7 @@ const BookList = () => (
                 <ReferenceArrayFieldBase reference="tags" source="tag_ids">
                     <WithListContext
                         loading={<p>Loading tags...</p>}
-                        errorElement={<p>Error while loading tags</p>}
+                        error={<p>Error while loading tags</p>}
                         empty={<p>No associated tags</p>}
                         render={({ data }) => (
                             <div className="stack">
@@ -98,12 +98,12 @@ Whether you use `<WithListContext>` or `useListContext` is a matter of coding st
 
 ## Standalone usage
 
-You can also use `<WithListContext>` outside of a `ListContext` by filling `data`, `total`, `error`, and `isPending` properties manually.
+You can also use `<WithListContext>` outside of a `ListContext` by filling `data`, `total`, `errorState`, and `isPending` properties manually.
 
 ```jsx
 import { WithListContext } from 'react-admin';
 
-const TagList = ({data, isPending}) => (
+const TagList = ({ data, isPending }) => (
     <WithListContext
         data={data}
         isPending={isPending}
@@ -126,18 +126,18 @@ const TagList = ({data, isPending}) => (
 
 `<WithListContext>` accepts a single `render` prop, which should be a function.
 
-| Prop           | Required | Type           | Default | Description                                                                               |
-|----------------|----------|----------------|---------|-------------------------------------------------------------------------------------------|
-| `children`     | Optional | `ReactNode`    |         | The components rendered in the list context.                                              |
-| `data`         | Optional | `RecordType[]` |         | The list data in standalone usage.                                                        |
-| `empty`        | Optional | `ReactNode`    |         | The component to display when the data is empty.                                          |
-| `error`        | Optional | `Error`        |         | The error in standalone usage.                                                            |
-| `errorElement` | Optional | `ReactNode`    |         | The component to display in case of error.                                                |
-| `isPending`    | Optional | `boolean`      |         | Determine if the list is loading in standalone usage.                                     |
-| `loading`      | Optional | `ReactNode`    |         | The component to display while checking authorizations.                                   |
-| `offline`      | Optional | `ReactNode`    |         | The component to display when there is no connectivity to load data and no data in cache. |
-| `render`       | Required | `function`     |         | The function to render the data                                                           |
-| `total`        | Optional | `number`       |         | The total number of data in the list in standalone usage.                                 |
+| Prop         | Required | Type           | Default | Description                                                                               |
+|--------------|----------|----------------|---------|-------------------------------------------------------------------------------------------|
+| `children`   | Optional | `ReactNode`    |         | The components rendered in the list context.                                              |
+| `data`       | Optional | `RecordType[]` |         | The list data in standalone usage.                                                        |
+| `empty`      | Optional | `ReactNode`    |         | The component to display when the data is empty.                                          |
+| `errorState` | Optional | `Error`        |         | The error in standalone usage.                                                            |
+| `error`      | Optional | `ReactNode`    |         | The component to display in case of error.                                                |
+| `isPending`  | Optional | `boolean`      |         | Determine if the list is loading in standalone usage.                                     |
+| `loading`    | Optional | `ReactNode`    |         | The component to display while checking authorizations.                                   |
+| `offline`    | Optional | `ReactNode`    |         | The component to display when there is no connectivity to load data and no data in cache. |
+| `render`     | Required | `function`     |         | The function to render the data                                                           |
+| `total`      | Optional | `number`       |         | The total number of data in the list in standalone usage.                                 |
 
 ## `empty`
 
@@ -162,15 +162,15 @@ If `empty` is not provided, the render function will be called with empty data.
 />
 ```
 
-## `errorElement`
+## `error`
 
-Use `errorElement` to display a message when an error is thrown.
+Use `error` to display a message when an error is thrown.
 
-If `errorElement` is not provided, the render function will be called with the error.
+If `error` is not provided, the render function will be called with the error.
 
 ```jsx
 <WithListContext
-    errorElement={<p>Error while loading books...</p>}
+    error={<p>Error while loading books...</p>}
     render={({ data }) => (
         <ul>
             {data.map(book => (

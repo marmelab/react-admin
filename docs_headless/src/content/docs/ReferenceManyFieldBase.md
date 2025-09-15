@@ -69,17 +69,20 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, RecordsIterator, ReferenceManyFieldBase, WithListContext } from 'ra-core';
+import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
-            <RecordsIterator>
-                <ReferenceManyFieldBase reference="comments" target="post_id">
-                    <CustomAuthorView source="name"/>
-                </ReferenceManyFieldBase>
-            </RecordsIterator>
-        </WithListContext>
+    <ListBase
+        loading={null}
+        error={null}
+        offline={null}
+        emptyWhileLoading
+    >
+        <RecordsIterator>
+            <ReferenceManyFieldBase reference="comments" target="post_id">
+                <CustomAuthorView source="name"/>
+            </ReferenceManyFieldBase>
+        </RecordsIterator>
     </ListBase>
 );
 ```

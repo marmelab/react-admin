@@ -134,28 +134,26 @@ export const InAList = ({ dataProvider = dataProviderWithAuthorList }) => (
             <Resource
                 name="authors"
                 list={
-                    <ListBase>
-                        <WithListContext
-                            loading={null}
-                            error={null}
-                            offline={null}
-                            empty={null}
-                        >
-                            <RecordsIterator
-                                render={author => (
-                                    <div>
-                                        <h3>{author.last_name} Books</h3>
-                                        <ReferenceManyFieldBase
-                                            target="author"
-                                            source="id"
-                                            reference="books"
-                                        >
-                                            <AuthorList source="title" />
-                                        </ReferenceManyFieldBase>
-                                    </div>
-                                )}
-                            />
-                        </WithListContext>
+                    <ListBase
+                        loading={null}
+                        error={null}
+                        offline={null}
+                        emptyWhileLoading
+                    >
+                        <RecordsIterator
+                            render={author => (
+                                <div>
+                                    <h3>{author.last_name} Books</h3>
+                                    <ReferenceManyFieldBase
+                                        target="author"
+                                        source="id"
+                                        reference="books"
+                                    >
+                                        <AuthorList source="title" />
+                                    </ReferenceManyFieldBase>
+                                </div>
+                            )}
+                        />
                     </ListBase>
                 }
             />

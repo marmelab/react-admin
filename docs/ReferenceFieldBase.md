@@ -218,22 +218,25 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
+When used in a [list context](./useListContext.md), `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { ListBase, RecordsIterator, ReferenceFieldBase, WithListContext } from 'react-admin';
+import { ListBase, RecordsIterator, ReferenceFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
-            <RecordsIterator>
-                <ReferenceFieldBase source="user_id" reference="users">
-                    <AuthorView />
-                </ReferenceFieldBase>
-            </RecordsIterator>
-        </WithListContext>
+    <ListBase
+        loading={null}
+        error={null}
+        offline={null}
+        emptyWhileLoading
+    >
+        <RecordsIterator>
+            <ReferenceFieldBase source="user_id" reference="users">
+                <AuthorView />
+            </ReferenceFieldBase>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -270,19 +273,18 @@ For example, the following code prefetches the authors referenced by the posts:
 
 {% raw %}
 ```jsx
-const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
-            <RecordsIterator render={(author) => (
-                <div>
-                    <h3>{author.title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
-            )} />
-        </WithListContext>
-    </ListBase>
+const PostShow = () => (
+    <ShowBase
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={author => (
+            <div>
+                <h3>{author.title}</h3>
+                <ReferenceFieldBase source="author_id" reference="authors">
+                    <AuthorView />
+                </ReferenceFieldBase>
+            </div>
+        )}
+    />
 );
 ```
 {% endraw %}

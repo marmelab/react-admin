@@ -21,12 +21,15 @@ const MostVisitedPosts = () => (
         resource="posts"
         sort={{ field: 'views', order: 'DESC' }}
         perPage={20}
+        emptyWhileLoading
     >
         <ul>
             <RecordsIterator
                 render={record => <li>{record.title} - {record.views}</li>}
             />
         </ul>
+
+        <WithListContext error={<div>Error loading list</div>} />
     </ListBase>
 );
 ```
@@ -40,30 +43,26 @@ You can use `<RecordsIterator>` as a child of any component that provides a [`Li
 - [`<ReferenceArrayField>`](./ReferenceArrayField.md),
 - [`<ReferenceManyField>`](./ReferenceManyField.md)
 
-`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use properties on the component providing you the list context (like [`<List>`](./List.md), [`<ReferenceArrayField>`](./ReferenceArrayField.md), [`<ReferenceManyField>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`errorElement`](./WithListContext.md#errorelement), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
+`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use related props on the component providing you the list context (like [`<List loading>`](./List.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
 
 {% raw %}
 ```jsx
-import { ListBase, RecordsIterator, WithListContext } from 'react-admin';
+import { ListBase, RecordsIterator } from 'react-admin';
 
 const MostVisitedPosts = () => (
     <ListBase
         resource="posts"
         sort={{ field: 'views', order: 'DESC' }}
         perPage={20}
+        loading={<p>Loading...</p>}
+        error={<p>Something went wrong</p>}
+        offline={<p>You are offline</p>}
     >
-        <WithListContext
-            loading={<p>Loading...</p>}
-            errorElement={<p>Something went wrong</p>}
-            empty={<p>No posts found</p>}
-            offline={<p>You are offline</p>}
-        >
-            <ul>
-                <RecordsIterator
-                    render={record => <li>{record.title} - {record.views}</li>}
-                />
-            </ul>
-        </WithListContext>
+        <ul>
+            <RecordsIterator
+                render={record => <li>{record.title} - {record.views}</li>}
+            />
+        </ul>
     </ListBase>
 );
 ```
@@ -71,17 +70,15 @@ const MostVisitedPosts = () => (
 
 ## Props
 
-`<RecordsIterator>` exposes the following important props:
+| Prop        | Required    | Type                              | Default | Description                                                                                          |
+| ----------- |-------------|-----------------------------------| ------- | ---------------------------------------------------------------------------------------------------- |
+| `children`  | Optional`*` | `ReactNode`                       | -       | The content to render for each record                                                                |
+| `data`      | Optional`*` | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
+| `isPending` | Optional    | `boolean`                         | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the [`ListContext`](./useListContext.md) |
+| `render`    | Optional    | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
+| `total`     | Optional    | `number`                          | -       | The total number of records. Defaults to the `total` from the [`ListContext`](./useListContext.md)                          |
 
-| Prop        | Required | Type                              | Default | Description                                                                                          |
-| ----------- | -------- |-----------------------------------| ------- | ---------------------------------------------------------------------------------------------------- |
-| `children`  | Optional | `ReactNode`                       | -       | The content to render for each record                                                                |
-| `data`      | Optional | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
-| `isPending` | Optional | `boolean`                         | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the [`ListContext`](./useListContext.md) |
-| `render`    | Optional | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
-| `total`     | Optional | `number`                          | -       | The total number of records. Defaults to the `total` from the [`ListContext`](./useListContext.md)                          |
-
-Either `children` or `render` is required.
+`*` Either `children` or `render` is required.
 
 ## `children`
 
@@ -166,7 +163,7 @@ const DashboardMostVisitedPosts = () => {
 
 ## `render`
 
-If provided, `RecordsIterator` will call the `render` prop for each record. This is useful when the components you render need the record data to render themselves, or when you want to pass additional props to the rendered component.
+If provided, `RecordsIterator` will call the `render` prop for each record. This is useful to customize the rendered component using the record data.
 
 {% raw %}
 ```tsx
@@ -185,27 +182,3 @@ const PostList = () => (
 {% endraw %}
 
 **Note**: You can't provide both the `children` and the `render` props. If both are provided, `<RecordsIterator>` will use the `render` prop.
-
-## `total`
-
-Although `<RecordsIterator>` reads the total from the closest [`<ListContext>`](./useListContext), you may provide it yourself when no such context is available:
-
-{% raw %}
-```jsx
-import { RecordsIterator, TextField } from 'react-admin';
-import { customerSegments } from './customerSegments.json';
-
-const PostList = () => (
-    <ul>
-        <RecordsIterator
-            data={customerSegments}
-            total={customerSegments.length}
-        >
-            <li>
-                <TextField source="name" />
-            </li>
-        </RecordsIterator>
-    </ul>
-);
-```
-{% endraw %}

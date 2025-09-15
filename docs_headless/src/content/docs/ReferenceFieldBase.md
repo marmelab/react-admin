@@ -211,22 +211,25 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 ## Performance
 
-When used in a list, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
+When used in a [list context](./useListContext.md), `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { ListBase, RecordsIterator, ReferenceFieldBase, WithListContext } from 'ra-core';
+import { ListBase, RecordsIterator, ReferenceFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase>
-        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
-            <RecordsIterator>
-                <ReferenceFieldBase source="user_id" reference="users">
-                    <AuthorView />
-                </ReferenceFieldBase>
-            </RecordsIterator>
-        </WithListContext>
+    <ListBase
+        loading={null}
+        error={null}
+        offline={null}
+        emptyWhileLoading
+    >
+        <RecordsIterator>
+            <ReferenceFieldBase source="user_id" reference="users">
+                <AuthorView />
+            </ReferenceFieldBase>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -262,19 +265,18 @@ When you know that a page will contain a `<ReferenceFieldBase>`, you can configu
 For example, the following code prefetches the authors referenced by the posts:
 
 ```jsx
-const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <WithListContext loading={null} errorElement={null} offline={null} empty={null}>
-            <RecordsIterator render={(author) => (
-                <div>
-                    <h3>{author.title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
-            )} />
-        </WithListContext>
-    </ListBase>
+const PostShow = () => (
+    <ShowBase
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={author => (
+            <div>
+                <h3>{author.title}</h3>
+                <ReferenceFieldBase source="author_id" reference="authors">
+                    <AuthorView />
+                </ReferenceFieldBase>
+            </div>
+        )}
+    />
 );
 ```
 
