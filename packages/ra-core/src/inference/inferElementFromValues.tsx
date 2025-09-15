@@ -158,6 +158,17 @@ const inferElementFromValues = (
                 )
             );
         }
+        if (
+            typeof values[0][0] === 'string' &&
+            hasType('scalar_array', types)
+        ) {
+            return (
+                types.scalar_array &&
+                new InferredElement(types.scalar_array, {
+                    source: name,
+                })
+            );
+        }
         // FIXME introspect further
         return new InferredElement(types.string, { source: name });
     }
