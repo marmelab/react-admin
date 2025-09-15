@@ -180,9 +180,11 @@ export const Notification = (inProps: NotificationProps) => {
             >
                 {message &&
                 typeof message !== 'string' &&
-                React.isValidElement(message)
-                    ? message
-                    : undefined}
+                React.isValidElement(message) ? (
+                    // Wrap the element in a div to avoid forcing our users to wrap their component with forwardRef
+                    // which is required for animating the Snackbar
+                    <div>{message}</div>
+                ) : undefined}
             </StyledSnackbar>
         </CloseNotificationContext.Provider>
     );

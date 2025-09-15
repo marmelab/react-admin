@@ -83,7 +83,7 @@ export interface LoadingInputProps {
     fullWidth?: boolean;
     helperText?: React.ReactNode;
     margin?: 'normal' | 'none' | 'dense';
-    label?: string | React.ReactElement | false;
+    label?: React.ReactNode;
     sx?: SxProps<Theme>;
     size?: 'medium' | 'small';
     timeout?: number;
