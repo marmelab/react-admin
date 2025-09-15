@@ -56,16 +56,30 @@ const App = () => (
 
 ## Props
 
-| Prop             | Required | Type              | Default | Description
-|------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
-| `render`         | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
-| `loading`        | Optional | `ReactNode`       |         | The component to render while checking for authentication and permissions
-| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
-| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
+| Prop                     | Required | Type                                                     | Default | Description
+|--------------------------|----------|----------------------------------------------------------|---------|--------------------------------------------------------
+| `authLoading`            | Optional | `ReactNode`                                              |         | The component to render while checking for authentication and permissions
+| `children`               | Optional | `ReactNode`                                              |         | The components rendering the record fields
+| `render`                 | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode` |         | Alternative to children, a function that takes the ShowController context and renders the form
+| `disable Authentication` | Optional | `boolean`                                                |         | Set to `true` to disable the authentication check
+| `id`                     | Optional | `string`                                                 |         | The record identifier. If not provided, it will be deduced from the URL
+| `offline`                | Optional | `ReactNode`                                              |         | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional | `object`                                                 |         | The options to pass to the `useQuery` hook
+| `resource`               | Optional | `string`                                                 |         | The resource name, e.g. `posts`
+
+## `authLoading`
+
+By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `authLoading` prop:
+
+```jsx
+import { ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </ShowBase>
+);
+```
 
 ## `children`
 
@@ -137,20 +151,6 @@ export const PostShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
-
-## `loading`
-
-By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
-
-```jsx
-import { ShowBase } from 'ra-core';
-
-export const PostShow = () => (
-    <ShowBase loading={<p>Checking for permissions...</p>}>
-        ...
-    </ShowBase>
-);
-```
 
 ## `offline`
 
