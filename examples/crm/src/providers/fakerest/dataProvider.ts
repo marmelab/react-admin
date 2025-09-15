@@ -22,7 +22,7 @@ import { getContactAvatar } from '../commons/getContactAvatar';
 import { authProvider, USER_STORAGE_KEY } from './authProvider';
 import { withSupabaseFilterAdapter } from './internal/supabaseAdapter';
 
-const baseDataProvider = simpleRestProvider('http://localhost:4000');
+const baseDataProvider = simpleRestProvider('https://crm.api.marmelab.com');
 
 const TASK_MARKED_AS_DONE = 'TASK_MARKED_AS_DONE';
 const TASK_MARKED_AS_UNDONE = 'TASK_MARKED_AS_UNDONE';

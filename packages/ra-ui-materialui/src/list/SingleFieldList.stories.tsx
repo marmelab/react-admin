@@ -146,7 +146,9 @@ export const Gap = () => (
 export const Divider = () => (
     <Wrapper>
         <SingleFieldList
-            divider={<MuiDivider orientation="vertical" flexItem />}
+            divider={
+                <MuiDivider orientation="vertical" data-separator flexItem />
+            }
         />
     </Wrapper>
 );

@@ -235,6 +235,16 @@ describe('DataTable', () => {
             selectAllButton.click();
             await screen.findByText('7 items selected');
         });
+        it('should only unselect the current page records', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[0]);
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+            fireEvent.click(checkboxes[0]);
+            await screen.findByText('2 items selected');
+        });
     });
     describe('isRowSelectable', () => {
         it('should allow to disable row selection', async () => {

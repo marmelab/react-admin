@@ -14,6 +14,7 @@ examples/**/static
 examples/**/dist
 cypress/videos
 cypress/screenshots
+cypress/downloads
 /public
 /storybook-static
 .pnp.*

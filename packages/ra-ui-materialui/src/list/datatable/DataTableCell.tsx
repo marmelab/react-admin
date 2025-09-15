@@ -6,6 +6,7 @@ import get from 'lodash/get';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';
+import { DataTableClasses } from './DataTableRoot';
 
 const PREFIX = 'RaDataTableCell';
 
@@ -55,6 +56,7 @@ export const DataTableCell = React.memo(
                 <TableCellStyled
                     ref={ref}
                     className={clsx(
+                        DataTableClasses.rowCell,
                         className,
                         cellClassName,
                         `column-${source}`
