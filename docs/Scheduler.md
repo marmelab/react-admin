@@ -5,7 +5,7 @@ title: "The Scheduler Component"
 
 # `<Scheduler>`
 
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component, part of [`ra-scheduler`](https://react-admin-ee.marmelab.com/documentation/ra-search), is a full-featured scheduler for managing tasks, assignments, events, scheduling constraints and dependencies, completion, recurring events, property booking, skill matrix, nested events, etc.
+This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component, part of [`ra-scheduler`](https://react-admin-ee.marmelab.com/documentation/ra-scheduler), is a full-featured scheduler for managing tasks, assignments, events, scheduling constraints and dependencies, completion, recurring events, property booking, skill matrix, nested events, etc.
 
 <video controls autoplay playsinline muted loop>
   <source src="https://react-admin-ee.marmelab.com/assets/ra-scheduler.mp4" type="video/mp4"/>
