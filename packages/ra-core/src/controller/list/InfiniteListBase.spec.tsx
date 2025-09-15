@@ -11,6 +11,7 @@ import {
 } from './InfiniteListBase.stories';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
+import { Empty } from './ListBase.stories';
 
 describe('InfiniteListBase', () => {
     it('should fetch a list of records on mount, put it in a ListContext, and render its children', async () => {
@@ -158,6 +159,14 @@ describe('InfiniteListBase', () => {
         render(<WithRenderProps />);
         await screen.findByText('War and Peace');
         expect(screen.queryByText('Loading...')).toBeNull();
+    });
+
+    it('should render a custom empty component when data is empty', async () => {
+        render(<Empty />);
+        expect(screen.queryByText('Loading...')).not.toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('No books');
     });
 
     it('should render loading component while loading', async () => {

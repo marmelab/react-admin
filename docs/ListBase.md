@@ -84,6 +84,7 @@ The `<ListBase>` component accepts the following props:
 * [`debounce`](./List.md#debounce)
 * [`disableAuthentication`](./List.md#disableauthentication)
 * [`disableSyncWithLocation`](./List.md#disablesyncwithlocation)
+* [`empty`](./List.md#empty)
 * [`emptyWhileLoading`](./List.md#emptywhileloading)
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
