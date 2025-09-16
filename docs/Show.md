@@ -59,22 +59,26 @@ That's enough to display the post show view above.
 
 ## Props
 
-| Prop             | Required | Type              | Default | Description
-|------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Optional&nbsp;* | `ReactNode`       |         | The components rendering the record fields
-| `render`       | Optional&nbsp;* | `(showContext) => ReactNode`       |         | A function rendering the record fields, receive the show context as its argument
-| `actions`        | Optional | `ReactElement`    |         | The actions to display in the toolbar
-| `aside`          | Optional | `ReactElement`    |         | The component to display on the side of the list
-| `className`      | Optional | `string`          |         | passed to the root component
-| `component`      | Optional | `Component`       | `Card`  | The component to render as the root element
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `empty WhileLoading` | Optional | `boolean`     |         | Set to `true` to return `null` while the show is loading
-| `id`             | Optional | `string | number` |         | The record id. If not provided, it will be deduced from the URL
-| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
-| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
-| `sx`             | Optional | `object`          |         | Override or extend the styles applied to the component
-| `title`          | Optional | `string | ReactElement | false` |   | The title to display in the App Bar
+| Prop                     | Required        | Type                              | Default  | Description
+|--------------------------|-----------------|-----------------------------------|----------|--------------------------------------------------------
+| `children`               | Optional&nbsp;* | `ReactNode`                       |          | The components rendering the record fields
+| `render`                 | Optional&nbsp;* | `(showContext) => ReactNode`      |          | A function rendering the record fields, receive the show context as its argument
+| `authLoading`            | Optional        | `ReactNode`                       |          | The component to render while checking for authentication and permissions
+| `actions`                | Optional        | `ReactElement`                    |          | The actions to display in the toolbar
+| `aside`                  | Optional        | `ReactElement`                    |          | The component to display on the side of the list
+| `className`              | Optional        | `string`                          |          | passed to the root component
+| `component`              | Optional        | `Component`                       | `Card`   | The component to render as the root element
+| `disable Authentication` | Optional        | `boolean`                         |          | Set to `true` to disable the authentication check
+| `empty WhileLoading`     | Optional        | `boolean`                         |          | Set to `true` to return `null` while the show is loading
+| `error`                  | Optional        | `ReactNode`                       |          | The component to render when failing to load the record
+| `id`                     | Optional        | `string \| number`                |          | The record id. If not provided, it will be deduced from the URL
+| `loading`                | Optional        | `ReactNode`                       |          | The component to render while loading the record to show
+| `offline`                | Optional        | `ReactNode`                       |          | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional        | `object`                          |          | The options to pass to the `useQuery` hook
+| `redirectOnError`        | Optional        | `'list' \| false \| function`     | `'list'` | The page to redirect to when an error occurs
+| `resource`               | Optional        | `string`                          |          | The resource name, e.g. `posts`
+| `sx`                     | Optional        | `object`                          |          | Override or extend the styles applied to the component
+| `title`                  | Optional        | `string \| ReactElement \| false` |          | The title to display in the App Bar
 
 `*` You must provide either `children` or `render`.
 
@@ -146,6 +150,20 @@ const Aside = () => {
 {% endraw %}
 
 **Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
+
+## `authLoading`
+
+By default, `<Show>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </Show>
+);
+```
 
 ## `children`
 
@@ -274,6 +292,20 @@ const BookShow = () => (
 );
 ```
 
+## `error`
+
+By default, `<Show>` redirects to the list when an error happens while loading the record to show. You can render an error component via the `error` prop:
+
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show error={<p>Something went wrong while loading your post!</p>}>
+        ...
+    </Show>
+);
+```
+
 ## `id`
 
 By default, `<Show>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
@@ -289,6 +321,20 @@ export const PostShow = () => (
 ```
 
 **Tip**: Pass both a custom `id` and a custom `resource` prop to use `<Show>` independently of the current URL. This even allows you to use more than one `<Show>` component in the same page.
+
+## `loading`
+
+By default, `<Show>` renders the children while loading the record to show. You can display a component during this time via the `loading` prop:
+
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show loading={<p>Loading the post...</p>}>
+        ...
+    </Show>
+);
+```
 
 ## `offline`
 
@@ -383,6 +429,24 @@ The default `onError` function is:
     redirect('list', resource);
     refresh();
 }
+```
+
+## `redirectOnError`
+
+By default, `<Show>` redirects to the list when an error happens while loading the record to show. You can change the default redirection by setting the `redirectOnError` prop:
+
+- `'list'`: redirect to the List view (the default)
+- `false`: do not redirect
+- A function `(resource, id) => string` to redirect to different targets depending on the record
+
+```jsx
+import { Show } from 'react-admin';
+
+export const PostShow = () => (
+    <Show redirectOnError={false}>
+        ...
+    </Show>
+);
 ```
 
 ## `render`
