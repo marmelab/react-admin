@@ -43,7 +43,11 @@ export const TextArrayField = <
     } = props;
     const data = useFieldValue(props) || emptyArray;
     return (
-        <Stack direction="row" gap={1} {...rest}>
+        <Stack
+            direction="row"
+            {...rest}
+            sx={{ gap: 1, flexWrap: 'wrap', ...rest.sx }}
+        >
             {data.length === 0
                 ? emptyText
                 : data.map((item: ReactNode, index: number) => (

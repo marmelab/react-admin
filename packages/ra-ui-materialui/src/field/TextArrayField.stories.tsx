@@ -46,5 +46,5 @@ export const Direction = () => (
 );
 
 export const Gap = () => (
-    <TextArrayField record={book} source="genres" gap={2} />
+    <TextArrayField record={book} source="genres" sx={{ gap: 2 }} />
 );
