@@ -55,23 +55,24 @@ export default App;
 
 You can customize the `<Create>` component using the following props:
 
-| Prop                | Required | Type                | Default        | Description                                                                                      |
-|---------------------|----------|---------------------|----------------|--------------------------------------------------------------------------------------------------|
-| `children`          | Optional&nbsp;* | `ReactNode`         | -              | The components that render the form                                                              |
-| `render`            | Optional&nbsp;* | `function`          | -              | Alternative to children. Function that renders the form, receives the create context as argument |
-| `actions`           | Optional | `ReactNode`         | Default toolbar| Override the actions toolbar with a custom component                                             |
-| `aside`             | Optional | `ReactNode`         | -              | Component to render aside to the main content                                                    |
-| `className`         | Optional | `string`            | -              | Passed to the root component                                                                     |
-| `component`         | Optional | `string`/`Component`| `Card`         | Override the root component                                                                      |
-| `disableAuthentication` | Optional | `boolean`      | `false`         | Disable the authentication check                                                                 |
-| `mutationMode`      | Optional | `string`            | `pessimistic`  | Switch to optimistic or undoable mutations                                                       |
-| `mutationOptions`   | Optional | `object`            | -              | Options for the `dataProvider.create()` call                                                     |
-| `record`            | Optional | `object`            | `{}`           | Initialize the form with a record                                                                |
-| `redirect`          | Optional | `string`/`function` | `'edit'`       | Change the redirect location after successful creation                                           |
-| `resource`          | Optional | `string`            | From URL       | Override the name of the resource to create                                                      |
-| `sx`                | Optional | `object`            | -              | Override the styles                                                                              |
-| `title`             | Optional | `string`/`ReactNode`| Translation    | Override the page title                                                                          |
-| `transform`         | Optional | `function`          | -              | Transform the form data before calling `dataProvider.create()`                                   |
+| Prop                    | Required        | Type                 | Default         | Description                                                                                      |
+|-------------------------|-----------------|----------------------|-----------------|--------------------------------------------------------------------------------------------------|
+| `authLoading`           | Optional        | `ReactNode`          | -               | The component to display while checking for authentication                                       |
+| `children`              | Optional&nbsp;* | `ReactNode`          | -               | The components that render the form                                                              |
+| `render`                | Optional&nbsp;* | `function`           | -               | Alternative to children. Function that renders the form, receives the create context as argument |
+| `actions`               | Optional        | `ReactNode`          | Default toolbar | Override the actions toolbar with a custom component                                             |
+| `aside`                 | Optional        | `ReactNode`          | -               | Component to render aside to the main content                                                    |
+| `className`             | Optional        | `string`             | -               | Passed to the root component                                                                     |
+| `component`             | Optional        | `string`/`Component` | `Card`          | Override the root component                                                                      |
+| `disableAuthentication` | Optional        | `boolean`            | `false`         | Disable the authentication check                                                                 |
+| `mutationMode`          | Optional        | `string`             | `pessimistic`   | Switch to optimistic or undoable mutations                                                       |
+| `mutationOptions`       | Optional        | `object`             | -               | Options for the `dataProvider.create()` call                                                     |
+| `record`                | Optional        | `object`             | `{}`            | Initialize the form with a record                                                                |
+| `redirect`              | Optional        | `string`/`function`  | `'edit'`        | Change the redirect location after successful creation                                           |
+| `resource`              | Optional        | `string`             | From URL        | Override the name of the resource to create                                                      |
+| `sx`                    | Optional        | `object`             | -               | Override the styles                                                                              |
+| `title`                 | Optional        | `string`/`ReactNode` | Translation     | Override the page title                                                                          |
+| `transform`             | Optional        | `function`           | -               | Transform the form data before calling `dataProvider.create()`                                   |
 
 `*` You must provide either `children` or `render`.
 
@@ -124,6 +125,20 @@ const PostCreate = () => (
 ```
 
 {% endraw %}
+
+## `authLoading`
+
+By default, `<Create>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { Create } from 'react-admin';
+
+export const PostCreate = () => (
+    <Create authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </Create>
+);
+```
 
 ## `children`
 
