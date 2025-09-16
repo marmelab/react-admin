@@ -31,7 +31,8 @@ export const BulkUpdateWithUndoButton = (
 
     const { handleUpdate, isPending } = useBulkUpdateController(rest);
 
-    const handleClick = e => {
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
         handleUpdate(data);
         if (typeof onClick === 'function') {
             onClick(e);

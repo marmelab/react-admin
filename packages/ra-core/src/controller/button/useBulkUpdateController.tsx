@@ -20,10 +20,7 @@ export const useBulkUpdateController = <
         onSuccess,
         onError,
         mutationMode = 'undoable',
-        mutationOptions = {
-            onSuccess,
-            onError,
-        },
+        mutationOptions = {},
         successMessage,
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
@@ -37,40 +34,44 @@ export const useBulkUpdateController = <
         resource,
         undefined,
         {
-            onSuccess: () => {
-                notify(
-                    successMessage ??
-                        `resources.${resource}.notifications.updated`,
-                    {
-                        type: 'info',
-                        messageArgs: {
-                            smart_count: selectedIds.length,
-                            _: translate('ra.notification.updated', {
+            onSuccess:
+                onSuccess ??
+                (() => {
+                    notify(
+                        successMessage ??
+                            `resources.${resource}.notifications.updated`,
+                        {
+                            type: 'info',
+                            messageArgs: {
                                 smart_count: selectedIds.length,
-                            }),
-                        },
-                        undoable: mutationMode === 'undoable',
-                    }
-                );
-                onUnselectItems();
-            },
-            onError: (error: any) => {
-                notify(
-                    typeof error === 'string'
-                        ? error
-                        : error?.message || 'ra.notification.http_error',
-                    {
-                        type: 'error',
-                        messageArgs: {
-                            _:
-                                typeof error === 'string'
-                                    ? error
-                                    : error?.message,
-                        },
-                    }
-                );
-                refresh();
-            },
+                                _: translate('ra.notification.updated', {
+                                    smart_count: selectedIds.length,
+                                }),
+                            },
+                            undoable: mutationMode === 'undoable',
+                        }
+                    );
+                    onUnselectItems();
+                }),
+            onError:
+                onError ??
+                ((error: any) => {
+                    notify(
+                        typeof error === 'string'
+                            ? error
+                            : error?.message || 'ra.notification.http_error',
+                        {
+                            type: 'error',
+                            messageArgs: {
+                                _:
+                                    typeof error === 'string'
+                                        ? error
+                                        : error?.message,
+                            },
+                        }
+                    );
+                    refresh();
+                }),
             ...otherMutationOptions,
         }
     );
