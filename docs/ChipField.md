@@ -41,3 +41,13 @@ The `<ChipField>` component accepts the usual `className` prop. You can also ove
 | `&.RaChipField-chip` | Applied to the underlying Material UI's `Chip` component |
 
 To override the style of all instances of `<ChipField>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaChipField` key.
+
+## Rendering A Scalar Value
+
+If you need to render a custom collection (e.g. an array of tags `['dolor', 'sit', 'amet']`), you may be tempted to use `<ChipField source="." />`, but that won't work.
+
+What you probably need in that case instead is the [`<TextArrayField>`](./TextArrayField.md) component, which will render each item of a scalar array in its own Chip.
+
+```jsx
+<TextArrayField source="tags" />
+```

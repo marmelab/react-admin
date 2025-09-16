@@ -211,6 +211,7 @@ title: "Index"
 * [`<TabbedForm>`](./TabbedForm.md)
 * [`<TabbedFormWithRevision>`](./TabbedForm.md#versioning)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />
 * [`<TabbedShowLayout>`](./TabbedShowLayout.md)
+* [`<TextArrayField>`](./TextArrayField.md)
 * [`<TextArrayInput>`](./TextArrayInput.md)
 * [`<TextField>`](./TextField.md)
 * [`<TextInput>`](./TextInput.md)
