@@ -26,6 +26,12 @@ published serially, then in its entirety in 1869.</p>
             url: 'https://www.myshop.com/tags/top-seller',
             email: 'doe@production.com',
             isAlreadyPublished: true,
+            genres: [
+                'Fiction',
+                'Historical Fiction',
+                'Classic Literature',
+                'Russian Literature',
+            ],
         },
     ],
     tags: [
