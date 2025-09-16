@@ -80,18 +80,21 @@ const PostList = () => (
 
 The `<ListBase>` component accepts the following props:
 
-* `children`
+* [`authLoading`](./List.md#authloading)
+* [`children`](./List.md#children)
 * [`debounce`](./List.md#debounce)
 * [`disableAuthentication`](./List.md#disableauthentication)
 * [`disableSyncWithLocation`](./List.md#disablesyncwithlocation)
 * [`emptyWhileLoading`](./List.md#emptywhileloading)
+* [`error`](./List.md#error)
 * [`exporter`](./List.md#exporter)
 * [`filter`](./List.md#filter-permanent-filter)
 * [`filterDefaultValues`](./List.md#filterdefaultvalues)
+* [`loading`](./List.md#loading)
 * [`offline`](./List.md#offline)
 * [`perPage`](./List.md#perpage)
 * [`queryOptions`](./List.md#queryoptions)
-* `render`
+* [`render`](./List.md#render)
 * [`resource`](./List.md#resource)
 * [`sort`](./List.md#sort)
 * [`storeKey`](./List.md#storeKey)

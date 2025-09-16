@@ -53,31 +53,34 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 
 ## Props
 
-| Prop                      | Required | Type           | Default        | Description                                                                                  |
-|---------------------------|----------|----------------|----------------|----------------------------------------------------------------------------------------------|
-| `children`                | Optional&nbsp;* | `ReactNode`    | -              | The components rendering the list of records.                                          |
-| `render`                | Optional&nbsp;* | `(listContext) => ReactNode`    | -              | A function to render the list of records. Receive the list context as its argument                                          |
-| `actions`                 | Optional | `ReactElement` | -              | The actions to display in the toolbar.                                                       |
-| `aside`                   | Optional | `ReactElement` | -              | The component to display on the side of the list.                                            |
-| `component`               | Optional | `Component`    | `Card`         | The component to render as the root element.                                                 |
-| `debounce`                | Optional | `number`       | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
-| `disable Authentication`  | Optional | `boolean`      | `false`        | Set to `true` to disable the authentication check.                                           |
-| `disable SyncWithLocation`| Optional | `boolean`      | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.            |
-| `empty`                   | Optional | `ReactElement` | -              | The component to display when the list is empty.                                             |
-| `empty WhileLoading`      | Optional | `boolean`      | `false`        | Set to `true` to return `null` while the list is loading.                                    |
-| `exporter`                | Optional | `function`     | -              | The function to call to export the list.                                                     |
-| `filters`                 | Optional | `ReactElement` | -              | The filters to display in the toolbar.                                                       |
-| `filter`                  | Optional | `object`       | -              | The permanent filter values.                                                                 |
-| `filter DefaultValues`    | Optional | `object`       | -              | The default filter values.                                                                   |
-| `offline`                 | Optional | `ReactNode`    | `<Offline>`    | The component to render when there is no connectivity and there is no data in the cache      |
-| `pagination`              | Optional | `ReactElement` | `<Pagination>` | The pagination component to use.                                                             |
-| `perPage`                 | Optional | `number`       | `10`           | The number of records to fetch per page.                                                     |
-| `queryOptions`            | Optional | `object`       | -              | The options to pass to the `useQuery` hook.                                                  |
-| `resource`                | Optional | `string`       | -              | The resource name, e.g. `posts`.                                                             |
-| `sort`                    | Optional | `object`       | -              | The initial sort parameters.                                                                 |
-| `storeKey`                | Optional | `string | false` | -           | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
-| `title`                   | Optional | `string | ReactElement | false` | -              | The title to display in the App Bar.                                                         |
-| `sx`                      | Optional | `object`       | -              | The CSS styles to apply to the component.                                                    |
+| Prop                       | Required        | Type                              | Default        | Description                                                                                      |
+|----------------------------|-----------------|-----------------------------------|----------------|--------------------------------------------------------------------------------------------------|
+| `children`                 | Optional&nbsp;* | `ReactNode`                       | -              | The components rendering the list of records.                                                    |
+| `render`                   | Optional&nbsp;* | `(listContext) => ReactNode`      | -              | A function to render the list of records. Receive the list context as its argument               |
+| `actions`                  | Optional        | `ReactElement`                    | -              | The actions to display in the toolbar.                                                           |
+| `aside`                    | Optional        | `ReactElement`                    | -              | The component to display on the side of the list.                                                |
+| `authLoading`              | Optional        | `ReactNode`                       | -              | The component to render while checking for authentication and permissions.                       |
+| `component`                | Optional        | `Component`                       | `Card`         | The component to render as the root element.                                                     |
+| `debounce`                 | Optional        | `number`                          | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters.     |
+| `disable Authentication`   | Optional        | `boolean`                         | `false`        | Set to `true` to disable the authentication check.                                               |
+| `disable SyncWithLocation` | Optional        | `boolean`                         | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.                |
+| `empty`                    | Optional        | `ReactElement`                    | -              | The component to display when the list is empty.                                                 |
+| `empty WhileLoading`       | Optional        | `boolean`                         | `false`        | Set to `true` to return `null` while the list is loading.                                        |
+| `error`                    | Optional        | `ReactNode`                       | -              | The component to render when failing to load the list of records.                                |
+| `exporter`                 | Optional        | `function`                        | -              | The function to call to export the list.                                                         |
+| `filters`                  | Optional        | `ReactElement`                    | -              | The filters to display in the toolbar.                                                           |
+| `filter`                   | Optional        | `object`                          | -              | The permanent filter values.                                                                     |
+| `filter DefaultValues`     | Optional        | `object`                          | -              | The default filter values.                                                                       |
+| `loading`                  | Optional        | `ReactNode`                       | -              | The component to render while loading the list of records.                                       |
+| `offline`                  | Optional        | `ReactNode`                       | `<Offline>`    | The component to render when there is no connectivity and there is no data in the cache          |
+| `pagination`               | Optional        | `ReactElement`                    | `<Pagination>` | The pagination component to use.                                                                 |
+| `perPage`                  | Optional        | `number`                          | `10`           | The number of records to fetch per page.                                                         |
+| `queryOptions`             | Optional        | `object`                          | -              | The options to pass to the `useQuery` hook.                                                      |
+| `resource`                 | Optional        | `string`                          | -              | The resource name, e.g. `posts`.                                                                 |
+| `sort`                     | Optional        | `object`                          | -              | The initial sort parameters.                                                                     |
+| `storeKey`                 | Optional        | `string \| false`                 | -              | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+| `title`                    | Optional        | `string \| ReactElement \| false` | -              | The title to display in the App Bar.                                                             |
+| `sx`                       | Optional        | `object`                          | -              | The CSS styles to apply to the component.                                                        |
 
 `*` You must provide either `children` or `render`.
 
@@ -272,6 +275,20 @@ export const PostList = () => (
 ```
 
 **Tip**: the `<Card sx>` prop in the `PostFilterSidebar` component above is here to put the sidebar on the left side of the screen, instead of the default right side.
+
+## `authLoading`
+
+By default, `<List>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { List } from 'react-admin';
+
+export const PostList = () => (
+    <List authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </List>
+);
+```
 
 ## `children`
 
@@ -580,6 +597,20 @@ const BookList = () => (
 );
 ```
 
+## `error`
+
+By default, `<List>` renders the children when an error happens while loading the list of records. You can render an error component via the `error` prop:
+
+```jsx
+import { List } from 'react-admin';
+
+export const PostList = () => (
+    <List error={<p>Something went wrong while loading your posts!</p>}>
+        ...
+    </List>
+);
+```
+
 ## `exporter`
 
 <video controls autoplay playsinline muted loop>
@@ -773,6 +804,20 @@ export const PostList = () => (
 
 ```js
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
+```
+
+## `loading`
+
+By default, `<List>` renders the children while loading the list of records. You can display a component during this time via the `loading` prop:
+
+```jsx
+import { List } from 'react-admin';
+
+export const PostList = () => (
+    <List loading={<p>Loading the posts...</p>}>
+        ...
+    </List>
+);
 ```
 
 ## `offline`
