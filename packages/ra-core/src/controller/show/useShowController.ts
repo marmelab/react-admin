@@ -110,7 +110,7 @@ export const useShowController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect(redirectOnError, resource);
+                redirect(redirectOnError, resource, id);
             },
             retry: false,
             ...otherQueryOptions,

@@ -134,7 +134,7 @@ export const useEditController = <
                 notify('ra.notification.item_doesnt_exist', {
                     type: 'error',
                 });
-                redirect(redirectOnError, resource);
+                redirect(redirectOnError, resource, id);
             },
             refetchOnReconnect: false,
             refetchOnWindowFocus: false,
