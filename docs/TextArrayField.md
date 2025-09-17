@@ -61,7 +61,7 @@ Additional props are passed to the underlying [Material-UI `Stack` component](ht
 
 ## `color`
 
-The color of the Chip components. Accepts any value supported by MUI's Chip (`primary`, `secondary`, etc).
+The color of the Chip components. Accepts any value supported by [MUI's Chip](https://mui.com/material-ui/react-chip/) (`primary`, `secondary`, etc).
 
 ```jsx
 <TextArrayField source="genres" color="secondary" />
@@ -104,7 +104,7 @@ const book = {
 
 ## `size`
 
-The size of the Chip components. Accepts any value supported by MUI's Chip (`small`, `medium`). The default is `small`.
+The size of the Chip components. Accepts any value supported by [MUI's Chip](https://mui.com/material-ui/react-chip/) (`small`, `medium`). The default is `small`.
 
 ```jsx
 <TextArrayField source="genres" size="medium" />
@@ -130,7 +130,7 @@ Custom styles for the Stack, using MUI's `sx` prop.
 
 ## `variant`
 
-The variant of the Chip components. Accepts any value supported by MUI's Chip (`filled`, `outlined`). The default is `filled`.
+The variant of the Chip components. Accepts any value supported by [MUI's Chip](https://mui.com/material-ui/react-chip/) (`filled`, `outlined`). The default is `filled`.
 
 ```jsx
 <TextArrayField source="genres" variant="outlined" />
