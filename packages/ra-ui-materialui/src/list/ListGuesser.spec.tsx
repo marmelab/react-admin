@@ -10,7 +10,7 @@ describe('<ListGuesser />', () => {
         await screen.findAllByText('top seller', undefined, { timeout: 2000 });
         expect(logSpy).toHaveBeenCalledWith(`Guessed List:
 
-import { DataTable, DateField, EmailField, List, ReferenceArrayField, ReferenceField } from 'react-admin';
+import { DataTable, DateField, EmailField, List, ReferenceArrayField, ReferenceField, TextArrayField } from 'react-admin';
 
 export const ProductList = () => (
     <List>
@@ -29,6 +29,9 @@ export const ProductList = () => (
             </DataTable.Col>
             <DataTable.Col source="email">
                 <EmailField source="email" />
+            </DataTable.Col>
+            <DataTable.Col source="sizes">
+                <TextArrayField source="sizes" />
             </DataTable.Col>
         </DataTable>
     </List>

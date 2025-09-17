@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import type { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
+import {
+    type InferredElement,
+    type InferredTypeMap,
+    type InputProps,
+} from 'ra-core';
 import {
     ArrayField,
     BooleanField,
@@ -15,6 +19,7 @@ import {
     TextField,
     UrlField,
     ChipField,
+    TextArrayField,
 } from '../field';
 import { SimpleShowLayout, SimpleShowLayoutProps } from './SimpleShowLayout';
 import { DataTable, SingleFieldList } from '../list';
@@ -54,6 +59,11 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
                         .join('\n                    ')}
                 </DataTable>
             </ArrayField>`,
+    },
+    scalar_array: {
+        component: TextArrayField,
+        representation: (props: InputProps) =>
+            `<TextArrayField source="${props.source}" />`,
     },
     boolean: {
         component: BooleanField,

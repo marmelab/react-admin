@@ -143,3 +143,11 @@ The `<SingleFieldList>` component accepts the usual `className` prop. You can al
 | `& .RaSingleFieldList-link` | Applied to each link    |
 
 **Tip**: You can override these classes for all `<SingleFieldList>` instances by overriding them in a Material UI theme, using the key "RaSingleFieldList".
+
+## Rendering An Array Of Strings
+
+If you need to render a custom collection (e.g. an array of tags `['dolor', 'sit', 'amet']`), you may want to use the [`<TextArrayField>`](./TextArrayField.md) component instead.
+
+```jsx
+<TextArrayField source="tags" />
+```

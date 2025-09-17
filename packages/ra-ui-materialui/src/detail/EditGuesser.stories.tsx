@@ -3,9 +3,9 @@ import { Admin } from 'react-admin';
 import { Resource, TestMemoryRouter } from 'ra-core';
 import fakeRestProvider from 'ra-data-fakerest';
 
-import { ShowGuesser as RAShowGuesser } from './ShowGuesser';
+import { EditGuesser as RAEditGuesser } from './EditGuesser';
 
-export default { title: 'ra-ui-materialui/detail/ShowGuesser' };
+export default { title: 'ra-ui-materialui/detail/EditGuesser' };
 
 const data = {
     books: [
@@ -43,12 +43,12 @@ published serially, then in its entirety in 1869.</p>
     ],
 };
 
-const ShowGuesserWithProdLogs = () => <RAShowGuesser enableLog />;
+const EditGuesserWithProdLogs = () => <RAEditGuesser enableLog />;
 
-export const ShowGuesser = () => (
-    <TestMemoryRouter initialEntries={['/books/123/show']}>
+export const EditGuesser = () => (
+    <TestMemoryRouter initialEntries={['/books/123']}>
         <Admin dataProvider={fakeRestProvider(data)}>
-            <Resource name="books" show={ShowGuesserWithProdLogs} />
+            <Resource name="books" edit={EditGuesserWithProdLogs} />
         </Admin>
     </TestMemoryRouter>
 );
