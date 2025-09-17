@@ -48,14 +48,15 @@ const BookShow = () => (
 
 The following props are available for `<TextArrayField>`:
 
-| Prop        | Type         | Required | Description                                                   |
-| ----------- | ------------ | -------- | ------------------------------------------------------------- |
-| `source`    | `string`     | Yes      | The name of the record field containing the array to display. |
-| `color`     | `string`     | -        | The color of the Chip components.                             |
-| `emptyText` | `ReactNode`  | -        | Text to display when the array is empty.                      |
-| `record`    | `RecordType` | -        | The record containing the data to display.                    |
-| `size`      | `string`     | -        | The size of the Chip components.                              |
-| `variant`   | `string`     | -        | The variant of the Chip components.                           |
+| Prop        | Required | Type         | Default  | Description                                                   |
+| ----------- | -------- | ------------ | -------- | ------------------------------------------------------------- |
+| `source`    | Yes      | `string`     | -        | The name of the record field containing the array to display. |
+| `color`     | -        | `string`     | -        | The color of the Chip components.                             |
+| `direction` | -        | `string`     | `row`    | The direction of the Stack layout.                            |
+| `emptyText` | -        | `ReactNode`  | -        | Text to display when the array is empty.                      |
+| `record`    | -        | `RecordType` | -        | The record containing the data to display.                    |
+| `size`      | -        | `string`     | `small`  | The size of the Chip components.                              |
+| `variant`   | -        | `string`     | `filled` | The variant of the Chip components.                           |
 
 Additional props are passed to the underlying [Material-UI `Stack` component](https://mui.com/material-ui/react-stack/).
 
