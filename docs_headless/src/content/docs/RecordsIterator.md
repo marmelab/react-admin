@@ -52,7 +52,7 @@ const PostShow = () => (
 );
 ```
 
-`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use properties on the component providing you the list context (like [`<List loading>`](./List.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
+`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use properties on the component providing you the list context (like [`<ListBase loading>`](./ListBase.md), [`<ReferenceArrayFieldBase loading>`](./ReferenceArrayFieldBase.md), [`<ReferenceManyFieldBase loading>`](./ReferenceManyFieldBase.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
 
 ```jsx
 import { ListBase, RecordsIterator } from 'ra-core';
@@ -77,14 +77,12 @@ const MostVisitedPosts = () => (
 
 ## Props
 
-`<RecordsIterator>` exposes the following important props:
-
 | Prop        | Required    | Type                              | Default | Description                                                                                          |
 | ----------- |-------------|-----------------------------------| ------- | ---------------------------------------------------------------------------------------------------- |
 | `children`  | Optional`*` | `ReactNode`                       | -       | The content to render for each record                                                                |
-| `data`      | Optional`*` | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
+| `data`      | Optional    | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
 | `isPending` | Optional    | `boolean`                         | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the [`ListContext`](./useListContext.md) |
-| `render`    | Optional    | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
+| `render`    | Optional`*` | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
 | `total`     | Optional    | `number`                          | -       | The total number of records. Defaults to the `total` from the [`ListContext`](./useListContext.md)                          |
 
 `*` Either `children` or `render` is required.
