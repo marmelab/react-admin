@@ -76,9 +76,9 @@ import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'react-admin';
 
 export const PostList = () => (
     <ListBase
+        loading={null}
         error={null}
         offline={null}
-        emptyWhileLoading
     >
         <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
