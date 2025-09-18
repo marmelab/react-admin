@@ -1,4 +1,5 @@
 import "./style.css";
+import "./newsletter.css";
 
 const GITHUB_API_URL = "https://api.github.com/repos/marmelab/react-admin";
 
@@ -114,11 +115,27 @@ function hideBanner() {
   if (banner) {
     banner.style.display = "none";
   }
+  window.localStorage.setItem("hideBannerDate", Date.now().toString());
 }
-const closeBanner = document.getElementById("closeBanner");
-if (closeBanner) {
-  closeBanner.addEventListener("click", (e) => {
-    e.preventDefault();
-    hideBanner();
-  });
+// Extend Window interface to include hideBanner
+declare global {
+  interface Window {
+    hideBanner: typeof hideBanner;
+  }
+}
+window.hideBanner = hideBanner;
+const hideBannerDate = parseInt(
+  window.localStorage.getItem("hideBannerDate") || "0",
+  10
+);
+if (!hideBannerDate || Date.now() - hideBannerDate > 14 * 24 * 60 * 60 * 1000) {
+  const emojis = ["🎄", "🎅", "🎁", "🎉", "🦌", "🤶", "🌟", "🔔", "🧦"];
+  const randomEmoji = document.getElementById("randomEmoji");
+  if (randomEmoji) {
+    randomEmoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+  }
+  const banner = document.getElementById("banner");
+  if (banner) {
+    banner.style.display = "flex";
+  }
 }
