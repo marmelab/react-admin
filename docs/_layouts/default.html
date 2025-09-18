@@ -105,6 +105,7 @@
 
     <body>
         <header>
+            {% include banner.html %}
             {% include nav.html %}
             <ul id="slide-out" class="sidenav sidenav-fixed">
                 <li class="logo">
@@ -192,5 +193,7 @@
 
             var AUTOHIDE = Boolean(0);
         </script>
+
+        {% include banner_script.html %}
     </body>
 </html>
