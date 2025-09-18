@@ -206,7 +206,7 @@ const Aside = () => {
 
 ## `authLoading`
 
-By default, `<Edit>` renders the `<Loading>` component while checking for authentication and permissions. You can display a custom component during this time via the `authLoading` prop:
+By default, `<Edit>` renders the `<Loading>` component while checking for authentication and permissions. You can display a custom component via the `authLoading` prop:
 
 ```jsx
 import { Edit } from 'react-admin';

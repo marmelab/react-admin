@@ -278,7 +278,7 @@ export const PostList = () => (
 
 ## `authLoading`
 
-By default, `<List>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+By default, `<List>` renders the `<Loading>` component while checking for authentication and permissions. You can display a custom component via the `authLoading` prop:
 
 ```jsx
 import { List } from 'react-admin';

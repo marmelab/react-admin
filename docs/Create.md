@@ -128,7 +128,7 @@ const PostCreate = () => (
 
 ## `authLoading`
 
-By default, `<Create>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+By default, `<Create>` renders the `<Loading>` component while checking for authentication and permissions. You can display a custom component via the `authLoading` prop:
 
 ```jsx
 import { Create } from 'react-admin';
