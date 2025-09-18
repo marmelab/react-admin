@@ -113,12 +113,3 @@ body {
       calc(var(--scroll) * var(--translate-speed) * var(--translate-base))
     );
 }
-
-#closeBanner {
-  cursor: pointer;
-}
-@media screen and (max-width: 576px) {
-  #closeBanner {
-    display: none;
-  }
-}
