@@ -17,15 +17,12 @@ const MostVisitedPosts = () => (
         resource="posts"
         sort={{ field: 'views', order: 'DESC' }}
         perPage={20}
-        emptyWhileLoading
     >
         <ul>
             <RecordsIterator
                 render={record => <li>{record.title} - {record.views}</li>}
             />
         </ul>
-
-        <WithListContext error={<div>Error loading list</div>} />
     </ListBase>
 );
 ```
