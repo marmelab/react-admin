@@ -56,15 +56,15 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
     );
 
     const logoutIfAccessDenied = useCallback<LogoutIfAccessDenied>(
-        async (error?: any) => {
+        async (errorFromCheckAuth?: any) => {
             if (!authProvider) {
                 return logoutIfAccessDeniedWithoutProvider();
             }
             try {
-                await authProvider.checkError(error);
+                await authProvider.checkError(errorFromCheckAuth);
                 return false;
-            } catch (e: any) {
-                const logoutUser = e?.logoutUser ?? true;
+            } catch (errorFromCheckError: any) {
+                const logoutUser = errorFromCheckError?.logoutUser ?? true;
                 // manual debounce
                 if (timer) {
                     return true; // side effects already triggered in this tick, exit
@@ -74,15 +74,18 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                 }, 0);
 
                 const redirectTo =
-                    e && e.redirectTo != null
-                        ? e.redirectTo
-                        : error && error.redirectTo
-                          ? error.redirectTo
+                    errorFromCheckError &&
+                    errorFromCheckError.redirectTo != null
+                        ? errorFromCheckError.redirectTo
+                        : errorFromCheckAuth && errorFromCheckAuth.redirectTo
+                          ? errorFromCheckAuth.redirectTo
                           : undefined;
 
                 const shouldNotify = !(
-                    (e && e.message === false) ||
-                    (error && error.message === false) ||
+                    (errorFromCheckError &&
+                        errorFromCheckError.message === false) ||
+                    (errorFromCheckAuth &&
+                        errorFromCheckAuth.message === false) ||
                     redirectTo?.startsWith('http')
                 );
                 if (shouldNotify) {
@@ -92,7 +95,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         if (logoutUser) {
                             notify(
                                 getErrorMessage(
-                                    e,
+                                    errorFromCheckError,
                                     'ra.notification.logged_out'
                                 ),
                                 { type: 'error' }
@@ -100,7 +103,7 @@ const useLogoutIfAccessDenied = (): LogoutIfAccessDenied => {
                         } else {
                             notify(
                                 getErrorMessage(
-                                    e,
+                                    errorFromCheckError,
                                     'ra.notification.not_authorized'
                                 ),
                                 { type: 'error' }

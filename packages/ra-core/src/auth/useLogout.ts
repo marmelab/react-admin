@@ -60,77 +60,72 @@ const useLogout = (): Logout => {
     const logout: Logout = useCallback(
         (
             params = {},
-            redirectTo = loginUrl,
+            redirectFromCaller,
             redirectToCurrentLocationAfterLogin = true
         ) => {
             if (authProvider) {
-                return authProvider
-                    .logout(params)
-                    .then(redirectToFromProvider => {
-                        if (
-                            redirectToFromProvider === false ||
-                            redirectTo === false
-                        ) {
-                            resetStore();
-                            queryClient.clear();
-                            // do not redirect
-                            return;
-                        }
+                return authProvider.logout(params).then(redirectFromLogout => {
+                    if (
+                        redirectFromLogout === false ||
+                        redirectFromCaller === false
+                    ) {
+                        resetStore();
+                        queryClient.clear();
+                        // do not redirect
+                        return;
+                    }
 
-                        const finalRedirectTo =
-                            redirectToFromProvider || redirectTo;
+                    const finalRedirectTo =
+                        redirectFromCaller || redirectFromLogout || loginUrl;
 
-                        if (finalRedirectTo?.startsWith('http')) {
-                            // absolute link (e.g. https://my.oidc.server/login)
-                            resetStore();
-                            queryClient.clear();
-                            window.location.href = finalRedirectTo;
-                            return finalRedirectTo;
-                        }
+                    if (finalRedirectTo?.startsWith('http')) {
+                        // absolute link (e.g. https://my.oidc.server/login)
+                        resetStore();
+                        queryClient.clear();
+                        window.location.href = finalRedirectTo;
+                        return finalRedirectTo;
+                    }
 
-                        // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
-                        // we must split it to pass a structured location to navigate()
-                        const redirectToParts = finalRedirectTo.split('?');
-                        const newLocation: Partial<Path> = {
-                            pathname: redirectToParts[0],
+                    // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
+                    // we must split it to pass a structured location to navigate()
+                    const redirectToParts = finalRedirectTo.split('?');
+                    const newLocation: Partial<Path> = {
+                        pathname: redirectToParts[0],
+                    };
+                    let newLocationOptions = {};
+
+                    if (
+                        redirectToCurrentLocationAfterLogin &&
+                        locationRef.current &&
+                        locationRef.current.pathname
+                    ) {
+                        newLocationOptions = {
+                            state: {
+                                nextPathname: locationRef.current.pathname,
+                                nextSearch: locationRef.current.search,
+                            },
                         };
-                        let newLocationOptions = {};
+                    }
+                    if (redirectToParts[1]) {
+                        newLocation.search = redirectToParts[1];
+                    }
 
-                        if (
-                            redirectToCurrentLocationAfterLogin &&
-                            locationRef.current &&
-                            locationRef.current.pathname
-                        ) {
-                            newLocationOptions = {
-                                state: {
-                                    nextPathname: locationRef.current.pathname,
-                                    nextSearch: locationRef.current.search,
-                                },
-                            };
-                        }
-                        if (redirectToParts[1]) {
-                            newLocation.search = redirectToParts[1];
-                        }
+                    // We need to navigate and reset the store after a litte delay to avoid a race condition
+                    // between the store reset and the navigation.
+                    //
+                    // This would only happen when the `authProvider.getPermissions` method returns
+                    // a resolved promise with no delay: If the store was reset before the navigation,
+                    // the `usePermissions` query would reset, causing the `CoreAdminRoutes` component to
+                    // rerender the `LogoutOnMount` component leading to an infinite loop.
+                    setTimeout(() => {
+                        navigateRef.current(newLocation, newLocationOptions);
 
-                        // We need to navigate and reset the store after a litte delay to avoid a race condition
-                        // between the store reset and the navigation.
-                        //
-                        // This would only happen when the `authProvider.getPermissions` method returns
-                        // a resolved promise with no delay: If the store was reset before the navigation,
-                        // the `usePermissions` query would reset, causing the `CoreAdminRoutes` component to
-                        // rerender the `LogoutOnMount` component leading to an infinite loop.
-                        setTimeout(() => {
-                            navigateRef.current(
-                                newLocation,
-                                newLocationOptions
-                            );
+                        resetStore();
+                        queryClient.clear();
+                    }, 0);
 
-                            resetStore();
-                            queryClient.clear();
-                        }, 0);
-
-                        return redirectToFromProvider;
-                    });
+                    return redirectFromLogout;
+                });
             } else {
                 navigateRef.current(
                     {
