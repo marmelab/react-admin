@@ -71,7 +71,7 @@ const App = () => (
 | `loading`                | Optional | `ReactNode`                                              |          | The component to render while loading the record to show
 | `offline`                | Optional | `ReactNode`                                              |          | The component to render when there is no connectivity and the record isn't in the cache
 | `queryOptions`           | Optional | `object`                                                 |          | The options to pass to the `useQuery` hook
-| `redirectOnError`        | Optional | `'list' \| false \| function`                            | `'list'` | The page to redirect to when an error occurs
+| `redirectOnError`        | Optional | `'list'` &#124; `false` &#124; `function`                | `'list'` | The page to redirect to when an error occurs
 | `resource`               | Optional | `string`                                                 |          | The resource name, e.g. `posts`
 
 ## `authLoading`

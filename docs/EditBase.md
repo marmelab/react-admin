@@ -44,21 +44,21 @@ export const BookEdit = () => (
 
 ## Props
 
-| Prop                     | Required     | Type                                                     | Default  | Description
-|--------------------------|--------------|----------------------------------------------------------|----------|--------------------------------------------------------
-| `authLoading`            | Optional     | `ReactNode`                                              |          | The component to render while checking for authentication and permissions
-| `children`               | Optional     | `ReactNode`                                              |          | The components rendering the record fields
-| `render`                 | Optional     | `(props: EditControllerResult<RecordType>) => ReactNode` |          | Alternative to children, a function that takes the EditController context and renders the form
-| `disable Authentication` | Optional     | `boolean`                                                |          | Set to `true` to disable the authentication check
-| `error`                  | Optional     | `ReactNode`                                              |          | The component to render when failing to load the record
-| `id`                     | Optional     | `string`                                                 |          | The record identifier. If not provided, it will be deduced from the URL
-| `loading`                | Optional     | `ReactNode`                                              |          | The component to render while loading the record to edit
-| `mutationMode`           | Optional     | `undoable`                                               |          | The mutation mode
-| `mutationOptions`        | Optional     | `ReactNode`                                              |          | The options to pass to the `useUpdate` hook
-| `offline`                | Optional     | `ReactNode`                                              |          | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`           | Optional     | `object`                                                 |          | The options to pass to the `useGetOne` hook
-| `redirectOnError`        | Optional     | `'list' \| false \| function`                            | `'list'` | The page to redirect to when an error occurs
-| `transform`              | Optional     | `string`                                                 |          | Transform the form data before calling `dataProvider.update()`
+| Prop                     | Required | Type                                                     | Default  | Description
+|--------------------------|----------|----------------------------------------------------------|----------|--------------------------------------------------------
+| `authLoading`            | Optional | `ReactNode`                                              |          | The component to render while checking for authentication and permissions
+| `children`               | Optional | `ReactNode`                                              |          | The components rendering the record fields
+| `render`                 | Optional | `(props: EditControllerResult<RecordType>) => ReactNode` |          | Alternative to children, a function that takes the EditController context and renders the form
+| `disable Authentication` | Optional | `boolean`                                                |          | Set to `true` to disable the authentication check
+| `error`                  | Optional | `ReactNode`                                              |          | The component to render when failing to load the record
+| `id`                     | Optional | `string`                                                 |          | The record identifier. If not provided, it will be deduced from the URL
+| `loading`                | Optional | `ReactNode`                                              |          | The component to render while loading the record to edit
+| `mutationMode`           | Optional | `undoable`                                               |          | The mutation mode
+| `mutationOptions`        | Optional | `ReactNode`                                              |          | The options to pass to the `useUpdate` hook
+| `offline`                | Optional | `ReactNode`                                              |          | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional | `object`                                                 |          | The options to pass to the `useGetOne` hook
+| `redirectOnError`        | Optional | `'list'` &#124; `false` &#124; `function`                | `'list'` | The page to redirect to when an error occurs
+| `transform`              | Optional | `string`                                                 |          | Transform the form data before calling `dataProvider.update()`
 
 ## `authLoading`
 

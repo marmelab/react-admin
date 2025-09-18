@@ -63,30 +63,30 @@ export default App;
 
 You can customize the `<Edit>` component using the following props:
 
-| Prop                    | Required        | Type                                          | Default      | Description                                                                             |
-|-------------------------|-----------------|-----------------------------------------------|--------------|-----------------------------------------------------------------------------------------|
-| `authLoading`           | Optional        | `ReactNode`                                   |              | The component to render while checking for authentication and permissions               |
-| `children`              | Optional&nbsp;* | `ReactNode`                                   | -            | The components that render the form                                                     |
-| `render`                | Optional&nbsp;* | `function`                                    | -            | Function to render the form, receives the editContext as argument                       |
-| `actions`               | Optional        | `ReactNode`                                   | -            | Override the actions toolbar with a custom component                                    |
-| `aside`                 | Optional        | `ReactNode`                                   | -            | Component to render aside to the main content                                           |
-| `className`             | Optional        | `string`                                      | -            | Passed to the root component                                                            |
-| `component`             | Optional        | `elementType`/`string`                        | `Card`       | Override the root component                                                             |
-| `disableAuthentication` | Optional        | `boolean`                                     | `false`      | Disable the authentication check                                                        |
-| `error`                 | Optional        | `ReactNode`                                   |              | The component to render when failing to load the record                                 |
-| `emptyWhileLoading`     | Optional        | `boolean`                                     | `false`      | Set to `true` to return `null` while the edit is loading                                |
-| `id`                    | Optional        | `string`/`number`                             | -            | The id of the record to edit                                                            |
-| `loading`               | Optional        | `ReactNode`                                   |              | The component to render while loading the record to edit                                |
-| `mutationMode`          | Optional        | `'undoable' \| 'optimistic' \| 'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                           |
-| `mutationOptions`       | Optional        | `object`                                      | -            | Options for the `dataProvider.update()` call                                            |
-| `offline`               | Optional        | `ReactNode`                                   |              | The component to render when there is no connectivity and the record isn't in the cache |
-| `queryOptions`          | Optional        | `object`                                      | -            | Options for the `dataProvider.getOne()` call                                            |
-| `redirect`              | Optional        | `'list' \| 'show' \| false \| function`       | `'list'`     | Change the redirect location after successful update                                    |
-| `resource`              | Optional        | `string`                                      | -            | Override the name of the resource to edit                                               |
-| `sx`                    | Optional        | `object`                                      | -            | Override the styles                                                                     |
-| `title`                 | Optional        | `string`/`ReactNode`/`false`                  | -            | Override the page title                                                                 |
-| `redirectOnError`       | Optional        | `'list' \| false \| function`                 | `'list'`     | The page to redirect to when an error occurs                                            |
-| `transform`             | Optional        | `function`                                    | -            | Transform the form data before calling `dataProvider.update()`                          |
+| Prop                    | Required        | Type                                                      | Default      | Description                                                                             |
+|-------------------------|-----------------|-----------------------------------------------------------|--------------|-----------------------------------------------------------------------------------------|
+| `authLoading`           | Optional        | `ReactNode`                                               |              | The component to render while checking for authentication and permissions               |
+| `children`              | Optional&nbsp;* | `ReactNode`                                               | -            | The components that render the form                                                     |
+| `render`                | Optional&nbsp;* | `function`                                                | -            | Function to render the form, receives the editContext as argument                       |
+| `actions`               | Optional        | `ReactNode`                                               | -            | Override the actions toolbar with a custom component                                    |
+| `aside`                 | Optional        | `ReactNode`                                               | -            | Component to render aside to the main content                                           |
+| `className`             | Optional        | `string`                                                  | -            | Passed to the root component                                                            |
+| `component`             | Optional        | `elementType` &#124; `string`                             | `Card`       | Override the root component                                                             |
+| `disableAuthentication` | Optional        | `boolean`                                                 | `false`      | Disable the authentication check                                                        |
+| `error`                 | Optional        | `ReactNode`                                               |              | The component to render when failing to load the record                                 |
+| `emptyWhileLoading`     | Optional        | `boolean`                                                 | `false`      | Set to `true` to return `null` while the edit is loading                                |
+| `id`                    | Optional        | `string`/`number`                                         | -            | The id of the record to edit                                                            |
+| `loading`               | Optional        | `ReactNode`                                               |              | The component to render while loading the record to edit                                |
+| `mutationMode`          | Optional        | `'undoable'` &#124; `'optimistic'` &#124; `'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                           |
+| `mutationOptions`       | Optional        | `object`                                                  | -            | Options for the `dataProvider.update()` call                                            |
+| `offline`               | Optional        | `ReactNode`                                               |              | The component to render when there is no connectivity and the record isn't in the cache |
+| `queryOptions`          | Optional        | `object`                                                  | -            | Options for the `dataProvider.getOne()` call                                            |
+| `redirect`              | Optional        | `'list'` &#124; `'show'` &#124; `false` &#124; `function` | `'list'`     | Change the redirect location after successful update                                    |
+| `resource`              | Optional        | `string`                                                  | -            | Override the name of the resource to edit                                               |
+| `sx`                    | Optional        | `object`                                                  | -            | Override the styles                                                                     |
+| `title`                 | Optional        | `string` &#124; `ReactNode` &#124; `false`                | -            | Override the page title                                                                 |
+| `redirectOnError`       | Optional        | `'list'` &#124; `false` &#124; `function`                 | `'list'`     | The page to redirect to when an error occurs                                            |
+| `transform`             | Optional        | `function`                                                | -            | Transform the form data before calling `dataProvider.update()`                          |
 
 `*` You must provide either `children` or `render`.
 

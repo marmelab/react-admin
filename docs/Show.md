@@ -59,26 +59,26 @@ That's enough to display the post show view above.
 
 ## Props
 
-| Prop                     | Required        | Type                              | Default  | Description
-|--------------------------|-----------------|-----------------------------------|----------|--------------------------------------------------------
-| `children`               | Optional&nbsp;* | `ReactNode`                       |          | The components rendering the record fields
-| `render`                 | Optional&nbsp;* | `(showContext) => ReactNode`      |          | A function rendering the record fields, receive the show context as its argument
-| `authLoading`            | Optional        | `ReactNode`                       |          | The component to render while checking for authentication and permissions
-| `actions`                | Optional        | `ReactElement`                    |          | The actions to display in the toolbar
-| `aside`                  | Optional        | `ReactElement`                    |          | The component to display on the side of the list
-| `className`              | Optional        | `string`                          |          | passed to the root component
-| `component`              | Optional        | `Component`                       | `Card`   | The component to render as the root element
-| `disable Authentication` | Optional        | `boolean`                         |          | Set to `true` to disable the authentication check
-| `empty WhileLoading`     | Optional        | `boolean`                         |          | Set to `true` to return `null` while the show is loading
-| `error`                  | Optional        | `ReactNode`                       |          | The component to render when failing to load the record
-| `id`                     | Optional        | `string \| number`                |          | The record id. If not provided, it will be deduced from the URL
-| `loading`                | Optional        | `ReactNode`                       |          | The component to render while loading the record to show
-| `offline`                | Optional        | `ReactNode`                       |          | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`           | Optional        | `object`                          |          | The options to pass to the `useQuery` hook
-| `redirectOnError`        | Optional        | `'list' \| false \| function`     | `'list'` | The page to redirect to when an error occurs
-| `resource`               | Optional        | `string`                          |          | The resource name, e.g. `posts`
-| `sx`                     | Optional        | `object`                          |          | Override or extend the styles applied to the component
-| `title`                  | Optional        | `string \| ReactElement \| false` |          | The title to display in the App Bar
+| Prop                     | Required        | Type                                          | Default  | Description
+|--------------------------|-----------------|-----------------------------------------------|----------|--------------------------------------------------------
+| `children`               | Optional&nbsp;* | `ReactNode`                                   |          | The components rendering the record fields
+| `render`                 | Optional&nbsp;* | `(showContext) => ReactNode`                  |          | A function rendering the record fields, receive the show context as its argument
+| `authLoading`            | Optional        | `ReactNode`                                   |          | The component to render while checking for authentication and permissions
+| `actions`                | Optional        | `ReactElement`                                |          | The actions to display in the toolbar
+| `aside`                  | Optional        | `ReactElement`                                |          | The component to display on the side of the list
+| `className`              | Optional        | `string`                                      |          | passed to the root component
+| `component`              | Optional        | `Component`                                   | `Card`   | The component to render as the root element
+| `disable Authentication` | Optional        | `boolean`                                     |          | Set to `true` to disable the authentication check
+| `empty WhileLoading`     | Optional        | `boolean`                                     |          | Set to `true` to return `null` while the show is loading
+| `error`                  | Optional        | `ReactNode`                                   |          | The component to render when failing to load the record
+| `id`                     | Optional        | `string` &#124; `number`                      |          | The record id. If not provided, it will be deduced from the URL
+| `loading`                | Optional        | `ReactNode`                                   |          | The component to render while loading the record to show
+| `offline`                | Optional        | `ReactNode`                                   |          | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional        | `object`                                      |          | The options to pass to the `useQuery` hook
+| `redirectOnError`        | Optional        | `'list'` &#124; `false` &#124; `function`     | `'list'` | The page to redirect to when an error occurs
+| `resource`               | Optional        | `string`                                      |          | The resource name, e.g. `posts`
+| `sx`                     | Optional        | `object`                                      |          | Override or extend the styles applied to the component
+| `title`                  | Optional        | `string` &#124; `ReactElement` &#124; `false` |          | The title to display in the App Bar
 
 `*` You must provide either `children` or `render`.
 
