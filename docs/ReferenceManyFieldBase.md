@@ -374,8 +374,12 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
         storeKey="custom"
+        loading={<p>Loading...</p>}
+        error={null}
+        offline={null}
+        empty={<p>No books</p>}
     >
-        <Iterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>
