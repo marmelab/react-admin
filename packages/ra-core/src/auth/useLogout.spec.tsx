@@ -7,6 +7,7 @@ import expect from 'expect';
 import { useGetOne } from '../dataProvider';
 import useLogout from './useLogout';
 import { CoreAdminContext } from '../core/CoreAdminContext';
+import { Redirect } from './useLogout.stories';
 
 import { TestMemoryRouter } from '../routing';
 
@@ -54,98 +55,21 @@ describe('useLogout', () => {
         ).toBeUndefined();
     });
     it('should redirect to `/login` by default', async () => {
-        const LogoutButton = () => {
-            const logout = useLogout();
-            return <button onClick={logout}>Logout</button>;
-        };
-        const authProvider = {
-            logout: () => Promise.resolve(),
-        } as any;
-        const Page = () => <div>Page</div>;
-        const Login = () => <div>Login</div>;
-        render(
-            <TestMemoryRouter>
-                <CoreAdminContext authProvider={authProvider}>
-                    <Routes>
-                        <Route path="/" element={<Page />} />
-                        <Route path="/login" element={<Login />} />
-                    </Routes>
-
-                    <LogoutButton />
-                </CoreAdminContext>
-            </TestMemoryRouter>
-        );
+        render(<Redirect redirectTo="default" />);
         await screen.findByText('Page');
         fireEvent.click(screen.getByText('Logout'));
         await screen.findByText('Login');
     });
     it('should redirect to the url returned by the authProvider.logout call', async () => {
-        const LogoutButton = () => {
-            const logout = useLogout();
-            return <button onClick={logout}>Logout</button>;
-        };
-        const authProvider = {
-            logout: () => Promise.resolve('/not_login'),
-        } as any;
-        const queryClient = new QueryClient();
-        const Page = () => <div>Page</div>;
-        const Login = () => <div>Login</div>;
-        const NotLogin = () => <div>NotLogin</div>;
-        render(
-            <TestMemoryRouter>
-                <CoreAdminContext
-                    authProvider={authProvider}
-                    queryClient={queryClient}
-                >
-                    <Routes>
-                        <Route path="/" element={<Page />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/not_login" element={<NotLogin />} />
-                    </Routes>
-
-                    <LogoutButton />
-                </CoreAdminContext>
-            </TestMemoryRouter>
-        );
+        render(<Redirect redirectTo="authProvider.logout" />);
         await screen.findByText('Page');
         fireEvent.click(screen.getByText('Logout'));
-        await screen.findByText('NotLogin');
+        await screen.findByText('Custom from authProvider.logout');
     });
     it('should redirect to the url returned by the caller', async () => {
-        const LogoutButton = () => {
-            const logout = useLogout();
-            return (
-                <button onClick={() => logout(undefined, '/caller_redirect')}>
-                    Logout
-                </button>
-            );
-        };
-        const authProvider = {
-            logout: () => Promise.resolve('/not_login'),
-        } as any;
-        const Page = () => <div>Page</div>;
-        const Login = () => <div>Login</div>;
-        const NotLogin = () => <div>NotLogin</div>;
-        const CallerRedirect = () => <div>CallerRedirect</div>;
-        render(
-            <TestMemoryRouter>
-                <CoreAdminContext authProvider={authProvider}>
-                    <Routes>
-                        <Route path="/" element={<Page />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/not_login" element={<NotLogin />} />
-                        <Route
-                            path="/caller_redirect"
-                            element={<CallerRedirect />}
-                        />
-                    </Routes>
-
-                    <LogoutButton />
-                </CoreAdminContext>
-            </TestMemoryRouter>
-        );
+        render(<Redirect redirectTo="caller" />);
         await screen.findByText('Page');
         fireEvent.click(screen.getByText('Logout'));
-        await screen.findByText('CallerRedirect');
+        await screen.findByText('Custom from useLogout caller');
     });
 });
