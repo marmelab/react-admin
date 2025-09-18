@@ -167,6 +167,8 @@ export const PostShow = () => (
 );
 ```
 
+**Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
+
 ## `loading`
 
 By default, `<ShowBase>` renders the children while loading the record to show. You can display a component during this time via the `loading` prop:
@@ -180,8 +182,6 @@ export const PostShow = () => (
     </ShowBase>
 );
 ```
-
-**Tip**: Pass both a custom `id` and a custom `resource` prop to use `<ShowBase>` independently of the current URL. This even allows you to use more than one `<ShowBase>` component in the same page.
 
 ## `offline`
 
