@@ -80,8 +80,7 @@ export const EditView = (props: EditViewProps) => {
             {finalActions}
             <div
                 className={clsx(EditClasses.main, {
-                    [EditClasses.noActions]:
-                        !finalActions || showOffline || showError,
+                    [EditClasses.noActions]: !finalActions,
                 })}
             >
                 <Content className={EditClasses.card}>

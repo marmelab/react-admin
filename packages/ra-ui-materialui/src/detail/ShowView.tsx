@@ -77,8 +77,7 @@ export const ShowView = (props: ShowViewProps) => {
             {finalActions !== false && finalActions}
             <div
                 className={clsx(ShowClasses.main, {
-                    [ShowClasses.noActions]:
-                        !finalActions || showOffline || showError,
+                    [ShowClasses.noActions]: !finalActions,
                 })}
             >
                 <Content className={ShowClasses.card}>
