@@ -3,6 +3,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     AccessControl,
     DefaultTitle,
+    Empty,
     EmptyWhileLoading,
     EmptyWhileLoadingRender,
     FetchError,
@@ -167,6 +168,13 @@ describe('ListBase', () => {
         fireEvent.click(screen.getByText('previous'));
         await screen.findByText('War and Peace');
         await screen.findByText('You are offline, the data may be outdated');
+    });
+    it('should render a custom empty component when data is empty', async () => {
+        render(<Empty />);
+        expect(screen.queryByText('Loading...')).not.toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('No books');
     });
     it('should render nothing while loading if emptyWhileLoading is set to true', async () => {
         render(<EmptyWhileLoading />);
