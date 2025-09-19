@@ -57,6 +57,7 @@ export const useListController = <
         filterDefaultValues,
         perPage = 10,
         queryOptions = {},
+        selectionStoreKey,
         sort = defaultSort,
         storeKey,
     } = props;
@@ -101,10 +102,19 @@ export const useListController = <
         storeKey,
     });
 
-    const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource,
-        disableSyncWithStore: storeKey === false,
-    });
+    const [selectedIds, selectionModifiers] = useRecordSelection(
+        selectionStoreKey
+            ? {
+                  storeKey: selectionStoreKey,
+              }
+            : storeKey === false
+              ? {
+                    disableSyncWithStore: true,
+                }
+              : {
+                    resource,
+                }
+    );
 
     const {
         data,
@@ -440,6 +450,23 @@ export interface ListControllerProps<
      * );
      */
     storeKey?: string | false;
+
+    /**
+     * The key to use to store selected items. Pass undefined to use default key.
+     *
+     * @see https://marmelab.com/react-admin/List.html#selectionStorekey
+     * @example
+     * const NewerBooks = () => (
+     *     <List
+     *         resource="books"
+     *         selectionStoreKey="newerBooks"
+     *         sort={{ field: 'year', order: 'DESC' }}
+     *     >
+     *         ...
+     *     </List>
+     * );
+     */
+    selectionStoreKey?: string;
 }
 
 const defaultSort = {
