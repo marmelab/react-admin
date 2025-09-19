@@ -132,7 +132,7 @@ The `BookList` component can grab the `authorId` parameter from the URL using th
 
 ```jsx
 // in src/BookList.jsx
-import { ListBase, ListIterator } from 'ra-core';
+import { ListBase, RecordsIterator } from 'ra-core';
 import { useParams } from 'react-router-dom';
 
 export const BookList = () => {
@@ -142,7 +142,7 @@ export const BookList = () => {
             <div>
                 <h1>Books</h1>
                 <ul>
-                    <ListIterator
+                    <RecordsIterator
                         render={book => (
                             <li key={book.id}>
                                 {book.title} ({book.year})
@@ -162,7 +162,7 @@ It's your responsibility to route to the `/authors/:id/books` route, e.g. from e
 
 ```jsx
 // in src/AuthorList.jsx
-import { useRecordContext, ListBase, ListIterator } from 'ra-core';
+import { useRecordContext, ListBase, RecordsIterator } from 'ra-core';
 import { Link } from 'react-router-dom';
 
 const BooksButton = () => {
@@ -178,7 +178,7 @@ export const AuthorList = () => (
     <ListBase>
         <div>
             <h1>Authors</h1>
-            <ListIterator
+            <RecordsIterator
                 render={author => (
                     <div key={author.id} style={{ padding: '1rem', border: '1px solid #ddd', margin: '0.5rem' }}>
                         <span>{author.firstName} {author.lastName}</span>
@@ -297,7 +297,7 @@ For instance, the following component displays the name of the current resource:
 
 ```jsx
 import * as React from 'react';
-import { ListBase, ListIterator, useResourceContext } from 'ra-core';
+import { ListBase, RecordsIterator, useResourceContext } from 'ra-core';
 
 const ResourceName = () => {
     const resource = useResourceContext();
@@ -308,7 +308,7 @@ const PostList = () => (
     <ListBase>
         <div>
             <ResourceName /> {/* renders 'posts' */}
-            <ListIterator
+            <RecordsIterator
                 render={record => (
                     <div key={record.id}>
                         <h3>{record.title}</h3>
@@ -366,7 +366,7 @@ In order to display a list of songs for the selected artist, `<SongList>` should
 
 ```jsx
 // in src/SongList.jsx
-import { ListBase, ListIterator, useRecordContext } from 'ra-core';
+import { ListBase, RecordsIterator, useRecordContext } from 'ra-core';
 import { useParams, Link } from 'react-router-dom';
 
 export const SongList = () => {
@@ -375,7 +375,7 @@ export const SongList = () => {
         <ListBase resource="songs" filter={{ artistId: id }}>
             <div>
                 <h1>Songs</h1>
-                <ListIterator
+                <RecordsIterator
                     render={song => (
                         <div key={song.id} style={{ padding: '1rem', border: '1px solid #ddd', margin: '0.5rem' }}>
                             <h3>{song.title}</h3>

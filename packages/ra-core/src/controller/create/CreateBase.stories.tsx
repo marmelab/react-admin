@@ -118,7 +118,7 @@ export const WithAuthProviderNoAccessControl = ({
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <CreateBase
             {...defaultProps}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <Child />
         </CreateBase>
@@ -141,7 +141,7 @@ export const AccessControl = ({
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <CreateBase
             {...defaultProps}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <Child />
         </CreateBase>

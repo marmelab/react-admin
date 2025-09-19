@@ -1,8 +1,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { UsingChildren, UsingRender } from './ListIterator.stories';
+import { UsingChildren, UsingRender } from './RecordsIterator.stories';
 
-describe('<ListIterator>', () => {
+describe('<RecordsIterator>', () => {
     describe.each([
         { Story: UsingRender, prop: 'render' },
         { Story: UsingChildren, prop: 'children' },

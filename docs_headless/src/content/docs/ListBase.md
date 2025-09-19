@@ -79,21 +79,38 @@ const PostList = () => (
 The `<ListBase>` component accepts the following props:
 
 | Prop                      | Required                | Type        | Default | Description                                                                                  |
-| ------------------------- | ----------------------- | ----------- | ------- | -------------------------------------------------------------------------------------------- |
+|---------------------------|-------------------------|-------------| ------- |----------------------------------------------------------------------------------------------|
+| `authLoading`             | Optional                | `ReactNode` | -       | The component to render while checking for authentication and permissions.                   |
 | `children`                | Required if no render   | `ReactNode` | -       | The component to use to render the list of records.                                          |
 | `render`                  | Required if no children | `ReactNode` | -       | A function that render the list of records, receives the list context as argument.           |
 | `debounce`                | Optional                | `number`    | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disableAuthentication`   | Optional                | `boolean`   | `false` | Set to `true` to disable the authentication check.                                           |
 | `disableSyncWithLocation` | Optional                | `boolean`   | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `error`                   | Optional                | `ReactNode` | -       | The component to render when failing to load the list of records.                            |
 | `exporter`                | Optional                | `function`  | -       | The function to call to export the list.                                                     |
 | `filter`                  | Optional                | `object`    | -       | The permanent filter values.                                                                 |
 | `filterDefaultValues`     | Optional                | `object`    | -       | The default filter values.                                                                   |
+| `loading`                 | Optional                | `ReactNode` | -       | The component to render while loading the list of records.                                   |
 | `perPage`                 | Optional                | `number`    | `10`    | The number of records to fetch per page.                                                     |
 | `queryOptions`            | Optional                | `object`    | -       | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                | Optional                | `string`    | -       | The resource name, e.g. `posts`.                                                             |
 | `sort`                    | Optional                | `object`    | -       | The initial sort parameters.                                                                 |
 
 In addition, `<ListBase>` renders its children components inside a `ListContext`. The context provides access to the list data, pagination, sorting, and filtering state.
+
+## `authLoading`
+
+By default, `<ListBase>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { ListBase } from 'ra-core';
+
+export const PostList = () => (
+    <ListBase authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </ListBase>
+);
+```
 
 ## `debounce`
 
@@ -190,6 +207,20 @@ const Dashboard = () => (
             </ListBase>
         </ResourceContextProvider>
     </div>
+);
+```
+
+## `error`
+
+By default, `<ListBase>` renders the children when an error happens while loading the list of records. You can render an error component via the `error` prop:
+
+```jsx
+import { ListBase } from 'ra-core';
+
+export const PostList = () => (
+    <ListBase error={<p>Something went wrong while loading your posts!</p>}>
+        ...
+    </ListBase>
 );
 ```
 
@@ -326,6 +357,20 @@ const PostList = () => (
 
 ```js
 const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser, ...filter };
+```
+
+## `loading`
+
+By default, `<ListBase>` renders the children while loading the list of records. You can display a component during this time via the `loading` prop:
+
+```jsx
+import { ListBase } from 'ra-core';
+
+export const PostList = () => (
+    <ListBase loading={<p>Loading the posts...</p>}>
+        ...
+    </ListBase>
+);
 ```
 
 ## `perPage`

@@ -33,6 +33,7 @@ export const EditView = (props: EditViewProps) => {
         component: Content = Card,
         emptyWhileLoading = false,
         offline = defaultOffline,
+        error,
         title,
         ...rest
     } = props;
@@ -40,23 +41,30 @@ export const EditView = (props: EditViewProps) => {
     const { hasShow } = useResourceDefinition();
     const editContext = useEditContext();
 
-    const { resource, defaultTitle, record, isPaused, isPending } = editContext;
+    const {
+        resource,
+        defaultTitle,
+        record,
+        isPaused,
+        isPending,
+        error: errorState,
+    } = editContext;
 
     const finalActions =
         typeof actions === 'undefined' && hasShow ? defaultActions : actions;
 
-    if (isPaused && isPending && offline !== undefined && offline !== false) {
-        return (
-            <Root className={clsx('edit-page', className)} {...rest}>
-                <div className={clsx(EditClasses.main, EditClasses.noActions)}>
-                    <Content className={EditClasses.card}>{offline}</Content>
-                    {aside}
-                </div>
-            </Root>
-        );
-    }
+    const showOffline =
+        isPaused && isPending && offline !== undefined && offline !== false;
 
-    if (!record && isPending && emptyWhileLoading) {
+    const showError = errorState && error !== false && error !== undefined;
+
+    if (
+        !record &&
+        isPending &&
+        emptyWhileLoading &&
+        !showOffline &&
+        !showError
+    ) {
         return null;
     }
 
@@ -76,7 +84,11 @@ export const EditView = (props: EditViewProps) => {
                 })}
             >
                 <Content className={EditClasses.card}>
-                    {render ? (
+                    {showOffline ? (
+                        offline
+                    ) : showError ? (
+                        error
+                    ) : render ? (
                         render(editContext)
                     ) : record ? (
                         children
@@ -97,6 +109,7 @@ export interface EditViewProps
     component?: ElementType;
     emptyWhileLoading?: boolean;
     offline?: ReactNode;
+    error?: ReactNode;
     title?: string | ReactElement | false;
     sx?: SxProps<Theme>;
     render?: (editContext: EditControllerResult) => ReactNode;

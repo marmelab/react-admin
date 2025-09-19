@@ -8,12 +8,14 @@ import {
     useInfinitePaginationContext,
     TestMemoryRouter,
     IsOffline,
+    GetListResult,
 } from 'ra-core';
 import {
     Alert,
     Box,
     Button,
     Card,
+    Stack,
     ThemeOptions,
     Typography,
 } from '@mui/material';
@@ -33,6 +35,7 @@ import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { deepmerge } from '@mui/utils';
 import { defaultLightTheme } from '../theme';
 import { onlineManager } from '@tanstack/react-query';
+import { useRef } from 'react';
 
 export default {
     title: 'ra-ui-materialui/list/InfiniteList',
@@ -607,6 +610,99 @@ Offline.argTypes = {
         mapping: {
             default: undefined,
             custom: <CustomOffline />,
+        },
+    },
+};
+
+export const FetchError = ({ error }: { error?: React.ReactNode }) => {
+    const resolveGetList = useRef<(() => void) | null>(null);
+    const rejectGetList = useRef<(() => void) | null>(null);
+    const errorDataProvider = {
+        ...dataProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>((resolve, reject) => {
+                resolveGetList.current = () => {
+                    resolve(dataProvider.getList(resource, params));
+                    resolveGetList.current = null;
+                    rejectGetList.current = null;
+                };
+                rejectGetList.current = () => {
+                    reject(new Error('Expected error.'));
+                    resolveGetList.current = null;
+                    rejectGetList.current = null;
+                };
+            });
+        },
+    };
+
+    return (
+        <Admin
+            dataProvider={errorDataProvider}
+            layout={({ children }) => (
+                <Layout>
+                    <Stack direction="row">
+                        {rejectGetList.current && (
+                            <Button
+                                onClick={() => {
+                                    rejectGetList.current &&
+                                        rejectGetList.current();
+                                }}
+                                sx={{ flex: 1 }}
+                            >
+                                Reject loading
+                            </Button>
+                        )}
+                        {resolveGetList.current && (
+                            <Button
+                                onClick={() => {
+                                    resolveGetList.current &&
+                                        resolveGetList.current();
+                                }}
+                                sx={{ flex: 1 }}
+                            >
+                                Resolve loading
+                            </Button>
+                        )}
+                    </Stack>
+                    {children}
+                </Layout>
+            )}
+        >
+            <Resource
+                name="books"
+                list={() => (
+                    <InfiniteList
+                        loading={<div>Loading...</div>}
+                        error={error}
+                        pagination={<InfinitePagination />}
+                    >
+                        <SimpleList
+                            primaryText="%{title}"
+                            secondaryText="%{author}"
+                        />
+                    </InfiniteList>
+                )}
+            />
+        </Admin>
+    );
+};
+
+const CustomError = () => {
+    return <Alert severity="error">Something went wrong!</Alert>;
+};
+
+FetchError.args = {
+    error: 'custom',
+};
+
+FetchError.argTypes = {
+    error: {
+        name: 'Error component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomError />,
         },
     },
 };

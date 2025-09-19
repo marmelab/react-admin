@@ -99,15 +99,18 @@ That's enough to display a basic list with infinite scroll functionality. When u
 `<InfiniteListBase>` accepts the same props as [`<ListBase>`](./ListBase.md), but configured for infinite loading:
 
 | Prop                       | Required                | Type        | Default | Description                                                                                  |
-| -------------------------- | ----------------------- | ----------- | ------- | -------------------------------------------------------------------------------------------- |
+|----------------------------| ----------------------- | ----------- | ------- | -------------------------------------------------------------------------------------------- |
+| `authLoading`              | Optional                | `ReactNode` | -       | The component to render while checking for authentication and permissions.                   |
 | `children`                 | Required if no render   | `ReactNode` | -       | The component to use to render the list of records.                                          |
 | `render`                   | Required if no children | `ReactNode` | -       | A function that render the list of records, receives the list context as argument.           |
 | `debounce`                 | Optional                | `number`    | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disable Authentication`   | Optional                | `boolean`   | `false` | Set to `true` to disable the authentication check.                                           |
 | `disable SyncWithLocation` | Optional                | `boolean`   | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `error`                    | Optional                | `ReactNode` | -       | The component to render when failing to load the list of records.                            |
 | `exporter`                 | Optional                | `function`  | -       | The function to call to export the list.                                                     |
 | `filter`                   | Optional                | `object`    | -       | The permanent filter values.                                                                 |
 | `filter DefaultValues`     | Optional                | `object`    | -       | The default filter values.                                                                   |
+| `loading`                  | Optional                | `ReactNode` | -       | The component to render while loading the list of records.                                   |
 | `perPage`                  | Optional                | `number`    | `10`    | The number of records to fetch per page.                                                     |
 | `queryOptions`             | Optional                | `object`    | -       | The options to pass to the `useQuery` hook.                                                  |
 | `resource`                 | Optional                | `string`    | -       | The resource name, e.g. `posts`.                                                             |

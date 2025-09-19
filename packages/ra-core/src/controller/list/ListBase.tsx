@@ -47,8 +47,10 @@ import { useIsAuthPending } from '../../auth';
 export const ListBase = <RecordType extends RaRecord = any>({
     children,
     emptyWhileLoading,
+    authLoading,
     loading,
     offline,
+    error,
     render,
     ...props
 }: ListBaseProps<RecordType>) => {
@@ -64,20 +66,34 @@ export const ListBase = <RecordType extends RaRecord = any>({
         );
     }
 
-    const showLoading =
+    const {
+        isPaused,
+        isPending,
+        isPlaceholderData,
+        error: errorState,
+    } = controllerProps;
+
+    const showAuthLoading =
         isAuthPending &&
         !props.disableAuthentication &&
-        loading !== undefined &&
-        loading !== false;
+        authLoading !== false &&
+        authLoading !== undefined;
 
-    const { isPaused, isPending, isPlaceholderData } = controllerProps;
+    const showLoading =
+        !isPaused &&
+        ((!props.disableAuthentication && isAuthPending) || isPending) &&
+        loading !== false &&
+        loading !== undefined;
+
     const showOffline =
         isPaused &&
         // If isPending and isPaused are true, we are offline and couldn't even load the initial data
         // If isPaused and isPlaceholderData are true, we are offline and couldn't even load data with different parameters on the same useQuery observer
         (isPending || isPlaceholderData) &&
-        offline !== undefined &&
-        offline !== false;
+        offline !== false &&
+        offline !== undefined;
+
+    const showError = errorState && error !== false && error !== undefined;
 
     const showEmpty = isPending && !showOffline && emptyWhileLoading === true;
 
@@ -85,15 +101,19 @@ export const ListBase = <RecordType extends RaRecord = any>({
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ListContextProvider value={controllerProps}>
-                {showLoading
-                    ? loading
-                    : showOffline
-                      ? offline
-                      : showEmpty
-                        ? null
-                        : render
-                          ? render(controllerProps)
-                          : children}
+                {showAuthLoading
+                    ? authLoading
+                    : showLoading
+                      ? loading
+                      : showOffline
+                        ? offline
+                        : showError
+                          ? error
+                          : showEmpty
+                            ? null
+                            : render
+                              ? render(controllerProps)
+                              : children}
             </ListContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -101,9 +121,11 @@ export const ListBase = <RecordType extends RaRecord = any>({
 
 export interface ListBaseProps<RecordType extends RaRecord = any>
     extends ListControllerProps<RecordType> {
-    children?: ReactNode;
     emptyWhileLoading?: boolean;
+    authLoading?: ReactNode;
     loading?: ReactNode;
     offline?: ReactNode;
+    error?: ReactNode;
+    children?: ReactNode;
     render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
 }

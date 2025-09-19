@@ -56,16 +56,33 @@ const App = () => (
 
 ## Props
 
-| Prop             | Required | Type              | Default | Description
-|------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
-| `render`         | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the ShowController context and renders the form
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
-| `loading`        | Optional | `ReactNode`       |         | The component to render while checking for authentication and permissions
-| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useQuery` hook
-| `resource`       | Optional | `string`          |         | The resource name, e.g. `posts`
+| Prop                     | Required | Type                                                     | Default  | Description
+|--------------------------|----------|----------------------------------------------------------|----------|--------------------------------------------------------
+| `authLoading`            | Optional | `ReactNode`                                              |          | The component to render while checking for authentication and permissions
+| `children`               | Optional | `ReactNode`                                              |          | The components rendering the record fields
+| `render`                 | Optional | `(props: ShowControllerResult<RecordType>) => ReactNode` |          | Alternative to children, a function that takes the ShowController context and renders the form
+| `disable Authentication` | Optional | `boolean`                                                |          | Set to `true` to disable the authentication check
+| `error`                  | Optional | `ReactNode`                                              |          | The component to render when failing to load the record
+| `id`                     | Optional | `string`                                                 |          | The record identifier. If not provided, it will be deduced from the URL
+| `loading`                | Optional | `ReactNode`                                              |          | The component to render while loading the record to show
+| `offline`                | Optional | `ReactNode`                                              |          | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional | `object`                                                 |          | The options to pass to the `useQuery` hook
+| `redirectOnError`        | Optional | `'list' \| false \| function`                            | `'list'` | The page to redirect to when an error occurs
+| `resource`               | Optional | `string`                                                 |          | The resource name, e.g. `posts`
+
+## `authLoading`
+
+By default, `<ShowBase>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </ShowBase>
+);
+```
 
 ## `children`
 
@@ -122,6 +139,20 @@ const PostShow = () => (
 );
 ```
 
+## `error`
+
+By default, `<ShowBase>` redirects to the list when an error happens while loading the record to show. You can render an error component via the `error` prop:
+
+```jsx
+import { ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase error={<p>Something went wrong while loading your post!</p>}>
+        ...
+    </ShowBase>
+);
+```
+
 ## `id`
 
 By default, `<ShowBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
@@ -140,13 +171,13 @@ export const PostShow = () => (
 
 ## `loading`
 
-By default, `<ShowBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
+By default, `<ShowBase>` renders the children while loading the record to show. You can display a component during this time via the `loading` prop:
 
 ```jsx
 import { ShowBase } from 'ra-core';
 
 export const PostShow = () => (
-    <ShowBase loading={<p>Checking for permissions...</p>}>
+    <ShowBase loading={<p>Loading the post...</p>}>
         ...
     </ShowBase>
 );
@@ -222,6 +253,24 @@ The default `onError` function is:
     redirect('list', resource);
     refresh();
 }
+```
+
+## `redirectOnError`
+
+By default, `<ShowBase>` redirects to the list when an error happens while loading the record to show. You can change the default redirection by setting the `redirectOnError` prop:
+
+- `'list'`: redirect to the List view (the default)
+- `false`: do not redirect
+- A function `(resource, id) => string` to redirect to different targets depending on the record
+
+```jsx
+import { ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase redirectOnError={false}>
+        ...
+    </ShowBase>
+);
 ```
 
 ## `render`

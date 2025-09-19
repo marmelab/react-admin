@@ -69,15 +69,15 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceManyFieldBase } from 'ra-core';
+import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
+        <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
                 <CustomAuthorView source="name"/>
             </ReferenceManyFieldBase>
-        </ListIterator>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -106,20 +106,27 @@ export const PostList = () => (
 
 `<ReferenceManyFieldBase>` renders its children inside a [`ListContext`](./useListContext.md). This means you can use any list iterator component as child.
 
-For instance, use a `<ListIterator>` to render the related records:
+For instance, use a `<RecordsIterator>` to render the related records:
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'ra-core';
+import { ShowBase, ReferenceManyFieldBase, RecordsIterator } from 'ra-core';
 
 export const AuthorShow = () => (
     <ShowBase>
-        <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
+        <ReferenceManyFieldBase
+            label="Books"
+            reference="books"
+            target="author_id"
+        >
             <ul>
-                <ListIterator render={(book) => (
-                    <li key={book.id}>
-                        <i>{book.title}</i>, published on{' '}{book.published_at}
-                    </li>
-                )}/>
+                <RecordsIterator
+                    render={book => (
+                        <li key={book.id}>
+                            <i>{book.title}</i>, published on
+                            {book.published_at}
+                        </li>
+                    )}
+                />
             </ul>
         </ReferenceManyFieldBase>
     </ShowBase>
@@ -327,7 +334,7 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
     >
-        <ListIterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>
@@ -339,7 +346,7 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
         storeKey="custom"
     >
-        <Iterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>

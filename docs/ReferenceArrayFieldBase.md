@@ -44,17 +44,15 @@ A typical `post` record therefore looks like this:
 
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
-```jsx
-import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'react-admin';
+```tsx
+import { ShowBase, ReferenceArrayFieldBase } from 'react-admin';
 
-export const PostList = () => (
-    <ListBase>
-        <ListIterator>
-            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                <TagList />
-            </ReferenceArrayFieldBase>
-        </ListIterator>
-    </ListBase>
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+            <TagList />
+        </ReferenceArrayFieldBase>
+    </ShowBase>
 );
 
 const TagList = (props: { children: React.ReactNode }) => {
@@ -181,7 +179,7 @@ For instance, to render only tags that are 'published', you can use the followin
 By default, `<ReferenceArrayFieldBase>` renders nothing when there is no connectivity and the records haven't been cached yet. You can provide your own component via the `offline` prop:
 
 ```jsx
-import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+import { ReferenceArrayFieldBase, ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase>
@@ -199,7 +197,7 @@ export const PostShow = () => (
 **Tip**: If the records are in the Tanstack Query cache but you want to warn the user that they may see an outdated version, you can use the `<IsOffline>` component:
 
 ```jsx
-import { IsOffline, ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+import { IsOffline, ReferenceArrayFieldBase, ShowBase } from 'react-admin';
 
 export const PostShow = () => (
     <ShowBase>

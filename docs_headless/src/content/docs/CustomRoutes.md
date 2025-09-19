@@ -189,7 +189,7 @@ const App = () => (
 
 // in src/BookList.js
 import { useParams } from 'react-router-dom';
-import { ListBase, ListIterator } from 'ra-core';
+import { ListBase, RecordsIterator } from 'ra-core';
 
 const BookList = () => {
     const { authorId } = useParams();
@@ -198,7 +198,7 @@ const BookList = () => {
             <div>
                 <h1>Books</h1>
                 <ul>
-                    <ListIterator
+                    <RecordsIterator
                         render={book => (
                             <li key={book.id}>
                                 {book.title} ({book.year})

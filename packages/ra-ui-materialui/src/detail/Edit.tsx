@@ -69,7 +69,9 @@ export const Edit = <RecordType extends RaRecord = any>(
         redirect,
         transform,
         disableAuthentication,
-        loading = defaultLoading,
+        authLoading = defaultAuthLoading,
+        loading,
+        error,
         ...rest
     } = props;
 
@@ -89,11 +91,14 @@ export const Edit = <RecordType extends RaRecord = any>(
             redirect={redirect}
             transform={transform}
             disableAuthentication={disableAuthentication}
+            authLoading={authLoading}
             loading={loading}
+            // Disable redirect on error as it is handled by EditView to display the error in the EditView container
+            redirectOnError={error ? false : undefined}
             // Disable offline support from EditBase as it is handled by EditView to keep the EditView container
             offline={false}
         >
-            <EditView {...rest} />
+            <EditView error={error} {...rest} />
         </EditBase>
     );
 };
@@ -102,6 +107,6 @@ export interface EditProps<RecordType extends RaRecord = any, ErrorType = Error>
     extends EditBaseProps<RecordType, ErrorType>,
         Omit<EditViewProps, 'children' | 'render'> {}
 
-const defaultLoading = <Loading />;
+const defaultAuthLoading = <Loading />;
 
 const PREFIX = 'RaEdit'; // Types declared in EditView.

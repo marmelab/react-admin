@@ -40,13 +40,14 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty = defaultEmpty,
         render,
         offline = defaultOffline,
+        error,
         ...rest
     } = props;
     const listContext = useListContext<RecordType>();
     const {
         defaultTitle,
         data,
-        error,
+        error: errorState,
         isPaused,
         isPending,
         isPlaceholderData,
@@ -63,6 +64,8 @@ export const ListView = <RecordType extends RaRecord = any>(
         offline !== false &&
         offline !== undefined;
 
+    const showError = errorState && error !== false && error !== undefined;
+
     if (
         (!children && !render) ||
         (!data && isPending && !isPaused && emptyWhileLoading)
@@ -73,7 +76,8 @@ export const ListView = <RecordType extends RaRecord = any>(
     const renderList = () => (
         <div
             className={clsx(ListClasses.main, {
-                [ListClasses.noActions]: !(filters || actions),
+                [ListClasses.noActions]:
+                    !(filters || actions) || showOffline || showError,
             })}
         >
             {filters || actions ? (
@@ -86,11 +90,13 @@ export const ListView = <RecordType extends RaRecord = any>(
             <Content className={ListClasses.content}>
                 {showOffline
                     ? offline
-                    : render
-                      ? render(listContext)
-                      : children}
+                    : showError
+                      ? error
+                      : render
+                        ? render(listContext)
+                        : children}
             </Content>
-            {!error && pagination !== false && pagination}
+            {!errorState && pagination !== false && pagination}
         </div>
     );
 
@@ -98,7 +104,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
 
     const shouldRenderEmptyPage =
-        !error &&
+        !errorState &&
         // the list is not loading data for the first time
         !isPending &&
         // the API returned no data (using either normal or partial pagination)
@@ -218,6 +224,33 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      * );
      */
     children?: ReactNode;
+
+    /**
+     * The component to display when there is an error while fetching the list.
+     *
+     * @see https://marmelab.com/react-admin/List.html#error
+     * @example
+     * import { List } from 'react-admin';
+     * import { Box, Typography } from '@mui/material';
+     *
+     * const ListError = () => (
+     *     <Box textAlign="center" m={1}>
+     *         <Typography variant="h4" paragraph>
+     *             Something went wrong
+     *         </Typography>
+     *         <Typography variant="body1">
+     *             Please try again or contact an administrator.
+     *         </Typography>
+     *     </Box>
+     * );
+     *
+     * const ProductList = () => (
+     *     <List error={<ListError />}>
+     *         ...
+     *     </List>
+     * );
+     */
+    error?: ReactNode;
 
     /**
      * A function rendering the list of records. Take the list controller as argument.
