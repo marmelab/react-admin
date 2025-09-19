@@ -127,6 +127,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         variant,
         disabled,
         readOnly,
+        emptyText,
         ...rest
     } = props;
 
@@ -335,21 +336,28 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     renderValue={(selected: any[]) => (
                         <div className={SelectArrayInputClasses.chips}>
                             {(Array.isArray(selected) ? selected : [])
-                                .map(item =>
-                                    (allChoices || []).find(
-                                        // eslint-disable-next-line eqeqeq
-                                        choice => getChoiceValue(choice) == item
+                                .length === 0 && emptyText ? (
+                                <span>{emptyText}</span>
+                            ) : (
+                                (Array.isArray(selected) ? selected : [])
+                                    .map(item =>
+                                        (allChoices || []).find(
+                                            choice =>
+                                                getChoiceValue(choice) == item
+                                        )
                                     )
-                                )
-                                .filter(item => !!item)
-                                .map(item => (
-                                    <Chip
-                                        key={getChoiceValue(item)}
-                                        label={renderMenuItemOption(item)}
-                                        className={SelectArrayInputClasses.chip}
-                                        size="small"
-                                    />
-                                ))}
+                                    .filter(item => !!item)
+                                    .map(item => (
+                                        <Chip
+                                            key={getChoiceValue(item)}
+                                            label={renderMenuItemOption(item)}
+                                            className={
+                                                SelectArrayInputClasses.chip
+                                            }
+                                            size="small"
+                                        />
+                                    ))
+                            )}
                         </div>
                     )}
                     disabled={disabled || readOnly}
@@ -385,6 +393,7 @@ export type SelectArrayInputProps = ChoicesProps &
         options?: SelectProps;
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
+        emptyText?: string | React.ReactElement;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
 
