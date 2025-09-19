@@ -121,10 +121,6 @@ export const AuthorShow = () => (
             label="Books"
             reference="books"
             target="author_id"
-            loading={<p>Loading...</p>}
-            error={null}
-            offline={null}
-            empty={null}
         >
             <ul>
                 <RecordsIterator
@@ -341,10 +337,6 @@ In the example below, both lists use the same reference ('books'), but their sel
         queryOptions={{
             meta: { foo: 'bar' },
         }}
-        loading={<p>Loading...</p>}
-        error={null}
-        offline={null}
-        empty={<p>No books</p>}
     >
         <RecordsIterator render={(book) => (
             <p>{book.title}</p>
@@ -357,10 +349,6 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
         storeKey="custom"
-        loading={<p>Loading...</p>}
-        error={null}
-        offline={null}
-        empty={<p>No books</p>}
     >
         <RecordsIterator render={(book) => (
             <p>{book.title}</p>

@@ -156,7 +156,6 @@ If `empty` is not provided, the render function will be called with empty data.
             ))}
         </ul>
     )}
-    loading={<p>Loading...</p>}
 />
 ```
 
@@ -179,7 +178,6 @@ If `error` is not provided, the render function will be called with the error.
             ))}
         </ul>
     )}
-    loading={<p>Loading...</p>}
 />
 ```
 

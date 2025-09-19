@@ -75,11 +75,7 @@ You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the autho
 import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase
-        loading={null}
-        error={null}
-        offline={null}
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
                 <CustomAuthorView source="name"/>
@@ -131,10 +127,6 @@ export const AuthorShow = () => (
             label="Books"
             reference="books"
             target="author_id"
-            loading={<p>Loading...</p>}
-            error={null}
-            offline={null}
-            empty={null}
         >
             <ul>
                 <RecordsIterator
@@ -358,10 +350,6 @@ In the example below, both lists use the same reference ('books'), but their sel
         queryOptions={{
             meta: { foo: 'bar' },
         }}
-        loading={<p>Loading...</p>}
-        error={null}
-        offline={null}
-        empty={<p>No books</p>}
     >
         <RecordsIterator render={(book) => (
             <p>{book.title}</p>
@@ -374,10 +362,6 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
         storeKey="custom"
-        loading={<p>Loading...</p>}
-        error={null}
-        offline={null}
-        empty={<p>No books</p>}
     >
         <RecordsIterator render={(book) => (
             <p>{book.title}</p>

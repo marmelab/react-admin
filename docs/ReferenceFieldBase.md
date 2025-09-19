@@ -226,11 +226,7 @@ For instance, with this code:
 import { ListBase, RecordsIterator, ReferenceFieldBase } from 'react-admin';
 
 export const PostList = () => (
-    <ListBase
-        loading={null}
-        error={null}
-        offline={null}
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceFieldBase source="user_id" reference="users">
                 <AuthorView />
