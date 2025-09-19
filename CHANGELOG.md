@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.11.3
+
+* Fix `useLogout` does not redirect to the `checkAuth` call `redirectTo` property ([#10949](https://github.com/marmelab/react-admin/pull/10949)) ([djhi](https://github.com/djhi))
+* [Doc] Update `disableSort` property in `<DataTable>` documentation ([#10947](https://github.com/marmelab/react-admin/pull/10947)) ([johannchopin-buyco](https://github.com/johannchopin-buyco))
+
 ## 5.11.2
 
 * Fix `<BulkDeleteWithConfirmButton>` default color ([#10928](https://github.com/marmelab/react-admin/pull/10928)) ([wmatex](https://github.com/wmatex))
