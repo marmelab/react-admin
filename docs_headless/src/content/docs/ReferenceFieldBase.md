@@ -219,11 +219,7 @@ For instance, with this code:
 import { ListBase, RecordsIterator, ReferenceFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase
-        error={null}
-        offline={null}
-        emptyWhileLoading
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceFieldBase source="user_id" reference="users">
                 <AuthorView />

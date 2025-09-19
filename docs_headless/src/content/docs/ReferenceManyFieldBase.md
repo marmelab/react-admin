@@ -72,11 +72,7 @@ You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the autho
 import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase
-        error={null}
-        offline={null}
-        emptyWhileLoading
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
                 <CustomAuthorView source="name"/>
