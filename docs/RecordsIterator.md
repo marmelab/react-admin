@@ -89,9 +89,9 @@ const MostVisitedPosts = () => (
 | Prop        | Required    | Type                              | Default | Description                                                                                          |
 | ----------- |-------------|-----------------------------------| ------- | ---------------------------------------------------------------------------------------------------- |
 | `children`  | Optional`*` | `ReactNode`                       | -       | The content to render for each record                                                                |
-| `data`      | Optional`*` | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
+| `data`      | Optional    | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
 | `isPending` | Optional    | `boolean`                         | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the [`ListContext`](./useListContext.md) |
-| `render`    | Optional    | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
+| `render`    | Optional`*` | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
 | `total`     | Optional    | `number`                          | -       | The total number of records. Defaults to the `total` from the [`ListContext`](./useListContext.md)                          |
 
 `*` Either `children` or `render` is required.
