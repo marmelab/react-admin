@@ -1607,7 +1607,7 @@ The column headers are buttons that allow users to change the list sort field an
 
 ### Disabling Sorting
 
-It is possible to disable sorting for a specific `<DataTable.Col>` by passing a `sortable` property set to `false`:
+It is possible to disable sorting for a specific `<DataTable.Col>` by passing the `disableSort` property:
 
 {% raw %}
 ```tsx
@@ -1617,7 +1617,7 @@ import { List, DataTable } from 'react-admin';
 export const PostList = () => (
     <List>
         <DataTable>
-            <DataTable.Col source="id" sortable={false} />
+            <DataTable.Col source="id" disableSort />
             <DataTable.Col source="title" />
             <DataTable.Col source="body" />
         </DataTable>
