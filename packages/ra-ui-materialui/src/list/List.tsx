@@ -72,6 +72,7 @@ export const List = <RecordType extends RaRecord = any>(
         perPage = 10,
         queryOptions,
         resource,
+        selectionStoreKey,
         sort,
         storeKey,
         render,
@@ -100,6 +101,7 @@ export const List = <RecordType extends RaRecord = any>(
             perPage={perPage}
             queryOptions={queryOptions}
             resource={resource}
+            selectionStoreKey={selectionStoreKey}
             sort={sort}
             storeKey={storeKey}
             // Disable offline support from ListBase as it is handled by ListView to keep the ListView container

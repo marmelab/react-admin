@@ -3,16 +3,24 @@ import { useCallback, useMemo, useState } from 'react';
 import { useStore, useRemoveFromStore } from '../../store';
 import { RaRecord } from '../../types';
 
+type UseRecordSelectionWithStoreKeyArgs = {
+    storeKey: string;
+    resource?: string;
+    disableSyncWithStore?: false;
+};
 type UseRecordSelectionWithResourceArgs = {
+    storeKey?: string;
     resource: string;
     disableSyncWithStore?: false;
 };
 type UseRecordSelectionWithNoStoreArgs = {
+    storeKey?: string;
     resource?: string;
     disableSyncWithStore: true;
 };
 
 export type UseRecordSelectionArgs =
+    | UseRecordSelectionWithStoreKeyArgs
     | UseRecordSelectionWithResourceArgs
     | UseRecordSelectionWithNoStoreArgs;
 
@@ -29,6 +37,7 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
  *
+ * @param args.storeKey The key to use to store the selected items
  * @param args.resource The resource name, e.g. 'posts'
  * @param args.disableSyncWithStore Controls the selection syncronization with the store
  *
@@ -37,19 +46,19 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
 export const useRecordSelection = <RecordType extends RaRecord = any>(
     args: UseRecordSelectionArgs
 ): UseRecordSelectionResult<RecordType> => {
-    const { resource = '', disableSyncWithStore = false } = args;
+    const { storeKey, resource = '', disableSyncWithStore = false } = args;
 
-    const storeKey = `${resource}.selectedIds`;
+    const finalStoreKey = storeKey || `${resource}.selectedIds`;
 
     const [localIds, setLocalIds] =
         useState<RecordType['id'][]>(defaultSelection);
     // As we can't conditionally call a hook, if the storeKey is false,
     // we'll ignore the params variable later on and won't call setParams either.
     const [storeIds, setStoreIds] = useStore<RecordType['id'][]>(
-        storeKey,
+        finalStoreKey,
         defaultSelection
     );
-    const resetStore = useRemoveFromStore(storeKey);
+    const resetStore = useRemoveFromStore(finalStoreKey);
 
     const ids = disableSyncWithStore ? localIds : storeIds;
     const setIds = disableSyncWithStore ? setLocalIds : setStoreIds;
