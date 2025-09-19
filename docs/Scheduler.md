@@ -125,7 +125,7 @@ export const EventList = () => (
         viewPreset="hourAndDay"
         startDate={startOfDay(new Date())}
         converters={{
-            toBryntumEvent?: (record: RaRecord) => ({
+            toBryntumEvent: (record) => ({
                 id: record.id,
                 name: record.name,
                 resourceId: record.resource_id,
@@ -133,11 +133,11 @@ export const EventList = () => (
                 startDate: new Date(record.start_at),
                 endDate: new Date(record.end_at),
             });
-            toBryntumResource?: (record: RaRecord) => ({
+            toBryntumResource: (record) => ({
                 id: record.id,
                 name: record.name,
             }),
-            toEvent?: (model: EventModel) => ({
+            toEvent: (model) => ({
                 id: model.id,
                 name: model.name,
                 resource_id: model.resourceId,
@@ -145,7 +145,7 @@ export const EventList = () => (
                 end_at: model.endDate,
                 color: record.eventColor,
             }),
-            toResource?: (model: ResourceModel) => ({
+            toResource: (model) => ({
                 id: model.id,
                 name: model.name,
             }),
