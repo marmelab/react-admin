@@ -132,7 +132,7 @@ export const EventList = () => (
                 eventColor: record.color,
                 startDate: new Date(record.start_at),
                 endDate: new Date(record.end_at),
-            });
+            }),
             toBryntumResource: (record) => ({
                 id: record.id,
                 name: record.name,
