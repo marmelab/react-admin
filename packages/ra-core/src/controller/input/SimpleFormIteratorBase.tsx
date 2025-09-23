@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { Children, type ReactNode, useMemo, useRef } from 'react';
-import get from 'lodash/get';
 import { type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
 import { FormDataConsumer } from '../../form/FormDataConsumer';
 import { useWrappedSource } from '../../core/useWrappedSource';
 import type { RaRecord } from '../../types';
 import { useEvent } from '../../util';
-import { useRecordContext } from '../record/useRecordContext';
 import { useArrayInput } from './useArrayInput';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 
 export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
-    const { inputs, render } = props;
+    const { children, inputs } = props;
 
     const finalSource = useWrappedSource('');
     if (!finalSource) {
@@ -22,7 +20,6 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
 
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { trigger, getValues } = useFormContext();
-    const record = useRecordContext(props);
     const initialDefaultValue = useRef({});
 
     const removeField = useEvent((index: number) => {
@@ -87,8 +84,6 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
         replace([]);
     });
 
-    const records = get(record, finalSource);
-
     const context = useMemo(
         () => ({
             total: fields.length,
@@ -113,13 +108,14 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     }
     return (
         <SimpleFormIteratorContext.Provider value={context}>
-            {render({ fields, records })}
+            {children}
         </SimpleFormIteratorContext.Provider>
     );
 };
 
 export interface SimpleFormIteratorBaseProps
     extends Partial<UseFieldArrayReturn> {
+    children: ReactNode;
     inline?: boolean;
     inputs: ReactNode;
     meta?: {
@@ -127,10 +123,6 @@ export interface SimpleFormIteratorBaseProps
         error?: any;
         submitFailed?: boolean;
     };
-    render: (props: {
-        fields: Record<'id', string>[];
-        records: RaRecord[];
-    }) => ReactNode;
     record?: RaRecord;
     resource?: string;
     source?: string;

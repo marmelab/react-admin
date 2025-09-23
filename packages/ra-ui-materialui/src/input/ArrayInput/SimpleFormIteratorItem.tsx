@@ -3,10 +3,11 @@ import type { ReactNode } from 'react';
 import { Typography, Stack } from '@mui/material';
 import clsx from 'clsx';
 import {
+    SimpleFormIteratorItemBase,
     useRecordContext,
-    useSimpleFormIteratorItem,
-    type SimpleFormIteratorDisableRemoveFunction,
     type RaRecord,
+    type SimpleFormIteratorDisableRemoveFunction,
+    type SimpleFormIteratorItemBaseProps,
 } from 'ra-core';
 
 import { SimpleFormIteratorClasses } from './useSimpleFormIteratorStyles';
@@ -23,12 +24,12 @@ export const SimpleFormIteratorItem = React.forwardRef<
         disableReordering,
         disableRemove,
         getItemLabel,
+        index,
         inline,
         removeButton = <DefaultRemoveItemButton />,
         reOrderButtons = <DefaultReOrderButtons />,
     } = props;
 
-    const { index } = useSimpleFormIteratorItem();
     const record = useRecordContext();
     if (!record) {
         throw new Error(
@@ -51,32 +52,34 @@ export const SimpleFormIteratorItem = React.forwardRef<
         typeof getItemLabel === 'function' ? getItemLabel(index) : getItemLabel;
 
     return (
-        <li className={SimpleFormIteratorClasses.line} ref={ref}>
-            {label != null && label !== false && (
-                <Typography
-                    variant="body2"
-                    className={SimpleFormIteratorClasses.index}
+        <SimpleFormIteratorItemBase {...props}>
+            <li className={SimpleFormIteratorClasses.line} ref={ref}>
+                {label != null && label !== false && (
+                    <Typography
+                        variant="body2"
+                        className={SimpleFormIteratorClasses.index}
+                    >
+                        {label}
+                    </Typography>
+                )}
+                <Stack
+                    className={clsx(SimpleFormIteratorClasses.form)}
+                    direction={inline ? { xs: 'column', sm: 'row' } : 'column'}
+                    sx={{
+                        gap: inline ? 2 : 0,
+                    }}
                 >
-                    {label}
-                </Typography>
-            )}
-            <Stack
-                className={clsx(SimpleFormIteratorClasses.form)}
-                direction={inline ? { xs: 'column', sm: 'row' } : 'column'}
-                sx={{
-                    gap: inline ? 2 : 0,
-                }}
-            >
-                {children}
-            </Stack>
-            {!disabled && (
-                <span className={SimpleFormIteratorClasses.action}>
-                    {!disableReordering && reOrderButtons}
+                    {children}
+                </Stack>
+                {!disabled && (
+                    <span className={SimpleFormIteratorClasses.action}>
+                        {!disableReordering && reOrderButtons}
 
-                    {!disableRemoveField(record) && removeButton}
-                </span>
-            )}
-        </li>
+                        {!disableRemoveField(record) && removeButton}
+                    </span>
+                )}
+            </li>
+        </SimpleFormIteratorItemBase>
     );
 });
 
@@ -84,7 +87,8 @@ export type SimpleFormIteratorGetItemLabelFunc = (
     index: number
 ) => string | ReactNode;
 
-export interface SimpleFormIteratorItemProps {
+export interface SimpleFormIteratorItemProps
+    extends SimpleFormIteratorItemBaseProps {
     children?: ReactNode;
     disabled?: boolean;
     disableRemove?: boolean | SimpleFormIteratorDisableRemoveFunction;

@@ -14,9 +14,11 @@ import {
     SimpleFormIteratorBase,
     type SimpleFormIteratorBaseProps,
     type SimpleFormIteratorDisableRemoveFunction,
-    SimpleFormIteratorItemBase,
     RecordContextProvider,
+    useArrayInput,
+    useRecordContext,
 } from 'ra-core';
+import get from 'lodash/get';
 
 import {
     SimpleFormIteratorClasses,
@@ -57,71 +59,67 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             'SimpleFormIterator can only be called within an iterator input like ArrayInput'
         );
     }
+    const { fields } = useArrayInput(props);
+    const record = useRecordContext(props);
+    const records = get(record, finalSource);
 
     return (
-        <SimpleFormIteratorBase
-            inputs={children}
-            render={({ fields, records }) => (
-                <Root
-                    className={clsx(
-                        className,
-                        fullWidth && 'fullwidth',
-                        disabled && 'disabled'
-                    )}
-                    sx={sx}
-                >
-                    <ul className={SimpleFormIteratorClasses.list}>
-                        {fields.map((member, index) => (
-                            <RecordContextProvider
-                                key={member.id}
-                                value={(records && records[index]) || {}}
+        <SimpleFormIteratorBase inputs={children} {...props}>
+            <Root
+                className={clsx(
+                    className,
+                    fullWidth && 'fullwidth',
+                    disabled && 'disabled'
+                )}
+                sx={sx}
+            >
+                <ul className={SimpleFormIteratorClasses.list}>
+                    {fields.map((member, index) => (
+                        <RecordContextProvider
+                            key={member.id}
+                            value={(records && records[index]) || {}}
+                        >
+                            <SimpleFormIteratorItem
+                                index={index}
+                                fields={fields}
+                                resource={props.resource}
+                                disabled={disabled}
+                                disableRemove={disableRemove}
+                                disableReordering={disableReordering}
+                                getItemLabel={getItemLabel}
+                                removeButton={removeButton}
+                                reOrderButtons={reOrderButtons}
+                                inline={inline}
                             >
-                                <SimpleFormIteratorItemBase
-                                    index={index}
-                                    fields={fields}
-                                    resource={props.resource}
-                                >
-                                    <SimpleFormIteratorItem
-                                        disabled={disabled}
-                                        disableRemove={disableRemove}
-                                        disableReordering={disableReordering}
-                                        getItemLabel={getItemLabel}
-                                        removeButton={removeButton}
-                                        reOrderButtons={reOrderButtons}
-                                        inline={inline}
-                                    >
-                                        {children}
-                                    </SimpleFormIteratorItem>
-                                </SimpleFormIteratorItemBase>
-                            </RecordContextProvider>
-                        ))}
-                    </ul>
-                    {!disabled &&
-                        !(disableAdd && (disableClear || disableRemove)) && (
-                            <div className={SimpleFormIteratorClasses.buttons}>
-                                {!disableAdd && (
-                                    <div
-                                        className={
-                                            SimpleFormIteratorClasses.add
-                                        }
-                                    >
-                                        {addButton}
-                                    </div>
-                                )}
-                                <SimpleFormIteratorClearButton
-                                    disableClear={disableClear}
-                                    disableRemove={disableRemove}
-                                />
-                            </div>
-                        )}
-                </Root>
-            )}
-        />
+                                {children}
+                            </SimpleFormIteratorItem>
+                        </RecordContextProvider>
+                    ))}
+                </ul>
+                {!disabled &&
+                    !(disableAdd && (disableClear || disableRemove)) && (
+                        <div className={SimpleFormIteratorClasses.buttons}>
+                            {!disableAdd && (
+                                <div className={SimpleFormIteratorClasses.add}>
+                                    {addButton}
+                                </div>
+                            )}
+                            <SimpleFormIteratorClearButton
+                                disableClear={disableClear}
+                                disableRemove={disableRemove}
+                            />
+                        </div>
+                    )}
+            </Root>
+        </SimpleFormIteratorBase>
     );
 };
 
 export interface SimpleFormIteratorProps
-    extends Omit<SimpleFormIteratorBaseProps, 'render' | 'inputs'> {
+    extends Omit<
+        SimpleFormIteratorBaseProps,
+        'children' | 'render' | 'inputs'
+    > {
     addButton?: ReactNode;
     children?: ReactNode;
     className?: string;
