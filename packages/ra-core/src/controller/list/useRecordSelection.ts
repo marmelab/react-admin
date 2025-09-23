@@ -1,14 +1,16 @@
-import { useCallback, useMemo, useState } from 'react';
+import { SetStateAction, useMemo, useState } from 'react';
 
-import { useStore, useRemoveFromStore } from '../../store';
+import { useStore } from '../../store';
 import { RaRecord } from '../../types';
 
 type UseRecordSelectionWithResourceArgs = {
     resource: string;
+    namespace?: string;
     disableSyncWithStore?: false;
 };
 type UseRecordSelectionWithNoStoreArgs = {
     resource?: string;
+    namespace?: string;
     disableSyncWithStore: true;
 };
 
@@ -20,11 +22,19 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
     RecordType['id'][],
     {
         select: (ids: RecordType['id'][]) => void;
-        unselect: (ids: RecordType['id'][]) => void;
+        unselect: (
+            ids: RecordType['id'][],
+            fromAllNamespaces?: boolean
+        ) => void;
         toggle: (id: RecordType['id']) => void;
         clearSelection: () => void;
     },
 ];
+
+type SelectionStore<RecordType extends RaRecord> = Record<
+    string,
+    RecordType['id'][]
+>;
 
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
@@ -37,62 +47,132 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
 export const useRecordSelection = <RecordType extends RaRecord = any>(
     args: UseRecordSelectionArgs
 ): UseRecordSelectionResult<RecordType> => {
-    const { resource = '', disableSyncWithStore = false } = args;
+    const {
+        resource = '',
+        disableSyncWithStore = false,
+        namespace = defaultNamespace,
+    } = args;
 
-    const storeKey = `${resource}.selectedIds`;
+    const storeKeyNoNamespace = `${resource}.selectedIds`;
+    const storeKey = `${storeKeyNoNamespace}.namespaced`;
 
-    const [localIds, setLocalIds] =
-        useState<RecordType['id'][]>(defaultSelection);
+    const [localSelectionStore, setLocalSelectionStore] =
+        useState<SelectionStore<RecordType>>(defaultSelection);
     // As we can't conditionally call a hook, if the storeKey is false,
     // we'll ignore the params variable later on and won't call setParams either.
-    const [storeIds, setStoreIds] = useStore<RecordType['id'][]>(
-        storeKey,
-        defaultSelection
+    const [selectionStore, setSelectionStore] = useStore<
+        SelectionStore<RecordType>
+    >(storeKey, defaultSelection);
+
+    const [selectionStoreNoNamespace, setSelectionStoreNoNamespace] = useStore<
+        RecordType['id'][]
+    >(storeKeyNoNamespace, []);
+
+    const ids =
+        (disableSyncWithStore
+            ? localSelectionStore[namespace]
+            : namespace === defaultNamespace
+              ? selectionStoreNoNamespace
+              : selectionStore[namespace]) ?? defaultEmptyIds;
+
+    const setStore = useMemo(
+        () =>
+            disableSyncWithStore
+                ? setLocalSelectionStore
+                : ((storeOrSetStateAction => {
+                      if (typeof storeOrSetStateAction === 'function') {
+                          const setStateAction = storeOrSetStateAction;
+
+                          setSelectionStore(setStateAction);
+                          setSelectionStoreNoNamespace(
+                              ids =>
+                                  setStateAction({ [defaultNamespace]: ids })?.[
+                                      defaultNamespace
+                                  ]
+                          );
+                      } else {
+                          const store = storeOrSetStateAction;
+                          setSelectionStore(store);
+                          setSelectionStoreNoNamespace(store[defaultNamespace]);
+                      }
+                  }) as React.Dispatch<
+                      SetStateAction<SelectionStore<RecordType>>
+                  >),
+        [disableSyncWithStore, setSelectionStore, setSelectionStoreNoNamespace]
     );
-    const resetStore = useRemoveFromStore(storeKey);
-
-    const ids = disableSyncWithStore ? localIds : storeIds;
-    const setIds = disableSyncWithStore ? setLocalIds : setStoreIds;
-
-    const reset = useCallback(() => {
-        if (disableSyncWithStore) {
-            setLocalIds(defaultSelection);
-        } else {
-            resetStore();
-        }
-    }, [disableSyncWithStore, resetStore]);
 
     const selectionModifiers = useMemo(
         () => ({
-            select: (idsToAdd: RecordType['id'][]) => {
-                if (!idsToAdd) return;
-                setIds([...idsToAdd]);
+            select: (idsToSelect: RecordType['id'][]) => {
+                if (!idsToSelect) return;
+
+                setStore(store => ({
+                    ...store,
+                    [namespace]: [...idsToSelect],
+                }));
             },
-            unselect(idsToRemove: RecordType['id'][]) {
+            unselect(
+                idsToRemove: RecordType['id'][],
+                fromAllNamespaces?: boolean
+            ) {
                 if (!idsToRemove || idsToRemove.length === 0) return;
-                setIds(ids => {
-                    if (!Array.isArray(ids)) return [];
-                    return ids.filter(id => !idsToRemove.includes(id));
+                setStore(store => {
+                    if (!fromAllNamespaces) {
+                        return {
+                            ...store,
+                            [namespace]: store[namespace]?.filter(
+                                id => !idsToRemove.includes(id)
+                            ),
+                        };
+                    } else {
+                        return Object.fromEntries(
+                            Object.entries(store).map(([namespace, ids]) => {
+                                return [
+                                    namespace,
+                                    ids?.filter(
+                                        id => !idsToRemove.includes(id)
+                                    ),
+                                ];
+                            })
+                        );
+                    }
                 });
             },
             toggle: (id: RecordType['id']) => {
                 if (typeof id === 'undefined') return;
-                setIds(ids => {
-                    if (!Array.isArray(ids)) return [...ids];
+
+                setStore(store => {
+                    const ids = store[namespace];
+
+                    if (!Array.isArray(ids))
+                        return { ...store, [namespace]: [...ids] };
+
                     const index = ids.indexOf(id);
-                    return index > -1
-                        ? [...ids.slice(0, index), ...ids.slice(index + 1)]
-                        : [...ids, id];
+                    const hasId = index > -1;
+
+                    return {
+                        ...store,
+                        [namespace]: hasId
+                            ? [...ids.slice(0, index), ...ids.slice(index + 1)]
+                            : [...ids, id],
+                    };
                 });
             },
             clearSelection: () => {
-                reset();
+                setStore(store => {
+                    return {
+                        ...store,
+                        [namespace]: [],
+                    };
+                });
             },
         }),
-        [setIds, reset]
+        [setStore, namespace]
     );
 
     return [ids, selectionModifiers];
 };
 
-const defaultSelection = [];
+const defaultNamespace = '';
+const defaultSelection = {};
+const defaultEmptyIds = [];

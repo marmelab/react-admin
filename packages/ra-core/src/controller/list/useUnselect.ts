@@ -16,8 +16,8 @@ export const useUnselect = (resource?: string) => {
         resource ? { resource } : { disableSyncWithStore: true }
     );
     return useCallback(
-        (ids: Identifier[]) => {
-            unselect(ids);
+        (ids: Identifier[], fromAllNamespaces: boolean = false) => {
+            unselect(ids, fromAllNamespaces);
         },
         [unselect]
     );
