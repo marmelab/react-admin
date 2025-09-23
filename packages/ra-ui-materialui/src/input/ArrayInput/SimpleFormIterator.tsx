@@ -64,7 +64,13 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const records = get(record, finalSource);
 
     return (
-        <SimpleFormIteratorBase inputs={children} {...props}>
+        <SimpleFormIteratorBase
+            // SimpleFormIteratorBase needs to know the actual inputs to correctly handle new items
+            // (single item without source, or multiple items, FormDataConsumer...)
+            // See its addField function
+            inputs={children}
+            {...props}
+        >
             <Root
                 className={clsx(
                     className,
@@ -116,10 +122,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
 };
 
 export interface SimpleFormIteratorProps
-    extends Omit<
-        SimpleFormIteratorBaseProps,
-        'children' | 'render' | 'inputs'
-    > {
+    extends Omit<SimpleFormIteratorBaseProps, 'children' | 'inputs'> {
     addButton?: ReactNode;
     children?: ReactNode;
     className?: string;
