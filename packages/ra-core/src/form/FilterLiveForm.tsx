@@ -107,7 +107,6 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
         if (!isValid) {
             return;
         }
-        hasJustBeenModifiedByUser.current = true;
         setFilters(mergeObjNotArray(filterValues, values));
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
@@ -121,8 +120,10 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     set(newValues, name, '');
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(newValues);
                 } else {
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(values);
                 }
             }
