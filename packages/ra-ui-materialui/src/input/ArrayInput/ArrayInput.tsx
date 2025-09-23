@@ -148,13 +148,6 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     );
 };
 
-export const getArrayInputError = error => {
-    if (Array.isArray(error)) {
-        return undefined;
-    }
-    return error;
-};
-
 export interface ArrayInputProps
     extends ArrayInputBaseProps,
         Omit<
