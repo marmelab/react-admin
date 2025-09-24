@@ -13,4 +13,4 @@ export * from './routing';
 export * from './store';
 export * from './types';
 export * from './util';
-export * from './test-ui';
+export * as testUI from './test-ui';
