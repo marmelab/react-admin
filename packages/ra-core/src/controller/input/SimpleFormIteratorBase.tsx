@@ -1,15 +1,17 @@
 import * as React from 'react';
-import { Children, type ReactNode, useMemo, useRef } from 'react';
+import { type ReactNode, useMemo } from 'react';
 import { type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
-import { FormDataConsumer } from '../../form/FormDataConsumer';
 import { useWrappedSource } from '../../core/useWrappedSource';
 import type { RaRecord } from '../../types';
 import { useEvent } from '../../util';
 import { useArrayInput } from './useArrayInput';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 
+const DefaultOnAddItem = item => item;
+
 export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
-    const { children, inputs } = props;
+    const { children, onAddItem: onAddItemProp = DefaultOnAddItem } = props;
+    const onAddItem = useEvent(onAddItemProp);
 
     const finalSource = useWrappedSource('');
     if (!finalSource) {
@@ -20,7 +22,6 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
 
     const { append, fields, move, remove, replace } = useArrayInput(props);
     const { trigger, getValues } = useFormContext();
-    const initialDefaultValue = useRef({});
 
     const removeField = useEvent((index: number) => {
         remove(index);
@@ -34,46 +35,8 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
         }
     });
 
-    if (fields.length > 0) {
-        const { id, ...rest } = fields[0];
-        initialDefaultValue.current = rest;
-        for (const k in initialDefaultValue.current)
-            initialDefaultValue.current[k] = null;
-    }
-
     const addField = useEvent((item: any = undefined) => {
-        let defaultValue = item;
-        if (item == null) {
-            defaultValue = initialDefaultValue.current;
-            if (
-                Children.count(inputs) === 1 &&
-                React.isValidElement(Children.only(inputs)) &&
-                // @ts-ignore
-                !Children.only(inputs).props.source &&
-                // Make sure it's not a FormDataConsumer
-                // @ts-ignore
-                Children.only(inputs).type !== FormDataConsumer
-            ) {
-                // ArrayInput used for an array of scalar values
-                // (e.g. tags: ['foo', 'bar'])
-                defaultValue = '';
-            } else {
-                // ArrayInput used for an array of objects
-                // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-                defaultValue = defaultValue || ({} as Record<string, unknown>);
-                Children.forEach(inputs, input => {
-                    if (
-                        React.isValidElement(input) &&
-                        input.type !== FormDataConsumer &&
-                        input.props.source
-                    ) {
-                        defaultValue[input.props.source] =
-                            input.props.defaultValue ?? null;
-                    }
-                });
-            }
-        }
-        append(defaultValue);
+        append(onAddItem(item));
     });
 
     const handleReorder = useEvent((origin: number, destination: number) => {
@@ -117,12 +80,12 @@ export interface SimpleFormIteratorBaseProps
     extends Partial<UseFieldArrayReturn> {
     children: ReactNode;
     inline?: boolean;
-    inputs: ReactNode;
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
         error?: any;
         submitFailed?: boolean;
     };
+    onAddItem?: (item: any) => any;
     record?: RaRecord;
     resource?: string;
     source?: string;

@@ -17,6 +17,8 @@ import {
     RecordContextProvider,
     useArrayInput,
     useRecordContext,
+    useEvent,
+    useGetArrayInputNewItemDefaults,
 } from 'ra-core';
 import get from 'lodash/get';
 
@@ -62,15 +64,16 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const { fields } = useArrayInput(props);
     const record = useRecordContext(props);
     const records = get(record, finalSource);
+    const getArrayInputNewItemDefaults =
+        useGetArrayInputNewItemDefaults(fields);
+
+    const handleAddItem = useEvent((item: any = undefined) => {
+        if (item != null) return item;
+        return getArrayInputNewItemDefaults(children);
+    });
 
     return (
-        <SimpleFormIteratorBase
-            // SimpleFormIteratorBase needs to know the actual inputs to correctly handle new items
-            // (single item without source, or multiple items, FormDataConsumer...)
-            // See its addField function
-            inputs={children}
-            {...props}
-        >
+        <SimpleFormIteratorBase {...props} onAddItem={handleAddItem}>
             <Root
                 className={clsx(
                     className,

@@ -13,3 +13,4 @@ export * from './SimpleFormIteratorContext';
 export * from './SimpleFormIteratorItemContext';
 export * from './useSimpleFormIterator';
 export * from './useSimpleFormIteratorItem';
+export * from './useGetArrayInputNewItemDefaults';
