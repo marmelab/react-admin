@@ -47,7 +47,7 @@ export const useBulkDeleteController = <
                         undoable: mutationMode === 'undoable',
                     }
                 );
-                onUnselectItems();
+                onUnselectItems(true);
             },
             onError: (error: any) => {
                 notify(

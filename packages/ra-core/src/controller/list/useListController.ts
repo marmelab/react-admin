@@ -104,6 +104,7 @@ export const useListController = <
     const [selectedIds, selectionModifiers] = useRecordSelection({
         resource,
         disableSyncWithStore: storeKey === false,
+        storeKey: storeKey === false ? undefined : storeKey,
     });
 
     const {
@@ -515,7 +516,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
             | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
     }) => void;
     onToggleItem: (id: RecordType['id']) => void;
-    onUnselectItems: () => void;
+    onUnselectItems: (fromAllStoreKeys?: boolean) => void;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];

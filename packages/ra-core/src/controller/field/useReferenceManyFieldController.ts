@@ -72,7 +72,6 @@ export const useReferenceManyFieldController = <
     const resource = useResourceContext(props);
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
@@ -93,7 +92,8 @@ export const useReferenceManyFieldController = <
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: storeKey,
+        resource: reference,
+        storeKey: props.storeKey ?? `${resource}.${record?.id}`,
     });
 
     // filter logic
