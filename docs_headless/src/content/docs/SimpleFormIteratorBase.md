@@ -36,6 +36,7 @@ export const SimpleFormIterator = ({ children, ...props }: SimpleFormIteratorBas
 
 ## Props
 
-| Prop       | Required | Type           | Default               | Description                                   |
-|------------|----------|----------------|-----------------------|-----------------------------------------------|
-| `children` | Optional | `ReactElement` | -                     | List of inputs to display for each array item |
+| Prop              | Required | Type           | Default               | Description                                   |
+|-------------------|----------|----------------|-----------------------|-----------------------------------------------|
+| `children`        | Optional | `ReactElement` | -                     | List of inputs to display for each array item |
+| `getItemDefaults` | Optional | `Function`     | -                     | Get the default values for new items          |

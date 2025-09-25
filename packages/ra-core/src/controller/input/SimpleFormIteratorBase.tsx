@@ -7,11 +7,14 @@ import { useEvent } from '../../util';
 import { useArrayInput } from './useArrayInput';
 import { SimpleFormIteratorContext } from './SimpleFormIteratorContext';
 
-const DefaultOnAddItem = item => item;
+const DefaultGetItemDefaults = item => item;
 
 export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
-    const { children, onAddItem: onAddItemProp = DefaultOnAddItem } = props;
-    const onAddItem = useEvent(onAddItemProp);
+    const {
+        children,
+        getItemDefaults: getItemDefaultsProp = DefaultGetItemDefaults,
+    } = props;
+    const getItemDefaults = useEvent(getItemDefaultsProp);
 
     const finalSource = useWrappedSource('');
     if (!finalSource) {
@@ -36,7 +39,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     });
 
     const addField = useEvent((item: any = undefined) => {
-        append(onAddItem(item));
+        append(getItemDefaults(item));
     });
 
     const handleReorder = useEvent((origin: number, destination: number) => {
@@ -85,7 +88,7 @@ export interface SimpleFormIteratorBaseProps
         error?: any;
         submitFailed?: boolean;
     };
-    onAddItem?: (item: any) => any;
+    getItemDefaults?: (item: any) => any;
     record?: RaRecord;
     resource?: string;
     source?: string;

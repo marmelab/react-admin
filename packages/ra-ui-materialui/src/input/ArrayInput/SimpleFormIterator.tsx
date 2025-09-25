@@ -67,13 +67,13 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const getArrayInputNewItemDefaults =
         useGetArrayInputNewItemDefaults(fields);
 
-    const handleAddItem = useEvent((item: any = undefined) => {
+    const getItemDefaults = useEvent((item: any = undefined) => {
         if (item != null) return item;
         return getArrayInputNewItemDefaults(children);
     });
 
     return (
-        <SimpleFormIteratorBase {...props} onAddItem={handleAddItem}>
+        <SimpleFormIteratorBase {...props} getItemDefaults={getItemDefaults}>
             <Root
                 className={clsx(
                     className,
