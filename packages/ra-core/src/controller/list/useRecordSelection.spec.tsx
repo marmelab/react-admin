@@ -28,6 +28,26 @@ describe('useRecordSelection', () => {
             {
                 wrapper: ({ children }) => (
                     <StoreContextProvider value={memoryStore()}>
+                        <StoreSetter
+                            name="foo.selectedIds"
+                            value={{ ['']: [123, 456] }}
+                        >
+                            {children}
+                        </StoreSetter>
+                    </StoreContextProvider>
+                ),
+            }
+        );
+        const [selected] = result.current;
+        expect(selected).toEqual([123, 456]);
+    });
+
+    it('should use the stored value in previous format', () => {
+        const { result } = renderHook(
+            () => useRecordSelection({ resource: 'foo' }),
+            {
+                wrapper: ({ children }) => (
+                    <StoreContextProvider value={memoryStore()}>
                         <StoreSetter name="foo.selectedIds" value={[123, 456]}>
                             {children}
                         </StoreSetter>
@@ -37,6 +57,31 @@ describe('useRecordSelection', () => {
         );
         const [selected] = result.current;
         expect(selected).toEqual([123, 456]);
+    });
+
+    it('should store in a new format after any operation', async () => {
+        const store = memoryStore();
+        const { result } = renderHook(
+            () => useRecordSelection({ resource: 'foo' }),
+            {
+                wrapper: ({ children }) => (
+                    <StoreContextProvider value={store}>
+                        <StoreSetter name="foo.selectedIds" value={[123, 456]}>
+                            {children}
+                        </StoreSetter>
+                    </StoreContextProvider>
+                ),
+            }
+        );
+
+        const [, { select }] = result.current;
+        select([123, 456, 7]);
+        await waitFor(() => {
+            const stored = store.getItem('foo.selectedIds');
+            expect(stored).toEqual({
+                ['']: [123, 456, 7],
+            });
+        });
     });
 
     describe('select', () => {
@@ -376,6 +421,40 @@ describe('useRecordSelection', () => {
                 const [selected] = result.current;
                 expect(selected).toEqual([]);
             });
+        });
+    });
+    describe('using storeKey', () => {
+        it('should return empty array by default', () => {
+            const { result } = renderHook(
+                () =>
+                    useRecordSelection({
+                        resource: 'foo',
+                        storeKey: 'bar',
+                    }),
+                { wrapper }
+            );
+            const [selected] = result.current;
+            expect(selected).toEqual([]);
+        });
+
+        it('should use the stored value', () => {
+            const { result } = renderHook(
+                () => useRecordSelection({ resource: 'foo', storeKey: 'bar' }),
+                {
+                    wrapper: ({ children }) => (
+                        <StoreContextProvider value={memoryStore()}>
+                            <StoreSetter
+                                name="foo.selectedIds"
+                                value={{ bar: [123, 456] }}
+                            >
+                                {children}
+                            </StoreSetter>
+                        </StoreContextProvider>
+                    ),
+                }
+            );
+            const [selected] = result.current;
+            expect(selected).toEqual([123, 456]);
         });
     });
 });

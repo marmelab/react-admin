@@ -60,21 +60,26 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
         SelectionStore<RecordType>
     >(finalStoreKey, defaultSelectionStore);
 
-    // Previous version saved RecordType['id'][] in store.
-    // Convert it to new type.
-    const selectionStore = Array.isArray(selectionStoreUnknownVersion)
-        ? {
-              ...defaultSelectionStore,
-              [defaultNamespace]: selectionStoreUnknownVersion,
-          }
-        : selectionStoreUnknownVersion;
-
-    const store = disableSyncWithStore ? localSelectionStore : selectionStore;
+    const store = disableSyncWithStore
+        ? localSelectionStore
+        : migrateSelectionStoreToNewVersion(selectionStoreUnknownVersion);
     const ids = store[namespace] ?? defaultEmptyIds;
 
     const setStore = useMemo(
         () =>
-            disableSyncWithStore ? setLocalSelectionStore : setSelectionStore,
+            disableSyncWithStore
+                ? setLocalSelectionStore
+                : (function migrateAndSetSelectionStore(valueOrSetter) {
+                      if (typeof valueOrSetter === 'function') {
+                          setSelectionStore(prevValue =>
+                              valueOrSetter(
+                                  migrateSelectionStoreToNewVersion(prevValue)
+                              )
+                          );
+                      } else {
+                          setSelectionStore(valueOrSetter);
+                      }
+                  } satisfies typeof setSelectionStore),
         [disableSyncWithStore, setSelectionStore]
     );
 
@@ -153,3 +158,14 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
 const defaultNamespace = '';
 const defaultSelectionStore = {};
 const defaultEmptyIds = [];
+
+function migrateSelectionStoreToNewVersion<RecordType extends RaRecord>(
+    selectionStoreUnknownVersion: SelectionStore<RecordType>
+) {
+    return Array.isArray(selectionStoreUnknownVersion)
+        ? {
+              ...defaultSelectionStore,
+              [defaultNamespace]: selectionStoreUnknownVersion,
+          }
+        : selectionStoreUnknownVersion;
+}
