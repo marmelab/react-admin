@@ -41,7 +41,7 @@
         "@emotion/styled": "^11.14.0",
         "@mui/icons-material": "^5.16.12 || ^6.0.0 || ^7.0.0",
         "@mui/material": "^5.16.12 || ^6.0.0 || ^7.0.0",
-        "@tanstack/react-query": "^5.83.0",
+        "@tanstack/react-query": "^5.90.2",
         "ra-core": "^5.11.3",
         "ra-i18n-polyglot": "^5.11.3",
         "ra-language-english": "^5.11.3",

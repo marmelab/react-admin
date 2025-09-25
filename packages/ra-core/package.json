@@ -28,7 +28,7 @@
     },
     "devDependencies": {
         "@hookform/resolvers": "^3.2.0",
-        "@tanstack/react-query-devtools": "^5.21.7",
+        "@tanstack/react-query-devtools": "^5.90.2",
         "@testing-library/react": "^15.0.7",
         "@types/jest": "^29.5.2",
         "@types/jscodeshift": "^0.11.11",
@@ -58,7 +58,7 @@
         "react-router-dom": "^6.28.1 || ^7.1.1"
     },
     "dependencies": {
-        "@tanstack/react-query": "^5.83.0",
+        "@tanstack/react-query": "^5.90.2",
         "date-fns": "^3.6.0",
         "eventemitter3": "^5.0.1",
         "inflection": "^3.0.0",

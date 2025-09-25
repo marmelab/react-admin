@@ -73,10 +73,10 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
         mutationMode,
         mutationOptions: {
             ...otherMutationOptions,
-            onSuccess: (data, variables, context) => {
+            onSuccess: (...args) => {
                 setOpen(false);
                 if (onSuccess) {
-                    onSuccess(data, variables, context);
+                    onSuccess(...args);
                 } else {
                     notify(
                         successMessage ??
@@ -96,10 +96,10 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                     redirect(redirectTo, resource);
                 }
             },
-            onError: (error, variables, context) => {
+            onError: (error, variables, onMutateResult, context) => {
                 setOpen(false);
                 if (onError) {
-                    onError(error, variables, context);
+                    onError(error, variables, onMutateResult, context);
                 } else {
                     notify(
                         typeof error === 'string'

@@ -12,8 +12,8 @@
     "dependencies": {
         "@mui/icons-material": "^5.16.12",
         "@mui/material": "^5.16.12",
-        "@tanstack/react-query": "^5.83.0",
-        "@tanstack/react-query-devtools": "^5.83.0",
+        "@tanstack/react-query": "^5.90.2",
+        "@tanstack/react-query-devtools": "^5.90.2",
         "fakerest": "^4.1.3",
         "jsonexport": "^3.2.0",
         "lodash": "~4.17.5",
