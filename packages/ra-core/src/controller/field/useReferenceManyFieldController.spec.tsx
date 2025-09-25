@@ -332,6 +332,42 @@ describe('useReferenceManyFieldController', () => {
         });
     });
 
+    it('should store selection state under default key', async () => {
+        const store = memoryStore();
+        const setStore = jest.spyOn(store, 'setItem');
+
+        render(
+            <CoreAdminContext store={store}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="uniqueName"
+                    record={{
+                        id: 123,
+                        uniqueName: 'jamesjoyce256',
+                        name: 'James Joyce',
+                    }}
+                    reference="books"
+                    target="author_id"
+                >
+                    {({ onToggleItem }) => {
+                        return (
+                            <button onClick={() => onToggleItem(456)}>
+                                Toggle
+                            </button>
+                        );
+                    }}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(await screen.findByText('Toggle'));
+        await waitFor(() => {
+            expect(setStore).toHaveBeenCalledWith('books.selectedIds', {
+                ['authors.123']: [456],
+            });
+        });
+    });
+
     it('should support custom storeKey', async () => {
         const store = memoryStore();
         const setStore = jest.spyOn(store, 'setItem');
@@ -352,7 +388,7 @@ describe('useReferenceManyFieldController', () => {
                 >
                     {({ onToggleItem }) => {
                         return (
-                            <button onClick={() => onToggleItem(123)}>
+                            <button onClick={() => onToggleItem(456)}>
                                 Toggle
                             </button>
                         );
@@ -363,9 +399,9 @@ describe('useReferenceManyFieldController', () => {
 
         fireEvent.click(await screen.findByText('Toggle'));
         await waitFor(() => {
-            expect(setStore).toHaveBeenCalledWith('customKey.selectedIds', [
-                123,
-            ]);
+            expect(setStore).toHaveBeenCalledWith('books.selectedIds', {
+                ['customKey']: [456],
+            });
         });
     });
 
