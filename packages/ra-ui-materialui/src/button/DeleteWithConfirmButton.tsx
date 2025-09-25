@@ -96,11 +96,12 @@ export const DeleteWithConfirmButton = <RecordType extends RaRecord = any>(
                     redirect(redirectTo, resource);
                 }
             },
-            onError: (error, variables, onMutateResult, context) => {
+            onError: (...args) => {
                 setOpen(false);
                 if (onError) {
-                    onError(error, variables, onMutateResult, context);
+                    onError(...args);
                 } else {
+                    const [error] = args;
                     notify(
                         typeof error === 'string'
                             ? error
