@@ -13,5 +13,3 @@ export const ClearArrayButton = (props: ButtonProps) => (
         <ClearIcon fontSize="small" />
     </IconButtonWithTooltip>
 );
-
-export default null;
