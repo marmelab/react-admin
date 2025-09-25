@@ -402,7 +402,8 @@ describe('<Edit />', () => {
                         resource: 'foo',
                         meta: undefined,
                     },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });
@@ -467,7 +468,8 @@ describe('<Edit />', () => {
                         resource: 'foo',
                         meta: undefined,
                     },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
                 expect(onSuccess).not.toHaveBeenCalled();
             });
@@ -526,7 +528,8 @@ describe('<Edit />', () => {
                         resource: 'foo',
                         meta: undefined,
                     },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });
@@ -591,7 +594,8 @@ describe('<Edit />', () => {
                         resource: 'foo',
                         meta: undefined,
                     },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
                 expect(onError).not.toHaveBeenCalled();
             });
