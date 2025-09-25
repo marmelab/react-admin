@@ -168,7 +168,12 @@ export default defineConfig({
                 },
                 {
                     label: 'Inputs',
-                    items: ['inputs', 'useinput'],
+                    items: [
+                        'inputs',
+                        'useinput',
+                        'referenceinputbase',
+                        'referencearrayinputbase',
+                    ],
                 },
                 {
                     label: 'Preferences',
