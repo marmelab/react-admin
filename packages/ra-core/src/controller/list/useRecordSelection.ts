@@ -1,16 +1,16 @@
-import { SetStateAction, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 import { useStore } from '../../store';
 import { RaRecord } from '../../types';
 
 type UseRecordSelectionWithResourceArgs = {
     resource: string;
-    namespace?: string;
+    storeKey?: string;
     disableSyncWithStore?: false;
 };
 type UseRecordSelectionWithNoStoreArgs = {
     resource?: string;
-    namespace?: string;
+    storeKey?: string;
     disableSyncWithStore: true;
 };
 
@@ -22,10 +22,7 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
     RecordType['id'][],
     {
         select: (ids: RecordType['id'][]) => void;
-        unselect: (
-            ids: RecordType['id'][],
-            fromAllNamespaces?: boolean
-        ) => void;
+        unselect: (ids: RecordType['id'][], fromAllStoreKeys?: boolean) => void;
         toggle: (id: RecordType['id']) => void;
         clearSelection: () => void;
     },
@@ -40,65 +37,45 @@ type SelectionStore<RecordType extends RaRecord> = Record<
  * Get the list of selected items for a resource, and callbacks to change the selection
  *
  * @param args.resource The resource name, e.g. 'posts'
- * @param args.disableSyncWithStore Controls the selection syncronization with the store
+ * @param args.storeKey The key to use to store selected items. Pass false to disable synchronization with the store.
+ * @param args.disableSyncWithStore Controls the selection synchronization with the store
  *
  * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
  */
 export const useRecordSelection = <RecordType extends RaRecord = any>(
     args: UseRecordSelectionArgs
 ): UseRecordSelectionResult<RecordType> => {
-    const {
-        resource = '',
-        disableSyncWithStore = false,
-        namespace = defaultNamespace,
-    } = args;
+    const { resource = '', storeKey, disableSyncWithStore } = args;
 
-    const storeKeyNoNamespace = `${resource}.selectedIds`;
-    const storeKey = `${storeKeyNoNamespace}.namespaced`;
+    const namespace = storeKey ?? defaultNamespace;
 
-    const [localSelectionStore, setLocalSelectionStore] =
-        useState<SelectionStore<RecordType>>(defaultSelection);
-    // As we can't conditionally call a hook, if the storeKey is false,
-    // we'll ignore the params variable later on and won't call setParams either.
-    const [selectionStore, setSelectionStore] = useStore<
+    const finalStoreKey = `${resource}.selectedIds`;
+
+    const [localSelectionStore, setLocalSelectionStore] = useState<
         SelectionStore<RecordType>
-    >(storeKey, defaultSelection);
+    >(defaultSelectionStore);
+    // As we can't conditionally call a hook, if the disableSyncWithStore is true,
+    // we'll ignore the store value later on and won't call setSelectionStore either.
+    const [selectionStoreUnknownVersion, setSelectionStore] = useStore<
+        SelectionStore<RecordType>
+    >(finalStoreKey, defaultSelectionStore);
 
-    const [selectionStoreNoNamespace, setSelectionStoreNoNamespace] = useStore<
-        RecordType['id'][]
-    >(storeKeyNoNamespace, []);
+    // Previous version saved RecordType['id'][] in store.
+    // Convert it to new type.
+    const selectionStore = Array.isArray(selectionStoreUnknownVersion)
+        ? {
+              ...defaultSelectionStore,
+              [defaultNamespace]: selectionStoreUnknownVersion,
+          }
+        : selectionStoreUnknownVersion;
 
-    const ids =
-        (disableSyncWithStore
-            ? localSelectionStore[namespace]
-            : namespace === defaultNamespace
-              ? selectionStoreNoNamespace
-              : selectionStore[namespace]) ?? defaultEmptyIds;
+    const store = disableSyncWithStore ? localSelectionStore : selectionStore;
+    const ids = store[namespace] ?? defaultEmptyIds;
 
     const setStore = useMemo(
         () =>
-            disableSyncWithStore
-                ? setLocalSelectionStore
-                : ((storeOrSetStateAction => {
-                      if (typeof storeOrSetStateAction === 'function') {
-                          const setStateAction = storeOrSetStateAction;
-
-                          setSelectionStore(setStateAction);
-                          setSelectionStoreNoNamespace(
-                              ids =>
-                                  setStateAction({ [defaultNamespace]: ids })?.[
-                                      defaultNamespace
-                                  ]
-                          );
-                      } else {
-                          const store = storeOrSetStateAction;
-                          setSelectionStore(store);
-                          setSelectionStoreNoNamespace(store[defaultNamespace]);
-                      }
-                  }) as React.Dispatch<
-                      SetStateAction<SelectionStore<RecordType>>
-                  >),
-        [disableSyncWithStore, setSelectionStore, setSelectionStoreNoNamespace]
+            disableSyncWithStore ? setLocalSelectionStore : setSelectionStore,
+        [disableSyncWithStore, setSelectionStore]
     );
 
     const selectionModifiers = useMemo(
@@ -113,11 +90,11 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
             },
             unselect(
                 idsToRemove: RecordType['id'][],
-                fromAllNamespaces?: boolean
+                fromAllStoreKeys?: boolean
             ) {
                 if (!idsToRemove || idsToRemove.length === 0) return;
                 setStore(store => {
-                    if (!fromAllNamespaces) {
+                    if (!fromAllStoreKeys) {
                         return {
                             ...store,
                             [namespace]: store[namespace]?.filter(
@@ -142,7 +119,7 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
                 if (typeof id === 'undefined') return;
 
                 setStore(store => {
-                    const ids = store[namespace];
+                    const ids = store[namespace] ?? defaultEmptyIds;
 
                     if (!Array.isArray(ids))
                         return { ...store, [namespace]: [...ids] };
@@ -174,5 +151,5 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
 };
 
 const defaultNamespace = '';
-const defaultSelection = {};
+const defaultSelectionStore = {};
 const defaultEmptyIds = [];
