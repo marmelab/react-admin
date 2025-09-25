@@ -41,7 +41,7 @@ import { Button, type ButtonProps } from './Button';
  *     <List>
  *         <Datagrid
  *             bulkActionsToolbar={
- *                 <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
+ *                 <BulkActionsToolbar selectAllButton={<PostSelectAllButton />}>
  *                     <BulkDeleteButton />
  *                 </BulkActionsToolbar>
  *             }
