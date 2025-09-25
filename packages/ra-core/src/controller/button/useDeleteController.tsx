@@ -1,13 +1,14 @@
 import { useCallback, useMemo } from 'react';
 import { UseMutationOptions } from '@tanstack/react-query';
 
-import { useDelete } from '../../dataProvider';
-import { useUnselect } from '../';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
-import { useNotify } from '../../notification';
+import { useDelete } from '../../dataProvider/useDelete';
+import { useUnselect } from '../list/useUnselect';
+import { useRecordContext } from '../record/useRecordContext';
+import { useRedirect, RedirectionSideEffect } from '../../routing/useRedirect';
+import { useNotify } from '../../notification/useNotify';
 import { RaRecord, MutationMode, DeleteParams } from '../../types';
-import { useResourceContext } from '../../core';
-import { useTranslate } from '../../i18n';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useTranslate } from '../../i18n/useTranslate';
 
 /**
  * Prepare a set of callbacks for a delete button
@@ -67,13 +68,13 @@ export const useDeleteController = <
     props: UseDeleteControllerParams<RecordType, ErrorType>
 ): UseDeleteControllerReturn => {
     const {
-        record,
         redirect: redirectTo = 'list',
         mutationMode,
         mutationOptions = {},
         successMessage,
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const notify = useNotify();
     const unselect = useUnselect(resource);
