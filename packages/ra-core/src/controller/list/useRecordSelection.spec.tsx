@@ -456,5 +456,82 @@ describe('useRecordSelection', () => {
             const [selected] = result.current;
             expect(selected).toEqual([123, 456]);
         });
+
+        it('should allow to unselect from all storeKeys', async () => {
+            const { result } = renderHook(
+                () => [
+                    useRecordSelection({ resource: 'foo', storeKey: 'bar1' }),
+                    useRecordSelection({ resource: 'foo', storeKey: 'bar2' }),
+                ],
+                {
+                    wrapper,
+                }
+            );
+
+            const [, { toggle: toggle1 }] = result.current[0];
+            const [, { toggle: toggle2 }] = result.current[1];
+            toggle1(123);
+            await waitFor(() => {});
+            toggle2(123);
+            await waitFor(() => {});
+            toggle2(456);
+            await waitFor(() => {
+                const [selected1] = result.current[0];
+                expect(selected1).toEqual([123]);
+                const [selected2] = result.current[1];
+                expect(selected2).toEqual([123, 456]);
+            });
+
+            const [, { unselect }] = result.current[0];
+            unselect([123], true);
+
+            await waitFor(() => {
+                const [selected1] = result.current[0];
+                expect(selected1).toEqual([]);
+                const [selected2] = result.current[1];
+                expect(selected2).toEqual([456]);
+            });
+        });
+
+        it('should allow to clear the selection from all storeKeys', async () => {
+            const { result } = renderHook(
+                () => [
+                    useRecordSelection({
+                        resource: 'foo',
+                        storeKey: 'bar1',
+                    }),
+                    useRecordSelection({
+                        resource: 'foo',
+                        storeKey: 'bar2',
+                    }),
+                ],
+                {
+                    wrapper,
+                }
+            );
+
+            const [, { toggle: toggle1 }] = result.current[0];
+            const [, { toggle: toggle2 }] = result.current[1];
+            toggle1(123);
+            // `set` in useStore doesn't chain set calls happened in one render cycle...
+            await waitFor(() => {});
+            toggle2(456);
+            await waitFor(() => {
+                const [selected1] = result.current[0];
+                expect(selected1).toEqual([123]);
+                const [selected2] = result.current[1];
+                expect(selected2).toEqual([456]);
+            });
+
+            const [, { clearSelection }] = result.current[0];
+            clearSelection(true);
+
+            await waitFor(() => {
+                const [selected1] = result.current[0];
+                expect(selected1).toEqual([]);
+                const [selected2] = result.current[1];
+                expect(selected2).toEqual([]);
+            });
+        });
     });
 });

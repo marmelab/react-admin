@@ -24,7 +24,7 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
         select: (ids: RecordType['id'][]) => void;
         unselect: (ids: RecordType['id'][], fromAllStoreKeys?: boolean) => void;
         toggle: (id: RecordType['id']) => void;
-        clearSelection: () => void;
+        clearSelection: (fromAllStoreKeys?: boolean) => void;
     },
 ];
 
@@ -140,12 +140,28 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
                     };
                 });
             },
-            clearSelection: () => {
+            clearSelection: (fromAllStoreKeys?: boolean) => {
                 setStore(store => {
-                    return {
-                        ...store,
-                        [namespace]: [],
-                    };
+                    if (fromAllStoreKeys) {
+                        console.log(
+                            store,
+                            Object.fromEntries(
+                                Object.keys(store).map(namespace => [
+                                    namespace,
+                                    [],
+                                ])
+                            )
+                        );
+
+                        return Object.fromEntries(
+                            Object.keys(store).map(namespace => [namespace, []])
+                        );
+                    } else {
+                        return {
+                            ...store,
+                            [namespace]: [],
+                        };
+                    }
                 });
             },
         }),
