@@ -45,6 +45,13 @@ export const softDarkTheme = {
                 elevation: 1,
             },
         },
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: '#616161',
+                },
+            },
+        },
     },
 };
 
