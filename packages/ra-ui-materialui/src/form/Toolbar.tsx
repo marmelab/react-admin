@@ -109,6 +109,7 @@ const StyledToolbar = styled(MuiToolbar, {
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     backgroundColor: (theme.vars || theme).palette.background.paper,
+    backgroundImage: theme.vars != null ? 'var(--Paper-overlay);' : 'none',
 
     [`&.${ToolbarClasses.desktopToolbar}`]: {},
 

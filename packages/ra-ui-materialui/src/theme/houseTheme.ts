@@ -6,6 +6,7 @@ import {
     PaletteOptions,
     ThemeOptions,
 } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 /**
  * House: A young and joyful theme.
@@ -169,6 +170,16 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
         styleOverrides: {
             toolbar: {
                 zIndex: 10,
+            },
+        },
+    },
+    RaToolbar: {
+        styleOverrides: {
+            root: {
+                backgroundColor:
+                    theme.palette.mode === 'dark'
+                        ? `color-mix(in oklab, ${theme.palette.background.paper} 80%, white)`
+                        : grey[300],
             },
         },
     },

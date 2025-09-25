@@ -100,7 +100,7 @@ export const defaultLightTheme: ThemeOptions = deepmerge(
             RaToolbar: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: grey[100],
+                        backgroundColor: grey[300],
                     },
                 },
             },
@@ -124,7 +124,7 @@ export const defaultDarkTheme: ThemeOptions = deepmerge(
             RaToolbar: {
                 styleOverrides: {
                     root: {
-                        backgroundColor: grey[900],
+                        backgroundColor: grey[800],
                     },
                 },
             },
