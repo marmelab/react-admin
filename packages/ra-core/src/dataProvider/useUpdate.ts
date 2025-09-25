@@ -272,7 +272,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
         },
         onSuccess: (...args) => {
             if (mode.current === 'pessimistic') {
-                const [, variables] = args;
+                const [data, variables] = args;
                 // update the getOne and getList query cache with the new result
                 const {
                     resource: callTimeResource = resource,
