@@ -516,7 +516,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
             | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
     }) => void;
     onToggleItem: (id: RecordType['id']) => void;
-    onUnselectItems: () => void;
+    onUnselectItems: (fromAllStoreKeys?: boolean) => void;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];

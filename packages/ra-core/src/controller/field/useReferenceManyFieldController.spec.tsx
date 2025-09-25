@@ -332,7 +332,7 @@ describe('useReferenceManyFieldController', () => {
         });
     });
 
-    it('should store selection state under default key', async () => {
+    it('should store selection state linked to referencing record', async () => {
         const store = memoryStore();
         const setStore = jest.spyOn(store, 'setItem');
 
