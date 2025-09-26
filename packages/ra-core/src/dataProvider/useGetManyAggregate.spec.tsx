@@ -1,19 +1,29 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 
 import { CoreAdminContext } from '../core';
-import { useGetManyAggregate } from './useGetManyAggregate';
+import {
+    useGetManyAggregate,
+    type UseGetManyAggregateOptions,
+} from './useGetManyAggregate';
 import { testDataProvider } from '../dataProvider';
-import { QueryClient } from '@tanstack/react-query';
 
 const UseGetManyAggregate = ({
     resource,
     ids,
+    meta,
     options = {},
     callback = null,
+}: {
+    resource: string;
+    ids: (string | number)[];
+    meta?: any;
+    options?: UseGetManyAggregateOptions;
+    callback?: (v: ReturnType<typeof useGetManyAggregate>) => void;
 }) => {
-    const hookValue = useGetManyAggregate(resource, { ids }, options);
+    const hookValue = useGetManyAggregate(resource, { ids, meta }, options);
     if (callback) callback(hookValue);
     return <div>hello</div>;
 };
@@ -285,6 +295,35 @@ describe('useGetManyAggregate', () => {
                 signal: undefined,
             });
             expect(dataProvider.getMany).toHaveBeenCalledWith('comments', {
+                ids: [5, 6],
+                signal: undefined,
+            });
+        });
+    });
+    it('should not aggregate multiple calls for different meta', async () => {
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <UseGetManyAggregate
+                    resource="posts"
+                    ids={[1, 2]}
+                    meta={{ test: true }}
+                />
+                <UseGetManyAggregate
+                    resource="posts"
+                    ids={[3, 4]}
+                    meta={{ test: true }}
+                />
+                <UseGetManyAggregate resource="posts" ids={[5, 6]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(2);
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
+                ids: [1, 2, 3, 4],
+                meta: { test: true },
+                signal: undefined,
+            });
+            expect(dataProvider.getMany).toHaveBeenCalledWith('posts', {
                 ids: [5, 6],
                 signal: undefined,
             });
