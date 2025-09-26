@@ -184,12 +184,10 @@ export const useCreate = <
                 .then(({ data }) => data);
         },
         ...mutationOptions,
-        onMutate: async (
-            variables: Partial<UseCreateMutateParams<RecordType>>
-        ) => {
+        onMutate: async (...args) => {
             if (mutationOptions.onMutate) {
                 const userContext =
-                    (await mutationOptions.onMutate(variables)) || {};
+                    (await mutationOptions.onMutate(...args)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -200,27 +198,27 @@ export const useCreate = <
                 return { snapshot: snapshot.current };
             }
         },
-        onError: (error, variables, context: { snapshot: Snapshot }) => {
+        onError: (...args) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                const [, , onMutateResult] = args;
                 // If the mutation fails, use the context returned from onMutate to rollback
-                context.snapshot.forEach(([key, value]) => {
-                    queryClient.setQueryData(key, value);
-                });
+                (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
+                    ([key, value]) => {
+                        queryClient.setQueryData(key, value);
+                    }
+                );
             }
             if (callTimeOnError.current) {
-                return callTimeOnError.current(error, variables, context);
+                return callTimeOnError.current(...args);
             }
             if (mutationOptions.onError) {
-                return mutationOptions.onError(error, variables, context);
+                return mutationOptions.onError(...args);
             }
             // call-time error callback is executed by react-query
         },
-        onSuccess: (
-            data: ResultRecordType,
-            variables: Partial<UseCreateMutateParams<RecordType>> = {},
-            context: unknown
-        ) => {
+        onSuccess: (...args) => {
             if (mode.current === 'pessimistic') {
+                const [data, variables] = args;
                 const { resource: callTimeResource = resource } = variables;
                 queryClient.setQueryData(
                     [callTimeResource, 'getOne', { id: String(data.id) }],
@@ -243,38 +241,26 @@ export const useCreate = <
                     mutationOptions.onSuccess &&
                     !hasCallTimeOnSuccess.current
                 ) {
-                    mutationOptions.onSuccess(data, variables, context);
+                    mutationOptions.onSuccess(...args);
                 }
             }
         },
-        onSettled: (
-            data,
-            error,
-            variables,
-            context: { snapshot: Snapshot }
-        ) => {
+        onSettled: (...args) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                const [, , , onMutateResult] = args;
                 // Always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
+                (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
+                    ([queryKey]) => {
+                        queryClient.invalidateQueries({ queryKey });
+                    }
+                );
             }
 
             if (callTimeOnSettled.current) {
-                return callTimeOnSettled.current(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+                return callTimeOnSettled.current(...args);
             }
             if (mutationOptions.onSettled) {
-                return mutationOptions.onSettled(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+                return mutationOptions.onSettled(...args);
             }
         },
     });
@@ -409,7 +395,12 @@ export const useCreate = <
                 onSuccess(
                     callTimeData as unknown as ResultRecordType,
                     { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
+                    { snapshot: snapshot.current },
+                    {
+                        client: queryClient,
+                        mutationKey: [resource, 'create', params],
+                        meta: mutationOptions.meta,
+                    }
                 );
             } else if (
                 mutationOptions.onSuccess &&
@@ -418,7 +409,12 @@ export const useCreate = <
                 mutationOptions.onSuccess(
                     callTimeData as unknown as ResultRecordType,
                     { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
+                    { snapshot: snapshot.current },
+                    {
+                        client: queryClient,
+                        mutationKey: [resource, 'create', params],
+                        meta: mutationOptions.meta,
+                    }
                 );
             }
         }, 0);

@@ -256,12 +256,10 @@ export const useDeleteMany = <
                 .then(({ data }) => data || []);
         },
         ...mutationOptions,
-        onMutate: async (
-            variables: Partial<UseDeleteManyMutateParams<RecordType>>
-        ) => {
+        onMutate: async (...args) => {
             if (mutationOptions.onMutate) {
                 const userContext =
-                    (await mutationOptions.onMutate(variables)) || {};
+                    (await mutationOptions.onMutate(...args)) || {};
                 return {
                     snapshot: snapshot.current,
                     // @ts-ignore
@@ -272,29 +270,27 @@ export const useDeleteMany = <
                 return { snapshot: snapshot.current };
             }
         },
-        onError: (
-            error: MutationError,
-            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-            context: { snapshot: Snapshot }
-        ) => {
+        onError: (...args) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                const [, , onMutateResult] = args;
+
                 // If the mutation fails, use the context returned from onMutate to rollback
-                context.snapshot.forEach(([key, value]) => {
-                    queryClient.setQueryData(key, value);
-                });
+                (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
+                    ([key, value]) => {
+                        queryClient.setQueryData(key, value);
+                    }
+                );
             }
 
             if (mutationOptions.onError && !hasCallTimeOnError.current) {
-                return mutationOptions.onError(error, variables, context);
+                return mutationOptions.onError(...args);
             }
             // call-time error callback is executed by react-query
         },
-        onSuccess: (
-            data: RecordType['id'][],
-            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-            context: unknown
-        ) => {
+        onSuccess: (...args) => {
             if (mode.current === 'pessimistic') {
+                const [, variables] = args;
+
                 // update the getOne and getList query cache with the new result
                 const {
                     resource: callTimeResource = resource,
@@ -309,31 +305,24 @@ export const useDeleteMany = <
                     mutationOptions.onSuccess &&
                     !hasCallTimeOnSuccess.current
                 ) {
-                    mutationOptions.onSuccess(data, variables, context);
+                    mutationOptions.onSuccess(...args);
                 }
                 // call-time success callback is executed by react-query
             }
         },
-        onSettled: (
-            data: RecordType['id'][],
-            error: MutationError,
-            variables: Partial<UseDeleteManyMutateParams<RecordType>> = {},
-            context: { snapshot: Snapshot }
-        ) => {
+        onSettled: (...args) => {
             if (mode.current === 'optimistic' || mode.current === 'undoable') {
+                const [, , , onMutateResult] = args;
                 // Always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
+                (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
+                    ([queryKey]) => {
+                        queryClient.invalidateQueries({ queryKey });
+                    }
+                );
             }
 
             if (mutationOptions.onSettled && !hasCallTimeOnSettled.current) {
-                return mutationOptions.onSettled(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+                return mutationOptions.onSettled(...args);
             }
         },
     });
@@ -426,13 +415,23 @@ export const useDeleteMany = <
                 otherCallTimeOptions.onSuccess(
                     callTimeIds,
                     { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
+                    { snapshot: snapshot.current },
+                    {
+                        client: queryClient,
+                        mutationKey: [resource, 'deleteMany', params],
+                        meta: mutationOptions.meta,
+                    }
                 );
             } else if (mutationOptions.onSuccess) {
                 mutationOptions.onSuccess(
                     callTimeIds,
                     { resource: callTimeResource, ...callTimeParams },
-                    { snapshot: snapshot.current }
+                    { snapshot: snapshot.current },
+                    {
+                        client: queryClient,
+                        mutationKey: [resource, 'deleteMany', params],
+                        meta: mutationOptions.meta,
+                    }
                 );
             }
         }, 0);

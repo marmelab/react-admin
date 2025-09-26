@@ -459,7 +459,8 @@ describe('useEditController', () => {
                         resource: 'posts',
                         meta: undefined,
                     },
-                    { snapshot: expect.any(Array) }
+                    { snapshot: expect.any(Array) },
+                    expect.anything()
                 )
             );
             expect(notificationsSpy).toEqual([]);
@@ -513,7 +514,8 @@ describe('useEditController', () => {
                         resource: 'posts',
                         meta: undefined,
                     },
-                    { snapshot: expect.any(Array) }
+                    { snapshot: expect.any(Array) },
+                    expect.anything()
                 )
             );
             expect(notificationsSpy).toEqual([]);
@@ -566,7 +568,8 @@ describe('useEditController', () => {
                         resource: 'posts',
                         meta: undefined,
                     },
-                    { snapshot: expect.any(Array) }
+                    { snapshot: expect.any(Array) },
+                    expect.anything()
                 )
             );
             expect(notificationsSpy).toEqual([]);

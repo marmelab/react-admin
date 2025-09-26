@@ -175,10 +175,11 @@ export const useEditController = <
         resource,
         recordCached,
         {
-            onSuccess: async (data, variables, context) => {
+            onSuccess: async (...args) => {
                 if (onSuccess) {
-                    return onSuccess(data, variables, context);
+                    return onSuccess(...args);
                 }
+                const [data] = args;
                 notify(`resources.${resource}.notifications.updated`, {
                     type: 'info',
                     messageArgs: {
@@ -191,10 +192,11 @@ export const useEditController = <
                 });
                 redirect(redirectTo, resource, data.id, data);
             },
-            onError: (error, variables, context) => {
+            onError: (...args) => {
                 if (onError) {
-                    return onError(error, variables, context);
+                    return onError(...args);
                 }
+                const [error] = args;
                 // Don't trigger a notification if this is a validation error
                 // (notification will be handled by the useNotifyIsFormInvalid hook)
                 const validationErrors = (error as HttpError)?.body?.errors;

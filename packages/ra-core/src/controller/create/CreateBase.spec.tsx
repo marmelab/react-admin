@@ -55,7 +55,8 @@ describe('CreateBase', () => {
                     test: 'test',
                 },
                 { data: { test: 'test' }, resource: 'posts' },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });
@@ -87,7 +88,8 @@ describe('CreateBase', () => {
                     test: 'test',
                 },
                 { data: { test: 'test' }, resource: 'posts' },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
         expect(onSuccess).not.toHaveBeenCalled();
@@ -114,7 +116,8 @@ describe('CreateBase', () => {
             expect(onError).toHaveBeenCalledWith(
                 { message: 'test' },
                 { data: { test: 'test' }, resource: 'posts' },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });
@@ -141,7 +144,8 @@ describe('CreateBase', () => {
             expect(onErrorOverride).toHaveBeenCalledWith(
                 { message: 'test' },
                 { data: { test: 'test' }, resource: 'posts' },
-                { snapshot: [] }
+                expect.anything(),
+                expect.anything()
             );
         });
         expect(onError).not.toHaveBeenCalled();

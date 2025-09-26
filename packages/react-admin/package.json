@@ -25,6 +25,7 @@
         "watch": "tsc --outDir dist/esm --module es2015 --watch"
     },
     "devDependencies": {
+        "@tanstack/react-query": "^5.90.2",
         "cross-env": "^5.2.0",
         "expect": "^27.4.6",
         "react-router": "^6.28.1",

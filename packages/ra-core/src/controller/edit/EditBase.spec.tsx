@@ -81,7 +81,8 @@ describe('EditBase', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });
@@ -125,7 +126,8 @@ describe('EditBase', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
         expect(onSuccess).not.toHaveBeenCalled();
@@ -162,7 +164,8 @@ describe('EditBase', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });
@@ -199,7 +202,8 @@ describe('EditBase', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
         expect(onError).not.toHaveBeenCalled();
