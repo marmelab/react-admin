@@ -8,11 +8,12 @@
     --sl-color-bg-nav: var(--sl-color-black);
     --sl-color-bg: var(--sl-color-black);
     --sl-color-bg-sidebar: var(--sl-color-black);
+    --sl-color-hairline-shade: var(--sl-color-gray-6);
     --sl-color-accent: #bd0249;
     --sl-color-accent-high: #ff78ac;
 }
 
-img.icon {
+img.icon {  
     display: inline;
     box-shadow: none;
     margin: 0;
