@@ -1,3 +1,4 @@
+import { grey } from '@mui/material/colors';
 import { RaThemeOptions } from 'react-admin';
 
 /** Just for fun */
@@ -21,5 +22,12 @@ export const chiptuneTheme: RaThemeOptions = {
         MuiFormControl: { defaultProps: { fullWidth: true } },
         MuiTextField: { defaultProps: { fullWidth: true } },
         RaSimpleFormIterator: { defaultProps: { fullWidth: true } },
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: grey[900],
+                },
+            },
+        },
     },
 };
