@@ -1405,7 +1405,7 @@ export const PostList = () => (
     <List>
         <DataTable
             bulkActionsToolbar={
-                <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
+                <BulkActionsToolbar selectAllButton={<PostSelectAllButton />}>
                     <BulkDeleteButton />
                 </BulkActionsToolbar>
             }
