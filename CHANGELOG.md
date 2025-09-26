@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.11.4
+
+* Fix `useGetManyAggregate` merge queries with different `meta` ([#10969](https://github.com/marmelab/react-admin/pull/10969)) ([djhi](https://github.com/djhi))
+* Fix `useDeleteController` should get the record from closest `RecordContext` ([#10967](https://github.com/marmelab/react-admin/pull/10967)) ([djhi](https://github.com/djhi))
+* Fix incompatibility with latest `@tanstack/react-query` ([#10964](https://github.com/marmelab/react-admin/pull/10964)) ([djhi](https://github.com/djhi))
+* Fix `<Toolbar>` design ([#10960](https://github.com/marmelab/react-admin/pull/10960)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput>` don't return currently selected choice when `enableGetChoices` returns `false` ([#10958](https://github.com/marmelab/react-admin/pull/10958)) ([djhi](https://github.com/djhi))
+* Fix `<FilterLiveForm>` may override latest users inputs when they type at the same pace than the debounce delay ([#10952](https://github.com/marmelab/react-admin/pull/10952)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<ReferenceManyInput>` documentation to mention `rankSource` ([#10970](https://github.com/marmelab/react-admin/pull/10970)) ([djhi](https://github.com/djhi))
+* [Doc] Add logo to `ra-core` documentation ([#10968](https://github.com/marmelab/react-admin/pull/10968)) ([djhi](https://github.com/djhi))
+* [Doc] Change `ra-core` documentation styles ([#10966](https://github.com/marmelab/react-admin/pull/10966)) ([djhi](https://github.com/djhi))
+* [Doc] Improve sidebar scrolling on `ra-core` documentation ([#10963](https://github.com/marmelab/react-admin/pull/10963)) ([slax57](https://github.com/slax57))
+* [Doc] Fix some incorrect video types ([#10962](https://github.com/marmelab/react-admin/pull/10962)) ([slax57](https://github.com/slax57))
+* [Doc] Add missing props to `<ReferenceArrayFieldBase>` and `<ReferenceManyFieldBase>` documentation ([#10956](https://github.com/marmelab/react-admin/pull/10956)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<BulkActionsToolbar selectAllButton>` only accepts an element ([#10954](https://github.com/marmelab/react-admin/pull/10954)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<Scheduler>` documentation ([#10950](https://github.com/marmelab/react-admin/pull/10950)) ([djhi](https://github.com/djhi))
+
 ## 5.11.3
 
 * Fix `useLogout` does not redirect to the `checkAuth` call `redirectTo` property ([#10949](https://github.com/marmelab/react-admin/pull/10949)) ([djhi](https://github.com/djhi))
