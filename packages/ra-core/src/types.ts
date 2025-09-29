@@ -276,10 +276,16 @@ export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
 export type OnSuccess = (
     response?: any,
     variables?: any,
+    onMutateResult?: any,
     context?: any
 ) => void;
 
-export type OnError = (error?: any, variables?: any, context?: any) => void;
+export type OnError = (
+    error?: any,
+    variables?: any,
+    onMutateResult?: any,
+    context?: any
+) => void;
 
 export type TransformData = (
     data: any,

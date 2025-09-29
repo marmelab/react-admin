@@ -154,22 +154,31 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // add current value to possible sources
     const { finalData, finalTotal } = useMemo(() => {
-        if (isPaused && possibleValuesData == null) {
+        if (isPaused && possibleValuesData == null && referenceRecord == null) {
             return {
                 finalData: null,
                 finalTotal: null,
             };
         }
         if (
-            !referenceRecord ||
+            referenceRecord == null ||
             possibleValuesData == null ||
             (possibleValuesData ?? []).find(
                 record => record.id === referenceRecord.id
             )
         ) {
+            // Here we might have the referenceRecord but no data (because of enableGetChoices for instance)
+            const finalData = possibleValuesData ?? [];
+            if (
+                referenceRecord &&
+                finalData.find(r => r.id === referenceRecord.id) == null
+            ) {
+                finalData.push(referenceRecord);
+            }
+
             return {
-                finalData: possibleValuesData,
-                finalTotal: total,
+                finalData,
+                finalTotal: total ?? finalData.length,
             };
         } else {
             return {

@@ -223,7 +223,8 @@ describe('<DeleteWithConfirmButton />', () => {
                     previousData: { id: 123, title: 'lorem' },
                     resource: 'posts',
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
         await waitFor(() => {
@@ -276,7 +277,8 @@ describe('<DeleteWithConfirmButton />', () => {
                     previousData: { id: 123, title: 'lorem' },
                     resource: 'posts',
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
         await waitFor(() => {

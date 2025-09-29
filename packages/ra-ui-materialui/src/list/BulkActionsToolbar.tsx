@@ -1,10 +1,5 @@
 import * as React from 'react';
-import {
-    isValidElement,
-    type ReactElement,
-    type ReactNode,
-    useCallback,
-} from 'react';
+import { isValidElement, type ReactNode, useCallback } from 'react';
 import {
     type ComponentsOverrides,
     styled,
@@ -95,7 +90,7 @@ export interface BulkActionsToolbarProps {
     children?: ReactNode;
     label?: string;
     className?: string;
-    selectAllButton?: ReactElement | false;
+    selectAllButton?: ReactNode;
 }
 
 const PREFIX = 'RaBulkActionsToolbar';

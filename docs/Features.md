@@ -257,7 +257,7 @@ Let's be realistic: Many developers focus on features first and don't have much 
 React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 

@@ -804,6 +804,7 @@ describe('<SelectArrayInput />', () => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     expect.objectContaining({ authors: undefined }),
                     expect.anything(),
+                    expect.anything(),
                     expect.anything()
                 );
             });
