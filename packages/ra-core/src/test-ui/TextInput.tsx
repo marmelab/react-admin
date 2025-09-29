@@ -13,7 +13,6 @@ export const TextInput = ({
 
     return (
         <div>
-            {}
             <label htmlFor={id}>
                 <FieldTitle
                     label={props.label}
