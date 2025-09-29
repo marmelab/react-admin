@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo } from 'react';
+import { isValidElement, useCallback, useEffect, useMemo } from 'react';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -107,6 +107,13 @@ export const useListController = <
         storeKey: storeKey === false ? undefined : storeKey,
     });
 
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
+
     const {
         data,
         pageInfo,
@@ -213,7 +220,7 @@ export const useListController = <
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page: query.page,
         perPage: query.perPage,
         refetch,

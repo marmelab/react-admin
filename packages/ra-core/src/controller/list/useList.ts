@@ -104,6 +104,13 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             : { disableSyncWithStore: true }
     );
 
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
+
     // filter logic
     const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useState<{
@@ -263,7 +270,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page,
         perPage,
         resource: '',

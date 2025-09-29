@@ -96,6 +96,13 @@ export const useReferenceManyFieldController = <
         storeKey: props.storeKey ?? `${resource}.${record?.id}`,
     });
 
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
+
     // filter logic
     const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useState<{
@@ -280,7 +287,7 @@ export const useReferenceManyFieldController = <
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page,
         perPage,
         refetch,

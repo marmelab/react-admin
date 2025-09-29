@@ -40,7 +40,7 @@ type SelectionStore<RecordType extends RaRecord> = Record<
  * @param args.storeKey The key to use to store selected items. Pass false to disable synchronization with the store.
  * @param args.disableSyncWithStore Controls the selection synchronization with the store
  *
- * @returns {Object} Destructure as [selectedIds, { select, toggle, clearSelection }].
+ * @returns {Object} Destructure as [selectedIds, { select, unselect, toggle, clearSelection }].
  */
 export const useRecordSelection = <RecordType extends RaRecord = any>(
     args: UseRecordSelectionArgs
