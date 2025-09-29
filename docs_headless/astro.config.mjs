@@ -106,6 +106,8 @@ export default defineConfig({
                         'usepermissions',
                         'addrefreshauthtoauthprovider',
                         'addrefreshauthtodataprovider',
+                        enterpriseEntry('canAccessWithPermissions'),
+                        enterpriseEntry('getPermissionsFromRoles'),
                     ],
                 },
                 {
@@ -204,6 +206,28 @@ export default defineConfig({
                     ],
                 },
                 {
+                    label: 'Realtime',
+                    items: [
+                        enterpriseEntry('usePublish'),
+                        enterpriseEntry('useSubscribe'),
+                        enterpriseEntry('useSubscribeCallback'),
+                        enterpriseEntry('useSubscribeToRecord'),
+                        enterpriseEntry('useSubscribeToRecordList'),
+                        enterpriseEntry('useLock'),
+                        enterpriseEntry('useUnlock'),
+                        enterpriseEntry('useGetLock'),
+                        enterpriseEntry('useGetLockLive'),
+                        enterpriseEntry('useGetLocks'),
+                        enterpriseEntry('useGetLocksLive'),
+                        enterpriseEntry('useLockCallbacks'),
+                        enterpriseEntry('useLockOnMount'),
+                        enterpriseEntry('useLockOnCall'),
+                        enterpriseEntry('useGetListLive'),
+                        enterpriseEntry('useGetOneLive'),
+                        enterpriseEntry('<LockStatusBase>'),
+                    ],
+                },
+                {
                     label: 'Recipes',
                     items: ['caching', 'unittesting'],
                 },
@@ -240,3 +264,19 @@ export default defineConfig({
         assets: 'assets',
     },
 });
+
+/**
+ * @param {string} name
+ * @returns {any}
+ */
+function enterpriseEntry(name) {
+    return {
+        link: name.toLowerCase().replace(/</g, '').replace(/>/g, ''),
+        label: name,
+        attrs: { class: 'enterprise' },
+        badge: {
+            text: 'React Admin Enterprise',
+            variant: 'default',
+        },
+    };
+}
