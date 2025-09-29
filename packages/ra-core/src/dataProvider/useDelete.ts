@@ -301,11 +301,6 @@ export type UseDeleteOptions<
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
-    onSuccess?: (
-        data: RecordType | undefined,
-        variables: Partial<UseDeleteMutateParams<RecordType>>,
-        context: unknown
-    ) => void;
 };
 
 export type UseDeleteResult<

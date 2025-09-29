@@ -24,6 +24,11 @@ export default defineConfig({
                     href: 'https://github.com/marmelab/react-admin',
                 },
             ],
+            logo: {
+                light: './public/logo-light.svg',
+                dark: './public/logo-dark.svg',
+                alt: 'ra-core',
+            },
             head: [
                 // add Umami analytics script tag.
                 {

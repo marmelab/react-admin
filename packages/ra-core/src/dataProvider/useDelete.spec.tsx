@@ -336,7 +336,8 @@ describe('useDelete', () => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     { id: 1 },
                     { id: 1, previousData: { foo: 456 }, resource: 'foo' },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });
@@ -372,7 +373,8 @@ describe('useDelete', () => {
                 expect(onError).toHaveBeenCalledWith(
                     new Error('not good'),
                     { id: 1, previousData: { foo: 456 }, resource: 'foo' },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });

@@ -1,5 +1,5 @@
 import * as React from 'react';
-
+import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     FilterLiveForm,
     FilterLiveFormProps,
@@ -7,11 +7,24 @@ import {
     required,
     InputProps,
 } from '.';
-import { ListContextProvider } from '../controller/list/ListContextProvider';
-import { useList } from '../controller/list/useList';
 import { useListContext } from '../controller/list/useListContext';
+import { ListBase, ListBaseProps } from '../controller/list/ListBase';
+import { CoreAdminContext } from '../core/CoreAdminContext';
+import { memoryStore } from '../store';
+import { TestMemoryRouter } from '../routing';
 
 export default { title: 'ra-core/form/FilterLiveForm' };
+
+const dataProvider = fakeRestDataProvider(
+    {
+        posts: [
+            { id: 1, title: 'Hello', has_newsletter: true },
+            { id: 2, title: 'World', has_newsletter: false },
+        ],
+    },
+    process.env.NODE_ENV !== 'test',
+    0
+);
 
 const TextInput = ({
     defaultValue = '',
@@ -46,23 +59,25 @@ const TextInput = ({
     );
 };
 
-export const Basic = (props: Partial<FilterLiveFormProps>) => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
+export const Basic = (props: {
+    FilterLiveFormProps?: Partial<FilterLiveFormProps>;
+    ListBaseProps?: Partial<ListBaseProps>;
+}) => {
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm {...props}>
-                <TextInput source="title" />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{ category: 'deals' }}
+                    {...props.ListBaseProps}
+                >
+                    <FilterLiveForm {...props.FilterLiveFormProps}>
+                        <TextInput source="title" />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -72,130 +87,128 @@ const format = (value: string): string => {
     }
     return value.length <= 11 ? value : `${value.slice(0, 11)}...`;
 };
-const parse = input => {
+const parse = (input: any) => {
     if (!input) {
         return input;
     }
     return input.replace(/\D/g, '');
 };
 export const ParseFormat = (props: Partial<FilterLiveFormProps>) => {
-    const listContext = useList({
-        data: [
-            { id: 1, document: 'Hello', has_newsletter: true },
-            { id: 2, document: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm {...props}>
-                <p>
-                    Expect a number (larger than 13 characters to trigger
-                    format)
-                </p>
-                <TextInput source="document" parse={parse} format={format} />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{ category: 'deals' }}
+                >
+                    <FilterLiveForm {...props}>
+                        <p>
+                            Expect a number (larger than 13 characters to
+                            trigger format)
+                        </p>
+                        <TextInput
+                            source="document"
+                            parse={parse}
+                            format={format}
+                        />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
-export const NoDebounce = () => <Basic debounce={false} />;
+export const NoDebounce = () => (
+    <Basic FilterLiveFormProps={{ debounce: false }} />
+);
 
 export const MultipleInput = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm>
-                <TextInput source="title" />
-                <TextInput source="author" />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{ category: 'deals' }}
+                >
+                    <FilterLiveForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 export const MultipleFilterLiveForm = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm>
-                <TextInput source="title" />
-            </FilterLiveForm>
-            <FilterLiveForm>
-                <TextInput source="author" />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{ category: 'deals' }}
+                >
+                    <FilterLiveForm>
+                        <TextInput source="title" />
+                    </FilterLiveForm>
+                    <FilterLiveForm>
+                        <TextInput source="author" />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 export const MultipleFilterLiveFormOverlapping = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm>
-                <TextInput source="title" />
-                <TextInput source="body" />
-            </FilterLiveForm>
-            <FilterLiveForm>
-                <TextInput source="author" />
-                <TextInput source="body" />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{ category: 'deals' }}
+                >
+                    <FilterLiveForm>
+                        <TextInput source="title" />
+                        <TextInput source="body" />
+                    </FilterLiveForm>
+                    <FilterLiveForm>
+                        <TextInput source="author" />
+                        <TextInput source="body" />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
 export const PerInputValidation = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-            author: 'Leo Tolstoy',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm>
-                <TextInput source="title" />
-                <TextInput source="author" validate={required()} />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{
+                        category: 'deals',
+                        author: 'Leo Tolstoy',
+                    }}
+                >
+                    <FilterLiveForm>
+                        <TextInput source="title" />
+                        <TextInput source="author" validate={required()} />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
-const validateFilters = values => {
+const validateFilters = (values: Record<string, any>) => {
     const errors: any = {};
     if (!values.author) {
         errors.author = 'The author is required';
@@ -203,24 +216,24 @@ const validateFilters = values => {
     return errors;
 };
 export const GlobalValidation = () => {
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'Hello', has_newsletter: true },
-            { id: 2, title: 'World', has_newsletter: false },
-        ],
-        filter: {
-            category: 'deals',
-            author: 'Leo Tolstoy',
-        },
-    });
     return (
-        <ListContextProvider value={listContext}>
-            <FilterLiveForm validate={validateFilters}>
-                <TextInput source="title" />
-                <TextInput source="author" isRequired />
-            </FilterLiveForm>
-            <FilterValue />
-        </ListContextProvider>
+        <TestMemoryRouter>
+            <CoreAdminContext dataProvider={dataProvider} store={memoryStore()}>
+                <ListBase
+                    resource="posts"
+                    filterDefaultValues={{
+                        category: 'deals',
+                        author: 'Leo Tolstoy',
+                    }}
+                >
+                    <FilterLiveForm validate={validateFilters}>
+                        <TextInput source="title" />
+                        <TextInput source="author" isRequired />
+                    </FilterLiveForm>
+                    <FilterValue />
+                </ListBase>
+            </CoreAdminContext>
+        </TestMemoryRouter>
     );
 };
 
@@ -275,7 +288,7 @@ const ExternalList = () => {
                     Apply filter
                 </button>
             </div>
-            {data.length ? (
+            {data?.length ? (
                 <ul>
                     {data.map(item => (
                         <li key={item.id}>
@@ -311,14 +324,8 @@ export const WithExternalChanges = () => {
     const onToggle = () => {
         setMounted(mounted => !mounted);
     };
-    const listContext = useList({
-        data: [
-            { id: 1, title: 'hello', body: 'foo' },
-            { id: 2, title: 'world', body: 'bar' },
-        ],
-    });
     return (
-        <div>
+        <TestMemoryRouter>
             <input
                 id="id_mounted"
                 type="checkbox"
@@ -327,18 +334,24 @@ export const WithExternalChanges = () => {
             />
             <label htmlFor="id_mounted">Mount/unmount</label>
             {mounted && (
-                <ListContextProvider value={listContext}>
-                    <FilterLiveForm>
-                        <TextInput
-                            source="title"
-                            style={{ flexDirection: 'row' }}
-                        />
-                        <ClearFiltersButton />
-                    </FilterLiveForm>
-                    <ExternalList />
-                    <FilterValue />
-                </ListContextProvider>
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    store={memoryStore()}
+                >
+                    <ListBase resource="posts">
+                        {' '}
+                        <FilterLiveForm>
+                            <TextInput
+                                source="title"
+                                style={{ flexDirection: 'row' }}
+                            />
+                            <ClearFiltersButton />
+                        </FilterLiveForm>
+                        <ExternalList />
+                        <FilterValue />
+                    </ListBase>
+                </CoreAdminContext>
             )}
-        </div>
+        </TestMemoryRouter>
     );
 };

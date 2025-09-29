@@ -1,4 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+
 import { getFilterFormValues } from './FilterLiveForm';
 import {
     Basic,
@@ -19,6 +21,22 @@ describe('<FilterLiveForm />', () => {
         await screen.findByText('{"category":"deals"}');
         const input = await screen.findByLabelText('title');
         fireEvent.change(input, { target: { value: 'foo' } });
+        await screen.findByText('{"category":"deals","title":"foo"}');
+        await new Promise(resolve => setTimeout(resolve, 500));
+    });
+
+    it('should work when users type at the exact same pace than the debounce delay', async () => {
+        render(
+            <Basic
+                ListBaseProps={{ debounce: 100 }}
+                FilterLiveFormProps={{ debounce: 100 }}
+            />
+        );
+        const input = await screen.findByLabelText('title');
+        await userEvent.type(input, 'foo', {
+            delay: 100,
+        });
+        screen.getByDisplayValue('foo');
         await screen.findByText('{"category":"deals","title":"foo"}');
     });
 

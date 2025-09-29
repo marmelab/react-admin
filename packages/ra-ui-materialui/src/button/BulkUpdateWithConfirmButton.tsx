@@ -46,17 +46,12 @@ export const BulkUpdateWithConfirmButton = (
         mutationMode,
         mutationOptions: {
             ...rest.mutationOptions,
-            onSettled(data, error, variables, context) {
+            onSettled(...args) {
                 // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
                 if (mutationMode === 'pessimistic') {
                     setOpen(false);
                 }
-                rest.mutationOptions?.onSettled?.(
-                    data,
-                    error,
-                    variables,
-                    context
-                );
+                rest.mutationOptions?.onSettled?.(...args);
             },
         },
     });
