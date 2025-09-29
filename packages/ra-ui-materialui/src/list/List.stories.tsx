@@ -771,6 +771,95 @@ export const LocationNotSyncWithStore = () => {
     );
 };
 
+const BooksWithStoreKeyA = () => (
+    <List resource="books" storeKey="A" sort={{ field: 'year', order: 'DESC' }}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </List>
+);
+
+const BooksWithStoreKeyB = () => (
+    <List resource="books" storeKey="B" sort={{ field: 'year', order: 'DESC' }}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </List>
+);
+
+const BooksWithoutStoreKey = () => (
+    <List resource="books" sort={{ field: 'year', order: 'DESC' }}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col source="author" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </List>
+);
+
+const RecordSelectionDashboard = () => (
+    <>
+        <Box>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/booksWithStoreKeyA"
+                variant="contained"
+            >
+                See books under storeKey A
+            </Button>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/booksWithStoreKeyB"
+                variant="contained"
+            >
+                See books under storeKey B
+            </Button>
+            <Button
+                component={Link}
+                sx={{ margin: 2 }}
+                to="/booksWithoutStoreKey"
+                variant="contained"
+            >
+                See books without storeKey
+            </Button>
+        </Box>
+    </>
+);
+
+export const RecordSelection = () => (
+    <TestMemoryRouter initialEntries={['/']}>
+        <Admin
+            dataProvider={defaultDataProvider}
+            dashboard={RecordSelectionDashboard}
+        >
+            <CustomRoutes>
+                <Route
+                    path="/booksWithStoreKeyA"
+                    element={<BooksWithStoreKeyA />}
+                />
+                <Route
+                    path="/booksWithStoreKeyB"
+                    element={<BooksWithStoreKeyB />}
+                />
+                <Route
+                    path="/booksWithoutStoreKey"
+                    element={<BooksWithoutStoreKey />}
+                />
+            </CustomRoutes>
+            <Resource name="books" />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 export const ErrorInFetch = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <Admin
