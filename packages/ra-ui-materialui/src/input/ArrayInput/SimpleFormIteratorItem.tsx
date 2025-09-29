@@ -95,9 +95,9 @@ export interface SimpleFormIteratorItemProps
     disableReordering?: boolean;
     getItemLabel?: boolean | SimpleFormIteratorGetItemLabelFunc;
     inline?: boolean;
-    // @deprecated use useSimpleFormIteratorItem().remove instead
+    // @deprecated Use useSimpleFormIteratorItem().remove instead
     onRemoveField?: (index: number) => void;
-    // @deprecated use useSimpleFormIteratorItem().reOrder instead
+    // @deprecated Use useSimpleFormIteratorItem().reOrder instead
     onReorder?: (origin: number, destination: number) => void;
     removeButton?: ReactNode;
     reOrderButtons?: ReactNode;
