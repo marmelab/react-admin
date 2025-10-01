@@ -2,9 +2,25 @@
 title: "getPermissionsFromRoles"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+`getPermissionsFromRoles` returns an array of user permissions based on a role definition, a list of roles, and a list of user permissions. It merges the permissions defined in `roleDefinitions` for the current user's roles (`userRoles`) with the extra `userPermissions`.
 
-This function returns an array of user permissions based on a role definition, a list of roles, and a list of user permissions. It merges the permissions defined in `roleDefinitions` for the current user's roles (`userRoles`) with the extra `userPermissions`.
+It is a builder block to implement the `authProvider.canAccess()` method,  which is called by ra-core to check whether the current user has the right to perform a given action on a given resource or record.
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
+
+## Usage
+
+`getPermissionsFromRoles` takes a configuration object as argument containing the role definitions, the user roles, and the user permissions.
+
+It returns an array of permissions that can be passed to [`canAccessWithPermissions`](./canAccessWithPermissions.md).
 
 ```ts
 import { getPermissionsFromRoles } from '@react-admin/ra-core-ee';
@@ -41,9 +57,21 @@ const permissions = getPermissionsFromRoles({
 // ];
 ```
 
-## Usage
+## Parameters
 
-The user roles and permissions should be returned upon login. The `authProvider` should store the permissions in memory, or in localStorage. This allows `authProvider.canAccess()` to read the permissions from localStorage.
+This function takes an object as argument with the following fields:
+
+| Name | Optional | Type | Description
+| - | - | - | - |
+| `roleDefinitions` | Required | `Record<string, Permission>` | A dictionary containing the role definition for each role
+| `userRoles` | Optional | `Array<string>` | An array of roles (admin, reader...) for the current user
+| `userPermissions` | Optional | `Array<Permission>` | An array of permissions for the current user
+
+## Building RBAC
+
+The following example shows how to implement Role-based Access Control (RBAC) in `authProvider.canAccess()` using `canAccessWithPermissions` and `getPermissionsFromRoles`. The role permissions are defined in the code, and the user roles are returned by the authentication endpoint. Additional user permissions can also be returned by the authentication endpoint.
+
+The `authProvider` stores the permissions in `localStorage`, so that returning users can access their permissions without having to log in again.
 
 ```tsx
 // in roleDefinitions.ts
@@ -97,14 +125,3 @@ const authProvider = {
     // ...
 };
 ```
-
-## Parameters
-
-This function takes an object as argument with the following fields:
-
-| Name | Optional | Type | Description
-| - | - | - | - |
-| `roleDefinitions` | Required | `Record<string, Permission>` | A dictionary containing the role definition for each role
-| `userRoles` | Optional | `Array<string>` | An array of roles (admin, reader...) for the current user
-| `userPermissions` | Optional | `Array<Permission>` | An array of permissions for the current user
-
