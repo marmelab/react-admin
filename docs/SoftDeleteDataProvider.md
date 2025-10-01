@@ -5,7 +5,7 @@ title: "Soft Delete Setup"
 
 # Soft Delete Setup
 
-The soft delete feature is an Enterprise Edition add-on that allows you to "delete" records without actually removing them from your database. 
+The soft delete feature is an [Enterprise Edition add-on](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete) that allows you to "delete" records without actually removing them from your database. 
 
 Use it to:
 
