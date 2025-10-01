@@ -5,30 +5,31 @@ title: "The SoftDeleteButton Component"
 
 # `<SoftDeleteButton>`
 
-Soft-deletes the current record.
+A button that soft-deletes the current record. By default, its label is "Archive" instead of "Delete", to reflect the fact that the record is not permanently deleted.
 
 ![A soft delete button in a `<DataTable>`](https://react-admin-ee.marmelab.com/assets/SoftDeleteButton.png)
 
 ## Usage
 
-`<SoftDeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any property:
+`<SoftDeleteButton>` reads the current record from `RecordContext`, and the current resource from `ResourceContext`, so in general it doesn't need any property. You can use it anywhere you would use a regular `<DeleteButton>`, for example in a `<Show>` view:
 
 {% raw %}
 ```tsx
+import { Show } from 'react-admin';
 import { SoftDeleteButton } from '@react-admin/ra-soft-delete';
 
 const CommentShow = () => (
-    <>
+    <Show>
         {/* ... */}
         <SoftDeleteButton />
-    </>
+    </Show>
 );
 ```
 {% endraw %}
 
 When pressed, it will call `dataProvider.softDelete()` with the current record's `id`.
 
-You can also call it with a record and a resource:
+You can also specify a record and a resource:
 
 {% raw %}
 ```tsx
@@ -186,9 +187,9 @@ Alternately, pass a `successMessage` prop:
 
 ## Access Control
 
-If your `authProvider` implements [Access Control](https://marmelab.com/react-admin/Permissions.html#access-control), `<SoftDeleteButton>` will only render if the user has the "soft_delete" access to the related resource.
+If your `authProvider` implements [Access Control](https://marmelab.com/react-admin/Permissions.html#access-control), `<SoftDeleteButton>` will only render if the user has the `soft_delete` access to the related resource.
 
-`<SoftDeleteButton>` will call `authProvider.canAccess()` using the following parameters:
+This means `<SoftDeleteButton>` calls `authProvider.canAccess()` using the following parameters:
 
 ```txt
 { action: "soft_delete", resource: [current resource], record: [current record] }
