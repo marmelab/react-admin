@@ -81,3 +81,21 @@ useDelete<Product, Error>(undefined, undefined, {
     },
 })
 ```
+
+## Soft Delete
+
+Many applications require a "soft delete" feature, where records are not permanently removed from the database but are instead marked as deleted. This allows for easy recovery of deleted records and helps maintain data integrity.
+
+`useSoftDelete`, part of [the `ra-soft-delete` Enterprise Edition module](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete), works similarly to `useDelete`, but it calls `dataProvider.softDelete()` instead of `dataProvider.delete()`. 
+
+```tsx
+const [softDeleteOne, { data, isPending, error }] = useSoftDelete(
+    resource,
+    { id, authorId, previousData, meta },
+    options,
+);
+```
+
+The `authorId` parameter is optional, and is populated automatically if you have an `authProvider` with a `getIdentity` method.
+
+Check the [Soft Delete documentation](./SoftDeleteDataProvider.md) for more information.
