@@ -31,9 +31,9 @@ const roleDefinitions = {
         { action: '*', resource: '*' }
     ],
     reader: [
-        { action: ['list', 'show', 'export'], resource: '*' }
-        { action: 'read', resource: 'posts.*' }
-        { action: 'read', resource: 'comments.*' }
+        { action: ['list', 'show', 'export'], resource: '*' },
+        { action: 'read', resource: 'posts.*' },
+        { action: 'read', resource: 'comments.*' },
     ],
     accounting: [
         { action: '*', resource: 'sales' },
