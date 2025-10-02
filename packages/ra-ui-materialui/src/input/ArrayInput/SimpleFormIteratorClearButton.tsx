@@ -10,6 +10,7 @@ import { Confirm } from '../../layout/Confirm';
 import { ClearArrayButton } from './ClearArrayButton';
 
 export const SimpleFormIteratorClearButton = ({
+    className,
     disableClear,
     disableRemove,
 }: SimpleFormIteratorClearButtonProps) => {
@@ -35,12 +36,16 @@ export const SimpleFormIteratorClearButton = ({
                 onConfirm={handleArrayClear}
                 onClose={() => setConfirmIsOpen(false)}
             />
-            <ClearArrayButton onClick={() => setConfirmIsOpen(true)} />
+            <ClearArrayButton
+                className={className}
+                onClick={() => setConfirmIsOpen(true)}
+            />
         </>
     );
 };
 
 export interface SimpleFormIteratorClearButtonProps {
+    className?: string;
     disableClear?: boolean;
     disableRemove?: boolean | SimpleFormIteratorDisableRemoveFunction;
 }
