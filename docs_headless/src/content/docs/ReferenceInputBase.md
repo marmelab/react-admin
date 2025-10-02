@@ -41,8 +41,8 @@ const ContactEdit = () => (
 );
 
 const CompanySelector = () => {
-    const { choices, isLoading, error } = useChoicesContext();
-    const { field, id } = useInput();
+    const { allChoices, isLoading, error, source } = useChoicesContext();
+    const { field, id } = useInput({ source });
     
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -52,7 +52,7 @@ const CompanySelector = () => {
             <label htmlFor={id}>Company</label>
             <select id={id} {...field}>
                 <option value="">Select a company</option>
-                {choices.map(choice => (
+                {allChoices.map(choice => (
                     <option key={choice.id} value={choice.id}>
                         {choice.name}
                     </option>
@@ -87,7 +87,7 @@ dataProvider.getList('companies', {
 });
 ```
 
-`<ReferenceInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./useChoicesContext.md). It's up to the child components to render the selection interface.
+`<ReferenceInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./usechoicescontext). It's up to the child components to render the selection interface.
 
 You can tweak how `<ReferenceInputBase>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
 
@@ -97,8 +97,7 @@ You can tweak how `<ReferenceInputBase>` fetches the possible values using the `
 |--------------------|----------|---------------------------------------------|----------------------------------|------------------------------------------------------------------------------------------------|
 | `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                         |
 | `reference`        | Required | `string`                                    | ''                               | Name of the reference resource, e.g. 'companies'.                                                  |
-| `children`         | Optional | `ReactNode`                                 | -                                | The actual selection component                                                                 |
-| `render`           | Optional | `(context) => ReactNode`                    | -                                | Function that takes the choices context and renders the selection interface                    |
+| `children`         | Required | `ReactNode`                                 | -                                | The actual selection component                                                                 |
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                     | Function taking the `filterValues` and returning a boolean to enable the `getList` call.       |
 | `filter`           | Optional | `Object`                                    | `{}`                             | Permanent filters to use for getting the suggestion list                                       |
 | `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
@@ -116,12 +115,8 @@ You can access the choices context using the `useChoicesContext` hook.
 import { ReferenceInputBase, useChoicesContext, useInput } from 'ra-core';
 
 export const CustomSelector = () => {
-    const { choices, isLoading, error } = useChoicesContext();
-    const { field, id } = useInput();
-
-    if (isLoading) {
-        return <div>Loading...</div>;
-    }
+    const { allChoices, isLoading, error, source } = useChoicesContext();
+    const { field, id } = useInput({ source });
 
     if (error) {
         return <div className="error">{error.toString()}</div>;
@@ -131,8 +126,9 @@ export const CustomSelector = () => {
         <div>
             <label htmlFor={id}>Company</label>
             <select id={id} {...field}>
+                {isPending && <option value="">Loading...</option>}
                 <option value="">Select a company</option>
-                {choices.map(choice => (
+                {allChoices.map(choice => (
                     <option key={choice.id} value={choice.id}>
                         {choice.name}
                     </option>
@@ -149,45 +145,6 @@ export const MyReferenceInput = () => (
 );
 ```
 
-## `render`
-
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ChoicesContext` as argument.
-
-```jsx
-export const MyReferenceInput = () => (
-    <ReferenceInputBase
-        source="company_id"
-        reference="companies"
-        render={({ choices, isLoading, error }) => {
-            if (isLoading) {
-                return <div>Loading...</div>;
-            }
-
-            if (error) {
-                return (
-                    <div className="error">
-                        {error.message}
-                    </div>
-                );
-            }
-            
-            return (
-                <select>
-                    <option value="">Select a company</option>
-                    {choices.map(choice => (
-                        <option key={choice.id} value={choice.id}>
-                            {choice.name}
-                        </option>
-                    ))}
-                </select>
-            );
-        }}
-    />
-);
-```
-
-The `render` function prop will take priority on `children` props if both are set.
-
 ## `enableGetChoices`
 
 You can make the `getList()` call lazy by using the `enableGetChoices` prop. This prop should be a function that receives the `filterValues` as parameter and return a boolean. This can be useful when using a search input on a resource with a lot of data. The following example only starts fetching the options when the query has at least 2 characters:
@@ -196,7 +153,7 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 <ReferenceInputBase
      source="company_id"
      reference="companies"
-     enableGetChoices={({ q }) => !!(q && q.length >= 2)}
+     enableGetChoices={({ q }) => q && q.length >= 2}
 />
 ```
 

@@ -39,8 +39,8 @@ const PostEdit = () => (
 );
 
 const TagSelector = () => {
-    const { choices, isLoading, error } = useChoicesContext();
-    const { field, id } = useInput();
+    const { choices, isLoading, error, source } = useChoicesContext();
+    const { field, id } = useInput({ source });
     
     if (isLoading) return <div>Loading...</div>;
     if (error) return <div>Error: {error.message}</div>;
@@ -97,7 +97,7 @@ dataProvider.getList('tags', {
 });
 ```
 
-`<ReferenceArrayInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./useChoicesContext.md). It's up to the child components to render the selection interface.
+`<ReferenceArrayInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./usechoicescontext). It's up to the child components to render the selection interface.
 
 You can tweak how `<ReferenceArrayInputBase>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
 
@@ -107,8 +107,7 @@ You can tweak how `<ReferenceArrayInputBase>` fetches the possible values using 
 |--------------------|----------|---------------------------------------------|------------------------------------|---------------------------------------------------------------------------------------------------------------------|
 | `source`           | Required | `string`                                    | -                                | Name of the entity property to use for the input value                                                                |
 | `reference`        | Required | `string`                                    | ''                                 | Name of the reference resource, e.g. 'tags'.                                                                       |
-| `children`         | Optional | `ReactNode`                                 | -                                | The actual selection component                                                                                   |
-| `render`           | Optional | `(context) => ReactNode`                    | -                                | Function that takes the choices context and renders the selection interface                    |
+| `children`         | Required | `ReactNode`                                 | -                                | The actual selection component                                                                                   |
 | `enableGetChoices` | Optional | `({q: string}) => boolean`                  | `() => true`                       | Function taking the `filterValues` and returning a boolean to enable the `getList` call.                           |
 | `filter`           | Optional | `Object`                                    | `{}`                               | Permanent filters to use for getting the suggestion list                                                            |
 | `offline`          | Optional | `ReactNode`                                 | -                                  | What to render when there is no network connectivity when loading the record |
@@ -126,8 +125,8 @@ You can access the choices context using the `useChoicesContext` hook.
 import { ReferenceArrayInputBase, useChoicesContext, useInput } from 'ra-core';
 
 export const CustomArraySelector = () => {
-    const { choices, isLoading, error } = useChoicesContext();
-    const { field, id } = useInput();
+    const { choices, isLoading, error, source } = useChoicesContext();
+    const { field, id } = useInput({ source });
 
     if (isLoading) {
         return <div>Loading...</div>;
@@ -170,44 +169,6 @@ export const MyReferenceArrayInput = () => (
     </ReferenceArrayInputBase>
 );
 ```
-
-## `render`
-
-Alternatively, you can pass a `render` function prop instead of children. This function will receive the `ChoicesContext` as argument.
-
-```jsx
-export const MyReferenceArrayInput = () => (
-    <ReferenceArrayInputBase
-        source="tag_ids"
-        reference="tags"
-        render={({ choices, isLoading, error }) => {
-            if (isLoading) {
-                return <div>Loading...</div>;
-            }
-
-            if (error) {
-                return (
-                    <div className="error">
-                        {error.message}
-                    </div>
-                );
-            }
-            
-            return (
-                <select multiple>
-                    {choices.map(choice => (
-                        <option key={choice.id} value={choice.id}>
-                            {choice.name}
-                        </option>
-                    ))}
-                </select>
-            );
-        }}
-    />
-);
-```
-
-The `render` function prop will take priority on `children` props if both are set.
 
 ## `enableGetChoices`
 
