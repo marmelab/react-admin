@@ -1,9 +1,10 @@
-import React, { ReactNode } from 'react';
+import React, { type ReactNode } from 'react';
 
 import { ResourceContextProvider } from '../../core';
-import { ChoicesContextProvider, InputProps } from '../../form';
+import type { InputProps } from '../../form/useInput';
+import { ChoicesContextProvider } from '../../form/choices/ChoicesContextProvider';
 import {
-    UseReferenceInputControllerParams,
+    type UseReferenceInputControllerParams,
     useReferenceInputController,
 } from './useReferenceInputController';
 
@@ -67,10 +68,10 @@ import {
 export const ReferenceInputBase = (props: ReferenceInputBaseProps) => {
     const {
         children,
-        reference,
-        sort = { field: 'id', order: 'DESC' },
         filter = {},
         offline,
+        reference,
+        sort = { field: 'id', order: 'DESC' },
     } = props;
 
     const controllerProps = useReferenceInputController({
