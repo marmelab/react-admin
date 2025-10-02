@@ -39,7 +39,7 @@ const FormToolbar = () => {
             <button type="submit" disabled={isLockedByOtherUser}>Save</button>
             {isLockedByOtherUser && (
                 <span>
-                    {`This record is locked by another user: ${lock?.dentity}.`}
+                    {`This record is locked by another user: ${lock?.identity}.`}
                 </span>
             )}
         </div>

@@ -33,4 +33,4 @@ const LatestNews = () => {
 
 The hook will subscribe to live updates on the list of records (topic: `resource/[resource]`) and will refetch the list when a new record is created, or an existing record is updated or deleted.
 
-See the [useGetList](https://marmelab.com/react-admin/useGetList.html) documentation for the full list of parameters and return type.
+See the [useGetList](./useGetList.md) documentation for the full list of parameters and return type.

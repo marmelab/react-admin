@@ -81,4 +81,4 @@ export const LockStatus = () => {
 };
 ```
 
-In addition to the [`useLockCallbacks`](#uselockcallbacks) parameters, `<LockStatusBase>` accepts a `render` prop. The function passed to the `render` prop will be called with the result of the `useLockCallbacks` hook.
+In addition to the [`useLockCallbacks`](./useLockCallbacks.md) parameters, `<LockStatusBase>` accepts a `render` prop. The function passed to the `render` prop will be called with the result of the `useLockCallbacks` hook.

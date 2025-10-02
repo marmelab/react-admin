@@ -26,25 +26,25 @@ import { useNotify, useListContext } from 'react-admin';
 import { useSubscribeToRecordList } from '@react-admin/ra-realtime';
 
 const ListWatcher = () => {
-    const notity = useNotify();
+    const notify = useNotify();
     const { refetch, data } = useListContext();
     useSubscribeToRecordList(event => {
         switch (event.type) {
             case 'created': {
-                notity('New movie created');
+                notify('New movie created');
                 refetch();
                 break;
             }
             case 'updated': {
                 if (data.find(record => record.id === event.payload.ids[0])) {
-                    notity(`Movie #${event.payload.ids[0]} updated`);
+                    notify(`Movie #${event.payload.ids[0]} updated`);
                     refetch();
                 }
                 break;
             }
             case 'deleted': {
                 if (data.find(record => record.id === event.payload.ids[0])) {
-                    notity(`Movie #${event.payload.ids[0]} deleted`);
+                    notify(`Movie #${event.payload.ids[0]} deleted`);
                     refetch();
                 }
                 break;
@@ -80,25 +80,25 @@ const MovieList = () => (
 Whenever an event is published on the `resource/[resource]` topic, the function passed as the first argument will be called with the event as a parameter.
 
 ```jsx
-const notity = useNotify();
+const notify = useNotify();
 const { refetch, data } = useListContext();
 useSubscribeToRecordList(event => {
     switch (event.type) {
         case 'created': {
-            notity('New movie created');
+            notify('New movie created');
             refetch();
             break;
         }
         case 'updated': {
             if (data.find(record => record.id === event.payload.ids[0])) {
-                notity(`Movie #${event.payload.ids[0]} updated`);
+                notify(`Movie #${event.payload.ids[0]} updated`);
                 refetch();
             }
             break;
         }
         case 'deleted': {
             if (data.find(record => record.id === event.payload.ids[0])) {
-                notity(`Movie #${event.payload.ids[0]} deleted`);
+                notify(`Movie #${event.payload.ids[0]} deleted`);
                 refetch();
             }
             break;
@@ -110,33 +110,33 @@ useSubscribeToRecordList(event => {
 **Tip**: Memoize the callback using `useCallback` to avoid unnecessary subscriptions/unsubscriptions.
 
 ```jsx
-const notity = useNotify();
+const notify = useNotify();
 const { refetch, data } = useListContext();
 const callback = useCallback(
     event => {
         switch (event.type) {
             case 'created': {
-                notity('New movie created');
+                notify('New movie created');
                 refetch();
                 break;
             }
             case 'updated': {
                 if (data.find(record => record.id === event.payload.ids[0])) {
-                    notity(`Movie #${event.payload.ids[0]} updated`);
+                    notify(`Movie #${event.payload.ids[0]} updated`);
                     refetch();
                 }
                 break;
             }
             case 'deleted': {
                 if (data.find(record => record.id === event.payload.ids[0])) {
-                    notity(`Movie #${event.payload.ids[0]} deleted`);
+                    notify(`Movie #${event.payload.ids[0]} deleted`);
                     refetch();
                 }
                 break;
             }
         }
     },
-    [data, refetch, notity]
+    [data, refetch, notify]
 );
 useSubscribeToRecordList(callback);
 ```

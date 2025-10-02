@@ -65,7 +65,7 @@ This function takes an object as argument with the following fields:
 | `resource` | Required | `string` | The resource for which to check users has the execution right
 | `record` | Required | `string` | The record for which to check users has the execution right
 
-`canAccessWithPermissions` expects the `permissions` to be a flat array of permissions. It is your responsibility to fetch these permissions (usually during login). If the permissions are spread into several role definitions, you can merge them into a single array using the [`getPermissionsFromRoles`](#getpermissionsfromroles) function.
+`canAccessWithPermissions` expects the `permissions` to be a flat array of permissions. It is your responsibility to fetch these permissions (usually during login). If the permissions are spread into several role definitions, you can merge them into a single array using the [`getPermissionsFromRoles`](./getPermissionsFromRoles.md) function.
 
 ## Building RBAC
 

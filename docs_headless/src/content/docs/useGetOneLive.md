@@ -27,4 +27,4 @@ const UserProfile = () => {
 
 The hook will subscribe to live updates on the record (topic: `resource/[resource]/[id]`) and will refetch the record when it is updated or deleted.
 
-See the [useGetOne](https://marmelab.com/react-admin/useGetOne.html) documentation for the full list of parameters and return type.
+See the [useGetOne](./useGetOne.md) documentation for the full list of parameters and return type.

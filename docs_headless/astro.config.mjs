@@ -271,7 +271,7 @@ export default defineConfig({
  */
 function enterpriseEntry(name) {
     return {
-        link: name.toLowerCase().replace(/</g, '').replace(/>/g, ''),
+        link: `${name.toLowerCase().replace(/</g, '').replace(/>/g, '')}/`,
         label: name,
         attrs: { class: 'enterprise' },
         badge: {

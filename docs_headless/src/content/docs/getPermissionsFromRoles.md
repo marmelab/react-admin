@@ -28,7 +28,7 @@ import { getPermissionsFromRoles } from '@react-admin/ra-core-ee';
 // static role definitions (usually in the app code)
 const roleDefinitions = {
     admin: [
-        { action: '*', resource: '*' }
+        { action: '*', resource: '*' },
     ],
     reader: [
         { action: ['list', 'show', 'export'], resource: '*' },
@@ -77,12 +77,12 @@ The `authProvider` stores the permissions in `localStorage`, so that returning u
 // in roleDefinitions.ts
 export const roleDefinitions = {
     admin: [
-        { action: '*', resource: '*' }
+        { action: '*', resource: '*' },
     ],
     reader: [
-        { action: ['list', 'show', 'export'], resource: '*' }
-        { action: 'read', resource: 'posts.*' }
-        { action: 'read', resource: 'comments.*' }
+        { action: ['list', 'show', 'export'], resource: '*' },
+        { action: 'read', resource: 'posts.*' },
+        { action: 'read', resource: 'comments.*' },
     ],
     accounting: [
         { action: '*', resource: 'sales' },
