@@ -30,7 +30,7 @@ export const SimpleFormIteratorItem = React.forwardRef<
         reOrderButtons = <DefaultReOrderButtons />,
     } = props;
 
-    const record = useRecordContext();
+    const record = useRecordContext(props);
     if (!record) {
         throw new Error(
             'SimpleFormIteratorItem must be used in a RecordContextProvider.'
