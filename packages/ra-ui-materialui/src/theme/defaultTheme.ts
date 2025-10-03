@@ -1,4 +1,5 @@
 import { ThemeOptions } from '@mui/material';
+import { grey } from '@mui/material/colors';
 import { deepmerge } from '@mui/utils';
 
 const defaultThemeInvariants: ThemeOptions = {
@@ -96,6 +97,13 @@ export const defaultLightTheme: ThemeOptions = deepmerge(
                     },
                 },
             },
+            RaToolbar: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: grey[300],
+                    },
+                },
+            },
         },
     }
 );
@@ -110,6 +118,15 @@ export const defaultDarkTheme: ThemeOptions = deepmerge(
             },
             background: {
                 default: '#313131',
+            },
+        },
+        components: {
+            RaToolbar: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: grey[800],
+                    },
+                },
             },
         },
     }

@@ -86,11 +86,13 @@ export const PostList = () => (
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Optional | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `children`     | Optional\* | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
 | `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and returns an element      |
-| `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
+| `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
+| `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records     |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                          |
 | `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
@@ -174,6 +176,38 @@ Use `empty` to customize the text displayed when there are no related records.
 </ReferenceManyFieldBase>
 ```
 
+## `error`
+
+By default, `<ReferenceManyFieldBase>` renders its children when an error occurs while fetching the related records. You can customize what is rendered by providing your own component via the `error` prop:
+
+```jsx
+import { ReferenceManyFieldBase, ShowBase } from 'ra-core';
+
+export const AuthorShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase
+            reference="books"
+            target="author_id"
+            error={<p>Error loading books. Please try again.</p>}
+        >
+            ...
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceManyFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    error={null}
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
 ## `filter`: Permanent Filter
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
@@ -189,6 +223,38 @@ You can filter the query used to populate the possible values. Use the `filter` 
 </ReferenceManyFieldBase>
 ```
 
+
+## `loading`
+
+By default, `<ReferenceManyFieldBase>` renders its children while fetching the related records. You can customize what is rendered by providing your own component via the `loading` prop:
+
+```jsx
+import { ReferenceManyFieldBase, ShowBase } from 'ra-core';
+
+export const AuthorShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase
+            reference="books"
+            target="author_id"
+            loading={<p>Loading books...</p>}
+        >
+            ...
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceManyFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    loading={null}
+>
+    ...
+</ReferenceManyFieldBase>
+```
 
 ## `offline`
 

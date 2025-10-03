@@ -207,7 +207,8 @@ describe('<UpdateWithConfirmButton />', () => {
                     meta: undefined,
                     resource: 'posts',
                 },
-                { snapshot: expect.any(Array) }
+                { snapshot: expect.any(Array) },
+                expect.anything()
             );
         });
     });
@@ -261,7 +262,8 @@ describe('<UpdateWithConfirmButton />', () => {
                     meta: undefined,
                     resource: 'posts',
                 },
-                { snapshot: expect.any(Array) }
+                { snapshot: expect.any(Array) },
+                expect.anything()
             );
         });
     });

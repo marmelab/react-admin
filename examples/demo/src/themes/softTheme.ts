@@ -1,3 +1,4 @@
+import { grey } from '@mui/material/colors';
 import { defaultTheme } from 'react-admin';
 
 /**
@@ -43,6 +44,13 @@ export const softDarkTheme = {
             },
             defaultProps: {
                 elevation: 1,
+            },
+        },
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: grey[800],
+                },
             },
         },
     },
@@ -118,6 +126,13 @@ export const softLightTheme = {
             styleOverrides: {
                 root: {
                     '&:last-child td': { border: 0 },
+                },
+            },
+        },
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: grey[300],
                 },
             },
         },

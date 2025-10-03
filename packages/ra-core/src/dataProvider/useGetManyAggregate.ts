@@ -246,31 +246,37 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
     const queryClient = calls[0].queryClient;
 
     /**
-     * Aggregate calls by resource
+     * Aggregate calls by resource and meta
      *
-     * callsByResource will look like:
+     * callsByResourceAndMeta will look like:
      * {
-     *     posts: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
+     *     'posts|{"test":true}': [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
+     *     'posts|{"test":false}': [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
      *     tags: [{ resource, ids, resolve, reject, dataProvider, queryClient }, ...],
      * }
      */
-    const callsByResource = calls.reduce(
+    const callsByResourceAndMeta = calls.reduce(
         (acc, callArgs) => {
-            if (!acc[callArgs.resource]) {
-                acc[callArgs.resource] = [];
+            const key = `${callArgs.resource}|${JSON.stringify(callArgs.meta)}`;
+            if (!acc[key]) {
+                acc[key] = [];
             }
-            acc[callArgs.resource].push(callArgs);
+            acc[key].push(callArgs);
             return acc;
         },
         {} as { [resource: string]: GetManyCallArgs[] }
     );
 
     /**
-     * For each resource, aggregate ids and call dataProvider.getMany() once
+     * For each resource/meta association, aggregate ids and call dataProvider.getMany() once
      */
-    Object.keys(callsByResource).forEach(resource => {
-        const callsForResource = callsByResource[resource];
+    Object.keys(callsByResourceAndMeta).forEach(resource => {
+        const callsForResource = callsByResourceAndMeta[resource];
 
+        const uniqueResource = callsForResource.reduce(
+            (acc, { resource }) => resource || acc,
+            '' as string // Should never happen as we always have a resource in callArgs but makes TS happy
+        );
         /**
          * Extract ids from queries, aggregate and deduplicate them
          *
@@ -338,7 +344,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
         queryClient
             .fetchQuery<any[], Error, any[]>({
                 queryKey: [
-                    resource,
+                    uniqueResource,
                     'getMany',
                     {
                         ids: aggregatedIds.map(id => String(id)),
@@ -347,7 +353,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 ],
                 queryFn: queryParams =>
                     dataProvider
-                        .getMany<any>(resource, {
+                        .getMany<any>(uniqueResource, {
                             ids: aggregatedIds,
                             meta: uniqueMeta,
                             signal:
@@ -377,7 +383,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
 const noop = () => undefined;
 
 export type UseGetManyAggregateOptions<
-    RecordType extends RaRecord,
+    RecordType extends RaRecord = any,
     ErrorType = Error,
 > = Omit<UseQueryOptions<RecordType[], ErrorType>, 'queryKey' | 'queryFn'> & {
     onSuccess?: (data: RecordType[]) => void;

@@ -1,12 +1,13 @@
 import { useCallback, useMemo } from 'react';
 
-import { useDelete, UseDeleteOptions } from '../../dataProvider';
-import { useRecordContext, useUnselect } from '../';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
-import { useNotify } from '../../notification';
+import { useDelete, UseDeleteOptions } from '../../dataProvider/useDelete';
+import { useUnselect } from '../list/useUnselect';
+import { useRecordContext } from '../record/useRecordContext';
+import { useRedirect, RedirectionSideEffect } from '../../routing/useRedirect';
+import { useNotify } from '../../notification/useNotify';
 import { RaRecord, MutationMode } from '../../types';
-import { useResourceContext } from '../../core';
-import { useTranslate } from '../../i18n';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useTranslate } from '../../i18n/useTranslate';
 
 /**
  * Prepare a set of callbacks for a delete button

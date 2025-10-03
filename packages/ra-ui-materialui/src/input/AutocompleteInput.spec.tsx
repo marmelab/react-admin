@@ -1605,6 +1605,7 @@ describe('<AutocompleteInput />', () => {
             expect(onSuccess).toHaveBeenCalledWith(
                 expect.objectContaining({ author: null }),
                 expect.anything(),
+                expect.anything(),
                 expect.anything()
             );
         });
@@ -1736,6 +1737,7 @@ describe('<AutocompleteInput />', () => {
             await waitFor(() => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     expect.objectContaining({ author: undefined }),
+                    expect.anything(),
                     expect.anything(),
                     expect.anything()
                 );

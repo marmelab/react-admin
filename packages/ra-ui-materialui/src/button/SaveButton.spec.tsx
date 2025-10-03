@@ -177,7 +177,8 @@ describe('<SaveButton />', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: expect.any(Array) }
+                { snapshot: expect.any(Array) },
+                expect.anything()
             );
         });
     });
@@ -230,7 +231,8 @@ describe('<SaveButton />', () => {
                     resource: 'posts',
                     meta: undefined,
                 },
-                { snapshot: expect.any(Array) }
+                { snapshot: expect.any(Array) },
+                expect.anything()
             );
         });
     });

@@ -100,11 +100,13 @@ retry_step "make build" "make build"
 # Step 3: EE Tests
 if [ -d $RA_ENTERPRISE_PATH ]; then
     current_dir=$(pwd)
-    retry_step "Run the EE tests" "
+    retry_step "Run the EE build" "
         cp -r packages/* \$RA_ENTERPRISE_PATH/node_modules &&
         cd \$RA_ENTERPRISE_PATH &&
         rm -rf node_modules/react-admin/node_modules/@mui &&
-        make build &&
+        make build
+    "
+    retry_step "Run the EE tests" "
         CI=true DEBUG_PRINT_LIMIT=3 make test
     "
     cd "$current_dir"
