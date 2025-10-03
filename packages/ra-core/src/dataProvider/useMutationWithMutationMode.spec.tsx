@@ -1,7 +1,10 @@
 import * as React from 'react';
-import { render, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { useMutationWithMutationMode } from './useMutationWithMutationMode';
+import {
+    useMutationWithMutationMode,
+    UseMutationWithMutationModeOptions,
+} from './useMutationWithMutationMode';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import { useDataProvider } from './useDataProvider';
 import { DataProvider } from '../types';
@@ -12,7 +15,17 @@ describe('useMutationWithMutationMode', () => {
         updateUserProfile: ({ data }: { data: any }) => Promise<{ data: any }>;
     };
 
-    const useUpdateUserProfile = (args?: { data?: any }) => {
+    const useUpdateUserProfile = (
+        args?: { data?: any },
+        options?: Pick<
+            UseMutationWithMutationModeOptions<
+                Error,
+                { data: any },
+                { data?: any }
+            >,
+            'mutationMode'
+        >
+    ) => {
         const dataProvider = useDataProvider<MyDataProvider>();
         return useMutationWithMutationMode<
             Error,
@@ -33,6 +46,7 @@ describe('useMutationWithMutationMode', () => {
             getSnapshot: () => {
                 return [];
             },
+            ...options,
         });
     };
 
@@ -88,6 +102,53 @@ describe('useMutationWithMutationMode', () => {
         await waitFor(() => {
             expect(dataProvider.updateUserProfile).toHaveBeenCalledWith({
                 data: { bar: 'baz' },
+            });
+        });
+    });
+
+    it('uses the latest params at execution time in optimistic mode', async () => {
+        const dataProvider = testDataProvider({
+            updateUserProfile: jest.fn(({ data }) =>
+                Promise.resolve({ data: { id: 1, ...data } } as any)
+            ),
+        }) as MyDataProvider;
+        const Dummy = () => {
+            const [data, setData] = React.useState({ value: 'value1' });
+            const [update] = useUpdateUserProfile(
+                {
+                    data,
+                },
+                { mutationMode: 'optimistic' }
+            );
+            return (
+                <>
+                    <button onClick={() => setData({ value: 'value2' })}>
+                        Update data
+                    </button>
+                    <button onClick={() => update()}>Update</button>
+                </>
+            );
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        fireEvent.click(screen.getByText('Update'));
+        // In case of undoable, clicking the _Update data_ button would trigger the mutation
+        fireEvent.click(screen.getByText('Update data'));
+        await waitFor(() => {
+            expect(dataProvider.updateUserProfile).toHaveBeenCalledWith({
+                data: { value: 'value1' },
+            });
+        });
+
+        // Ensure the next call uses the latest data
+        fireEvent.click(screen.getByText('Update'));
+        await waitFor(() => {
+            expect(dataProvider.updateUserProfile).toHaveBeenCalledWith({
+                data: { value: 'value2' },
             });
         });
     });
