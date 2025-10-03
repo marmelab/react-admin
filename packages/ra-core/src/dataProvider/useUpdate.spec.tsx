@@ -555,6 +555,58 @@ describe('useUpdate', () => {
                 });
             });
         });
+        it('updates getManyReference query cache with pageInfo when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getManyReference'], {
+                data: [{ id: 1, bar: 'bar' }],
+                pageInfo: {
+                    hasPreviousPage: false,
+                    hasNextPage: true,
+                },
+            });
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryData(['foo', 'getManyReference'])
+                ).toEqual({
+                    data: [{ id: 1, bar: 'baz' }],
+                    pageInfo: {
+                        hasPreviousPage: false,
+                        hasNextPage: true,
+                    },
+                });
+            });
+        });
         it('updates getInfiniteList query cache when dataProvider promise resolves', async () => {
             const queryClient = new QueryClient();
             queryClient.setQueryData(['foo', 'getInfiniteList'], {

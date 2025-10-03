@@ -225,10 +225,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     { queryKey: [resource, 'getManyReference'] },
                     (res: GetListResult) =>
                         res && res.data
-                            ? {
-                                  data: updateColl(res.data),
-                                  total: res.total,
-                              }
+                            ? { ...res, data: updateColl(res.data) }
                             : res,
                     { updatedAt }
                 );

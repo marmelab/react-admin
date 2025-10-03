@@ -1047,6 +1047,48 @@ const dataProvider = addEventsForMutations(
 );
 ```
 
+## Soft Delete
+
+React-admin lets you implement **soft delete** in your admin app, so that users can recover deleted records.
+
+![Soft delete example](https://react-admin-ee.marmelab.com/assets/DeletedRecordsList.png)
+
+Replace the standard `<DeleteButton>` with the [`<SoftDeleteButton>`](./SoftDeleteButton.md) in your `<List>`, `<Show>`, and `<Edit>` views to enable soft delete:
+
+```jsx
+import { List, DataTable, TextField } from 'react-admin';
+import { SoftDeleteButton } from '@react-admin/ra-soft-delete';
+
+export const PostList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <SoftDeleteButton />
+            </DataTable.Col>
+        </DataTable>
+    </List>
+);
+```
+
+Then, add a `<DeletedRecordsList>` somewhere in your app to let users view and restore deleted records:
+
+```jsx
+import { Admin, CustomRoutes } from 'react-admin';
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+const App = () => (
+    <Admin>
+        <CustomRoutes>
+            <Route path="/deleted-records" element={<DeletedRecordsList />} />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+Check out the [Soft Delete Documentation](./SoftDeleteDataProvider.md) to learn more.
+
 ## Calendar
 
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
