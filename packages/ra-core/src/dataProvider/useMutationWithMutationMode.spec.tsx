@@ -122,6 +122,7 @@ describe('useMutationWithMutationMode', () => {
             );
             return (
                 <>
+                    <p>{data.value}</p>
                     <button onClick={() => setData({ value: 'value2' })}>
                         Update data
                     </button>
@@ -138,6 +139,8 @@ describe('useMutationWithMutationMode', () => {
         fireEvent.click(screen.getByText('Update'));
         // In case of undoable, clicking the _Update data_ button would trigger the mutation
         fireEvent.click(screen.getByText('Update data'));
+        await screen.findByText('value2');
+        fireEvent.click(screen.getByText('Update'));
         await waitFor(() => {
             expect(dataProvider.updateUserProfile).toHaveBeenCalledWith({
                 data: { value: 'value1' },
@@ -145,7 +148,6 @@ describe('useMutationWithMutationMode', () => {
         });
 
         // Ensure the next call uses the latest data
-        fireEvent.click(screen.getByText('Update'));
         await waitFor(() => {
             expect(dataProvider.updateUserProfile).toHaveBeenCalledWith({
                 data: { value: 'value2' },
