@@ -205,7 +205,7 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
 </ReferenceManyInput>
 ```
 
-### `rankSource`
+## `rankSource`
 
 `<SimpleFormIterator>` provides controls to reorder the items in the list. If the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
 
