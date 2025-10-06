@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react';
+import * as React from 'react';
 import { RaRecord } from '../../types';
 import { ListControllerResult } from './useListController';
 import { useListContextWithProps } from './useListContextWithProps';
@@ -81,7 +81,7 @@ export interface WithListContextProps<RecordType extends RaRecord>
     > {
     render?: (
         context: Partial<ListControllerResult<RecordType>>
-    ) => ReactElement | false | null;
+    ) => React.ReactNode;
     loading?: React.ReactNode;
     offline?: React.ReactNode;
     errorState?: ListControllerResult<RecordType>['error'];
