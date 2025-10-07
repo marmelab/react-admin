@@ -73,7 +73,7 @@ export const OrderEdit = () => (
 
 ## Global validation
 
-If you are using an `<ArrayInput>` inside a form with global validation, you need to shape the errors object returned by the `validate` function like an array too.
+If you are using an `<ArrayInputBase>` inside a form with global validation, you need to shape the errors object returned by the `validate` function like an array too.
 
 For instance, to display the following errors:
 
