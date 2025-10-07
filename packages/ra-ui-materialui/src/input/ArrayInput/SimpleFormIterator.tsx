@@ -113,11 +113,12 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                                     {addButton}
                                 </div>
                             )}
-                            <SimpleFormIteratorClearButton
-                                className={SimpleFormIteratorClasses.clear}
-                                disableClear={disableClear}
-                                disableRemove={disableRemove}
-                            />
+                            <div className={SimpleFormIteratorClasses.clear}>
+                                <SimpleFormIteratorClearButton
+                                    disableClear={disableClear}
+                                    disableRemove={disableRemove}
+                                />
+                            </div>
                         </div>
                     )}
             </Root>
