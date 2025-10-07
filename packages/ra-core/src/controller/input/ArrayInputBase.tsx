@@ -20,7 +20,7 @@ import { ArrayInputContext } from './ArrayInputContext';
  *
  *  @example
  *
- *      import { ArrayInputBase } from 'react-admin';
+ *      import { ArrayInputBase } from 'ra-core';
  *      import { SimpleFormIterator, DateInput, TextInput } from 'my-react-admin-ui';
  *
  *      <ArrayInputBase source="backlinks">
