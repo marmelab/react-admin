@@ -1,10 +1,17 @@
 ---
 title: "useLockCallbacks"
 ---
-
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
-
 This utility hook allows to easily get the callbacks to **lock** and **unlock** a record, as well as the current **lock status**.
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
 
 ## Usage
 

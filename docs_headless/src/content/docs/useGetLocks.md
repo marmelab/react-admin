@@ -2,14 +2,19 @@
 title: "useGetLocks"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+A hook that gets all the locks for a given resource. Calls `dataProvider.getLocks()` on mount.
 
-Get all the locks for a given resource. Calls `dataProvider.getLocks()` on mount.
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
-```tsx
-// simple Usage
-const { data } = useGetLocks('posts');
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
 ```
+
+## Usage
 
 Here is how to use it in a custom list, to disable edit and delete buttons for locked records:
 

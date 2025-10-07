@@ -2,9 +2,19 @@
 title: "useLock"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
-
 `useLock` is a low-level hook that returns a callback to call `dataProvider.lock()`, leveraging react-query's `useMutation`.
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
+
+## Usage
 
 ```tsx
 const [lock, { isLoading, error }] = useLock(

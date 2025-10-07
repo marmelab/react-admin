@@ -2,13 +2,21 @@
 title: "usePublish"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
-
 Get a callback to publish an event on a topic. The callback returns a promise that resolves when the event is published.
 
 `usePublish` calls `dataProvider.publish()` to publish the event. It leverages react-query's `useMutation` hook to provide a callback.
 
 **Note**: Events should generally be published by the server, in reaction to an action by an end user. They should seldom be published directly by the client. This hook is provided mostly for testing purposes, but you may use it in your own custom components if you know what you're doing.
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
 
 ## Usage
 

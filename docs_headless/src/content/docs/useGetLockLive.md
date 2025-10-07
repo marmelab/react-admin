@@ -2,7 +2,19 @@
 title: "useGetLockLive"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+A hook that gets the lock status for a record in real time.
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
+
+## Usage
 
 Use the `useGetLockLive()` hook to get the lock status in real time. This hook calls `dataProvider.getLock()` for the current record on mount, and subscribes to live updates on the `lock/[resource]/[id]` topic.
 

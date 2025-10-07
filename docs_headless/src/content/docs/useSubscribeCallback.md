@@ -2,8 +2,6 @@
 title: "useSubscribeCallback"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
-
 Get a callback to subscribe to events on a topic and optionally unsubscribe on unmount.
 
 This is useful to start a subscription from an event handler, like a button click.
@@ -12,6 +10,16 @@ This is useful to start a subscription from an event handler, like a button clic
   <source src="https://react-admin-ee.marmelab.com/assets/useSubscribeCallback.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
+
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
 
 ## Usage
 

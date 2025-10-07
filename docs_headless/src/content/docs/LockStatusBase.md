@@ -2,9 +2,19 @@
 title: "<LockStatusBase>"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+`<LockStatusBase>` displays the lock status of the current record. It allows to visually indicate whether the record is locked or not, by the current user or not, and provides an easy way to lock or unlock the record.
 
-Use the `<LockStatusBase>` component to display the lock status of the record in the nearest `RecordContext`:
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
+
+## Usage
 
 ```tsx
 import React from 'react';

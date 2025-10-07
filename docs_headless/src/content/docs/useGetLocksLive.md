@@ -2,10 +2,21 @@
 title: "useGetLocksLive"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+Use the `useGetLocksLive` hook to get all the locks for a resource in real time. 
 
-Use the `useGetLocksLive` hook to get the locks in real time. This hook calls `dataProvider.getLocks()` for the current resource on mount, and subscribes to live updates on the `lock/[resource]` topic.
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
+
+## Usage
+
+This hook calls `dataProvider.getLocks()` for the current resource on mount, and subscribes to live updates on the `lock/[resource]` topic.
 This means that if a lock is acquired or released by another user while the current user is on the page, the return value will be updated.
 
 ```tsx
@@ -13,8 +24,9 @@ import { useRecordContext } from 'ra-core';
 import { useGetLocksLive } from '@react-admin/ra-core-ee';
 import { Lock } from 'lucide-react';
 
-export const LockField = ({ locks }) => {
+export const LockField = () => {
     const record = useRecordContext();
+    const locks = useGetLocksLive();
     if (!record) return null;
     const lock = locks?.find(lock => lock.recordId === record?.id);
     if (!lock) return <span className="w-4 h-4" />;

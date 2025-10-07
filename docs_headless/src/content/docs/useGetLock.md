@@ -2,20 +2,19 @@
 title: "useGetLock"
 ---
 
-**Tip**: `ra-core-ee` is part of the [React-Admin Enterprise Edition](https://marmelab.com/ra-enterprise/), and hosted in a private npm registry. You need to subscribe to one of the Enterprise Edition plans to access this package.
+A hook that gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
 
-Gets the lock status for a record. It calls `dataProvider.getLock()` on mount.
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
-```tsx
-const { data, isLoading } = useGetLock(resource, { id });
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
 ```
 
-Parameters description:
-
--   `resource`: the resource name (e.g. `'posts'`)
--   `params`: an object with the following properties:
-    -   `id`: the record id (e.g. `123`)
-    -   `meta`: Optional. an object that will be forwarded to the dataProvider (optional)
+## Usage
 
 Here is a form toolbar that displays the lock status of the current record:
 
@@ -46,3 +45,10 @@ const FormToolbar = () => {
     );
 };
 ```
+
+## Parameters
+
+-   `resource`: the resource name (e.g. `'posts'`)
+-   `params`: an object with the following properties:
+    -   `id`: the record id (e.g. `123`)
+    -   `meta`: Optional. an object that will be forwarded to the dataProvider (optional)
