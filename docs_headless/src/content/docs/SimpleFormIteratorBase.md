@@ -7,12 +7,25 @@ title: "<SimpleFormIteratorBase>"
 
 ## Usage
 
-Here's one could implement a minimal `SimpleFormIterator` using `<SimpleFormIteratorBase>`:
+Here's how one could implement a minimal `SimpleFormIterator` using `<SimpleFormIteratorBase>`:
 
 ```tsx
+import {
+    SimpleFormIteratorBase,
+    SimpleFormIteratorItemBase,
+    useArrayInput,
+    useFieldValue,
+    useSimpleFormIterator,
+    useSimpleFormIteratorItem,
+    useWrappedSource,
+    type SimpleFormIteratorBaseProps
+} from 'ra-core';
+
 export const SimpleFormIterator = ({ children, ...props }: SimpleFormIteratorBaseProps) => {
-    const { fields, replace } = useArrayInput(props);
-    const records = useFieldValue({ source: finalSource });
+    const { fields } = useArrayInput(props);
+    // Get the parent source by passing an empty string as source
+    const source = useWrappedSource('');
+    const records = useFieldValue({ source });
 
     return (
         <SimpleFormIteratorBase {...props}>
@@ -20,16 +33,32 @@ export const SimpleFormIterator = ({ children, ...props }: SimpleFormIteratorBas
                 {fields.map((member, index) => (
                     <SimpleFormIteratorItemBase
                         key={member.id}
-                        fields={fields}
                         index={index}
+                        record={record}
                     >
                         <li>
-                            {props.children}
+                            {children}
+                            <RemoveItemButton />
                         </li>
                     </SimpleFormIteratorItemBase>
                 ))}
             </ul>
+            <AddItemButton />
         </SimpleFormIteratorBase>
+    )
+}
+
+const RemoveItemButton = () => {
+    const { remove } = useSimpleFormIteratorItem();
+    return (
+        <button type="button" onClick={() => remove()}>Remove</button>
+    )
+}
+
+const AddItemButton = () => {
+    const { add } = useSimpleFormIterator();
+    return (
+        <button type="button" onClick={() => add()}>Add</button>
     )
 }
 ```

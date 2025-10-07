@@ -173,7 +173,12 @@ export default defineConfig({
                 },
                 {
                     label: 'Inputs',
-                    items: ['inputs', 'useinput'],
+                    items: [
+                        'inputs',
+                        'useinput',
+                        'arrayinputbase',
+                        'simpleformiteratorbase',
+                    ],
                 },
                 {
                     label: 'Preferences',
