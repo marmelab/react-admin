@@ -16,20 +16,21 @@ import {
 import { ArrayInputContext } from './ArrayInputContext';
 
 /**
- * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
+ * To edit arrays of data embedded inside a record, <ArrayInputBase> creates a list of sub-forms.
  *
  *  @example
  *
- *      import { ArrayInput, SimpleFormIterator, DateInput, TextInput } from 'react-admin';
+ *      import { ArrayInputBase } from 'react-admin';
+ *      import { SimpleFormIterator, DateInput, TextInput } from 'my-react-admin-ui';
  *
- *      <ArrayInput source="backlinks">
+ *      <ArrayInputBase source="backlinks">
  *          <SimpleFormIterator>
  *              <DateInput source="date" />
  *              <TextInput source="url" />
  *          </SimpleFormIterator>
- *      </ArrayInput>
+ *      </ArrayInputBase>
  *
- * <ArrayInput> allows the edition of embedded arrays, like the backlinks field
+ * <ArrayInputBase> allows the edition of embedded arrays, like the backlinks field
  * in the following post record:
  *
  * {
@@ -46,13 +47,10 @@ import { ArrayInputContext } from './ArrayInputContext';
  *    ]
  * }
  *
- * <ArrayInput> expects a single child, which must be a *form iterator* component.
+ * <ArrayInputBase> expects a single child, which must be a *form iterator* component.
  * A form iterator is a component accepting a fields object as passed by
  * react-hook-form-arrays's useFieldArray() hook, and defining a layout for
- * an array of fields. For instance, the <SimpleFormIterator> component
- * displays an array of fields in an unordered list (<ul>), one sub-form by
- * list item (<li>). It also provides controls for adding and removing
- * a sub-record (a backlink in this example).
+ * an array of fields.
  *
  * @see {@link https://react-hook-form.com/docs/usefieldarray}
  */

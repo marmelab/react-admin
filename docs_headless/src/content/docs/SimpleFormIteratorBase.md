@@ -3,7 +3,7 @@ layout: default
 title: "<SimpleFormIteratorBase>"
 ---
 
-`<SimpleFormIteratorBase>` helps building a component that lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInputBase>`](./ArrayInputBase.md) or [`<ReferenceManyInput>`](./ReferenceManyInput.md). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/docs/usefieldarray).
+`<SimpleFormIteratorBase>` helps building a component that lets users edit, add, remove and reorder sub-records. It is designed to be used as a child of [`<ArrayInputBase>`](./ArrayInputBase.md) or [`<ReferenceManyInput>`](https://react-admin-ee.marmelab.com/documentation/ra-core-ee#referencemanyinputbase). You can also use it within an `ArrayInputContext` containing a *field array*, i.e. the value returned by [react-hook-form's `useFieldArray` hook](https://react-hook-form.com/docs/usefieldarray).
 
 ## Usage
 
