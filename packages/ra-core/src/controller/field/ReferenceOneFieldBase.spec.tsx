@@ -6,8 +6,12 @@ import {
     Offline,
     WithRenderProp,
 } from './ReferenceOneFieldBase.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ReferenceOneFieldBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should pass the loading state', async () => {
         jest.spyOn(console, 'error')
             .mockImplementationOnce(() => {})

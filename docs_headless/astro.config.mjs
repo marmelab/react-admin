@@ -24,6 +24,11 @@ export default defineConfig({
                     href: 'https://github.com/marmelab/react-admin',
                 },
             ],
+            logo: {
+                light: './public/logo-light.svg',
+                dark: './public/logo-dark.svg',
+                alt: 'ra-core',
+            },
             head: [
                 // add Umami analytics script tag.
                 {
@@ -110,7 +115,7 @@ export default defineConfig({
                         'filteringtutorial',
                         'listbase',
                         'infinitelistbase',
-                        'listiterator',
+                        'recordsiterator',
                         'filterliveform',
                         'withlistcontext',
                         'uselist',
@@ -162,6 +167,7 @@ export default defineConfig({
                         'referencefieldbase',
                         'referencemanycountbase',
                         'referencemanyfieldbase',
+                        'referencemanytomanyfieldbase',
                         'referenceonefieldbase',
                         'usefieldvalue',
                     ],
@@ -170,10 +176,11 @@ export default defineConfig({
                     label: 'Inputs',
                     items: [
                         'inputs',
-                        'useinput',
+                        'referencemanyinputbase',
+                        'referencemanytomanyinputbase',
+                        'referenceoneinputbase',
                         'usechoicescontext',
-                        'referenceinputbase',
-                        'referencearrayinputbase',
+                        'useinput',
                     ],
                 },
                 {

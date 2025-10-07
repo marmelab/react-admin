@@ -13,7 +13,7 @@ import {
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import { Route, Routes } from 'react-router-dom';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { AdminContext } from '../AdminContext';
 import {
@@ -27,12 +27,15 @@ import {
     Themed,
     WithRenderProp,
     Offline,
+    FetchError,
 } from './Show.stories';
 import { Show } from './Show';
 import { Alert } from '@mui/material';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('<Show />', () => {
     beforeEach(async () => {
+        onlineManager.setOnline(true);
         // Why is this required? No idea, but without is the tests are flaky
         await new Promise(res => setTimeout(res, 100));
     });
@@ -252,5 +255,18 @@ describe('<Show />', () => {
         expect(screen.queryByText('You are offline!')).toBeNull();
         rerender(<Offline isOnline={false} offline={<CustomOffline />} />);
         await screen.findByText('You are offline, the data may be outdated');
+    });
+    it('should render the custom error component when an error happens', async () => {
+        const CustomError = () => {
+            return <Alert severity="error">Something went wrong!</Alert>;
+        };
+        render(<FetchError error={<CustomError />} />);
+        fireEvent.click(await screen.findByText('Reject loading'));
+        await screen.findByText('Something went wrong!');
+    });
+    it('should redirect to list by default when an error happens', async () => {
+        render(<FetchError />);
+        fireEvent.click(await screen.findByText('Reject loading'));
+        await screen.findByText('List view');
     });
 });

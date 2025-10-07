@@ -38,19 +38,37 @@ export const BookEdit = () => (
 
 ## Props
 
-| Prop             | Required | Type              | Default | Description
-|------------------|----------|-------------------|---------|--------------------------------------------------------
-| `children`       | Optional | `ReactNode`       |         | The components rendering the record fields
-| `render`         | Optional | `(props: EditControllerResult<RecordType>) => ReactNode`       |         | Alternative to children, a function that takes the EditController context and renders the form
-| `disable Authentication` | Optional | `boolean` |         | Set to `true` to disable the authentication check
-| `id`             | Optional | `string`          |         | The record identifier. If not provided, it will be deduced from the URL
-| `loading`        | Optional | `ReactNode`       |         | The component to render while checking for authentication and permissions
-| `mutationMode`   | Optional | `undoable`       |         | The mutation mode
-| `mutationOptions` | Optional | `ReactNode`       |         | The options to pass to the `useUpdate` hook
-| `offline`        | Optional | `ReactNode`       |         | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`   | Optional | `object`          |         | The options to pass to the `useGetOne` hook
-| `transform`       | Optional | `string`          |         | Transform the form data before calling `dataProvider.update()`
+| Prop                     | Required | Type                                                     | Default  | Description
+|--------------------------|----------|----------------------------------------------------------|----------|--------------------------------------------------------
+| `authLoading`            | Optional | `ReactNode`                                              |          | The component to render while checking for authentication and permissions
+| `children`               | Optional | `ReactNode`                                              |          | The components rendering the record fields
+| `render`                 | Optional | `(props: EditControllerResult<RecordType>) => ReactNode` |          | Alternative to children, a function that takes the EditController context and renders the form
+| `disable Authentication` | Optional | `boolean`                                                |          | Set to `true` to disable the authentication check
+| `error`                  | Optional | `ReactNode`                                              |          | The component to render when failing to load the record
+| `id`                     | Optional | `string`                                                 |          | The record identifier. If not provided, it will be deduced from the URL
+| `loading`                | Optional | `ReactNode`                                              |          | The component to render while loading the record to edit
+| `mutationMode`           | Optional | `undoable`                                               |          | The mutation mode
+| `mutationOptions`        | Optional | `ReactNode`                                              |          | The options to pass to the `useUpdate` hook
+| `offline`                | Optional | `ReactNode`                                              |          | The component to render when there is no connectivity and the record isn't in the cache
+| `queryOptions`           | Optional | `object`                                                 |          | The options to pass to the `useGetOne` hook
+| `redirectOnError`        | Optional | `'list' \| false \| function`                            | `'list'` | The page to redirect to when an error occurs
+| `transform`              | Optional | `string`                                                 |          | Transform the form data before calling `dataProvider.update()`
 
+## `authLoading`
+
+By default, `<EditBase>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { EditBase, Form } from 'ra-core';
+
+export const PostEdit = () => (
+    <EditBase authLoading={<p>Checking for permissions...</p>}>
+        <Form>
+            {/* form content */}
+        </Form>
+    </EditBase>
+);
+```
 
 ## `children`
 
@@ -99,6 +117,20 @@ const PostEdit = () => (
 );
 ```
 
+## `error`
+
+By default, `<EditBase>` redirects to the list when an error happens while loading the record to edit. You can render an error component via the `error` prop:
+
+```jsx
+import { EditBase } from 'ra-core';
+
+export const PostEdit = () => (
+    <EditBase error={<p>Something went wrong while loading your post!</p>}>
+        ...
+    </EditBase>
+);
+```
+
 ## `id`
 
 By default, `<EditBase>` deduces the identifier of the record to show from the URL path. So under the `/posts/123/show` path, the `id` prop will be `123`. You may want to force a different identifier. In this case, pass a custom `id` prop.
@@ -119,19 +151,18 @@ export const PostEdit = () => (
 
 ## `loading`
 
-By default, `<EditBase>` renders nothing while checking for authentication and permissions. You can provide your own component via the `loading` prop:
+By default, `<EditBase>` renders the children while loading the record to edit. You can display a component during this time via the `loading` prop:
 
 ```jsx
-import { EditBase, Form } from 'ra-core';
+import { EditBase } from 'ra-core';
 
 export const PostEdit = () => (
-    <EditBase loading={<p>Checking for permissions...</p>}>
-        <Form>
-            {/* form content */}
-        </Form>
+    <EditBase loading={<p>Loading the post...</p>}>
+        ...
     </EditBase>
 );
 ```
+
 
 ## `mutationMode`
 
@@ -372,6 +403,24 @@ The default `onError` function is:
     redirect('list', resource);
     refresh();
 }
+```
+
+## `redirectOnError`
+
+By default, `<EditBase>` redirects to the list when an error happens while loading the record to edit. You can change the default redirection by setting the `redirectOnError` prop:
+
+- `'list'`: redirect to the List view (the default)
+- `false`: do not redirect
+- A function `(resource, id) => string` to redirect to different targets depending on the record
+
+```jsx
+import { EditBase } from 'ra-core';
+
+export const PostEdit = () => (
+    <EditBase redirectOnError={false}>
+        ...
+    </EditBase>
+);
 ```
 
 ## `render`

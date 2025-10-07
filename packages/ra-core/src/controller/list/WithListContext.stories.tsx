@@ -114,7 +114,10 @@ const fruitsData = fruitscsv.split('\n').map((line, id) => {
     };
 });
 
-const dataProvider = fakerestDataProvider({ fruits: fruitsData }, true);
+const dataProvider = fakerestDataProvider(
+    { fruits: fruitsData },
+    process.env.NODE_ENV !== 'test'
+);
 
 type Fruit = {
     id: number;
@@ -218,6 +221,137 @@ export const Chart = () => (
         <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
             <WithListContext<Fruit>
                 render={({ data }) => <LineChart data={data} />}
+            />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+const emptyDataProvider = fakerestDataProvider(
+    { fruits: [] },
+    process.env.NODE_ENV !== 'test'
+);
+
+export const Empty = () => (
+    <CoreAdminContext dataProvider={emptyDataProvider}>
+        <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
+            <WithListContext<Fruit>
+                empty={<div>No fruits found</div>}
+                render={({ isPending, data, total }) =>
+                    isPending ? (
+                        <>Loading...</>
+                    ) : (
+                        <table style={{ borderSpacing: '30px 5px' }}>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Apples</th>
+                                    <th>Blueberries</th>
+                                    <th>Carrots</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {data.map(fruit => (
+                                    <tr key={fruit.id}>
+                                        <td>{fruit.date}</td>
+                                        <td>{fruit.apples}</td>
+                                        <td>{fruit.blueberries}</td>
+                                        <td>{fruit.carrots}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colSpan={4}>Total: {total}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    )
+                }
+            />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+const foreverLoadingDataProvider = {
+    ...dataProvider,
+    getList: _resource => new Promise(() => {}),
+} as any;
+
+export const Loading = () => (
+    <CoreAdminContext dataProvider={foreverLoadingDataProvider}>
+        <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
+            <WithListContext<Fruit>
+                loading={<>Loading...</>}
+                render={({ data, total }) => (
+                    <table style={{ borderSpacing: '30px 5px' }}>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Apples</th>
+                                <th>Blueberries</th>
+                                <th>Carrots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map(fruit => (
+                                <tr key={fruit.id}>
+                                    <td>{fruit.date}</td>
+                                    <td>{fruit.apples}</td>
+                                    <td>{fruit.blueberries}</td>
+                                    <td>{fruit.carrots}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={4}>Total: {total}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                )}
+            />
+        </ListBase>
+    </CoreAdminContext>
+);
+
+const erroredDataProvider = {
+    ...dataProvider,
+    getList: _resource => Promise.reject('Error'),
+} as any;
+
+export const Error = () => (
+    <CoreAdminContext dataProvider={erroredDataProvider}>
+        <ListBase resource="fruits" disableSyncWithLocation perPage={100}>
+            <WithListContext<Fruit>
+                loading={<>Loading...</>}
+                error={<p>Error loading data</p>}
+                render={({ data, total }) => (
+                    <table style={{ borderSpacing: '30px 5px' }}>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Apples</th>
+                                <th>Blueberries</th>
+                                <th>Carrots</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {data.map(fruit => (
+                                <tr key={fruit.id}>
+                                    <td>{fruit.date}</td>
+                                    <td>{fruit.apples}</td>
+                                    <td>{fruit.blueberries}</td>
+                                    <td>{fruit.carrots}</td>
+                                </tr>
+                            ))}
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colSpan={4}>Total: {total}</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                )}
             />
         </ListBase>
     </CoreAdminContext>

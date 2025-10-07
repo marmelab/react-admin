@@ -12,8 +12,12 @@ import {
     WithRenderProp,
     Offline,
 } from './ReferenceOneField.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ReferenceOneField', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should render the recordRepresentation of the related record', async () => {
         render(<RecordRepresentation />);
         await screen.findByText('Genre: novel, ISBN: 9780393966473');

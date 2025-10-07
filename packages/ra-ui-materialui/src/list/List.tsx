@@ -67,7 +67,8 @@ export const List = <RecordType extends RaRecord = any>(
         exporter,
         filter = defaultFilter,
         filterDefaultValues,
-        loading = defaultLoading,
+        authLoading = defaultAuthLoading,
+        loading,
         perPage = 10,
         queryOptions,
         resource,
@@ -94,6 +95,7 @@ export const List = <RecordType extends RaRecord = any>(
             exporter={exporter}
             filter={filter}
             filterDefaultValues={filterDefaultValues}
+            authLoading={authLoading}
             loading={loading}
             perPage={perPage}
             queryOptions={queryOptions}
@@ -113,6 +115,6 @@ export interface ListProps<RecordType extends RaRecord = any>
         ListViewProps {}
 
 const defaultFilter = {};
-const defaultLoading = <Loading />;
+const defaultAuthLoading = <Loading />;
 
 const PREFIX = 'RaList'; // Types declared in ListView.

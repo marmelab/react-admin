@@ -73,7 +73,9 @@ export const Show = <RecordType extends RaRecord = any>(
         resource,
         queryOptions,
         disableAuthentication,
-        loading = defaultLoading,
+        authLoading = defaultAuthLoading,
+        loading,
+        error,
         ...rest
     } = props;
 
@@ -89,11 +91,14 @@ export const Show = <RecordType extends RaRecord = any>(
             disableAuthentication={disableAuthentication}
             queryOptions={queryOptions}
             resource={resource}
+            authLoading={authLoading}
             loading={loading}
+            // Disable redirect on error as it is handled by ShowView to display the error in the ShowView container
+            redirectOnError={error ? false : undefined}
             // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
             offline={false}
         >
-            <ShowView {...rest} />
+            <ShowView error={error} {...rest} />
         </ShowBase>
     );
 };
@@ -102,6 +107,6 @@ export interface ShowProps<RecordType extends RaRecord = any>
     extends ShowBaseProps<RecordType>,
         Omit<ShowViewProps, 'children' | 'render'> {}
 
-const defaultLoading = <Loading />;
+const defaultAuthLoading = <Loading />;
 
 const PREFIX = 'RaShow'; // Types declared in ShowView.

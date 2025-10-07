@@ -23,6 +23,7 @@ const data = {
             tags_ids: [1],
             last_update: new Date('2023-10-01').toISOString(),
             email: 'office.jeans@myshop.com',
+            sizes: ['S', 'M', 'L', 'XL'],
         },
         {
             id: 2,
@@ -32,6 +33,7 @@ const data = {
             tags_ids: [2, 3],
             last_update: new Date('2023-11-01').toISOString(),
             email: 'black.elegance.jeans@myshop.com',
+            sizes: ['S', 'M', 'L'],
         },
         {
             id: 3,
@@ -41,6 +43,7 @@ const data = {
             tags_ids: [2, 4],
             last_update: new Date('2023-12-01').toISOString(),
             email: 'slim.fit.jeans@myshop.com',
+            sizes: ['XS', 'S', 'M'],
         },
         {
             id: 4,
@@ -50,6 +53,7 @@ const data = {
             tags_ids: [1, 4, 3],
             last_update: new Date('2023-10-15').toISOString(),
             email: 'basic.t.shirt@myshop.com',
+            sizes: ['M', 'L', 'XL', 'XXL'],
         },
         {
             id: 5,
@@ -59,6 +63,7 @@ const data = {
             tags_ids: [1, 4, 3],
             last_update: new Date('2023-10-15').toISOString(),
             email: 'basic.cap@myshop.com',
+            sizes: ['One Size'],
         },
     ],
     categories: [

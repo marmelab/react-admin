@@ -70,7 +70,8 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
         exporter,
         filter = defaultFilter,
         filterDefaultValues,
-        loading = defaultLoading,
+        authLoading = defaultAuthLoading,
+        loading,
         pagination = defaultPagination,
         perPage = 10,
         queryOptions,
@@ -97,6 +98,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
             exporter={exporter}
             filter={filter}
             filterDefaultValues={filterDefaultValues}
+            authLoading={authLoading}
             loading={loading}
             perPage={perPage}
             queryOptions={queryOptions}
@@ -113,7 +115,7 @@ export const InfiniteList = <RecordType extends RaRecord = any>(
 
 const defaultPagination = <InfinitePagination />;
 const defaultFilter = {};
-const defaultLoading = <Loading />;
+const defaultAuthLoading = <Loading />;
 
 export interface InfiniteListProps<RecordType extends RaRecord = any>
     extends Omit<InfiniteListBaseProps<RecordType>, 'children' | 'render'>,

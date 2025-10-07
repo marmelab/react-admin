@@ -2,8 +2,12 @@ import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from 'ra-core';
 import { Basic, Offline, WithError } from './ReferenceArrayInputBase.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('<ReferenceArrayInputBase>', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     afterEach(async () => {
         // wait for the getManyAggregate batch to resolve
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));

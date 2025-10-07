@@ -1,5 +1,38 @@
 # Changelog
 
+## 5.12.0
+
+* Add `error`, `loading`, `empty` and `offline` props to `<ListBase>`, `<WithListContext>`, `<EditBase>`, and `<ShowBase>` to set fallback components for non-success states.  ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<RecordsIterator>` for easy rendering of lists of records ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<TextArrayField>` to render arrays of strings ([#10939](https://github.com/marmelab/react-admin/pull/10939)) ([slax57](https://github.com/slax57))
+* Add `useUpdateController` to make the logic portable ([#10924](https://github.com/marmelab/react-admin/pull/10924)) ([djhi](https://github.com/djhi))
+* Add `useBulkUpdateController` to make the logic portable ([#10925](https://github.com/marmelab/react-admin/pull/10925)) ([djhi](https://github.com/djhi))
+* Add `useBulkDeleteController` to make the logic portable ([#10923](https://github.com/marmelab/react-admin/pull/10923)) ([djhi](https://github.com/djhi))
+* Add `<ListBase emptyWhileLoading>` option ([#10917](https://github.com/marmelab/react-admin/pull/10917)) ([djhi](https://github.com/djhi))
+* Add `useMutationWithMutationMode` hook ([#10910](https://github.com/marmelab/react-admin/pull/10910)) ([djhi](https://github.com/djhi))
+* Update Guessers to use `<TextArrayInput>` / `<TextArrayField>` for scalar arrays ([#10939](https://github.com/marmelab/react-admin/pull/10939)) ([slax57](https://github.com/slax57))
+* Fix `useMutationWithMutationMode` in `optimistic` and `undoable` mode may pass invalid parameters to the mutation ([#10977](https://github.com/marmelab/react-admin/pull/10977)) ([djhi](https://github.com/djhi))
+* Fix update removing `meta` and `pageInfo` properties from `getManyReference` result ([#10975](https://github.com/marmelab/react-admin/pull/10975)) ([jvasseur](https://github.com/jvasseur))
+* [Doc] Add missing props to `<ReferenceArrayField>` and `<ReferenceManyField>`, and base components ([#10978](https://github.com/marmelab/react-admin/pull/10978)) ([slax57](https://github.com/slax57))
+* [Doc] Add Soft Delete Documentation ([#10974](https://github.com/marmelab/react-admin/pull/10974)) ([djhi](https://github.com/djhi))
+
+## 5.11.4
+
+* Fix `useGetManyAggregate` merge queries with different `meta` ([#10969](https://github.com/marmelab/react-admin/pull/10969)) ([djhi](https://github.com/djhi))
+* Fix `useDeleteController` should get the record from closest `RecordContext` ([#10967](https://github.com/marmelab/react-admin/pull/10967)) ([djhi](https://github.com/djhi))
+* Fix incompatibility with latest `@tanstack/react-query` ([#10964](https://github.com/marmelab/react-admin/pull/10964)) ([djhi](https://github.com/djhi))
+* Fix `<Toolbar>` design ([#10960](https://github.com/marmelab/react-admin/pull/10960)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceInput>` don't return currently selected choice when `enableGetChoices` returns `false` ([#10958](https://github.com/marmelab/react-admin/pull/10958)) ([djhi](https://github.com/djhi))
+* Fix `<FilterLiveForm>` may override latest users inputs when they type at the same pace than the debounce delay ([#10952](https://github.com/marmelab/react-admin/pull/10952)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<ReferenceManyInput>` documentation to mention `rankSource` ([#10970](https://github.com/marmelab/react-admin/pull/10970)) ([djhi](https://github.com/djhi))
+* [Doc] Add logo to `ra-core` documentation ([#10968](https://github.com/marmelab/react-admin/pull/10968)) ([djhi](https://github.com/djhi))
+* [Doc] Change `ra-core` documentation styles ([#10966](https://github.com/marmelab/react-admin/pull/10966)) ([djhi](https://github.com/djhi))
+* [Doc] Improve sidebar scrolling on `ra-core` documentation ([#10963](https://github.com/marmelab/react-admin/pull/10963)) ([slax57](https://github.com/slax57))
+* [Doc] Fix some incorrect video types ([#10962](https://github.com/marmelab/react-admin/pull/10962)) ([slax57](https://github.com/slax57))
+* [Doc] Add missing props to `<ReferenceArrayFieldBase>` and `<ReferenceManyFieldBase>` documentation ([#10956](https://github.com/marmelab/react-admin/pull/10956)) ([slax57](https://github.com/slax57))
+* [Doc] Fix `<BulkActionsToolbar selectAllButton>` only accepts an element ([#10954](https://github.com/marmelab/react-admin/pull/10954)) ([slax57](https://github.com/slax57))
+* [Doc] Update `<Scheduler>` documentation ([#10950](https://github.com/marmelab/react-admin/pull/10950)) ([djhi](https://github.com/djhi))
+
 ## 5.11.3
 
 * Fix `useLogout` does not redirect to the `checkAuth` call `redirectTo` property ([#10949](https://github.com/marmelab/react-admin/pull/10949)) ([djhi](https://github.com/djhi))

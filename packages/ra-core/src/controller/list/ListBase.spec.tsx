@@ -3,14 +3,22 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     AccessControl,
     DefaultTitle,
+    EmptyWhileLoading,
+    EmptyWhileLoadingRender,
+    FetchError,
+    Loading,
     NoAuthProvider,
     Offline,
     WithAuthProviderNoAccessControl,
     WithRenderProps,
 } from './ListBase.stories';
 import { testDataProvider } from '../../dataProvider';
+import { onlineManager } from '@tanstack/react-query';
 
 describe('ListBase', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should load data immediately if authProvider is not provided', async () => {
         const dataProvider = testDataProvider({
             // @ts-ignore
@@ -144,7 +152,7 @@ describe('ListBase', () => {
     it('should render the offline prop node when offline', async () => {
         const { rerender } = render(<Offline isOnline={false} />);
         await screen.findByText('You are offline, cannot load data');
-        rerender(<Offline isOnline={true} />);
+        rerender(<Offline isOnline />);
         await screen.findByText('War and Peace');
         expect(
             screen.queryByText('You are offline, cannot load data')
@@ -153,11 +161,49 @@ describe('ListBase', () => {
         await screen.findByText('You are offline, the data may be outdated');
         fireEvent.click(screen.getByText('next'));
         await screen.findByText('You are offline, cannot load data');
-        rerender(<Offline isOnline={true} />);
+        rerender(<Offline isOnline />);
         await screen.findByText('And Then There Were None');
         rerender(<Offline isOnline={false} />);
         fireEvent.click(screen.getByText('previous'));
         await screen.findByText('War and Peace');
         await screen.findByText('You are offline, the data may be outdated');
+    });
+    it('should render nothing while loading if emptyWhileLoading is set to true', async () => {
+        render(<EmptyWhileLoading />);
+        expect(screen.queryByText('Loading...')).toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('War and Peace');
+    });
+    it('should render nothing while loading if emptyWhileLoading is set to true and using the render prop', async () => {
+        render(<EmptyWhileLoadingRender />);
+        expect(screen.queryByText('Loading...')).toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('War and Peace');
+    });
+    it('should render loading component while loading', async () => {
+        render(<Loading />);
+        expect(screen.queryByText('Loading books...')).not.toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Loading books...')).toBeNull();
+        });
+        await screen.findByText('War and Peace');
+    });
+    it('should render error component on error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        render(<FetchError />);
+        expect(screen.queryByText('Cannot load books.')).toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Reject books loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Cannot load books.')).not.toBeNull();
+        });
+        expect(screen.queryByText('War and Peace')).toBeNull();
+
+        jest.spyOn(console, 'error').mockRestore();
     });
 });

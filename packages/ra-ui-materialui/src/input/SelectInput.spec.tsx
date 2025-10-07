@@ -929,6 +929,7 @@ describe('<SelectInput />', () => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     expect.objectContaining({ author: undefined }),
                     expect.anything(),
+                    expect.anything(),
                     expect.anything()
                 );
             });
@@ -947,7 +948,8 @@ describe('<SelectInput />', () => {
             expect(onSuccess).toHaveBeenCalledWith(
                 expect.objectContaining({ gender: null }),
                 expect.anything(),
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });

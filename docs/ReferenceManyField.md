@@ -95,7 +95,9 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and render elements      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
+| `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records     |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                          |
 | `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
@@ -223,6 +225,40 @@ Use `empty` to customize the text displayed when the related record is empty.
 </ReferenceManyField>
 ```
 
+## `error`
+
+By default, `<ReferenceManyField>` renders its children when an error occurs while fetching the related records. You can customize what is rendered by providing your own component via the `error` prop:
+
+```jsx
+import { ReferenceManyField, Show, SimpleShowLayout } from 'react-admin';
+
+export const AuthorShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                error={<p>Error loading books. Please try again.</p>}
+            >
+                ...
+            </ReferenceManyField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can also have `<ReferenceManyField>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    error={null}
+>
+    ...
+</ReferenceManyField>
+```
+
 ## `filter`: Permanent Filter
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
@@ -305,6 +341,41 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
     <DataTable.Col source="title" />
     <DataTable.Col source="published_at" field={DateField} />
   </DataTable>
+</ReferenceManyField>
+```
+
+## `loading`
+
+By default, `<ReferenceManyField>` renders its children while fetching the related records. You can customize what is rendered by providing your own component via the `loading` prop:
+
+```jsx
+import { ReferenceManyField, Show, SimpleShowLayout } from 'react-admin';
+import { CircularProgress } from '@mui/material';
+
+export const AuthorShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <ReferenceManyField
+                reference="books"
+                target="author_id"
+                loading={<CircularProgress />}
+            >
+                ...
+            </ReferenceManyField>
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can also have `<ReferenceManyField>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyField
+    reference="books"
+    target="author_id"
+    loading={null}
+>
+    ...
 </ReferenceManyField>
 ```
 

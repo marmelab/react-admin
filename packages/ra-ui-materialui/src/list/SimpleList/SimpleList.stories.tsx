@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
     ResourceContextProvider,
     ResourceProps,
+    ListBase,
     ResourceDefinitionContextProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
@@ -116,17 +117,18 @@ const data = {
     ],
 };
 
+const myDataProvider = fakeRestDataProvider(data);
+
 export const Basic = () => (
     <TestMemoryRouter>
-        <AdminContext>
-            <ResourceContextProvider value="books">
+        <AdminContext dataProvider={myDataProvider}>
+            <ListBase resource="books" perPage={15}>
                 <SimpleList
-                    data={data.books}
                     primaryText={record => record.title}
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                 />
-            </ResourceContextProvider>
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );
@@ -236,8 +238,6 @@ RowClick.argTypes = {
         control: { type: 'select' },
     },
 };
-
-const myDataProvider = fakeRestDataProvider(data);
 
 const Wrapper = ({
     children,
@@ -443,6 +443,7 @@ export const StandaloneEmpty = () => (
 export const Themed = () => (
     <TestMemoryRouter>
         <AdminContext
+            dataProvider={myDataProvider}
             theme={deepmerge(defaultLightTheme, {
                 components: {
                     RaSimpleList: {
@@ -463,15 +464,14 @@ export const Themed = () => (
                 },
             } as ThemeOptions)}
         >
-            <ResourceContextProvider value="books">
+            <ListBase resource="books" perPage={15}>
                 <SimpleList
                     data-testid={'themed-list'}
-                    data={data.books}
                     primaryText={record => record.title}
                     secondaryText={record => record.author}
                     tertiaryText={record => record.year}
                 />
-            </ResourceContextProvider>
+            </ListBase>
         </AdminContext>
     </TestMemoryRouter>
 );

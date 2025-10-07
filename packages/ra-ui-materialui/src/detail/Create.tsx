@@ -72,7 +72,8 @@ export const Create = <
         disableAuthentication,
         hasEdit,
         hasShow,
-        loading = defaultLoading,
+        loading,
+        authLoading = loading ?? defaultAuthLoading,
         ...rest
     } = props;
 
@@ -93,7 +94,7 @@ export const Create = <
             disableAuthentication={disableAuthentication}
             hasEdit={hasEdit}
             hasShow={hasShow}
-            loading={loading}
+            authLoading={authLoading}
         >
             <CreateView {...rest} />
         </CreateBase>
@@ -110,6 +111,6 @@ export interface CreateProps<
         >,
         CreateViewProps {}
 
-const defaultLoading = <Loading />;
+const defaultAuthLoading = <Loading />;
 
 const PREFIX = 'RaCreate'; // Types declared in CreateView.

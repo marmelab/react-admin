@@ -137,6 +137,7 @@ describe('<TextInput />', () => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: null },
                 expect.anything(),
+                expect.anything(),
                 expect.anything()
             );
         });
@@ -148,6 +149,7 @@ describe('<TextInput />', () => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: 'test' },
                 expect.anything(),
+                expect.anything(),
                 expect.anything()
             );
         });
@@ -158,6 +160,7 @@ describe('<TextInput />', () => {
         await waitFor(() => {
             expect(onSuccess).toHaveBeenCalledWith(
                 { id: 123, title: null },
+                expect.anything(),
                 expect.anything(),
                 expect.anything()
             );

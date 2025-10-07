@@ -40,17 +40,15 @@ A typical `post` record therefore looks like this:
 
 In that case, use `<ReferenceArrayFieldBase>` to display the post tag names as a list of chips, as follows:
 
-```jsx
-import { ListBase, ListIterator, ReferenceArrayFieldBase } from 'ra-core';
+```tsx
+import { ShowBase, ReferenceArrayFieldBase } from 'ra-core';
 
-export const PostList = () => (
-    <ListBase>
-        <ListIterator>
-            <ReferenceArrayFieldBase reference="tags" source="tag_ids">
-                <TagList />
-            </ReferenceArrayFieldBase>
-        </ListIterator>
-    </ListBase>
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase reference="tags" source="tag_ids">
+            <TagList />
+        </ReferenceArrayFieldBase>
+    </ShowBase>
 );
 
 const TagList = (props: { children: React.ReactNode }) => {
@@ -91,6 +89,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
 | `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                                             |
+| `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
@@ -263,6 +262,38 @@ You can also have `<ReferenceArrayFieldBase>` render nothing in that case by set
     source="tag_ids"
     reference="tags"
     loading={null}
+>
+    ...
+</ReferenceArrayFieldBase>
+```
+
+## `offline`
+
+Use `offline` to customize the text displayed when there are no related records because of lack of network connectivity.
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            offline={<p>Offline, could not load data</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceArrayFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayFieldBase
+    source="tag_ids"
+    reference="tags"
+    offline={null}
 >
     ...
 </ReferenceArrayFieldBase>

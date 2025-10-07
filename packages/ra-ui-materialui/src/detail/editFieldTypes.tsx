@@ -13,6 +13,7 @@ import {
     SelectInput,
     SimpleFormIterator,
     TextInput,
+    TextArrayInput,
 } from '../input';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
@@ -39,6 +40,11 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ArrayInput source="${props.source}"><SimpleFormIterator>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</SimpleFormIterator></ArrayInput>`,
+    },
+    scalar_array: {
+        component: TextArrayInput,
+        representation: (props: InputProps) =>
+            `<TextArrayInput source="${props.source}" />`,
     },
     boolean: {
         component: BooleanInput,

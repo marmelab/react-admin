@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
     useEditContext,
     IsOffline,
+    GetOneResult,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -21,9 +22,10 @@ import {
     Typography,
 } from '@mui/material';
 
+import { Layout } from '../layout';
 import { TextInput } from '../input';
 import { SimpleForm } from '../form/SimpleForm';
-import { ShowButton, SaveButton } from '../button';
+import { ShowButton, SaveButton, Button } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Edit, EditProps } from './Edit';
 import { deepmerge } from '@mui/utils';
@@ -441,11 +443,11 @@ export const Offline = ({
         onlineManager.setOnline(isOnline);
     }, [isOnline]);
     return (
-        <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <TestMemoryRouter initialEntries={['/books/1/edit']}>
             <Admin dataProvider={dataProvider}>
                 <Resource
                     name="books"
-                    show={<BookEditOffline offline={offline} />}
+                    edit={<BookEditOffline offline={offline} />}
                 />
             </Admin>
         </TestMemoryRouter>
@@ -454,7 +456,12 @@ export const Offline = ({
 
 const BookEditOffline = (props: EditProps) => {
     return (
-        <Edit {...props} redirect={false} mutationMode="pessimistic">
+        <Edit
+            {...props}
+            emptyWhileLoading
+            redirect={false}
+            mutationMode="pessimistic"
+        >
             <OfflineIndicator />
             <SimpleForm>
                 <TextInput source="title" />
@@ -509,6 +516,73 @@ Offline.argTypes = {
         mapping: {
             default: undefined,
             custom: <CustomOffline />,
+        },
+    },
+};
+
+const CustomError = () => {
+    return <Alert severity="error">Something went wrong!</Alert>;
+};
+
+export const FetchError = ({ error }: { error?: React.ReactNode }) => {
+    let rejectGetOne: (() => void) | null = null;
+    const errorDataProvider = {
+        ...dataProvider,
+        getOne: () => {
+            return new Promise<GetOneResult>((_, reject) => {
+                rejectGetOne = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/edit']}>
+            <Admin
+                dataProvider={errorDataProvider}
+                layout={({ children }) => (
+                    <Layout>
+                        <Button
+                            onClick={() => {
+                                rejectGetOne && rejectGetOne();
+                            }}
+                        >
+                            Reject loading
+                        </Button>
+                        {children}
+                    </Layout>
+                )}
+            >
+                <Resource
+                    name="books"
+                    list={<p>List view</p>}
+                    edit={() => (
+                        <Edit error={error}>
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <TextInput source="author" />
+                                <TextInput source="summary" />
+                                <TextInput source="year" />
+                            </SimpleForm>
+                        </Edit>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+FetchError.args = {
+    error: 'custom',
+};
+
+FetchError.argTypes = {
+    error: {
+        name: 'Error component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomError />,
         },
     },
 };

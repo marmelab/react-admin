@@ -31,10 +31,14 @@ import {
     WithPagination,
     WithRenderProp,
 } from './ReferenceArrayField.stories';
+import { onlineManager } from '@tanstack/react-query';
 
 const theme = createTheme({});
 
 describe('<ReferenceArrayField />', () => {
+    beforeEach(() => {
+        onlineManager.setOnline(true);
+    });
     it('should render a loading indicator when related records are not yet fetched and a second has passed', async () => {
         render(
             <ThemeProvider theme={theme}>

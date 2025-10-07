@@ -9,6 +9,7 @@ import {
     GetListParams,
     WithListContext,
     IsOffline,
+    GetListResult,
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import {
@@ -34,6 +35,7 @@ import { BulkActionsToolbar } from './BulkActionsToolbar';
 import { defaultLightTheme } from '../theme';
 import { onlineManager } from '@tanstack/react-query';
 import { deepmerge } from '@mui/utils';
+import { Layout } from '../layout';
 
 export default { title: 'ra-ui-materialui/list/List' };
 
@@ -1006,6 +1008,76 @@ Offline.argTypes = {
         mapping: {
             default: undefined,
             custom: <CustomOffline />,
+        },
+    },
+};
+
+export const FetchError = ({ error }: { error?: React.ReactNode }) => {
+    let rejectGetList: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getList: () => {
+            return new Promise<GetListResult>((_, reject) => {
+                rejectGetList = () => {
+                    reject(new Error('Expected error.'));
+                    rejectGetList = null;
+                };
+            });
+        },
+    };
+
+    return (
+        <TestMemoryRouter initialEntries={['/books']}>
+            <Admin
+                dataProvider={dataProvider}
+                layout={({ children }) => (
+                    <Layout>
+                        {rejectGetList && (
+                            <Button
+                                onClick={() => {
+                                    rejectGetList && rejectGetList();
+                                }}
+                            >
+                                Reject loading
+                            </Button>
+                        )}
+                        {children}
+                    </Layout>
+                )}
+            >
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List loading={<div>Loading...</div>} error={error}>
+                            <SimpleList
+                                primaryText="%{title} (%{year})"
+                                secondaryText="%{summary}"
+                                tertiaryText={record => record.year}
+                            />
+                        </List>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+const CustomError = () => {
+    return <Alert severity="error">Something went wrong!</Alert>;
+};
+
+FetchError.args = {
+    error: 'custom',
+};
+
+FetchError.argTypes = {
+    error: {
+        name: 'Error component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomError />,
         },
     },
 };

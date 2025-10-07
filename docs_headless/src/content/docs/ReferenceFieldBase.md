@@ -211,20 +211,20 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 ## Performance
 
-When used in a list, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
+When used in a [list context](./useListContext.md), `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'ra-core';
+import { ListBase, RecordsIterator, ReferenceFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
+        <RecordsIterator>
             <ReferenceFieldBase source="user_id" reference="users">
                 <AuthorView />
             </ReferenceFieldBase>
-        </ListIterator>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -260,19 +260,18 @@ When you know that a page will contain a `<ReferenceFieldBase>`, you can configu
 For example, the following code prefetches the authors referenced by the posts:
 
 ```jsx
-const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <ListIterator
-            render={({ title, author_id }) => (
-                <div>
-                    <h3>{title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
-            )}
-        />
-    </ListBase>
+const PostShow = () => (
+    <ShowBase
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={post => (
+            <div>
+                <h3>{post.title}</h3>
+                <ReferenceFieldBase source="author_id" reference="authors">
+                    <AuthorView />
+                </ReferenceFieldBase>
+            </div>
+        )}
+    />
 );
 ```
 

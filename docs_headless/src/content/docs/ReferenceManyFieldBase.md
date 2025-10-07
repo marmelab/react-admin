@@ -69,15 +69,15 @@ const BookList = ({
 You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the authors of the comments related to each post in a list by matching `post.id` to `comment.post_id`:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceManyFieldBase } from 'ra-core';
+import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
+        <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
                 <CustomAuthorView source="name"/>
             </ReferenceManyFieldBase>
-        </ListIterator>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -86,6 +86,8 @@ export const PostList = () => (
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
+| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 | `children`     | Optional\* | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
 | `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and returns an element      |
 | `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
@@ -96,11 +98,9 @@ export const PostList = () => (
 | `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
-| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
-| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 
 \* Either one of children or render is required.
 
@@ -108,20 +108,27 @@ export const PostList = () => (
 
 `<ReferenceManyFieldBase>` renders its children inside a [`ListContext`](./useListContext.md). This means you can use any list iterator component as child.
 
-For instance, use a `<ListIterator>` to render the related records:
+For instance, use a `<RecordsIterator>` to render the related records:
 
 ```jsx
-import { ShowBase, ReferenceManyFieldBase, ListIterator } from 'ra-core';
+import { ShowBase, ReferenceManyFieldBase, RecordsIterator } from 'ra-core';
 
 export const AuthorShow = () => (
     <ShowBase>
-        <ReferenceManyFieldBase label="Books" reference="books" target="author_id">
+        <ReferenceManyFieldBase
+            label="Books"
+            reference="books"
+            target="author_id"
+        >
             <ul>
-                <ListIterator render={(book) => (
-                    <li key={book.id}>
-                        <i>{book.title}</i>, published on{' '}{book.published_at}
-                    </li>
-                )}/>
+                <RecordsIterator
+                    render={book => (
+                        <li key={book.id}>
+                            <i>{book.title}</i>, published on
+                            {book.published_at}
+                        </li>
+                    )}
+                />
             </ul>
         </ReferenceManyFieldBase>
     </ShowBase>
@@ -393,7 +400,7 @@ In the example below, both lists use the same reference ('books'), but their sel
             meta: { foo: 'bar' },
         }}
     >
-        <ListIterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>
@@ -405,7 +412,7 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
         storeKey="custom"
     >
-        <Iterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>

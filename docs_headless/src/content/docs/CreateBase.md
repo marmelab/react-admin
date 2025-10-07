@@ -40,6 +40,7 @@ export const BookCreate = () => (
 
 You can customize the `<CreateBase>` component using the following props:
 
+* [`authLoading`](#authloading): the component to display while checking for authentication
 * [`children`](#children): the components that renders the form
 * [`render`](#render): alternative to children, a function that takes the `CreateController` context and renders the form
 * [`disableAuthentication`](#disableauthentication): disable the authentication check
@@ -49,6 +50,20 @@ You can customize the `<CreateBase>` component using the following props:
 * [`redirect`](#redirect): change the redirect location after successful creation
 * [`resource`](#resource): override the name of the resource to create
 * [`transform`](#transform): transform the form data before calling `dataProvider.create()`
+
+## `authLoading`
+
+By default, `<CreateBase>` renders the children while checking for authentication and permissions. You can display a component during this time via the `authLoading` prop:
+
+```jsx
+import { CreateBase } from 'ra-core';
+
+export const PostCreate = () => (
+    <CreateBase authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </CreateBase>
+);
+```
 
 ## `children`
 
