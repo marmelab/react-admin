@@ -176,6 +176,8 @@ export default defineConfig({
                     label: 'Inputs',
                     items: [
                         'inputs',
+                        'referenceinputbase',
+                        'referencearrayinputbase',
                         'referencemanyinputbase',
                         'referencemanytomanyinputbase',
                         'referenceoneinputbase',

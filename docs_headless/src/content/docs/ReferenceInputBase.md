@@ -87,7 +87,7 @@ dataProvider.getList('companies', {
 });
 ```
 
-`<ReferenceInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./usechoicescontext). It's up to the child components to render the selection interface.
+`<ReferenceInputBase>` handles the data fetching and provides the choices through a [`ChoicesContext`](./useChoicesContext.md). It's up to the child components to render the selection interface.
 
 You can tweak how `<ReferenceInputBase>` fetches the possible values using the `page`, `perPage`, `sort`, and `filter` props.
 
@@ -115,7 +115,7 @@ You can access the choices context using the `useChoicesContext` hook.
 import { ReferenceInputBase, useChoicesContext, useInput } from 'ra-core';
 
 export const CustomSelector = () => {
-    const { allChoices, isLoading, error, source } = useChoicesContext();
+    const { allChoices, isPending, error, source } = useChoicesContext();
     const { field, id } = useInput({ source });
 
     if (error) {
