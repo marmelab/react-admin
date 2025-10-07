@@ -242,7 +242,7 @@ const ProductEdit = () => (
 ## Limitations
 
 -   `<ReferenceManyInputBase>` cannot be used inside an `<ArrayInputBase>` or a `<ReferenceOneInputBase>`.
--   `<ReferenceManyInputBase>` cannot be used with `undoable` mutations in a `<Create>` view.
+-   `<ReferenceManyInputBase>` cannot be used with `undoable` mutations in a `<CreateBase>` view.
 -   `<ReferenceManyInputBase>` cannot have a `<ReferenceOneInputBase>` or a `<ReferenceManyToManyInputBase>` as one of its children.
 -   `<ReferenceManyInputBase>` does not support server side validation.
 
