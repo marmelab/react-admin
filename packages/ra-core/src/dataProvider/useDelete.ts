@@ -200,6 +200,7 @@ export const useDelete = <
                             newCollection.length < res.data.length;
                         return recordWasFound
                             ? {
+                                  ...res,
                                   data: newCollection,
                                   total: res.total! - 1,
                               }

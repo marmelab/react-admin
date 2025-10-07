@@ -55,10 +55,10 @@ export const useMutationWithMutationMode = <
         mode.current = mutationMode;
     }, [mutationMode]);
 
+    // This ref won't be updated when params change in an effect, only when the mutate callback is called (See L247)
+    // This ensures that for undoable and optimistic mutations, the params are not changed by side effects (unselectAll for instance)
+    // _after_ the mutate function has been called, while keeping the ability to change declaration time params _until_ the mutation is called.
     const paramsRef = useRef<Partial<TVariables>>(params);
-    useEffect(() => {
-        paramsRef.current = params;
-    }, [params]);
 
     // Ref that stores the snapshot of the state before the mutation to allow reverting it
     const snapshot = useRef<Snapshot>([]);
@@ -96,7 +96,6 @@ export const useMutationWithMutationMode = <
         {
             mutationKey,
             mutationFn: async params => {
-                const callTimeParams = { ...paramsRef.current, ...params };
                 if (params == null) {
                     throw new Error(
                         'useMutationWithMutationMode mutation requires parameters'
@@ -105,7 +104,7 @@ export const useMutationWithMutationMode = <
 
                 return (
                     mutateWithMiddlewares
-                        .current(callTimeParams as TVariables)
+                        .current(params as TVariables)
                         // Middlewares expect the data property of the dataProvider response
                         .then(({ data }) => data)
                 );
@@ -210,12 +209,15 @@ export const useMutationWithMutationMode = <
             ...otherCallTimeOptions
         } = callTimeOptions;
 
+        // store the hook time params *at the moment of the call*
+        // because they may change afterwards, which would break the undoable mode
+        // as the previousData would be overwritten by the optimistic update
+        paramsRef.current = params;
+
         // Store the mutation with middlewares to avoid losing them if the calling component is unmounted
         if (getMutateWithMiddlewares) {
             mutateWithMiddlewares.current = getMutateWithMiddlewaresEvent(
                 (params: TVariables) => {
-                    // Store the final parameters which might have been changed by middlewares
-                    paramsRef.current = params;
                     return mutationFnEvent(params);
                 }
             );
@@ -229,11 +231,6 @@ export const useMutationWithMutationMode = <
         // so that they are called even when the calling component is unmounted
         callTimeOnError.current = onError;
         callTimeOnSettled.current = onSettled;
-
-        // store the hook time params *at the moment of the call*
-        // because they may change afterwards, which would break the undoable mode
-        // as the previousData would be overwritten by the optimistic update
-        paramsRef.current = params;
 
         if (mutationMode) {
             mode.current = mutationMode;
@@ -288,7 +285,7 @@ export const useMutationWithMutationMode = <
             if (onSuccess) {
                 onSuccess(
                     optimisticResult,
-                    callTimeParams,
+                    { ...paramsRef.current, ...callTimeParams },
                     {
                         snapshot: snapshot.current,
                     },
@@ -304,7 +301,7 @@ export const useMutationWithMutationMode = <
             ) {
                 mutationOptions.onSuccess(
                     optimisticResult,
-                    callTimeParams,
+                    { ...paramsRef.current, ...callTimeParams },
                     {
                         snapshot: snapshot.current,
                     },
@@ -319,16 +316,25 @@ export const useMutationWithMutationMode = <
 
         if (mode.current === 'optimistic') {
             // call the mutate method without success side effects
-            return mutation.mutate(callTimeParams);
+            return mutation.mutate({
+                ...paramsRef.current,
+                ...callTimeParams,
+            });
         } else {
             // Undoable mutation: add the mutation to the undoable queue.
             // The Notification component will dequeue it when the user confirms or cancels the message.
             addUndoableMutation(({ isUndo }) => {
                 if (isUndo) {
                     if (onUndo) {
-                        onUndoEvent(callTimeParams, {
-                            mutationMode: mode.current,
-                        });
+                        onUndoEvent(
+                            {
+                                ...paramsRef.current,
+                                ...callTimeParams,
+                            },
+                            {
+                                mutationMode: mode.current,
+                            }
+                        );
                     }
                     // rollback
                     snapshot.current.forEach(([key, value]) => {
@@ -336,7 +342,10 @@ export const useMutationWithMutationMode = <
                     });
                 } else {
                     // call the mutate method without success side effects
-                    mutation.mutate(callTimeParams);
+                    mutation.mutate({
+                        ...paramsRef.current,
+                        ...callTimeParams,
+                    });
                 }
             });
         }

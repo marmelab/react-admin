@@ -87,7 +87,10 @@ You can change how the list of related records is rendered by passing a custom c
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
 | `children`     | Optional&nbsp;* | `ReactNode`                                                                         | `<SingleFieldList>`              | One or several elements that render a list of records based on a `ListContext`                         |
 | `render`     | Optional&nbsp;* | `(listContext) => Element`                                                                         | `<SingleFieldList>`              | A function that takes a list context and render a list of records                         |
+| `empty`        | Optional | `ReactNode`                                                                       | -                                | The component to render when the related records list is empty                                         |
+| `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
+| `loading`      | Optional | `ReactNode`                                                                       | `<LinearProgress>`             | The component to render while fetching the related records                                             |
 | `offline`      | Optional | `ReactNode`                                                              | `<Offline variant="inline" />` | The component to render when there is no connectivity and the record isn't in the cache |
 | `pagination`   | Optional | `ReactNode`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
@@ -186,6 +189,66 @@ export const PostShow = () => (
 );
 ```
 
+## `empty`
+
+By default, `<ReferenceArrayField>` renders its children when the related records list is empty. You can customize what is rendered by providing your own component via the `empty` prop:
+
+```jsx
+import { ReferenceArrayField, Show, SimpleShowLayout } from 'react-admin';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <ReferenceArrayField
+                source="tag_ids"
+                reference="tags"
+                empty={<p>No tags found.</p>}
+            />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can also have `<ReferenceArrayField>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayField
+    source="tag_ids"
+    reference="tags"
+    empty={null}
+/>
+```
+
+## `error`
+
+By default, `<ReferenceArrayField>` renders its children when an error occurs while fetching the related records. You can customize what is rendered by providing your own component via the `error` prop:
+
+```jsx
+import { ReferenceArrayField, Show, SimpleShowLayout } from 'react-admin';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <ReferenceArrayField
+                source="tag_ids"
+                reference="tags"
+                error={<p>Error loading tags. Please try again.</p>}
+            />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can also have `<ReferenceArrayField>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayField
+    source="tag_ids"
+    reference="tags"
+    error={null}
+/>
+```
+
 ## `filter`
 
 `<ReferenceArrayField>` fetches all the related records, and displays them all, too. You can use the `filter` prop to filter the list of related records to display (this works by filtering the records client-side, after the fetch).
@@ -226,6 +289,37 @@ React-admin uses [the i18n system](./Translation.md) to translate the label, so 
 
 ```jsx
 <ReferenceArrayField label="resource.posts.fields.tags" source="tag_ids" reference="tags" />
+```
+
+## `loading`
+
+By default, `<ReferenceArrayField>` renders a `<LinearProgress>` component while fetching the related records. You can customize what is rendered by providing your own component via the `loading` prop:
+
+```jsx
+import { ReferenceArrayField, Show, SimpleShowLayout } from 'react-admin';
+import { CircularProgress } from '@mui/material';
+
+export const PostShow = () => (
+    <Show>
+        <SimpleShowLayout>
+            <ReferenceArrayField
+                source="tag_ids"
+                reference="tags"
+                loading={<CircularProgress />}
+            />
+        </SimpleShowLayout>
+    </Show>
+);
+```
+
+You can also have `<ReferenceArrayField>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayField
+    source="tag_ids"
+    reference="tags"
+    loading={null}
+/>
 ```
 
 ## `offline`

@@ -80,3 +80,21 @@ useDeleteMany<Product, Error>(undefined, undefined, {
     },
 })
 ```
+
+## Soft Delete
+
+Many applications require a "soft delete" feature, where records are not permanently removed from the database but are instead marked as deleted. This allows for easy recovery of deleted records and helps maintain data integrity.
+
+`useSoftDeleteMany`, part of [the `ra-soft-delete` Enterprise Edition module](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete), works similarly to `useDeleteMany`, but it calls `dataProvider.softDeleteMany()` instead of `dataProvider.deleteMany()`. 
+
+```tsx
+const [softDeleteMany, { data, isPending, error }] = useSoftDeleteMany(
+    resource,
+    { ids, authorId, meta },
+    options,
+);
+```
+
+The `authorId` parameter is optional, and is populated automatically if you have an `authProvider` with a `getIdentity` method.
+
+Check the [Soft Delete documentation](./SoftDeleteDataProvider.md) for more information.
