@@ -160,6 +160,10 @@ export interface ArrayInputProps
             | 'onChange'
         > {
     className?: string;
+    loading?: React.ReactNode;
+    isFetching?: boolean;
+    isLoading?: boolean;
+    isPending?: boolean;
 }
 
 const PREFIX = 'RaArrayInput';

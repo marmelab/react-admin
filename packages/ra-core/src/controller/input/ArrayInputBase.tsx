@@ -58,8 +58,6 @@ export const ArrayInputBase = (props: ArrayInputBaseProps) => {
     const {
         children,
         defaultValue = [],
-        isPending,
-        loading,
         resource: resourceFromProps,
         source: arraySource,
         validate,
@@ -153,10 +151,6 @@ export const ArrayInputBase = (props: ArrayInputBaseProps) => {
         [parentSourceContext, arraySource]
     );
 
-    if (isPending && loading !== undefined && loading !== false) {
-        return loading;
-    }
-
     return (
         <ArrayInputContext.Provider value={fieldProps}>
             <OptionalResourceContextProvider value={resourceFromProps}>
@@ -178,8 +172,4 @@ export const getArrayInputError = error => {
 export interface ArrayInputBaseProps
     extends Omit<InputProps, 'disabled' | 'readOnly'> {
     children: ReactNode;
-    loading?: ReactNode;
-    isFetching?: boolean;
-    isLoading?: boolean;
-    isPending?: boolean;
 }
