@@ -94,7 +94,7 @@ By default, `<DeletedRecordsList>` will show the deleted records data on click o
 If you wish to customize the content in this show dialog, you can use the `detailComponents` prop to customize the dialog content for every resource in the list.
 The content is the same as a classic `<Show>` page.
 
-However, you **must** use [`<ShowDeleted>`](#showdeleted) component instead of `<Show>` to write a custom view for a deleted record. This is because `<Show>` gets a fresh version of the record from the data provider to display it, which is not possible in the deleted records list as the record is now deleted.
+However, you **must** use [`<ShowDeleted>`](./ShowDeleted.md) component instead of `<Show>` to write a custom view for a deleted record. This is because `<Show>` gets a fresh version of the record from the data provider to display it, which is not possible in the deleted records list as the record is now deleted.
 
 {% raw %}
 ```tsx
@@ -358,7 +358,7 @@ const Admin = () => {
 ```
 {% endraw %}
 
-**Tip:** The `storeKey` is actually passed to the underlying `useDeletedRecordsListController` hook, which you can use directly for more complex scenarios. See the [`useDeletedRecordsListController` doc](#usedeletedrecordslistcontroller) for more info.
+**Tip:** The `storeKey` is actually passed to the underlying `useDeletedRecordsListController` hook, which you can use directly for more complex scenarios. See the [`useDeletedRecordsListController` doc](./useDeletedRecordsListController.md) for more info.
 
 **Note:** *Selection state* will remain linked to a global key regardless of the specified `storeKey` string. This is a design choice because if row selection is not stored globally, then when a user permanently deletes or restores a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useDeletedRecordsListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own delete buttons to manually unselect rows when deleting or restoring records. You can still opt out of all store interactions including selection if you set it to `false`.
 
