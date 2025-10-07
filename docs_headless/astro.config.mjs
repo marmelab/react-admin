@@ -167,13 +167,20 @@ export default defineConfig({
                         'referencefieldbase',
                         'referencemanycountbase',
                         'referencemanyfieldbase',
+                        'referencemanytomanyfieldbase',
                         'referenceonefieldbase',
                         'usefieldvalue',
                     ],
                 },
                 {
                     label: 'Inputs',
-                    items: ['inputs', 'useinput'],
+                    items: [
+                        'inputs',
+                        'referencemanyinputbase',
+                        'referencemanytomanyinputbase',
+                        'referenceoneinputbase',
+                        'useinput',
+                    ],
                 },
                 {
                     label: 'Preferences',
