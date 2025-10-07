@@ -171,7 +171,7 @@ export default defineConfig({
                     items: [
                         'inputs',
                         'useinput',
-                        'useChoicesContext',
+                        'usechoicescontext',
                         'referenceinputbase',
                         'referencearrayinputbase',
                     ],
