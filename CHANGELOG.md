@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.12.0
+
+* Introduce `<TextArrayField>` and use `<TextArrayInput>` / `<TextArrayField>` in guessers for scalar arrays ([#10939](https://github.com/marmelab/react-admin/pull/10939)) ([slax57](https://github.com/slax57))
+* Introduce `useBulkUpdateController` ([#10925](https://github.com/marmelab/react-admin/pull/10925)) ([djhi](https://github.com/djhi))
+* Introduce `useUpdateController` ([#10924](https://github.com/marmelab/react-admin/pull/10924)) ([djhi](https://github.com/djhi))
+* Introduce `useBulkDeleteController` ([#10923](https://github.com/marmelab/react-admin/pull/10923)) ([djhi](https://github.com/djhi))
+* Introduce `emptyWhileLoading` on `<ListBase>` ([#10917](https://github.com/marmelab/react-admin/pull/10917)) ([djhi](https://github.com/djhi))
+* Introduce `useMutationWithMutationMode` hook ([#10910](https://github.com/marmelab/react-admin/pull/10910)) ([djhi](https://github.com/djhi))
+* Introduce `<RecordsIterator>` ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `useMutationWithMutationMode` in `optimistic` and `undoable` mode may pass invalid parameters to the mutation ([#10977](https://github.com/marmelab/react-admin/pull/10977)) ([djhi](https://github.com/djhi))
+* Fix update removing `meta` and `pageInfo` properties from `getManyReference` result ([#10975](https://github.com/marmelab/react-admin/pull/10975)) ([jvasseur](https://github.com/jvasseur))
+* [Doc] Add missing props to `<ReferenceArrayField>` and `<ReferenceManyField>`, and base components ([#10978](https://github.com/marmelab/react-admin/pull/10978)) ([slax57](https://github.com/slax57))
+* [Doc] Add Soft Delete Documentation ([#10974](https://github.com/marmelab/react-admin/pull/10974)) ([djhi](https://github.com/djhi))
+
 ## 5.11.4
 
 * Fix `useGetManyAggregate` merge queries with different `meta` ([#10969](https://github.com/marmelab/react-admin/pull/10969)) ([djhi](https://github.com/djhi))
