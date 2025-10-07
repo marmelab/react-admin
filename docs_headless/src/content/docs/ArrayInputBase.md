@@ -77,7 +77,7 @@ If you are using an `<ArrayInputBase>` inside a form with global validation, you
 
 For instance, to display the following errors:
 
-![ArrayInput global validation](./img/ArrayInput-global-validation.png)
+![ArrayInput global validation](../../img/ArrayInput-global-validation.png)
 
 You need to return an errors object shaped like this:
 
