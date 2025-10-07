@@ -73,7 +73,7 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     });
 
     return (
-        <SimpleFormIteratorBase {...props} getItemDefaults={getItemDefaults}>
+        <SimpleFormIteratorBase getItemDefaults={getItemDefaults} {...props}>
             <Root
                 className={clsx(
                     className,
