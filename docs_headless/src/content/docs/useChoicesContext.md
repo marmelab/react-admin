@@ -2,7 +2,7 @@
 title: "useChoicesContext"
 ---
 
-The [`<ReferenceInputBase>`](./referenceinputbase) and [`<ReferenceArrayInputBase>`](./referencearrayinputbase) components create a `ChoicesContext` to store the choices, as well as filters, pagination, sort state, and callbacks to update them.
+The [`<ReferenceInputBase>`](./ReferenceInputBase.md) and [`<ReferenceArrayInputBase>`](./ReferenceArrayInputBase.md) components create a `ChoicesContext` to store the choices, as well as filters, pagination, sort state, and callbacks to update them.
 
 The `ChoicesContext` is very similar to the [`ListContext`](./uselistcontext) with the exception that it does not return a `data` property but 3 choices related properties:
 

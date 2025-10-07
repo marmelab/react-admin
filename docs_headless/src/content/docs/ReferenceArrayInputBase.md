@@ -39,7 +39,7 @@ const PostEdit = () => (
 );
 
 const TagSelector = () => {
-    const { choices, isLoading, error, source } = useChoicesContext();
+    const { allChoices, isLoading, error, source } = useChoicesContext();
     const { field, id } = useInput({ source });
     
     if (isLoading) return <div>Loading...</div>;
@@ -56,7 +56,7 @@ const TagSelector = () => {
     return (
         <fieldset>
             <legend>Select tags</legend>
-            {choices.map(choice => (
+            {allChoices.map(choice => (
                 <label key={choice.id} style={{ display: 'block' }}>
                     <input 
                         type="checkbox" 
@@ -125,7 +125,7 @@ You can access the choices context using the `useChoicesContext` hook.
 import { ReferenceArrayInputBase, useChoicesContext, useInput } from 'ra-core';
 
 export const CustomArraySelector = () => {
-    const { choices, isLoading, error, source } = useChoicesContext();
+    const { allChoices, isLoading, error, source } = useChoicesContext();
     const { field, id } = useInput({ source });
 
     if (isLoading) {
@@ -147,7 +147,7 @@ export const CustomArraySelector = () => {
     return (
         <fieldset>
             <legend>Select multiple tags</legend>
-            {choices.map(choice => (
+            {allChoices.map(choice => (
                 <label key={choice.id} style={{ display: 'block' }}>
                     <input 
                         type="checkbox" 
