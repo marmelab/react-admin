@@ -138,15 +138,15 @@ const SelectInput = (
 ) => {
     const { allChoices, error, isPending, source } = useChoicesContext(props);
     const { getChoiceValue, getChoiceText } = useChoices(props);
-    const { field } = useInput({ ...props, source });
+    const { field, id } = useInput({ ...props, source });
 
     if (error) {
         return <div style={{ color: 'red' }}>{error.message}</div>;
     }
     return (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
-            <label htmlFor={field.name}>{props.label || field.name}</label>
-            <select id={field.name} {...field}>
+            <label htmlFor={id}>{props.label || field.name}</label>
+            <select id={id} {...field}>
                 {isPending && <option value="">Loading...</option>}
                 {allChoices?.map(choice => (
                     <option
@@ -572,5 +572,65 @@ const RenderChildOnDemand = ({ children }) => {
             </button>
             {showChild && <div>{children}</div>}
         </>
+    );
+};
+
+export const FullHeadlessStory = () => {
+    return (
+        <TestMemoryRouter initialEntries={['/books/1']}>
+            <CoreAdmin dataProvider={dataProviderWithAuthors}>
+                <Resource
+                    name="books"
+                    edit={
+                        <EditBase
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <Form>
+                                <ReferenceInputBase
+                                    reference="authors"
+                                    source="author"
+                                >
+                                    <CustomSelector />
+                                </ReferenceInputBase>
+                                <button type="submit">Save</button>
+                            </Form>
+                        </EditBase>
+                    }
+                />
+            </CoreAdmin>
+        </TestMemoryRouter>
+    );
+};
+
+const CustomSelector = (
+    props: Omit<InputProps, 'source'> &
+        Partial<Pick<InputProps, 'source'>> &
+        ChoicesProps & { source?: string }
+) => {
+    const { allChoices, isPending, error, source } = useChoicesContext(props);
+    const { field, id } = useInput({ ...props, source });
+
+    if (error) {
+        return <div className="error">{error.message}</div>;
+    }
+
+    return (
+        <div>
+            <label htmlFor={id}>Author</label>
+            <select id={id} {...field}>
+                {isPending && <option value="">Loading...</option>}
+                <option value="">Select an author</option>
+                {allChoices.map(choice => (
+                    <option key={choice.id} value={choice.id}>
+                        {choice.first_name} {choice.last_name}
+                    </option>
+                ))}
+            </select>
+        </div>
     );
 };

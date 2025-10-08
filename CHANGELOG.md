@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.12.0
+
+* Add `error`, `loading`, `empty` and `offline` props to `<ListBase>`, `<WithListContext>`, `<EditBase>`, and `<ShowBase>` to set fallback components for non-success states.  ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<RecordsIterator>` for easy rendering of lists of records ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Add `<TextArrayField>` to render arrays of strings ([#10939](https://github.com/marmelab/react-admin/pull/10939)) ([slax57](https://github.com/slax57))
+* Add `useUpdateController` to make the logic portable ([#10924](https://github.com/marmelab/react-admin/pull/10924)) ([djhi](https://github.com/djhi))
+* Add `useBulkUpdateController` to make the logic portable ([#10925](https://github.com/marmelab/react-admin/pull/10925)) ([djhi](https://github.com/djhi))
+* Add `useBulkDeleteController` to make the logic portable ([#10923](https://github.com/marmelab/react-admin/pull/10923)) ([djhi](https://github.com/djhi))
+* Add `<ListBase emptyWhileLoading>` option ([#10917](https://github.com/marmelab/react-admin/pull/10917)) ([djhi](https://github.com/djhi))
+* Add `useMutationWithMutationMode` hook ([#10910](https://github.com/marmelab/react-admin/pull/10910)) ([djhi](https://github.com/djhi))
+* Update Guessers to use `<TextArrayInput>` / `<TextArrayField>` for scalar arrays ([#10939](https://github.com/marmelab/react-admin/pull/10939)) ([slax57](https://github.com/slax57))
+* Fix `useMutationWithMutationMode` in `optimistic` and `undoable` mode may pass invalid parameters to the mutation ([#10977](https://github.com/marmelab/react-admin/pull/10977)) ([djhi](https://github.com/djhi))
+* Fix update removing `meta` and `pageInfo` properties from `getManyReference` result ([#10975](https://github.com/marmelab/react-admin/pull/10975)) ([jvasseur](https://github.com/jvasseur))
+* [Doc] Add missing props to `<ReferenceArrayField>` and `<ReferenceManyField>`, and base components ([#10978](https://github.com/marmelab/react-admin/pull/10978)) ([slax57](https://github.com/slax57))
+* [Doc] Add Soft Delete Documentation ([#10974](https://github.com/marmelab/react-admin/pull/10974)) ([djhi](https://github.com/djhi))
+
 ## 5.11.4
 
 * Fix `useGetManyAggregate` merge queries with different `meta` ([#10969](https://github.com/marmelab/react-admin/pull/10969)) ([djhi](https://github.com/djhi))
