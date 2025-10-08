@@ -39,7 +39,7 @@ export const EditGuesser = <RecordType extends RaRecord = any>(
             transform={transform}
             disableAuthentication={disableAuthentication}
         >
-            <EditViewGuesser {...rest} />
+            <EditGuesserView {...rest} />
         </EditBase>
     );
 };
@@ -47,7 +47,7 @@ export const EditGuesser = <RecordType extends RaRecord = any>(
 export interface EditGuesserProps<RecordType extends RaRecord = any>
     extends Omit<EditProps<RecordType>, 'children'> {}
 
-const EditViewGuesser = <RecordType extends RaRecord = any>(
+export const EditGuesserView = <RecordType extends RaRecord = any>(
     props: EditGuesserProps<RecordType>
 ) => {
     const resource = useResourceContext(props);
