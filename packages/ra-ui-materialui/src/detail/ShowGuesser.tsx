@@ -20,11 +20,11 @@ export const ShowGuesser = ({
     ...rest
 }: Omit<ShowProps, 'children'> & { enableLog?: boolean }) => (
     <ShowBase id={id} resource={resource} queryOptions={queryOptions}>
-        <ShowViewGuesser {...rest} />
+        <ShowGuesserView {...rest} />
     </ShowBase>
 );
 
-const ShowViewGuesser = (
+export const ShowGuesserView = (
     props: Omit<ShowProps, 'children'> & { enableLog?: boolean }
 ) => {
     const resource = useResourceContext(props);

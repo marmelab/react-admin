@@ -77,12 +77,12 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             resource={resource}
             sort={sort}
         >
-            <ListViewGuesser {...rest} />
+            <ListGuesserView {...rest} />
         </ListBase>
     );
 };
 
-const ListViewGuesser = (
+export const ListGuesserView = (
     props: Omit<ListViewProps, 'children'> & { enableLog?: boolean }
 ) => {
     const { data } = useListContext();
