@@ -1,18 +1,23 @@
 ---
-layout: default
 title: "useSubscribeToRecordList"
 ---
 
-# `useSubscribeToRecordList`
-
-This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> hook is a  specialized version of [`useSubscribe`](./useSubscribe.md) that subscribes to events concerning a list of records.
+This specialized version of `useSubscribe` subscribes to events concerning a list of records.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/useSubscribeToRecordList.webm" type="video/webm"/>
-  <source src="./img/useSubscribeToRecordList.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/useSubscribeToRecordList.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Installation
+
+```bash
+npm install --save @react-admin/ra-core-ee
+# or
+yarn add @react-admin/ra-core-ee
+```
 
 ## Usage
 
@@ -20,10 +25,10 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 
 For instance, the following component displays notifications when a record is created, updated, or deleted by someone else:
 
-```jsx
+```tsx
 import React from 'react';
-import { useNotify, useListContext } from 'react-admin';
-import { useSubscribeToRecordList } from '@react-admin/ra-realtime';
+import { useNotify, useListContext } from 'ra-core';
+import { useSubscribeToRecordList } from '@react-admin/ra-core-ee';
 
 const ListWatcher = () => {
     const notify = useNotify();
@@ -55,15 +60,10 @@ const ListWatcher = () => {
 };
 
 const MovieList = () => (
-    <List>
-        <DataTable>
-            <DataTable.Col source="id" />
-            <DataTable.Col source="title" />
-            <DataTable.Col source="director" />
-            <DataTable.Col source="year" />
-        </DataTable>
+    <ListBase>
+        {/* The list view*/}
         <ListWatcher />
-    </List>
+    </ListBase>
 );
 ```
 
@@ -79,7 +79,7 @@ const MovieList = () => (
 
 Whenever an event is published on the `resource/[resource]` topic, the function passed as the first argument will be called with the event as a parameter.
 
-```jsx
+```tsx
 const notify = useNotify();
 const { refetch, data } = useListContext();
 useSubscribeToRecordList(event => {
@@ -109,7 +109,7 @@ useSubscribeToRecordList(event => {
 
 **Tip**: Memoize the callback using `useCallback` to avoid unnecessary subscriptions/unsubscriptions.
 
-```jsx
+```tsx
 const notify = useNotify();
 const { refetch, data } = useListContext();
 const callback = useCallback(
@@ -157,7 +157,7 @@ See [`useSubscribe`](./useSubscribe.md) for more details.
 
 `useSubscribeToRecordList` reads the current resource from the `ResourceContext`. You can provide the resource explicitly if you are not in such a context:
 
-```jsx
+```tsx
 useSubscribeToRecordList(event => {
     if (event.type === 'updated') {
         notify('Post updated');
