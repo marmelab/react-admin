@@ -51,6 +51,7 @@ export const ListBase = <RecordType extends RaRecord = any>({
     loading,
     offline,
     error,
+    empty,
     render,
     ...props
 }: ListBaseProps<RecordType>) => {
@@ -71,6 +72,11 @@ export const ListBase = <RecordType extends RaRecord = any>({
         isPending,
         isPlaceholderData,
         error: errorState,
+        data,
+        total,
+        hasPreviousPage,
+        hasNextPage,
+        filterValues,
     } = controllerProps;
 
     const showAuthLoading =
@@ -95,7 +101,25 @@ export const ListBase = <RecordType extends RaRecord = any>({
 
     const showError = errorState && error !== false && error !== undefined;
 
-    const showEmpty = isPending && !showOffline && emptyWhileLoading === true;
+    const showEmptyWhileLoading =
+        isPending && !showOffline && emptyWhileLoading === true;
+
+    const showEmpty =
+        !errorState &&
+        // the list is not loading data for the first time
+        !isPending &&
+        // the API returned no data (using either normal or partial pagination)
+        (total === 0 ||
+            (total == null &&
+                hasPreviousPage === false &&
+                hasNextPage === false &&
+                // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
+                data.length === 0)) &&
+        // the user didn't set any filters
+        !Object.keys(filterValues).length &&
+        // there is an empty page component
+        empty !== undefined &&
+        empty !== false;
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
@@ -109,11 +133,13 @@ export const ListBase = <RecordType extends RaRecord = any>({
                         ? offline
                         : showError
                           ? error
-                          : showEmpty
+                          : showEmptyWhileLoading
                             ? null
-                            : render
-                              ? render(controllerProps)
-                              : children}
+                            : showEmpty
+                              ? empty
+                              : render
+                                ? render(controllerProps)
+                                : children}
             </ListContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -126,6 +152,7 @@ export interface ListBaseProps<RecordType extends RaRecord = any>
     loading?: ReactNode;
     offline?: ReactNode;
     error?: ReactNode;
+    empty?: ReactNode;
     children?: ReactNode;
     render?: (props: ListControllerResult<RecordType, Error>) => ReactNode;
 }

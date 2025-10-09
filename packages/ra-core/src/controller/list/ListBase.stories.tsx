@@ -503,6 +503,39 @@ export const FetchError = () => {
     );
 };
 
+export const Empty = () => {
+    let resolveGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: () => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () => resolve({ data: [], total: 0 });
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <ListBase
+                resource="books"
+                perPage={5}
+                loading={<p>Loading...</p>}
+                empty={<p>No books</p>}
+            >
+                <BookListView />
+            </ListBase>
+        </CoreAdminContext>
+    );
+};
+
 export const EmptyWhileLoading = () => {
     let resolveGetList: (() => void) | null = null;
     const baseProvider = defaultDataProvider(0);
