@@ -98,7 +98,7 @@ useSubscribeToRecord(
 );
 ```
 
-**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](#usegetonelive) instead.
+**Tip**: If your reason to subscribe to events on a record is to keep the record up to date, you should use [the `useGetOneLive` hook](./useGetOneLive.md) instead.
 
 ## Parameters
 
@@ -186,7 +186,7 @@ The `options` object can contain the following properties:
 -   `once`: Whether to unsubscribe after the first event. Defaults to `false`.
 -   `unsubscribeOnUnmount`: Whether to unsubscribe on unmount. Defaults to `true`.
 
-See [`useSubscribe`](#usesubscribe) for more details.
+See [`useSubscribe`](./useSubscribe.md) for more details.
 
 ## `recordId`
 

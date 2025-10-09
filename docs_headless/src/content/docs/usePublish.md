@@ -68,7 +68,7 @@ Some hooks and components in this package are specialized to handle "CRUD" event
 }
 ```
 
-See the [CRUD events](#crud-events) section for more details.
+See the [CRUD events](https://react-admin-ee.marmelab.com/documentation/ra-realtime#crud-events) section for more details.
 
 ## Return Value
 

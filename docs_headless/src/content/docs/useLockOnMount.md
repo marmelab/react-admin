@@ -58,7 +58,7 @@ const PostEdit = () => (
 );
 ```
 
-**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnMount` will block the navigation and show a notification until the record is unlocked. Hence it's a good practice to give them a way to unlock the record manually, e.g. by using the `doUnlock` callback returned by the hook or the [`<LockStatusBase>`](#lockstatusbase) component.
+**Note**: If users close their tab/browser when on a page with a locked record, `useLockOnMount` will block the navigation and show a notification until the record is unlocked. Hence it's a good practice to give them a way to unlock the record manually, e.g. by using the `doUnlock` callback returned by the hook or the [`<LockStatusBase>`](./LockStatusBase.md) component.
 
 ## Parameters
 
