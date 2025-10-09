@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo } from 'react';
+import { isValidElement, useCallback, useEffect, useMemo } from 'react';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
@@ -104,7 +104,15 @@ export const useListController = <
     const [selectedIds, selectionModifiers] = useRecordSelection({
         resource,
         disableSyncWithStore: storeKey === false,
+        storeKey: storeKey === false ? undefined : storeKey,
     });
+
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
 
     const {
         data,
@@ -212,7 +220,7 @@ export const useListController = <
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page: query.page,
         perPage: query.perPage,
         refetch,
@@ -515,7 +523,7 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
             | UseReferenceManyFieldControllerParams<RecordType>['queryOptions'];
     }) => void;
     onToggleItem: (id: RecordType['id']) => void;
-    onUnselectItems: () => void;
+    onUnselectItems: (fromAllStoreKeys?: boolean) => void;
     page: number;
     perPage: number;
     refetch: (() => void) | UseGetListHookValue<RecordType>['refetch'];
