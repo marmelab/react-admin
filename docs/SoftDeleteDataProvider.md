@@ -24,7 +24,7 @@ npm install --save @react-admin/ra-soft-delete
 yarn add @react-admin/ra-soft-delete
 ```
 
-You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://marmelab.com/react-admin/enterprise-edition.html) for more details.
+You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://react-admin-ee.marmelab.com) for more details.
 
 ## Data Provider 
 

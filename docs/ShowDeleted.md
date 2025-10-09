@@ -9,7 +9,7 @@ The `<ShowDeleted>` component replaces the [`<Show>`](https://marmelab.com/react
 
 It has the same properties as `<Show>`, apart from `resource`, `id` and `queryOptions` which are passed from the context and cannot be overridden. See [`<Show>` props documentation](https://marmelab.com/react-admin/Show.html#props) for more info.
 
-It is intended to be used with [`detailComponents`](#detailcomponents) of [`<DeletedRecordsList>`](#deletedrecordslist).
+It is intended to be used with [`detailComponents`](./DeletedRecordsList.md#detailcomponents) of [`<DeletedRecordsList>`](./DeletedRecordsList.md).
 
 {% raw %}
 ```tsx
