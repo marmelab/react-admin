@@ -26,6 +26,7 @@ export interface TranslationMessages extends StringMap {
             remove_filter: string;
             remove_all_filters: string;
             remove: string;
+            reset: string;
             save: string;
             search: string;
             search_columns: string;
