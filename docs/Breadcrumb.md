@@ -567,6 +567,149 @@ const MyBreadcrumbCustomHome = () => (
 
 **Tip:** It's a good practice to include a visually hidden placeholder ('Dashboard' in this example) for screen readers when using an icon as label.
 
+## `<Breadcrumb.ListItem>`
+
+A version of the `<Breadcrumb.Item>` dedicated to list views. It accepts all [`<Breadcrumb.Item>` props](#breadcrumbitem).
+
+It is convenient for building custom breadcrumbs.
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            <Breadcrumb.EditItem resource="posts" />
+            <Breadcrumb.ShowItem resource="posts" />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+```
+
+## `<Breadcrumb.CreateItem>`
+
+A version of the `<Breadcrumb.Item>` dedicated to create views. It accepts all [`<Breadcrumb.Item>` props](#breadcrumbitem).
+
+It is convenient for building custom breadcrumbs.
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            <Breadcrumb.EditItem resource="posts" />
+            <Breadcrumb.ShowItem resource="posts" />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+```
+
+## `<Breadcrumb.EditItem>`
+
+A version of the `<Breadcrumb.Item>` dedicated to edit views. It is convenient for building custom breadcrumbs.
+
+It accepts all [`<Breadcrumb.Item>` props](#breadcrumbitem) and an optional `meta` prop that allows you to provide a [`meta`](https://marmelab.com/react-admin/Actions.html#meta-parameter) parameter matching the one set in the `<Edit>` component:
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            <Breadcrumb.EditItem resource="posts" meta={ { test: true } } />
+            <Breadcrumb.ShowItem resource="posts" />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+
+const PostEdit = () => (
+    <Edit queryOptions={ { meta: { test: true } } }>
+        // ...
+    </Edit>
+);
+```
+
+**Tip**: If your `<Edit>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](#usedefineapplocation) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.EditItem>` as it will read the record from the `AppLocationContext`:
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            {/* meta are not provided here */}
+            <Breadcrumb.EditItem resource="posts" />
+            <Breadcrumb.ShowItem resource="posts" />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+
+const PostEdit = () => (
+    {/* meta are provided here */}
+    <Edit queryOptions={ { meta: { test: true } } }>
+        // ...
+    </Edit>
+);
+
+const PostAppLocation = () => {
+    const record = useRecordContext();
+    // Pass the current record in the app location
+    useDefineAppLocation('posts.edit', { record });
+    return null;
+}
+```
+
+## `<Breadcrumb.ShowItem>`
+
+A version of the `<Breadcrumb.Item>` dedicated to show views. It is convenient for building custom breadcrumbs.
+
+It accepts all [`<Breadcrumb.Item>` props](#breadcrumbitem) and an optional `meta` prop that allows you to provide a [`meta`](https://marmelab.com/react-admin/Actions.html#meta-parameter) parameter matching the one set in the `<Show>` component:
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            <Breadcrumb.EditItem resource="posts" />
+            <Breadcrumb.ShowItem resource="posts" meta={ { test: true } } />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+
+
+const PostShow = () => (
+    <Show queryOptions={ { meta: { test: true } } }>
+        // ...
+    </Show>
+);
+```
+
+**Tip**: If your `<Show>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](#usedefineapplocation) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.ShowItem>` as it will read the record from the `AppLocationContext`:
+
+```tsx
+const MyBreadcrumb = () => (
+    <Breadcrumb>
+        <Breadcrumb.ListItem resource="posts">
+            <Breadcrumb.EditItem resource="posts" />
+            {/* meta are not provided here */}
+            <Breadcrumb.ShowItem resource="posts" />
+            <Breadcrumb.CreateItem resource="posts" />
+        </Breadcrumb.ListItem>
+    </Breadcrumb>
+);
+
+const PostShow = () => (
+    {/* meta are provided here */}
+    <Show queryOptions={ { meta: { test: true } } }>
+        // ...
+    </Show>
+);
+
+const PostAppLocation = () => {
+    const record = useRecordContext();
+    // Pass the current record in the app location
+    useDefineAppLocation('posts.show', { record });
+    return null;
+}
+```
+
 ## Admins With A Dashboard
 
 If the app has a home page defined via the [`<Admin dashboard>`](./Admin.md#dashboard) prop, the Breadcrumb will automatically detect it and set the root of the Breadcrumb to this page.
