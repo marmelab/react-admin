@@ -1089,6 +1089,52 @@ const App = () => (
 
 Check out the [Soft Delete Documentation](./SoftDeleteDataProvider.md) to learn more.
 
+## Scheduler
+
+React-admin can integrate with [Bryntum Scheduler](https://bryntum.com/products/scheduler/), a modern and high-performance scheduling system, to let you manage tasks, assignments, events, scheduling constraints and dependencies, completion, recurring events, property booking, skill matrix, nested events, etc.
+
+![Custom Scheduler](./img/custom-scheduler.webp)
+
+It supports drag and drop, infinite scroll, zoom, custom layout and styling, collapsible columns, localization, grouping and filtering and export to pdf. You can use it with any backend, as it leverages react-admin's data provider architecture.
+
+Use the [`<Scheduler>`](./Scheduler.md) component as the `list` of a [`<Resource>`](./Resource.md):
+
+```tsx
+// in ./src/App.tsx
+import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { EventList } from './events/EventList';
+
+export const MyAdmin = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="events" list={EventList} />
+    </Admin>
+);
+
+// in ./src/events/EventList.tsx
+import { Scheduler } from '@react-admin/ra-scheduler';
+import '@bryntum/core-thin/core.material.css';
+import '@bryntum/grid-thin/grid.material.css';
+import '@bryntum/scheduler-thin/scheduler.material.css';
+import { endOfDay, startOfDay } from 'date-fns';
+
+export const EventList = () => (
+    <Scheduler
+        columns={[{ text: 'Name', field: 'name', width: 130 }]}
+        viewPreset="hourAndDay"
+        startDate={startOfDay(new Date())}
+        endDate={endOfDay(new Date())}
+    />
+);
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-scheduler.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Check out the [Scheduler documentation](https://react-admin-ee.marmelab.com/documentation/ra-scheduler) to learn more.
+
 ## Calendar
 
 If your app needs to display **events**, **appointments**, **time intervals**, or any other kind of time-based data, you can use the [`<Calendar>`](./Calendar.md) component.
