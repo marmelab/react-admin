@@ -30,6 +30,8 @@ export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
  * redirect(false);
  * // redirect to the result of a function
  * redirect((resource, id, data) => ...)
+ * // redirect to an absolute URL
+ * redirect('https://marmelab.com/react-admin');
  */
 export const useRedirect = () => {
     const navigate = useNavigate();
