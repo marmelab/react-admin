@@ -627,7 +627,7 @@ const PostEdit = () => (
 );
 ```
 
-**Tip**: If your `<Edit>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](#usedefineapplocation) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.EditItem>` as it will read the record from the `AppLocationContext`:
+**Tip**: If your `<Edit>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](./useDefineAppLocation.md) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.EditItem>` as it will read the record from the `AppLocationContext`:
 
 ```tsx
 const MyBreadcrumb = () => (
@@ -681,7 +681,7 @@ const PostShow = () => (
 );
 ```
 
-**Tip**: If your `<Show>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](#usedefineapplocation) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.ShowItem>` as it will read the record from the `AppLocationContext`:
+**Tip**: If your `<Show>` component has a `meta` parameter but manually calls [`useDefineAppLocation`](./useDefineAppLocation.md) and provides it with the record, you don't need to set the `meta` prop on the `<Breadcrumb.ShowItem>` as it will read the record from the `AppLocationContext`:
 
 ```tsx
 const MyBreadcrumb = () => (
