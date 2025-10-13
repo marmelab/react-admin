@@ -7,22 +7,35 @@ title: "Writing An Auth Provider"
 
 React-admin can use any authentication backend, but you have to write an adapter for it. This adapter is called an `authProvider`. The `authProvider` is a simple object with methods that react-admin calls to handle authentication and authorization.
 
-## AuthProvider Interface Overview
+## Auth Provider Methods
 
 React-admin expect an `authProvider` to implement the following methods:
 
 ```tsx
 const authProvider = {
-    // required methods
+    // REQUIRED
+    // send username and password to the auth server and get back credentials
+    // (for login / password flow)
     async login(params) {/* ... */},
+    // when the dataProvider returns an error, check if this is an authentication error
     async checkError(error) {/* ... */},
+    // when the user navigates, make sure that their credentials are still valid
     async checkAuth(params) {/* ... */},
+    // remove local credentials and notify the auth server that the user logged out
     async logout() {/* ... */},
-    // optional methods
+
+    // OPTIONAL
+    // get the user's profile (id, fullName, avatar)
     async getIdentity() {/* ... */},
-    async handleCallback() {/* ... */}, // for third-party authentication only
-    async canAccess(params) {/* ... */}, // for authorization only
-    async getPermissions() {/* ... */}, // for authorization only
+    // process authentication callback from third-party providers
+    // (for third-party authentication flow)
+    async handleCallback() {/* ... */},
+    // check authorization for an action over a resource
+    // (for access-control style authorization)
+    async canAccess(params) {/* ... */},
+    // get the user's permissions
+    // (for permission style authorization)
+    async getPermissions() {/* ... */},
 };
 ```
 
@@ -36,7 +49,7 @@ const authProvider: AuthProvider = {
 };
 ```
 
-## Example
+## Simple Example
 
 Here is a fictive but working implementation of an auth provider. It only accepts user "john" with password "123".
 
@@ -71,11 +84,15 @@ const authProvider = {
 };
 ```
 
-## Step-By-Step
+## `login`
 
-If you have to implement your own auth provider, here is a step-by-step guide to get you started.
-
-### `login`
+| **Purpose** | Send username and password to the auth server and get back credentials  |
+| **Required** | Yes |
+| **When to use** | For login / password flows |
+| **Resolve if** | Login credentials were accepted |
+| **Request format** | `Object` with values from the login form |
+| **Response format** | `void | { redirectTo?: string | boolean }` |
+| **Error format** | `string | { message?: string }` |
 
 Once an admin has an `authProvider`, react-admin enables a new page on the `/login` route, which displays a login form.
 
@@ -83,7 +100,9 @@ Once an admin has an `authProvider`, react-admin enables a new page on the `/log
 
 Upon submission, the login page calls the `authProvider.login()` method with the login data as parameter. React-admin expects this async method to return if the login data is correct, and to throw an error if it's not.
 
-For instance, to query an authentication route via HTTPS and store the user credentials (a token) in local storage, configure the `authProvider` as follows:
+**Tip:** The `login` method will never be called if you rely solely on [third-party authentication](./Authentication.md#using-external-authentication-providers) flows (e.g. Auth0, Cognito, or any other OAuth-based service). In this case, you can provide a dummy implementation that always resolves.
+
+Below is an example showing how to configure the `authProvider` to query an authentication route via HTTPS and store the user credentials (a token) in local storage:
 
 ```tsx
 // in src/authProvider.js
@@ -129,7 +148,15 @@ const authProvider = {
 };
 ```
 
-### `checkError`
+## `checkError`
+
+| **Purpose** | Check if a dataProvider error is an authentication error |
+| **Required** | Yes |
+| **When to use** | Always |
+| **Resolve if** | Error is not an auth error |
+| **Request format** | `{ message: string, status: number, body: Object }` (error from the dataProvider) |
+| **Response format** | `void` |
+| **Error format** | `{ message?: string | boolean, redirectTo?: string | boolean, logoutUser?: boolean }` |
 
 When the user credentials are missing or become invalid, a secure API usually responds with an HTTP error code 401 or 403.
 
@@ -205,7 +232,15 @@ const authProvider = {
 };
 ```
 
-### `checkAuth`
+## `checkAuth`
+
+| **Purpose** | Check if the user is authenticated (when navigating to an authenticated route) |
+| **Required** | Yes |
+| **When to use** | Always |
+| **Resolve if** | User is authenticated |
+| **Request format** | Params passed to `useCheckAuth()` -- empty for react-admin default routes |
+| **Response format** | `void` |
+| **Error format** | `{ message?: string | boolean, redirectTo?: string | boolean }` |
 
 Redirecting to the login page whenever a REST response uses a 401 status code is usually not enough. React-admin keeps data on the client side, and could briefly display stale data while contacting the server - even after the credentials are no longer valid.
 
@@ -269,7 +304,17 @@ const authProvider = {
 };
 ```
 
-### `logout`
+**Tip:** `checkAuth` won't be called for routes [allowing anonymous access](./Authentication.md#allowing-anonymous-access).
+
+## `logout`
+
+| **Purpose** | Log out the user from the backend and clean up authentication data |
+| **Required** | Yes |
+| **When to use** | Always |
+| **Resolve if** | Auth backend acknowledged logout |
+| **Request format** | - |
+| **Response format** | `string | false | void` route to redirect to after logout, defaults to `/login` |
+| **Error format** | - |
 
 If you enable authentication, react-admin adds a logout button in the user menu in the top bar (or in the sliding menu on mobile). When the user clicks on the logout button, this calls the `authProvider.logout()` method, and removes potentially sensitive data stored in [the react-admin Store](./Store.md). Then the user gets redirected to the login page. The two previous sections also illustrated that react-admin can call `authProvider.logout()` itself, when the API returns a 403 error or when the local credentials expire.
 
@@ -303,9 +348,19 @@ const authProvider = {
 };
 ```
 
-### `getIdentity`
+**Tip**: If both `authProvider.checkAuth()` and `authProvider.logout()` return a redirect URL, the one from `authProvider.checkAuth()` takes precedence.
 
-Admin components often adapt their behavior based on the current user identity. For instance, a lock system may allow edition only if the lock owner is the current user. Another example is the user menu: it has to display the current user name and avatar.
+## `getIdentity`
+
+| **Purpose** | Get the current user identity |
+| **Required** | No |
+| **When to use** | Always |
+| **Resolve if** | Auth backend returned identity |
+| **Request format** | - |
+| **Response format** | `{ id: string | number, fullName?: string, avatar?: string }` |
+| **Error format** | `Error` |
+
+Admin components often adapt their behavior based on the current user identity. For instance, a [lock system](https://react-admin-ee.marmelab.com/documentation/ra-realtime#locks) may allow edition only if the lock owner is the current user. Another example is the [user menu](./AppBar.md#usermenu): it has to display the current user name and avatar.
 
 React-admin delegates the storage of the connected user identity to the `authProvider`. If it exposes a `getIdentity()` method, react-admin will call it to read the user details. 
 
@@ -326,7 +381,7 @@ React-admin uses the `fullName` and the `avatar` (an image source, or a data-uri
 
 ![User identity](./img/identity.png)
 
-**Tip**: You can use the `id` field to identify the current user in your code, by calling the `useGetIdentity` hook:
+**Tip**: You can use the `id` field to identify the current user in your code, by calling the [`useGetIdentity`](./useGetIdentity.md) hook:
 
 ```jsx
 import { useGetIdentity, useGetOne } from 'react-admin';
@@ -345,7 +400,15 @@ const PostDetail = ({ id }) => {
 }
 ```
 
-### `handleCallback`
+## `handleCallback`
+
+| **Purpose** | Process authentication callback from third-party providers (Auth0, Cognito, ...) |
+| **Required** | No |
+| **When to use** | For third-party authentication flows |
+| **Resolve if** | User is authenticated |
+| **Request format** | - |
+| **Response format** | `void | { redirectTo?: string | boolean }` |
+| **Error format** | `{ redirectTo?: string | boolean, logoutOnFailure?: boolean, message?: string | boolean }` |
 
 This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
 
@@ -389,6 +452,8 @@ const authProvider = {
 }
 ```
 
+![Auth0 login flow diagram](./img/authProvider-OAuth-flow.png)
+
 Once `handleCallback` returns, react-admin redirects the user to the home page, or to the location found in `localStorage.getItem(PreviousLocationStorageKey)`. In the above example, `authProvider.checkAuth()` sets this location to the page the user was trying to access. 
 
 You can override this behavior by returning an object with a `redirectTo` property, as follows:
@@ -408,7 +473,17 @@ const authProvider = {
 };
 ```
 
-### `canAccess`
+**Tip:** If you rely solely on third-party authentication flows, the `authProvider.login()` method will never be called. In this case you can simply provide a dummy implementation that always resolves.
+
+## `canAccess`
+
+| **Purpose** | Check authorization for an action over a resource |
+| **Required** | No |
+| **When to use** | For [Access Control](./Permissions.md#access-control) style Authorization |
+| **Resolve if** | Auth backend returned authorization |
+| **Request format** | `{ action: string, resource: string, record: object }` |
+| **Response format** | `boolean` |
+| **Error format** | `Error` |
 
 React-admin has built-in [Access Control](./Permissions.md#access-control) features that you can enable by implementing the `authProvider.canAccess()` method. It receives a permissions object with the following properties:
 
@@ -452,7 +527,15 @@ Check the [Access Control documentation](./Permissions.md#access-control) for mo
 **Tip**: [The Role-Based Access Control (RBAC) module](./AuthRBAC.md) allows fined-grained permissions in react-admin apps leveraging the `canAccess` method. Check [the RBAC documentation](./AuthRBAC.md) for more information.
 
 
-### `getPermissions`
+## `getPermissions`
+
+| **Purpose** | Returns a boolean indicating whether the user can perform the provided action on the provided resource |
+| **Required** | No |
+| **When to use** | For [Permissions](./Permissions.md#permissions) style Authorization |
+| **Resolve if** | Auth backend returned permissions |
+| **Request format** | params passed to `usePermissions()` -- empty for react-admin default routes |
+| **Response format** | `any` |
+| **Error format** | `Error` |
 
 As an alternative to `canAccess()`, `getPermissions()` lets you return an arbitrary permissions object. This object can be used by React components to enable or disable UI elements based on the user's role.
 
@@ -472,50 +555,11 @@ React-admin doesn't use permissions by default, but it provides [the `usePermiss
 
 Check the [Access Control documentation](./Permissions.md#permissions) for more information on how to use the `getPermissions` method.
 
-## Request Format
+**Tip:** How to choose between `canAccess` and `getPermissions`? We recommend Access Control (i.e. `canAccess`) because it allows you to put the authorization logic in the `authProvider` rather than in the React code.
 
-React-admin calls the `authProvider` methods with the following params:
+## Using External Authentication Providers
 
-| Method           | Usage                                           | Parameters format  |
-| ---------------- | ----------------------------------------------- | ------------------ |
-| `login`          | Log a user in                                   | `Object` whatever fields the login form contains |
-| `checkError`     | Check if a dataProvider error is an authentication error  | `{ message: string, status: number, body: Object }` the error returned by the `dataProvider` |
-| `checkAuth`      | Check credentials before moving to a new route  | `Object` whatever params passed to `useCheckAuth()` - empty for react-admin default routes |
-| `logout`         | Log a user out                                  |                    |
-| `getIdentity`    | Get the current user identity                   |                    | 
-| `handleCallback` | Validate users after third party authentication service redirection                |  |
-| `canAccess`      | Check authorization for an action over a resource | `{ action: string, resource: string, record: object }` |
-| `getPermissions` | Get the current user credentials                | `Object` whatever params passed to `usePermissions()` - empty for react-admin default routes |
-
-## Response Format
-
-`authProvider` methods must return a Promise. In case of success, the Promise should resolve to the following value:
-
-| Method           | Resolve if                        | Response format |
-| ---------------- | --------------------------------- | --------------- |
-| `login`          | Login credentials were accepted   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
-| `checkError`     | Error is not an auth error        | `void`          |
-| `checkAuth`      | User is authenticated             | `void`          |
-| `logout`         | Auth backend acknowledged logout  | `string | false | void` route to redirect to after logout, defaults to `/login` |
-| `getIdentity`    | Auth backend returned identity    | `{ id: string | number, fullName?: string, avatar?: string }`  | 
-| `handleCallback` | User is authenticated   | `void | { redirectTo?: string | boolean  }` route to redirect to after login |
-| `canAccess`      | Auth backend returned authorization | `boolean` |
-| `getPermissions` | Auth backend returned permissions | Free format. |
-
-## Error Format
-
-When the auth backend returns an error, the Auth Provider should return a rejected Promise, with the following value: 
-
-| Method           | Reject if                                 | Error format |
-| ---------------- | ----------------------------------------- | --------------- |
-| `login`          | Login credentials weren't accepted        | `string | { message?: string }` error message to display |
-| `checkError`     | Error is an auth error                    | `void | { redirectTo?: string, message?: string | boolean  }` route to redirect to after logout, message to notify the user or `false` to disable notification |
-| `checkAuth`      | User is not authenticated                 | `void | { redirectTo?: string, message?: string }` route to redirect to after logout, message to notify the user |
-| `logout`         | Auth backend failed to log the user out   | `void` |
-| `getIdentity`    | Auth backend failed to return identity    | `Object` free format - returned as `error` when `useGetIdentity()` is called | 
-| `handleCallback` | Failed to authenticate users after redirection | `void | { redirectTo?: string, logoutOnFailure?: boolean, message?: string }` |
-| `canAccess`      | Auth backend failed to return authorization | `Object` free format - returned as `error` when `useCanAccess()` is called. |
-| `getPermissions` | Auth backend failed to return permissions | `Object` free format - returned as `error` when `usePermissions()` is called. The error will be passed to `checkError` |
+Instead of the built-in Login page, you can use an external authentication provider, like Auth0, Cognito, or any other OAuth-based service. See [Using External Authentication Providers](./Authentication.md#using-external-authentication-providers) for an example.
 
 ## Query Cancellation
 
