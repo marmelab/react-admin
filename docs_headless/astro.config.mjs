@@ -240,6 +240,7 @@ export default defineConfig({
                 {
                     label: 'Soft Delete',
                     items: [
+                        enterpriseEntry('SoftDeleteDataProvider', 'Setting up'),
                         enterpriseEntry('<DeletedRecordsListBase>'),
                         enterpriseEntry('<ShowDeletedBase>'),
                         enterpriseEntry('<DeletedRecordRepresentation>'),
@@ -298,10 +299,10 @@ export default defineConfig({
  * @param {string} name
  * @returns {any}
  */
-function enterpriseEntry(name) {
+function enterpriseEntry(name, label = name) {
     return {
         link: `${name.toLowerCase().replace(/</g, '').replace(/>/g, '')}/`,
-        label: name,
+        label,
         attrs: { class: 'enterprise' },
         badge: {
             text: 'React Admin Enterprise',
