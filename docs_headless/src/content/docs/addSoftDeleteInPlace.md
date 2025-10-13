@@ -18,7 +18,7 @@ yarn add @react-admin/ra-core-ee
 
 You'll need to pass an object with all your resources as key so that `getListDeleted` knows where to look for deleted records.
 
-> **Note on performances:** Avoid calling `getListDeleted` without a `resource` filter, as it uses a naive implementation combining multiple `getList` calls, which can lead to bad performances. It is recommended to use one list per resource in this case (see [`resource` property](./getListDeleted.md#resource)).
+> **Note on performances:** Avoid calling `getListDeleted` without a `resource` filter, as it uses a naive implementation combining multiple `getList` calls, which can lead to bad performances. It is recommended to use one list per resource in this case (see [`resource` property](./useGetListDeleted.md#resource)).
 
 ```tsx
 // in src/dataProvider.ts
