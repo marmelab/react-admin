@@ -218,6 +218,7 @@ export default defineConfig({
                 {
                     label: 'Realtime',
                     items: [
+                        enterpriseEntry('<LockStatusBase>'),
                         enterpriseEntry('usePublish'),
                         enterpriseEntry('useSubscribe'),
                         enterpriseEntry('useSubscribeCallback'),
@@ -234,12 +235,14 @@ export default defineConfig({
                         enterpriseEntry('useLockOnCall'),
                         enterpriseEntry('useGetListLive'),
                         enterpriseEntry('useGetOneLive'),
-                        enterpriseEntry('<LockStatusBase>'),
                     ],
                 },
                 {
                     label: 'Soft Delete',
                     items: [
+                        enterpriseEntry('<DeletedRecordsListBase>'),
+                        enterpriseEntry('<ShowDeletedBase>'),
+                        enterpriseEntry('<DeletedRecordRepresentation>'),
                         enterpriseEntry('addSoftDeleteBasedOnResource'),
                         enterpriseEntry('addSoftDeleteInPlace'),
                         enterpriseEntry('useSoftDelete'),
@@ -251,9 +254,6 @@ export default defineConfig({
                         enterpriseEntry('useHardDelete'),
                         enterpriseEntry('useHardDeleteMany'),
                         enterpriseEntry('useDeletedRecordsListController'),
-                        enterpriseEntry('DeletedRecordsListBase'),
-                        enterpriseEntry('ShowDeletedBase'),
-                        enterpriseEntry('DeletedRecordRepresentation'),
                     ],
                 },
                 {
