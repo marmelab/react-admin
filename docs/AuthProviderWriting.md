@@ -89,7 +89,8 @@ const authProvider = {
 | **Purpose** | Send username and password to the auth server and get back credentials  |
 | **Required** | Yes |
 | **When to use** | For login / password flows |
-| **Resolve if** | Login credentials were accepted |
+| **On resolve** | Redirects to previous page or admin index (customizable) |
+| **On reject** | Displays error message in a notification |
 | **Request format** | `Object` with values from the login form |
 | **Response format** | `void | { redirectTo?: string | boolean }` |
 | **Error format** | `string | { message?: string }` |
@@ -153,7 +154,8 @@ const authProvider = {
 | **Purpose** | Check if a dataProvider error is an authentication error |
 | **Required** | Yes |
 | **When to use** | Always |
-| **Resolve if** | Error is not an auth error |
+| **On resolve** | - |
+| **On reject** | Logs the user out and redirects to the login page (customizable) |
 | **Request format** | `{ message: string, status: number, body: Object }` (error from the dataProvider) |
 | **Response format** | `void` |
 | **Error format** | `{ message?: string | boolean, redirectTo?: string | boolean, logoutUser?: boolean }` |
@@ -237,7 +239,8 @@ const authProvider = {
 | **Purpose** | Check if the user is authenticated (when navigating to an authenticated route) |
 | **Required** | Yes |
 | **When to use** | Always |
-| **Resolve if** | User is authenticated |
+| **On resolve** | - |
+| **On reject** | Logs the user out and redirects to the login page (customizable) |
 | **Request format** | Params passed to `useCheckAuth()` -- empty for react-admin default routes |
 | **Response format** | `void` |
 | **Error format** | `{ message?: string | boolean, redirectTo?: string | boolean }` |
@@ -311,7 +314,8 @@ const authProvider = {
 | **Purpose** | Log out the user from the backend and clean up authentication data |
 | **Required** | Yes |
 | **When to use** | Always |
-| **Resolve if** | Auth backend acknowledged logout |
+| **On resolve** | Redirects to login page (customizable) |
+| **On reject** | - |
 | **Request format** | - |
 | **Response format** | `string | false | void` route to redirect to after logout, defaults to `/login` |
 | **Error format** | - |
@@ -355,7 +359,6 @@ const authProvider = {
 | **Purpose** | Get the current user identity |
 | **Required** | No |
 | **When to use** | Always |
-| **Resolve if** | Auth backend returned identity |
 | **Request format** | - |
 | **Response format** | `{ id: string | number, fullName?: string, avatar?: string }` |
 | **Error format** | `Error` |
@@ -405,10 +408,11 @@ const PostDetail = ({ id }) => {
 | **Purpose** | Process authentication callback from third-party providers (Auth0, Cognito, ...) |
 | **Required** | No |
 | **When to use** | For third-party authentication flows |
-| **Resolve if** | User is authenticated |
+| **On resolve** | Redirects to previous page or admin index (customizable) |
+| **On reject** | Renders the error |
 | **Request format** | - |
 | **Response format** | `void | { redirectTo?: string | boolean }` |
-| **Error format** | `{ redirectTo?: string | boolean, logoutOnFailure?: boolean, message?: string | boolean }` |
+| **Error format** | `Error` |
 
 This method is used when integrating a third-party authentication provider such as [Auth0](https://auth0.com/). React-admin provides a route at the `/auth-callback` path, to be used as the callback URL in the authentication service. After logging in using the authentication service, users will be redirected to this route. The `/auth-callback` route calls the `authProvider.handleCallback` method on mount. 
 
@@ -480,7 +484,6 @@ const authProvider = {
 | **Purpose** | Check authorization for an action over a resource |
 | **Required** | No |
 | **When to use** | For [Access Control](./Permissions.md#access-control) style Authorization |
-| **Resolve if** | Auth backend returned authorization |
 | **Request format** | `{ action: string, resource: string, record: object }` |
 | **Response format** | `boolean` |
 | **Error format** | `Error` |
@@ -532,7 +535,6 @@ Check the [Access Control documentation](./Permissions.md#access-control) for mo
 | **Purpose** | Returns a boolean indicating whether the user can perform the provided action on the provided resource |
 | **Required** | No |
 | **When to use** | For [Permissions](./Permissions.md#permissions) style Authorization |
-| **Resolve if** | Auth backend returned permissions |
 | **Request format** | params passed to `usePermissions()` -- empty for react-admin default routes |
 | **Response format** | `any` |
 | **Error format** | `Error` |
