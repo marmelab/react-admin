@@ -438,7 +438,7 @@ sequenceDiagram
     participant RA as React Admin<br/>(authProvider)
     participant A as Auth0 website
     U->>RA: Access /posts
-    Note over RA: checkAuth()<br/>(rejects)
+    Note over RA: checkAuth()<br/>Auth0Client.isAuthenticated()
     RA->>A: Auth0Client.loginWithRedirect()
     Note over A: Login using Auth0 form
     A->>RA: Redirects to /auth-callback<br/>(with token)
