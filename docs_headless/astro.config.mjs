@@ -218,6 +218,7 @@ export default defineConfig({
                 {
                     label: 'Realtime',
                     items: [
+                        enterpriseEntry('<LockStatusBase>'),
                         enterpriseEntry('usePublish'),
                         enterpriseEntry('useSubscribe'),
                         enterpriseEntry('useSubscribeCallback'),
@@ -234,7 +235,26 @@ export default defineConfig({
                         enterpriseEntry('useLockOnCall'),
                         enterpriseEntry('useGetListLive'),
                         enterpriseEntry('useGetOneLive'),
-                        enterpriseEntry('<LockStatusBase>'),
+                    ],
+                },
+                {
+                    label: 'Soft Delete',
+                    items: [
+                        enterpriseEntry('SoftDeleteDataProvider', 'Setting up'),
+                        enterpriseEntry('<DeletedRecordsListBase>'),
+                        enterpriseEntry('<ShowDeletedBase>'),
+                        enterpriseEntry('<DeletedRecordRepresentation>'),
+                        enterpriseEntry('addSoftDeleteBasedOnResource'),
+                        enterpriseEntry('addSoftDeleteInPlace'),
+                        enterpriseEntry('useSoftDelete'),
+                        enterpriseEntry('useSoftDeleteMany'),
+                        enterpriseEntry('useGetListDeleted'),
+                        enterpriseEntry('useGetOneDeleted'),
+                        enterpriseEntry('useRestoreOne'),
+                        enterpriseEntry('useRestoreMany'),
+                        enterpriseEntry('useHardDelete'),
+                        enterpriseEntry('useHardDeleteMany'),
+                        enterpriseEntry('useDeletedRecordsListController'),
                     ],
                 },
                 {
@@ -279,10 +299,10 @@ export default defineConfig({
  * @param {string} name
  * @returns {any}
  */
-function enterpriseEntry(name) {
+function enterpriseEntry(name, label = name) {
     return {
         link: `${name.toLowerCase().replace(/</g, '').replace(/>/g, '')}/`,
-        label: name,
+        label,
         attrs: { class: 'enterprise' },
         badge: {
             text: 'React Admin Enterprise',

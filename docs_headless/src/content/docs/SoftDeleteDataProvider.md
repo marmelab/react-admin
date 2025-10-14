@@ -3,9 +3,7 @@ layout: default
 title: "Soft Delete Setup"
 ---
 
-# Soft Delete Setup
-
-The soft delete feature is an [Enterprise Edition add-on](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete) that allows you to "delete" records without actually removing them from your database. 
+The soft delete feature is an [Enterprise Edition add-on](https://react-admin-ee.marmelab.com/documentation/ra-core-ee) that allows you to "delete" records without actually removing them from your database. 
 
 Use it to:
 
@@ -14,14 +12,12 @@ Use it to:
 - Restore archived items individually or in bulk
 - Track who deleted what and when
 
-It provides drop-in replacements for DeleteButton and BulkDeleteButton.
-
 ## Installation
 
 ```bash
-npm install --save @react-admin/ra-soft-delete
+npm install --save @react-admin/ra-core-ee
 # or
-yarn add @react-admin/ra-soft-delete
+yarn add @react-admin/ra-core-ee
 ```
 
 You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://react-admin-ee.marmelab.com) for more details.
@@ -30,8 +26,8 @@ You will need an active Enterprise Edition license to use this package. Please r
 
 ### Methods
 
-`ra-soft-delete` relies on the `dataProvider` to soft-delete, restore or view deleted records.
-In order to use the `ra-soft-delete`, you must add a few new methods to your data provider:
+The Soft Delete features of `ra-core-ee` rely on the `dataProvider` to soft-delete, restore or view deleted records.
+In order to use those features, you must add a few new methods to your data provider:
 
 - `softDelete` performs the soft deletion of the provided record.
 - `softDeleteMany` performs the soft deletion of the provided records.
@@ -97,18 +93,18 @@ const dataProviderWithSoftDelete: SoftDeleteDataProvider = {
 };
 ```
 
-**Tip**: `ra-soft-delete` automatically populates the `authorId` parameter using `authProvider.getIdentity()` if it is implemented. It will use the `id` field of the returned identity object. Otherwise this field will be left blank.
+**Tip**: `ra-core-ee` automatically populates the `authorId` parameter using `authProvider.getIdentity()` if it is implemented. It will use the `id` field of the returned identity object. Otherwise this field will be left blank.
 
 **Tip**: Deleted records are immutable, so you don't need to implement an `updateDeleted` method.
 
-Once your provider has all soft-delete methods, pass it to the `<Admin>` component and you're ready to start using `ra-soft-delete`.
+Once your provider has all soft-delete methods, pass it to the [`<CoreAdmin>`](./CoreAdmin.md) component and you're ready to start using the Soft Delete feature.
 
 ```tsx
 // in src/App.tsx
-import { Admin } from 'react-admin';
+import { CoreAdmin } from 'ra-core';
 import { dataProvider } from './dataProvider';
 
-const App = () => <Admin dataProvider={dataProvider}>{/* ... */}</Admin>;
+const App = () => <CoreAdmin dataProvider={dataProvider}>{/* ... */}</CoreAdmin>;
 ```
 
 ### Deleted Record Structure
@@ -140,15 +136,15 @@ Here is an example of a deleted record:
 
 ### Builders
 
-`ra-soft-delete` comes with two built-in implementations that will add soft delete capabilities to your data provider without any specific backend requirements. You can choose the one that best fits your needs:
+`ra-core-ee` comes with two built-in implementations that will add soft delete capabilities to your data provider without any specific backend requirements. You can choose the one that best fits your needs:
 
-- `addSoftDeleteBasedOnResource` stores the deleted records for all resources in a single resource. This resource is named `deleted_records` by default.
+- [`addSoftDeleteBasedOnResource`](./addSoftDeleteBasedOnResource.md) stores the deleted records for all resources in a single resource. This resource is named `deleted_records` by default.
 
     With this builder, all deleted records disappear from their original resource when soft-deleted, and are recreated in the `deleted_records` resource.
 
 ```tsx
 // in src/dataProvider.ts
-import { addSoftDeleteBasedOnResource } from '@react-admin/ra-soft-delete';
+import { addSoftDeleteBasedOnResource } from '@react-admin/ra-core-ee';
 import baseDataProvider from './baseDataProvider';
 
 export const dataProvider = addSoftDeleteBasedOnResource(
@@ -157,7 +153,7 @@ export const dataProvider = addSoftDeleteBasedOnResource(
 );
 ```
 
-- `addSoftDeleteInPlace` keeps the deleted records in the same resource, but marks them as deleted.
+- [`addSoftDeleteInPlace`](./addSoftDeleteInPlace.md) keeps the deleted records in the same resource, but marks them as deleted.
 
     With this builder, all deleted records remain in their original resource when soft-deleted, but are marked with the `deleted_at` and `deleted_by` fields. The query methods (`getList`, `getOne`, etc.) automatically filter out deleted records.
 
@@ -165,7 +161,7 @@ export const dataProvider = addSoftDeleteBasedOnResource(
 
 ```tsx
 // in src/dataProvider.ts
-import { addSoftDeleteInPlace } from '@react-admin/ra-soft-delete';
+import { addSoftDeleteInPlace } from '@react-admin/ra-core-ee';
 import baseDataProvider from './baseDataProvider';
 
 export const dataProvider = addSoftDeleteInPlace(
@@ -183,7 +179,7 @@ export const dataProvider = addSoftDeleteInPlace(
 );
 ```
 
-**Note:** When using `addSoftDeleteInPlace`, avoid calling `getListDeleted` without a `resource` filter, as it uses a naive implementation combining multiple `getList` calls, which can lead to bad performance. It is recommended to use one list per resource in this case (see [`<DeletedRecordsList resource>` property](./DeletedRecordsList.md#resource)).
+**Note:** When using `addSoftDeleteInPlace`, avoid calling `getListDeleted` without a `resource` filter, as it uses a naive implementation combining multiple `getList` calls, which can lead to bad performance. It is recommended to use one list per resource in this case (see [`<DeletedRecordsListBase resource>` property](./DeletedRecordsListBase.md#resource)).
 
 You can also write your own implementation. Feel free to look at these builders source code for inspiration. You can find it under your `node_modules` folder, e.g. at `node_modules/@react-admin/ra-core-ee/src/soft-delete/dataProvider/addSoftDeleteBasedOnResource.ts`.
 
@@ -203,7 +199,7 @@ Each data provider verb has its own hook so you can use them in custom component
 
 ## `createMany`
 
-`ra-soft-delete` provides a default implementation of the `createMany` method that simply calls `create` multiple times. However, some data providers may be able to create multiple records at once, which can greatly improve performances.
+`ra-core-ee` provides a default implementation of the `createMany` method that simply calls `create` multiple times. However, some data providers may be able to create multiple records at once, which can greatly improve performances.
 
 ```tsx
 const dataProviderWithCreateMany = {
