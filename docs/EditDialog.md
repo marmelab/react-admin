@@ -485,7 +485,7 @@ const EmployerSimpleFormWithFullyControlledDialogs = () => {
             <EditDialog
                 fullWidth
                 maxWidth="md"
-                record={{ employer_id: record?.id }} // pre-populates the employer_id to link the new customer to the current employer
+                record={record}
                 isOpen={isEditDialogOpen}
                 open={openEditDialog}
                 close={closeEditDialog}
