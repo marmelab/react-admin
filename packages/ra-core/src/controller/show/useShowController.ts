@@ -178,7 +178,7 @@ export interface ShowControllerBaseResult<RecordType extends RaRecord = any> {
     isLoading: boolean;
     isPaused?: boolean;
     isPlaceholderData?: boolean;
-    redirectOnError: RedirectionSideEffect;
+    redirectOnError?: RedirectionSideEffect;
     resource: string;
     record?: RecordType;
     refetch: UseGetOneHookValue<RecordType>['refetch'];
