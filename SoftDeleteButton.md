@@ -111,7 +111,7 @@ import AutoDeleteIcon from '@mui/icons-material/AutoDelete';
 - `optimistic`: Clicking the button will update the UI optimistically and soft-delete the record. If the soft-deletion fails, the UI will be rolled back.
 - `pessimistic`: Clicking the button will display a confirmation dialog. If the user confirms, the record will be soft-deleted. If the user cancels, nothing will happen.
 
-**Note**: When choosing the `pessimistic` mode, `<SoftDeleteButton>` will actually render a [`<SoftDeleteWithConfirmButton>`](#softdeletewithconfirmbutton) component and accept additional props to customize the confirm dialog (see below).
+**Note**: When choosing the `pessimistic` mode, `<SoftDeleteButton>` will actually render a [`<SoftDeleteWithConfirmButton>`](./SoftDeleteWithConfirmButton.md) component and accept additional props to customize the confirm dialog (see below).
 
 ## `mutationOptions`
 

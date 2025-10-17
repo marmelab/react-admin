@@ -5,7 +5,7 @@ title: "The useDeletedRecordsListController Hook"
 
 # `useDeletedRecordsListController`
 
-`useDeletedRecordsListController` contains the headless logic of the `<DeletedRecordsList>` component. It's useful to create a custom deleted records list. It's also the base hook when building a custom view with another UI kit than Material UI.
+`useDeletedRecordsListController` contains the headless logic of the [`<DeletedRecordsList>`](./DeletedRecordsList.md) component. It's useful to create a custom deleted records list. It's also the base hook when building a custom view with another UI kit than Material UI.
 
 `useDeletedRecordsListController` reads the deleted records list parameters from the URL, calls `dataProvider.getListDeleted()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](https://marmelab.com/react-admin/useListContext.html) shape.
 
@@ -35,16 +35,16 @@ const MyDeletedRecords = ({children}: { children: React.ReactNode }) => {
 
 `useDeletedRecordsListController` expects an object as parameter. All keys are optional.
 
-- [`debounce`](#debounce): Debounce time in ms for the `setFilters` callbacks.
-- [`disableAuthentication`](#disableauthentication): Set to true to allow anonymous access to the list
-- [`disableSyncWithLocation`](#disablesyncwithlocation): Set to true to have more than one list per page
-- [`filter`](#filter-permanent-filter): Permanent filter, forced over the user filter
-- [`filterDefaultValues`](#filterdefaultvalues): Default values for the filter form
-- [`perPage`](#perpage): Number of results per page
-- [`queryOptions`](#queryoptions): React-query options for the [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) call.
-- [`resource`](#resource): The resource of deleted records to fetch and display (used as filter when calling `getListDeleted`)
-- [`sort`](#sort): Current sort value, e.g. `{ field: 'deleted_at', order: 'ASC' }`
-- [`storeKey`](#storekey): Key used to differentiate the list from another, in store managed states
+- [`debounce`](./DeletedRecordsList.md#debounce): Debounce time in ms for the `setFilters` callbacks.
+- [`disableAuthentication`](./DeletedRecordsList.md#disableauthentication): Set to true to allow anonymous access to the list
+- [`disableSyncWithLocation`](./DeletedRecordsList.md#disablesyncwithlocation): Set to true to have more than one list per page
+- [`filter`](./DeletedRecordsList.md#filter-permanent-filter): Permanent filter, forced over the user filter
+- [`filterDefaultValues`](./DeletedRecordsList.md#filterdefaultvalues): Default values for the filter form
+- [`perPage`](./DeletedRecordsList.md#perpage): Number of results per page
+- [`queryOptions`](./DeletedRecordsList.md#queryoptions): React-query options for the [`useQuery`](https://tanstack.com/query/latest/docs/framework/react/reference/useQuery) call.
+- [`resource`](./DeletedRecordsList.md#resource): The resource of deleted records to fetch and display (used as filter when calling `getListDeleted`)
+- [`sort`](./DeletedRecordsList.md#sort): Current sort value, e.g. `{ field: 'deleted_at', order: 'ASC' }`
+- [`storeKey`](./DeletedRecordsList.md#storekey): Key used to differentiate the list from another, in store managed states
 
 Here are their default values:
 
@@ -90,9 +90,9 @@ To display multiple deleted records lists and keep distinct store states for eac
 
 In case no `storeKey` is provided, the states will be stored with the following key: `ra-soft-delete.listParams`.
 
-**Note**: Please note that selection state will remain linked to a constant key (`ra-soft-delete.selectedIds`) as described [here](#storekey).
+**Note**: Please note that selection state will remain linked to a constant key (`ra-soft-delete.selectedIds`) as described [here](./DeletedRecordsList.md#storekey).
 
-If you want to disable the storage of list parameters altogether for a given list, you can use [the `disableSyncWithLocation` prop](#disablesyncwithlocation).
+If you want to disable the storage of list parameters altogether for a given list, you can use [the `disableSyncWithLocation` prop](./DeletedRecordsList.md#disablesyncwithlocation).
 
 In the example below, the controller states of `NewestDeletedRecords` and `OldestDeletedRecords` are stored separately (under the store keys 'newest' and 'oldest' respectively).
 
@@ -171,7 +171,7 @@ const {
 
 ## Security
 
-`useDeletedRecordsListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](#disableauthentication) property.
+`useDeletedRecordsListController` requires authentication and will redirect anonymous users to the login page. If you want to allow anonymous access, use the [`disableAuthentication`](./DeletedRecordsList.md#disableauthentication) property.
 
 If your `authProvider` implements [Access Control](https://marmelab.com/react-admin/Permissions.html#access-control), `useDeletedRecordsListController` will only render if the user has the `deleted_records` access on a virtual `ra-soft-delete` resource.
 
@@ -205,4 +205,4 @@ const CustomDeletedRecords = () => {
 
 Users without access will be redirected to the [Access Denied page](https://marmelab.com/react-admin/Admin.html#accessdenied).
 
-Note: Access control is disabled when you use [the disableAuthentication property](#disableauthentication).
+Note: Access control is disabled when you use [the disableAuthentication property](./DeletedRecordsList.md#disableauthentication).
