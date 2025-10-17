@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.12.1
+
+* Fix `<ColumnsSelector>` reset button is not translatable ([#10984](https://github.com/marmelab/react-admin/pull/10984)) ([yarkovaleksei](https://github.com/yarkovaleksei))
+* [Doc] Update `useRedirect` JSDoc to add absolute URL example ([#10987](https://github.com/marmelab/react-admin/pull/10987)) ([COil](https://github.com/COil))
+* [Doc] Update Soft Delete documentation ([#10986](https://github.com/marmelab/react-admin/pull/10986)) ([djhi](https://github.com/djhi))
+* [Doc] Mention Scheduler in All Features ([#10985](https://github.com/marmelab/react-admin/pull/10985)) ([slax57](https://github.com/slax57))
+* [Doc] Fix Soft Delete documentation links ([#10980](https://github.com/marmelab/react-admin/pull/10980)) ([djhi](https://github.com/djhi))
+* [Doc] Add documentation about ra-relationship core components ([#10979](https://github.com/marmelab/react-admin/pull/10979)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add documentation for headless enterprise features in ra-core documentation ([#10973](https://github.com/marmelab/react-admin/pull/10973)) ([djhi](https://github.com/djhi))
+* [Doc] Add `<ReferenceInputBase>` and `<ReferenceArrayInputBase>` documentation in headless doc site ([#10965](https://github.com/marmelab/react-admin/pull/10965)) ([djhi](https://github.com/djhi))
+* [TypeScript] Fix `useShowController` result type ([#10992](https://github.com/marmelab/react-admin/pull/10992)) ([slax57](https://github.com/slax57))
+* Bump astro from 5.13.7 to 5.14.3 ([#10988](https://github.com/marmelab/react-admin/pull/10988)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.12.0
 
 * Add `error`, `loading`, `empty` and `offline` props to `<ListBase>`, `<WithListContext>`, `<EditBase>`, and `<ShowBase>` to set fallback components for non-success states.  ([#10880](https://github.com/marmelab/react-admin/pull/10880)) ([erwanMarmelab](https://github.com/erwanMarmelab))
