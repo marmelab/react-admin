@@ -8,7 +8,7 @@ The `<FormDataConsumer>` component gets the current (edited) values of the recor
 
 ## Usage
 
-As <FormDataConsumer> uses the render props pattern, you can avoid creating an intermediate component like the <CityInput> component above:
+As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an intermediate component like the `<CityInput>` component above:
 
 ```tsx
 import * as React from 'react';
@@ -122,13 +122,11 @@ TypeScript users will notice that scopedFormData is typed as an optional paramet
 If you need to access the effective source of an input inside an `<ArrayInput>`, for example to change the value programmatically using setValue, you will need to leverage the [`useSourceContext`](./useSourceContext.md) hook.
 :::
 
-@todo: add useSourceContext Page
-
 ## Props
 
-| Prop       | Required | Type       | Default | Description                                                       |
-| ---------- | -------- | ---------- | ------- | ----------------------------------------------------------------- |
-| `children` | Required | `function` | -       | A function that takes the `formData` and returns a `ReactElement` |
+| Prop       | Required | Type       | Default | Description                                                    |
+| ---------- | -------- | ---------- | ------- | -------------------------------------------------------------- |
+| `children` | Required | `function` | -       | A function that takes the `formData` and returns a `ReactNode` |
 
 ## `children`
 

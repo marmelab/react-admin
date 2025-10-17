@@ -128,21 +128,17 @@ a[aria-current='page'].enterprise span:not(.sl-badge)::after {
     background-image: url('/public/premium-dark.svg');
 }
 
-[data-theme='light'] a.enterprise span:not(.sl-badge)::after {
+[data-theme="light"] a.enterprise span:not(.sl-badge)::after {
     background-image: url('/public/premium-light.svg');
 }
-[data-theme='light']
-    a[aria-current='page'].enterprise
-    span:not(.sl-badge)::after {
+[data-theme="light"] a[aria-current='page'].enterprise span:not(.sl-badge)::after {
     background-image: url('/public/premium-dark.svg');
 }
 
-[data-theme='dark'] a.enterprise span:not(.sl-badge)::after {
+[data-theme="dark"] a.enterprise span:not(.sl-badge)::after {
     background-image: url('/public/premium-dark.svg');
 }
-[data-theme='dark']
-    a[aria-current='page'].enterprise
-    span:not(.sl-badge)::after {
+[data-theme="dark"] a[aria-current='page'].enterprise span:not(.sl-badge)::after {
     background-image: url('/public/premium-light.svg');
 }
 
