@@ -15,9 +15,7 @@ export const FieldTitle = (props: FieldTitleProps) => {
     const translateLabel = useTranslateLabel();
 
     if (label === true) {
-        throw new Error(
-            'Label parameter must be a string, a ReactElement or false'
-        );
+        throw new Error('Label parameter must be a ReactNode');
     }
 
     if (label === false || label === '') {

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { RaRecord } from '../../types';
 import { RecordContextProvider } from './RecordContext';
 
@@ -24,7 +23,7 @@ export const OptionalRecordContextProvider = <
     value,
     children,
 }: {
-    children: ReactElement;
+    children: React.ReactNode;
     value?: RecordType;
 }) =>
     value ? (

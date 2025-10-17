@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Children, ReactElement, ComponentType, createElement } from 'react';
+import { Children, ComponentType, createElement } from 'react';
 import { Location } from 'react-router-dom';
 
 import warning from '../util/warning';
@@ -12,7 +12,7 @@ export interface WithPermissionsChildrenParams {
 
 type WithPermissionsChildren = (
     params: WithPermissionsChildrenParams
-) => ReactElement;
+) => React.ReactNode;
 
 export interface WithPermissionsProps {
     authParams?: object;
