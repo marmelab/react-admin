@@ -183,8 +183,10 @@ export default defineConfig({
                         'referencemanyinputbase',
                         'referencemanytomanyinputbase',
                         'referenceoneinputbase',
+                        'formdataconsumer',
                         'usechoicescontext',
                         'useinput',
+                        'usesourcecontext',
                     ],
                 },
                 {

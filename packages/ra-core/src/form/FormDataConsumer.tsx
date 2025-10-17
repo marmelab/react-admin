@@ -101,13 +101,32 @@ export type FormDataConsumerRender<
 
 interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {
     children: FormDataConsumerRender<TFieldValues>;
+    /**
+     * @deprecated This prop will be removed in a future major release.
+     */
     form?: string;
+
+    /**
+     * @deprecated This prop will be removed in a future major release.
+     */
     record?: any;
+
+    /**
+     * @deprecated This prop will be removed in a future major release.
+     */
     source?: string;
+
+    /**
+     * @deprecated This prop will be removed in a future major release.
+     */
     [key: string]: any;
 }
 
 interface Props<TFieldValues extends FieldValues> extends ConnectedProps {
     formData: TFieldValues;
+
+    /**
+     * @deprecated This prop will be removed in a future major release.
+     */
     index?: number;
 }
