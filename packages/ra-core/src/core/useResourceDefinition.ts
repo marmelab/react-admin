@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import defaults from 'lodash/defaults';
+import defaults from 'lodash/defaults.js';
 
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useResourceContext } from './useResourceContext';

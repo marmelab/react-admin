@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
 
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';

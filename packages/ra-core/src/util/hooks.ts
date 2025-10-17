@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState, useCallback } from 'react';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 
 // thanks Kent C Dodds for the following helpers
 

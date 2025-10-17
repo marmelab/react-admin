@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { useRecordContext } from '../controller';
 import { ExtractRecordPaths } from '../types';
 

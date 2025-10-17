@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';

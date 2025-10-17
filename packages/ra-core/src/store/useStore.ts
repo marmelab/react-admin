@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 
 import { useEvent } from '../util';
 import { useStoreContext } from './useStoreContext';

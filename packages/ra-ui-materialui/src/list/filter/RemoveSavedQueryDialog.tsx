@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 import { useListContext, useTranslate } from 'ra-core';
 import {
     Button,

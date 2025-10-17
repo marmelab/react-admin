@@ -1,6 +1,6 @@
 import { useCallback, useRef } from 'react';
-import merge from 'lodash/merge';
-import set from 'lodash/set';
+import merge from 'lodash/merge.js';
+import set from 'lodash/set.js';
 import { useResourceContext } from '../../core';
 import { useDataProvider } from '../../dataProvider';
 import { useTranslate, useTranslateLabel } from '../../i18n';

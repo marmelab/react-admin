@@ -7,8 +7,8 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import clsx from 'clsx';
-import isEqual from 'lodash/isEqual';
-import merge from 'lodash/merge';
+import isEqual from 'lodash/isEqual.js';
+import merge from 'lodash/merge.js';
 import {
     useCreatePath,
     useCanAccess,

@@ -1,5 +1,5 @@
 import { Reducer } from 'react';
-import set from 'lodash/set';
+import set from 'lodash/set.js';
 
 import removeEmpty from '../../util/removeEmpty';
 import removeKey from '../../util/removeKey';

@@ -1,13 +1,16 @@
-import { internet, name } from 'faker/locale/en_US';
+import { faker } from '@faker-js/faker';
 
 import { RAFile, Sale } from '../../../types';
 import { Db } from './types';
 
 export const generateSales = (_: Db): Sale[] => {
     const randomSales = Array.from(Array(5).keys()).map(id => {
-        const first_name = name.firstName();
-        const last_name = name.lastName();
-        const email = internet.email(first_name, last_name);
+        const first_name = faker.person.firstName();
+        const last_name = faker.person.lastName();
+        const email = faker.internet.email({
+            firstName: first_name,
+            lastName: last_name,
+        });
 
         return {
             id: id + 1,

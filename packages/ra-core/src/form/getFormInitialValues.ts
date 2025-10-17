@@ -1,4 +1,4 @@
-import merge from 'lodash/merge';
+import merge from 'lodash/merge.js';
 import { RaRecord } from '../types';
 
 export default function getFormInitialValues(

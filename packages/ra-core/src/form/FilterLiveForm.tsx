@@ -1,9 +1,9 @@
 import * as React from 'react';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
-import get from 'lodash/get';
-import mergeWith from 'lodash/mergeWith';
-import set from 'lodash/set';
+import isEqual from 'lodash/isEqual.js';
+import cloneDeep from 'lodash/cloneDeep.js';
+import get from 'lodash/get.js';
+import mergeWith from 'lodash/mergeWith.js';
+import set from 'lodash/set.js';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import {
@@ -11,11 +11,8 @@ import {
     SourceContextValue,
     useResourceContext,
 } from '../core';
-import {
-    FormGroupsProvider,
-    getSimpleValidationResolver,
-    ValidateForm,
-} from '.';
+import { FormGroupsProvider } from './groups/FormGroupsProvider';
+import { getSimpleValidationResolver, type ValidateForm } from './validation';
 import { useDebouncedEvent } from '../util';
 import { useListContext } from '../controller/list/useListContext';
 

@@ -1,3 +1,4 @@
+import type {} from '@mui/material/themeCssVarsAugmentation';
 export * from './RichTextInput';
 export * from './buttons';
 export * from './RichTextInputToolbar';

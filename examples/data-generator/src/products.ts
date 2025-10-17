@@ -1,4 +1,4 @@
-import { random, lorem } from 'faker/locale/en';
+import { faker } from '@faker-js/faker';
 
 import { randomFloat, weightedBoolean } from './utils';
 import type { Db } from './types';
@@ -195,10 +195,10 @@ export const generateProducts = (db: Db): Product[] => {
                         '-' +
                         (index + 1) +
                         '.jpeg',
-                    description: lorem.paragraph(),
+                    description: faker.lorem.paragraph(),
                     stock: weightedBoolean(10)
                         ? 0
-                        : random.number({ min: 0, max: 150 }),
+                        : faker.number.int({ min: 0, max: 150 }),
                     sales: 0,
                 };
             }),
