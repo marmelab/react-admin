@@ -1,4 +1,4 @@
-import { random, lorem } from 'faker/locale/en';
+import { faker } from '@faker-js/faker';
 import { subDays, isAfter } from 'date-fns';
 
 import { randomDate, weightedArrayElement, weightedBoolean } from './utils';
@@ -40,12 +40,12 @@ export const generateReviews = (db: Db): Review[] => {
                             order_id: order.id,
                             product_id: product.product_id,
                             customer_id: order.customer_id,
-                            rating: random.number({ min: 1, max: 5 }),
+                            rating: faker.number.int({ min: 1, max: 5 }),
                             comment: Array.apply(
                                 null,
-                                Array(random.number({ min: 1, max: 5 }))
+                                Array(faker.number.int({ min: 1, max: 5 }))
                             )
-                                .map(() => lorem.sentences())
+                                .map(() => faker.lorem.sentences())
                                 .join('\n \r'),
                         };
                     }),

@@ -22,8 +22,8 @@ import {
     shallowEqual,
     useEvent,
 } from 'ra-core';
-import matches from 'lodash/matches';
-import pickBy from 'lodash/pickBy';
+import matches from 'lodash/matches.js';
+import pickBy from 'lodash/pickBy.js';
 
 const arePropsEqual = (prevProps, nextProps) =>
     prevProps.label === nextProps.label &&

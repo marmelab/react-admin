@@ -1,5 +1,5 @@
 import { useContext, useMemo } from 'react';
-import defaults from 'lodash/defaults';
+import defaults from 'lodash/defaults.js';
 
 import { ListContext } from './ListContext';
 import { ListControllerResult } from './useListController';

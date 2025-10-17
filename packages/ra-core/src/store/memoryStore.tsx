@@ -1,6 +1,6 @@
-import set from 'lodash/set';
-import unset from 'lodash/unset';
-import get from 'lodash/get';
+import set from 'lodash/set.js';
+import unset from 'lodash/unset.js';
+import get from 'lodash/get.js';
 import { Store } from './types';
 
 type Subscription = {

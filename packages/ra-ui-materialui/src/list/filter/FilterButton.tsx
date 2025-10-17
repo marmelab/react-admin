@@ -22,7 +22,7 @@ import BookmarkAddIcon from '@mui/icons-material/BookmarkAdd';
 import BookmarkRemoveIcon from '@mui/icons-material/BookmarkRemove';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import ContentFilter from '@mui/icons-material/FilterList';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 import {
     useFilterContext,
     useListContext,

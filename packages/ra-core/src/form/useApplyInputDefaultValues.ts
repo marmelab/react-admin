@@ -4,7 +4,7 @@ import {
     UseFieldArrayReturn,
     useFormContext,
 } from 'react-hook-form';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { useRecordContext } from '../controller';
 import { InputProps } from './useInput';
 import { useWrappedSource } from '../core';

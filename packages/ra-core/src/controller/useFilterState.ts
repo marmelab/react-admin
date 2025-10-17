@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from 'react';
-import debounce from 'lodash/debounce';
-import isEqual from 'lodash/isEqual';
+import debounce from 'lodash/debounce.js';
+import isEqual from 'lodash/isEqual.js';
 
 import { FilterPayload } from '../types';
 

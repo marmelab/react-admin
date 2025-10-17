@@ -13,7 +13,7 @@ import {
     UpdateManyParams,
     DeleteManyParams,
 } from 'ra-core';
-import pullAt from 'lodash/pullAt';
+import pullAt from 'lodash/pullAt.js';
 import localforage from 'localforage';
 
 /**

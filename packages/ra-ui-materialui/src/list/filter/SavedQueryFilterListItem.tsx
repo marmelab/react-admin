@@ -12,7 +12,7 @@ import {
     useThemeProps,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 import { useNavigate } from 'react-router-dom';
 import { stringify } from 'query-string';
 import { useListContext } from 'ra-core';

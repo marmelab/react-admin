@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { seed, address, internet, name } from 'faker/locale/en_GB';
+import { faker } from '@faker-js/faker';
 import { QueryClient } from '@tanstack/react-query';
 
 import {
@@ -32,20 +32,23 @@ export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
-seed(123); // we want consistent results
+faker.seed(123); // we want consistent results
 
 const data = {
     customers: Array.from(Array(900).keys()).map(id => {
-        const first_name = name.firstName();
-        const last_name = name.lastName();
-        const email = internet.email(first_name, last_name);
+        const first_name = faker.person.firstName();
+        const last_name = faker.person.lastName();
+        const email = faker.internet.email({
+            firstName: first_name,
+            lastName: last_name,
+        });
 
         return {
             id,
             first_name,
             last_name,
             email,
-            city: address.city(),
+            city: faker.location.city(),
         };
     }),
 };

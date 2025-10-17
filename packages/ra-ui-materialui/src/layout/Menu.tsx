@@ -6,7 +6,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 import clsx from 'clsx';
 
 import { DRAWER_WIDTH, CLOSED_DRAWER_WIDTH } from './Sidebar';

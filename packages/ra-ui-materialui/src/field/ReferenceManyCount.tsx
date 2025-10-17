@@ -14,7 +14,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import ErrorIcon from '@mui/icons-material/Error';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';

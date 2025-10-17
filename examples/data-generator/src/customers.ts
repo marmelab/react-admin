@@ -1,4 +1,4 @@
-import { date, name, internet, address } from 'faker/locale/en';
+import { faker } from '@faker-js/faker';
 
 import { randomDate, weightedBoolean } from './utils';
 
@@ -12,10 +12,13 @@ export const generateCustomers = (): Customer[] => {
         const last_seen = randomDate(first_seen);
         const has_ordered =
             weightedBoolean(25) && numberOfCustomers < maxCustomers;
-        const first_name = name.firstName();
-        const last_name = name.lastName();
-        const email = internet.email(first_name, last_name);
-        const birthday = has_ordered ? date.past(60) : null;
+        const first_name = faker.person.firstName();
+        const last_name = faker.person.lastName();
+        const email = faker.internet.email({
+            firstName: first_name,
+            lastName: last_name,
+        });
+        const birthday = has_ordered ? faker.date.recent({ days: 60 }) : null;
         const avatar = has_ordered
             ? 'https://marmelab.com/posters/avatar-' +
               numberOfCustomers +
@@ -31,10 +34,12 @@ export const generateCustomers = (): Customer[] => {
             first_name,
             last_name,
             email,
-            address: has_ordered ? address.streetAddress() : null,
-            zipcode: has_ordered ? address.zipCode() : null,
-            city: has_ordered ? address.city() : null,
-            stateAbbr: has_ordered ? address.stateAbbr() : null,
+            address: has_ordered ? faker.location.streetAddress() : null,
+            zipcode: has_ordered ? faker.location.zipCode() : null,
+            city: has_ordered ? faker.location.city() : null,
+            stateAbbr: has_ordered
+                ? faker.location.state({ abbreviated: true })
+                : null,
             avatar,
             birthday: birthday ? birthday.toISOString() : null,
             first_seen: first_seen.toISOString(),

@@ -3,7 +3,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import {
     FilterLiveForm,
     useFilterContext,

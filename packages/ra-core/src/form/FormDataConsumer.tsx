@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { useFormContext, FieldValues } from 'react-hook-form';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { useFormValues } from './useFormValues';
 import { useWrappedSource } from '../core';
 

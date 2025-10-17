@@ -20,7 +20,7 @@ import {
     useEvent,
     useGetArrayInputNewItemDefaults,
 } from 'ra-core';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import {
     SimpleFormIteratorClasses,

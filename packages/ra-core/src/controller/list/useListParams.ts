@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
-import lodashDebounce from 'lodash/debounce';
+import lodashDebounce from 'lodash/debounce.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';

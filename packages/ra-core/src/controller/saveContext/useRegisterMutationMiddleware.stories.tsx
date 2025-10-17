@@ -11,8 +11,8 @@ import {
     SimpleForm,
     useRegisterMutationMiddleware,
 } from 'react-admin';
-import get from 'lodash/get';
-import set from 'lodash/set';
+import get from 'lodash/get.js';
+import set from 'lodash/set.js';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 export default {

@@ -1,3 +1,4 @@
+import type {} from '@mui/material/themeCssVarsAugmentation';
 export * from './auth';
 export * from './button';
 export * from './theme';

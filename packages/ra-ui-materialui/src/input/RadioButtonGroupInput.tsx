@@ -13,7 +13,7 @@ import {
     RadioGroup,
     type RadioGroupProps,
 } from '@mui/material';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import {
     useInput,
     FieldTitle,

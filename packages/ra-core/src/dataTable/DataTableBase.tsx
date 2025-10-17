@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useEffect, useMemo, useRef, type FC, type ReactNode } from 'react';
-import union from 'lodash/union';
-import difference from 'lodash/difference';
+import union from 'lodash/union.js';
+import difference from 'lodash/difference.js';
 
 import { OptionalResourceContextProvider, useResourceContext } from '../core';
 import { useEvent } from '../util';

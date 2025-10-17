@@ -1,11 +1,4 @@
-import {
-    address,
-    company,
-    internet,
-    lorem,
-    phone,
-    random,
-} from 'faker/locale/en_US';
+import { faker } from '@faker-js/faker';
 import { randomDate } from './utils';
 
 import { defaultCompanySectors } from '../../../root/defaultConfiguration';
@@ -18,35 +11,42 @@ const regex = /\W+/;
 
 export const generateCompanies = (db: Db): Required<Company>[] => {
     return Array.from(Array(55).keys()).map(id => {
-        const name = company.companyName();
+        const name = faker.company.name();
         return {
             id,
             name: name,
             logo: {
-                title: lorem.text(1),
+                title: faker.lorem.text(),
                 src: `./logos/${id}.png`,
             } as RAFile,
-            sector: random.arrayElement(defaultCompanySectors),
-            size: random.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
+            sector: faker.helpers.arrayElement(defaultCompanySectors),
+            size: faker.helpers.arrayElement(sizes) as 1 | 10 | 50 | 250 | 500,
             linkedin_url: `https://www.linkedin.com/company/${name
                 .toLowerCase()
                 .replace(regex, '_')}`,
-            website: internet.url(),
-            phone_number: phone.phoneNumber(),
-            address: address.streetAddress(),
-            zipcode: address.zipCode(),
-            city: address.city(),
-            stateAbbr: address.stateAbbr(),
+            website: faker.internet.url(),
+            phone_number: faker.phone.number(),
+            address: faker.location.streetAddress(),
+            zipcode: faker.location.zipCode(),
+            city: faker.location.city(),
+            stateAbbr: faker.location.state({ abbreviated: true }),
             nb_contacts: 0,
             nb_deals: 0,
             // at least 1/3rd of companies for Jane Doe
             sales_id:
-                random.number(2) === 0 ? 0 : random.arrayElement(db.sales).id,
+                faker.number.int(2) === 0
+                    ? 0
+                    : faker.helpers.arrayElement(db.sales).id,
             created_at: randomDate().toISOString(),
-            description: lorem.paragraph(),
-            revenue: random.arrayElement(['$1M', '$10M', '$100M', '$1B']),
-            tax_identifier: random.alphaNumeric(10),
-            country: random.arrayElement(['USA', 'France', 'UK']),
+            description: faker.lorem.paragraph(),
+            revenue: faker.helpers.arrayElement([
+                '$1M',
+                '$10M',
+                '$100M',
+                '$1B',
+            ]),
+            tax_identifier: faker.string.alphanumeric({ length: 10 }),
+            country: faker.helpers.arrayElement(['USA', 'France', 'UK']),
             context_links: [],
         };
     });

@@ -1,4 +1,4 @@
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useRecordContext } from '../record';

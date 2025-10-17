@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { address, internet, name } from 'faker/locale/en_GB';
+import { faker } from '@faker-js/faker';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
 import {
@@ -119,16 +119,19 @@ describe('<PrevNextButtons />', () => {
         it('should limit the number of items fetched from the data provider', async () => {
             const data = {
                 customers: Array.from(Array(900).keys()).map(id => {
-                    const first_name = name.firstName();
-                    const last_name = name.lastName();
-                    const email = internet.email(first_name, last_name);
+                    const first_name = faker.person.firstName();
+                    const last_name = faker.person.lastName();
+                    const email = faker.internet.email({
+                        firstName: first_name,
+                        lastName: last_name,
+                    });
 
                     return {
                         id,
                         first_name,
                         last_name,
                         email,
-                        city: address.city(),
+                        city: faker.location.city(),
                     };
                 }),
             };

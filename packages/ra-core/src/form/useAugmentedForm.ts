@@ -11,7 +11,7 @@ import {
     useForm,
     UseFormProps,
 } from 'react-hook-form';
-import merge from 'lodash/merge';
+import merge from 'lodash/merge.js';
 import { RaRecord } from '../types';
 import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import { FC } from 'react';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 import clsx from 'clsx';
 
 import { DashboardMenuItem, useSidebarState } from 'react-admin';

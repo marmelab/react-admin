@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { parse } from 'query-string';
 import { Location, useLocation } from 'react-router-dom';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 import { RaRecord } from '../types';
 
 /**

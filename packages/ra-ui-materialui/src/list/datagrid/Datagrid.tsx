@@ -24,8 +24,8 @@ import {
 } from 'ra-core';
 import { Table, TableProps, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
-import union from 'lodash/union';
-import difference from 'lodash/difference';
+import union from 'lodash/union.js';
+import difference from 'lodash/difference.js';
 
 import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';

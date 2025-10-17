@@ -1,7 +1,7 @@
 import { useContext, useMemo } from 'react';
 import { DatagridProps } from './Datagrid';
 import DatagridContext, { DatagridContextValue } from './DatagridContext';
-import defaults from 'lodash/defaults';
+import defaults from 'lodash/defaults.js';
 
 export const useDatagridContext = (
     props?: DatagridProps

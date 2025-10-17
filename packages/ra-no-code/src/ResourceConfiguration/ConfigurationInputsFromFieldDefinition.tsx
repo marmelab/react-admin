@@ -4,7 +4,7 @@ import {
     InferredElementDescription,
     SelectInput,
 } from 'react-admin';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import { useResourcesConfiguration } from './useResourcesConfiguration';
 
 export const ConfigurationInputsFromFieldDefinition = ({

@@ -1,4 +1,4 @@
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce.js';
 
 /**
  * A version of lodash/debounce that always returns a promise but wait for the debounced function to return to resolve it.

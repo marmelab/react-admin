@@ -1,5 +1,5 @@
-import merge from 'lodash/merge';
-import get from 'lodash/get';
+import merge from 'lodash/merge.js';
+import get from 'lodash/get.js';
 import pluralize from 'pluralize';
 import {
     DataProvider,

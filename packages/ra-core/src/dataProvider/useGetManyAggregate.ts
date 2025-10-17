@@ -5,7 +5,7 @@ import {
     useQuery,
     UseQueryOptions,
 } from '@tanstack/react-query';
-import union from 'lodash/union';
+import union from 'lodash/union.js';
 
 import { UseGetManyHookValue } from './useGetMany';
 import { Identifier, RaRecord, GetManyParams, DataProvider } from '../types';

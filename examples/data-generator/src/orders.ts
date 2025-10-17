@@ -1,4 +1,4 @@
-import { random } from 'faker/locale/en';
+import { faker } from '@faker-js/faker';
 import { isAfter, subDays } from 'date-fns';
 
 import {
@@ -23,7 +23,7 @@ export const generateOrders = (db: Db): Order[] => {
         const basket = Array.from(Array(nbProducts).keys()).map(() => {
             let product_id;
             do {
-                product_id = random.number({
+                product_id = faker.number.int({
                     min: 0,
                     max: 10 * 13 - 1,
                 });
@@ -46,20 +46,24 @@ export const generateOrders = (db: Db): Order[] => {
         );
 
         const delivery_fees = randomFloat(3, 8);
-        const tax_rate = random.arrayElement([0.12, 0.17, 0.2]);
+        const tax_rate = faker.helpers.arrayElement([0.12, 0.17, 0.2]);
         const taxes = parseFloat(
             ((total_ex_taxes + delivery_fees) * tax_rate).toFixed(2)
         );
-        const customer = random.arrayElement(realCustomers);
+        const customer = faker.helpers.arrayElement(realCustomers);
         const date = randomDate(customer.first_seen, customer.last_seen);
 
         const status: OrderStatus =
-            isAfter(date, aMonthAgo) && random.boolean()
+            isAfter(date, aMonthAgo) && faker.datatype.boolean()
                 ? 'ordered'
                 : weightedArrayElement(['delivered', 'cancelled'], [10, 1]);
         return {
             id,
-            reference: random.alphaNumeric(6).toUpperCase(),
+            reference: faker.string
+                .alphanumeric({
+                    length: 8,
+                })
+                .toUpperCase(),
             date: date.toISOString(),
             customer_id: customer.id,
             basket: basket,

@@ -12,15 +12,14 @@
         "dist",
         "src"
     ],
-    "main": "dist/cjs/index.js",
-    "module": "dist/esm/index.js",
-    "types": "dist/cjs/index.d.ts",
+    "zshy": "./src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "type": "module",
     "sideEffects": false,
     "scripts": {
-        "build": "yarn run build-cjs && yarn run build-esm",
-        "build-cjs": "rimraf ./dist/cjs && tsc --outDir dist/cjs",
-        "build-esm": "rimraf ./dist/esm && tsc --outDir dist/esm --module es2015",
-        "watch": "tsc --outDir dist/esm --module es2015 --watch"
+        "build": "zshy"
     },
     "dependencies": {
         "@tiptap/core": "^2.0.3",
@@ -58,9 +57,16 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.53.0",
-        "rimraf": "^3.0.2",
         "tippy.js": "^6.3.7",
-        "typescript": "^5.1.3"
+        "typescript": "^5.1.3",
+        "zshy": "^0.4.4"
     },
-    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7"
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.cts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
+        }
+    }
 }

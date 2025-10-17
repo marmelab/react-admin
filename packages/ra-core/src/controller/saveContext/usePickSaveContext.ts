@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import pick from 'lodash/pick';
+import pick from 'lodash/pick.js';
 import { SaveContextValue } from './SaveContext';
 
 /**

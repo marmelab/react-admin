@@ -11,7 +11,7 @@ import {
     type UseUpdateOptions,
     type RaRecord,
 } from 'ra-core';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 import { styled } from '@mui/material/styles';
 import { Box, IconButton, type SxProps } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
