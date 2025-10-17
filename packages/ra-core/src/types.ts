@@ -343,10 +343,10 @@ export type AdminChildren =
     | Iterable<ReactNode | RenderResourcesFunction>
     | ReactNode;
 
-export type TitleComponent = string | ReactElement<any>;
+export type TitleComponent = ReactNode;
 export type CatchAllComponent = ComponentType<{ title?: TitleComponent }>;
 
-export type LoginComponent = ComponentType<{}> | ReactElement<any>;
+export type LoginComponent = ComponentType<{}> | ReactNode;
 export type DashboardComponent = ComponentType<WithPermissionsChildrenParams>;
 
 export interface CoreLayoutProps {

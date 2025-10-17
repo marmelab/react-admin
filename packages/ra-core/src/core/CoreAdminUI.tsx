@@ -6,7 +6,6 @@ import {
     createElement,
     useState,
     ErrorInfo,
-    ReactElement,
 } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
@@ -154,7 +153,7 @@ export interface CoreAdminUIProps {
         errorInfo?: ErrorInfo;
         error: Error;
         resetErrorBoundary: (args) => void;
-    }) => ReactElement;
+    }) => React.ReactNode;
 
     /**
      * The main app layout component
