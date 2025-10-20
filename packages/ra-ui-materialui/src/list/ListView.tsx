@@ -196,7 +196,7 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      *     </List>
      * );
      */
-    aside?: ReactElement;
+    aside?: React.ReactNode;
 
     /**
      * A class name to apply to the root div element
@@ -318,7 +318,7 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      *     </List>
      * );
      */
-    empty?: ReactElement | false;
+    empty?: React.ReactNode;
 
     /**
      * Set to true to return null while the list is loading.
@@ -404,7 +404,7 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      *     </List>
      * );
      */
-    title?: string | ReactElement | false;
+    title?: React.ReactNode;
 
     /**
      * The CSS styles to apply to the component.

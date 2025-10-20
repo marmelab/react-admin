@@ -1,6 +1,6 @@
 import * as React from 'react';
 import useScrollTrigger from '@mui/material/useScrollTrigger';
-import Slide from '@mui/material/Slide';
+import Slide, { SlideProps } from '@mui/material/Slide';
 
 export const HideOnScroll = (props: HideOnScrollProps) => {
     const { children, className } = props;
@@ -17,7 +17,4 @@ export const HideOnScroll = (props: HideOnScrollProps) => {
     );
 };
 
-export interface HideOnScrollProps {
-    children: React.ReactElement;
-    className?: string;
-}
+export type HideOnScrollProps = Pick<SlideProps, 'children' | 'className'>;

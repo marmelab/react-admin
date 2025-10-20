@@ -60,14 +60,20 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         if (!filters) return [];
         const values = filterValues;
-        return filters.filter((filterElement: React.ReactElement) => {
-            const filterValue = get(values, filterElement.props.source);
-            return (
-                filterElement.props.alwaysOn ||
-                displayedFilters[filterElement.props.source] ||
-                !isEmptyValue(filterValue)
-            );
-        });
+        return filters.filter(
+            (filterElement): filterElement is React.ReactElement => {
+                if (!React.isValidElement(filterElement)) {
+                    return false;
+                }
+
+                const filterValue = get(values, filterElement.props.source);
+                return (
+                    filterElement.props.alwaysOn ||
+                    displayedFilters[filterElement.props.source] ||
+                    !isEmptyValue(filterValue)
+                );
+            }
+        );
     };
 
     const handleHide = useCallback(
@@ -77,7 +83,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     return (
         <>
-            {getShownFilters().map((filterElement: React.ReactElement) => (
+            {getShownFilters().map(filterElement => (
                 <FilterFormInput
                     key={filterElement.key || filterElement.props.source}
                     filterElement={filterElement}

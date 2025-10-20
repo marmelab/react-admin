@@ -39,7 +39,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 
 | Prop                      | Required | Type               | Default | Description                                                |
 | ------------------------- | -------- | ------------------ | ------- | ---------------------------------------------------------- |
-| `children`                | Required | `element`          | -       | The form content.                                          |
+| `children`                | Required | `ReactNode`          | -       | The form content.                                          |
 | `component`               | Optional | `elementType`      | `CardContent` | The component used to wrap the form.                |
 | `defaultValues`           | Optional | `object| function` | -       | The default values of the record.                          |
 | `id`                      | Optional | `string`           | -       | The id of the underlying `<form>` tag.                     |
@@ -47,7 +47,7 @@ Here are all the props you can set on the `<SimpleForm>` component:
 | `onSubmit`                | Optional | `function`         | `save`  | A callback to call when the form is submitted.             |
 | `sanitize EmptyValues`    | Optional | `boolean`          | -       | Set to `true` to remove empty values from the form state.  |
 | `sx`                      | Optional | `object`           | -       | Custom styles                                              |
-| `toolbar`                 | Optional | `element`          | -       | The toolbar component.                                     |
+| `toolbar`                 | Optional | `ReactNode`          | -       | The toolbar component.                                     |
 | `validate`                | Optional | `function`         | -       | A function to validate the form values.                    |
 | `warnWhen UnsavedChanges` | Optional | `boolean`          | -       | Set to `true` to warn the user when leaving the form with unsaved changes. |
 

@@ -6,7 +6,6 @@ import {
     cloneElement,
     isValidElement,
     type ReactElement,
-    type ReactNode,
     useState,
 } from 'react';
 import clsx from 'clsx';
@@ -116,14 +115,14 @@ const DefaultComponent = ({ children }) => (
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps {
-    children?: ReactNode;
+    children?: React.ReactNode;
     className?: string;
     component?: ComponentType<any>;
     resource?: string;
     formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement | false;
+    toolbar?: React.ReactNode;
     sx?: SxProps<Theme>;
 }
 
