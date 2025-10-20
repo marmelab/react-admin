@@ -150,3 +150,9 @@ a[aria-current='page'].enterprise span:not(.sl-badge)::after {
         background-image: url('/public/premium-light.svg');
     }
 }
+
+table {
+    display: table;
+    min-width: 100%;
+    table-layout: auto;
+}
