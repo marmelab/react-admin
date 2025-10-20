@@ -838,7 +838,7 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 
 ## `<DeleteButton>`
 
-Delete the current record.
+Deletes the current record.
 
 ![Delete button](./img/DeleteButton.png)
 
@@ -866,6 +866,8 @@ You can also call it with a record and a resource:
 <DeleteButton record={{ id: 123, author: 'John Doe' }} resource="comments" />
 ```
 {% endraw %}
+
+**Tip**: React-admin provides a [`<SoftDeleteButton>`](./SoftDeleteButton.md) variant, which archives the record instead of deleting it. Check out the [Soft Delete documentation](./SoftDeleteDataProvider.md) for more information.
 
 ### Props
 
@@ -1405,7 +1407,7 @@ export const PostList = () => (
     <List>
         <DataTable
             bulkActionsToolbar={
-                <BulkActionsToolbar selectAllButton={PostSelectAllButton}>
+                <BulkActionsToolbar selectAllButton={<PostSelectAllButton />}>
                     <BulkDeleteButton />
                 </BulkActionsToolbar>
             }

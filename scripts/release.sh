@@ -99,14 +99,17 @@ retry_step "make build" "make build"
 
 # Step 3: EE Tests
 if [ -d $RA_ENTERPRISE_PATH ]; then
-    retry_step "Run the EE tests" "
+    current_dir=$(pwd)
+    retry_step "Run the EE build" "
         cp -r packages/* \$RA_ENTERPRISE_PATH/node_modules &&
         cd \$RA_ENTERPRISE_PATH &&
         rm -rf node_modules/react-admin/node_modules/@mui &&
-        make build &&
-        CI=true make test
+        make build
     "
-    cd -
+    retry_step "Run the EE tests" "
+        CI=true DEBUG_PRINT_LIMIT=3 make test
+    "
+    cd "$current_dir"
 else
     manual_step "Run the EE tests" "
 Cannot find the $RA_ENTERPRISE_PATH folder in the repository parent directory

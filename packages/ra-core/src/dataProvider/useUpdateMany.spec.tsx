@@ -530,6 +530,7 @@ describe('useUpdateMany', () => {
     describe('middlewares', () => {
         it('when pessimistic, it accepts middlewares and displays result and success side effects when dataProvider promise resolves', async () => {
             render(<WithMiddlewares mutationMode="pessimistic" timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -569,6 +570,7 @@ describe('useUpdateMany', () => {
                     timeout={10}
                 />
             );
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).toBeNull();
@@ -592,6 +594,7 @@ describe('useUpdateMany', () => {
 
         it('when optimistic, it accepts middlewares and displays result and success side effects right away', async () => {
             render(<WithMiddlewares mutationMode="optimistic" timeout={10} />);
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -616,6 +619,7 @@ describe('useUpdateMany', () => {
                     timeout={10}
                 />
             );
+            await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
@@ -637,6 +641,7 @@ describe('useUpdateMany', () => {
 
         it('when undoable, it accepts middlewares and displays result and success side effects right away and fetched on confirm', async () => {
             render(<WithMiddlewares mutationMode="undoable" timeout={10} />);
+            await screen.findByText('Hello');
             act(() => {
                 screen.getByText('Update title').click();
             });

@@ -154,7 +154,7 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 <ReferenceInput
      source="company_id"
      reference="companies"
-     enableGetChoices={({ q }) => !!(q && q.length >= 2)}
+     enableGetChoices={({ q }) => q && q.length >= 2}
 />
 ```
 
@@ -428,8 +428,7 @@ You can learn more about the `create` prop in the documentation of the selection
 If the reference resource is a tree, use [`<ReferenceNodeInput>`](./ReferenceNodeInput.md) instead of `<ReferenceInput>`.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

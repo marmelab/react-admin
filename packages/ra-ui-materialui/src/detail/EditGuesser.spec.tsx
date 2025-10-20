@@ -1,53 +1,35 @@
 import * as React from 'react';
 import expect from 'expect';
-import { render, screen, waitFor } from '@testing-library/react';
-import { CoreAdminContext } from 'ra-core';
+import { render, screen } from '@testing-library/react';
 
-import { EditGuesser } from './EditGuesser';
-import { ThemeProvider } from '../theme/ThemeProvider';
+import { EditGuesser } from './EditGuesser.stories';
 
 describe('<EditGuesser />', () => {
     it('should log the guessed Edit view based on the fetched record', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
-        const dataProvider = {
-            getOne: () =>
-                Promise.resolve({
-                    data: {
-                        id: 123,
-                        author: 'john doe',
-                        post_id: 6,
-                        score: 3,
-                        body: "Queen, tossing her head through the wood. 'If it had lost something; and she felt sure it.",
-                        created_at: new Date('2012-08-02'),
-                        tags_ids: [1, 2],
-                    },
-                }),
-            getMany: () => Promise.resolve({ data: [] }),
-        };
-        render(
-            <ThemeProvider>
-                <CoreAdminContext dataProvider={dataProvider as any}>
-                    <EditGuesser resource="comments" id={123} enableLog />
-                </CoreAdminContext>
-            </ThemeProvider>
-        );
-        await waitFor(() => {
-            screen.getByDisplayValue('john doe');
-        });
+        render(<EditGuesser />);
+        await screen.findByDisplayValue('john doe');
         expect(logSpy).toHaveBeenCalledWith(`Guessed Edit:
 
-import { DateInput, Edit, NumberInput, ReferenceArrayInput, ReferenceInput, SimpleForm, TextInput } from 'react-admin';
+import { ArrayInput, BooleanInput, DateInput, Edit, NumberInput, ReferenceArrayInput, ReferenceInput, SimpleForm, SimpleFormIterator, TextArrayInput, TextInput } from 'react-admin';
 
-export const CommentEdit = () => (
+export const BookEdit = () => (
     <Edit>
         <SimpleForm>
             <TextInput source="id" />
-            <TextInput source="author" />
+            <ArrayInput source="authors"><SimpleFormIterator><TextInput source="id" />
+<TextInput source="name" />
+<DateInput source="dob" /></SimpleFormIterator></ArrayInput>
             <ReferenceInput source="post_id" reference="posts" />
             <NumberInput source="score" />
             <TextInput source="body" />
+            <TextInput source="description" />
             <DateInput source="created_at" />
             <ReferenceArrayInput source="tags_ids" reference="tags" />
+            <TextInput source="url" />
+            <TextInput source="email" />
+            <BooleanInput source="isAlreadyPublished" />
+            <TextArrayInput source="genres" />
         </SimpleForm>
     </Edit>
 );`);

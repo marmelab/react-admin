@@ -5,15 +5,17 @@ import {
     useRecordContext,
     TestMemoryRouter,
     IsOffline,
+    GetOneResult,
 } from 'ra-core';
 import { Alert, Box, Card, Stack, ThemeOptions } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 import { onlineManager } from '@tanstack/react-query';
 
+import { Layout } from '../layout';
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
 import { SimpleShowLayout } from './SimpleShowLayout';
-import { EditButton } from '../button';
+import { EditButton, Button } from '../button';
 import TopToolbar from '../layout/TopToolbar';
 import { Show, ShowProps } from './Show';
 import { defaultLightTheme } from '../theme';
@@ -366,6 +368,73 @@ Offline.argTypes = {
         mapping: {
             default: undefined,
             custom: <CustomOffline />,
+        },
+    },
+};
+
+const CustomError = () => {
+    return <Alert severity="error">Something went wrong!</Alert>;
+};
+
+export const FetchError = ({ error }: { error?: React.ReactNode }) => {
+    let rejectGetOne: (() => void) | null = null;
+    const errorDataProvider = {
+        ...dataProvider,
+        getOne: () => {
+            return new Promise<GetOneResult>((_, reject) => {
+                rejectGetOne = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <TestMemoryRouter initialEntries={['/books/1/show']}>
+            <Admin
+                dataProvider={errorDataProvider}
+                layout={({ children }) => (
+                    <Layout>
+                        <Button
+                            onClick={() => {
+                                rejectGetOne && rejectGetOne();
+                            }}
+                        >
+                            Reject loading
+                        </Button>
+                        {children}
+                    </Layout>
+                )}
+            >
+                <Resource
+                    name="books"
+                    list={<p>List view</p>}
+                    show={() => (
+                        <Show error={error}>
+                            <SimpleShowLayout>
+                                <TextField source="title" />
+                                <TextField source="author" />
+                                <TextField source="summary" />
+                                <TextField source="year" />
+                            </SimpleShowLayout>
+                        </Show>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
+
+FetchError.args = {
+    error: 'custom',
+};
+
+FetchError.argTypes = {
+    error: {
+        name: 'Error component',
+        control: { type: 'radio' },
+        options: ['default', 'custom'],
+        mapping: {
+            default: undefined,
+            custom: <CustomError />,
         },
     },
 };

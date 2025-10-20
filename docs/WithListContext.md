@@ -12,13 +12,13 @@ Use it to render a list of records already fetched.
 
 ## Usage
 
-The most common use case for `<WithListContext>` is to build a custom list view on-the-fly, without creating a new component, in a place where records are available inside a `ListContext`. 
+The most common use case for `<WithListContext>` is to build a custom list view on-the-fly, without creating a new component, in a place where records are available inside a `ListContext`.
 
 For instance, a list of book tags fetched via [`<ReferenceArrayField>`](./ReferenceArrayField.md): 
 
 ```jsx
 import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
-import { Chip, Stack } from '@mui/material';
+import { Chip, Stack, Typography } from '@mui/material';
 
 const BookList = () => (
     <List>
@@ -27,15 +27,18 @@ const BookList = () => (
             <DataTable.Col source="title" />
             <DataTable.Col source="tag_ids" label="Tags">
                 <ReferenceArrayField reference="tags" source="tag_ids">
-                    <WithListContext render={({ isPending, data }) => (
-                        !isPending && (
+                    <WithListContext
+                        loading={<Typography>Loading tags...</Typography>}
+                        error={<Typography>Error while loading tags</Typography>}
+                        empty={<Typography>No associated tags</Typography>}
+                        render={({data}) => (
                             <Stack direction="row" spacing={1}>
                                 {data.map(tag => (
                                     <Chip key={tag.id} label={tag.name} />
                                 ))}
                             </Stack>
-                        )
-                    )} />
+                        )}
+                    />
                 </ReferenceArrayField>
             </DataTable.Col>
         </DataTable>
@@ -45,10 +48,11 @@ const BookList = () => (
 
 ![List of tags](./img/reference-array-field.png)
 
-The equivalent with `useListContext` would require an intermediate component:
+The equivalent with `useListContext` would require an intermediate component, manually handling the loading, error, and empty states:
 
 ```jsx
 import { List, DataTable, ReferenceArrayField, WithListContext } from 'react-admin';
+import { Chip, Stack, Typography } from '@mui/material';
 
 const BookList = () => (
     <List>
@@ -65,24 +69,161 @@ const BookList = () => (
 );
 
 const TagList = () => {
-    const { isPending, data } = useListContext();
-    return isPending 
-        ? null
-        : (
-            <Stack direction="row" spacing={1}>
-                {data.map(tag => (
-                    <Chip key={tag.id} label={tag.name} />
-                ))}
-            </Stack>
-        );
+    const { isPending, error, data, total } = useListContext();
+
+    if (isPending) {
+        return <Typography>Loading tags...</Typography>;
+    }
+
+    if (error) {
+        return <Typography>Error while loading tags</Typography>;
+    }
+
+    if (data == null || data.length === 0 || total === 0) {
+        return <Typography>No associated tags</Typography>;
+    }
+
+    return (
+        <Stack direction="row" spacing={1}>
+            {data.map(tag => (
+                <Chip key={tag.id} label={tag.name}/>
+            ))}
+        </Stack>
+    );
 };
 ```
 
 Whether you use `<WithListContext>` or `useListContext` is a matter of coding style.
 
+## Standalone usage
+
+You can also use `<WithListContext>` outside of a `ListContext` by filling `data`, `total`, `errorState`, and `isPending` properties manually.
+
+```jsx
+import { WithListContext } from 'react-admin';
+import { Chip, Stack, Typography } from '@mui/material';
+
+const TagList = ({ data, isPending }) => (
+    <WithListContext
+        data={data}
+        isPending={isPending}
+        loading={<Typography>Loading tags...</Typography>}
+        empty={<Typography>No associated tags</Typography>}
+        render={({ data }) => (
+            <Stack direction="row" spacing={1}>
+                {data.map(tag => (
+                    <Chip key={tag.id} label={tag.name} />
+                ))}
+            </Stack>
+        )}
+    />
+);
+```
+
 ## Props
 
 `<WithListContext>` accepts a single `render` prop, which should be a function.
+
+| Prop         | Required | Type           | Default | Description                                                                               |
+|--------------|----------|----------------|---------|-------------------------------------------------------------------------------------------|
+| `children`   | Optional | `ReactNode`    |         | The components rendered in the list context.                                              |
+| `data`       | Optional | `RecordType[]` |         | The list data in standalone usage.                                                        |
+| `empty`      | Optional | `ReactNode`    |         | The component to display when the data is empty.                                          |
+| `errorState` | Optional | `Error`        |         | The error in standalone usage.                                                            |
+| `error`      | Optional | `ReactNode`    |         | The component to display in case of error.                                                |
+| `isPending`  | Optional | `boolean`      |         | Determine if the list is loading in standalone usage.                                     |
+| `loading`    | Optional | `ReactNode`    |         | The component to display while checking authorizations.                                   |
+| `offline`    | Optional | `ReactNode`    |         | The component to display when there is no connectivity to load data and no data in cache. |
+| `render`     | Required | `function`     |         | The function to render the data                                                           |
+| `total`      | Optional | `number`       |         | The total number of data in the list in standalone usage.                                 |
+
+## `empty`
+
+Use `empty` to display a message when the list is empty.
+
+If `empty` is not provided, the render function will be called with empty data.
+
+```jsx
+<WithListContext
+    empty={<p>no books</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+/>
+```
+
+## `error`
+
+Use `error` to display a message when an error is thrown.
+
+If `error` is not provided, the render function will be called with the error.
+
+```jsx
+<WithListContext
+    error={<p>Error while loading books...</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+/>
+```
+
+## `loading`
+
+Use `loading` to display a loader while data is loading.
+
+If `loading` is not provided, the render function will be called with `isPending` as true and no data.
+
+```jsx
+<WithListContext
+    loading={<p>loading...</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+/>
+```
+
+## `offline`
+
+Use `offline` to display a component when there is no connectivity to load data and no data in cache.
+
+If `offline` is not provided, the render function will be called with `isPaused` as true and no data.
+
+```jsx
+<WithListContext
+    offline={<p>Offline</p>}
+    render={({ data }) => (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, published on
+                    {book.published_at}
+                </li>
+            ))}
+        </ul>
+    )}
+/>
+```
 
 ## `render`
 
@@ -223,7 +364,7 @@ const LineChart = ({ data }) => {
 Another use case is to create a button that refreshes the current list. As the [`ListContext`](./useListContext.md) exposes the `refetch` function, it's as simple as:
 
 ```jsx
-import { WithListContext } from 'react-admin'; 
+import { WithListContext } from 'react-admin';
 
 const RefreshListButton = () => (
     <WithListContext render={({ refetch }) => (

@@ -92,10 +92,11 @@ export const useCreateController = <
         MutationOptionsError,
         ResultRecordType
     >(resource, undefined, {
-        onSuccess: async (data, variables, context) => {
+        onSuccess: async (...args) => {
             if (onSuccess) {
-                return onSuccess(data, variables, context);
+                return onSuccess(...args);
             }
+            const [data] = args;
             notify(`resources.${resource}.notifications.created`, {
                 type: 'info',
                 messageArgs: {
@@ -108,10 +109,11 @@ export const useCreateController = <
             });
             redirect(finalRedirectTo, resource, data.id, data);
         },
-        onError: (error: MutationOptionsError, variables, context) => {
+        onError: (...args) => {
             if (onError) {
-                return onError(error, variables, context);
+                return onError(...args);
             }
+            const [error] = args;
             // Don't trigger a notification if this is a validation error
             // (notification will be handled by the useNotifyIsFormInvalid hook)
             const validationErrors = (error as HttpError)?.body?.errors;

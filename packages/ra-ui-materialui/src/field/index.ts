@@ -18,6 +18,7 @@ export * from './ReferenceOneField';
 export * from './RichTextField';
 export * from './sanitizeFieldRestProps';
 export * from './SelectField';
+export * from './TextArrayField';
 export * from './TextField';
 export * from './TranslatableFields';
 export * from './TranslatableFieldsTab';

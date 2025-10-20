@@ -31,28 +31,37 @@ export const ShowView = (props: ShowViewProps) => {
         component: Content = Card,
         emptyWhileLoading = false,
         offline = defaultOffline,
+        error,
         title,
         ...rest
     } = props;
 
     const showContext = useShowContext();
-    const { resource, defaultTitle, isPaused, isPending, record } = showContext;
+    const {
+        resource,
+        defaultTitle,
+        isPaused,
+        isPending,
+        record,
+        error: errorState,
+    } = showContext;
     const { hasEdit } = useResourceDefinition();
 
     const finalActions =
         typeof actions === 'undefined' && hasEdit ? defaultActions : actions;
 
-    if (isPaused && isPending && offline !== undefined && offline !== false) {
-        return (
-            <Root className={clsx('show-page', className)} {...rest}>
-                <div className={clsx(ShowClasses.main, ShowClasses.noActions)}>
-                    <Content className={ShowClasses.card}>{offline}</Content>
-                    {aside}
-                </div>
-            </Root>
-        );
-    }
-    if (!record && emptyWhileLoading) {
+    const showOffline =
+        isPaused && isPending && offline !== undefined && offline !== false;
+
+    const showError = errorState && error !== false && error !== undefined;
+
+    if (
+        !record &&
+        isPending &&
+        emptyWhileLoading &&
+        !showOffline &&
+        !showError
+    ) {
         return null;
     }
 
@@ -72,7 +81,13 @@ export const ShowView = (props: ShowViewProps) => {
                 })}
             >
                 <Content className={ShowClasses.card}>
-                    {render ? render(showContext) : children}
+                    {showOffline
+                        ? offline
+                        : showError
+                          ? error
+                          : render
+                            ? render(showContext)
+                            : children}
                 </Content>
                 {aside}
             </div>
@@ -87,6 +102,7 @@ export interface ShowViewProps
     component?: ElementType;
     emptyWhileLoading?: boolean;
     offline?: ReactNode;
+    error?: ReactNode;
     title?: ReactNode;
     sx?: SxProps<Theme>;
     render?: (showContext: ShowControllerResult) => ReactNode;

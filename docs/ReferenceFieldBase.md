@@ -70,6 +70,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `offline`   | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when loading the record |
 | `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `record`    | Optional | `RaRecord` | - | The current record |
 | `sortBy`    | Optional | `string | Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 
 ## `children`
@@ -217,20 +218,20 @@ By default, when used in a `<Datagrid>`, and when the user clicks on the column 
 
 <iframe src="https://www.youtube-nocookie.com/embed/egBhWqF3sWc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
 
-When used in a `<DataTable>`, `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
+When used in a [list context](./useListContext.md), `<ReferenceFieldBase>` fetches the referenced record only once for the entire table.
 
 For instance, with this code:
 
 ```jsx
-import { ListBase, ListIterator, ReferenceFieldBase } from 'react-admin';
+import { ListBase, RecordsIterator, ReferenceFieldBase } from 'react-admin';
 
 export const PostList = () => (
     <ListBase>
-        <ListIterator>
+        <RecordsIterator>
             <ReferenceFieldBase source="user_id" reference="users">
                 <AuthorView />
             </ReferenceFieldBase>
-        </ListIterator>
+        </RecordsIterator>
     </ListBase>
 );
 ```
@@ -267,19 +268,18 @@ For example, the following code prefetches the authors referenced by the posts:
 
 {% raw %}
 ```jsx
-const PostList = () => (
-    <ListBase queryOptions={{ meta: { prefetch: ['author'] } }}>
-        <ListIterator
-            render={({ title, author_id }) => (
-                <div>
-                    <h3>{title}</h3>
-                    <ReferenceFieldBase source="author_id" reference="authors">
-                        <AuthorView />
-                    </ReferenceFieldBase>
-                </div>
-            )}
-        />
-    </ListBase>
+const PostShow = () => (
+    <ShowBase
+        queryOptions={{ meta: { prefetch: ['author'] } }}
+        render={post => (
+            <div>
+                <h3>{post.title}</h3>
+                <ReferenceFieldBase source="author_id" reference="authors">
+                    <AuthorView />
+                </ReferenceFieldBase>
+            </div>
+        )}
+    />
 );
 ```
 {% endraw %}

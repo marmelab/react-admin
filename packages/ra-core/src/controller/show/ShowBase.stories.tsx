@@ -15,6 +15,10 @@ import {
     useLocaleState,
     IsOffline,
     WithRecord,
+    GetOneResult,
+    Resource,
+    CoreAdmin,
+    TestMemoryRouter,
 } from '../..';
 import { onlineManager } from '@tanstack/react-query';
 
@@ -120,7 +124,7 @@ export const WithAuthProviderNoAccessControl = ({
         <ShowBase
             {...defaultProps}
             {...ShowProps}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <Child />
         </ShowBase>
@@ -143,12 +147,104 @@ export const AccessControl = ({
     <CoreAdminContext authProvider={authProvider} dataProvider={dataProvider}>
         <ShowBase
             {...defaultProps}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <Child />
         </ShowBase>
     </CoreAdminContext>
 );
+
+export const Loading = () => {
+    let resolveGetOne: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getOne: (resource, params) => {
+            return new Promise<GetOneResult>(resolve => {
+                resolveGetOne = () =>
+                    resolve(defaultDataProvider.getOne(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetOne && resolveGetOne();
+                }}
+            >
+                Resolve loading
+            </button>
+            <ShowBase {...defaultProps} loading={<div>Loading data...</div>}>
+                <Child />
+            </ShowBase>
+        </CoreAdminContext>
+    );
+};
+
+export const FetchError = () => {
+    let rejectGetOne: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getOne: () => {
+            return new Promise<GetOneResult>((_, reject) => {
+                rejectGetOne = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    rejectGetOne && rejectGetOne();
+                }}
+            >
+                Reject loading
+            </button>
+            <ShowBase {...defaultProps} error={<p>Something went wrong.</p>}>
+                <Child />
+            </ShowBase>
+        </CoreAdminContext>
+    );
+};
+
+export const RedirectOnError = () => {
+    let rejectGetOne: (() => void) | null = null;
+    const dataProvider = {
+        ...defaultDataProvider,
+        getOne: () => {
+            return new Promise<GetOneResult>((_, reject) => {
+                rejectGetOne = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <TestMemoryRouter initialEntries={['/posts/12/show']}>
+            <CoreAdmin dataProvider={dataProvider}>
+                <Resource
+                    name="posts"
+                    list={<p>List view</p>}
+                    show={
+                        <>
+                            <button
+                                onClick={() => {
+                                    rejectGetOne && rejectGetOne();
+                                }}
+                            >
+                                Reject loading
+                            </button>
+                            <ShowBase {...defaultProps}>
+                                <Child />
+                            </ShowBase>
+                        </>
+                    }
+                />
+            </CoreAdmin>
+        </TestMemoryRouter>
+    );
+};
 
 export const WithRenderProp = ({
     dataProvider = defaultDataProvider,

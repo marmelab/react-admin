@@ -74,6 +74,8 @@ const ProductEdit = () => (
 
 **Tip**: `<ReferenceManyInput>` cannot be used with `undoable` mutations. You have to set `mutationMode="optimistic"` or `mutationMode="pessimistic"` in the parent `<Edit>`, as in the example above.
 
+**Tip**: `<SimpleFormIterator>` uses the `disableReordering` prop in this example because the `variants` resource doesn't support reordering. If your reference table does have a `rank` column, you can leave sorting controls on (see [the `rankSource` section](#ranksource) for details).
+
 ## Props
 
 | Prop           | Required | Type                      | Default                          | Description                                                                                                                                                         |
@@ -86,6 +88,7 @@ const ProductEdit = () => (
 | `source`       | Optional | `string`                  | `id`                             | Name of the field that carries the identity of the current record, used as origin for the relationship                                                              |
 | `filter`       | Optional | `Object`                  | -                                | Filters to use when fetching the related records, passed to `getManyReference()`                                                                                    |
 | `perPage`      | Optional | `number`                  | 25                               | Maximum number of referenced records to fetch                                                                                                                       |
+| `rankSource`    | Optional | `string`                  | -                                | Name of the field used to store the rank of each item. When defined, it enables reordering of the items.                                                 |
 | `sort`         | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                                                                 |
 | `defaultValue` | Optional | `array`                   | -                                | Default value of the input.                                                                                                                                         |
 | `validate`     | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](./Validation.md) for details.                                   |
@@ -201,6 +204,31 @@ By default, react-admin restricts the possible values to 25 and displays no pagi
     ...
 </ReferenceManyInput>
 ```
+
+## `rankSource`
+
+`<SimpleFormIterator>` provides controls to reorder the items in the list. If the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
+
+For example, if the variants have a `rank` field, you can set the `rankSource` prop like this:
+
+```jsx
+<ReferenceManyInput
+    reference="variants"
+    target="product_id"
+    rankSource="rank"
+>
+    <SimpleFormIterator>
+        <TextInput source="sku" />
+        <SelectInput source="size" choices={sizes} />
+        <SelectInput source="color" choices={colors} />
+        <NumberInput source="stock" defaultValue={0} />
+    </SimpleFormIterator>
+</ReferenceManyInput>
+```
+
+Now the variants will be ordered by rank, and whenever the user changes the order of the items, `<ReferenceManyInput>` will update the `rank` field of each item accordingly.
+
+Note that `<SimpleFormIterator>` doesn't have the `disableReordering` prop in that case, to display the up/down controls.
 
 ## `reference`
 

@@ -414,6 +414,13 @@ const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
                     },
                 },
             },
+            RaToolbar: {
+                styleOverrides: {
+                    root: {
+                        backgroundColor: GREY,
+                    },
+                },
+            },
         },
         sidebar: {
             width: 195,

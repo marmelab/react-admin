@@ -92,6 +92,5 @@ export const ReferenceArrayInput = (props: ReferenceArrayInputProps) => {
 const defaultChildren = <AutocompleteArrayInput />;
 const defaultOffline = <Offline variant="inline" />;
 
-export interface ReferenceArrayInputProps extends ReferenceArrayInputBaseProps {
-    label?: string;
-}
+export interface ReferenceArrayInputProps
+    extends ReferenceArrayInputBaseProps {}

@@ -4,6 +4,7 @@ import {
     Theme,
     ThemeOptions,
 } from '@mui/material';
+import { grey } from '@mui/material/colors';
 
 /**
  * Nano: A dense theme with minimal chrome, ideal for complex apps.
@@ -324,6 +325,14 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
     RaTranslatableInputs: {
         defaultProps: {
             fullWidth: true,
+        },
+    },
+    RaToolbar: {
+        styleOverrides: {
+            root: {
+                backgroundColor:
+                    theme.palette.mode === 'dark' ? grey[900] : grey[100],
+            },
         },
     },
 });

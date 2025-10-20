@@ -81,8 +81,16 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
     });
     const { handleSubmit, getValues, reset, trigger, watch } = formContext;
 
+    const hasJustBeenModifiedByUser = React.useRef(false);
+
     // Reapply filterValues when they change externally
     useEffect(() => {
+        // Unless users has just modified the form themselves in which case we want to avoid overriding it with
+        // a previous value which was applied with a delay (debounce in List)
+        if (hasJustBeenModifiedByUser.current) {
+            hasJustBeenModifiedByUser.current = false;
+            return;
+        }
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
         if (!isEqual(newValues, previousValues)) {
@@ -109,8 +117,10 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     set(newValues, name, '');
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(newValues);
                 } else {
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(values);
                 }
             }

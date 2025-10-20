@@ -257,7 +257,7 @@ Let's be realistic: Many developers focus on features first and don't have much 
 React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -279,13 +279,11 @@ And for mobile users, react-admin renders a different layout with larger margins
 
 React-admin components use Material UI components by default, which lets you scaffold a page in no time. As Material UI supports [theming](#theming), you can easily customize the look and feel of your app. But in some cases, this is not enough, and you need to use another UI library.
 
-You can change the UI library you use with react-admin to use [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. The **headless logic** behind react-admin components is agnostic of the UI library, and is exposed via `...Base` components and controller hooks.
-
-For instance, [`shadcn-admin-kit`](https://github.com/marmelab/shadcn-admin-kit) is a react-admin distribution that replaces Material UI with [Shadcn UI](https://ui.shadcn.com/).
+Fortunately, react-admin is built on top of a **headless library** called [`ra-core`](https://marmelab.com/ra-core/), which contains hooks and `...Base` components that you can use with any UI library. For instance, [`shadcn-admin-kit`](https://github.com/marmelab/shadcn-admin-kit) is a react-admin distribution that replaces Material UI with [Shadcn UI](https://ui.shadcn.com/).
 
 [![Shadcn admin kit](https://github.com/marmelab/shadcn-admin-kit/raw/main/public/shadcn-admin-kit.webp)](https://github.com/marmelab/shadcn-admin-kit)
 
-`shadcn-admin-kit` follows the same syntax conventions as react-admin, so most of the react-admin documentation still applies. For example, the `<ProductEdit>` component looks like this:
+`shadcn-admin-kit` follows the same syntax conventions as react-admin, so most of the react-admin syntax still applies. For example, the `<ProductEdit>` component looks like this:
 
 ```tsx
 import {
@@ -313,7 +311,7 @@ export const ProductEdit = () => (
 );
 ```
 
-Here is another example: a List view built with [Ant Design](https://ant.design/):
+You can also build apps with `ra-core` and [Ant Design](https://ant.design/), [Daisy UI](https://daisyui.com/), [Chakra UI](https://chakra-ui.com/), or even you own custom UI library. For example, here is a List view built with [Ant Design](https://ant.design/):
 
 ![List view built with Ant Design](./img/list_ant_design.png)
 
@@ -322,7 +320,7 @@ It leverages the `useListController` hook:
 {% raw %}
 
 ```jsx
-import { useListController } from 'react-admin'; 
+import { useListController } from 'ra-core'; 
 import { Card, Table, Button } from 'antd';
 import {
   CheckCircleOutlined,
@@ -1048,6 +1046,48 @@ const dataProvider = addEventsForMutations(
   authProvider
 );
 ```
+
+## Soft Delete
+
+React-admin lets you implement **soft delete** in your admin app, so that users can recover deleted records.
+
+![Soft delete example](https://react-admin-ee.marmelab.com/assets/DeletedRecordsList.png)
+
+Replace the standard `<DeleteButton>` with the [`<SoftDeleteButton>`](./SoftDeleteButton.md) in your `<List>`, `<Show>`, and `<Edit>` views to enable soft delete:
+
+```jsx
+import { List, DataTable, TextField } from 'react-admin';
+import { SoftDeleteButton } from '@react-admin/ra-soft-delete';
+
+export const PostList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <SoftDeleteButton />
+            </DataTable.Col>
+        </DataTable>
+    </List>
+);
+```
+
+Then, add a `<DeletedRecordsList>` somewhere in your app to let users view and restore deleted records:
+
+```jsx
+import { Admin, CustomRoutes } from 'react-admin';
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+const App = () => (
+    <Admin>
+        <CustomRoutes>
+            <Route path="/deleted-records" element={<DeletedRecordsList />} />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+Check out the [Soft Delete Documentation](./SoftDeleteDataProvider.md) to learn more.
 
 ## Calendar
 

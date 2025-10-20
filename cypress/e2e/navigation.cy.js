@@ -12,7 +12,9 @@ describe('Navigation', () => {
             // additional rerenders, and otherwise it's the 'Skip to content' button that gets focused
             cy.contains('John Doe');
             cy.contains('Posts');
-            cy.get(ListPage.elements.profile).focus().tab();
+            cy.get(ListPage.elements.profile)
+                .focus()
+                .press(Cypress.Keyboard.Keys.TAB);
 
             cy.get(`${ListPage.elements.menuItems}:first-child`).should(
                 'have.class',
@@ -27,7 +29,7 @@ describe('Navigation', () => {
 
             ListPage.waitUntilVisible();
 
-            cy.get('body').tab();
+            cy.get('body').press(Cypress.Keyboard.Keys.TAB);
 
             cy.get(ListPage.elements.skipNavButton).should('exist');
         });

@@ -155,7 +155,7 @@ export const WithAuthProviderNoAccessControl = ({
         <ListBase
             resource="books"
             perPage={5}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
             {...ListProps}
         >
             <BookListView />
@@ -180,7 +180,7 @@ export const AccessControl = ({
         <ListBase
             resource="books"
             perPage={5}
-            loading={<div>Authentication loading...</div>}
+            authLoading={<div>Authentication loading...</div>}
         >
             <BookListView />
         </ListBase>
@@ -436,6 +436,71 @@ Offline.argTypes = {
     isOnline: {
         control: { type: 'boolean' },
     },
+};
+
+export const Loading = () => {
+    let resolveGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: (resource, params) => {
+            return new Promise<GetListResult>(resolve => {
+                resolveGetList = () =>
+                    resolve(baseProvider.getList(resource, params));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    resolveGetList && resolveGetList();
+                }}
+            >
+                Resolve books loading
+            </button>
+            <ListBase
+                resource="books"
+                perPage={5}
+                loading={<p>Loading books...</p>}
+            >
+                <BookListView />
+            </ListBase>
+        </CoreAdminContext>
+    );
+};
+
+export const FetchError = () => {
+    let rejectGetList: (() => void) | null = null;
+    const baseProvider = defaultDataProvider(0);
+    const dataProvider = {
+        ...baseProvider,
+        getList: () => {
+            return new Promise<GetListResult>((_, reject) => {
+                rejectGetList = () => reject(new Error('Expected error.'));
+            });
+        },
+    };
+
+    return (
+        <CoreAdminContext dataProvider={dataProvider}>
+            <button
+                onClick={() => {
+                    rejectGetList && rejectGetList();
+                }}
+            >
+                Reject books loading
+            </button>
+            <ListBase
+                resource="books"
+                perPage={5}
+                error={<p>Cannot load books.</p>}
+            >
+                <BookListView />
+            </ListBase>
+        </CoreAdminContext>
+    );
 };
 
 export const EmptyWhileLoading = () => {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Resource, TestMemoryRouter } from 'ra-core';
+import { Resource, TestMemoryRouter, useNotify } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { BulkUpdateButton } from './BulkUpdateButton';
 import { AdminContext } from '../AdminContext';
@@ -164,6 +164,47 @@ export const MutationMode = () => (
             </>
         }
     />
+);
+
+const MutationOptionsButtons = () => {
+    const notify = useNotify();
+    return (
+        <>
+            <BulkUpdateButton
+                label="Update Undoable"
+                data={{ reads: 0 }}
+                mutationMode="undoable"
+                mutationOptions={{
+                    onSuccess: () => {
+                        notify('Updated successfully', { undoable: true });
+                    },
+                }}
+            />
+            <BulkUpdateButton
+                label="Update Optimistic"
+                data={{ reads: 0 }}
+                mutationMode="optimistic"
+                mutationOptions={{
+                    onSuccess: () => {
+                        notify('Updated successfully');
+                    },
+                }}
+            />
+            <BulkUpdateButton
+                label="Update Pessimistic"
+                data={{ reads: 0 }}
+                mutationMode="pessimistic"
+                mutationOptions={{
+                    onSuccess: () => {
+                        notify('Updated successfully');
+                    },
+                }}
+            />
+        </>
+    );
+};
+export const MutationOptions = () => (
+    <Wrapper bulkActionButtons={<MutationOptionsButtons />} />
 );
 
 export const Themed = () => (

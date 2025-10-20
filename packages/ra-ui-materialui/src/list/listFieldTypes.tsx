@@ -12,6 +12,7 @@ import {
     UrlField,
     ArrayFieldProps,
     TextField,
+    TextArrayField,
 } from '../field';
 
 export const listFieldTypes = {
@@ -49,6 +50,19 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
                         <ChipField source="${children.length > 0 && children[0].getProps().source}" />
                     </SingleFieldList>
                 </ArrayField>
+            </DataTable.Col>`,
+    },
+    scalar_array: {
+        component: (props: ArrayFieldProps) => {
+            return (
+                <DataTable.Col {...props}>
+                    <TextArrayField {...props} />
+                </DataTable.Col>
+            );
+        },
+        representation: props =>
+            `<DataTable.Col source="${props.source}">
+                <TextArrayField source="${props.source}" />
             </DataTable.Col>`,
     },
     boolean: {

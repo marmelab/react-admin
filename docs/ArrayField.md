@@ -260,7 +260,13 @@ Check [the `useListContext` documentation](./useListContext.md) for more informa
 
 ## Rendering An Array Of Strings
 
-If you need to render a custom collection (e.g. an array of tags `['dolor', 'sit', 'amet']`), it's often simpler to write your own component:
+If you need to render a custom collection (e.g. an array of tags `['dolor', 'sit', 'amet']`), you can use the [`<TextArrayField>`](./TextArrayField.md) component.
+
+```jsx
+<TextArrayField source="tags" />
+```
+
+You can also create your own field component, using the `useRecordContext` hook:
 
 ```jsx
 import { useRecordContext } from 'react-admin';

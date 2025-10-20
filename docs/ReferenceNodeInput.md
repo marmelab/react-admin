@@ -8,8 +8,7 @@ title: "The ReferenceNodeInput Component"
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows users to select one or several nodes from a tree of a reference resource. For instance, this is useful to select a category for a product.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-basic.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -58,8 +57,7 @@ const ProductEdit = () => (
 ```
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/ReferenceNodeInput-TreeInput-multiple.webm" type="video/webm"/>
-  <source src="./img/ReferenceNodeInput-TreeInput-multiple.mp4" type="video/mp4"/>
+  <source src="https://react-admin-ee.marmelab.com/assets/ReferenceNodeInput-TreeInput-multiple.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 

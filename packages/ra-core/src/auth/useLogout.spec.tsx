@@ -7,6 +7,7 @@ import expect from 'expect';
 import { useGetOne } from '../dataProvider';
 import useLogout from './useLogout';
 import { CoreAdminContext } from '../core/CoreAdminContext';
+import { Redirect } from './useLogout.stories';
 
 import { TestMemoryRouter } from '../routing';
 
@@ -52,5 +53,23 @@ describe('useLogout', () => {
         expect(
             queryClient.getQueryData(['posts', 'getOne', { id: '1' }])
         ).toBeUndefined();
+    });
+    it('should redirect to `/login` by default', async () => {
+        render(<Redirect redirectTo="default" />);
+        await screen.findByText('Page');
+        fireEvent.click(screen.getByText('Logout'));
+        await screen.findByText('Login');
+    });
+    it('should redirect to the url returned by the authProvider.logout call', async () => {
+        render(<Redirect redirectTo="authProvider.logout" />);
+        await screen.findByText('Page');
+        fireEvent.click(screen.getByText('Logout'));
+        await screen.findByText('Custom from authProvider.logout');
+    });
+    it('should redirect to the url returned by the caller', async () => {
+        render(<Redirect redirectTo="caller" />);
+        await screen.findByText('Page');
+        fireEvent.click(screen.getByText('Logout'));
+        await screen.findByText('Custom from useLogout caller');
     });
 });

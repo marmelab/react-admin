@@ -10,6 +10,9 @@ import {
     Offline,
     WithAuthProviderNoAccessControl,
     WithRenderProp,
+    Loading,
+    FetchError,
+    RedirectOnError,
 } from './ShowBase.stories';
 import { onlineManager } from '@tanstack/react-query';
 
@@ -160,5 +163,42 @@ describe('ShowBase', () => {
         // Ensure the data is still displayed when going offline after it was loaded
         await screen.findByText('You are offline, the data may be outdated');
         await screen.findByText('Hello');
+    });
+    it('should render loading component while loading', async () => {
+        render(<Loading />);
+        expect(screen.queryByText('Loading data...')).not.toBeNull();
+        expect(screen.queryByText('Hello')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Loading data...')).toBeNull();
+        });
+        await screen.findByText('Hello');
+    });
+    it('should render error component on error', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        render(<FetchError />);
+        expect(screen.queryByText('Something went wrong.')).toBeNull();
+        expect(screen.queryByText('Hello')).toBeNull();
+        fireEvent.click(screen.getByText('Reject loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('Something went wrong.')).not.toBeNull();
+        });
+        expect(screen.queryByText('Hello')).toBeNull();
+
+        jest.spyOn(console, 'error').mockRestore();
+    });
+    it('should redirect when no error component is provided', async () => {
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+
+        render(<RedirectOnError />);
+        expect(screen.queryByText('Hello')).toBeNull();
+        fireEvent.click(screen.getByText('Reject loading'));
+        await waitFor(() => {
+            expect(screen.queryByText('List view')).not.toBeNull();
+        });
+        expect(screen.queryByText('Hello')).toBeNull();
+
+        jest.spyOn(console, 'error').mockRestore();
     });
 });

@@ -1,6 +1,6 @@
 {
     "name": "ra-core",
-    "version": "5.11.0",
+    "version": "5.12.0",
     "description": "Core components of react-admin, a frontend Framework for building admin applications on top of REST services, using ES6, React",
     "files": [
         "*.md",
@@ -28,7 +28,8 @@
     },
     "devDependencies": {
         "@hookform/resolvers": "^3.2.0",
-        "@tanstack/react-query-devtools": "^5.21.7",
+        "@tanstack/react-query": "^5.90.2",
+        "@tanstack/react-query-devtools": "^5.90.2",
         "@testing-library/react": "^15.0.7",
         "@types/jest": "^29.5.2",
         "@types/jscodeshift": "^0.11.11",

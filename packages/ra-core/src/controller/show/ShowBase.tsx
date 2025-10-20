@@ -9,6 +9,7 @@ import {
 import { ShowContextProvider } from './ShowContextProvider';
 import { OptionalResourceContextProvider } from '../../core';
 import { useIsAuthPending } from '../../auth';
+import { ReactNode } from 'react';
 
 /**
  * Call useShowController and put the value in a ShowContext
@@ -40,13 +41,20 @@ import { useIsAuthPending } from '../../auth';
  * );
  */
 export const ShowBase = <RecordType extends RaRecord = any>({
-    children,
+    authLoading,
     loading,
     offline,
+    error,
+    redirectOnError,
+    children,
     render,
     ...props
 }: ShowBaseProps<RecordType>) => {
-    const controllerProps = useShowController<RecordType>(props);
+    const hasError = error !== false && error !== undefined;
+    const controllerProps = useShowController<RecordType>({
+        ...props,
+        redirectOnError: redirectOnError ?? (hasError ? false : undefined),
+    });
 
     const isAuthPending = useIsAuthPending({
         resource: controllerProps.resource,
@@ -59,28 +67,40 @@ export const ShowBase = <RecordType extends RaRecord = any>({
         );
     }
 
-    const { isPaused, isPending } = controllerProps;
+    const { isPaused, isPending, error: errorState } = controllerProps;
 
-    const shouldRenderLoading =
+    const showAuthLoading =
         isAuthPending &&
         !props.disableAuthentication &&
+        authLoading !== false &&
+        authLoading !== undefined;
+
+    const showLoading =
+        !isPaused &&
+        ((!props.disableAuthentication && isAuthPending) || isPending) &&
         loading !== false &&
         loading !== undefined;
 
-    const shouldRenderOffline =
+    const showOffline =
         isPaused && isPending && offline !== false && offline !== undefined;
+
+    const showError = errorState && hasError;
 
     return (
         // We pass props.resource here as we don't need to create a new ResourceContext if the props is not provided
         <OptionalResourceContextProvider value={props.resource}>
             <ShowContextProvider value={controllerProps}>
-                {shouldRenderLoading
-                    ? loading
-                    : shouldRenderOffline
-                      ? offline
-                      : render
-                        ? render(controllerProps)
-                        : children}
+                {showAuthLoading
+                    ? authLoading
+                    : showLoading
+                      ? loading
+                      : showOffline
+                        ? offline
+                        : showError
+                          ? error
+                          : render
+                            ? render(controllerProps)
+                            : children}
             </ShowContextProvider>
         </OptionalResourceContextProvider>
     );
@@ -88,8 +108,10 @@ export const ShowBase = <RecordType extends RaRecord = any>({
 
 export interface ShowBaseProps<RecordType extends RaRecord = RaRecord>
     extends ShowControllerProps<RecordType> {
+    authLoading?: ReactNode;
+    loading?: ReactNode;
+    offline?: ReactNode;
+    error?: ReactNode;
     children?: React.ReactNode;
     render?: (props: ShowControllerResult<RecordType>) => React.ReactNode;
-    loading?: React.ReactNode;
-    offline?: React.ReactNode;
 }
