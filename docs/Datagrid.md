@@ -54,7 +54,11 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 | `body`               | Optional | `ReactNode`                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
 | `bulkActionButtons`  | Optional | `ReactNode`                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
 | `empty`              | Optional | `ReactNode`                 | `<Empty>`             | The component used to render the empty table.                 |
+<<<<<<< HEAD
 | `expand`             | Optional | `ReactNode`                 |                       | The component used to render the expand panel for each row.   |
+=======
+| `expand`             | Optional | `ReactElement`                 |                       | The component used to render the expand panel for each row.   |
+>>>>>>> b718465c2 (Chore: Use ReactNode instead of ReactElement where applicable)
 | `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
 | `header`             | Optional | `ReactNode`                 | `<Datagrid Header>`   | The component used to render the table header.                |
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
