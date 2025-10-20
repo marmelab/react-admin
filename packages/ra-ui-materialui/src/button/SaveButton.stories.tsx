@@ -1,10 +1,15 @@
 import * as React from 'react';
-import { Form, TestMemoryRouter } from 'ra-core';
+import { Form, ResourceContextProvider, TestMemoryRouter } from 'ra-core';
 import { Paper } from '@mui/material';
+import fakeRestDataProvider from 'ra-data-fakerest';
+import { useFormContext } from 'react-hook-form';
 
 import { SaveButton } from './SaveButton';
+import { ArrayInput } from '../input/ArrayInput/ArrayInput';
+import { TextInput } from '../input/TextInput';
+import { SimpleFormIterator } from '../input/ArrayInput/SimpleFormIterator';
 import { AdminContext } from '../AdminContext';
-import { useFormContext } from 'react-hook-form';
+import { Edit } from '../detail';
 
 export default {
     title: 'ra-ui-materialui/button/SaveButton',
@@ -81,3 +86,45 @@ export const Submitting = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const ComplexForm = () => (
+    <AdminContext
+        dataProvider={fakeRestDataProvider(
+            {
+                posts: [
+                    {
+                        id: 1,
+                        title: 'Lorem ipsum',
+                        tags: [{ name: 'bazinga' }],
+                    },
+                ],
+            },
+            process.env.NODE_ENV !== 'test',
+            300
+        )}
+    >
+        <Paper>
+            <ResourceContextProvider value="posts">
+                <Edit id={1} redirect={false}>
+                    <Form>
+                        <TextInput source="title" />
+                        <ArrayInput source="tags">
+                            <SimpleFormIterator>
+                                <TextInput source="name" />
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                        <SaveButton />
+                        <FormInspector />
+                    </Form>
+                </Edit>
+            </ResourceContextProvider>
+        </Paper>
+    </AdminContext>
+);
+
+const FormInspector = () => {
+    const {
+        formState: { isDirty, dirtyFields },
+    } = useFormContext();
+    return <p>{JSON.stringify({ isDirty, dirtyFields })}</p>;
+};
