@@ -3,7 +3,11 @@ import defaults from 'lodash/defaults.js';
 
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useResourceContext } from './useResourceContext';
-import { ResourceDefinition, ResourceOptions } from '../types';
+import {
+    RecordToStringFunction,
+    ResourceDefinition,
+    ResourceOptions,
+} from '../types';
 
 /**
  * Hook to get the definition of a given resource
@@ -70,5 +74,5 @@ export interface UseResourceDefinitionOptions {
     readonly recordRepresentation?:
         | string
         | React.ReactElement
-        | ((record: any) => string);
+        | RecordToStringFunction;
 }
