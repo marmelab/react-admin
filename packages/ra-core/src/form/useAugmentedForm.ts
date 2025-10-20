@@ -76,20 +76,24 @@ export const useAugmentedForm = <RecordType = any>(
 
     const form = useForm({
         criteriaMode,
-        values: defaultValuesIncludingRecord,
+        defaultValues: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
         ...rest,
     });
 
     const formRef = useRef(form);
+    const { reset } = form;
+
+    useEffect(() => {
+        reset(defaultValuesIncludingRecord);
+    }, [defaultValuesIncludingRecord, reset]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
 
     const recordFromLocation = useRecordFromLocation();
     const recordFromLocationApplied = useRef(false);
-    const { reset } = form;
     useEffect(() => {
         if (recordFromLocation && !recordFromLocationApplied.current) {
             reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
