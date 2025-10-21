@@ -2,13 +2,15 @@ import * as React from 'react';
 import { required } from 'ra-core';
 import { useFormState, useFormContext } from 'react-hook-form';
 import { createTheme } from '@mui/material/styles';
+import fakeRestDataProvider from 'ra-data-fakerest';
 
 import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
-import { Create } from '../detail';
-import { SimpleForm } from '../form';
+import { Create, Edit } from '../detail';
+import { SimpleForm, Toolbar } from '../form';
 import { FormInspector } from './common';
 import { TextInput } from './TextInput';
+import { SaveButton } from '../button';
 
 export default { title: 'ra-ui-materialui/input/NumberInput' };
 
@@ -93,6 +95,66 @@ export const DefaultValue = () => (
         <FormInspector name="views2" />
         <FormInspector name="views3" />
     </Wrapper>
+);
+
+export const NullValueInCreate = () => (
+    <AdminContext
+        defaultTheme="light"
+        dataProvider={fakeRestDataProvider(
+            { posts: [] },
+            process.env.NODE_ENV !== 'test'
+        )}
+    >
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm
+                toolbar={
+                    <Toolbar>
+                        <SaveButton alwaysEnable />
+                    </Toolbar>
+                }
+            >
+                <NumberInput source="views" />
+                <FormInspector name="views" />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const NullValueInEdit = () => (
+    <AdminContext
+        defaultTheme="light"
+        dataProvider={fakeRestDataProvider(
+            {
+                posts: [
+                    {
+                        id: 1,
+                        title: 'Lorem Ipsum',
+                        // Don't define views
+                    },
+                ],
+            },
+            process.env.NODE_ENV !== 'test'
+        )}
+    >
+        <Edit
+            id="1"
+            resource="posts"
+            sx={{ width: 600 }}
+            mutationMode="pessimistic"
+        >
+            <SimpleForm
+                toolbar={
+                    <Toolbar>
+                        <SaveButton alwaysEnable />
+                    </Toolbar>
+                }
+            >
+                <TextInput source="title" />
+                <NumberInput source="views" />
+                <FormInspector name="views" />
+            </SimpleForm>
+        </Edit>
+    </AdminContext>
 );
 
 export const HelperText = () => (

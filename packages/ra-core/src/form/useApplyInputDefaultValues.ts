@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import {
     FieldValues,
     UseFieldArrayReturn,
@@ -36,12 +36,21 @@ export const useApplyInputDefaultValues = ({
     const finalSource = useWrappedSource(source);
 
     const record = useRecordContext(inputProps);
-    const { getValues, resetField, formState, reset } = useFormContext();
+    const { getValues, resetField, reset, subscribe } = useFormContext();
     const recordValue = get(record, finalSource);
     const formValue = get(getValues(), finalSource);
-    const { dirtyFields } = formState;
-    const isDirty = Object.keys(dirtyFields).includes(finalSource);
+    const isDirty = useRef<boolean | undefined>(undefined);
 
+    useEffect(() => {
+        return subscribe({
+            formState: { dirtyFields: true },
+            callback: ({ dirtyFields }) => {
+                isDirty.current = Object.keys(dirtyFields ?? {}).includes(
+                    finalSource
+                );
+            },
+        });
+    }, [finalSource, subscribe]);
     useEffect(() => {
         if (
             defaultValue == null ||
@@ -52,7 +61,7 @@ export const useApplyInputDefaultValues = ({
             // We check strictly for undefined to avoid setting default value
             // when the field is null
             recordValue !== undefined ||
-            isDirty
+            isDirty.current === true
         ) {
             return;
         }
