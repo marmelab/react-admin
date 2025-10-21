@@ -173,6 +173,44 @@ export const ReadOnly = () => (
     </TestMemoryRouter>
 );
 
+export const DefaultValues = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                edit={() => {
+                    return (
+                        <Edit
+                            mutationMode="pessimistic"
+                            mutationOptions={{
+                                onSuccess: data => {
+                                    console.log(data);
+                                },
+                            }}
+                        >
+                            <SimpleForm>
+                                <TextInput source="title" />
+                                <ArrayInput source="authors">
+                                    <SimpleFormIterator>
+                                        <TextInput
+                                            source="name"
+                                            defaultValue="John Doe"
+                                        />
+                                        <TextInput
+                                            source="role"
+                                            defaultValue="Author"
+                                        />
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            </SimpleForm>
+                        </Edit>
+                    );
+                }}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const BookEditWithAutocomplete = () => {
     return (
         <Edit
