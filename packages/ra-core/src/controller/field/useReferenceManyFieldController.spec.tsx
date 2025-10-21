@@ -362,9 +362,10 @@ describe('useReferenceManyFieldController', () => {
 
         fireEvent.click(await screen.findByText('Toggle'));
         await waitFor(() => {
-            expect(setStore).toHaveBeenCalledWith('books.selectedIds', {
-                ['authors.123']: [456],
-            });
+            expect(setStore).toHaveBeenCalledWith(
+                'authors.123.books.selectedIds',
+                [456]
+            );
         });
     });
 
@@ -399,9 +400,9 @@ describe('useReferenceManyFieldController', () => {
 
         fireEvent.click(await screen.findByText('Toggle'));
         await waitFor(() => {
-            expect(setStore).toHaveBeenCalledWith('books.selectedIds', {
-                ['customKey']: [456],
-            });
+            expect(setStore).toHaveBeenCalledWith('customKey.selectedIds', [
+                456,
+            ]);
         });
     });
 

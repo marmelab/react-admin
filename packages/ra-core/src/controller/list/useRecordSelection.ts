@@ -1,6 +1,6 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import { useStore } from '../../store';
+import { useStore, useStoreContext } from '../../store';
 import { RaRecord } from '../../types';
 
 type UseRecordSelectionWithResourceArgs = {
@@ -28,11 +28,6 @@ export type UseRecordSelectionResult<RecordType extends RaRecord = any> = [
     },
 ];
 
-type SelectionStore<RecordType extends RaRecord> = Record<
-    string,
-    RecordType['id'][]
->;
-
 /**
  * Get the list of selected items for a resource, and callbacks to change the selection
  *
@@ -47,39 +42,43 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
 ): UseRecordSelectionResult<RecordType> => {
     const { resource = '', storeKey, disableSyncWithStore } = args;
 
-    const namespace = storeKey ?? defaultNamespace;
+    const finalStoreKey = `${storeKey || resource}.selectedIds`;
 
-    const finalStoreKey = `${resource}.selectedIds`;
-
-    const [localSelectionStore, setLocalSelectionStore] = useState<
-        SelectionStore<RecordType>
-    >(defaultSelectionStore);
+    const [localSelectionStore, setLocalSelectionStore] =
+        useState<RecordType['id'][]>(defaultIds);
     // As we can't conditionally call a hook, if the disableSyncWithStore is true,
-    // we'll ignore the store value later on and won't call setSelectionStore either.
-    const [selectionStoreUnknownVersion, setSelectionStore] = useStore<
-        SelectionStore<RecordType>
-    >(finalStoreKey, defaultSelectionStore);
+    // we'll ignore the useStore values later on and won't call set functions either.
+    const [selectionStore, setSelectionStore] = useStore<RecordType['id'][]>(
+        finalStoreKey,
+        defaultIds
+    );
+    const [storeKeys, setStoreKeys] = useStore<string[]>(
+        `${resource}.selectedIds.storeKeys`,
+        defaultStoreKeys
+    );
 
-    const store = disableSyncWithStore
-        ? localSelectionStore
-        : migrateSelectionStoreToNewVersion(selectionStoreUnknownVersion);
-    const ids = store[namespace] ?? defaultEmptyIds;
+    useEffect(
+        function addStoreKeyToStore() {
+            if (!disableSyncWithStore && storeKey) {
+                setStoreKeys(storeKeys => {
+                    if (!storeKeys.includes(finalStoreKey)) {
+                        return [...storeKeys, finalStoreKey];
+                    } else {
+                        return storeKeys;
+                    }
+                });
+            }
+        },
+        [disableSyncWithStore, finalStoreKey, setStoreKeys, storeKey]
+    );
+
+    const { getItem, setItem } = useStoreContext();
+
+    const ids = disableSyncWithStore ? localSelectionStore : selectionStore;
 
     const setStore = useMemo(
         () =>
-            disableSyncWithStore
-                ? setLocalSelectionStore
-                : (function migrateAndSetSelectionStore(valueOrSetter) {
-                      if (typeof valueOrSetter === 'function') {
-                          setSelectionStore(prevValue =>
-                              valueOrSetter(
-                                  migrateSelectionStoreToNewVersion(prevValue)
-                              )
-                          );
-                      } else {
-                          setSelectionStore(valueOrSetter);
-                      }
-                  } satisfies typeof setSelectionStore),
+            disableSyncWithStore ? setLocalSelectionStore : setSelectionStore,
         [disableSyncWithStore, setSelectionStore]
     );
 
@@ -88,100 +87,74 @@ export const useRecordSelection = <RecordType extends RaRecord = any>(
             select: (idsToSelect: RecordType['id'][]) => {
                 if (!idsToSelect) return;
 
-                setStore(store => ({
-                    ...store,
-                    [namespace]: [...idsToSelect],
-                }));
+                setStore(idsToSelect);
             },
             unselect(
                 idsToRemove: RecordType['id'][],
                 fromAllStoreKeys?: boolean
             ) {
                 if (!idsToRemove || idsToRemove.length === 0) return;
-                setStore(store => {
-                    if (!fromAllStoreKeys) {
-                        return {
-                            ...store,
-                            [namespace]: store[namespace]?.filter(
-                                id => !idsToRemove.includes(id)
-                            ),
-                        };
-                    } else {
-                        return Object.fromEntries(
-                            Object.entries(store).map(([namespace, ids]) => {
-                                return [
-                                    namespace,
-                                    ids?.filter(
-                                        id => !idsToRemove.includes(id)
-                                    ),
-                                ];
-                            })
-                        );
-                    }
-                });
+
+                setStore(ids => ids.filter(id => !idsToRemove.includes(id)));
+
+                if (!disableSyncWithStore && fromAllStoreKeys) {
+                    storeKeys
+                        .filter(storeKey => storeKey !== finalStoreKey)
+                        .forEach(storeKey => {
+                            const ids = getItem<RecordType['id'][]>(storeKey);
+                            if (ids) {
+                                setItem<RecordType['id'][]>(
+                                    storeKey,
+                                    ids.filter(id => !idsToRemove.includes(id))
+                                );
+                            }
+                        });
+                }
             },
             toggle: (id: RecordType['id']) => {
                 if (typeof id === 'undefined') return;
 
-                setStore(store => {
-                    const ids = store[namespace] ?? defaultEmptyIds;
-
-                    if (!Array.isArray(ids))
-                        return { ...store, [namespace]: [...ids] };
+                setStore(ids => {
+                    if (!Array.isArray(ids)) return [...ids];
 
                     const index = ids.indexOf(id);
                     const hasId = index > -1;
 
-                    return {
-                        ...store,
-                        [namespace]: hasId
-                            ? [...ids.slice(0, index), ...ids.slice(index + 1)]
-                            : [...ids, id],
-                    };
+                    return hasId
+                        ? [...ids.slice(0, index), ...ids.slice(index + 1)]
+                        : [...ids, id];
                 });
             },
             clearSelection: (fromAllStoreKeys?: boolean) => {
-                setStore(store => {
-                    if (fromAllStoreKeys) {
-                        console.log(
-                            store,
-                            Object.fromEntries(
-                                Object.keys(store).map(namespace => [
-                                    namespace,
-                                    [],
-                                ])
-                            )
-                        );
+                setStore(defaultIds);
 
-                        return Object.fromEntries(
-                            Object.keys(store).map(namespace => [namespace, []])
-                        );
-                    } else {
-                        return {
-                            ...store,
-                            [namespace]: [],
-                        };
-                    }
-                });
+                if (!disableSyncWithStore && fromAllStoreKeys) {
+                    storeKeys
+                        .filter(storeKey => storeKey !== finalStoreKey)
+                        .forEach(storeKey => {
+                            const ids = getItem<RecordType['id'][]>(storeKey);
+                            if (ids) {
+                                setItem<RecordType['id'][]>(
+                                    storeKey,
+                                    defaultIds
+                                );
+                            }
+                        });
+                }
             },
         }),
-        [setStore, namespace]
+        [
+            disableSyncWithStore,
+            finalStoreKey,
+            getItem,
+            setItem,
+            setStore,
+            storeKeys,
+        ]
     );
 
     return [ids, selectionModifiers];
 };
 
-const defaultNamespace = '';
-const defaultSelectionStore = {};
-const defaultEmptyIds = [];
-
-function migrateSelectionStoreToNewVersion<RecordType extends RaRecord>(
-    selectionStoreUnknownVersion: SelectionStore<RecordType>
-) {
-    return Array.isArray(selectionStoreUnknownVersion)
-        ? {
-              ...defaultSelectionStore,
-              [defaultNamespace]: selectionStoreUnknownVersion,
-          }
-        : selectionStoreUnknownVersion;
-}
+const defaultIds = [];
+const defaultStoreKeys = [];

@@ -125,12 +125,22 @@ describe('useDeleteWithConfirmController', () => {
             <TestMemoryRouter>
                 <CoreAdminContext store={store} dataProvider={dataProvider}>
                     <StoreSetter
-                        name="posts.selectedIds"
-                        value={{ ['']: [123, 456], ['bar']: [456] }}
+                        name="posts.selectedIds.storeKeys"
+                        value={['bar.selectedIds']}
                     >
-                        <Routes>
-                            <Route path="/" element={<MockComponent />} />
-                        </Routes>
+                        <StoreSetter
+                            name="posts.selectedIds"
+                            value={[123, 456]}
+                        >
+                            <StoreSetter name="bar.selectedIds" value={[456]}>
+                                <Routes>
+                                    <Route
+                                        path="/"
+                                        element={<MockComponent />}
+                                    />
+                                </Routes>
+                            </StoreSetter>
+                        </StoreSetter>
                     </StoreSetter>
                 </CoreAdminContext>
             </TestMemoryRouter>
@@ -139,11 +149,10 @@ describe('useDeleteWithConfirmController', () => {
         const button = await screen.findByText('Delete');
         fireEvent.click(button);
         await waitFor(
-            () =>
-                expect(store.getItem('posts.selectedIds')).toEqual({
-                    ['']: [123],
-                    ['bar']: [],
-                }),
+            () => {
+                expect(store.getItem('posts.selectedIds')).toEqual([123]);
+                expect(store.getItem('bar.selectedIds')).toEqual([]);
+            },
             {
                 timeout: 1000,
             }

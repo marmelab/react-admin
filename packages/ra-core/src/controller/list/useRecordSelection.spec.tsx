@@ -28,26 +28,6 @@ describe('useRecordSelection', () => {
             {
                 wrapper: ({ children }) => (
                     <StoreContextProvider value={memoryStore()}>
-                        <StoreSetter
-                            name="foo.selectedIds"
-                            value={{ ['']: [123, 456] }}
-                        >
-                            {children}
-                        </StoreSetter>
-                    </StoreContextProvider>
-                ),
-            }
-        );
-        const [selected] = result.current;
-        expect(selected).toEqual([123, 456]);
-    });
-
-    it('should use the stored value in previous format', () => {
-        const { result } = renderHook(
-            () => useRecordSelection({ resource: 'foo' }),
-            {
-                wrapper: ({ children }) => (
-                    <StoreContextProvider value={memoryStore()}>
                         <StoreSetter name="foo.selectedIds" value={[123, 456]}>
                             {children}
                         </StoreSetter>
@@ -78,9 +58,7 @@ describe('useRecordSelection', () => {
         select([123, 456, 7]);
         await waitFor(() => {
             const stored = store.getItem('foo.selectedIds');
-            expect(stored).toEqual({
-                ['']: [123, 456, 7],
-            });
+            expect(stored).toEqual([123, 456, 7]);
         });
     });
 
@@ -444,8 +422,8 @@ describe('useRecordSelection', () => {
                     wrapper: ({ children }) => (
                         <StoreContextProvider value={memoryStore()}>
                             <StoreSetter
-                                name="foo.selectedIds"
-                                value={{ bar: [123, 456] }}
+                                name="bar.selectedIds"
+                                value={[123, 456]}
                             >
                                 {children}
                             </StoreSetter>
@@ -531,6 +509,75 @@ describe('useRecordSelection', () => {
                 expect(selected1).toEqual([]);
                 const [selected2] = result.current[1];
                 expect(selected2).toEqual([]);
+            });
+        });
+
+        describe('using stored storeKeys', () => {
+            it('should keep final storeKey in the store', async () => {
+                const store = memoryStore();
+                renderHook(
+                    () =>
+                        useRecordSelection({
+                            resource: 'foo',
+                            storeKey: 'bar',
+                        }),
+                    {
+                        wrapper: ({ children }) => (
+                            <StoreContextProvider value={store}>
+                                {children}
+                            </StoreContextProvider>
+                        ),
+                    }
+                );
+
+                await waitFor(() => {
+                    const storeKeys = store.getItem(
+                        'foo.selectedIds.storeKeys'
+                    );
+                    expect(storeKeys).toEqual(['bar.selectedIds']);
+                });
+            });
+
+            it('should check all storeKeys listed in store when `fromAllStoreKeys` is `true`', async () => {
+                const store = memoryStore();
+                const { result } = renderHook(
+                    () => {
+                        return useRecordSelection({
+                            resource: 'foo',
+                            storeKey: 'bar1',
+                        });
+                    },
+                    {
+                        wrapper: ({ children }) => (
+                            <StoreContextProvider value={store}>
+                                <StoreSetter
+                                    name={'foo.selectedIds.storeKeys'}
+                                    value={['bar2.selectedIds']}
+                                >
+                                    <StoreSetter
+                                        name={'bar1.selectedIds'}
+                                        value={[123]}
+                                    >
+                                        <StoreSetter
+                                            name={'bar2.selectedIds'}
+                                            value={[123]}
+                                        >
+                                            {children}
+                                        </StoreSetter>
+                                    </StoreSetter>
+                                </StoreSetter>
+                            </StoreContextProvider>
+                        ),
+                    }
+                );
+
+                const [, { clearSelection }] = result.current;
+                clearSelection(true);
+
+                await waitFor(() => {
+                    expect(store.getItem('bar1.selectedIds')).toEqual([]);
+                    expect(store.getItem('bar2.selectedIds')).toEqual([]);
+                });
             });
         });
     });

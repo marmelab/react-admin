@@ -93,7 +93,7 @@ export const useReferenceManyFieldController = <
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection({
         resource: reference,
-        storeKey: props.storeKey ?? `${resource}.${record?.id}`,
+        storeKey: props.storeKey ?? `${resource}.${record?.id}.${reference}`,
     });
 
     const onUnselectItems = useCallback(
