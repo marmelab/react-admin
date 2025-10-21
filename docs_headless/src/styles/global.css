@@ -5,6 +5,10 @@
 @import 'tailwindcss/utilities.css' layer(utilities);
 
 :root {
+    --sl-sidebar-width: 21.25rem;
+    --sl-text-h2: 1.5rem;
+    --sl-text-h3: 1.25rem;
+    --sl-text-h4: 1.125rem;
     --sl-color-bg-nav: var(--sl-color-black);
     --sl-color-bg: var(--sl-color-black);
     --sl-color-bg-sidebar: var(--sl-color-black);
@@ -114,41 +118,26 @@ a.enterprise .sl-badge {
 a.enterprise span:not(.sl-badge)::after {
     content: '';
     background-repeat: no-repeat;
-    width: 16px;
-    height: 16px;
+    width: 20px;
+    height: 20px;
     position: absolute;
     top: 6px;
     right: 6px;
 }
 
 a.enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-dark.svg');
+    background-image: url('/public/premium.svg');
 }
 a[aria-current='page'].enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-dark.svg');
+    background-image: url('/public/premium.svg');
 }
 
-[data-theme="light"] a.enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-light.svg');
-}
-[data-theme="light"] a[aria-current='page'].enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-dark.svg');
+[data-theme="light"] a[aria-current="page"].enterprise span:not(.sl-badge)::after {
+    background-image: url('/public/premium-white.svg');
 }
 
-[data-theme="dark"] a.enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-dark.svg');
-}
-[data-theme="dark"] a[aria-current='page'].enterprise span:not(.sl-badge)::after {
-    background-image: url('/public/premium-light.svg');
-}
-
-@media (prefers-color-scheme: dark) {
-    a.enterprise span:not(.sl-badge)::after {
-        background-image: url('/public/premium-dark.svg');
-    }
-    a[aria-current='page'].enterprise span:not(.sl-badge)::after {
-        background-image: url('/public/premium-light.svg');
-    }
+[data-theme="dark"] a[aria-current="page"].enterprise span:not(.sl-badge)::after {
+    background-image: url('/public/premium-black.svg');
 }
 
 table {
