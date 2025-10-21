@@ -86,7 +86,7 @@ export default defineConfig([
                         {
                             name: 'lodash',
                             message:
-                                "Named import from lodash should be avoided for performance reasons. Use a default import instead. E.g. `import merge from 'lodash/merge';` instead of `import { merge } from 'lodash';`.",
+                                "Named import from lodash should be avoided for performance reasons. Use a default import instead. E.g. `import merge from 'lodash/merge.js';` instead of `import { merge } from 'lodash';`.",
                         },
                     ],
                 },
