@@ -7,7 +7,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import {
     type ExtractRecordPaths,
     type HintedString,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCallback, useRef } from 'react';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce.js';
 import { useEvent } from './useEvent';
 
 // allow the hook to work in SSR

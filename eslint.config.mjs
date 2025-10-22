@@ -86,7 +86,14 @@ export default defineConfig([
                         {
                             name: 'lodash',
                             message:
-                                "Named import from lodash should be avoided for performance reasons. Use a default import instead. E.g. `import merge from 'lodash/merge';` instead of `import { merge } from 'lodash';`.",
+                                "Named import from lodash should be avoided for performance reasons. Use a default import instead. E.g. `import merge from 'lodash/merge.js';` (note the file extension) instead of `import { merge } from 'lodash';`.",
+                        },
+                    ],
+                    patterns: [
+                        {
+                            regex: 'lodash/(?![a-zA-Z]*\\.js$)',
+                            message:
+                                'Always specify the file extension when importing from lodash or it will cause runtime issues for ESM environments.',
                         },
                     ],
                 },

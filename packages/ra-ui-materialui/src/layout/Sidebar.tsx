@@ -13,7 +13,7 @@ import {
     type Theme,
     useScrollTrigger,
 } from '@mui/material';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 import { useLocale } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';

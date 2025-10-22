@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
 import { useEvent } from '../../util';

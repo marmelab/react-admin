@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { address, internet, name } from 'faker/locale/en_GB';
 import fakeRestDataProvider from 'ra-data-fakerest';
 
 import {
@@ -23,7 +22,7 @@ describe('<PrevNextButtons />', () => {
 
     it('should render the current record position according to the clicked item in the list', async () => {
         render(<Basic />);
-        const tr = await screen.findByText('Deja');
+        const tr = await screen.findByText('first_name_3');
         fireEvent.click(tr);
         await screen.findByRole('navigation');
         expect(screen.getByText('4 / 900')).toBeDefined();
@@ -31,7 +30,7 @@ describe('<PrevNextButtons />', () => {
 
     it('should render previous button as disabled if there is no previous record', async () => {
         render(<Basic />);
-        const tr = await screen.findByText('Maurine');
+        const tr = await screen.findByText('first_name_0');
         fireEvent.click(tr);
         await screen.findByRole('navigation');
         const previousButton = screen.getByLabelText('Go to previous page');
@@ -43,7 +42,7 @@ describe('<PrevNextButtons />', () => {
         render(<Basic />);
         const lastPage = await screen.findByText('90');
         fireEvent.click(lastPage);
-        const tr = await screen.findByText('Maxwell');
+        const tr = await screen.findByText('first_name_899');
         fireEvent.click(tr);
         await screen.findByRole('navigation');
         const nextButton = screen.getByLabelText('Go to next page');
@@ -54,16 +53,17 @@ describe('<PrevNextButtons />', () => {
     it('should render a total based on query filter', async () => {
         render(<WithQueryFilter />);
         const input = await screen.findByLabelText('Search');
-        fireEvent.change(input, { target: { value: 'east' } });
-        const item = await screen.findByText('217');
+        fireEvent.change(input, { target: { value: 'city_0' } });
+        await screen.findByText('1-10 of 50');
+        const item = await screen.findByText('first_name_9');
         fireEvent.click(item);
         await screen.findByRole('navigation');
-        await screen.findByText('10 / 57');
+        await screen.findByText('10 / 50');
     });
 
     it('should link to the edit view by default', async () => {
         render(<Basic />);
-        const row = await screen.findByText('Deja');
+        const row = await screen.findByText('first_name_0');
         fireEvent.click(row);
         fireEvent.click(await screen.findByLabelText('Edit'));
         const next = await screen.findByLabelText('Go to next page');
@@ -90,7 +90,7 @@ describe('<PrevNextButtons />', () => {
     describe('linkType', () => {
         it('should link to the show view when linkType is show', async () => {
             render(<Basic />);
-            const row = await screen.findByText('Deja');
+            const row = await screen.findByText('first_name_0');
             fireEvent.click(row);
             const next = await screen.findByLabelText('Go to next page');
             fireEvent.click(next);
@@ -102,10 +102,10 @@ describe('<PrevNextButtons />', () => {
     describe('filter', () => {
         it('should render a total based on filter', async () => {
             render(<WithFilter />);
-            const item = await screen.findByText('822');
+            const item = await screen.findByText('first_name_5');
             fireEvent.click(item);
             await screen.findByRole('navigation');
-            expect(screen.getByText('1 / 5')).toBeDefined();
+            expect(screen.getByText('5 / 50')).toBeDefined();
         });
     });
 
@@ -119,16 +119,16 @@ describe('<PrevNextButtons />', () => {
         it('should limit the number of items fetched from the data provider', async () => {
             const data = {
                 customers: Array.from(Array(900).keys()).map(id => {
-                    const first_name = name.firstName();
-                    const last_name = name.lastName();
-                    const email = internet.email(first_name, last_name);
+                    const first_name = `first_name_${id}`;
+                    const last_name = `last_name_${id}`;
+                    const email = `first_name_${id}.last_name_${id}@example.com`;
 
                     return {
                         id,
                         first_name,
                         last_name,
                         email,
-                        city: address.city(),
+                        city: `city_${id}`,
                     };
                 }),
             };
@@ -151,49 +151,49 @@ describe('<PrevNextButtons />', () => {
     describe('pagination', () => {
         it('should compute the index correctly when opening first record of page 2', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_1');
             fireEvent.click(await screen.findByLabelText('Go to page 2'));
-            const tr = await screen.findByText('Hamill');
+            const tr = await screen.findByText('first_name_10');
             fireEvent.click(tr);
             await screen.findByText('11 / 900');
         });
         it('should compute the index correctly when opening second record of page 2', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_1');
             fireEvent.click(await screen.findByLabelText('Go to page 2'));
-            const tr = await screen.findByText('Kub');
+            const tr = await screen.findByText('first_name_11');
             fireEvent.click(tr);
             await screen.findByText('12 / 900');
         });
         it('should compute the index correctly when opening last record of page 2', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_1');
             fireEvent.click(await screen.findByLabelText('Go to page 2'));
-            const tr = await screen.findByText('Langworth');
+            const tr = await screen.findByText('first_name_19');
             fireEvent.click(tr);
             await screen.findByText('20 / 900');
         });
         it('should compute the index correctly when opening first record of page 3', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_1');
             fireEvent.click(await screen.findByLabelText('Go to page 3'));
-            const tr = await screen.findByText('Spinka');
+            const tr = await screen.findByText('first_name_20');
             fireEvent.click(tr);
             await screen.findByText('21 / 900');
         });
         it('should compute the index correctly when opening second record of page 3', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_5');
             fireEvent.click(await screen.findByLabelText('Go to page 3'));
-            const tr = await screen.findByText('Lowe');
+            const tr = await screen.findByText('first_name_21');
             fireEvent.click(tr);
             await screen.findByText('22 / 900');
         });
         it('should compute the index correctly when opening last record of page 3', async () => {
             render(<Basic />);
-            await screen.findByText('Deja');
+            await screen.findByText('first_name_5');
             fireEvent.click(await screen.findByLabelText('Go to page 3'));
-            const tr = await screen.findByText('Grimes');
+            const tr = await screen.findByText('first_name_29');
             fireEvent.click(tr);
             await screen.findByText('30 / 900');
         });

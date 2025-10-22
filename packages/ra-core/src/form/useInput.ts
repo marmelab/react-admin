@@ -8,7 +8,7 @@ import {
     UseFormStateReturn,
 } from 'react-hook-form';
 import type { EditorEvents } from '@tiptap/react';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { useRecordContext } from '../controller';
 import { composeValidators, Validator, isRequired } from './validation';

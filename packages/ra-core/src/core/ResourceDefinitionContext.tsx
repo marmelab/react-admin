@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createContext, useCallback, useState, useMemo } from 'react';
-import isEqual from 'lodash/isEqual';
+import isEqual from 'lodash/isEqual.js';
 
 import { AdminChildren, ResourceDefinition, ResourceOptions } from '../types';
 

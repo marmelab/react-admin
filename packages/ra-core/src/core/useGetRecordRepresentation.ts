@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useCallback, ReactNode } from 'react';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { useResourceDefinition } from './useResourceDefinition';
 

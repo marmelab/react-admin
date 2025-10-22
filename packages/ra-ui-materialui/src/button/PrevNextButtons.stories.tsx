@@ -9,7 +9,6 @@ import {
 } from 'ra-core';
 import englishMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
-import { seed, address, internet, name } from 'faker/locale/en_GB';
 import { QueryClient } from '@tanstack/react-query';
 
 import {
@@ -32,20 +31,26 @@ export default { title: 'ra-ui-materialui/button/PrevNextButtons' };
 
 const i18nProvider = polyglotI18nProvider(() => englishMessages, 'en');
 
-seed(123); // we want consistent results
+let cityCounter = 0;
+let city = `city_${cityCounter}`;
 
 const data = {
-    customers: Array.from(Array(900).keys()).map(id => {
-        const first_name = name.firstName();
-        const last_name = name.lastName();
-        const email = internet.email(first_name, last_name);
+    customers: Array.from(Array(900).keys()).map((id, index) => {
+        const first_name = `first_name_${id}`;
+        const last_name = `last_name_${id}`;
+        const email = `email_${id}@example.com`;
+        // Increment city every 50 records
+        if (index % 50 === 0 && index !== 0) {
+            cityCounter += 1;
+            city = `city_${cityCounter}`;
+        }
 
         return {
             id,
             first_name,
             last_name,
             email,
-            city: address.city(),
+            city,
         };
     }),
 };
@@ -159,7 +164,7 @@ export const WithFilter = () => (
                     name="customers"
                     list={
                         <ListGuesser
-                            filter={{ city_q: 'East A' }}
+                            filter={{ city_q: 'city_0' }}
                             sort={{ field: 'first_name', order: 'DESC' }}
                         />
                     }
@@ -172,7 +177,7 @@ export const WithFilter = () => (
                                             field: 'first_name',
                                             order: 'DESC',
                                         }}
-                                        filter={{ city_q: 'East A' }}
+                                        filter={{ city_q: 'city_0' }}
                                     />
                                     <ShowButton />
                                 </MyTopToolbar>
@@ -189,7 +194,7 @@ export const WithFilter = () => (
                                             field: 'first_name',
                                             order: 'DESC',
                                         }}
-                                        filter={{ city_q: 'East A' }}
+                                        filter={{ city_q: 'city_0' }}
                                     />
                                     <EditButton />
                                 </MyTopToolbar>

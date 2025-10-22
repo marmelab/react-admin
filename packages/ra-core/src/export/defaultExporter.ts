@@ -1,4 +1,4 @@
-import jsonExport from 'jsonexport/dist';
+import jsonExport from 'jsonexport/dist/index.js';
 
 import { downloadCSV } from './downloadCSV';
 import { Exporter } from '../types';
