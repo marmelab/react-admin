@@ -33,10 +33,7 @@ const DefaultAddItemButton = (
     return (
         <button
             type="button"
-            onClick={event => {
-                event.preventDefault();
-                add();
-            }}
+            onClick={() => add()}
             className={[`button-add button-add-${source}`, className].join(' ')}
             {...rest}
         >
@@ -61,10 +58,7 @@ const DefaultRemoveItemButton = (
     return (
         <button
             type="button"
-            onClick={event => {
-                event.preventDefault();
-                remove();
-            }}
+            onClick={() => remove()}
             className={[
                 `button-remove button-remove-${source}-${index}`,
                 className,
@@ -89,20 +83,14 @@ const DefaultReOrderButtons = ({ className }: { className?: string }) => {
         >
             <button
                 type="button"
-                onClick={event => {
-                    event.preventDefault();
-                    reOrder(index - 1);
-                }}
+                onClick={() => reOrder(index - 1)}
                 disabled={index <= 0}
             >
                 <Translate i18nKey="ra.action.move_up">Move Up</Translate>
             </button>
             <button
                 type="button"
-                onClick={event => {
-                    event.preventDefault();
-                    reOrder(index + 1);
-                }}
+                onClick={() => reOrder(index + 1)}
                 disabled={total == null || index >= total - 1}
             >
                 <Translate i18nKey="ra.action.move_down">Move Down</Translate>
@@ -294,10 +282,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                             }
                                         />
                                         <button
-                                            onClick={event => {
-                                                event.preventDefault();
-                                                setConfirmIsOpen(true);
-                                            }}
+                                            type="button"
+                                            onClick={() =>
+                                                setConfirmIsOpen(true)
+                                            }
                                         >
                                             <Translate i18nKey="ra.action.clear_array_input">
                                                 Clear
