@@ -793,7 +793,7 @@ export const ChipProps = () => (
                 { id: 'u003', name: 'Reviewer' },
             ]}
             ChipProps={{
-                deleteIcon: <BackspaceIcon />,
+                deleteIcon: <BackspaceIcon data-testid="delete-icon" />,
             }}
         />
     </Wrapper>
@@ -812,7 +812,7 @@ export const SlotPropsChip = () => (
             slotProps={{
                 // @ts-ignore
                 chip: {
-                    deleteIcon: <BackspaceIcon />,
+                    deleteIcon: <BackspaceIcon data-testid="delete-icon" />,
                 },
             }}
         />
