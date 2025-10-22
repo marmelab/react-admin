@@ -798,3 +798,23 @@ export const ChipProps = () => (
         />
     </Wrapper>
 );
+
+export const SlotPropsChip = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            slotProps={{
+                // @ts-ignore
+                chip: {
+                    deleteIcon: <BackspaceIcon />,
+                },
+            }}
+        />
+    </Wrapper>
+);
