@@ -112,6 +112,20 @@ Alternately, pass a `successMessage` prop:
 <BulkDeleteButton successMessage="Posts deleted successfully" />
 ```
 
+### Access Control
+
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<BulkDeleteButton>` will only render if the user has the "delete" access to the related resource.
+
+`<BulkDeleteButton>` will call `authProvider.canAccess()` using the following parameters:
+
+```txt
+{ action: "delete", resource: [current resource] }
+```
+
+### Soft Delete
+
+Should you need to only archive records, the soft delete feature from the [Enterprise Edition add-on](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete) provides the [`<BulkSoftDeleteButton />`](./BulkSoftDeleteButton.md), a drop-in replacement for `<BulkDeleteButton>`.
+
 ## `<BulkExportButton>`
 
 Same as `<ExportButton>`, except it only exports the selected rows instead of the entire list. To be used inside [the `<DataTable bulkActionButtons>` prop](./DataTable.md#bulkactionbuttons).
@@ -1022,6 +1036,10 @@ If your `authProvider` implements [Access Control](./Permissions.md#access-contr
 { action: "delete", resource: [current resource], record: [current record] }
 ```
 
+### Soft Delete
+
+Should you need to only archive records, the soft delete feature from the [Enterprise Edition add-on](https://react-admin-ee.marmelab.com/documentation/ra-soft-delete) provides the [`<SoftDeleteButton />`](./SoftDeleteButton.md), a drop-in replacement for `<DeleteButton>`.
+
 ## `<DeleteWithConfirmButton>`
 
 Delete the current record after a confirm dialog has been accepted. To be used inside a `<Toolbar/>` component.
@@ -1063,15 +1081,15 @@ const MyEdit = () => (
     <Edit>
         <SimpleForm toolbar={<EditToolbar />}>
             ...
-        </SimpleForm>        
-    </Edit>    
+        </SimpleForm>
+    </Edit>
 );
 ```
 {% endraw %}
 
 ## `<EditButton>`
 
-Opens the Edit view of the current record. 
+Opens the Edit view of the current record.
 
 ![Edit button](./img/edit-button.png)
 
@@ -1397,7 +1415,7 @@ By default, react-admin's `<DataTable>` displays a `<SelectAllButton>` in its `b
 import { List, DataTable, BulkActionsToolbar, SelectAllButton, BulkDeleteButton } from 'react-admin';
 
 const PostSelectAllButton = () => (
-    <SelectAllButton 
+    <SelectAllButton
         label="Select all records"
         queryOptions={{ meta: { foo: 'bar' } }}
     />
@@ -1636,11 +1654,11 @@ const PostEditActions = () => (
 
 The mutation mode determines when the side effects (redirection, notifications, etc.) are executed:
 
-- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed. 
-- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown. 
+- `pessimistic`: The mutation is passed to the dataProvider first. When the dataProvider returns successfully, the mutation is applied locally, and the side effects are executed.
+- `optimistic`: The mutation is applied locally and the side effects are executed immediately. Then the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 - `undoable` (default): The mutation is applied locally and the side effects are executed immediately. Then a notification is shown with an undo button. If the user clicks on undo, the mutation is never sent to the dataProvider, and the page is refreshed. Otherwise, after a 5 seconds delay, the mutation is passed to the dataProvider. If the dataProvider returns successfully, nothing happens (as the mutation was already applied locally). If the dataProvider returns in error, the page is refreshed and an error notification is shown.
 
-By default, the `<UpdateButton>` uses the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive. 
+By default, the `<UpdateButton>` uses the `undoable` mutation mode. This is part of the "optimistic rendering" strategy of react-admin ; it makes user interactions more reactive.
 
 You can change this default by setting the `mutationMode` prop. For instance, to remove the ability to undo the changes, use the `optimistic` mode:
 
@@ -1671,7 +1689,7 @@ const PostEditActions = () => (
 {% endraw %}
 
 
-**Tip**: When using any other mode than `undoable`, the `<UpdateButton>` displays a confirmation dialog before calling the dataProvider. 
+**Tip**: When using any other mode than `undoable`, the `<UpdateButton>` displays a confirmation dialog before calling the dataProvider.
 
 ### `confirmTitle`
 
@@ -1777,7 +1795,7 @@ The default `onSuccess` function is:
 }
 ```
 
-**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects: 
+**Tip**: When you use `mutationMode="pessimistic"`, the `onSuccess` function receives the response from the `dataProvider.update()` call, which is the edited record (see [the dataProvider documentation for details](./DataProviderWriting.md#update)). You can use that response in the success side effects:
 
 {% raw %}
 ```jsx
