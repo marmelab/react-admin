@@ -114,12 +114,12 @@ Alternately, pass a `successMessage` prop:
 
 ### Access Control
 
-If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<DeleteButton>` will only render if the user has the "delete" access to the related resource.
+If your `authProvider` implements [Access Control](./Permissions.md#access-control), `<BulkDeleteButton>` will only render if the user has the "delete" access to the related resource.
 
-`<DeleteButton>` will call `authProvider.canAccess()` using the following parameters:
+`<BulkDeleteButton>` will call `authProvider.canAccess()` using the following parameters:
 
 ```txt
-{ action: "delete", resource: [current resource], record: [current record] }
+{ action: "delete", resource: [current resource] }
 ```
 
 ### Soft Delete
