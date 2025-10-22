@@ -282,6 +282,7 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
                                             }
                                         />
                                         <button
+                                            type="button"
                                             onClick={() =>
                                                 setConfirmIsOpen(true)
                                             }
