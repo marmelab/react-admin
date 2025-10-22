@@ -169,7 +169,10 @@ export default defineConfig({
                         'referencefieldbase',
                         'referencemanycountbase',
                         'referencemanyfieldbase',
-                        'referencemanytomanyfieldbase',
+                        enterpriseEntry(
+                            'referencemanytomanyfieldbase',
+                            '<ReferenceManyToManyFieldBase>'
+                        ),
                         'referenceonefieldbase',
                         'usefieldvalue',
                     ],
@@ -180,9 +183,18 @@ export default defineConfig({
                         'inputs',
                         'referenceinputbase',
                         'referencearrayinputbase',
-                        'referencemanyinputbase',
-                        'referencemanytomanyinputbase',
-                        'referenceoneinputbase',
+                        enterpriseEntry(
+                            'referencemanyinputbase',
+                            '<ReferenceManyInputBase>'
+                        ),
+                        enterpriseEntry(
+                            'referencemanytomanyinputbase',
+                            '<ReferenceManyToManyInputBase>'
+                        ),
+                        enterpriseEntry(
+                            'referenceoneinputbase',
+                            '<ReferenceOneInputBase>'
+                        ),
                         'formdataconsumer',
                         'usechoicescontext',
                         'useinput',
