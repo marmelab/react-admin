@@ -1194,7 +1194,8 @@ describe('useUpdate', () => {
                 />
             );
 
-            fireEvent.change(screen.getByLabelText('title'), {
+            fireEvent.click(await screen.findByText('Hello'));
+            fireEvent.change(await screen.findByLabelText('title'), {
                 target: { value: 'Bazinga' },
             });
             fireEvent.click(screen.getByText('Save'));
@@ -1204,9 +1205,13 @@ describe('useUpdate', () => {
             await waitFor(() => {
                 expect(middlewareSpy).toHaveBeenCalledWith('posts', {
                     id: '1',
-                    data: { title: 'Bazinga' },
+                    data: { author: 'John Doe', id: 1, title: 'Bazinga' },
                     meta: undefined,
-                    previousData: undefined,
+                    previousData: {
+                        author: 'John Doe',
+                        id: 1,
+                        title: 'Bazinga',
+                    },
                 });
             });
         });
@@ -1220,7 +1225,8 @@ describe('useUpdate', () => {
                 />
             );
 
-            fireEvent.change(screen.getByLabelText('title'), {
+            fireEvent.click(await screen.findByText('Hello'));
+            fireEvent.change(await screen.findByLabelText('title'), {
                 target: { value: 'Bazinga' },
             });
             fireEvent.click(screen.getByText('Save'));
@@ -1229,9 +1235,13 @@ describe('useUpdate', () => {
             await waitFor(() => {
                 expect(middlewareSpy).toHaveBeenCalledWith('posts', {
                     id: '1',
-                    data: { title: 'Bazinga' },
+                    data: { author: 'John Doe', id: 1, title: 'Bazinga' },
                     meta: undefined,
-                    previousData: undefined,
+                    previousData: {
+                        author: 'John Doe',
+                        id: 1,
+                        title: 'Bazinga',
+                    },
                 });
             });
         });

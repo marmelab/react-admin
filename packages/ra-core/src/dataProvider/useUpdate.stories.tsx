@@ -220,7 +220,7 @@ export const Middleware = ({
         },
     });
     return (
-        <TestMemoryRouter initialEntries={['/posts/1']}>
+        <TestMemoryRouter initialEntries={['/posts']}>
             <CoreAdmin
                 queryClient={new QueryClient()}
                 dataProvider={dataProvider}
