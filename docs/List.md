@@ -79,7 +79,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `resource`                 | Optional        | `string`                                      | -              | The resource name, e.g. `posts`.                                                                 |
 | `sort`                     | Optional        | `object`                                      | -              | The initial sort parameters.                                                                     |
 | `storeKey`                 | Optional        | `string` &#124; `false`                       | -              | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
-| `title`                    | Optional        | `ReactNode` | -              | The title to display in the App Bar.                                                             |
+| `title`                    | Optional        | `ReactNode` / `string` / `false` | -              | The title to display in the App Bar.                                                             |
 | `sx`                       | Optional        | `object`                                      | -              | The CSS styles to apply to the component.                                                        |
 
 `*` You must provide either `children` or `render`.
