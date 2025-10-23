@@ -4,10 +4,10 @@ import isEmpty from 'lodash/isEmpty.js';
 // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
 export const useFormIsDirty = (): boolean => {
     const { dirtyFields } = useFormState();
-    return hasDirtyFields(dirtyFields);
+    return checkHasDirtyFields(dirtyFields);
 };
 
-const hasDirtyFields = (
+export const checkHasDirtyFields = (
     dirtyFields: Partial<
         Readonly<{
             [x: string]: any;
@@ -36,13 +36,13 @@ const hasDirtyFields = (
                 if (
                     typeof item === 'object' &&
                     item !== null &&
-                    hasDirtyFields(item)
+                    checkHasDirtyFields(item)
                 ) {
                     return true;
                 }
             }
         } else if (typeof value === 'object' && value !== null) {
-            return hasDirtyFields(value);
+            return checkHasDirtyFields(value);
         }
         return false;
     });
