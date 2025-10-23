@@ -11,9 +11,11 @@ import { CoreAdminContext } from '../../core';
 import { testDataProvider } from '../../dataProvider';
 import { ChoicesContextValue, Form } from '../../form';
 import { SORT_ASC } from '../list/queryReducer';
+import { GetManyResult, RaRecord } from '../../types';
 
 const ReferenceArrayInputController = (
     props: UseReferenceArrayInputParams & {
+        field: { value: any };
         children: (params: ChoicesContextValue) => ReactElement;
     }
 ) => {
@@ -157,7 +159,7 @@ describe('useReferenceArrayInputController', () => {
                         getMany: () =>
                             Promise.resolve({
                                 data: [{ id: 1, title: 'foo' }],
-                            }),
+                            } satisfies GetManyResult<RaRecord> as any),
                     })}
                 >
                     <Form onSubmit={jest.fn()}>
@@ -545,11 +547,7 @@ describe('useReferenceArrayInputController', () => {
     });
 
     it('should have props compatible with the ListContext', async () => {
-        const children = ({
-            setPage,
-            setPerPage,
-            setSort,
-        }): React.ReactElement => {
+        const children = ({ setPage, setPerPage, setSort }) => {
             const handleSetPage = () => {
                 setPage(2);
             };

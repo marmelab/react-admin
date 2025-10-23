@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import {
     PreferencesEditorContext,
     PreferencesEditorContextValue,
@@ -7,7 +7,7 @@ import {
 
 export const PreferencesEditorContextProvider = ({ children }) => {
     const [isEnabled, setIsEnabled] = useState(false);
-    const [editor, setEditor] = useState<ReactElement | null>(null);
+    const [editor, setEditor] = useState<React.ReactNode>(null);
     const [preferenceKey, setPreferenceKey] = useState<string | null>(null);
     const [path, setPath] = useState<string | null>(null);
     const [title, setTitleString] = useState<string | null>(null);
