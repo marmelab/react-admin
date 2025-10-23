@@ -31,7 +31,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
-import { MutationMode, Params } from './useUpdate.stories';
+import { Middleware, MutationMode, Params } from './useUpdate.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -1181,6 +1181,58 @@ describe('useUpdate', () => {
                     screen.queryByText('Hello World from middleware')
                 ).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it(`it calls the middlewares in undoable mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="undoable"
+                    timeout={100}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.change(screen.getByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.updated');
+            expect(middlewareSpy).not.toHaveBeenCalled();
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                    id: '1',
+                    data: { title: 'Bazinga' },
+                    meta: undefined,
+                    previousData: undefined,
+                });
+            });
+        });
+        it(`it calls the middlewares in optimistic mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="optimistic"
+                    timeout={0}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.change(screen.getByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.updated');
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                    id: '1',
+                    data: { title: 'Bazinga' },
+                    meta: undefined,
+                    previousData: undefined,
+                });
             });
         });
     });

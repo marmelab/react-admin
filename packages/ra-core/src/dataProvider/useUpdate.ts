@@ -269,16 +269,22 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 );
                 return snapshot;
             },
-            getMutateWithMiddlewares: mutationFn => args => {
-                // This is necessary to avoid breaking changes in useUpdate:
-                // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+            getMutateWithMiddlewares: mutationFn => {
                 if (getMutateWithMiddlewares) {
-                    const { resource, ...params } = args;
-                    return getMutateWithMiddlewares(
+                    // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
+                    // we still have them applied when users have called the mutate function.
+                    const mutateWithMiddlewares = getMutateWithMiddlewares(
                         dataProviderUpdate.bind(dataProvider)
-                    )(resource, params);
+                    );
+                    return args => {
+                        // This is necessary to avoid breaking changes in useUpdate:
+                        // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+                        const { resource, ...params } = args;
+                        return mutateWithMiddlewares(resource, params);
+                    };
                 }
-                return mutationFn(args);
+
+                return args => mutationFn(args);
             },
         }
     );
