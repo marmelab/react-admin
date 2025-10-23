@@ -232,6 +232,7 @@ export default defineConfig({
                 {
                     label: 'Realtime',
                     items: [
+                        enterpriseEntry('<ListLiveUpdate>'),
                         enterpriseEntry('<LockStatusBase>'),
                         enterpriseEntry('usePublish'),
                         enterpriseEntry('useSubscribe'),
