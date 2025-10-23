@@ -11,6 +11,7 @@ import useDeleteWithConfirmController, {
 
 import { TestMemoryRouter } from '../../routing';
 import { useNotificationContext } from '../../notification';
+import { memoryStore, StoreSetter } from '../../store';
 
 describe('useDeleteWithConfirmController', () => {
     it('should call the dataProvider.delete() function with the meta param', async () => {
@@ -100,5 +101,61 @@ describe('useDeleteWithConfirmController', () => {
                 },
             ]);
         });
+    });
+
+    it('should unselect records from all storeKeys in useRecordSelection', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn((resource, params) => {
+                return Promise.resolve({ data: params.previousData });
+            }),
+        });
+
+        const MockComponent = () => {
+            const { handleDelete } = useDeleteWithConfirmController({
+                record: { id: 456 },
+                resource: 'posts',
+                mutationMode: 'pessimistic',
+            } as UseDeleteWithConfirmControllerParams);
+            return <button onClick={handleDelete}>Delete</button>;
+        };
+
+        const store = memoryStore();
+
+        render(
+            <TestMemoryRouter>
+                <CoreAdminContext store={store} dataProvider={dataProvider}>
+                    <StoreSetter
+                        name="posts.selectedIds.storeKeys"
+                        value={['bar.selectedIds']}
+                    >
+                        <StoreSetter
+                            name="posts.selectedIds"
+                            value={[123, 456]}
+                        >
+                            <StoreSetter name="bar.selectedIds" value={[456]}>
+                                <Routes>
+                                    <Route
+                                        path="/"
+                                        element={<MockComponent />}
+                                    />
+                                </Routes>
+                            </StoreSetter>
+                        </StoreSetter>
+                    </StoreSetter>
+                </CoreAdminContext>
+            </TestMemoryRouter>
+        );
+
+        const button = await screen.findByText('Delete');
+        fireEvent.click(button);
+        await waitFor(
+            () => {
+                expect(store.getItem('posts.selectedIds')).toEqual([123]);
+                expect(store.getItem('bar.selectedIds')).toEqual([]);
+            },
+            {
+                timeout: 1000,
+            }
+        );
     });
 });
