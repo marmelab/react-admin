@@ -428,7 +428,27 @@ export const authProvider = {
 };
 ```
 
-You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#customizing-the-login-component).
+![Auth0 login flow diagram](./img/authProvider-OAuth-flow.png)
+{% comment %}
+Diagram source:
+```mermaid
+sequenceDiagram
+    autonumber
+    participant U as User
+    participant RA as React Admin<br/>(authProvider)
+    participant A as Auth0 website
+    U->>RA: Access /posts
+    Note over RA: checkAuth()<br/>Auth0Client.isAuthenticated()
+    RA->>A: Auth0Client.loginWithRedirect()
+    Note over A: Login using Auth0 form
+    A->>RA: Redirects to /auth-callback<br/>(with token)
+    Note over RA: handleCallback()<br/>Auth0Client.handleRedirectCallback()
+    RA->>U: Redirects to /posts
+```
+Edited with https://mermaid.live/edit
+{% endcomment %}
+
+**Tip:** You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#customizing-the-login-component).
 
 ## Handling Refresh Tokens
 
