@@ -194,7 +194,7 @@ export const Middleware = ({
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = testDataProvider({
         // @ts-ignore
-        getList: (resource, params) => {
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
@@ -203,12 +203,14 @@ export const Middleware = ({
         // @ts-ignore
         getOne: (resource, params) => {
             return Promise.resolve({
+                // eslint-disable-next-line eqeqeq
                 data: posts.find(p => p.id == params.id),
             });
         },
         update: (resource, params) => {
             return new Promise(resolve => {
                 setTimeout(() => {
+                    // eslint-disable-next-line eqeqeq
                     const post = posts.find(p => p.id == params.id);
                     if (post) {
                         post.title = params.data.title;

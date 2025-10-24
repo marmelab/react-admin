@@ -15,7 +15,6 @@ import { useNotificationContext } from '../notification';
 import { useTakeUndoableMutation } from './undo';
 import { Form, InputProps, useInput } from '../form';
 import { TestMemoryRouter } from '../routing';
-import { Link } from 'react-router-dom';
 import { testDataProvider } from './testDataProvider';
 import { useRefresh } from './useRefresh';
 
@@ -239,7 +238,7 @@ export const Middleware = ({
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
     const dataProvider = testDataProvider({
         // @ts-ignore
-        getList: (resource, params) => {
+        getList: () => {
             return Promise.resolve({
                 data: posts,
                 total: posts.length,
