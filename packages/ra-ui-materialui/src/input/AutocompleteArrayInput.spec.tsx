@@ -13,6 +13,7 @@ import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
 import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
+    ChipProps,
     CreateItemLabel,
     CreateItemLabelRendered,
     CreateLabel,
@@ -20,6 +21,7 @@ import {
     InsideReferenceArrayInputOnChange,
     OnChange,
     OnCreate,
+    SlotPropsChip,
 } from './AutocompleteArrayInput.stories';
 
 describe('<AutocompleteArrayInput />', () => {
@@ -1326,4 +1328,12 @@ describe('<AutocompleteArrayInput />', () => {
         expect(input.value).not.toBe('Create x');
         expect(input.value).toBe('');
     }, 10000);
+    it('should allow to customize chips using the ChipProps prop', async () => {
+        render(<ChipProps />);
+        await screen.findAllByTestId('delete-icon');
+    });
+    it('should allow to customize chips using the slotProps prop', async () => {
+        render(<SlotPropsChip />);
+        await screen.findAllByTestId('delete-icon');
+    });
 });

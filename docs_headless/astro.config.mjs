@@ -106,6 +106,8 @@ export default defineConfig({
                         'usepermissions',
                         'addrefreshauthtoauthprovider',
                         'addrefreshauthtodataprovider',
+                        enterpriseEntry('canAccessWithPermissions'),
+                        enterpriseEntry('getPermissionsFromRoles'),
                     ],
                 },
                 {
@@ -167,7 +169,10 @@ export default defineConfig({
                         'referencefieldbase',
                         'referencemanycountbase',
                         'referencemanyfieldbase',
-                        'referencemanytomanyfieldbase',
+                        enterpriseEntry(
+                            'referencemanytomanyfieldbase',
+                            '<ReferenceManyToManyFieldBase>'
+                        ),
                         'referenceonefieldbase',
                         'usefieldvalue',
                     ],
@@ -183,8 +188,22 @@ export default defineConfig({
                         'referencemanytomanyinputbase',
                         'referenceoneinputbase',
                         'simpleformiteratorbase',
+                        enterpriseEntry(
+                            'referencemanyinputbase',
+                            '<ReferenceManyInputBase>'
+                        ),
+                        enterpriseEntry(
+                            'referencemanytomanyinputbase',
+                            '<ReferenceManyToManyInputBase>'
+                        ),
+                        enterpriseEntry(
+                            'referenceoneinputbase',
+                            '<ReferenceOneInputBase>'
+                        ),
+                        'formdataconsumer',
                         'usechoicescontext',
                         'useinput',
+                        'usesourcecontext',
                     ],
                 },
                 {
@@ -213,6 +232,52 @@ export default defineConfig({
                     items: [
                         'recordrepresentation',
                         'usegetrecordrepresentation',
+                    ],
+                },
+                {
+                    label: 'Realtime',
+                    items: [
+                        enterpriseEntry('RealtimeFeatures', 'Setting Up'),
+                        enterpriseEntry('<ListLiveUpdate>'),
+                        enterpriseEntry('<LockOnMount>'),
+                        enterpriseEntry('<LockStatusBase>'),
+                        enterpriseEntry('<WithLocks>'),
+                        enterpriseEntry('usePublish'),
+                        enterpriseEntry('useSubscribe'),
+                        enterpriseEntry('useSubscribeCallback'),
+                        enterpriseEntry('useSubscribeToRecord'),
+                        enterpriseEntry('useSubscribeToRecordList'),
+                        enterpriseEntry('useLock'),
+                        enterpriseEntry('useUnlock'),
+                        enterpriseEntry('useGetLock'),
+                        enterpriseEntry('useGetLockLive'),
+                        enterpriseEntry('useGetLocks'),
+                        enterpriseEntry('useGetLocksLive'),
+                        enterpriseEntry('useLockCallbacks'),
+                        enterpriseEntry('useLockOnMount'),
+                        enterpriseEntry('useLockOnCall'),
+                        enterpriseEntry('useGetListLive'),
+                        enterpriseEntry('useGetOneLive'),
+                    ],
+                },
+                {
+                    label: 'Soft Delete',
+                    items: [
+                        enterpriseEntry('SoftDeleteDataProvider', 'Setting up'),
+                        enterpriseEntry('<DeletedRecordsListBase>'),
+                        enterpriseEntry('<ShowDeletedBase>'),
+                        enterpriseEntry('<DeletedRecordRepresentation>'),
+                        enterpriseEntry('addSoftDeleteBasedOnResource'),
+                        enterpriseEntry('addSoftDeleteInPlace'),
+                        enterpriseEntry('useSoftDelete'),
+                        enterpriseEntry('useSoftDeleteMany'),
+                        enterpriseEntry('useGetListDeleted'),
+                        enterpriseEntry('useGetOneDeleted'),
+                        enterpriseEntry('useRestoreOne'),
+                        enterpriseEntry('useRestoreMany'),
+                        enterpriseEntry('useHardDelete'),
+                        enterpriseEntry('useHardDeleteMany'),
+                        enterpriseEntry('useDeletedRecordsListController'),
                     ],
                 },
                 {
@@ -252,3 +317,19 @@ export default defineConfig({
         assets: 'assets',
     },
 });
+
+/**
+ * @param {string} name
+ * @returns {any}
+ */
+function enterpriseEntry(name, label = name) {
+    return {
+        link: `${name.toLowerCase().replace(/</g, '').replace(/>/g, '')}/`,
+        label,
+        attrs: { class: 'enterprise' },
+        badge: {
+            text: 'React Admin Enterprise',
+            variant: 'default',
+        },
+    };
+}

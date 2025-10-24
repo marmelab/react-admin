@@ -24,7 +24,7 @@ npm install --save @react-admin/ra-soft-delete
 yarn add @react-admin/ra-soft-delete
 ```
 
-You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://marmelab.com/react-admin/enterprise-edition.html) for more details.
+You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://react-admin-ee.marmelab.com) for more details.
 
 ## Data Provider 
 
@@ -185,7 +185,7 @@ export const dataProvider = addSoftDeleteInPlace(
 
 **Note:** When using `addSoftDeleteInPlace`, avoid calling `getListDeleted` without a `resource` filter, as it uses a naive implementation combining multiple `getList` calls, which can lead to bad performance. It is recommended to use one list per resource in this case (see [`<DeletedRecordsList resource>` property](./DeletedRecordsList.md#resource)).
 
-You can also write your own implementation. Feel free to look at these builders source code for inspiration. You can find it under your `node_modules` folder, e.g. at `node_modules/@react-admin/ra-soft-delete/src/dataProvider/addSoftDeleteBasedOnResource.ts`.
+You can also write your own implementation. Feel free to look at these builders source code for inspiration. You can find it under your `node_modules` folder, e.g. at `node_modules/@react-admin/ra-core-ee/src/soft-delete/dataProvider/addSoftDeleteBasedOnResource.ts`.
 
 ### Query and Mutation Hooks 
 

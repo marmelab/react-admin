@@ -380,7 +380,9 @@ export const authProvider = {
 };
 ```
 
-You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#adding-a-login-page).
+![Auth0 login flow diagram](../../img/authProvider-OAuth-flow.png)
+
+**Tip:** You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#adding-a-login-page).
 
 ## Handling Refresh Tokens
 

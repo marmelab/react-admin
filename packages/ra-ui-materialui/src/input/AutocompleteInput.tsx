@@ -726,6 +726,11 @@ If you provided a React element for the optionText prop, you must also provide t
                     value.map((option, index) => {
                         // We have to extract the key because react 19 does not allow to spread the key prop
                         const { key, ...tagProps } = getTagProps({ index });
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
+                        const mergedSlotProps = props.slotProps?.chip
+                            ? // @ts-expect-error slotProps do not yet exist in MUI v5
+                              props.slotProps.chip
+                            : props.ChipProps;
                         return (
                             <Chip
                                 label={
@@ -738,6 +743,7 @@ If you provided a React element for the optionText prop, you must also provide t
                                 size="small"
                                 key={key}
                                 {...tagProps}
+                                {...mergedSlotProps}
                             />
                         );
                     })
