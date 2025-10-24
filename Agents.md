@@ -93,8 +93,9 @@ react-admin/
 │   ├── crm/             # CRM application
 │   └── tutorial/        # Tutorial app
 ├── cypress/             # E2E test configuration
-├── docs/               # Jekyll documentation
-└── scripts/            # Build scripts
+├── docs/                # Jekyll documentation
+├── docs_headless/       # Astro + Starlight documentation for headless components
+└── scripts/             # Build scripts
 ```
 
 ### Key ra-core Directories
@@ -173,6 +174,8 @@ All documentation files must include:
 - Detailed usage for each prop/parameter (in alphabetical order)
 - Recipes and advanced usage examples if applicable
 
+Headless hooks and components (the ones in `ra-core`) are also documented in the `/docs_headless/` directory.
+
 ### Pre-commit Hooks
 
 - Automatic test execution for modified files
@@ -197,7 +200,7 @@ make prettier       # Format code
 
 ### Pull Request Process
 
-1. **Target branch**: `next` for features, `master` for bug fixes
+1. **Target branch**: `next` for features, `master` for bug fixes or documentation changes
 2. **Required checks**:
    - All tests passing (`make test`)
    - Linting clean (`make lint`)
@@ -212,13 +215,13 @@ make prettier       # Format code
    ```
 
 4. **Documentation**: Update relevant docs for API changes
+5. **Title**: Start with a verb (Add / Fix / Update / Remove), prefix with `[Doc]` or `[TypeScript]` if the change only concerns doc or types. 
 
 ### Common Make Commands
 ```bash
-make                  # Show all available commands
-make install         # Install dependencies
-make build           # Build all packages (CJS + ESM)
-make watch          # Development watch mode
+make                # Show all available commands
+make install        # Install dependencies
+make build          # Build all packages (CJS + ESM)
 make test           # Run all tests
 make lint           # Check code quality
 make prettier       # Format code
@@ -230,6 +233,7 @@ make run-demo       # Run demo application
 
 - Use `React.memo()` for expensive components
 - Leverage `useMemo()` and `useCallback()` appropriately
+- Use `useEvent()` (an internal hook) for memoized event handlers
 - Implement pagination for large datasets
 - Use query caching via React Query
 
