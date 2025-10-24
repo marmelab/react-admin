@@ -114,5 +114,23 @@ describe('useFormIsDirty', () => {
             };
             expect(checkHasDirtyFields(dirtyFields)).toBe(false);
         });
+
+        it('should return true when an array contains an empty object (new item)', () => {
+            const dirtyFields = {
+                name: false,
+                age: false,
+                hobbies: [{}], // empty object should be considered dirty
+            };
+            expect(checkHasDirtyFields(dirtyFields)).toBe(true);
+        });
+
+        it('should return true when an array contains undefined entries (new item)', () => {
+            const dirtyFields = {
+                name: false,
+                age: false,
+                hobbies: [undefined], // undefined should be considered dirty
+            } as any;
+            expect(checkHasDirtyFields(dirtyFields)).toBe(true);
+        });
     });
 });
