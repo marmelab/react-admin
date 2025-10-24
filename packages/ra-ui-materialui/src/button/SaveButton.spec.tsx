@@ -23,6 +23,7 @@ import { AdminContext } from '../AdminContext';
 import {
     AlwaysEnable,
     Basic,
+    ComplexForm,
     EnabledWhenFormIsPrefilled,
 } from './SaveButton.stories';
 
@@ -401,11 +402,78 @@ describe('<SaveButton />', () => {
         );
     });
 
-    it('should render enabled if the form is prefilled', async () => {
+    it('should be enabled if the form is prefilled', async () => {
         render(<EnabledWhenFormIsPrefilled />);
         await waitFor(() =>
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
                 false
+            )
+        );
+    });
+
+    it('should enable/disable consistently in a complex form', async () => {
+        render(<ComplexForm />);
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                true
+            )
+        );
+        fireEvent.change(await screen.getByDisplayValue('Lorem ipsum'), {
+            target: { value: 'Lorem ipsum dolor' },
+        });
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                true
+            )
+        );
+        fireEvent.change(await screen.getByDisplayValue('bazinga'), {
+            target: { value: 'bazingaaaa' },
+        });
+
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                true
+            )
+        );
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
+        await waitFor(() =>
+            expect(
+                screen.queryAllByLabelText('resources.posts.fields.tags.name')
+                    .length
+            ).toEqual(2)
+        );
+        fireEvent.change(
+            screen.getAllByLabelText('resources.posts.fields.tags.name')[1],
+            {
+                target: { value: 'plop' },
+            }
+        );
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
+            )
+        );
+        fireEvent.click(screen.getByText('ra.action.save'));
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                true
             )
         );
     });

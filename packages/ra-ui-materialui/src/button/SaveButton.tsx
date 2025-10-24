@@ -19,6 +19,7 @@ import {
     warning,
     setSubmissionErrors,
     useRecordFromLocation,
+    useFormIsDirty,
 } from 'ra-core';
 
 /**
@@ -72,9 +73,9 @@ export const SaveButton = <RecordType extends RaRecord = any>(
     const translate = useTranslate();
     const form = useFormContext();
     const saveContext = useSaveContext();
-    const { dirtyFields, isValidating, isSubmitting } = useFormState();
+    const { isValidating, isSubmitting } = useFormState();
     // useFormState().isDirty might differ from useFormState().dirtyFields (https://github.com/react-hook-form/react-hook-form/issues/4740)
-    const isDirty = Object.keys(dirtyFields).length > 0;
+    const isDirty = useFormIsDirty();
     // Use form isDirty, isValidating and form context saving to enable or disable the save button
     // if alwaysEnable is undefined and the form wasn't prefilled
     const recordFromLocation = useRecordFromLocation();
