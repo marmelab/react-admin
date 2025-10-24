@@ -17,11 +17,43 @@ React-admin is a comprehensive frontend framework for building B2B and admin app
 
 ### Provider Pattern
 
-React-admin uses adapters called "providers" for external integrations. 
+React-admin uses adapters called "providers" for external integrations:
+
+```typescript
+// Data Provider - abstracts API calls
+dataProvider.getList('posts', {
+    pagination: { page: 1, perPage: 5 },
+    sort: { field: 'title', order: 'ASC' },
+    filter: { author_id: 12 }
+})
+
+// Auth Provider - handles authentication
+authProvider.checkAuth()
+authProvider.login({ username, password })
+authProvider.getPermissions()
+
+// i18n Provider - manages translations
+i18nProvider.translate('ra.action.save')
+```
 
 ### Hook-Based API
 
 All functionality exposed through hooks following React patterns:
+
+```typescript
+// Data hooks
+const { data, isLoading } = useGetList('posts', {
+    pagination: { page: 1, perPage: 10 }
+});
+
+// State management hooks
+const [filters, setFilters] = useFilterState();
+const [page, setPage] = usePaginationState();
+
+// Auth hooks
+const { permissions } = usePermissions();
+const canAccess = useCanAccess({ resource: 'posts', action: 'edit' });
+```
 
 ### Headless Core
 
@@ -65,6 +97,15 @@ react-admin/
 └── scripts/            # Build scripts
 ```
 
+### Key ra-core Directories
+
+- `src/auth/` - Authentication and authorization (54 files)
+- `src/controller/` - CRUD controllers and state management
+- `src/dataProvider/` - Data fetching and caching logic (70 files)
+- `src/form/` - Form handling (31 files)
+- `src/routing/` - Navigation and routing (26 files)
+- `src/i18n/` - Internationalization (30 files)
+
 ### Package Dependencies
 
 - **Core**: React 18.3+, TypeScript 5.8+, lodash 4.17+, inflection 3.0+
@@ -76,13 +117,12 @@ react-admin/
 
 ## Development Practices
 
-**Search for similar functions** before creating a new one. React-admin is a rich framework that already has many building blocks. 
-
 ### TypeScript Requirements
 
 - **Strict mode enabled** - no implicit any
 - **Complete type exports** - all public APIs must be typed
 - **Generic types** for flexibility in data providers and resources
+- **JSDoc comments** for better IDE support
 
 ```typescript
 // GOOD - Properly typed with generics
@@ -116,16 +156,10 @@ export const MyField = ({ source, ...props }) => {
 ```
 
 ### File Organization
-
 - **Feature-based structure** within packages (not type-based)
-- **One file per component** except for components that can't be used in standalone (e.g. `DataTable.Col`)
 - **Co-location** - Tests (`.spec.tsx`) and stories (`.stories.tsx`) next to components
 - **Index exports** - Each directory has an index.ts exporting public API
 - **Flat structure** within features - avoid unnecessary nesting
-
-### JSDoc
-
-Every hook or component must have basic usage described in JSDoc, including a non-trivial example. No need to document all options - IDEs display TypeScript types for that. 
 
 ### Documentation
 
@@ -176,7 +210,8 @@ make prettier       # Format code
    feat: Add support for custom row actions in Datagrid
    docs: Clarify dataProvider response format
    ```
-4. Use Pull Request Description Template
+
+4. **Documentation**: Update relevant docs for API changes
 
 ### Common Make Commands
 ```bash
@@ -206,7 +241,6 @@ make run-demo       # Run demo application
 - Test with screen readers
 
 ### Browser Support
-
 - Modern browsers only (Chrome, Firefox, Safari, Edge)
 - No IE11 support
 - ES5 compilation target for compatibility
