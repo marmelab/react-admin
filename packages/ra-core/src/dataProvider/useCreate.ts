@@ -206,7 +206,7 @@ export const useCreate = <
                         dataProviderCreate.bind(dataProvider)
                     );
                     return args => {
-                        // This is necessary to avoid breaking changes in useUpdate:
+                        // This is necessary to avoid breaking changes in useCreate:
                         // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
                         const { resource, ...params } = args;
                         return mutateWithMiddlewares(resource, params);
