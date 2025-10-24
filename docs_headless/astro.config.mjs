@@ -233,7 +233,9 @@ export default defineConfig({
                     label: 'Realtime',
                     items: [
                         enterpriseEntry('<ListLiveUpdate>'),
+                        enterpriseEntry('<LockOnMount>'),
                         enterpriseEntry('<LockStatusBase>'),
+                        enterpriseEntry('<WithLocks>'),
                         enterpriseEntry('usePublish'),
                         enterpriseEntry('useSubscribe'),
                         enterpriseEntry('useSubscribeCallback'),
