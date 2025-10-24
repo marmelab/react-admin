@@ -2,7 +2,7 @@
 title: '<LockOnMount>'
 ---
 
-`<LockOnMount />` calls `dataProvider.lock()` on mount and `dataProvider.unlock()` on unmount to lock and unlock the record. It relies on `authProvider.getIdentity()` to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided.
+`<LockOnMount />` calls [`dataProvider.lock()`](./RealtimeFeatures.md#data-provider-requirements) on mount and [`dataProvider.unlock()`](./RealtimeFeatures.md#data-provider-requirements) on unmount to lock and unlock the record. It relies on [`authProvider.getIdentity()`](./AuthProviderWriting.md#getidentity) to get the identity of the current user. It guesses the current `resource` and `recordId` from the context (or the route) if not provided.
 
 This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 

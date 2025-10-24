@@ -232,6 +232,7 @@ export default defineConfig({
                 {
                     label: 'Realtime',
                     items: [
+                        enterpriseEntry('RealtimeFeatures', 'Setting Up'),
                         enterpriseEntry('<ListLiveUpdate>'),
                         enterpriseEntry('<LockOnMount>'),
                         enterpriseEntry('<LockStatusBase>'),

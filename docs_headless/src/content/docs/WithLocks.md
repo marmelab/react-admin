@@ -4,7 +4,7 @@ title: '<WithLocks>'
 
 `<WithLocks>` fetches the locks for a resource on mount, and puts them in a LocksContext. The locks are updated in real time.
 
-This component calls `dataProvider.getLocks()`, then subscribes to the locks topic for the current resource, and refetches the locks when a new event is received.
+This component calls [`dataProvider.getLocks()`](./RealtimeFeatures.md#data-provider-requirements), then subscribes to the locks topic for the current resource, and refetches the locks when a new event is received.
 
 This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
