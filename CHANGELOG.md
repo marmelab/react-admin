@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.12.2
+
+* Fix middlewares might not be applied in `optimistic` and `undoable` modes when they are unregistered before the actual mutation is called ([#11007](https://github.com/marmelab/react-admin/pull/11007)) ([djhi](https://github.com/djhi))
+* Fix `<AutocompleteArrayInput>` does not apply `ChipProps` nor `slotProps.chip` in `renderTags` ([#11003](https://github.com/marmelab/react-admin/pull/11003)) ([djhi](https://github.com/djhi))
+* Fix `<SaveButton>` form dirty status check ([#10997](https://github.com/marmelab/react-admin/pull/10997)) ([djhi](https://github.com/djhi))
+* [Doc] Add missing Enterprise ribbon to some `ra-core-ee` modules ([#11001](https://github.com/marmelab/react-admin/pull/11001)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Mention Soft Delete in Buttons documentation ([#11000](https://github.com/marmelab/react-admin/pull/11000)) ([djhi](https://github.com/djhi))
+* [Doc] Add `<FormDataConsumer>` and `useSourceContext` headless documentation ([#10991](https://github.com/marmelab/react-admin/pull/10991)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Improve AuthProvider documentation ([#10989](https://github.com/marmelab/react-admin/pull/10989)) ([slax57](https://github.com/slax57))
+* [chore] Bump vite from 6.3.6 to 6.4.1 ([#10999](https://github.com/marmelab/react-admin/pull/10999)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.12.1
 
 * Fix `<ColumnsSelector>` reset button is not translatable ([#10984](https://github.com/marmelab/react-admin/pull/10984)) ([yarkovaleksei](https://github.com/yarkovaleksei))
