@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import isEqual from 'lodash/isEqual.js';
 import { useListContext, useTranslate } from 'ra-core';
 import {
@@ -21,7 +20,7 @@ export interface RemoveSavedQueryDialogProps {
 export const RemoveSavedQueryDialog = ({
     open,
     onClose,
-}: RemoveSavedQueryDialogProps): ReactElement => {
+}: RemoveSavedQueryDialogProps) => {
     const translate = useTranslate();
     const { resource, filterValues, sort, perPage, displayedFilters } =
         useListContext();

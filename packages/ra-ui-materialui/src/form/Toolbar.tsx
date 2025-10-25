@@ -54,7 +54,7 @@ import { SaveButton, DeleteButton } from '../button';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
+ * @prop {ReactNode} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
 export const Toolbar = (inProps: ToolbarProps) => {

@@ -105,12 +105,12 @@ export const EditView = (props: EditViewProps) => {
 export interface EditViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
     actions?: ReactElement | false;
-    aside?: ReactElement;
+    aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;
     offline?: ReactNode;
     error?: ReactNode;
-    title?: string | ReactElement | false;
+    title?: ReactNode;
     sx?: SxProps<Theme>;
     render?: (editContext: EditControllerResult) => ReactNode;
 }

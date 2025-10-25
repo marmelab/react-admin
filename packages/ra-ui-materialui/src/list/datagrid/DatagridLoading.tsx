@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, FC, memo } from 'react';
+import { FC, memo } from 'react';
 import {
     Table,
     TableCell,
@@ -118,7 +118,7 @@ const DatagridLoading = ({
 export interface DatagridLoadingProps {
     className?: string;
     expand?:
-        | ReactElement
+        | React.ReactNode
         | FC<{
               id: Identifier;
               record: RaRecord;

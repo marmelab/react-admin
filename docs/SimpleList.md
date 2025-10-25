@@ -42,9 +42,9 @@ export const PostList = () => (
 
 | Prop | Required | Type | Default | Description |
 | --- | --- | --- | --- | --- |
-| `primaryText` | Optional | mixed | record representation | The primary text to display. |
-| `secondaryText` | Optional | mixed | | The secondary text to display. |
-| `tertiaryText` | Optional | mixed | | The tertiary text to display. |
+| `primaryText` | Optional | `ReactNode` or `function` | record representation | The primary text to display. |
+| `secondaryText` | Optional | `ReactNode`  or `function` | | The secondary text to display. |
+| `tertiaryText` | Optional | `ReactNode` | or `function`  | The tertiary text to display. |
 | `rowClick` | Optional |mixed | `"edit"` | The action to trigger when the user clicks on a row. |
 | `leftAvatar` | Optional | function | | A function returning an `<Avatar>` component to display before the primary text. |
 | `leftIcon` | Optional | function | | A function returning an `<Icon>` component to display before the primary text. |
@@ -52,7 +52,7 @@ export const PostList = () => (
 | `rightIcon` | Optional | function | | A function returning an `<Icon>` component to display after the primary text. |
 | `rowStyle` | Optional | function | | A function returning a style object to apply to each row. |
 | `rowSx` | Optional | function | | A function returning a sx object to apply to each row. |
-| `empty` | Optional | ReactElement | | A ReactElement to display instead of the list when the data is empty. |
+| `empty` | Optional | `ReactNode` | | A `ReactNode` to display instead of the list when the data is empty. |
 
 ## `empty`
 

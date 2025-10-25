@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ComponentType, ReactElement, isValidElement } from 'react';
+import { ComponentType, isValidElement } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { isValidElementType } from 'react-is';
 
@@ -36,7 +36,9 @@ export const Resource = (props: ResourceProps) => {
     );
 };
 
-const getElement = (ElementOrComponent: ComponentType<any> | ReactElement) => {
+const getElement = (
+    ElementOrComponent: ComponentType<any> | React.ReactNode
+) => {
     if (isValidElement(ElementOrComponent)) {
         return ElementOrComponent;
     }

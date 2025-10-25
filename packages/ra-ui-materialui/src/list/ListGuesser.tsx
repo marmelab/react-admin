@@ -87,7 +87,7 @@ export const ListGuesserView = (
 ) => {
     const { data } = useListContext();
     const resource = useResourceContext();
-    const [child, setChild] = useState<React.ReactElement | null>(null);
+    const [child, setChild] = useState<React.ReactNode>(null);
     const { enableLog = process.env.NODE_ENV === 'development', ...rest } =
         props;
 

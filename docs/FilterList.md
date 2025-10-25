@@ -77,7 +77,7 @@ A more sophisticated example is the filter sidebar for the visitors list visible
 |------|----------|------|---------|-------------|
 | [`children`](#children) | Required | node | | The children of `<FilterList>` must be a list of `<FilterListItem>` components. |
 | [`icon`](#icon) | Optional | element | | When set, the `<FilterList icon>` prop appears on the left side of the filter label. |
-| [`label`](#label) | Optional | string | | React-admin renders the `<FilterList label>` on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated. |
+| [`label`](#label) | Optional | `ReactNode` | | React-admin renders the `<FilterList label>` on top of the child filter items. The string is passed through the `useTranslate` hook, and therefore can be translated. |
 
 ## `children`
 
@@ -274,7 +274,7 @@ The children of `<FilterList>` must be a list of `<FilterListItem>` components. 
 
 | Prop | Required | Type | Default | Description |
 |------|----------|------|---------|-------------|
-| `label` | Required | string | | The label of the filter item. It is passed through the `useTranslate` hook, and therefore can be translated. |
+| `label` | Required | `ReactNode` | | The label of the filter item. It is passed through the `useTranslate` hook, and therefore can be translated. |
 | `value` | Required | object | | The value of the filter item. It is merged with the current filter value when enabled by the user. |
 | `icon` | Optional | `ReactElement` | | When set, the icon appears to the left of the item label.  |
 | `isSelected` | Optional | function | | A function that receives the item value and the currently applied filters. It must return a boolean. |

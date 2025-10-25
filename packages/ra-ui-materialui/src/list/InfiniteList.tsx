@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { InfiniteListBase, InfiniteListBaseProps, RaRecord } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
@@ -62,7 +61,7 @@ import { Loading } from '../layout';
  */
 export const InfiniteList = <RecordType extends RaRecord = any>(
     props: InfiniteListProps<RecordType>
-): ReactElement => {
+) => {
     const {
         debounce,
         disableAuthentication,

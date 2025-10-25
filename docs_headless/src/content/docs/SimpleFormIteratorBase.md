@@ -67,4 +67,4 @@ const AddItemButton = () => {
 
 | Prop              | Required | Type           | Default               | Description                                   |
 |-------------------|----------|----------------|-----------------------|-----------------------------------------------|
-| `children`        | Optional | `ReactElement` | -                     | List of inputs to display for each array item |
+| `children`        | Optional | `ReactNode` | -                     | List of inputs to display for each array item |

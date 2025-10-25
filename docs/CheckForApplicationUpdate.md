@@ -46,7 +46,7 @@ export const App = () => (
 | --------------- | -------- | -------------- | ------------------ |-------------------------------------------------------------------- |
 | `interval`      | Optional | `number`       | `3600000` (1 hour) | The interval in milliseconds between two checks                     |
 | `disabled`      | Optional | `boolean`      | `false`            | Whether the automatic check is disabled                             |
-| `notification`  | Optional | `ReactElement` |                    | The notification to display to the user when an update is available |
+| `notification`  | Optional | `ReactNode` |                    | The notification to display to the user when an update is available |
 | `onNewVersion Available` | Optional | `function` |               | The effect to execute when a new version is detected.               |
 | `url`           | Optional | `string`       | Current URL        | The URL to download to check for code update                        |
 | `fetchOptions`  | Optional | `RequestInit | undefined` | `undefined`    | The options passed to `fetch` when checking for an update       |

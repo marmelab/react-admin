@@ -58,13 +58,13 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `children`                 | Optional&nbsp;* | `ReactNode`                                   | -              | The components rendering the list of records.                                                    |
 | `render`                   | Optional&nbsp;* | `(listContext) => ReactNode`                  | -              | A function to render the list of records. Receive the list context as its argument               |
 | `actions`                  | Optional        | `ReactElement`                                | -              | The actions to display in the toolbar.                                                           |
-| `aside`                    | Optional        | `ReactElement`                                | -              | The component to display on the side of the list.                                                |
+| `aside`                    | Optional        | `ReactNode`                                | -              | The component to display on the side of the list.                                                |
 | `authLoading`              | Optional        | `ReactNode`                                   | -              | The component to render while checking for authentication and permissions.                       |
 | `component`                | Optional        | `Component`                                   | `Card`         | The component to render as the root element.                                                     |
 | `debounce`                 | Optional        | `number`                                      | `500`          | The debounce delay in milliseconds to apply when users change the sort or filter parameters.     |
 | `disable Authentication`   | Optional        | `boolean`                                     | `false`        | Set to `true` to disable the authentication check.                                               |
 | `disable SyncWithLocation` | Optional        | `boolean`                                     | `false`        | Set to `true` to disable the synchronization of the list parameters with the URL.                |
-| `empty`                    | Optional        | `ReactElement`                                | -              | The component to display when the list is empty.                                                 |
+| `empty`                    | Optional        | `ReactNode`                                | -              | The component to display when the list is empty.                                                 |
 | `empty WhileLoading`       | Optional        | `boolean`                                     | `false`        | Set to `true` to return `null` while the list is loading.                                        |
 | `error`                    | Optional        | `ReactNode`                                   | -              | The component to render when failing to load the list of records.                                |
 | `exporter`                 | Optional        | `function`                                    | -              | The function to call to export the list.                                                         |
@@ -79,7 +79,7 @@ You can find more advanced examples of `<List>` usage in the [demos](./Demos.md)
 | `resource`                 | Optional        | `string`                                      | -              | The resource name, e.g. `posts`.                                                                 |
 | `sort`                     | Optional        | `object`                                      | -              | The initial sort parameters.                                                                     |
 | `storeKey`                 | Optional        | `string` &#124; `false`                       | -              | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
-| `title`                    | Optional        | `string` &#124;` ReactElement` &#124; `false` | -              | The title to display in the App Bar.                                                             |
+| `title`                    | Optional        | `ReactNode` / `string` / `false` | -              | The title to display in the App Bar.                                                             |
 | `sx`                       | Optional        | `object`                                      | -              | The CSS styles to apply to the component.                                                        |
 
 `*` You must provide either `children` or `render`.

@@ -59,7 +59,7 @@ export interface CreateViewProps
     aside?: ReactElement;
     component?: ElementType;
     sx?: SxProps<Theme>;
-    title?: string | ReactElement | false;
+    title?: ReactNode;
     render?: (createContext: CreateControllerResult) => ReactNode;
     children?: ReactNode;
 }

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { ListBase, ListBaseProps, RaRecord } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
@@ -59,7 +58,7 @@ import { Loading } from '../layout';
  */
 export const List = <RecordType extends RaRecord = any>(
     props: ListProps<RecordType>
-): ReactElement => {
+) => {
     const {
         debounce,
         disableAuthentication,

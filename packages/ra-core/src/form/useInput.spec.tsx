@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent } from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { CoreAdminContext, SourceContextProvider } from '../core';
@@ -11,7 +11,7 @@ import { DefaultValue } from './useInput.stories';
 
 const Input: FunctionComponent<
     {
-        children: (props: ReturnType<typeof useInput>) => ReactElement;
+        children: (props: ReturnType<typeof useInput>) => React.ReactNode;
     } & InputProps
 > = props => {
     const inputProps = useInput(props);
@@ -20,7 +20,7 @@ const Input: FunctionComponent<
 
 const InputWithCustomOnChange: FunctionComponent<
     {
-        children: (props: ReturnType<typeof useInput>) => ReactElement;
+        children: (props: ReturnType<typeof useInput>) => React.ReactNode;
     } & InputProps & { setContextValue?: (value: string) => void }
 > = ({ children, setContextValue, ...props }) => {
     const { getValues } = useFormContext();

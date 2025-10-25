@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { ShowBase, RaRecord, ShowBaseProps } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
@@ -62,7 +61,7 @@ import { Loading } from '../layout';
  */
 export const Show = <RecordType extends RaRecord = any>(
     inProps: ShowProps<RecordType>
-): ReactElement => {
+) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,

@@ -198,8 +198,7 @@ const TestedComponentWithPermissions = () => {
 };
 
 const TestedComponentWithOnlyLazyCustomRoutes = ({ navigateCallback }) => {
-    const [lazyRoutes, setLazyRoutes] =
-        React.useState<React.ReactElement | null>(null);
+    const [lazyRoutes, setLazyRoutes] = React.useState<React.ReactNode>(null);
 
     React.useEffect(() => {
         const timer = setTimeout(

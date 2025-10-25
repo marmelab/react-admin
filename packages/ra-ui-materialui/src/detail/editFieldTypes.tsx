@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { SimpleForm } from '../form';
 import {
     ArrayInput,
@@ -82,9 +82,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceArrayInput source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
-        component: (
-            props: { children: ReactNode } & InputProps
-        ): ReactElement => <SelectInput optionText="id" {...props} />,
+        component: (props: { children: ReactNode } & InputProps) => (
+            <SelectInput optionText="id" {...props} />
+        ),
         representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {

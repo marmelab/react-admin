@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { type ReactElement, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
@@ -170,7 +170,9 @@ export interface ReferenceArrayFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends BaseFieldProps<RecordType> {
     children?: ReactNode;
-    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactElement;
+    render?: (
+        props: ListControllerResult<ReferenceRecordType>
+    ) => React.ReactNode;
     error?: ReactNode;
     loading?: ReactNode;
     empty?: ReactNode;

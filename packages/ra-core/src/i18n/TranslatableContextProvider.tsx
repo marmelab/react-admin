@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 import {
     TranslatableContext,
     TranslatableContextValue,
@@ -11,7 +11,7 @@ export const TranslatableContextProvider = ({
 }: {
     children: ReactNode;
     value: TranslatableContextValue;
-}): ReactElement => {
+}) => {
     return (
         <TranslatableContext.Provider value={value}>
             {children}

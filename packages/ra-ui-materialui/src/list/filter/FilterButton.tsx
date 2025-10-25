@@ -90,7 +90,12 @@ export const FilterButton = (inProps: FilterButtonProps) => {
     }
 
     const allTogglableFilters = filters.filter(
-        (filterElement: React.ReactElement) => !filterElement.props.alwaysOn
+        (filterElement): filterElement is React.ReactElement => {
+            return (
+                React.isValidElement(filterElement) &&
+                !filterElement.props.alwaysOn
+            );
+        }
     );
 
     const handleClickButton = useCallback(
@@ -179,21 +184,19 @@ export const FilterButton = (inProps: FilterButtonProps) => {
                 anchorEl={anchorEl.current}
                 onClose={handleRequestClose}
             >
-                {allTogglableFilters.map(
-                    (filterElement: React.ReactElement, index) => (
-                        <FilterButtonMenuItem
-                            key={filterElement.props.source}
-                            filter={filterElement}
-                            displayed={
-                                !!displayedFilters[filterElement.props.source]
-                            }
-                            resource={resource}
-                            onShow={handleShow}
-                            onHide={handleRemove}
-                            autoFocus={index === 0}
-                        />
-                    )
-                )}
+                {allTogglableFilters.map((filterElement, index) => (
+                    <FilterButtonMenuItem
+                        key={filterElement.props.source}
+                        filter={filterElement}
+                        displayed={
+                            !!displayedFilters[filterElement.props.source]
+                        }
+                        resource={resource}
+                        onShow={handleShow}
+                        onHide={handleRemove}
+                        autoFocus={index === 0}
+                    />
+                ))}
                 {(hasFilterValues || validSavedQueries.length > 0) && (
                     <Divider />
                 )}

@@ -50,13 +50,13 @@ Both are [Enterprise Edition](https://react-admin-ee.marmelab.com) components.
 
 | Prop                 | Required | Type                    | Default               | Description                                                   |
 | -------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
-| `children`           | Required | Element                 | n/a                   | The list of `<Field>` components to render as columns.        |
-| `body`               | Optional | Element                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
-| `bulkActionButtons`  | Optional | Element                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
-| `empty`              | Optional | Element                 | `<Empty>`             | The component used to render the empty table.                 |
-| `expand`             | Optional | Element                 |                       | The component used to render the expand panel for each row.   |
+| `children`           | Required | `ReactNode`                 | n/a                   | The list of `<Field>` components to render as columns.        |
+| `body`               | Optional | `ReactNode`                 | `<Datagrid Body>`     | The component used to render the body of the table.           |
+| `bulkActionButtons`  | Optional | `ReactNode`                 | `<BulkDelete Button>` | The component used to render the bulk action buttons.         |
+| `empty`              | Optional | `ReactNode`                 | `<Empty>`             | The component used to render the empty table.                 |
+| `expand`             | Optional | `ReactNode`                 |                       | The component used to render the expand panel for each row.   |
 | `expandSingle`       | Optional | Boolean                 | `false`               | Whether to allow only one expanded row at a time.             |
-| `header`             | Optional | Element                 | `<Datagrid Header>`   | The component used to render the table header.                |
+| `header`             | Optional | `ReactNode`                 | `<Datagrid Header>`   | The component used to render the table header.                |
 | `hover`              | Optional | Boolean                 | `true`                | Whether to highlight the row under the mouse.                 |
 | `isRowExpandable`    | Optional | Function                | `() => true`          | A function that returns whether a row is expandable.          |
 | `isRowSelectable`    | Optional | Function                | `() => true`          | A function that returns whether a row is selectable.          |

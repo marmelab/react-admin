@@ -17,7 +17,7 @@ import Aside from './Aside';
 import UserEditEmbedded from './UserEditEmbedded';
 export const UserIcon = PeopleIcon;
 
-const getUserFilters = (canSeeRole: boolean): React.ReactElement[] => {
+const getUserFilters = (canSeeRole: boolean) => {
     const filters = [
         <SearchInput source="q" alwaysOn />,
         <TextInput source="name" />,
