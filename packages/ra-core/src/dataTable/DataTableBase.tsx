@@ -1,20 +1,20 @@
+import difference from 'lodash/difference';
+import union from 'lodash/union';
 import * as React from 'react';
 import { useEffect, useMemo, useRef, type FC, type ReactNode } from 'react';
-import union from 'lodash/union';
-import difference from 'lodash/difference';
 
-import { OptionalResourceContextProvider, useResourceContext } from '../core';
-import { useEvent } from '../util';
 import { useListContextWithProps } from '../controller/list/useListContextWithProps';
 import { type ListControllerResult } from '../controller/list/useListController';
-import { type RowClickFunctionBase } from './types';
+import { OptionalResourceContextProvider, useResourceContext } from '../core';
 import { type Identifier, type RaRecord, type SortPayload } from '../types';
-import { DataTableConfigContext } from './DataTableConfigContext';
+import { useEvent } from '../util';
 import { DataTableCallbacksContext } from './DataTableCallbacksContext';
+import { DataTableConfigContext } from './DataTableConfigContext';
 import { DataTableDataContext } from './DataTableDataContext';
 import { DataTableSelectedIdsContext } from './DataTableSelectedIdsContext';
 import { DataTableSortContext } from './DataTableSortContext';
 import { DataTableStoreContext } from './DataTableStoreContext';
+import { type RowClickFunctionBase } from './types';
 
 export const DataTableBase = function DataTable<
     RecordType extends RaRecord = any,
@@ -76,8 +76,6 @@ export const DataTableBase = function DataTable<
             if (!data) return;
             const ids = data.map(record => record.id);
             const lastSelectedIndex = ids.indexOf(lastSelected.current);
-            // @ts-ignore FIXME useEvent prevents using event.currentTarget
-            lastSelected.current = event.target.checked ? id : null;
 
             if (event.shiftKey && lastSelectedIndex !== -1) {
                 const index = ids.indexOf(id);
@@ -86,10 +84,10 @@ export const DataTableBase = function DataTable<
                     Math.max(lastSelectedIndex, index) + 1
                 );
 
-                // @ts-ignore FIXME useEvent prevents using event.currentTarget
-                const newSelectedIds = event.target.checked
-                    ? union(selectedIds, idsBetweenSelections)
-                    : difference(selectedIds, idsBetweenSelections);
+                const isClickedItemSelected = selectedIds?.includes(id);
+                const newSelectedIds = isClickedItemSelected
+                    ? difference(selectedIds, idsBetweenSelections)
+                    : union(selectedIds, idsBetweenSelections);
 
                 onSelect?.(
                     isRowSelectable
@@ -103,6 +101,8 @@ export const DataTableBase = function DataTable<
             } else {
                 onToggleItem?.(id);
             }
+
+            lastSelected.current = id;
         }
     );
 
