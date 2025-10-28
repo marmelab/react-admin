@@ -76,7 +76,8 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
         resolver: finalResolver,
         ...rest,
     });
-    const { handleSubmit, getValues, reset, trigger, watch } = formContext;
+    const { handleSubmit, getValues, reset, watch, formState } = formContext;
+    const { isValid } = formState;
 
     const hasJustBeenModifiedByUser = React.useRef(false);
 
@@ -99,15 +100,17 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
     }, [JSON.stringify(filterValues), getValues, reset]);
 
     const onSubmit = (values: any): void => {
+        // Do not call setFilters if the form is invalid
+        if (!isValid) {
+            return;
+        }
         setFilters(mergeObjNotArray(filterValues, values));
     };
     const debouncedOnSubmit = useDebouncedEvent(onSubmit, debounce || 0);
 
     // Submit the form on values change
     useEffect(() => {
-        const { unsubscribe } = watch(async (values, { name }) => {
-            // Trigger validation manually
-            if (!(await trigger())) return;
+        const { unsubscribe } = watch((values, { name }) => {
             // Check that the name is present to avoid setting filters when
             // watch was triggered by a reset
             if (name) {
@@ -123,7 +126,7 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
             }
         });
         return () => unsubscribe();
-    }, [watch, debouncedOnSubmit, trigger]);
+    }, [watch, debouncedOnSubmit]);
 
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
