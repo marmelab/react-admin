@@ -43,11 +43,11 @@ export const useApplyInputDefaultValues = ({
 
     useEffect(() => {
         return subscribe({
-            formState: { dirtyFields: true },
+            // Even though we only need dirtyFields, we subscribe to values as well to
+            // ensure we properly receive dirtyFields updates for newly added items in an ArrayInput
+            formState: { values: true, dirtyFields: true },
             callback: ({ dirtyFields }) => {
-                isDirty.current = Object.keys(dirtyFields ?? {}).includes(
-                    finalSource
-                );
+                isDirty.current = get(dirtyFields ?? {}, finalSource, false);
             },
         });
     }, [finalSource, subscribe]);
