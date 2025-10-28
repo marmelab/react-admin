@@ -1,36 +1,6 @@
 import "./style.css";
 import "./newsletter.css";
 
-const GITHUB_API_URL = "https://api.github.com/repos/marmelab/react-admin";
-
-const getGithubStats = () => {
-  const headers = new Headers();
-  headers.append("Content-Type", "application/x-www-form-urlencoded");
-
-  const request = new Request(GITHUB_API_URL, {
-    headers,
-  });
-
-  return fetch(request).then((response) => response.json());
-};
-
-const githubStarsContent = document.getElementById("github-stars-content");
-if (githubStarsContent === null) {
-  throw new Error("github-stars-content element not found");
-}
-
-const githubStarsContentMobile = document.getElementById(
-  "github-stars-content-mobile"
-);
-if (githubStarsContentMobile === null) {
-  throw new Error("github-stars-content-mobile element not found");
-}
-
-getGithubStats().then(({ stargazers_count }) => {
-  githubStarsContent.innerText = stargazers_count;
-  githubStarsContentMobile.innerText = stargazers_count;
-});
-
 window.addEventListener(
   "scroll",
   () => {
