@@ -17,7 +17,7 @@ import {
     type ComponentsOverrides,
     useThemeProps,
 } from '@mui/material';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { LinearProgress } from '../../layout/LinearProgress';
 import { InputHelperText } from '../InputHelperText';
