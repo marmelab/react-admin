@@ -18,19 +18,23 @@ export default { title: 'ra-core/controller/input/ArrayInputBase' };
 export const Basic = () => (
     <TestMemoryRouter initialEntries={['/posts/1']}>
         <Admin
-            dataProvider={fakeRestDataProvider({
-                posts: [
-                    {
-                        id: 1,
-                        title: 'Post 1',
-                        tags: [
-                            { name: 'Tag 1', color: 'red' },
-                            { name: 'Tag 2', color: 'blue' },
-                        ],
-                    },
-                    { id: 2, title: 'Post 2' },
-                ],
-            })}
+            dataProvider={fakeRestDataProvider(
+                {
+                    posts: [
+                        {
+                            id: 1,
+                            title: 'Post 1',
+                            tags: [
+                                { name: 'Tag 1', color: 'red' },
+                                { name: 'Tag 2', color: 'blue' },
+                            ],
+                        },
+                        { id: 2, title: 'Post 2', tags: [] },
+                    ],
+                },
+                process.env.NODE_ENV !== 'test',
+                process.env.NODE_ENV !== 'test' ? 300 : 0
+            )}
         >
             <Resource
                 name="posts"

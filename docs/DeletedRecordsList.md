@@ -36,24 +36,41 @@ That's enough to display the deleted records list, with functional simple filter
 
 ## Props
 
-| Prop                       | Required | Type                            | Default                                  | Description                                                                                      |
-|----------------------------|----------|---------------------------------|------------------------------------------|--------------------------------------------------------------------------------------------------|
-| `debounce`                 | Optional | `number`                        | `500`                                    | The debounce delay in milliseconds to apply when users change the sort or filter parameters.     |
-| `children`                 | Optional | `Element`                       | `<Deleted Records Table>`                  | The component used to render the list of deleted records.                                        |
-| `detail Components`         | Optional | `Record<string, ComponentType>` | -                                        | The custom show components for each resource in the deleted records list.                        |
-| `disable Authentication`   | Optional | `boolean`                       | `false`                                  | Set to `true` to disable the authentication check.                                               |
-| `disable SyncWithLocation` | Optional | `boolean`                       | `false`                                  | Set to `true` to disable the synchronization of the list parameters with the URL.                |
-| `filter`                   | Optional | `object`                        | -                                        | The permanent filter values.                                                                     |
-| `filter DefaultValues`     | Optional | `object`                        | -                                        | The default filter values.                                                                       |
-| `mutation Mode`            | Optional | `string`                        | `'undoable'`                             | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`).                                 |
-| `pagination`               | Optional | `ReactElement`                  | `<Pagination>`                           | The pagination component to use.                                                                 |
-| `perPage`                  | Optional | `number`                        | `10`                                     | The number of records to fetch per page.                                                         |
-| `queryOptions`             | Optional | `object`                        | -                                        | The options to pass to the `useQuery` hook.                                                      |
-| `resource`                 | Optional | `string`                        | -                                        | The resource of deleted records to fetch and display                                             |
-| `sort`                     | Optional | `object`                        | `{ field: 'deleted_at', order: 'DESC' }` | The initial sort parameters.                                                                     |
-| `storeKey`                 | Optional | `string` or `false`             | -                                        | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
-| `title`                    | Optional | `string | ReactElement                             | false`                                                                                           | -                                        | The title to display in the App Bar.                                                             |
-| `sx`                       | Optional | `object`                        | -                                        | The CSS styles to apply to the component.                                                        |
+| Prop                       | Required       | Type                            | Default                                  | Description                                                                                      |
+|----------------------------|----------------|---------------------------------|------------------------------------------|--------------------------------------------------------------------------------------------------|
+| `authLoading`              | Optional       | `ReactNode`                     | -                                        | The component to render while checking for authentication and permissions.                       |
+| `debounce`                 | Optional       | `number`                        | `500`                                    | The debounce delay in milliseconds to apply when users change the sort or filter parameters.     |
+| `children`                 | Optional       | `Element`                       | `<DeletedRecordsTable>`                  | The component used to render the list of deleted records.                                        |
+| `detailComponents`         | Optional       | `Record<string, ComponentType>` | -                                        | The custom show components for each resource in the deleted records list.                        |
+| `disable Authentication`   | Optional       | `boolean`                       | `false`                                  | Set to `true` to disable the authentication check.                                               |
+| `disable SyncWithLocation` | Optional       | `boolean`                       | `false`                                  | Set to `true` to disable the synchronization of the list parameters with the URL.                |
+| `empty`                    | Optional       | `ReactNode`                     | -                                        | The component to display when the list is empty.                                                 |
+| `error`                    | Optional       | `ReactNode`                     | -                                        | The component to render when failing to load the list of records.                                |
+| `filter`                   | Optional       | `object`                        | -                                        | The permanent filter values.                                                                     |
+| `filter DefaultValues`     | Optional       | `object`                        | -                                        | The default filter values.                                                                       |
+| `loading`                  | Optional       | `ReactNode`                     | -                                        | The component to render while loading the list of records.                                       |
+| `mutation Mode`            | Optional       | `string`                        | `'undoable'`                             | Mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`).                                 |
+| `offline`                  | Optional       | `ReactNode`                     | `<Offline>`                              | The component to render when there is no connectivity and there is no data in the cache          |
+| `pagination`               | Optional       | `ReactElement`                  | `<Pagination>`                           | The pagination component to use.                                                                 |
+| `perPage`                  | Optional       | `number`                        | `10`                                     | The number of records to fetch per page.                                                         |
+| `queryOptions`             | Optional       | `object`                        | -                                        | The options to pass to the `useQuery` hook.                                                      |
+| `resource`                 | Optional       | `string`                        | -                                        | The resource of deleted records to fetch and display                                             |
+| `sort`                     | Optional       | `object`                        | `{ field: 'deleted_at', order: 'DESC' }` | The initial sort parameters.                                                                     |
+| `storeKey`                 | Optional       | `string` or `false`             | -                                        | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+| `title`                    | Optional       | `string                         | ReactElement                             | false`                                                                                           | -                                        | The title to display in the App Bar.                                                             |
+| `sx`                       | Optional       | `object`                        | -                                        | The CSS styles to apply to the component.                                                        |
+
+## `authLoading`
+
+By default, `<DeletedRecordsList>` renders `<Loading>` while checking for authentication and permissions. You can display a custom component via the `authLoading` prop:
+
+```jsx
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+export const CustomDeletedRecords = () => (
+    <DeletedRecordsList authLoading={<p>Checking for permissions...</p>} />
+);
+```
 
 ## `children`
 
@@ -94,7 +111,7 @@ By default, `<DeletedRecordsList>` will show the deleted records data on click o
 If you wish to customize the content in this show dialog, you can use the `detailComponents` prop to customize the dialog content for every resource in the list.
 The content is the same as a classic `<Show>` page.
 
-However, you **must** use [`<ShowDeleted>`](#showdeleted) component instead of `<Show>` to write a custom view for a deleted record. This is because `<Show>` gets a fresh version of the record from the data provider to display it, which is not possible in the deleted records list as the record is now deleted.
+However, you **must** use [`<ShowDeleted>`](./ShowDeleted.md) component instead of `<Show>` to write a custom view for a deleted record. This is because `<Show>` gets a fresh version of the record from the data provider to display it, which is not possible in the deleted records list as the record is now deleted.
 
 {% raw %}
 ```tsx
@@ -152,9 +169,21 @@ const DeletedRecordsWithoutSyncWithLocation = () => <DeletedRecordsList disableS
 const DeletedRecordsSyncWithStore = () => <DeletedRecordsList disableSyncWithLocation storeKey="deletedRecordsListParams" />;
 ```
 
+## `error`
+
+By default, `<DeletedRecordsList>` renders the children when an error happens while loading the list of deleted records. You can render an error component via the `error` prop:
+
+```jsx
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+export const CustomDeletedRecords = () => (
+    <DeletedRecordsList error={<p>Something went wrong while loading your posts!</p>} />
+);
+```
+
 ## `filter`: Permanent Filter
 
-You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` props:
+You can choose to always filter the list, without letting the user disable this filter - for instance to display only published posts. Write the filter to be passed to the data provider in the `filter` prop:
 
 {% raw %}
 ```tsx
@@ -184,6 +213,19 @@ const filterSentToDataProvider = { ...filterDefaultValues, ...filterChosenByUser
 ```
 {% endraw %}
 
+## `loading`
+
+By default, `<DeletedRecordsList>` renders the children while loading the list of deleted records. You can display a component during this time via the `loading` prop:
+
+```jsx
+import { Loading } from 'react-admin';
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+export const CustomDeletedRecords = () => (
+    <DeletedRecordsList loading={<Loading />} />
+);
+```
+
 ## `mutationMode`
 
 The `<DeletedRecordsList>` list exposes restore and delete permanently buttons, which perform "mutations" (i.e. they alter the data). React-admin offers three modes for mutations. The mode determines when the side effects (redirection, notifications, etc.) are executed:
@@ -211,6 +253,21 @@ const PessimisticDeletedRecords = () => (
 ```
 
 **Tip**: When using any other mode than `undoable`, the `<DeletePermanentlyButton>` and `<RestoreButton>` display a confirmation dialog before calling the dataProvider.
+
+## `offline`
+
+By default, `<DeletedRecordsList>` renders the `<Offline>` component when there is no connectivity and there are no records in the cache yet for the current parameters (page, sort, etc.). You can provide your own component via the `offline` prop:
+
+```jsx
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+import { Alert } from '@mui/material';
+
+const offline = <Alert severity="warning">No network. Could not load the posts.</Alert>;
+
+export const CustomDeletedRecords = () => (
+    <DeletedRecordsList offline={offline} />
+);
+```
 
 ## `pagination`
 
@@ -358,7 +415,7 @@ const Admin = () => {
 ```
 {% endraw %}
 
-**Tip:** The `storeKey` is actually passed to the underlying `useDeletedRecordsListController` hook, which you can use directly for more complex scenarios. See the [`useDeletedRecordsListController` doc](#usedeletedrecordslistcontroller) for more info.
+**Tip:** The `storeKey` is actually passed to the underlying `useDeletedRecordsListController` hook, which you can use directly for more complex scenarios. See the [`useDeletedRecordsListController` doc](./useDeletedRecordsListController.md) for more info.
 
 **Note:** *Selection state* will remain linked to a global key regardless of the specified `storeKey` string. This is a design choice because if row selection is not stored globally, then when a user permanently deletes or restores a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useDeletedRecordsListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own delete buttons to manually unselect rows when deleting or restoring records. You can still opt out of all store interactions including selection if you set it to `false`.
 

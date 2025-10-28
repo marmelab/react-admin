@@ -1,5 +1,5 @@
 import { useCallback, isValidElement, ReactElement } from 'react';
-import set from 'lodash/set';
+import set from 'lodash/set.js';
 import {
     useChoices,
     OptionText,

@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useLocation } from 'react-router';
-import debounce from 'lodash/debounce';
+import debounce from 'lodash/debounce.js';
 
 import { useStore } from '../store';
 

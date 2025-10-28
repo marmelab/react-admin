@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Admin } from 'react-admin';
 
 import CloseIcon from '@mui/icons-material/Close';
+import BackspaceIcon from '@mui/icons-material/Backspace';
 import {
     Button,
     Chip,
@@ -779,4 +780,41 @@ export const InsideReferenceArrayInputWithCreationSupport = () => (
             />
         </Admin>
     </TestMemoryRouter>
+);
+
+export const ChipProps = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            ChipProps={{
+                deleteIcon: <BackspaceIcon data-testid="delete-icon" />,
+            }}
+        />
+    </Wrapper>
+);
+
+export const SlotPropsChip = () => (
+    <Wrapper>
+        <AutocompleteArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            slotProps={{
+                // @ts-ignore
+                chip: {
+                    deleteIcon: <BackspaceIcon data-testid="delete-icon" />,
+                },
+            }}
+        />
+    </Wrapper>
 );

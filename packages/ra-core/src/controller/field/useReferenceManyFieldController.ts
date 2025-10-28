@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-import lodashDebounce from 'lodash/debounce';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
+import lodashDebounce from 'lodash/debounce.js';
 
 import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';

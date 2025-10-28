@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useDataTableStoreContext, useRecordContext, useStore } from 'ra-core';
 import { TableCell, useThemeProps, type SxProps } from '@mui/material';
 import { type ComponentsOverrides, styled } from '@mui/material/styles';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import clsx from 'clsx';
 
 import { DataTableColumnProps } from './DataTableColumn';

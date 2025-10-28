@@ -6,7 +6,7 @@ import {
 } from '@mui/material/styles';
 import clsx from 'clsx';
 import { useCallback } from 'react';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import {
     type CheckboxProps,
     FormLabel,

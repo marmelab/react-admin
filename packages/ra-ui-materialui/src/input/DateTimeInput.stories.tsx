@@ -5,7 +5,7 @@ import { useRecordContext } from 'ra-core';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Box, Button, createTheme, Typography } from '@mui/material';
 import { ThemeOptions } from '@mui/material/styles';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { AdminContext } from '../AdminContext';
 import { Create } from '../detail';
