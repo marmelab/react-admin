@@ -99,7 +99,7 @@ export type DisableRemoveFunction = (record: RaRecord) => boolean;
 export const SimpleFormIteratorItem = React.forwardRef<
     any,
     Partial<ArrayInputContextValue> & {
-        children?: React.ReactNode;
+        children?: ReactNode;
         disabled?: boolean;
         disableRemove?: boolean | DisableRemoveFunction;
         disableReordering?: boolean;
@@ -107,8 +107,8 @@ export const SimpleFormIteratorItem = React.forwardRef<
         index: number;
         inline?: boolean;
         record: RaRecord;
-        removeButton?: React.ReactNode;
-        reOrderButtons?: React.ReactNode;
+        removeButton?: ReactNode;
+        reOrderButtons?: ReactNode;
         resource?: string;
         source?: string;
     }
@@ -295,10 +295,10 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     ) : null;
 };
 
-type GetItemLabelFunc = (index: number) => React.ReactNode;
+type GetItemLabelFunc = (index: number) => ReactNode;
 
 export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
-    addButton?: React.ReactNode;
+    addButton?: ReactNode;
     children?: ReactNode;
     className?: string;
     readOnly?: boolean;
@@ -316,8 +316,8 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
         submitFailed?: boolean;
     };
     record?: RaRecord;
-    removeButton?: React.ReactNode;
-    reOrderButtons?: React.ReactNode;
+    removeButton?: ReactNode;
+    reOrderButtons?: ReactNode;
     resource?: string;
     source?: string;
 }

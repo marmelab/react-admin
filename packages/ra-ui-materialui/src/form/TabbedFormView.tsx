@@ -22,7 +22,7 @@ import { useResourceContext, useSplatPathBase } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
-export const TabbedFormView = (inProps: TabbedFormViewProps): ReactElement => {
+export const TabbedFormView = (inProps: TabbedFormViewProps) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,

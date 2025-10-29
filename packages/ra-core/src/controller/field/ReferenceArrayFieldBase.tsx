@@ -170,9 +170,7 @@ export interface ReferenceArrayFieldBaseProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends BaseFieldProps<RecordType> {
     children?: ReactNode;
-    render?: (
-        props: ListControllerResult<ReferenceRecordType>
-    ) => React.ReactNode;
+    render?: (props: ListControllerResult<ReferenceRecordType>) => ReactNode;
     error?: ReactNode;
     loading?: ReactNode;
     empty?: ReactNode;
