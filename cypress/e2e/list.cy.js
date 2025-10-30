@@ -224,6 +224,64 @@ describe('List Page', () => {
                 .click({ shiftKey: true });
             cy.contains('6 items selected');
         });
+
+        it('should allow to deselect a range with shift key', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get(ListPagePosts.elements.selectItem).eq(0).click();
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(4)
+                .click({ shiftKey: true });
+            cy.contains('5 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(5)
+            );
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(2)
+                .click({ shiftKey: true });
+            cy.contains('2 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(2)
+            );
+        });
+
+        it('should allow alternating shift-select and shift-deselect', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get(ListPagePosts.elements.selectItem).eq(0).click();
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(3)
+                .click({ shiftKey: true });
+            cy.contains('4 items selected');
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(4)
+                .click({ shiftKey: true });
+            cy.contains('5 items selected');
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(2)
+                .click({ shiftKey: true });
+            cy.contains('2 items selected');
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(4)
+                .click({ shiftKey: true });
+            cy.contains('5 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(5)
+            );
+        });
+
+        it('should support shift-deselect after select all then manual deselect', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            ListPagePosts.toggleSelectAll();
+            cy.contains('10 items selected');
+            cy.get(ListPagePosts.elements.selectItem).eq(1).click();
+            cy.contains('9 items selected');
+            cy.get(ListPagePosts.elements.selectItem)
+                .eq(3)
+                .click({ shiftKey: true });
+            cy.contains('7 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(7)
+            );
+        });
     });
 
     describe('rowClick', () => {
