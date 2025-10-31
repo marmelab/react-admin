@@ -43,7 +43,7 @@ describe('useMutationWithMutationMode', () => {
             updateCache: ({ data }) => {
                 return data;
             },
-            getQueryKeys: () => {
+            getSnapshot: () => {
                 return [];
             },
             ...options,

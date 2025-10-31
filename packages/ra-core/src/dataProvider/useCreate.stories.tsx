@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
-import fakeRestDataProvider from 'ra-data-fakerest';
 
 import { CoreAdmin, CoreAdminContext, Resource } from '../core';
 import { useCreate } from './useCreate';
@@ -383,71 +382,4 @@ const RefreshButton = () => {
             Refresh
         </button>
     );
-};
-
-export const InvalidateList = ({
-    mutationMode,
-}: {
-    mutationMode: MutationModeType;
-}) => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            posts: [
-                { id: 1, title: 'Hello' },
-                { id: 2, title: 'World' },
-            ],
-        },
-        process.env.NODE_ENV !== 'test',
-        process.env.NODE_ENV === 'test' ? 10 : 1000
-    );
-
-    return (
-        <TestMemoryRouter initialEntries={['/posts/create']}>
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource
-                    name="posts"
-                    create={
-                        <CreateBase mutationMode={mutationMode}>
-                            <Form>
-                                {mutationMode !== 'pessimistic' && (
-                                    <TextInput source="id" defaultValue={3} />
-                                )}
-                                <TextInput source="title" />
-                                <button type="submit">Save</button>
-                            </Form>
-                        </CreateBase>
-                    }
-                    list={
-                        <ListBase loading={<p>Loading...</p>}>
-                            <RecordsIterator
-                                render={(record: any) => (
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            gap: '8px',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        {record.id}: {record.title}
-                                    </div>
-                                )}
-                            />
-                            <Notification />
-                        </ListBase>
-                    }
-                />
-            </CoreAdmin>
-        </TestMemoryRouter>
-    );
-};
-InvalidateList.args = {
-    mutationMode: 'undoable',
-};
-InvalidateList.argTypes = {
-    mutationMode: {
-        control: {
-            type: 'select',
-        },
-        options: ['pessimistic', 'optimistic', 'undoable'],
-    },
 };

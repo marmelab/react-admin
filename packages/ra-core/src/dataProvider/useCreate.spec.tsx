@@ -26,12 +26,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useCreate.undoable.stories';
-import {
-    Middleware,
-    MutationMode,
-    Params,
-    InvalidateList,
-} from './useCreate.stories';
+import { Middleware, MutationMode, Params } from './useCreate.stories';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -631,16 +626,5 @@ describe('useCreate', () => {
             fireEvent.click(screen.getByText('Refresh'));
             await screen.findByText('Bazinga');
         });
-    });
-
-    it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
-        render(<InvalidateList mutationMode="undoable" />);
-        fireEvent.change(await screen.findByLabelText('title'), {
-            target: { value: 'New Post' },
-        });
-        fireEvent.click(screen.getByText('Save'));
-        await screen.findByText('resources.posts.notifications.created');
-        fireEvent.click(screen.getByText('Close'));
-        await screen.findByText('3: New Post');
     });
 });

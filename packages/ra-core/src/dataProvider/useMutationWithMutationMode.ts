@@ -28,7 +28,7 @@ export const useMutationWithMutationMode = <
         mutationFn,
         getMutateWithMiddlewares,
         updateCache,
-        getQueryKeys,
+        getSnapshot,
         onUndo,
         ...mutationOptions
     } = options;
@@ -41,28 +41,7 @@ export const useMutationWithMutationMode = <
 
     const mutationFnEvent = useEvent(mutationFn);
     const updateCacheEvent = useEvent(updateCache);
-    const getQueryKeysEvent = useEvent(getQueryKeys);
-    const getSnapshotEvent = useEvent(
-        /**
-         * Snapshot the previous values via queryClient.getQueriesData()
-         *
-         * The snapshotData ref will contain an array of tuples [query key, associated data]
-         *
-         * @example
-         * [
-         *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-         *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-         * ]
-         *
-         * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-         */
-        (queryKeys: Array<QueryKey>) =>
-            queryKeys.reduce(
-                (prev, queryKey) =>
-                    prev.concat(queryClient.getQueriesData({ queryKey })),
-                [] as Snapshot
-            ) as Snapshot
-    );
+    const getSnapshotEvent = useEvent(getSnapshot);
     const onUndoEvent = useEvent(onUndo ?? noop);
     const getMutateWithMiddlewaresEvent = useEvent(
         getMutateWithMiddlewares ??
@@ -192,17 +171,9 @@ export const useMutationWithMutationMode = <
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
-                    const [, , variables, onMutateResult] = args;
+                    const [, , , onMutateResult] = args;
 
                     // Always refetch after error or success:
-                    getQueryKeysEvent(
-                        { ...paramsRef.current, ...variables },
-                        {
-                            mutationMode: mode.current,
-                        }
-                    ).forEach(queryKey => {
-                        queryClient.invalidateQueries({ queryKey });
-                    });
                     (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
                         ([queryKey]) => {
                             queryClient.invalidateQueries({ queryKey });
@@ -272,12 +243,10 @@ export const useMutationWithMutationMode = <
         }
 
         snapshot.current = getSnapshotEvent(
-            getQueryKeysEvent(
-                { ...paramsRef.current, ...callTimeParams },
-                {
-                    mutationMode: mode.current,
-                }
-            )
+            { ...paramsRef.current, ...callTimeParams },
+            {
+                mutationMode: mode.current,
+            }
         );
 
         if (mode.current === 'pessimistic') {
@@ -421,10 +390,10 @@ export type UseMutationWithMutationModeOptions<
         options: OptionsType,
         mutationResult: TData['data'] | undefined
     ) => TData['data'];
-    getQueryKeys: <OptionsType extends { mutationMode: MutationMode }>(
+    getSnapshot: <OptionsType extends { mutationMode: MutationMode }>(
         params: Partial<TVariables>,
         options: OptionsType
-    ) => Array<QueryKey>;
+    ) => Snapshot;
     onUndo?: <OptionsType extends { mutationMode: MutationMode }>(
         params: Partial<TVariables>,
         options: OptionsType

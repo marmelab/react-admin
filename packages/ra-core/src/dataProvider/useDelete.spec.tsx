@@ -20,7 +20,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { MutationMode, Params, InvalidateList } from './useDelete.stories';
+import { MutationMode, Params } from './useDelete.stories';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -730,17 +730,6 @@ describe('useDelete', () => {
                     ],
                     pageParams: [],
                 });
-            });
-        });
-
-        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
-            render(<InvalidateList mutationMode="undoable" />);
-            await screen.findByText('Title: Hello');
-            fireEvent.click(await screen.findByText('Delete'));
-            await screen.findByText('resources.posts.notifications.deleted');
-            fireEvent.click(screen.getByText('Close'));
-            await waitFor(() => {
-                expect(screen.queryByText('1: Hello')).toBeNull();
             });
         });
     });

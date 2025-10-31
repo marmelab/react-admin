@@ -6,7 +6,7 @@ import { QueryClient, useMutationState } from '@tanstack/react-query';
 import { CoreAdminContext } from '../core';
 import { testDataProvider } from './testDataProvider';
 import { useDeleteMany } from './useDeleteMany';
-import { MutationMode, Params, InvalidateList } from './useDeleteMany.stories';
+import { MutationMode, Params } from './useDeleteMany.stories';
 
 describe('useDeleteMany', () => {
     it('returns a callback that can be used with update arguments', async () => {
@@ -388,16 +388,6 @@ describe('useDeleteMany', () => {
                     ],
                     pageParams: [],
                 });
-            });
-        });
-
-        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
-            render(<InvalidateList mutationMode="undoable" />);
-            fireEvent.click(await screen.findByText('Delete'));
-            await screen.findByText('resources.posts.notifications.deleted');
-            fireEvent.click(screen.getByText('Close'));
-            await waitFor(() => {
-                expect(screen.queryByText('1: Hello')).toBeNull();
             });
         });
     });
