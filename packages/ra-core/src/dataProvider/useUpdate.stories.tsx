@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
-import fakeRestDataProvider from 'ra-data-fakerest';
 
 import { CoreAdmin, CoreAdminContext, Resource } from '../core';
 import { useUpdate } from './useUpdate';
@@ -333,61 +332,4 @@ const TextInput = (props: InputProps) => {
             <input id={id} {...field} />
         </div>
     );
-};
-
-export const InvalidateList = ({
-    mutationMode = 'undoable',
-}: {
-    mutationMode?: MutationModeType;
-}) => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            posts: [
-                { id: 1, title: 'Hello' },
-                { id: 2, title: 'World' },
-            ],
-        },
-        process.env.NODE_ENV !== 'test',
-        process.env.NODE_ENV === 'test' ? 10 : 1000
-    );
-    return (
-        <TestMemoryRouter initialEntries={['/posts/1']}>
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource
-                    name="posts"
-                    list={
-                        <ListBase loading={<p>Loading...</p>}>
-                            <RecordsIterator
-                                render={record => (
-                                    <div>
-                                        {record.id}: {record.title}
-                                    </div>
-                                )}
-                            />
-                            <Notification />
-                        </ListBase>
-                    }
-                    edit={
-                        <EditBase mutationMode={mutationMode}>
-                            <Form>
-                                <TextInput source="title" />
-                                <button type="submit">Save</button>
-                            </Form>
-                        </EditBase>
-                    }
-                />
-            </CoreAdmin>
-        </TestMemoryRouter>
-    );
-};
-InvalidateList.args = {
-    mutationMode: 'undoable',
-};
-InvalidateList.argTypes = {
-    mutationMode: {
-        control: {
-            type: 'select',
-        },
-        options: ['pessimistic', 'optimistic', 'undoable'],
-    },
 };

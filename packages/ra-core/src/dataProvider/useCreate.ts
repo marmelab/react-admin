@@ -160,7 +160,7 @@ export const useCreate = <
 
                 return clonedData;
             },
-            getQueryKeys: ({ resource, ...params }, { mutationMode }) => {
+            getSnapshot: ({ resource, ...params }, { mutationMode }) => {
                 const queryKeys: any[] = [
                     [resource, 'getList'],
                     [resource, 'getInfiniteList'],
@@ -176,7 +176,27 @@ export const useCreate = <
                     ]);
                 }
 
-                return queryKeys;
+                /**
+                 * Snapshot the previous values via queryClient.getQueriesData()
+                 *
+                 * The snapshotData ref will contain an array of tuples [query key, associated data]
+                 *
+                 * @example
+                 * [
+                 *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
+                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
+                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
+                 * ]
+                 *
+                 * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
+                 */
+                const snapshot = queryKeys.reduce(
+                    (prev, queryKey) =>
+                        prev.concat(queryClient.getQueriesData({ queryKey })),
+                    [] as Snapshot
+                );
+
+                return snapshot;
             },
             getMutateWithMiddlewares: mutationFn => {
                 if (getMutateWithMiddlewares) {

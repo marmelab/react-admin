@@ -1,22 +1,11 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { QueryClient, useIsMutating } from '@tanstack/react-query';
-import fakeRestDataProvider from 'ra-data-fakerest';
 
-import { CoreAdmin, CoreAdminContext, Resource } from '../core';
+import { CoreAdminContext } from '../core';
 import { useDelete } from './useDelete';
 import { useGetList } from './useGetList';
 import type { DataProvider, MutationMode as MutationModeType } from '../types';
-import {
-    EditBase,
-    ListBase,
-    RecordsIterator,
-    useDeleteController,
-    WithRecord,
-} from '../controller';
-import { TestMemoryRouter } from '../routing';
-import { useNotificationContext } from '../notification';
-import { useTakeUndoableMutation } from './undo';
 
 export default { title: 'ra-core/dataProvider/useDelete' };
 
@@ -172,111 +161,4 @@ const ParamsCore = () => {
             {isMutating !== 0 && <div>mutating</div>}
         </>
     );
-};
-
-const Notification = () => {
-    const { notifications, resetNotifications } = useNotificationContext();
-    const takeMutation = useTakeUndoableMutation();
-
-    return notifications.length > 0 ? (
-        <>
-            <div>{notifications[0].message}</div>
-            <div style={{ display: 'flex', gap: '16px' }}>
-                <button
-                    onClick={() => {
-                        if (notifications[0].notificationOptions?.undoable) {
-                            const mutation = takeMutation();
-                            if (mutation) {
-                                mutation({ isUndo: false });
-                            }
-                        }
-                        resetNotifications();
-                    }}
-                >
-                    Close
-                </button>
-            </div>
-        </>
-    ) : null;
-};
-
-const DeleteButton = ({ mutationMode }: { mutationMode: MutationModeType }) => {
-    const { isPending, handleDelete } = useDeleteController({
-        mutationMode,
-        redirect: 'list',
-    });
-    return (
-        <button onClick={handleDelete} disabled={isPending}>
-            Delete
-        </button>
-    );
-};
-
-export const InvalidateList = ({
-    mutationMode,
-}: {
-    mutationMode: MutationModeType;
-}) => {
-    const dataProvider = fakeRestDataProvider(
-        {
-            posts: [
-                { id: 1, title: 'Hello' },
-                { id: 2, title: 'World' },
-            ],
-        },
-        process.env.NODE_ENV !== 'test',
-        process.env.NODE_ENV === 'test' ? 10 : 1000
-    );
-
-    return (
-        <TestMemoryRouter initialEntries={['/posts/1']}>
-            <CoreAdmin dataProvider={dataProvider}>
-                <Resource
-                    name="posts"
-                    edit={
-                        <EditBase>
-                            <div>
-                                <h1>Edit Post</h1>
-                                <WithRecord
-                                    render={record => (
-                                        <div>Title: {record.title}</div>
-                                    )}
-                                />
-                                <DeleteButton mutationMode={mutationMode} />
-                            </div>
-                        </EditBase>
-                    }
-                    list={
-                        <ListBase loading={<p>Loading...</p>}>
-                            <RecordsIterator
-                                render={(record: any) => (
-                                    <div
-                                        style={{
-                                            display: 'flex',
-                                            gap: '8px',
-                                            alignItems: 'center',
-                                        }}
-                                    >
-                                        {record.id}: {record.title}
-                                    </div>
-                                )}
-                            />
-                            <Notification />
-                        </ListBase>
-                    }
-                />
-            </CoreAdmin>
-        </TestMemoryRouter>
-    );
-};
-InvalidateList.args = {
-    mutationMode: 'undoable',
-};
-InvalidateList.argTypes = {
-    mutationMode: {
-        control: {
-            type: 'select',
-        },
-        options: ['pessimistic', 'optimistic', 'undoable'],
-    },
 };

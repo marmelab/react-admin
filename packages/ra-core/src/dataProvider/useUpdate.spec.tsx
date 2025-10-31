@@ -31,12 +31,7 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
-import {
-    Middleware,
-    MutationMode,
-    Params,
-    InvalidateList,
-} from './useUpdate.stories';
+import { Middleware, MutationMode, Params } from './useUpdate.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -658,18 +653,6 @@ describe('useUpdate', () => {
                 });
             });
         });
-
-        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
-            render(<InvalidateList mutationMode="undoable" />);
-            fireEvent.change(await screen.findByDisplayValue('Hello'), {
-                target: { value: 'Hello changed' },
-            });
-            fireEvent.click(screen.getByText('Save'));
-            await screen.findByText('resources.posts.notifications.updated');
-            fireEvent.click(screen.getByText('Close'));
-            await screen.findByText(/Hello changed/);
-        });
-
         describe('pessimistic mutation mode', () => {
             it('updates getOne query cache when dataProvider promise resolves', async () => {
                 const queryClient = new QueryClient();
