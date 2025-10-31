@@ -55,6 +55,7 @@ const InvoiceList = () => (
         sort={{ field: 'date', order: 'DESC' }}
         actions={<ListActions />}
         title={<InvoicesTitle />}
+        queryOptions={{ meta: { embed: 'customer' } }}
     >
         <DataTable
             rowClick="expand"
@@ -67,7 +68,11 @@ const InvoiceList = () => (
         >
             <Column source="id" />
             <Column field={DateField} source="date" />
-            <Column source="customer_id" className="onlyLarge">
+            <Column
+                source="customer.last_name"
+                label="resources.invoices.fields.customer_id"
+                className="onlyLarge"
+            >
                 <ReferenceField source="customer_id" reference="customers">
                     <FullNameField source="last_name" />
                 </ReferenceField>

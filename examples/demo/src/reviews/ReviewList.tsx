@@ -71,6 +71,7 @@ const ReviewList = () => {
                 sort={{ field: 'date', order: 'DESC' }}
                 actions={<ReviewListActions />}
                 title={<ReviewsTitle />}
+                queryOptions={{ meta: { embed: ['customer', 'product'] } }}
             >
                 {isXSmall ? (
                     <ReviewListMobile />

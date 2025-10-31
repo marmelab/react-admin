@@ -66,6 +66,7 @@ const OrderList = () => (
         filters={orderFilters}
         actions={<ListActions />}
         title={<OrdersTitle />}
+        queryOptions={{ meta: { embed: 'customer' } }}
     >
         <TabbedDatagrid />
     </List>
@@ -195,7 +196,12 @@ const OrdersTable = React.memo(
                 <DateField source="date" showTime />
             </Column>
             <Column source="reference" />
-            <Column source="customer_id" field={CustomerReferenceField} />
+            <Column
+                source="customer.last_name"
+                label="resources.orders.fields.customer_id"
+            >
+                <CustomerReferenceField />
+            </Column>
             <Column label="resources.orders.fields.address">
                 <ReferenceField
                     source="customer_id"
