@@ -65,7 +65,7 @@ The routes call the following `dataProvider` methods:
 | `create` |  | `React.ComponentType` | - | The component to render for the create view |
 | `edit` |  | `React.ComponentType` | - | The component to render for the edit view |
 | `show` |  | `React.ComponentType` | - | The component to render for the show view |
-| `record Representation` |  | `string` or `function` or `React.ComponentType` | - | The representation of a record to use in the UI |
+| `record Representation` |  | `function` &#124; `ReactNode` | - | The representation of a record to use in the UI |
 | `icon` |  | `React.ComponentType` | - | The component to render in the menu |
 | `options` |  | `object` | - | Additional options for the resource |
 | `children` |  | `Route` | - | Sub-routes for the resource |

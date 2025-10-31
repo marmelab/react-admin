@@ -71,8 +71,5 @@ export interface UseResourceDefinitionOptions {
     readonly hasEdit?: boolean;
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
-    readonly recordRepresentation?:
-        | string
-        | React.ReactElement
-        | RecordToStringFunction;
+    readonly recordRepresentation?: React.ReactNode | RecordToStringFunction;
 }
