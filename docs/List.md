@@ -486,7 +486,7 @@ const Dashboard = () => (
 )
 ```
 
-Please note that the selection state is not synced in the URL but in a global store using the resource as key. Thus, all lists in the page using the same resource will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
+Please note that the selection state is not synced in the URL but in a global store using the resource and, if provided, `storeKey` as part of the key. Thus, all lists in the page using the same resource and `storeKey` will share the same synced selection state. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. You can still opt out of all store interactions for list state if you set it to `false`.
 
 ## `empty`
 
@@ -1097,7 +1097,9 @@ const Admin = () => {
 
 **Tip:** The `storeKey` is actually passed to the underlying `useListController` hook, which you can use directly for more complex scenarios. See the [`useListController` doc](./useListController.md#storekey) for more info.
 
-**Note:** *Selection state* will remain linked to a resource-based key regardless of the specified `storeKey` string. This is a design choice because if row selection is not tied to a resource, then when a user deletes a record it may remain selected without any ability to unselect it. If you want to allow custom `storeKey`'s for managing selection state, you will have to implement your own `useListController` hook and pass a custom key to the `useRecordSelection` hook. You will then need to implement your own `DeleteButton` and `BulkDeleteButton` to manually unselect rows when deleting records. You can still opt out of all store interactions including selection if you set it to `false`.
+**Tip:** The `storeKey` is also passed to the underlying `useRecordSelection` hook, so that lists with different storeKeys for same resource will have independent selection states.
+
+**Tip:** Setting `storeKey` to `false` will opt out of all store interactions including selection.
 
 ## `title`
 
