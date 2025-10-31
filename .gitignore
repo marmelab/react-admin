@@ -25,3 +25,4 @@ cypress/downloads
 !.yarn/sdks
 !.yarn/versions
 .env
+.claude/settings.local.json
