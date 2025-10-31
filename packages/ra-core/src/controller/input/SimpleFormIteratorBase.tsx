@@ -23,7 +23,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
         );
     }
 
-    const { append, fields, move, remove, replace } = useArrayInput(props);
+    const { append, fields, move, remove } = useArrayInput(props);
     const { trigger, getValues } = useFormContext();
 
     const removeField = useEvent((index: number) => {
@@ -47,7 +47,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     });
 
     const handleArrayClear = useEvent(() => {
-        replace([]);
+        remove();
     });
 
     const context = useMemo(

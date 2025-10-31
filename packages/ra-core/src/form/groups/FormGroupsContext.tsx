@@ -3,6 +3,7 @@ import { createContext } from 'react';
 export const FormGroupsContext = createContext<
     FormGroupsContextValue | undefined
 >(undefined);
+FormGroupsContext.displayName = 'FormGroupsContext';
 
 export type FormGroupSubscriber = () => void;
 
