@@ -659,7 +659,7 @@ describe('useUpdate', () => {
             });
         });
 
-        it('invalidates getList query dataProvider resolves in undoable mode', async () => {
+        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
             render(<InvalidateList mutationMode="undoable" />);
             fireEvent.change(await screen.findByDisplayValue('Hello'), {
                 target: { value: 'Hello changed' },
