@@ -78,7 +78,7 @@ That's enough to display the post show view above.
 | `redirectOnError`        | Optional        | `'list'` &#124; `false` &#124; `function`     | `'list'` | The page to redirect to when an error occurs
 | `resource`               | Optional        | `string`                                      |          | The resource name, e.g. `posts`
 | `sx`                     | Optional        | `object`                                      |          | Override or extend the styles applied to the component
-| `title`                  | Optional        | `string` &#124; `ReactElement` &#124; `false` |          | The title to display in the App Bar
+| `title`                  | Optional        | `ReactNode` / `string` / `false` |          | The title to display in the App Bar
 
 `*` You must provide either `children` or `render`.
 

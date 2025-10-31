@@ -150,5 +150,8 @@ const emptyArray = [];
 export interface PaginationProps extends TablePaginationBaseProps {
     rowsPerPageOptions?: Array<number | { label: string; value: number }>;
     actions?: FC<PaginationActionsProps>;
+    /**
+     * @deprecated The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).
+     */
     limit?: ReactElement;
 }

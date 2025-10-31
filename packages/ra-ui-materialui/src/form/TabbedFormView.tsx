@@ -6,7 +6,6 @@ import {
     cloneElement,
     isValidElement,
     type ReactElement,
-    type ReactNode,
     useState,
 } from 'react';
 import clsx from 'clsx';
@@ -23,7 +22,7 @@ import { useResourceContext, useSplatPathBase } from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
-export const TabbedFormView = (inProps: TabbedFormViewProps): ReactElement => {
+export const TabbedFormView = (inProps: TabbedFormViewProps) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -116,14 +115,14 @@ const DefaultComponent = ({ children }) => (
 const DefaultToolbar = <Toolbar />;
 
 export interface TabbedFormViewProps {
-    children?: ReactNode;
+    children?: React.ReactNode;
     className?: string;
     component?: ComponentType<any>;
     resource?: string;
     formRootPathname?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactElement | false;
+    toolbar?: React.ReactNode;
     sx?: SxProps<Theme>;
 }
 

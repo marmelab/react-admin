@@ -96,7 +96,7 @@ export interface ReferenceOneFieldProps<
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends Omit<FieldProps<RecordType>, 'source' | 'emptyText'> {
     children?: ReactNode;
-    render?: (record: UseReferenceResult<ReferenceRecordType>) => ReactElement;
+    render?: (record: UseReferenceResult<ReferenceRecordType>) => ReactNode;
     reference: string;
     target: string;
     sort?: SortPayload;

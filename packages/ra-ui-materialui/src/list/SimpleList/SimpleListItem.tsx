@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement, ReactNode } from 'react';
 import type { SxProps } from '@mui/material';
 import { ListItem, ListItemButton, ListItemProps } from '@mui/material';
 import {
@@ -115,14 +114,14 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
 export type FunctionToElement<RecordType extends RaRecord = any> = (
     record: RecordType,
     id: Identifier
-) => ReactNode;
+) => React.ReactNode;
 
 export type FunctionLinkType = (record: RaRecord, id: Identifier) => string;
 
 export interface SimpleListBaseProps<RecordType extends RaRecord = any> {
     leftAvatar?: FunctionToElement<RecordType>;
     leftIcon?: FunctionToElement<RecordType>;
-    primaryText?: FunctionToElement<RecordType> | ReactElement | string;
+    primaryText?: FunctionToElement<RecordType> | React.ReactNode;
     /**
      * @deprecated use rowClick instead
      */
@@ -147,8 +146,8 @@ export interface SimpleListBaseProps<RecordType extends RaRecord = any> {
     rowClick?: string | RowClickFunction | false;
     rightAvatar?: FunctionToElement<RecordType>;
     rightIcon?: FunctionToElement<RecordType>;
-    secondaryText?: FunctionToElement<RecordType> | ReactElement | string;
-    tertiaryText?: FunctionToElement<RecordType> | ReactElement | string;
+    secondaryText?: FunctionToElement<RecordType> | React.ReactNode;
+    tertiaryText?: FunctionToElement<RecordType> | React.ReactNode;
     rowSx?: (record: RecordType, index: number) => SxProps;
     rowStyle?: (record: RecordType, index: number) => any;
 }

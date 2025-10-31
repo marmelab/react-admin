@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { ImportResourceDialog } from './ImportResourceDialog';
 import {
@@ -48,7 +48,7 @@ export const NewResourceMenuItem = (
 
     const primaryText = 'New resource';
 
-    const renderMenuItem = (): ReactElement => (
+    const renderMenuItem = () => (
         <MenuItem
             className={classes.root}
             tabIndex={0}

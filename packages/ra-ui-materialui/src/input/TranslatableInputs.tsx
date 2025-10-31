@@ -69,9 +69,7 @@ import { TranslatableInputsTabContent } from './TranslatableInputsTabContent';
  * @param {string[]} props.locales An array of the possible locales. For example: `['en', 'fr'].
  * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
-export const TranslatableInputs = (
-    inProps: TranslatableInputsProps
-): ReactElement => {
+export const TranslatableInputs = (inProps: TranslatableInputsProps) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
