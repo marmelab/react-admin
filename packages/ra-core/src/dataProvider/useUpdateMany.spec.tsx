@@ -17,6 +17,7 @@ import {
     Params,
     UndefinedValues,
     WithMiddlewares,
+    InvalidateList,
 } from './useUpdateMany.stories';
 
 describe('useUpdateMany', () => {
@@ -524,6 +525,14 @@ describe('useUpdateMany', () => {
             await screen.findByText(
                 '[{"id":1,"title":"world"},{"id":2,"title":"world"}]'
             ); // and not [{"title":"world"},{"title":"world"}]
+        });
+
+        it('invalidates getList query dataProvider resolves in undoable mode', async () => {
+            render(<InvalidateList mutationMode="undoable" />);
+            fireEvent.click(await screen.findByText('Update'));
+            await screen.findByText('resources.posts.notifications.updated');
+            fireEvent.click(screen.getByText('Close'));
+            await screen.findByText('1: Hello updated');
         });
     });
 
