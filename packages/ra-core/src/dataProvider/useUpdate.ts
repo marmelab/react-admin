@@ -17,10 +17,7 @@ import type {
     DataProvider,
     UpdateResult,
 } from '../types';
-import {
-    type Snapshot,
-    useMutationWithMutationMode,
-} from './useMutationWithMutationMode';
+import { useMutationWithMutationMode } from './useMutationWithMutationMode';
 import { useEvent } from '../util';
 
 /**
@@ -236,20 +233,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 };
                 return optimisticResult;
             },
-            getSnapshot: ({ resource, ...params }) => {
-                /**
-                 * Snapshot the previous values via queryClient.getQueriesData()
-                 *
-                 * The snapshotData ref will contain an array of tuples [query key, associated data]
-                 *
-                 * @example
-                 * [
-                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-                 * ]
-                 *
-                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-                 */
+            getQueryKeys: ({ resource, ...params }) => {
                 const queryKeys = [
                     [
                         resource,
@@ -261,13 +245,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     [resource, 'getMany'],
                     [resource, 'getManyReference'],
                 ];
-
-                const snapshot = queryKeys.reduce(
-                    (prev, queryKey) =>
-                        prev.concat(queryClient.getQueriesData({ queryKey })),
-                    [] as Snapshot
-                );
-                return snapshot;
+                return queryKeys;
             },
             getMutateWithMiddlewares: mutationFn => {
                 if (getMutateWithMiddlewares) {
