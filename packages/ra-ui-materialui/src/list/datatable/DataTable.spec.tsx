@@ -1,16 +1,16 @@
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import * as React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import {
     Basic,
     Columns,
     Empty,
-    StandaloneStatic,
-    StandaloneDynamic,
     Expand,
     ExpandSingle,
     IsRowExpandable,
     IsRowSelectable,
     NonPrimitiveData,
+    StandaloneDynamic,
+    StandaloneStatic,
 } from './DataTable.stories';
 
 describe('DataTable', () => {
@@ -244,6 +244,31 @@ describe('DataTable', () => {
             await screen.findByText('7 items selected');
             fireEvent.click(checkboxes[0]);
             await screen.findByText('2 items selected');
+        });
+        it('should support alternating shift-select and shift-deselect', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[1]);
+            fireEvent.click(checkboxes[4], { shiftKey: true });
+            await screen.findByText('4 items selected');
+            fireEvent.click(checkboxes[5], { shiftKey: true });
+            await screen.findByText('5 items selected');
+            fireEvent.click(checkboxes[3], { shiftKey: true });
+            await screen.findByText('2 items selected');
+            fireEvent.click(checkboxes[5], { shiftKey: true });
+            await screen.findByText('5 items selected');
+        });
+        it('should support shift-deselect after select all then deselect one', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[0]);
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+            fireEvent.click(checkboxes[2]);
+            await screen.findByText('6 items selected');
+            fireEvent.click(checkboxes[4], { shiftKey: true });
+            await screen.findByText('4 items selected');
         });
     });
     describe('isRowSelectable', () => {

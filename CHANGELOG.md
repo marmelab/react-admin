@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.12.3
+
+* Fix optimistic query invalidation and avoid invalidating the same query twice ([#11017](https://github.com/marmelab/react-admin/pull/11017)) ([slax57](https://github.com/slax57))
+* Fix: Shift+Click deselection range not working properly in Datagrid ([#11012](https://github.com/marmelab/react-admin/pull/11012)) ([Jszigeti](https://github.com/Jszigeti))
+* [Doc] Document how to support line-breaks in notifications ([#11014](https://github.com/marmelab/react-admin/pull/11014)) ([slax57](https://github.com/slax57))
+* [Chore] Add Agents.md to help coding agents ([#11005](https://github.com/marmelab/react-admin/pull/11005)) ([fzaninotto](https://github.com/fzaninotto))
+
 ## 5.12.2
 
 * Fix middlewares might not be applied in `optimistic` and `undoable` modes when they are unregistered before the actual mutation is called ([#11007](https://github.com/marmelab/react-admin/pull/11007)) ([djhi](https://github.com/djhi))
