@@ -192,7 +192,7 @@ export const useMutationWithMutationMode = <
                     mode.current === 'optimistic' ||
                     mode.current === 'undoable'
                 ) {
-                    const [, , variables, onMutateResult] = args;
+                    const [, , variables] = args;
 
                     // Always refetch after error or success:
                     getQueryKeysEvent(
@@ -203,11 +203,6 @@ export const useMutationWithMutationMode = <
                     ).forEach(queryKey => {
                         queryClient.invalidateQueries({ queryKey });
                     });
-                    (onMutateResult as { snapshot: Snapshot }).snapshot.forEach(
-                        ([queryKey]) => {
-                            queryClient.invalidateQueries({ queryKey });
-                        }
-                    );
                 }
 
                 if (callTimeOnSettled.current) {
