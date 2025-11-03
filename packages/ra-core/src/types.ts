@@ -318,10 +318,7 @@ export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
     readonly icon?: any;
-    readonly recordRepresentation?:
-        | ReactElement
-        | RecordToStringFunction
-        | string;
+    readonly recordRepresentation?: React.ReactNode | RecordToStringFunction;
 }
 
 /**
@@ -385,7 +382,7 @@ export interface ResourceProps {
     hasEdit?: boolean;
     hasShow?: boolean;
     icon?: ComponentType<any>;
-    recordRepresentation?: ReactElement | RecordToStringFunction | string;
+    recordRepresentation?: React.ReactNode | RecordToStringFunction;
     options?: ResourceOptions;
     children?: ReactNode;
 }

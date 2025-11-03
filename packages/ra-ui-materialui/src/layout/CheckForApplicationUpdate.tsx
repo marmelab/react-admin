@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import {
     useNotify,
     UseCheckForApplicationUpdateOptions,
@@ -12,7 +11,7 @@ import { ApplicationUpdatedNotification } from './ApplicationUpdatedNotification
  *
  * @param {CheckForApplicationUpdateProps} props
  * @param {boolean} options.disabled Optional. Whether the check should be disabled. Defaults to false.
- * @param {string|ReactElement} props.notification The notification to display to the user. Displayed only if `updateMode` is manual. Defaults to `<ApplicationUpdatedNotification />`.
+ * @param {React.ReactNode} props.notification The notification to display to the user. Displayed only if `updateMode` is manual. Defaults to `<ApplicationUpdatedNotification />`.
  * @param {string} options.url Optional. The URL to download to check for code update. Defaults to the current URL.
  * @param {RequestInit} options.fetchOptions Optional. The options passed to fetch function when checking for update.
  * @param {number} options.interval Optional. The interval in milliseconds between two checks. Defaults to 3600000 (1 hour).
@@ -88,7 +87,7 @@ export const CheckForApplicationUpdate = (
 export interface CheckForApplicationUpdateProps
     extends Omit<UseCheckForApplicationUpdateOptions, 'onNewVersionAvailable'> {
     onNewVersionAvailable?: UseCheckForApplicationUpdateOptions['onNewVersionAvailable'];
-    notification?: ReactElement;
+    notification?: React.ReactNode;
 }
 
 const DEFAULT_NOTIFICATION = <ApplicationUpdatedNotification />;

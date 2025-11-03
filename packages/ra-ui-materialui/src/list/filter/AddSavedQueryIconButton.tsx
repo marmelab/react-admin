@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { IconButton, IconButtonProps } from '@mui/material';
 import AddIcon from '@mui/icons-material/AddCircleOutline';
 import { useTranslate } from 'ra-core';
 
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 
-export const AddSavedQueryIconButton = (
-    props: IconButtonProps
-): ReactElement => {
+export const AddSavedQueryIconButton = (props: IconButtonProps) => {
     const [open, setOpen] = useState(false);
     const handleOpen = (): void => {
         setOpen(true);

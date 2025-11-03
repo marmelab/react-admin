@@ -81,6 +81,25 @@ export const Multiline = () => (
     </Wrapper>
 );
 
+const LineBreakNotification = () => {
+    const notify = useNotify();
+    React.useEffect(() => {
+        notify(
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.\nSed euismod, nisl nec ultricies aliquam, nisl nisl aliquet nisl, eget aliquet nisl nisl eu nisl.\nSed euismod, nisl nec ultricies aliquam, nisl nisl aliquet nisl, eget aliquet nisl nisl eu nisl.',
+            {
+                multiLine: true,
+            }
+        );
+    }, [notify]);
+    return null;
+};
+
+export const LineBreak = () => (
+    <Wrapper>
+        <LineBreakNotification />
+    </Wrapper>
+);
+
 const AutoHideDurationNotification = () => {
     const notify = useNotify();
     React.useEffect(() => {

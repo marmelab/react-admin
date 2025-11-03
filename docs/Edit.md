@@ -84,7 +84,7 @@ You can customize the `<Edit>` component using the following props:
 | `redirect`              | Optional        | `'list'` &#124; `'show'` &#124; `false` &#124; `function` | `'list'`     | Change the redirect location after successful update                                    |
 | `resource`              | Optional        | `string`                                                  | -            | Override the name of the resource to edit                                               |
 | `sx`                    | Optional        | `object`                                                  | -            | Override the styles                                                                     |
-| `title`                 | Optional        | `string` &#124; `ReactNode` &#124; `false`                | -            | Override the page title                                                                 |
+| `title`                 | Optional        | `ReactNode` / `string` / `false` | -            | Override the page title                                                                 |
 | `redirectOnError`       | Optional        | `'list'` &#124; `false` &#124; `function`                 | `'list'`     | The page to redirect to when an error occurs                                            |
 | `transform`             | Optional        | `function`                                                | -            | Transform the form data before calling `dataProvider.update()`                          |
 

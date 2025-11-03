@@ -71,7 +71,7 @@ You can customize the `<Create>` component using the following props:
 | `redirect`              | Optional        | `string`/`function`  | `'edit'`        | Change the redirect location after successful creation                                           |
 | `resource`              | Optional        | `string`             | From URL        | Override the name of the resource to create                                                      |
 | `sx`                    | Optional        | `object`             | -               | Override the styles                                                                              |
-| `title`                 | Optional        | `string`/`ReactNode` | Translation     | Override the page title                                                                          |
+| `title`                 | Optional        | `ReactNode` / `string` / `false` | Translation     | Override the page title                                                                          |
 | `transform`             | Optional        | `function`           | -               | Transform the form data before calling `dataProvider.create()`                                   |
 
 `*` You must provide either `children` or `render`.

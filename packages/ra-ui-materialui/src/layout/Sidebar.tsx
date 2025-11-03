@@ -5,7 +5,6 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import clsx from 'clsx';
-import type { ReactElement } from 'react';
 import {
     Drawer,
     type DrawerProps,
@@ -64,7 +63,7 @@ export const Sidebar = (inProps: SidebarProps) => {
 
 export interface SidebarProps extends DrawerProps {
     appBarAlwaysOn?: boolean;
-    children: ReactElement;
+    children: React.ReactNode;
     closedSize?: number;
     size?: number;
 }

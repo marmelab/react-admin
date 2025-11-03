@@ -23,7 +23,7 @@ import {
     WithListContext,
 } from 'ra-core';
 import * as React from 'react';
-import { isValidElement, type ReactElement } from 'react';
+import { isValidElement } from 'react';
 
 import { ListNoResults } from '../ListNoResults';
 import { SimpleListLoading } from './SimpleListLoading';
@@ -149,7 +149,7 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
     extends SimpleListBaseProps<RecordType>,
         Omit<ListProps, 'classes'> {
     className?: string;
-    empty?: ReactElement;
+    empty?: React.ReactNode;
     hasBulkActions?: boolean;
     // can be injected when using the component without context
     resource?: string;

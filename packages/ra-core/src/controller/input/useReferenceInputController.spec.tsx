@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useCallback, ReactElement } from 'react';
+import { useState, useCallback } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
@@ -21,9 +21,7 @@ const ReferenceInputController = (
     const inputProps = useInput({
         ...rest,
     });
-    return children(
-        useReferenceInputController({ ...rest, ...inputProps })
-    ) as ReactElement;
+    return children(useReferenceInputController({ ...rest, ...inputProps }));
 };
 
 describe('useReferenceInputController', () => {

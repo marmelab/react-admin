@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { Form, type FormProps } from 'ra-core';
 import {
     Stack,
@@ -71,7 +71,7 @@ export const SimpleForm = (inProps: SimpleFormProps) => {
                     {children}
                 </Stack>
             </Component>
-            {toolbar !== false ? toolbar : null}
+            {toolbar}
         </Form>
     );
 };
@@ -83,7 +83,7 @@ export interface SimpleFormProps
     className?: string;
     component?: React.ComponentType<any>;
     defaultValues?: any;
-    toolbar?: ReactElement | false;
+    toolbar?: ReactNode;
     sx?: SxProps<Theme>;
 }
 
