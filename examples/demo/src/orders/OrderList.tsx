@@ -196,6 +196,7 @@ const OrdersTable = React.memo(
                 <DateField source="date" showTime />
             </Column>
             <Column source="reference" />
+            {/* FIXME: Sort by reference field does not work with ra-data-graphql */}
             <Column
                 source="customer.last_name"
                 label="resources.orders.fields.customer_id"

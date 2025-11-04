@@ -68,6 +68,7 @@ const InvoiceList = () => (
         >
             <Column source="id" />
             <Column field={DateField} source="date" />
+            {/* FIXME: Sort by reference field does not work with ra-data-graphql */}
             <Column
                 source="customer.last_name"
                 label="resources.invoices.fields.customer_id"
