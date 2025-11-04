@@ -5,7 +5,11 @@ title: "useUnselect"
 
 # `useUnselect`
 
-This hook returns a function that unselects lines in the current `<DataTable>` that match an array of ids. Pass the name of the resource to the hook as argument.
+This hook returns a function that unselects lines in a `<DataTable>` that match an array of ids. Pass the name of the resource to the hook as the 1st argument.
+
+The 2nd optional argument accepts `storeKey`. It should match with the `storeKey` used in `useListController`.
+
+Returned function accepts boolean as the 2nd `fromAllStoreKeys` argument - if `true`, then it will unselect the records across all storeKeys used with this resource.
 
 ```jsx
 import { useListContext, useUnselect } from 'react-admin';
