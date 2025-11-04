@@ -1,4 +1,4 @@
-import { isValidElement, useEffect, useMemo } from 'react';
+import { isValidElement, useCallback, useEffect, useMemo } from 'react';
 import type {
     InfiniteQueryObserverBaseResult,
     InfiniteData,
@@ -96,6 +96,13 @@ export const useInfiniteListController = <
     });
 
     const [selectedIds, selectionModifiers] = useRecordSelection({ resource });
+
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
 
     const {
         data,
@@ -212,7 +219,7 @@ export const useInfiniteListController = <
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page: query.page,
         perPage: query.perPage,
         refetch,

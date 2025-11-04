@@ -109,7 +109,7 @@ const useDeleteWithConfirmController = <
                             undoable: mutationMode === 'undoable',
                         }
                     );
-                    record && unselect([record.id]);
+                    record && unselect([record.id], true);
                     redirect(redirectTo, resource);
                 },
                 onError: error => {
