@@ -433,8 +433,8 @@ const sexChoices = [
     { id: 'female', name: 'Female' },
 ];
 
-const CustomerForm = (props: any) => (
-    <SimpleForm defaultValues={{ firstname: 'John', name: 'Doe' }} {...props}>
+const CustomerForm = () => (
+    <SimpleForm>
         <TextInput source="first_name" validate={required()} />
         <TextInput source="last_name" validate={required()} />
         <DateInput source="dob" label="born" validate={required()} />
@@ -442,66 +442,54 @@ const CustomerForm = (props: any) => (
     </SimpleForm>
 );
 
-const EmployerSimpleFormWithFullyControlledDialogs = () => {
-    const record = useRecordContext();
-
-    const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-    const openEditDialog = useCallback(() => {
-        setIsEditDialogOpen(true);
+const EmployerEdit = () => {
+    const [record, setRecord] = React.useState<any>(undefined);
+    const closeDialog = React.useCallback(() => {
+        setRecord(undefined);
     }, []);
-    const closeEditDialog = useCallback(() => {
-        setIsEditDialogOpen(false);
-    }, []);
-
     return (
-        <SimpleForm>
-            <TextInput source="name" validate={required()} />
-            <TextInput source="address" validate={required()} />
-            <TextInput source="city" validate={required()} />
-            <ReferenceManyField
-                label="Customers"
-                reference="customers"
-                target="employer_id"
-            >
-                <DataTable>
-                    <DataTable.Col source="id" />
-                    <DataTable.Col source="first_name" />
-                    <DataTable.Col source="last_name" />
-                    <DataTable.Col source="dob" label="born" field={DateField} />
-                    <DataTable.Col source="sex">
-                        <SelectField source="sex" choices={sexChoices} />
-                    </DataTable.Col>
-                    <DataTable.Col>
-                        <Button
-                            label="Edit customer"
-                            onClick={() => openEditDialog()}
-                            size="medium"
-                            variant="contained"
-                            sx={{ mb: 4 }}
-                        />
-                    <DataTable.Col>
-                </DataTable>
-            </ReferenceManyField>
-            <EditDialog
-                fullWidth
-                maxWidth="md"
-                record={record}
-                isOpen={isEditDialogOpen}
-                open={openEditDialog}
-                close={closeEditDialog}
-                resource="customers"
-            >
-                <CustomerForm />
-            </EditDialog>
-        </SimpleForm>
+        <Edit>
+            <SimpleForm>
+                <TextInput source="name" validate={required()} />
+                <TextInput source="address" validate={required()} />
+                <TextInput source="city" validate={required()} />
+                <ReferenceManyField
+                    label="Customers"
+                    reference="customers"
+                    target="employer_id"
+                >
+                    <DataTable>
+                        <DataTable.Col source="id" />
+                        <DataTable.Col source="first_name" />
+                        <DataTable.Col source="last_name" />
+                        <DataTable.Col label="born">
+                            <DateField source="dob" label="born" />
+                        </DataTable.Col>
+                        <DataTable.Col source="sex">
+                            <SelectField source="sex" choices={sexChoices} />
+                        </DataTable.Col>
+                        <DataTable.Col render={record => (
+                            <Button
+                                label="Edit customer"
+                                onClick={() => setRecord(record)}
+                            />
+                        )} />
+                    </DataTable>
+                </ReferenceManyField>
+                <EditDialog
+                    record={record}
+                    resource="customers"
+                    isOpen={!!record}
+                    close={closeDialog}
+                    fullWidth
+                    maxWidth="md"
+                >
+                    <CustomerForm />
+                </EditDialog>
+            </SimpleForm>
+        </Edit>
     );
 };
-
-const EmployerEdit = () => (
-    <Edit>
-        <EmployerSimpleFormWithFullyControlledDialogs />
-    </Edit>
-);
 ```
 
 {% endraw %}
