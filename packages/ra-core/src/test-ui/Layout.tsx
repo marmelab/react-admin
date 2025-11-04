@@ -1,6 +1,8 @@
-import { useRefresh, useResourceDefinitions, useTranslate } from '../';
 import * as React from 'react';
 import { Link } from 'react-router-dom';
+import { useResourceDefinitions } from '../core/useResourceDefinitions';
+import { useTranslate } from '../i18n/useTranslate';
+import { useRefresh } from '../dataProvider/useRefresh';
 import { Notification } from './Notification';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {

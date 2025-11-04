@@ -1,19 +1,17 @@
 import * as React from 'react';
 import { type ReactNode, useCallback, useState } from 'react';
-import {
-    type RaRecord,
-    useArrayInput,
-    useTranslate,
-    useWrappedSource,
-    Translate,
-    useSimpleFormIterator,
-    ArrayInputContextValue,
-    useSimpleFormIteratorItem,
-    SimpleFormIteratorBase,
-    SimpleFormIteratorItemBase,
-    useFieldValue,
-} from '../';
 import { type UseFieldArrayReturn } from 'react-hook-form';
+import type { RaRecord } from '../types';
+import { useTranslate } from '../i18n/useTranslate';
+import { Translate } from '../i18n/Translate';
+import { useFieldValue } from '../util/useFieldValue';
+import { useWrappedSource } from '../core/useWrappedSource';
+import { useArrayInput } from '../controller/input/useArrayInput';
+import { type ArrayInputContextValue } from '../controller/input/ArrayInputContext';
+import { useSimpleFormIterator } from '../controller/input/useSimpleFormIterator';
+import { useSimpleFormIteratorItem } from '../controller/input/useSimpleFormIteratorItem';
+import { SimpleFormIteratorBase } from '../controller/input/SimpleFormIteratorBase';
+import { SimpleFormIteratorItemBase } from '../controller/input/SimpleFormIteratorItemBase';
 
 import { Confirm } from './Confirm';
 
