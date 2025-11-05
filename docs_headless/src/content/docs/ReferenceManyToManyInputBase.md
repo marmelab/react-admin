@@ -6,6 +6,8 @@ This component allows adding or removing relationships between two resources sha
 
 **Note**: The `<ReferenceManyToManyInputBase>` cannot currently display multiple records with the same id from the end reference resource even though they might have different properties in the associative table.
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ## Usage
 
 Let's imagine that you're writing an app managing concerts for artists. The data model features a many-to-many relationship between the `bands` and `venues` tables through a `performances` associative table.
