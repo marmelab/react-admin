@@ -138,14 +138,28 @@ export const useListParams = ({
     // the categories products on the demo), we need to persist them in the
     // store as well so that we don't lose them after a redirection back
     // to the list
-    useEffect(() => {
-        if (disableSyncWithLocation) {
-            return;
-        }
-        if (
-            !isEqual(query, queryFromLocation) &&
-            Object.keys(queryFromLocation).length === 0
-        ) {
+    useEffect(
+        () => {
+            if (disableSyncWithLocation) {
+                return;
+            }
+            const defaultParams = {
+                filter: filterDefaultValues || {},
+                page: 1,
+                perPage,
+                sort: sort.field,
+                order: sort.order,
+            };
+            if (
+                // The location params are not empty (we don't want to override them if provided)
+                Object.keys(queryFromLocation).length > 0 ||
+                // or the stored params are different from the location params
+                isEqual(query, queryFromLocation) ||
+                // or the stored params are not different from the default params (to keep the URL simple when possible)
+                isEqual(query, defaultParams)
+            ) {
+                return;
+            }
             navigate({
                 search: `?${stringify({
                     ...query,
@@ -153,8 +167,18 @@ export const useListParams = ({
                     displayedFilters: JSON.stringify(query.displayedFilters),
                 })}`,
             });
-        }
-    }, [disableSyncWithLocation, query, location.search]); // eslint-disable-line
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            navigate,
+            disableSyncWithLocation,
+            filterDefaultValues,
+            perPage,
+            sort,
+            query,
+            location.search,
+        ]
+    );
 
     const changeParams = useCallback(
         action => {
