@@ -142,7 +142,10 @@ export const useListParams = ({
         if (disableSyncWithLocation) {
             return;
         }
-        if (!isEqual(query, queryFromLocation)) {
+        if (
+            !isEqual(query, queryFromLocation) &&
+            Object.keys(queryFromLocation).length === 0
+        ) {
             navigate({
                 search: `?${stringify({
                     ...query,

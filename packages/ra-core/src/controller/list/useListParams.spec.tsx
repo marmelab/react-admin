@@ -606,6 +606,84 @@ describe('useListParams', () => {
             expect(storeValue).toBeUndefined();
         });
 
+        it('should not synchronize location with store if the location already contains parameters', async () => {
+            let location;
+            let storeValue;
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
+            render(
+                <TestMemoryRouter
+                    initialEntries={[
+                        {
+                            search:
+                                '?' +
+                                stringify({
+                                    filter: JSON.stringify({}),
+                                    sort: 'id',
+                                    order: 'ASC',
+                                    page: 5,
+                                    perPage: 10,
+                                }),
+                        },
+                    ]}
+                    locationCallback={l => {
+                        location = l;
+                    }}
+                >
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        store={memoryStore({
+                            'posts.listParams': {
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 10,
+                                perPage: 10,
+                                filter: {},
+                            },
+                        })}
+                    >
+                        <Component disableSyncWithLocation />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            await waitFor(() => {
+                expect(storeValue).toEqual({
+                    sort: 'id',
+                    order: 'ASC',
+                    page: 10,
+                    perPage: 10,
+                    filter: {},
+                });
+            });
+
+            await waitFor(() => {
+                expect(location).toEqual(
+                    expect.objectContaining({
+                        hash: '',
+                        key: expect.any(String),
+                        state: null,
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                filter: JSON.stringify({}),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 5,
+                                perPage: 10,
+                            }),
+                    })
+                );
+            });
+        });
+
         it('should not synchronize location with store when sync is not enabled', async () => {
             let location;
             let storeValue;
