@@ -684,6 +684,36 @@ describe('useListParams', () => {
             });
         });
 
+        it('should not synchronize location with store if the store parameters are the defaults', async () => {
+            let location;
+            render(
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
+                >
+                    <CoreAdminContext dataProvider={testDataProvider()}>
+                        <Component disableSyncWithLocation />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            // Let React do its thing
+            await new Promise(resolve => setTimeout(resolve, 0));
+
+            await waitFor(() => {
+                expect(location).toEqual(
+                    expect.objectContaining({
+                        hash: '',
+                        key: expect.any(String),
+                        state: null,
+                        pathname: '/',
+                        search: '',
+                    })
+                );
+            });
+        });
+
         it('should not synchronize location with store when sync is not enabled', async () => {
             let location;
             let storeValue;
