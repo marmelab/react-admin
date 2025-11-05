@@ -276,6 +276,17 @@ export default defineConfig({
                     ],
                 },
                 {
+                    label: 'History',
+                    items: [
+                        enterpriseEntry('HistoryFeatures', 'Setting up'),
+                        enterpriseEntry('useAddRevisionAfterMutation'),
+                        enterpriseEntry('useApplyChangesBasedOnSearchParam'),
+                        enterpriseEntry('useDeleteRevisions'),
+                        enterpriseEntry('useGenerateChangeMessage'),
+                        enterpriseEntry('useGetRevisions'),
+                    ],
+                },
+                {
                     label: 'Recipes',
                     items: ['caching', 'unittesting'],
                 },
