@@ -653,18 +653,14 @@ const EmployerEdit = () => (
               <DataTable>
                   <DataTable.Col source="first_name" />
                   <DataTable.Col source="last_name" />
-                  <DataTable.Col
-                      render={record => (
-                          <EditInDialogButton>
-                              <SimpleForm
-                                record={{ employer_id: record.id }}
-                              >
-                                  <TextInput source="first_name" />
-                                  <TextInput source="last_name" />
-                              </SimpleForm>
-                          </EditInDialogButton>
-                      )}
-                  />
+                  <DataTable.Col>
+                      <EditInDialogButton>
+                          <SimpleForm>
+                              <TextInput source="first_name" />
+                              <TextInput source="last_name" />
+                          </SimpleForm>
+                      </EditInDialogButton>
+                  </DataTable.Col>
               </DataTable>
           </ReferenceManyField>
       </SimpleForm>
