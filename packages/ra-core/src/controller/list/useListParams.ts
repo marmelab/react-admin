@@ -134,12 +134,20 @@ export const useListParams = ({
         }
     }, [location.search]); // eslint-disable-line
 
+    const currentStoreKey = useRef(storeKey);
     // if the location includes params (for example from a link like
     // the categories products on the demo), we need to persist them in the
     // store as well so that we don't lose them after a redirection back
     // to the list
     useEffect(
         () => {
+            // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
+            // the same resource but different storeKeys.
+            if (currentStoreKey.current !== storeKey) {
+                // storeKey has changed
+                currentStoreKey.current = storeKey;
+                return;
+            }
             if (disableSyncWithLocation) {
                 return;
             }
@@ -150,6 +158,7 @@ export const useListParams = ({
                 sort: sort.field,
                 order: sort.order,
             };
+
             if (
                 // The location params are not empty (we don't want to override them if provided)
                 Object.keys(queryFromLocation).length > 0 ||
@@ -177,6 +186,7 @@ export const useListParams = ({
             sort,
             query,
             location.search,
+            params,
         ]
     );
 
