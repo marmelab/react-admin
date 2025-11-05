@@ -3,6 +3,7 @@ import {
     AccessControl,
     Basic,
     DefaultTitle,
+    Empty,
     FetchError,
     Loading,
     NoAuthProvider,
@@ -11,7 +12,6 @@ import {
 } from './InfiniteListBase.stories';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { testDataProvider } from '../../dataProvider';
-import { Empty } from './ListBase.stories';
 
 describe('InfiniteListBase', () => {
     it('should fetch a list of records on mount, put it in a ListContext, and render its children', async () => {
