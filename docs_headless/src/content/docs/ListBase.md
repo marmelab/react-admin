@@ -86,6 +86,7 @@ The `<ListBase>` component accepts the following props:
 | `debounce`                | Optional                | `number`    | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disableAuthentication`   | Optional                | `boolean`   | `false` | Set to `true` to disable the authentication check.                                           |
 | `disableSyncWithLocation` | Optional                | `boolean`   | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                   | Optional                | `ReactNode` | -       | The component to display when the list is empty.                                             |
 | `error`                   | Optional                | `ReactNode` | -       | The component to render when failing to load the list of records.                            |
 | `exporter`                | Optional                | `function`  | -       | The function to call to export the list.                                                     |
 | `filter`                  | Optional                | `object`    | -       | The permanent filter values.                                                                 |
@@ -209,6 +210,34 @@ const Dashboard = () => (
     </div>
 );
 ```
+
+## `empty`
+
+By default, `<ListBase>` renders the children when there is no result and no active filter. If you want for instance to invite users to create the first record, you can render a custom component via the `empty` prop:
+
+{% raw %}
+```jsx
+import { ListBase } from 'ra-core';
+import { Link } from 'react-router';
+
+const Empty = () => (
+    <div>
+        <h4>
+            No product available
+        </h4>
+        <Link to="/products/create">Create the first product</Link>
+    </div>
+);
+
+const ProductList = () => (
+    <ListBase empty={<Empty />}>
+        ...
+    </ListBase>
+);
+```
+{% endraw %}
+
+The `empty` component can call the [`useListContext()`](./useListContext.md) hook to receive the same props as the `ListBase` child component.
 
 ## `error`
 
