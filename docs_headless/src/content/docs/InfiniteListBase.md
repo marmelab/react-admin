@@ -106,6 +106,8 @@ That's enough to display a basic list with infinite scroll functionality. When u
 | `debounce`                 | Optional                | `number`    | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disable Authentication`   | Optional                | `boolean`   | `false` | Set to `true` to disable the authentication check.                                           |
 | `disable SyncWithLocation` | Optional                | `boolean`   | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                    | Optional                | `ReactNode` | -       | The component to display when the list is empty.                                             |
+| `emptyWhileLoading`        | Optional                | `boolean`   | -       | Set to `true` to return `null` while the list is loading.                                    |
 | `error`                    | Optional                | `ReactNode` | -       | The component to render when failing to load the list of records.                            |
 | `exporter`                 | Optional                | `function`  | -       | The function to call to export the list.                                                     |
 | `filter`                   | Optional                | `object`    | -       | The permanent filter values.                                                                 |

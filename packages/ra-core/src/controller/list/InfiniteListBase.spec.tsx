@@ -3,6 +3,7 @@ import {
     AccessControl,
     Basic,
     DefaultTitle,
+    Empty,
     FetchError,
     Loading,
     NoAuthProvider,
@@ -158,6 +159,14 @@ describe('InfiniteListBase', () => {
         render(<WithRenderProps />);
         await screen.findByText('War and Peace');
         expect(screen.queryByText('Loading...')).toBeNull();
+    });
+
+    it('should render a custom empty component when data is empty', async () => {
+        render(<Empty />);
+        expect(screen.queryByText('Loading...')).not.toBeNull();
+        expect(screen.queryByText('War and Peace')).toBeNull();
+        fireEvent.click(screen.getByText('Resolve books loading'));
+        await screen.findByText('No books');
     });
 
     it('should render loading component while loading', async () => {
