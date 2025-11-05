@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Translate, useListContext, useTranslate } from '../';
+import { Translate } from '../i18n/Translate';
+import { useTranslate } from '../i18n/useTranslate';
+import { useListContext } from '../controller/list/useListContext';
 
 export const Pagination = () => {
     const { page, perPage, total, setPage } = useListContext();

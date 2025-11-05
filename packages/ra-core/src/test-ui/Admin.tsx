@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { CoreAdmin, CoreAdminProps } from '../core';
+import { CoreAdmin, CoreAdminProps } from '../core/CoreAdmin';
 
 import { Layout } from './Layout';
 import { defaultI18nProvider } from './defaultI18nProvider';

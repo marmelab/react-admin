@@ -1,20 +1,21 @@
 import * as React from 'react';
-import {
-    DataTableBase,
-    DataTableBaseProps,
-    DataTableRenderContext,
-    RaRecord,
-    RecordContextProvider,
-    useDataTableCallbacksContext,
-    useDataTableRenderContext,
-    useEvent,
-    useFieldValue,
-    useGetPathForRecordCallback,
-    useListContext,
-    useRecordContext,
-    useResourceContext,
-} from '../';
 import { useNavigate } from 'react-router';
+import type { RaRecord } from '../types';
+import { useResourceContext } from '../core/useResourceContext';
+import { useRecordContext } from '../controller/record/useRecordContext';
+import { RecordContextProvider } from '../controller/record/RecordContext';
+import { useListContext } from '../controller/list/useListContext';
+import { useFieldValue } from '../util/useFieldValue';
+import { useEvent } from '../util/useEvent';
+import { useGetPathForRecordCallback } from '../routing/useGetPathForRecordCallback';
+import { useDataTableSelectedIdsContext } from '../dataTable/DataTableSelectedIdsContext';
+import {
+    useDataTableRenderContext,
+    DataTableRenderContext,
+} from '../dataTable/DataTableRenderContext';
+import { useDataTableConfigContext } from '../dataTable/DataTableConfigContext';
+import { useDataTableCallbacksContext } from '../dataTable/DataTableCallbacksContext';
+import { DataTableBase, DataTableBaseProps } from '../dataTable/DataTableBase';
 
 const DataTableCol = (props: {
     children?: React.ReactNode;
@@ -79,7 +80,7 @@ const DataTableCell = (props: {
 
 const DataTableCellValue = (props: { source: string }) => {
     const value = useFieldValue(props);
-    return <>{value}</>;
+    return <>{value?.toString()}</>;
 };
 
 const DataTableRow = (props: {
@@ -101,7 +102,10 @@ const DataTableRow = (props: {
             'DataTableRow can only be used within a ResourceContext or be passed a resource prop'
         );
     }
-    const { rowClick } = useDataTableCallbacksContext();
+
+    const { hasBulkActions = false } = useDataTableConfigContext();
+    const { handleToggleItem, rowClick } = useDataTableCallbacksContext();
+    const selectedIds = useDataTableSelectedIdsContext();
 
     const handleClick = useEvent(async (event: React.MouseEvent) => {
         event.persist();
@@ -127,21 +131,37 @@ const DataTableRow = (props: {
         });
     });
 
-    return <tr onClick={handleClick}>{props.children}</tr>;
+    return (
+        <tr onClick={handleClick}>
+            {hasBulkActions && (
+                <DataTableCol>
+                    <input
+                        aria-label="Select this row"
+                        type="checkbox"
+                        checked={selectedIds?.includes(record.id)}
+                        onChange={event => handleToggleItem!(record.id, event)}
+                    />
+                </DataTableCol>
+            )}
+            {props.children}
+        </tr>
+    );
 };
 
 const isPromise = (value: any): value is Promise<any> =>
     value && typeof value.then === 'function';
 
 export const DataTable = (
-    props: Omit<DataTableBaseProps, 'hasBulkActions' | 'empty' | 'loading'>
+    props: Omit<DataTableBaseProps, 'hasBulkActions' | 'empty' | 'loading'> & {
+        hasBulkActions?: boolean;
+    }
 ) => {
     const { data } = useListContext();
 
     return (
         <DataTableBase
-            {...props}
             hasBulkActions={false}
+            {...props}
             empty={null}
             loading={null}
         >
@@ -151,7 +171,10 @@ export const DataTable = (
             >
                 <DataTableRenderContext.Provider value="header">
                     <thead>
-                        <tr>{props.children}</tr>
+                        <tr>
+                            {props.hasBulkActions ? <td></td> : null}
+                            {props.children}
+                        </tr>
                     </thead>
                 </DataTableRenderContext.Provider>
                 <DataTableRenderContext.Provider value="data">

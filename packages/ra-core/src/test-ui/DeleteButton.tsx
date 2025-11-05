@@ -1,10 +1,10 @@
 import * as React from 'react';
+import { Translate } from '../i18n/Translate';
 import {
-    Translate,
     useDeleteController,
     UseDeleteControllerParams,
-    useRecordContext,
-} from '../';
+} from '../controller/button/useDeleteController';
+import { useRecordContext } from '../controller/record/useRecordContext';
 
 export const DeleteButton = (
     props: UseDeleteControllerParams & { label: React.ReactNode }

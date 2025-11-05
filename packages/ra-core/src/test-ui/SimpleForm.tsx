@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { Form, FormProps, Translate } from '../';
 import { useFormContext } from 'react-hook-form';
+import { Translate } from '../i18n/Translate';
+import { Form, FormProps } from '../form/Form';
 
 export const SimpleForm = ({ children, ...props }: FormProps) => (
     <Form {...props}>
