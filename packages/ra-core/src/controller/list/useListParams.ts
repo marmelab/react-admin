@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce.js';
+import isEqual from 'lodash/isEqual.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
@@ -132,6 +133,25 @@ export const useListParams = ({
             setParams(query);
         }
     }, [location.search]); // eslint-disable-line
+
+    // if the location includes params (for example from a link like
+    // the categories products on the demo), we need to persist them in the
+    // store as well so that we don't lose them after a redirection back
+    // to the list
+    useEffect(() => {
+        if (disableSyncWithLocation) {
+            return;
+        }
+        if (!isEqual(query, queryFromLocation)) {
+            navigate({
+                search: `?${stringify({
+                    ...query,
+                    filter: JSON.stringify(query.filter),
+                    displayedFilters: JSON.stringify(query.displayedFilters),
+                })}`,
+            });
+        }
+    }, [disableSyncWithLocation, query, location.search]); // eslint-disable-line
 
     const changeParams = useCallback(
         action => {

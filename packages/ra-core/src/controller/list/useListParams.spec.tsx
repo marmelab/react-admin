@@ -9,6 +9,7 @@ import { useStore } from '../../store/useStore';
 import { useListParams, getQuery, getNumberOrDefault } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
+import { memoryStore } from '../../store';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -495,6 +496,71 @@ describe('useListParams', () => {
             });
         });
 
+        it('should synchronize location with store when sync is enabled', async () => {
+            let location;
+            let storeValue;
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
+            render(
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
+                >
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        store={memoryStore({
+                            'posts.listParams': {
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 10,
+                                perPage: 10,
+                                filter: {},
+                            },
+                        })}
+                    >
+                        <Component />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            await waitFor(() => {
+                expect(storeValue).toEqual({
+                    sort: 'id',
+                    order: 'ASC',
+                    page: 10,
+                    perPage: 10,
+                    filter: {},
+                });
+            });
+
+            await waitFor(() => {
+                expect(location).toEqual(
+                    expect.objectContaining({
+                        hash: '',
+                        key: expect.any(String),
+                        state: null,
+                        pathname: '/',
+                        search:
+                            '?' +
+                            stringify({
+                                filter: JSON.stringify({}),
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 10,
+                                perPage: 10,
+                            }),
+                    })
+                );
+            });
+        });
+
         it('should not synchronize parameters with location and store when sync is not enabled', async () => {
             let location;
             let storeValue;
@@ -538,6 +604,63 @@ describe('useListParams', () => {
                 })
             );
             expect(storeValue).toBeUndefined();
+        });
+
+        it('should not synchronize location with store when sync is not enabled', async () => {
+            let location;
+            let storeValue;
+            const StoreReader = () => {
+                const [value] = useStore('posts.listParams');
+                React.useEffect(() => {
+                    storeValue = value;
+                }, [value]);
+                return null;
+            };
+            render(
+                <TestMemoryRouter
+                    locationCallback={l => {
+                        location = l;
+                    }}
+                >
+                    <CoreAdminContext
+                        dataProvider={testDataProvider()}
+                        store={memoryStore({
+                            'posts.listParams': {
+                                sort: 'id',
+                                order: 'ASC',
+                                page: 10,
+                                perPage: 10,
+                                filter: {},
+                            },
+                        })}
+                    >
+                        <Component disableSyncWithLocation />
+                        <StoreReader />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            await waitFor(() => {
+                expect(storeValue).toEqual({
+                    sort: 'id',
+                    order: 'ASC',
+                    page: 10,
+                    perPage: 10,
+                    filter: {},
+                });
+            });
+
+            await waitFor(() => {
+                expect(location).toEqual(
+                    expect.objectContaining({
+                        hash: '',
+                        key: expect.any(String),
+                        state: null,
+                        pathname: '/',
+                        search: '',
+                    })
+                );
+            });
         });
 
         it('should synchronize parameters with store when sync is not enabled and storeKey is passed', async () => {
