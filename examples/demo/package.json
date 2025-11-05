@@ -13,7 +13,7 @@
         "data-generator-retail": "^5.0.0",
         "date-fns": "^3.6.0",
         "echarts": "^5.6.0",
-        "fakerest": "^4.1.1",
+        "fakerest": "^4.2.0",
         "graphql": "^15.6.0",
         "graphql-tag": "^2.12.6",
         "inflection": "^3.0.0",
