@@ -199,13 +199,13 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     }
 
     const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
-    const { fields, replace } = useArrayInput(props);
+    const { fields, remove } = useArrayInput(props);
     const translate = useTranslate();
 
     const handleArrayClear = useCallback(() => {
-        replace([]);
+        remove();
         setConfirmIsOpen(false);
-    }, [replace]);
+    }, [remove]);
 
     const records = useFieldValue({ source: finalSource });
 

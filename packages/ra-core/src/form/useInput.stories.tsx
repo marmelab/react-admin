@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useForm, FormProvider, useFieldArray } from 'react-hook-form';
 import { CoreAdminContext } from '../core';
 import { Form } from './Form';
 import { InputProps, useInput } from './useInput';
@@ -7,12 +8,15 @@ export default {
     title: 'ra-core/form/useInput',
 };
 
-const Input = (props: InputProps) => {
+const Input = (props: InputProps & { log?: boolean }) => {
+    const { label, log } = props;
     const { id, field, fieldState } = useInput(props);
-
+    if (log) {
+        console.log(`Input ${id} rendered:`);
+    }
     return (
         <label htmlFor={id}>
-            {id}: <input id={id} {...field} />
+            {label ?? id}: <input id={id} {...field} />
             {fieldState.error && <span>{fieldState.error.message}</span>}
         </label>
     );
@@ -85,4 +89,39 @@ DefaultValue.argTypes = {
         },
         control: { type: 'select' },
     },
+};
+
+export const Large = () => {
+    const [submittedData, setSubmittedData] = React.useState<any>();
+    const fields = Array.from({ length: 15 }).map((_, index) => (
+        <Input
+            key={index}
+            source={`field${index + 1}`}
+            label={`field${index + 1}`}
+        />
+    ));
+    return (
+        <CoreAdminContext>
+            <Form
+                onSubmit={data => setSubmittedData(data)}
+                record={Array.from({ length: 15 }).reduce((acc, _, index) => {
+                    acc[`field${index + 1}`] = `value${index + 1}`;
+                    return acc;
+                }, {})}
+            >
+                <div
+                    style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        gap: '1em',
+                        marginBottom: '1em',
+                    }}
+                >
+                    {fields}
+                </div>
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(submittedData, null, 2)}</pre>
+        </CoreAdminContext>
+    );
 };
