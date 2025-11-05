@@ -26,7 +26,12 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useCreate.undoable.stories';
-import { MutationMode, Params } from './useCreate.stories';
+import {
+    Middleware,
+    MutationMode,
+    Params,
+    InvalidateList,
+} from './useCreate.stories';
 
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
@@ -574,5 +579,68 @@ describe('useCreate', () => {
             ).toBeNull();
             expect(screen.queryByText('mutating')).toBeNull();
         }, 6000);
+
+        it(`it calls the middlewares in undoable mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="undoable"
+                    timeout={0}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.change(screen.getByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.created');
+            expect(middlewareSpy).not.toHaveBeenCalled();
+            fireEvent.click(screen.getByText('Refresh'));
+            expect(screen.queryByText('Bazinga')).toBeNull();
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                    data: { id: 2, title: 'Bazinga' },
+                    meta: undefined,
+                });
+            });
+            fireEvent.click(screen.getByText('Refresh'));
+            await screen.findByText('Bazinga');
+        });
+        it(`it calls the middlewares in optimistic mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="optimistic"
+                    timeout={0}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.change(screen.getByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.created');
+            fireEvent.click(screen.getByText('Close'));
+            expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                data: { id: 2, title: 'Bazinga' },
+                meta: undefined,
+            });
+            fireEvent.click(screen.getByText('Refresh'));
+            await screen.findByText('Bazinga');
+        });
+    });
+
+    it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
+        render(<InvalidateList mutationMode="undoable" />);
+        fireEvent.change(await screen.findByLabelText('title'), {
+            target: { value: 'New Post' },
+        });
+        fireEvent.click(screen.getByText('Save'));
+        await screen.findByText('resources.posts.notifications.created');
+        fireEvent.click(screen.getByText('Close'));
+        await screen.findByText('3: New Post');
     });
 });

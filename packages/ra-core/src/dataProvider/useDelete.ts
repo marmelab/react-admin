@@ -200,6 +200,7 @@ export const useDelete = <
                             newCollection.length < res.data.length;
                         return recordWasFound
                             ? {
+                                  ...res,
                                   data: newCollection,
                                   total: res.total! - 1,
                               }
@@ -210,34 +211,14 @@ export const useDelete = <
 
                 return params.previousData;
             },
-            getSnapshot: ({ resource }) => {
+            getQueryKeys: ({ resource }) => {
                 const queryKeys = [
                     [resource, 'getList'],
                     [resource, 'getInfiniteList'],
                     [resource, 'getMany'],
                     [resource, 'getManyReference'],
                 ];
-
-                /**
-                 * Snapshot the previous values via queryClient.getQueriesData()
-                 *
-                 * The snapshotData ref will contain an array of tuples [query key, associated data]
-                 *
-                 * @example
-                 * [
-                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-                 * ]
-                 *
-                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-                 */
-                const snapshot = queryKeys.reduce(
-                    (prev, queryKey) =>
-                        prev.concat(queryClient.getQueriesData({ queryKey })),
-                    [] as Snapshot
-                );
-
-                return snapshot;
+                return queryKeys;
             },
             onSettled: (
                 result,
@@ -301,11 +282,6 @@ export type UseDeleteOptions<
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
-    onSuccess?: (
-        data: RecordType | undefined,
-        variables: Partial<UseDeleteMutateParams<RecordType>>,
-        context: unknown
-    ) => void;
 };
 
 export type UseDeleteResult<

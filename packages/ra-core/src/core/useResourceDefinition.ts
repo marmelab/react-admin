@@ -1,9 +1,13 @@
 import { useMemo } from 'react';
-import defaults from 'lodash/defaults';
+import defaults from 'lodash/defaults.js';
 
 import { useResourceDefinitions } from './useResourceDefinitions';
 import { useResourceContext } from './useResourceContext';
-import { ResourceDefinition, ResourceOptions } from '../types';
+import {
+    RecordToStringFunction,
+    ResourceDefinition,
+    ResourceOptions,
+} from '../types';
 
 /**
  * Hook to get the definition of a given resource
@@ -67,8 +71,5 @@ export interface UseResourceDefinitionOptions {
     readonly hasEdit?: boolean;
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
-    readonly recordRepresentation?:
-        | string
-        | React.ReactElement
-        | ((record: any) => string);
+    readonly recordRepresentation?: React.ReactNode | RecordToStringFunction;
 }

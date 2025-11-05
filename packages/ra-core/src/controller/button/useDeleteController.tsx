@@ -1,21 +1,19 @@
 import { useCallback, useMemo } from 'react';
-import { UseMutationOptions } from '@tanstack/react-query';
 
-import { useDelete } from '../../dataProvider';
-import { useUnselect } from '../';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
-import { useNotify } from '../../notification';
-import { RaRecord, MutationMode, DeleteParams } from '../../types';
-import { useResourceContext } from '../../core';
-import { useTranslate } from '../../i18n';
+import { useDelete, UseDeleteOptions } from '../../dataProvider/useDelete';
+import { useUnselect } from '../list/useUnselect';
+import { useRecordContext } from '../record/useRecordContext';
+import { useRedirect, RedirectionSideEffect } from '../../routing/useRedirect';
+import { useNotify } from '../../notification/useNotify';
+import { RaRecord, MutationMode } from '../../types';
+import { useResourceContext } from '../../core/useResourceContext';
+import { useTranslate } from '../../i18n/useTranslate';
 
 /**
  * Prepare a set of callbacks for a delete button
  *
  * @example
  * const DeleteButton = ({
- *     resource,
- *     record,
  *     redirect,
  *     ...rest
  * }) => {
@@ -24,8 +22,6 @@ import { useTranslate } from '../../i18n';
  *         handleDelete,
  *     } = useDeleteController({
  *         mutationMode: 'pessimistic',
- *         resource,
- *         record,
  *         redirect,
  *     });
  *
@@ -67,13 +63,13 @@ export const useDeleteController = <
     props: UseDeleteControllerParams<RecordType, ErrorType>
 ): UseDeleteControllerReturn => {
     const {
-        record,
         redirect: redirectTo = 'list',
-        mutationMode,
+        mutationMode = 'undoable',
         mutationOptions = {},
         successMessage,
     } = props;
     const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const notify = useNotify();
     const unselect = useUnselect(resource);
@@ -99,24 +95,21 @@ export const useDeleteController = <
                         undoable: mutationMode === 'undoable',
                     }
                 );
-                record && unselect([record.id]);
+                record && unselect([record.id], true);
                 redirect(redirectTo, resource);
             },
-            onError: error => {
+            onError: (error: any) => {
                 notify(
                     typeof error === 'string'
                         ? error
-                        : (error as Error)?.message ||
-                              'ra.notification.http_error',
+                        : error?.message || 'ra.notification.http_error',
                     {
                         type: 'error',
                         messageArgs: {
                             _:
                                 typeof error === 'string'
                                     ? error
-                                    : (error as Error)?.message
-                                      ? (error as Error).message
-                                      : undefined,
+                                    : error?.message,
                         },
                     }
                 );
@@ -166,11 +159,7 @@ export interface UseDeleteControllerParams<
     MutationOptionsError = unknown,
 > {
     mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        DeleteParams<RecordType>
-    >;
+    mutationOptions?: UseDeleteOptions<RecordType, MutationOptionsError>;
     record?: RecordType;
     redirect?: RedirectionSideEffect;
     resource?: string;

@@ -1,13 +1,13 @@
 import * as React from 'react';
-import { createContext, ReactElement } from 'react';
+import { createContext } from 'react';
 
 export const PreferencesEditorContext = createContext<
     PreferencesEditorContextValue | undefined
 >(undefined);
 
 export type PreferencesEditorContextValue = {
-    editor: ReactElement | null;
-    setEditor: React.Dispatch<React.SetStateAction<ReactElement | null>>;
+    editor: React.ReactNode;
+    setEditor: React.Dispatch<React.SetStateAction<React.ReactNode>>;
     preferenceKey: string | null;
     setPreferenceKey: React.Dispatch<React.SetStateAction<string | null>>;
     title: string | null;

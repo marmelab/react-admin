@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
 
 import { removeEmpty } from '../../util';
 import { FilterPayload, RaRecord, SortPayload } from '../../types';
@@ -102,6 +102,13 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
                   resource,
               }
             : { disableSyncWithStore: true }
+    );
+
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
     );
 
     // filter logic
@@ -263,7 +270,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page,
         perPage,
         resource: '',

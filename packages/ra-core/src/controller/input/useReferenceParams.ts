@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState, useRef, useEffect } from 'react';
-import lodashDebounce from 'lodash/debounce';
+import lodashDebounce from 'lodash/debounce.js';
 
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';

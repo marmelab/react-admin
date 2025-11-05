@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactElement, ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, useState } from 'react';
 import { useListContext, useTranslate } from 'ra-core';
 import {
     Button,
@@ -15,7 +15,7 @@ import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 export const AddSavedQueryDialog = ({
     open,
     onClose,
-}: AddSavedQueryDialogProps): ReactElement => {
+}: AddSavedQueryDialogProps) => {
     const translate = useTranslate();
     const { resource, filterValues, displayedFilters, sort, perPage } =
         useListContext();

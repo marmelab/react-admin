@@ -9,18 +9,14 @@ import {
 import {
     useListContext,
     useTranslate,
-    useUpdateMany,
-    useNotify,
-    useUnselectAll,
     useResourceContext,
-    type MutationMode,
     type RaRecord,
-    type UpdateManyParams,
+    useBulkUpdateController,
+    UseBulkUpdateControllerParams,
 } from 'ra-core';
 
 import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
-import type { UseMutationOptions } from '@tanstack/react-query';
 import { humanize, inflect } from 'inflection';
 
 export const BulkUpdateWithConfirmButton = (
@@ -30,10 +26,8 @@ export const BulkUpdateWithConfirmButton = (
         props: inProps,
         name: PREFIX,
     });
-    const notify = useNotify();
     const translate = useTranslate();
     const resource = useResourceContext(props);
-    const unselectAll = useUnselectAll(resource);
     const [isOpen, setOpen] = useState(false);
     const { selectedIds } = useListContext();
 
@@ -45,66 +39,41 @@ export const BulkUpdateWithConfirmButton = (
         label = 'ra.action.update',
         mutationMode = 'pessimistic',
         onClick,
-        onSuccess = () => {
-            notify(`resources.${resource}.notifications.updated`, {
-                type: 'info',
-                messageArgs: {
-                    smart_count: selectedIds.length,
-                    _: translate('ra.notification.updated', {
-                        smart_count: selectedIds.length,
-                    }),
-                },
-                undoable: mutationMode === 'undoable',
-            });
-            unselectAll();
-            setOpen(false);
-        },
-        onError = (error: Error | string) => {
-            notify(
-                typeof error === 'string'
-                    ? error
-                    : error.message || 'ra.notification.http_error',
-                {
-                    type: 'error',
-                    messageArgs: {
-                        _:
-                            typeof error === 'string'
-                                ? error
-                                : error && error.message
-                                  ? error.message
-                                  : undefined,
-                    },
-                }
-            );
-            setOpen(false);
-        },
-        mutationOptions = {},
         ...rest
     } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const { handleUpdate, isPending } = useBulkUpdateController({
+        ...rest,
+        mutationMode,
+        mutationOptions: {
+            ...rest.mutationOptions,
+            onSettled(...args) {
+                // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
+                if (mutationMode === 'pessimistic') {
+                    setOpen(false);
+                }
+                rest.mutationOptions?.onSettled?.(...args);
+            },
+        },
+    });
 
-    const [updateMany, { isPending }] = useUpdateMany(
-        resource,
-        { ids: selectedIds, data, meta: mutationMeta },
-        {
-            onSuccess,
-            onError,
-            mutationMode,
-            ...otherMutationOptions,
-        }
-    );
-
-    const handleClick = e => {
-        setOpen(true);
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        setOpen(true);
     };
 
-    const handleDialogClose = () => {
+    const handleDialogClose = (e: React.MouseEvent) => {
+        e.stopPropagation();
         setOpen(false);
     };
 
-    const handleUpdate = e => {
-        updateMany();
+    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.stopPropagation();
+        // We close the dialog immediately here for optimistic/undoable modes instead of in onSuccess/onError
+        // to avoid reimplementing the default side effects
+        if (mutationMode !== 'pessimistic') {
+            setOpen(false);
+        }
+        handleUpdate(data);
 
         if (typeof onClick === 'function') {
             onClick(e);
@@ -155,7 +124,7 @@ export const BulkUpdateWithConfirmButton = (
                         ),
                     }),
                 }}
-                onConfirm={handleUpdate}
+                onConfirm={handleConfirm}
                 onClose={handleDialogClose}
             />
         </Fragment>
@@ -164,30 +133,20 @@ export const BulkUpdateWithConfirmButton = (
 
 const sanitizeRestProps = ({
     label,
-    onSuccess,
-    onError,
+    resource,
+    successMessage,
     ...rest
-}: Omit<
-    BulkUpdateWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon' | 'data'
->) => rest;
+}: Omit<BulkUpdateWithConfirmButtonProps, 'icon' | 'data'>) => rest;
 
 export interface BulkUpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps {
+> extends Omit<ButtonProps, 'onError'>,
+        UseBulkUpdateControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;
     confirmTitle?: React.ReactNode;
     icon?: React.ReactNode;
     data: any;
-    onSuccess?: () => void;
-    onError?: (error: any) => void;
-    mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        RecordType,
-        MutationOptionsError,
-        UpdateManyParams<RecordType>
-    > & { meta?: any };
 }
 
 const PREFIX = 'RaBulkUpdateWithConfirmButton';

@@ -8,7 +8,7 @@ title: "Theming"
 React-admin applications use a neutral style by default. You will probably want to customize the look and feel to match your branding, or your end users preferences. Don't worry! You can customize the look and feel of pretty much everything in react-admin.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -121,7 +121,7 @@ const App = () => (
 
 React-admin comes with 5 built-in themes:
 
-| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)](AppTheme.html#default) | &nbsp;&nbsp; [B&W](./AppTheme.md#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](./AppTheme.html#bw) |
+| &nbsp;&nbsp; [Default](./AppTheme.md#default) [![Default light theme](./img/defaultLightTheme1.jpg)](./AppTheme.html#default) | &nbsp;&nbsp; [B&W](./AppTheme.md#bw) [![B&W light theme](./img/bwLightTheme1.jpg)](./AppTheme.html#bw) |
 | &nbsp;&nbsp; [Nano](./AppTheme.md#nano) [![Nano light theme](./img/nanoLightTheme1.jpg)](./AppTheme.html#nano) | &nbsp;&nbsp; [Radiant](./AppTheme.md#radiant) [![Radiant light theme](./img/radiantLightTheme1.jpg)](./AppTheme.html#radiant) |
 | &nbsp;&nbsp; [House](./AppTheme.md#house) [![House light theme](./img/houseLightTheme1.jpg)](./AppTheme.html#house) |
 

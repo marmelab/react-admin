@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
-import get from 'lodash/get';
-import isEqual from 'lodash/isEqual';
-import lodashDebounce from 'lodash/debounce';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
+import lodashDebounce from 'lodash/debounce.js';
 
 import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
@@ -72,7 +72,6 @@ export const useReferenceManyFieldController = <
     const resource = useResourceContext(props);
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const storeKey = props.storeKey ?? `${resource}.${record?.id}.${reference}`;
     const { meta, ...otherQueryOptions } = queryOptions;
 
     // pagination logic
@@ -93,8 +92,16 @@ export const useReferenceManyFieldController = <
 
     // selection logic
     const [selectedIds, selectionModifiers] = useRecordSelection({
-        resource: storeKey,
+        resource: reference,
+        storeKey: props.storeKey ?? `${resource}.${record?.id}.${reference}`,
     });
+
+    const onUnselectItems = useCallback(
+        (fromAllStoreKeys?: boolean) => {
+            return selectionModifiers.unselect(selectedIds, fromAllStoreKeys);
+        },
+        [selectedIds, selectionModifiers]
+    );
 
     // filter logic
     const filterRef = useRef(filter);
@@ -280,7 +287,7 @@ export const useReferenceManyFieldController = <
         onSelect: selectionModifiers.select,
         onSelectAll,
         onToggleItem: selectionModifiers.toggle,
-        onUnselectItems: selectionModifiers.clearSelection,
+        onUnselectItems,
         page,
         perPage,
         refetch,

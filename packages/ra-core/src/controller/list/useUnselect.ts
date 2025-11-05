@@ -11,13 +11,15 @@ import { Identifier } from '../../types';
  * const unselect = useUnselect('posts');
  * unselect([123, 456]);
  */
-export const useUnselect = (resource?: string) => {
+export const useUnselect = (resource?: string, storeKey?: string) => {
     const [, { unselect }] = useRecordSelection(
-        resource ? { resource } : { disableSyncWithStore: true }
+        resource
+            ? { resource, storeKey }
+            : { disableSyncWithStore: true, storeKey }
     );
     return useCallback(
-        (ids: Identifier[]) => {
-            unselect(ids);
+        (ids: Identifier[], fromAllStoreKeys: boolean = false) => {
+            unselect(ids, fromAllStoreKeys);
         },
         [unselect]
     );

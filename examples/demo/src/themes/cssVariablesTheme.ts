@@ -10,11 +10,29 @@ const lightTheme: RaThemeOptions = {
             0.8
         ),
     },
+    components: {
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: `color-mix(in oklab, var(--mui-palette-background-paper) 80%, light-dark(black, white))`,
+                },
+            },
+        },
+    },
 };
 const darkTheme: RaThemeOptions = {
     palette: {
         mode: 'dark',
         bulkActionsToolbarBackgroundColor: defaultTheme.palette.primary.dark,
+    },
+    components: {
+        RaToolbar: {
+            styleOverrides: {
+                root: {
+                    backgroundColor: `color-mix(in oklab, var(--mui-palette-background-paper) 80%, light-dark(black, white))`,
+                },
+            },
+        },
     },
 };
 

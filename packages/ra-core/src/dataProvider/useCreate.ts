@@ -160,7 +160,7 @@ export const useCreate = <
 
                 return clonedData;
             },
-            getSnapshot: ({ resource, ...params }, { mutationMode }) => {
+            getQueryKeys: ({ resource, ...params }, { mutationMode }) => {
                 const queryKeys: any[] = [
                     [resource, 'getList'],
                     [resource, 'getInfiniteList'],
@@ -176,38 +176,24 @@ export const useCreate = <
                     ]);
                 }
 
-                /**
-                 * Snapshot the previous values via queryClient.getQueriesData()
-                 *
-                 * The snapshotData ref will contain an array of tuples [query key, associated data]
-                 *
-                 * @example
-                 * [
-                 *   [['posts', 'getOne', { id: '1' }], { id: 1, title: 'Hello' }],
-                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-                 * ]
-                 *
-                 * @see https://react-query-v3.tanstack.com/reference/QueryClient#queryclientgetqueriesdata
-                 */
-                const snapshot = queryKeys.reduce(
-                    (prev, queryKey) =>
-                        prev.concat(queryClient.getQueriesData({ queryKey })),
-                    [] as Snapshot
-                );
-
-                return snapshot;
+                return queryKeys;
             },
-            getMutateWithMiddlewares: mutationFn => args => {
-                // This is necessary to avoid breaking changes in useCreate:
-                // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+            getMutateWithMiddlewares: mutationFn => {
                 if (getMutateWithMiddlewares) {
-                    const { resource, ...params } = args;
-                    return getMutateWithMiddlewares(
+                    // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
+                    // we still have them applied when users have called the mutate function.
+                    const mutateWithMiddlewares = getMutateWithMiddlewares(
                         dataProviderCreate.bind(dataProvider)
-                    )(resource, params);
+                    );
+                    return args => {
+                        // This is necessary to avoid breaking changes in useCreate:
+                        // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+                        const { resource, ...params } = args;
+                        return mutateWithMiddlewares(resource, params);
+                    };
                 }
-                return mutationFn(args);
+
+                return args => mutationFn(args);
             },
             onUndo: ({ resource, data, meta }) => {
                 queryClient.removeQueries({

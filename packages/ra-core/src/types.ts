@@ -276,10 +276,16 @@ export type MutationMode = 'pessimistic' | 'optimistic' | 'undoable';
 export type OnSuccess = (
     response?: any,
     variables?: any,
+    onMutateResult?: any,
     context?: any
 ) => void;
 
-export type OnError = (error?: any, variables?: any, context?: any) => void;
+export type OnError = (
+    error?: any,
+    variables?: any,
+    onMutateResult?: any,
+    context?: any
+) => void;
 
 export type TransformData = (
     data: any,
@@ -312,10 +318,7 @@ export interface ResourceDefinition<OptionsType extends ResourceOptions = any> {
     readonly hasShow?: boolean;
     readonly hasCreate?: boolean;
     readonly icon?: any;
-    readonly recordRepresentation?:
-        | ReactElement
-        | RecordToStringFunction
-        | string;
+    readonly recordRepresentation?: React.ReactNode | RecordToStringFunction;
 }
 
 /**
@@ -379,7 +382,7 @@ export interface ResourceProps {
     hasEdit?: boolean;
     hasShow?: boolean;
     icon?: ComponentType<any>;
-    recordRepresentation?: ReactElement | RecordToStringFunction | string;
+    recordRepresentation?: React.ReactNode | RecordToStringFunction;
     options?: ResourceOptions;
     children?: ReactNode;
 }

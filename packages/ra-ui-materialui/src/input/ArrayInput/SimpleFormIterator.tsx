@@ -1,13 +1,5 @@
 import * as React from 'react';
-import {
-    Children,
-    type ReactElement,
-    type ReactNode,
-    useCallback,
-    useMemo,
-    useRef,
-    useState,
-} from 'react';
+import type { ReactNode } from 'react';
 import {
     type ComponentsOverrides,
     styled,
@@ -16,29 +8,30 @@ import {
     useThemeProps,
 } from '@mui/material';
 import clsx from 'clsx';
-import get from 'lodash/get';
 import {
-    FormDataConsumer,
     type RaRecord,
-    SimpleFormIteratorContext,
-    useRecordContext,
-    useArrayInput,
-    useTranslate,
     useWrappedSource,
+    SimpleFormIteratorBase,
+    type SimpleFormIteratorBaseProps,
+    type SimpleFormIteratorDisableRemoveFunction,
+    RecordContextProvider,
+    useArrayInput,
+    useRecordContext,
+    useEvent,
+    useGetArrayInputNewItemDefaults,
 } from 'ra-core';
-import { type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import get from 'lodash/get.js';
 
 import {
     SimpleFormIteratorClasses,
     SimpleFormIteratorPrefix as PREFIX,
 } from './useSimpleFormIteratorStyles';
 import {
-    DisableRemoveFunction,
+    type SimpleFormIteratorGetItemLabelFunc,
     SimpleFormIteratorItem,
 } from './SimpleFormIteratorItem';
 import { AddItemButton as DefaultAddItemButton } from './AddItemButton';
-import { ClearArrayButton } from './ClearArrayButton';
-import { Confirm } from '../../layout';
+import { SimpleFormIteratorClearButton } from './SimpleFormIteratorClearButton';
 
 export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
     const props = useThemeProps({
@@ -51,7 +44,6 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
         reOrderButtons,
         children,
         className,
-        resource,
         disabled,
         disableAdd = false,
         disableClear,
@@ -69,101 +61,19 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             'SimpleFormIterator can only be called within an iterator input like ArrayInput'
         );
     }
-
-    const [confirmIsOpen, setConfirmIsOpen] = useState<boolean>(false);
-    const { append, fields, move, remove, replace } = useArrayInput(props);
-    const { trigger, getValues } = useFormContext();
-    const translate = useTranslate();
+    const { fields } = useArrayInput(props);
     const record = useRecordContext(props);
-    const initialDefaultValue = useRef({});
-
-    const removeField = useCallback(
-        (index: number) => {
-            remove(index);
-            const isScalarArray = getValues(finalSource).every(
-                (value: any) => typeof value !== 'object'
-            );
-            if (isScalarArray) {
-                // Trigger validation on the Array to avoid ghost errors.
-                // Otherwise, validation errors on removed fields might still be displayed
-                trigger(finalSource);
-            }
-        },
-        [remove, trigger, finalSource, getValues]
-    );
-
-    if (fields.length > 0) {
-        const { id, ...rest } = fields[0];
-        initialDefaultValue.current = rest;
-        for (const k in initialDefaultValue.current)
-            initialDefaultValue.current[k] = null;
-    }
-
-    const addField = useCallback(
-        (item: any = undefined) => {
-            let defaultValue = item;
-            if (item == null) {
-                defaultValue = initialDefaultValue.current;
-                if (
-                    Children.count(children) === 1 &&
-                    React.isValidElement(Children.only(children)) &&
-                    // @ts-ignore
-                    !Children.only(children).props.source &&
-                    // Make sure it's not a FormDataConsumer
-                    // @ts-ignore
-                    Children.only(children).type !== FormDataConsumer
-                ) {
-                    // ArrayInput used for an array of scalar values
-                    // (e.g. tags: ['foo', 'bar'])
-                    defaultValue = '';
-                } else {
-                    // ArrayInput used for an array of objects
-                    // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-                    defaultValue =
-                        defaultValue || ({} as Record<string, unknown>);
-                    Children.forEach(children, input => {
-                        if (
-                            React.isValidElement(input) &&
-                            input.type !== FormDataConsumer &&
-                            input.props.source
-                        ) {
-                            defaultValue[input.props.source] =
-                                input.props.defaultValue ?? null;
-                        }
-                    });
-                }
-            }
-            append(defaultValue);
-        },
-        [append, children]
-    );
-
-    const handleReorder = useCallback(
-        (origin: number, destination: number) => {
-            move(origin, destination);
-        },
-        [move]
-    );
-
-    const handleArrayClear = useCallback(() => {
-        replace([]);
-        setConfirmIsOpen(false);
-    }, [replace]);
-
     const records = get(record, finalSource);
+    const getArrayInputNewItemDefaults =
+        useGetArrayInputNewItemDefaults(fields);
 
-    const context = useMemo(
-        () => ({
-            total: fields.length,
-            add: addField,
-            remove: removeField,
-            reOrder: handleReorder,
-            source: finalSource,
-        }),
-        [addField, fields.length, handleReorder, removeField, finalSource]
-    );
-    return fields ? (
-        <SimpleFormIteratorContext.Provider value={context}>
+    const getItemDefaults = useEvent((item: any = undefined) => {
+        if (item != null) return item;
+        return getArrayInputNewItemDefaults(children);
+    });
+
+    return (
+        <SimpleFormIteratorBase getItemDefaults={getItemDefaults} {...props}>
             <Root
                 className={clsx(
                     className,
@@ -174,24 +84,25 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
             >
                 <ul className={SimpleFormIteratorClasses.list}>
                     {fields.map((member, index) => (
-                        <SimpleFormIteratorItem
+                        <RecordContextProvider
                             key={member.id}
-                            disabled={disabled}
-                            disableRemove={disableRemove}
-                            disableReordering={disableReordering}
-                            fields={fields}
-                            getItemLabel={getItemLabel}
-                            index={index}
-                            onRemoveField={removeField}
-                            onReorder={handleReorder}
-                            record={(records && records[index]) || {}}
-                            removeButton={removeButton}
-                            reOrderButtons={reOrderButtons}
-                            resource={resource}
-                            inline={inline}
+                            value={(records && records[index]) || {}}
                         >
-                            {children}
-                        </SimpleFormIteratorItem>
+                            <SimpleFormIteratorItem
+                                index={index}
+                                fields={fields}
+                                resource={props.resource}
+                                disabled={disabled}
+                                disableRemove={disableRemove}
+                                disableReordering={disableReordering}
+                                getItemLabel={getItemLabel}
+                                removeButton={removeButton}
+                                reOrderButtons={reOrderButtons}
+                                inline={inline}
+                            >
+                                {children}
+                            </SimpleFormIteratorItem>
+                        </RecordContextProvider>
                     ))}
                 </ul>
                 {!disabled &&
@@ -202,55 +113,32 @@ export const SimpleFormIterator = (inProps: SimpleFormIteratorProps) => {
                                     {addButton}
                                 </div>
                             )}
-                            {fields.length > 0 &&
-                                !disableClear &&
-                                !disableRemove && (
-                                    <div
-                                        className={
-                                            SimpleFormIteratorClasses.clear
-                                        }
-                                    >
-                                        <Confirm
-                                            isOpen={confirmIsOpen}
-                                            title={translate(
-                                                'ra.action.clear_array_input'
-                                            )}
-                                            content={translate(
-                                                'ra.message.clear_array_input'
-                                            )}
-                                            onConfirm={handleArrayClear}
-                                            onClose={() =>
-                                                setConfirmIsOpen(false)
-                                            }
-                                        />
-                                        <ClearArrayButton
-                                            onClick={() =>
-                                                setConfirmIsOpen(true)
-                                            }
-                                        />
-                                    </div>
-                                )}
+                            <div className={SimpleFormIteratorClasses.clear}>
+                                <SimpleFormIteratorClearButton
+                                    disableClear={disableClear}
+                                    disableRemove={disableRemove}
+                                />
+                            </div>
                         </div>
                     )}
             </Root>
-        </SimpleFormIteratorContext.Provider>
-    ) : null;
+        </SimpleFormIteratorBase>
+    );
 };
 
-type GetItemLabelFunc = (index: number) => string | ReactElement;
-
-export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
-    addButton?: ReactElement;
+export interface SimpleFormIteratorProps
+    extends Omit<SimpleFormIteratorBaseProps, 'children' | 'inputs'> {
+    addButton?: ReactNode;
     children?: ReactNode;
     className?: string;
     readOnly?: boolean;
     disabled?: boolean;
     disableAdd?: boolean;
     disableClear?: boolean;
-    disableRemove?: boolean | DisableRemoveFunction;
+    disableRemove?: boolean | SimpleFormIteratorDisableRemoveFunction;
     disableReordering?: boolean;
     fullWidth?: boolean;
-    getItemLabel?: boolean | GetItemLabelFunc;
+    getItemLabel?: boolean | SimpleFormIteratorGetItemLabelFunc;
     inline?: boolean;
     meta?: {
         // the type defined in FieldArrayRenderProps says error is boolean, which is wrong.
@@ -258,12 +146,17 @@ export interface SimpleFormIteratorProps extends Partial<UseFieldArrayReturn> {
         submitFailed?: boolean;
     };
     record?: RaRecord;
-    removeButton?: ReactElement;
-    reOrderButtons?: ReactElement;
+    removeButton?: ReactNode;
+    reOrderButtons?: ReactNode;
     resource?: string;
     source?: string;
     sx?: SxProps<Theme>;
 }
+
+/*
+@deprecated Use SimpleFormIteratorDisableRemoveFunction instead
+*/
+export type DisableRemoveFunction = SimpleFormIteratorDisableRemoveFunction;
 
 const Root = styled('div', {
     name: PREFIX,

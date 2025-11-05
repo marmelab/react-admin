@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
-import set from 'lodash/set';
-import get from 'lodash/get';
-import cloneDeep from 'lodash/cloneDeep';
+import set from 'lodash/set.js';
+import get from 'lodash/get.js';
+import cloneDeep from 'lodash/cloneDeep.js';
 import { TranslatableContextValue } from './TranslatableContext';
 import { useLocaleState } from './useLocaleState';
 

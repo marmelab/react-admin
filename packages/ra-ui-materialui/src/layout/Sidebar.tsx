@@ -5,7 +5,6 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import clsx from 'clsx';
-import type { ReactElement } from 'react';
 import {
     Drawer,
     type DrawerProps,
@@ -13,7 +12,7 @@ import {
     type Theme,
     useScrollTrigger,
 } from '@mui/material';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 import { useLocale } from 'ra-core';
 
 import { useSidebarState } from './useSidebarState';
@@ -64,7 +63,7 @@ export const Sidebar = (inProps: SidebarProps) => {
 
 export interface SidebarProps extends DrawerProps {
     appBarAlwaysOn?: boolean;
-    children: ReactElement;
+    children: React.ReactNode;
     closedSize?: number;
     size?: number;
 }

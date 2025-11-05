@@ -1,9 +1,9 @@
 import * as React from 'react';
-import isEqual from 'lodash/isEqual';
-import cloneDeep from 'lodash/cloneDeep';
-import get from 'lodash/get';
-import mergeWith from 'lodash/mergeWith';
-import set from 'lodash/set';
+import isEqual from 'lodash/isEqual.js';
+import cloneDeep from 'lodash/cloneDeep.js';
+import get from 'lodash/get.js';
+import mergeWith from 'lodash/mergeWith.js';
+import set from 'lodash/set.js';
 import { ReactNode, useEffect } from 'react';
 import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
 import {
@@ -11,11 +11,8 @@ import {
     SourceContextValue,
     useResourceContext,
 } from '../core';
-import {
-    FormGroupsProvider,
-    getSimpleValidationResolver,
-    ValidateForm,
-} from '.';
+import { FormGroupsProvider } from './groups/FormGroupsProvider';
+import { getSimpleValidationResolver, type ValidateForm } from './validation';
 import { useDebouncedEvent } from '../util';
 import { useListContext } from '../controller/list/useListContext';
 
@@ -82,8 +79,16 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
     const { handleSubmit, getValues, reset, watch, formState } = formContext;
     const { isValid } = formState;
 
+    const hasJustBeenModifiedByUser = React.useRef(false);
+
     // Reapply filterValues when they change externally
     useEffect(() => {
+        // Unless users has just modified the form themselves in which case we want to avoid overriding it with
+        // a previous value which was applied with a delay (debounce in List)
+        if (hasJustBeenModifiedByUser.current) {
+            hasJustBeenModifiedByUser.current = false;
+            return;
+        }
         const newValues = getFilterFormValues(getValues(), filterValues);
         const previousValues = getValues();
         if (!isEqual(newValues, previousValues)) {
@@ -112,8 +117,10 @@ export const FilterLiveForm = (props: FilterLiveFormProps) => {
                 if (get(values, name) === '') {
                     const newValues = cloneDeep(values);
                     set(newValues, name, '');
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(newValues);
                 } else {
+                    hasJustBeenModifiedByUser.current = true;
                     debouncedOnSubmit(values);
                 }
             }

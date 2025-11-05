@@ -14,10 +14,21 @@ const { sidebar } = Astro.locals.starlightRoute;
             "a[aria-current='page']"
         );
         if (currentItem) {
-            sidebarContainer.scrollTo({
-                top: currentItem.offsetTop - sidebarContainer.offsetTop,
-                behavior: 'smooth',
-            });
+            // Check if the current item is already visible in the sidebar viewport
+            const containerRect = sidebarContainer.getBoundingClientRect();
+            const itemRect = currentItem.getBoundingClientRect();
+
+            const isItemVisible =
+                itemRect.top >= containerRect.top &&
+                itemRect.bottom <= containerRect.bottom;
+
+            // Only scroll if the item is not already visible
+            if (!isItemVisible) {
+                sidebarContainer.scrollTo({
+                    top: currentItem.offsetTop - sidebarContainer.offsetTop,
+                    behavior: 'auto',
+                });
+            }
         }
     });
 </script>

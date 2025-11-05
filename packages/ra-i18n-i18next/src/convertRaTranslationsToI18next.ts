@@ -1,4 +1,4 @@
-import clone from 'lodash/clone';
+import clone from 'lodash/clone.js';
 
 /**
  * A function that takes translations from a standard react-admin language package and converts them to i18next format.

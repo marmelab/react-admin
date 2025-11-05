@@ -107,7 +107,8 @@ describe('<DeleteWithUndoButton />', () => {
                     previousData: { id: 123, title: 'lorem' },
                     resource: 'posts',
                 },
-                { snapshot: [] }
+                { snapshot: [] },
+                expect.anything()
             );
         });
     });

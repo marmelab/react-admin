@@ -21,15 +21,12 @@ const MostVisitedPosts = () => (
         resource="posts"
         sort={{ field: 'views', order: 'DESC' }}
         perPage={20}
-        emptyWhileLoading
     >
         <ul>
             <RecordsIterator
                 render={record => <li>{record.title} - {record.views}</li>}
             />
         </ul>
-
-        <WithListContext error={<div>Error loading list</div>} />
     </ListBase>
 );
 ```
@@ -40,7 +37,6 @@ You can use `<RecordsIterator>` as a child of any component that provides a [`Li
 - [`<ReferenceManyField>`](./ReferenceManyField.md),
 - [`<ReferenceArrayField>`](./ReferenceArrayField.md),
 - [`<List>`](./List.md),
-- [`<ListGuesser>`](./ListGuesser.md),
 - [`<ListBase>`](./ListBase.md)
 
 ```jsx
@@ -49,21 +45,21 @@ import {
     ShowBase,
     RecordsIterator,
     ReferenceManyField,
-    SingleFieldList
+    RecordsIterator
 } from 'react-admin';
 
 const PostShow = () => (
     <ShowBase>
         <ReferenceManyField reference="tags" target="post_id">
-            <SingleFieldList>
+            <RecordsIterator>
                 <ChipField source="name" />
-            </SingleFieldList>
+            </RecordsIterator>
         </ReferenceManyField>
     </ShowBase>
 );
 ```
 
-`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use related props on the component providing you the list context (like [`<List loading>`](./List.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
+`<RecordsIterator>` expects that data is properly loaded, without error. If you want to handle loading, error, offline and empty states, use related props on the component providing you the list context (like [`<List loading>`](./List.md), [`<ListBase loading>`](./ListBase.md), [`<ReferenceArrayField loading>`](./ReferenceArrayField.md), [`<ReferenceManyField loading>`](./ReferenceManyField.md)). You can also make use of [`<WithListContext>`](./WithListContext.md) [`loading`](./WithListContext.md#loading), [`error`](./WithListContext.md#error), [`offline`](./WithListContext.md#offline) and [`empty`](./WithListContext.md#empty) props.
 
 {% raw %}
 ```jsx
@@ -93,9 +89,9 @@ const MostVisitedPosts = () => (
 | Prop        | Required    | Type                              | Default | Description                                                                                          |
 | ----------- |-------------|-----------------------------------| ------- | ---------------------------------------------------------------------------------------------------- |
 | `children`  | Optional`*` | `ReactNode`                       | -       | The content to render for each record                                                                |
-| `data`      | Optional`*` | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
+| `data`      | Optional    | `RaRecord[]`                      | -       | The records. Defaults to the `data` from the [`ListContext`](./useListContext.md)                                           |
 | `isPending` | Optional    | `boolean`                         | -       | A boolean indicating whether the data is pending. Defaults to the `isPending` from the [`ListContext`](./useListContext.md) |
-| `render`    | Optional    | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
+| `render`    | Optional`*` | `(record: RaRecord) => ReactNode` | -       | A function that returns the content to render for each record                                        |
 | `total`     | Optional    | `number`                          | -       | The total number of records. Defaults to the `total` from the [`ListContext`](./useListContext.md)                          |
 
 `*` Either `children` or `render` is required.

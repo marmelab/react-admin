@@ -1,4 +1,4 @@
-import lodashMemoize from 'lodash/memoize';
+import lodashMemoize from 'lodash/memoize.js';
 
 /* @link http://stackoverflow.com/questions/46155/validate-email-address-in-javascript */
 const EMAIL_REGEX =

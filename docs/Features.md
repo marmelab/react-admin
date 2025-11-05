@@ -257,7 +257,7 @@ Let's be realistic: Many developers focus on features first and don't have much 
 React-admin provides **components that look pretty good out of the box**, so even if you don't spend time on the UI, it won't look bad (unless you try hard). React-admin uses [Material UI](https://mui.com/material-ui/getting-started/), which is a React implementation of the [Material Design](https://material.io/) guidelines, the most battle-tested design system.
 
 <video controls autoplay playsinline muted loop width="100%">
-  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/webm" />
+  <source src="https://user-images.githubusercontent.com/99944/116970434-4a926480-acb8-11eb-8ce2-0602c680e45e.mp4" type="video/mp4" />
   Your browser does not support the video tag.
 </video>
 
@@ -1046,6 +1046,94 @@ const dataProvider = addEventsForMutations(
   authProvider
 );
 ```
+
+## Soft Delete
+
+React-admin lets you implement **soft delete** in your admin app, so that users can recover deleted records.
+
+![Soft delete example](https://react-admin-ee.marmelab.com/assets/DeletedRecordsList.png)
+
+Replace the standard `<DeleteButton>` with the [`<SoftDeleteButton>`](./SoftDeleteButton.md) in your `<List>`, `<Show>`, and `<Edit>` views to enable soft delete:
+
+```jsx
+import { List, DataTable, TextField } from 'react-admin';
+import { SoftDeleteButton } from '@react-admin/ra-soft-delete';
+
+export const PostList = () => (
+    <List>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <SoftDeleteButton />
+            </DataTable.Col>
+        </DataTable>
+    </List>
+);
+```
+
+Then, add a `<DeletedRecordsList>` somewhere in your app to let users view and restore deleted records:
+
+```jsx
+import { Admin, CustomRoutes } from 'react-admin';
+import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
+
+const App = () => (
+    <Admin>
+        <CustomRoutes>
+            <Route path="/deleted-records" element={<DeletedRecordsList />} />
+        </CustomRoutes>
+    </Admin>
+);
+```
+
+Check out the [Soft Delete Documentation](./SoftDeleteDataProvider.md) to learn more.
+
+## Scheduler
+
+React-admin can integrate with [Bryntum Scheduler](https://bryntum.com/products/scheduler/), a modern and high-performance scheduling system, to let you manage tasks, assignments, events, scheduling constraints and dependencies, completion, recurring events, property booking, skill matrix, nested events, etc.
+
+![Custom Scheduler](./img/custom-scheduler.webp)
+
+It supports drag and drop, infinite scroll, zoom, custom layout and styling, collapsible columns, localization, grouping and filtering and export to pdf. You can use it with any backend, as it leverages react-admin's data provider architecture.
+
+Use the [`<Scheduler>`](./Scheduler.md) component as the `list` of a [`<Resource>`](./Resource.md):
+
+```tsx
+// in ./src/App.tsx
+import { Admin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { EventList } from './events/EventList';
+
+export const MyAdmin = () => (
+    <Admin dataProvider={dataProvider}>
+        <Resource name="events" list={EventList} />
+    </Admin>
+);
+
+// in ./src/events/EventList.tsx
+import { Scheduler } from '@react-admin/ra-scheduler';
+import '@bryntum/core-thin/core.material.css';
+import '@bryntum/grid-thin/grid.material.css';
+import '@bryntum/scheduler-thin/scheduler.material.css';
+import { endOfDay, startOfDay } from 'date-fns';
+
+export const EventList = () => (
+    <Scheduler
+        columns={[{ text: 'Name', field: 'name', width: 130 }]}
+        viewPreset="hourAndDay"
+        startDate={startOfDay(new Date())}
+        endDate={endOfDay(new Date())}
+    />
+);
+```
+
+<video controls autoplay playsinline muted loop>
+  <source src="https://react-admin-ee.marmelab.com/assets/ra-scheduler.mp4" type="video/mp4"/>
+  Your browser does not support the video tag.
+</video>
+
+Check out the [Scheduler documentation](https://react-admin-ee.marmelab.com/documentation/ra-scheduler) to learn more.
 
 ## Calendar
 

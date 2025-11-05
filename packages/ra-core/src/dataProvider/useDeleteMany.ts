@@ -157,12 +157,12 @@ export const useDeleteMany = <
                             newCollection.length < res.data.length;
                         return recordWasFound
                             ? {
+                                  ...res,
                                   data: newCollection,
                                   total: res.total
                                       ? res.total -
                                         (res.data.length - newCollection.length)
                                       : undefined,
-                                  pageInfo: res.pageInfo,
                               }
                             : res;
                     },
@@ -191,7 +191,6 @@ export const useDeleteMany = <
                                                 (page.data.length -
                                                     newCollection.length)
                                               : undefined,
-                                          pageInfo: page.pageInfo,
                                       }
                                     : page;
                             }),
@@ -217,6 +216,7 @@ export const useDeleteMany = <
                         }
                         if (res.total) {
                             return {
+                                ...res,
                                 data: newCollection,
                                 total:
                                     res.total -
@@ -225,12 +225,12 @@ export const useDeleteMany = <
                         }
                         if (res.pageInfo) {
                             return {
+                                ...res,
                                 data: newCollection,
-                                pageInfo: res.pageInfo,
                             };
                         }
                         throw new Error(
-                            'Found getList result in cache without total or pageInfo'
+                            'Found getManyReference result in cache without total or pageInfo'
                         );
                     },
                     { updatedAt }
@@ -238,33 +238,14 @@ export const useDeleteMany = <
 
                 return params.ids;
             },
-            getSnapshot: ({ resource }) => {
+            getQueryKeys: ({ resource }) => {
                 const queryKeys = [
                     [resource, 'getList'],
                     [resource, 'getInfiniteList'],
                     [resource, 'getMany'],
                     [resource, 'getManyReference'],
                 ];
-
-                /**
-                 * Snapshot the previous values via queryClient.getQueriesData()
-                 *
-                 * The snapshotData ref will contain an array of tuples [query key, associated data]
-                 *
-                 * @example
-                 * [
-                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-                 * ]
-                 *
-                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-                 */
-                const snapshot = queryKeys.reduce(
-                    (prev, queryKey) =>
-                        prev.concat(queryClient.getQueriesData({ queryKey })),
-                    [] as Snapshot
-                );
-                return snapshot;
+                return queryKeys;
             },
             onSettled: (
                 result,

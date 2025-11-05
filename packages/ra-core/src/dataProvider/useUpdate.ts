@@ -17,10 +17,7 @@ import type {
     DataProvider,
     UpdateResult,
 } from '../types';
-import {
-    type Snapshot,
-    useMutationWithMutationMode,
-} from './useMutationWithMutationMode';
+import { useMutationWithMutationMode } from './useMutationWithMutationMode';
 import { useEvent } from '../util';
 
 /**
@@ -225,10 +222,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     { queryKey: [resource, 'getManyReference'] },
                     (res: GetListResult) =>
                         res && res.data
-                            ? {
-                                  data: updateColl(res.data),
-                                  total: res.total,
-                              }
+                            ? { ...res, data: updateColl(res.data) }
                             : res,
                     { updatedAt }
                 );
@@ -239,20 +233,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 };
                 return optimisticResult;
             },
-            getSnapshot: ({ resource, ...params }) => {
-                /**
-                 * Snapshot the previous values via queryClient.getQueriesData()
-                 *
-                 * The snapshotData ref will contain an array of tuples [query key, associated data]
-                 *
-                 * @example
-                 * [
-                 *   [['posts', 'getList'], { data: [{ id: 1, title: 'Hello' }], total: 1 }],
-                 *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
-                 * ]
-                 *
-                 * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
-                 */
+            getQueryKeys: ({ resource, ...params }) => {
                 const queryKeys = [
                     [
                         resource,
@@ -264,24 +245,24 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     [resource, 'getMany'],
                     [resource, 'getManyReference'],
                 ];
-
-                const snapshot = queryKeys.reduce(
-                    (prev, queryKey) =>
-                        prev.concat(queryClient.getQueriesData({ queryKey })),
-                    [] as Snapshot
-                );
-                return snapshot;
+                return queryKeys;
             },
-            getMutateWithMiddlewares: mutationFn => args => {
-                // This is necessary to avoid breaking changes in useUpdate:
-                // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+            getMutateWithMiddlewares: mutationFn => {
                 if (getMutateWithMiddlewares) {
-                    const { resource, ...params } = args;
-                    return getMutateWithMiddlewares(
+                    // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
+                    // we still have them applied when users have called the mutate function.
+                    const mutateWithMiddlewares = getMutateWithMiddlewares(
                         dataProviderUpdate.bind(dataProvider)
-                    )(resource, params);
+                    );
+                    return args => {
+                        // This is necessary to avoid breaking changes in useUpdate:
+                        // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
+                        const { resource, ...params } = args;
+                        return mutateWithMiddlewares(resource, params);
+                    };
                 }
-                return mutationFn(args);
+
+                return args => mutationFn(args);
             },
         }
     );

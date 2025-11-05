@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, ReactElement } from 'react';
+import { ReactNode } from 'react';
 import { SimpleForm } from '../form';
 import {
     ArrayInput,
@@ -13,6 +13,7 @@ import {
     SelectInput,
     SimpleFormIterator,
     TextInput,
+    TextArrayInput,
 } from '../input';
 import { InferredElement, InferredTypeMap, InputProps } from 'ra-core';
 
@@ -39,6 +40,11 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ArrayInput source="${props.source}"><SimpleFormIterator>${children
                 .map(child => child.getRepresentation())
                 .join('\n')}</SimpleFormIterator></ArrayInput>`,
+    },
+    scalar_array: {
+        component: TextArrayInput,
+        representation: (props: InputProps) =>
+            `<TextArrayInput source="${props.source}" />`,
     },
     boolean: {
         component: BooleanInput,
@@ -76,9 +82,9 @@ ${children.map(child => `            ${child.getRepresentation()}`).join('\n')}
             `<ReferenceArrayInput source="${props.source}" reference="${props.reference}" />`,
     },
     referenceArrayChild: {
-        component: (
-            props: { children: ReactNode } & InputProps
-        ): ReactElement => <SelectInput optionText="id" {...props} />,
+        component: (props: { children: ReactNode } & InputProps) => (
+            <SelectInput optionText="id" {...props} />
+        ),
         representation: () => `<SelectInput optionText="id" />`,
     },
     richText: {

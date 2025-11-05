@@ -2,7 +2,6 @@ import React, {
     Children,
     type ComponentType,
     isValidElement,
-    type ReactElement,
     type ReactNode,
 } from 'react';
 import {
@@ -152,7 +151,7 @@ export const FileInput = (inProps: FileInputProps) => {
 
     const childrenElement =
         children && isValidElement(Children.only(children))
-            ? (Children.only(children) as ReactElement<any>)
+            ? Children.only(children)
             : undefined;
 
     const { getRootProps, getInputProps } = useDropzone({

@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
 import { getValuesFromRecords, RaRecord, useDataProvider } from 'react-admin';
-import set from 'lodash/set';
+import set from 'lodash/set.js';
 
 import {
     useResourcesConfiguration,

@@ -219,11 +219,7 @@ For instance, with this code:
 import { ListBase, RecordsIterator, ReferenceFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase
-        error={null}
-        offline={null}
-        emptyWhileLoading
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceFieldBase source="user_id" reference="users">
                 <AuthorView />
@@ -267,9 +263,9 @@ For example, the following code prefetches the authors referenced by the posts:
 const PostShow = () => (
     <ShowBase
         queryOptions={{ meta: { prefetch: ['author'] } }}
-        render={author => (
+        render={post => (
             <div>
-                <h3>{author.title}</h3>
+                <h3>{post.title}</h3>
                 <ReferenceFieldBase source="author_id" reference="authors">
                     <AuthorView />
                 </ReferenceFieldBase>

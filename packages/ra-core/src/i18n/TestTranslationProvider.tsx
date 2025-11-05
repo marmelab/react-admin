@@ -1,5 +1,5 @@
 import * as React from 'react';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 
 import { I18nContextProvider } from './I18nContextProvider';
 import { I18nProvider } from '../types';

@@ -846,6 +846,38 @@ export const InsideReferenceInput = () => (
     </TestMemoryRouter>
 );
 
+const enableGetChoices = filters => filters?.q?.length > 3;
+export const InsideReferenceInputWithDisableChoice = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit
+                        mutationMode="pessimistic"
+                        mutationOptions={{
+                            onSuccess: data => {
+                                console.log(data);
+                            },
+                        }}
+                    >
+                        <SimpleForm>
+                            <ReferenceInput
+                                reference="authors"
+                                source="author"
+                                enableGetChoices={enableGetChoices}
+                            >
+                                <AutocompleteInput optionText="name" />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const LanguageChangingAuthorInput = ({ onChange }) => {
     const { setValue } = useFormContext();
     const handleChange = (value, record) => {

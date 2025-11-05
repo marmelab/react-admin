@@ -96,3 +96,25 @@ You can override the style of the toolbar using the `sx` prop. Use the class nam
 | `& .RaToolbar-defaultToolbar`  | Applied to the internal wrapper of the `<Toolbar>` buttons when no children are passed |
 
 To override the style of all instances of `<Toolbar>` components using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaToolbar` key.
+
+## Soft Delete
+
+`<Toolbar>` displays a `<DeleteButton>` by default. React-admin provides a [`<SoftDeleteButton>`](./SoftDeleteButton.md) variant, which archives the record instead of deleting it. 
+
+To replace the default `<DeleteButton>` with a `<SoftDeleteButton>`, create a custom toolbar:
+
+{% raw %}
+```jsx
+import { Toolbar, SaveButton } from 'react-admin';
+import { SoftDeleteButton } from '@react-admin/ra-soft-delete';
+
+const MyToolbar = () => (
+    <Toolbar sx={{ justifyContent: 'space-between' }}>
+        <SaveButton label="Save" />
+        <SoftDeleteButton />
+    </Toolbar>
+);
+```
+{% endraw %}
+
+Then inject it to `<SimpleForm>` or `<TabbedForm>` using the `toolbar` prop.

@@ -8,8 +8,6 @@ import {
     useEffect,
     FC,
     ComponentType,
-    ReactElement,
-    ReactNode,
     useMemo,
 } from 'react';
 import {
@@ -24,8 +22,8 @@ import {
 } from 'ra-core';
 import { Table, TableProps, SxProps, useThemeProps } from '@mui/material';
 import clsx from 'clsx';
-import union from 'lodash/union';
-import difference from 'lodash/difference';
+import union from 'lodash/union.js';
+import difference from 'lodash/difference.js';
 
 import { DatagridHeader } from './DatagridHeader';
 import DatagridLoading from './DatagridLoading';
@@ -322,7 +320,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *
      * @see https://marmelab.com/react-admin/Datagrid.html#body
      */
-    body?: ReactElement | ComponentType;
+    body?: React.ReactNode | ComponentType;
 
     /**
      * A class name to apply to the root table element
@@ -349,7 +347,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    bulkActionsToolbar?: ReactElement;
+    bulkActionsToolbar?: React.ReactNode;
 
     /**
      * The component used to render the bulk action buttons. Defaults to <BulkDeleteButton>.
@@ -375,7 +373,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    bulkActionButtons?: ReactElement | false;
+    bulkActionButtons?: React.ReactNode;
 
     /**
      * The component used to render the expand panel for each row.
@@ -400,7 +398,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      * )
      */
     expand?:
-        | ReactElement
+        | React.ReactNode
         | FC<{
               id: Identifier;
               record: RecordType;
@@ -412,7 +410,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *
      * @see https://marmelab.com/react-admin/Datagrid.html#header
      */
-    header?: ReactElement | ComponentType;
+    header?: React.ReactNode | ComponentType;
 
     /**
      * Whether to allow only one expanded row at a time. Defaults to false.
@@ -465,7 +463,7 @@ export interface DatagridProps<RecordType extends RaRecord = any>
      *     </List>
      * );
      */
-    empty?: ReactNode;
+    empty?: React.ReactNode;
 
     /**
      * A function that returns whether the row for a record is expandable.

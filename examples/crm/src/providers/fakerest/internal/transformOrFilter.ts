@@ -1,4 +1,4 @@
-import isObject from 'lodash/isObject';
+import isObject from 'lodash/isObject.js';
 
 // @or filter is an equivaluent of fakerest `q=`
 export function transformOrFilter(values: any) {

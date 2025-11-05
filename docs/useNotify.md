@@ -145,6 +145,15 @@ notify(
 );
 ```
 
+You also need to set the `multiLine` option to `true` when your message contains line breaks (`\n`):
+
+```jsx
+notify(
+    'Line 1\nLine 2\nLine 3',
+    { multiLine: true }
+);
+```
+
 ## `type`
 
 This option lets you choose the notification type. It can be `info`, `success`, `warning` or `error`. The default is `info`.

@@ -20,7 +20,7 @@ import {
     ErrorCase as ErrorCaseUndoable,
     SuccessCase as SuccessCaseUndoable,
 } from './useDelete.undoable.stories';
-import { MutationMode, Params } from './useDelete.stories';
+import { MutationMode, Params, InvalidateList } from './useDelete.stories';
 
 describe('useDelete', () => {
     it('returns a callback that can be used with deleteOne arguments', async () => {
@@ -336,7 +336,8 @@ describe('useDelete', () => {
                 expect(onSuccess).toHaveBeenCalledWith(
                     { id: 1 },
                     { id: 1, previousData: { foo: 456 }, resource: 'foo' },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });
@@ -372,7 +373,8 @@ describe('useDelete', () => {
                 expect(onError).toHaveBeenCalledWith(
                     new Error('not good'),
                     { id: 1, previousData: { foo: 456 }, resource: 'foo' },
-                    { snapshot: [] }
+                    { snapshot: [] },
+                    expect.anything()
                 );
             });
         });
@@ -728,6 +730,17 @@ describe('useDelete', () => {
                     ],
                     pageParams: [],
                 });
+            });
+        });
+
+        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
+            render(<InvalidateList mutationMode="undoable" />);
+            await screen.findByText('Title: Hello');
+            fireEvent.click(await screen.findByText('Delete'));
+            await screen.findByText('resources.posts.notifications.deleted');
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(screen.queryByText('1: Hello')).toBeNull();
             });
         });
     });

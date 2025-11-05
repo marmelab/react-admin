@@ -63,26 +63,30 @@ export default App;
 
 You can customize the `<Edit>` component using the following props:
 
-| Prop                  | Required  | Type                | Default      | Description                                                                                   |
-|-----------------------|-----------|---------------------|--------------|-----------------------------------------------------------------------------------------------|
-| `children`            | Optional&nbsp;*  | `ReactNode`         | -            | The components that render the form                                                            |
-| `render`              | Optional&nbsp;* | `function`          | -            | Function to render the form, receives the editContext as argument                              |
-| `actions`             | Optional  | `ReactNode`         | -            | Override the actions toolbar with a custom component                                           |
-| `aside`               | Optional  | `ReactNode`         | -            | Component to render aside to the main content                                                  |
-| `className`           | Optional  | `string`            | -            | Passed to the root component                                                                  |
-| `component`           | Optional  | `elementType`/`string` | `Card`     | Override the root component                                                                   |
-| `disableAuthentication`| Optional | `boolean`           | `false`      | Disable the authentication check                                                              |
-| `emptyWhileLoading`   | Optional  | `boolean`           | `false`      | Set to `true` to return `null` while the edit is loading                                      |
-| `id`                  | Optional  | `string`/`number`   | -            | The id of the record to edit                                                                  |
-| `mutationMode`        | Optional  | `'undoable' \| 'optimistic' \| 'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                                 |
-| `mutationOptions`     | Optional  | `object`            | -            | Options for the `dataProvider.update()` call                                                  |
-| `offline`             | Optional | `ReactNode`          |              | The component to render when there is no connectivity and the record isn't in the cache
-| `queryOptions`        | Optional  | `object`            | -            | Options for the `dataProvider.getOne()` call                                                  |
-| `redirect`            | Optional  | `'list' \| 'show' \| false \| function` | `'list'` | Change the redirect location after successful update                                           |
-| `resource`            | Optional  | `string`            | -            | Override the name of the resource to edit                                                     |
-| `sx`                  | Optional  | `object`            | -            | Override the styles                                                                           |
-| `title`               | Optional  | `string`/`ReactNode`/`false` | -      | Override the page title                                                                       |
-| `transform`           | Optional  | `function`          | -            | Transform the form data before calling `dataProvider.update()`                                |
+| Prop                    | Required        | Type                                                      | Default      | Description                                                                             |
+|-------------------------|-----------------|-----------------------------------------------------------|--------------|-----------------------------------------------------------------------------------------|
+| `authLoading`           | Optional        | `ReactNode`                                               |              | The component to render while checking for authentication and permissions               |
+| `children`              | Optional&nbsp;* | `ReactNode`                                               | -            | The components that render the form                                                     |
+| `render`                | Optional&nbsp;* | `function`                                                | -            | Function to render the form, receives the editContext as argument                       |
+| `actions`               | Optional        | `ReactNode`                                               | -            | Override the actions toolbar with a custom component                                    |
+| `aside`                 | Optional        | `ReactNode`                                               | -            | Component to render aside to the main content                                           |
+| `className`             | Optional        | `string`                                                  | -            | Passed to the root component                                                            |
+| `component`             | Optional        | `elementType` &#124; `string`                             | `Card`       | Override the root component                                                             |
+| `disableAuthentication` | Optional        | `boolean`                                                 | `false`      | Disable the authentication check                                                        |
+| `error`                 | Optional        | `ReactNode`                                               |              | The component to render when failing to load the record                                 |
+| `emptyWhileLoading`     | Optional        | `boolean`                                                 | `false`      | Set to `true` to return `null` while the edit is loading                                |
+| `id`                    | Optional        | `string`/`number`                                         | -            | The id of the record to edit                                                            |
+| `loading`               | Optional        | `ReactNode`                                               |              | The component to render while loading the record to edit                                |
+| `mutationMode`          | Optional        | `'undoable'` &#124; `'optimistic'` &#124; `'pessimistic'` | `'undoable'` | Switch to optimistic or pessimistic mutations                                           |
+| `mutationOptions`       | Optional        | `object`                                                  | -            | Options for the `dataProvider.update()` call                                            |
+| `offline`               | Optional        | `ReactNode`                                               |              | The component to render when there is no connectivity and the record isn't in the cache |
+| `queryOptions`          | Optional        | `object`                                                  | -            | Options for the `dataProvider.getOne()` call                                            |
+| `redirect`              | Optional        | `'list'` &#124; `'show'` &#124; `false` &#124; `function` | `'list'`     | Change the redirect location after successful update                                    |
+| `resource`              | Optional        | `string`                                                  | -            | Override the name of the resource to edit                                               |
+| `sx`                    | Optional        | `object`                                                  | -            | Override the styles                                                                     |
+| `title`                 | Optional        | `ReactNode` / `string` / `false` | -            | Override the page title                                                                 |
+| `redirectOnError`       | Optional        | `'list'` &#124; `false` &#124; `function`                 | `'list'`     | The page to redirect to when an error occurs                                            |
+| `transform`             | Optional        | `function`                                                | -            | Transform the form data before calling `dataProvider.update()`                          |
 
 `*` You must provide either `children` or `render`.
 
@@ -199,6 +203,20 @@ const Aside = () => {
 {% endraw %}
 
 **Tip**: Always test the record is defined before using it, as react-admin starts rendering the UI before the `dataProvider.getOne()` call is over.
+
+## `authLoading`
+
+By default, `<Edit>` renders the `<Loading>` component while checking for authentication and permissions. You can display a custom component via the `authLoading` prop:
+
+```jsx
+import { Edit } from 'react-admin';
+
+export const PostEdit = () => (
+    <Edit authLoading={<p>Checking for permissions...</p>}>
+        ...
+    </Edit>
+);
+```
 
 ## `children`
 
@@ -325,6 +343,41 @@ You can decide to use a `<Edit>` component in another path, or embedded in a pag
 ```jsx
 const PostEdit = () => (
     <Edit id={1234}>
+        ...
+    </Edit>
+);
+```
+
+## `error`
+
+By default, `<Edit>` redirects to the list when an error happens while loading the record to edit. You can render an error component via the `error` prop:
+
+```jsx
+import { Edit } from 'react-admin';
+import { Alert } from '@mui/material';
+
+export const PostEdit = () => (
+    <Edit
+        error={
+            <Alert severity="error">
+                Something went wrong while loading your post!
+            </Alert>
+        }
+    >
+        ...
+    </Edit>
+);
+```
+
+## `loading`
+
+By default, `<Edit>` renders the children while loading the record to edit. You can display a component during this time via the `loading` prop:
+
+```jsx
+import { Edit, Loading } from 'react-admin';
+
+export const PostEdit = () => (
+    <Edit loading={<Loading />}>
         ...
     </Edit>
 );
@@ -636,6 +689,24 @@ const PostEdit = () => (
 Note that the `redirect` prop is ignored if you set an `onSuccess` callback of [the `mutationOptions` prop](#mutationoptions). See that prop for how to set a different redirection path in that case.
 
 **Warning**: If you set [`queryOptions`](#queryoptions) meta without redirecting, make sure that [`mutationOptions`](#mutationoptions) meta is the same, or you will have data update issues.
+
+## `redirectOnError`
+
+By default, `<Edit>` redirects to the list when an error happens while loading the record to edit. You can change the default redirection by setting the `redirectOnError` prop:
+
+- `'list'`: redirect to the List view (the default)
+- `false`: do not redirect
+- A function `(resource, id) => string` to redirect to different targets depending on the record
+
+```jsx
+import { Edit } from 'react-admin';
+
+export const PostEdit = () => (
+    <Edit redirectOnError={false}>
+        ...
+    </Edit>
+);
+```
 
 ## `render`
 

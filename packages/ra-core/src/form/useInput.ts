@@ -1,4 +1,4 @@
-import { ReactElement, useEffect, useId, FocusEvent } from 'react';
+import { useEffect, useId, FocusEvent, ReactNode } from 'react';
 import {
     ControllerFieldState,
     ControllerRenderProps,
@@ -8,7 +8,7 @@ import {
     UseFormStateReturn,
 } from 'react-hook-form';
 import type { EditorEvents } from '@tiptap/react';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { useRecordContext } from '../controller';
 import { composeValidators, Validator, isRequired } from './validation';
@@ -152,8 +152,8 @@ export type InputProps<ValueType = any> = Omit<
         format?: (value: ValueType) => any;
         id?: string;
         isRequired?: boolean;
-        label?: string | ReactElement | false;
-        helperText?: string | ReactElement | false;
+        label?: ReactNode;
+        helperText?: ReactNode;
         name?: string;
         onBlur?: (...event: any[]) => void;
         onChange?: (...event: any[]) => void;

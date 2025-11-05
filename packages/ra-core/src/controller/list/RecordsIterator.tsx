@@ -18,9 +18,6 @@ export const RecordsIterator = <RecordType extends RaRecord = any>(
         data.length === 0 ||
         total === 0
     ) {
-        console.warn(
-            '<RecordsIterator> does not handle loading, offline, empty and error states. Use <WithListContext>.'
-        );
         return null;
     }
 

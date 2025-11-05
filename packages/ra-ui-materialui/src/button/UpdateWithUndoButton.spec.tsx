@@ -101,7 +101,8 @@ describe('<UpdateWithUndoButton />', () => {
                     previousData: { id: 123, title: 'lorem', views: 500 },
                     resource: 'posts',
                 },
-                { snapshot: expect.any(Array) }
+                { snapshot: expect.any(Array) },
+                expect.anything()
             );
         });
     });

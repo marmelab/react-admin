@@ -54,7 +54,7 @@ import { SaveButton, DeleteButton } from '../button';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by the <SimpleForm>)
- * @prop {ReactElement[]} children Customize the buttons you want to display in the <Toolbar>.
+ * @prop {ReactNode} children Customize the buttons you want to display in the <Toolbar>.
  *
  */
 export const Toolbar = (inProps: ToolbarProps) => {
@@ -108,7 +108,8 @@ const StyledToolbar = styled(MuiToolbar, {
     name: PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
-    backgroundColor: (theme.vars || theme).palette.divider,
+    backgroundColor: (theme.vars || theme).palette.background.paper,
+    backgroundImage: theme.vars != null ? 'var(--Paper-overlay);' : 'none',
 
     [`&.${ToolbarClasses.desktopToolbar}`]: {},
 

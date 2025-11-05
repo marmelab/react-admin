@@ -970,21 +970,21 @@ export const PostList = () => (
 
 ### Props
 
-| Prop                 | Required | Type                    | Default               | Description                                                   |
-| -------------------- | -------- | ----------------------- | --------------------- | ------------------------------------------------------------- |
-| `align`              | Optional       | `"left" \| "right"`    | `"left"`              | The alignment of the column.                                  |
-| `children`           | Optional | ReactNode               | -                     | The content of the column.                                    |
-| `cellClassName`      | Optional | string                  | -                     | The class name of the cells.                                   |
-| `cellSx`          | Optional | function                 | -                     | A function that returns the sx prop to apply to a cell.                             |
-| `className`          | Optional | string                  | -                     | The class name of the column.                                 |
-| `disableSort`        | Optional | boolean                 | false                | Set to true to disable sort.                               |
-| `field`              | Optional | Component               | -                     | The field component to use for the column.                    |
-| `headerClassName`    | Optional | string                  | -                     | The class name of the header cell.                            |
-| `label`              | Optional | string                  | -                     | The column label, displayed in the header.                    |
-| `render`             | Optional | (record) => ReactNode | -               | A function to render the column content.                      |
-| `sortByOrder`        | Optional | "ASC" \| "DESC"         | "ASC"                 | The order to use for sorting the column.                      |
-| `source`             | Optional | string                  | -                     | The source of the column, used for sorting and to read the data from the record when there is no child. |
-| `sx`                | Optional | SxProps                 | -                     | The styles to apply to the column.                            |
+| Prop              | Required   | Type                      | Default    | Description                                                                                             |
+|-------------------|------------|---------------------------|------------|---------------------------------------------------------------------------------------------------------|
+| `align`           | Optional   | `"left"` &#124; `"right"` | `"left"`   | The alignment of the column.                                                                            |
+| `children`        | Optional   | ReactNode                 | -          | The content of the column.                                                                              |
+| `cellClassName`   | Optional   | string                    | -          | The class name of the cells.                                                                            |
+| `cellSx`          | Optional   | function                  | -          | A function that returns the sx prop to apply to a cell.                                                 |
+| `className`       | Optional   | string                    | -          | The class name of the column.                                                                           |
+| `disableSort`     | Optional   | boolean                   | `false`    | Set to true to disable sort.                                                                            |
+| `field`           | Optional   | Component                 | -          | The field component to use for the column.                                                              |
+| `headerClassName` | Optional   | string                    | -          | The class name of the header cell.                                                                      |
+| `label`           | Optional   | string                    | -          | The column label, displayed in the header.                                                              |
+| `render`          | Optional   | (record) => ReactNode     | -          | A function to render the column content.                                                                |
+| `sortByOrder`     | Optional   | `"ASC"` &#124; `"DESC"`   | `"ASC"`    | The order to use for sorting the column.                                                                |
+| `source`          | Optional   | string                    | -          | The source of the column, used for sorting and to read the data from the record when there is no child. |
+| `sx`              | Optional   | SxProps                   | -          | The styles to apply to the column.                                                                      |
 
 Additional props are passed to [the MUI `<TableCell>`](https://mui.com/material-ui/api/table-cell/) component.
 
@@ -1607,7 +1607,7 @@ The column headers are buttons that allow users to change the list sort field an
 
 ### Disabling Sorting
 
-It is possible to disable sorting for a specific `<DataTable.Col>` by passing a `sortable` property set to `false`:
+It is possible to disable sorting for a specific `<DataTable.Col>` by passing the `disableSort` property:
 
 {% raw %}
 ```tsx
@@ -1617,7 +1617,7 @@ import { List, DataTable } from 'react-admin';
 export const PostList = () => (
     <List>
         <DataTable>
-            <DataTable.Col source="id" sortable={false} />
+            <DataTable.Col source="id" disableSort />
             <DataTable.Col source="title" />
             <DataTable.Col source="body" />
         </DataTable>

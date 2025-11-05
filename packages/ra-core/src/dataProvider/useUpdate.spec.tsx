@@ -31,7 +31,12 @@ import {
     WithMiddlewaresSuccess as WithMiddlewaresSuccessUndoable,
     WithMiddlewaresError as WithMiddlewaresErrorUndoable,
 } from './useUpdate.undoable.stories';
-import { MutationMode, Params } from './useUpdate.stories';
+import {
+    Middleware,
+    MutationMode,
+    Params,
+    InvalidateList,
+} from './useUpdate.stories';
 
 describe('useUpdate', () => {
     describe('mutate', () => {
@@ -555,6 +560,58 @@ describe('useUpdate', () => {
                 });
             });
         });
+        it('updates getManyReference query cache with pageInfo when dataProvider promise resolves', async () => {
+            const queryClient = new QueryClient();
+            queryClient.setQueryData(['foo', 'getManyReference'], {
+                data: [{ id: 1, bar: 'bar' }],
+                pageInfo: {
+                    hasPreviousPage: false,
+                    hasNextPage: true,
+                },
+            });
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1, bar: 'baz' } } as any)
+                ),
+            } as any;
+            let localUpdate;
+            const Dummy = () => {
+                const [update] = useUpdate();
+                localUpdate = update;
+                return <span />;
+            };
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+            localUpdate('foo', {
+                id: 1,
+                data: { bar: 'baz' },
+                previousData: { id: 1, bar: 'bar' },
+            });
+            await waitFor(() => {
+                expect(dataProvider.update).toHaveBeenCalledWith('foo', {
+                    id: 1,
+                    data: { bar: 'baz' },
+                    previousData: { id: 1, bar: 'bar' },
+                });
+            });
+            await waitFor(() => {
+                expect(
+                    queryClient.getQueryData(['foo', 'getManyReference'])
+                ).toEqual({
+                    data: [{ id: 1, bar: 'baz' }],
+                    pageInfo: {
+                        hasPreviousPage: false,
+                        hasNextPage: true,
+                    },
+                });
+            });
+        });
         it('updates getInfiniteList query cache when dataProvider promise resolves', async () => {
             const queryClient = new QueryClient();
             queryClient.setQueryData(['foo', 'getInfiniteList'], {
@@ -601,6 +658,18 @@ describe('useUpdate', () => {
                 });
             });
         });
+
+        it('invalidates getList query when dataProvider resolves in undoable mode', async () => {
+            render(<InvalidateList mutationMode="undoable" />);
+            fireEvent.change(await screen.findByDisplayValue('Hello'), {
+                target: { value: 'Hello changed' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.updated');
+            fireEvent.click(screen.getByText('Close'));
+            await screen.findByText(/Hello changed/);
+        });
+
         describe('pessimistic mutation mode', () => {
             it('updates getOne query cache when dataProvider promise resolves', async () => {
                 const queryClient = new QueryClient();
@@ -1129,6 +1198,68 @@ describe('useUpdate', () => {
                     screen.queryByText('Hello World from middleware')
                 ).toBeNull();
                 expect(screen.queryByText('mutating')).toBeNull();
+            });
+        });
+
+        it(`it calls the middlewares in undoable mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="undoable"
+                    timeout={100}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.click(await screen.findByText('Hello'));
+            fireEvent.change(await screen.findByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.updated');
+            expect(middlewareSpy).not.toHaveBeenCalled();
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                    id: '1',
+                    data: { author: 'John Doe', id: 1, title: 'Bazinga' },
+                    meta: undefined,
+                    previousData: {
+                        author: 'John Doe',
+                        id: 1,
+                        title: 'Bazinga',
+                    },
+                });
+            });
+        });
+        it(`it calls the middlewares in optimistic mode even when they got unregistered`, async () => {
+            const middlewareSpy = jest.fn();
+            render(
+                <Middleware
+                    mutationMode="optimistic"
+                    timeout={0}
+                    middleware={middlewareSpy}
+                />
+            );
+
+            fireEvent.click(await screen.findByText('Hello'));
+            fireEvent.change(await screen.findByLabelText('title'), {
+                target: { value: 'Bazinga' },
+            });
+            fireEvent.click(screen.getByText('Save'));
+            await screen.findByText('resources.posts.notifications.updated');
+            fireEvent.click(screen.getByText('Close'));
+            await waitFor(() => {
+                expect(middlewareSpy).toHaveBeenCalledWith('posts', {
+                    id: '1',
+                    data: { author: 'John Doe', id: 1, title: 'Bazinga' },
+                    meta: undefined,
+                    previousData: {
+                        author: 'John Doe',
+                        id: 1,
+                        title: 'Bazinga',
+                    },
+                });
             });
         });
     });

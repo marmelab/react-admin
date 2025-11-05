@@ -18,7 +18,7 @@ export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
             indicatorColor="primary"
             {...rest}
         >
-            {Children.map(children, (tab: ReactElement, index) => {
+            {Children.map(children, (tab, index) => {
                 if (!isValidElement<any>(tab)) return null;
 
                 // Builds the full tab which is the concatenation of the last matched route in the

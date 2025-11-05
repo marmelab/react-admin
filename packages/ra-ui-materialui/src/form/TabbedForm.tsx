@@ -7,7 +7,7 @@ import {
     HtmlHTMLAttributes,
 } from 'react';
 import { Form, FormProps, MutationMode, RaRecord } from 'ra-core';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
 import { useFormRootPath } from './useFormRootPath';

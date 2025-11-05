@@ -8,6 +8,7 @@ import {
     ResourceContextProvider,
     ResourceProps,
     ListBase,
+    ResourceDefinitionContextProvider,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -140,16 +141,28 @@ export const LinkType = ({
     locationCallback?: (l: Location) => void;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext dataProvider={myDataProvider}>
-            <ListBase resource="books" perPage={15}>
-                <Alert color="info">Inferred should target edit</Alert>
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                    linkType={linkType}
-                />
-            </ListBase>
+        <AdminContext>
+            <ResourceDefinitionContextProvider
+                definitions={{
+                    books: {
+                        name: 'books',
+                        hasList: true,
+                        hasEdit: true,
+                        hasShow: false,
+                    },
+                }}
+            >
+                <ResourceContextProvider value="books">
+                    <Alert color="info">Inferred should target edit</Alert>
+                    <SimpleList
+                        data={data.books}
+                        primaryText={record => record.title}
+                        secondaryText={record => record.author}
+                        tertiaryText={record => record.year}
+                        linkType={linkType}
+                    />
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
         </AdminContext>
     </TestMemoryRouter>
 );
@@ -180,16 +193,28 @@ export const RowClick = ({
     rowClick: string | RowClickFunction | false;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
-        <AdminContext dataProvider={myDataProvider}>
-            <ListBase resource="books" perPage={15}>
-                <Alert color="info">Inferred should target edit</Alert>
-                <SimpleList
-                    primaryText={record => record.title}
-                    secondaryText={record => record.author}
-                    tertiaryText={record => record.year}
-                    rowClick={rowClick}
-                />
-            </ListBase>
+        <AdminContext>
+            <ResourceDefinitionContextProvider
+                definitions={{
+                    books: {
+                        name: 'books',
+                        hasList: true,
+                        hasEdit: true,
+                        hasShow: false,
+                    },
+                }}
+            >
+                <ResourceContextProvider value="books">
+                    <Alert color="info">Inferred should target edit</Alert>
+                    <SimpleList
+                        data={data.books}
+                        primaryText={record => record.title}
+                        secondaryText={record => record.author}
+                        tertiaryText={record => record.year}
+                        rowClick={rowClick}
+                    />
+                </ResourceContextProvider>
+            </ResourceDefinitionContextProvider>
         </AdminContext>
     </TestMemoryRouter>
 );

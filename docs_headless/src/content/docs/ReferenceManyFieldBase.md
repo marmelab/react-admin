@@ -72,11 +72,7 @@ You can also use `<ReferenceManyFieldBase>` in a list, e.g. to display the autho
 import { ListBase, RecordsIterator, ReferenceManyFieldBase } from 'ra-core';
 
 export const PostList = () => (
-    <ListBase
-        error={null}
-        offline={null}
-        emptyWhileLoading
-    >
+    <ListBase>
         <RecordsIterator>
             <ReferenceManyFieldBase reference="comments" target="post_id">
                 <CustomAuthorView source="name"/>
@@ -90,19 +86,21 @@ export const PostList = () => (
 
 | Prop           | Required | Type                                                                              | Default                          | Description                                                                         |
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
-| `children`     | Optional | `Element`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
-| `render`     | Optional\* | `(ListContext) => Element`                                                                         | -                                | Function that receives a `ListContext` and returns an element      |
-| `debounce`     | Optional\* | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
+| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
+| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
+| `children`     | Optional\* | `ReactNode`                                                                         | -                                | One or several elements that render a list of records based on a `ListContext`      |
+| `render`     | Optional\* | `(ListContext) => ReactNode`                                                                         | -                                | Function that receives a `ListContext` and returns an element      |
+| `debounce`     | Optional | `number`                                                                          | 500                              | debounce time in ms for the `setFilters` callbacks                                  |
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
+| `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records     |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                          |
 | `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 25                               | Maximum number of referenced records to fetch                                       |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                       |
-| `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'books'                   |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()` |
 | `source`       | Optional | `string`                                                                          | `id`                             | Target field carrying the relationship on the source record (usually 'id')          |
 | `storeKey`     | Optional | `string`                                                                          | -                                | The key to use to store the records selection state                                 |
-| `target`       | Required | `string`                                                                          | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'   |
 
 \* Either one of children or render is required.
 
@@ -121,10 +119,6 @@ export const AuthorShow = () => (
             label="Books"
             reference="books"
             target="author_id"
-            loading={<p>Loading...</p>}
-            error={null}
-            offline={null}
-            empty={null}
         >
             <ul>
                 <RecordsIterator
@@ -182,6 +176,38 @@ Use `empty` to customize the text displayed when there are no related records.
 </ReferenceManyFieldBase>
 ```
 
+## `error`
+
+By default, `<ReferenceManyFieldBase>` renders its children when an error occurs while fetching the related records. You can customize what is rendered by providing your own component via the `error` prop:
+
+```jsx
+import { ReferenceManyFieldBase, ShowBase } from 'ra-core';
+
+export const AuthorShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase
+            reference="books"
+            target="author_id"
+            error={<p>Error loading books. Please try again.</p>}
+        >
+            ...
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceManyFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    error={null}
+>
+    ...
+</ReferenceManyFieldBase>
+```
+
 ## `filter`: Permanent Filter
 
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
@@ -197,6 +223,38 @@ You can filter the query used to populate the possible values. Use the `filter` 
 </ReferenceManyFieldBase>
 ```
 
+
+## `loading`
+
+By default, `<ReferenceManyFieldBase>` renders its children while fetching the related records. You can customize what is rendered by providing your own component via the `loading` prop:
+
+```jsx
+import { ReferenceManyFieldBase, ShowBase } from 'ra-core';
+
+export const AuthorShow = () => (
+    <ShowBase>
+        <ReferenceManyFieldBase
+            reference="books"
+            target="author_id"
+            loading={<p>Loading books...</p>}
+        >
+            ...
+        </ReferenceManyFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceManyFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceManyFieldBase
+    reference="books"
+    target="author_id"
+    loading={null}
+>
+    ...
+</ReferenceManyFieldBase>
+```
 
 ## `offline`
 
@@ -341,10 +399,6 @@ In the example below, both lists use the same reference ('books'), but their sel
         queryOptions={{
             meta: { foo: 'bar' },
         }}
-        loading={<p>Loading...</p>}
-        error={null}
-        offline={null}
-        empty={<p>No books</p>}
     >
         <RecordsIterator render={(book) => (
             <p>{book.title}</p>
@@ -358,7 +412,7 @@ In the example below, both lists use the same reference ('books'), but their sel
         }}
         storeKey="custom"
     >
-        <Iterator render={(book) => (
+        <RecordsIterator render={(book) => (
             <p>{book.title}</p>
         )} />
     </ReferenceManyFieldBase>

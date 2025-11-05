@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { CreateBase, CreateBaseProps, Identifier, RaRecord } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
 
@@ -56,7 +55,7 @@ export const Create = <
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     inProps: CreateProps<RecordType, Error, ResultRecordType>
-): ReactElement => {
+) => {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,

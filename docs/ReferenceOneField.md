@@ -59,8 +59,8 @@ const BookShow = () => (
 | -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `children`     | Optional&nbsp;* | `Element`                                   | -                                | The Field element used to render the referenced record                              |
-| `render`     | Optional&nbsp;* | `(ReferenceFieldContext) => Element`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
+| `children`     | Optional&nbsp;* | `ReactNode`                                   | -                                | The Field element used to render the referenced record                              |
+| `render`     | Optional&nbsp;* | `(ReferenceFieldContext) => ReactNode`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |

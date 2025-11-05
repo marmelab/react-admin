@@ -2,7 +2,7 @@ import * as React from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Chip, useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-import lodashGet from 'lodash/get';
+import lodashGet from 'lodash/get.js';
 import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,

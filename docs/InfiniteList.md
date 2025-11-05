@@ -56,31 +56,34 @@ That's enough to display a basic post list, that users can sort and filter, and 
 
 The props are the same as [the `<List>` component](./List.md):
 
-| Prop                       | Required | Type           | Default                 | Description                                                                                  |
-|----------------------------|----------|----------------|-------------------------|----------------------------------------------------------------------------------------------|
-| `children`                 | Required if no render | `ReactNode`    | -                       | The component to use to render the list of records.                                          |
-| `render`                 | Required if no children | `ReactNode`    | -                       | A function that render the list of records, receives the list context as argument.                                          |
-| `actions`                  | Optional | `ReactElement` | -                       | The actions to display in the toolbar.                                                       |
-| `aside`                    | Optional | `(listContext) => ReactElement` | -                       | The component to display on the side of the list.                                            |
-| `component`                | Optional | `Component`    | `Card`                  | The component to render as the root element.                                                 |
-| `debounce`                 | Optional | `number`       | `500`                   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
-| `disable Authentication`   | Optional | `boolean`      | `false`                 | Set to `true` to disable the authentication check.                                           |
-| `disable SyncWithLocation` | Optional | `boolean`      | `false`                 | Set to `true` to disable the synchronization of the list parameters with the URL.            |
-| `empty`                    | Optional | `ReactElement` | -                       | The component to display when the list is empty.                                             |
-| `empty WhileLoading`       | Optional | `boolean`      | `false`                 | Set to `true` to return `null` while the list is loading.                                    |
-| `exporter`                 | Optional | `function`     | -                       | The function to call to export the list.                                                     |
-| `filters`                  | Optional | `ReactElement` | -                       | The filters to display in the toolbar.                                                       |
-| `filter`                   | Optional | `object`       | -                       | The permanent filter values.                                                                 |
-| `filter DefaultValues`     | Optional | `object`       | -                       | The default filter values.                                                                   |
-| `offline`                  | Optional | `ReactNode`    | `<Offline>`             | The component to render when there is no connectivity and there is no data in the cache      |
-| `pagination`               | Optional | `ReactElement` | `<Infinite Pagination>` | The pagination component to use.                                                             |
-| `perPage`                  | Optional | `number`       | `10`                    | The number of records to fetch per page.                                                     |
-| `queryOptions`             | Optional | `object`       | -                       | The options to pass to the `useQuery` hook.                                                  |
-| `resource`                 | Optional | `string`       | -                       | The resource name, e.g. `posts`.                                                             |
-| `sort`                     | Optional | `object`       | -                       | The initial sort parameters.                                                                 |
-| `storeKey`                 | Optional | `string`       | -                       | The key to use to store the current filter & sort.                                           |
-| `title`                    | Optional | `string`       | -                       | The title to display in the App Bar.                                                         |
-| `sx`                       | Optional | `object`       | -                       | The CSS styles to apply to the component.                                                    |
+| Prop                       | Required                | Type                            | Default                 | Description                                                                                  |
+|----------------------------|-------------------------|---------------------------------|-------------------------|----------------------------------------------------------------------------------------------|
+| `children`                 | Required if no render   | `ReactNode`                     | -                       | The component to use to render the list of records.                                          |
+| `render`                   | Required if no children | `ReactNode`                     | -                       | A function that render the list of records, receives the list context as argument.           |
+| `actions`                  | Optional                | `ReactElement`                  | -                       | The actions to display in the toolbar.                                                       |
+| `aside`                    | Optional                | `(listContext) => ReactNode` | -                       | The component to display on the side of the list.                                            |
+| `authLoading`              | Optional                | `ReactNode`                     | -                       | The component to render while checking for authentication and permissions.                   |
+| `component`                | Optional                | `Component`                     | `Card`                  | The component to render as the root element.                                                 |
+| `debounce`                 | Optional                | `number`                        | `500`                   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
+| `disable Authentication`   | Optional                | `boolean`                       | `false`                 | Set to `true` to disable the authentication check.                                           |
+| `disable SyncWithLocation` | Optional                | `boolean`                       | `false`                 | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                    | Optional                | `ReactNode`                  | -                       | The component to display when the list is empty.                                             |
+| `empty WhileLoading`       | Optional                | `boolean`                       | `false`                 | Set to `true` to return `null` while the list is loading.                                    |
+| `error`                    | Optional                | `ReactNode`                     | -                       | The component to render when failing to load the list of records.                            |
+| `exporter`                 | Optional                | `function`                      | -                       | The function to call to export the list.                                                     |
+| `filters`                  | Optional                | `ReactElement`                  | -                       | The filters to display in the toolbar.                                                       |
+| `filter`                   | Optional                | `object`                        | -                       | The permanent filter values.                                                                 |
+| `filter DefaultValues`     | Optional                | `object`                        | -                       | The default filter values.                                                                   |
+| `loading`                  | Optional                | `ReactNode`                     | -                       | The component to render while loading the list of records.                                   |
+| `offline`                  | Optional                | `ReactNode`                     | `<Offline>`             | The component to render when there is no connectivity and there is no data in the cache      |
+| `pagination`               | Optional                | `ReactNode`                  | `<Infinite Pagination>` | The pagination component to use.                                                             |
+| `perPage`                  | Optional                | `number`                        | `10`                    | The number of records to fetch per page.                                                     |
+| `queryOptions`             | Optional                | `object`                        | -                       | The options to pass to the `useQuery` hook.                                                  |
+| `resource`                 | Optional                | `string`                        | -                       | The resource name, e.g. `posts`.                                                             |
+| `sort`                     | Optional                | `object`                        | -                       | The initial sort parameters.                                                                 |
+| `storeKey`                 | Optional                | `string`                        | -                       | The key to use to store the current filter & sort.                                           |
+| `title`                    | Optional                | `ReactNode` / `string` / `false` | -                       | The title to display in the App Bar.                                                         |
+| `sx`                       | Optional                | `object`                        | -                       | The CSS styles to apply to the component.                                                    |
 
 Check the [`<List>` component](./List.md) for details about each prop.
 

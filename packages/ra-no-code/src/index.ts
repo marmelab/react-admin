@@ -1,3 +1,4 @@
+import type {} from '@mui/material/themeCssVarsAugmentation';
 export * from './Admin';
 export * from './ApplicationsDashboard';
 export * from './Root';

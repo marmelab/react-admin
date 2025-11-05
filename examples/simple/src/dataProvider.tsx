@@ -1,6 +1,6 @@
 import fakeRestProvider from 'ra-data-fakerest';
 import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
-import get from 'lodash/get';
+import get from 'lodash/get.js';
 import addUploadFeature from './addUploadFeature';
 import { queryClient } from './queryClient';
 import data from './data';

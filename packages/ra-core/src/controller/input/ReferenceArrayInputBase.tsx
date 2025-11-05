@@ -6,8 +6,8 @@ import {
 } from './useReferenceArrayInputController';
 import { ResourceContextProvider } from '../../core/ResourceContextProvider';
 import { ChoicesContextProvider } from '../../form/choices/ChoicesContextProvider';
+import { ChoicesContextValue } from '../../form/choices/ChoicesContext';
 import { RaRecord } from '../../types';
-import { ChoicesContextValue } from '../../form';
 
 /**
  * An Input component for fields containing a list of references to another resource.

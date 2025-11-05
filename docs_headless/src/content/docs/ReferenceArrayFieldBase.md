@@ -83,13 +83,17 @@ You can change how the list of related records is rendered by passing a custom c
 | -------------- | -------- | --------------------------------------------------------------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `source`       | Required | `string`                                                                          | -                                | Name of the property to display                                                                        |
 | `reference`    | Required | `string`                                                                          | -                                | The name of the resource for the referenced records, e.g. 'tags'                                       |
-| `children`     | Optional\* | `Element`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
-| `render`     | Optional\* | `(ListContext) => Element`                                                                         |               | A function that takes a list context and renders a list of records                        |
+| `children`     | Optional\* | `ReactNode`                                                                         |               | One or several elements that render a list of records based on a `ListContext`                         |
+| `render`     | Optional\* | `(ListContext) => ReactNode`                                                                         |               | A function that takes a list context and renders a list of records                        |
+| `empty`        | Optional | `ReactNode`                                                                       | -                                | The component to render when the related records list is empty                                         |
+| `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
+| `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                                             |
+| `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `perPage`      | Optional | `number`                                                                          | 1000                             | Maximum number of results to display                                                                   |
 | `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}`                             | `react-query` options for the `getMany` query                                                                           |
 | `sort`         | Optional | `{ field, order }`                                                                | `{ field: 'id', order: 'DESC' }` | Sort order to use when displaying the related records (the sort is done client-side)                   |
-| `sortBy`       | Optional | `string | Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
+| `sortBy`       | Optional | `string \| Function`                                                               | `source`                         | When used in a `List`, name of the field to use for sorting when the user clicks on the column header. |
 
 \* Either one of children or render is required.
 
@@ -120,6 +124,70 @@ const TagList = (props: { children: React.ReactNode }) => {
         </p>
     );
 };
+```
+
+## `empty`
+
+By default, `<ReferenceArrayFieldBase>` renders its children when the related records list is empty. You can customize what is rendered by providing your own component via the `empty` prop:
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            empty={<p>No tags found.</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceArrayFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayFieldBase
+    source="tag_ids"
+    reference="tags"
+    empty={null}
+>
+    ...
+</ReferenceArrayFieldBase>
+```
+
+## `error`
+
+By default, `<ReferenceArrayFieldBase>` renders its children when an error occurs while fetching the related records. You can customize what is rendered by providing your own component via the `error` prop:
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            error={<p>Error loading tags. Please try again.</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceArrayFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayFieldBase
+    source="tag_ids"
+    reference="tags"
+    error={null}
+>
+    ...
+</ReferenceArrayFieldBase>
 ```
 
 ## `render`
@@ -165,6 +233,70 @@ For instance, to render only tags that are 'published', you can use the followin
     reference="tags"
     filter={{ is_published: true }}
 />
+```
+
+## `loading`
+
+By default, `<ReferenceArrayFieldBase>` renders its children while fetching the related records. You can customize what is rendered by providing your own component via the `loading` prop:
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            loading={<p>Loading tags...</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceArrayFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayFieldBase
+    source="tag_ids"
+    reference="tags"
+    loading={null}
+>
+    ...
+</ReferenceArrayFieldBase>
+```
+
+## `offline`
+
+Use `offline` to customize the text displayed when there are no related records because of lack of network connectivity.
+
+```jsx
+import { ReferenceArrayFieldBase, ShowBase } from 'ra-core';
+
+export const PostShow = () => (
+    <ShowBase>
+        <ReferenceArrayFieldBase
+            source="tag_ids"
+            reference="tags"
+            offline={<p>Offline, could not load data</p>}
+        >
+            ...
+        </ReferenceArrayFieldBase>
+    </ShowBase>
+);
+```
+
+You can also have `<ReferenceArrayFieldBase>` render nothing in that case by setting the prop to `null`:
+
+```jsx
+<ReferenceArrayFieldBase
+    source="tag_ids"
+    reference="tags"
+    offline={null}
+>
+    ...
+</ReferenceArrayFieldBase>
 ```
 
 ## `perPage`

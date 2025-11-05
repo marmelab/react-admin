@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useState, useCallback, ReactElement } from 'react';
+import { useState, useCallback } from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import expect from 'expect';
 
@@ -21,9 +21,7 @@ const ReferenceInputController = (
     const inputProps = useInput({
         ...rest,
     });
-    return children(
-        useReferenceInputController({ ...rest, ...inputProps })
-    ) as ReactElement;
+    return children(useReferenceInputController({ ...rest, ...inputProps }));
 };
 
 describe('useReferenceInputController', () => {
@@ -316,6 +314,7 @@ describe('useReferenceInputController', () => {
 
         it('should fetch current value using getMany even if enableGetChoices is returning false', async () => {
             const children = jest.fn().mockReturnValue(<p>child</p>);
+
             render(
                 <CoreAdminContext dataProvider={dataProvider}>
                     <Form defaultValues={{ post_id: 1 }}>
@@ -332,6 +331,19 @@ describe('useReferenceInputController', () => {
             await waitFor(() => {
                 expect(dataProvider.getList).toBeCalledTimes(0);
                 expect(dataProvider.getMany).toBeCalledTimes(1);
+            });
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({
+                        sort: { field: 'id', order: 'ASC' },
+                        allChoices: [{ id: 1, title: 'foo' }],
+                        availableChoices: [],
+                        selectedChoices: [{ id: 1, title: 'foo' }],
+                        isPending: true,
+                        total: 1,
+                        isFromReference: true,
+                    })
+                );
             });
         });
     });

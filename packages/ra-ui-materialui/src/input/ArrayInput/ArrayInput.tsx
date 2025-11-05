@@ -1,20 +1,13 @@
 import * as React from 'react';
-import { type ReactElement, useEffect } from 'react';
 import clsx from 'clsx';
 import {
     isRequired,
     FieldTitle,
-    composeSyncValidators,
-    useApplyInputDefaultValues,
-    useGetValidationErrorMessage,
-    useFormGroupContext,
-    useFormGroups,
-    SourceContextProvider,
-    type SourceContextValue,
     useSourceContext,
-    OptionalResourceContextProvider,
+    ArrayInputBase,
+    type ArrayInputBaseProps,
 } from 'ra-core';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import {
     InputLabel,
     FormControl,
@@ -24,13 +17,10 @@ import {
     type ComponentsOverrides,
     useThemeProps,
 } from '@mui/material';
-
 import { LinearProgress } from '../../layout';
-import type { CommonInputProps } from '../CommonInputProps';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
 import { Labeled } from '../../Labeled';
-import { ArrayInputContext } from 'ra-core';
 
 /**
  * To edit arrays of data embedded inside a record, <ArrayInput> creates a list of sub-forms.
@@ -82,11 +72,9 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
         className,
         defaultValue = [],
         label,
-        isFetching,
-        isLoading,
-        isPending,
         children,
         helperText,
+        isPending,
         resource: resourceFromProps,
         source: arraySource,
         validate,
@@ -95,104 +83,21 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
         ...rest
     } = props;
 
-    const formGroupName = useFormGroupContext();
-    const formGroups = useFormGroups();
     const parentSourceContext = useSourceContext();
     const finalSource = parentSourceContext.getSource(arraySource);
-
-    const sanitizedValidate = Array.isArray(validate)
-        ? composeSyncValidators(validate)
-        : validate;
-    const getValidationErrorMessage = useGetValidationErrorMessage();
-
-    const { getFieldState, formState, getValues } = useFormContext();
-
-    const fieldProps = useFieldArray({
-        name: finalSource,
-        rules: {
-            validate: async value => {
-                if (!sanitizedValidate) return true;
-                const error = await sanitizedValidate(
-                    value,
-                    getValues(),
-                    props
-                );
-
-                if (!error) return true;
-                return getValidationErrorMessage(error);
-            },
-        },
-    });
-
-    useEffect(() => {
-        if (formGroups && formGroupName != null) {
-            formGroups.registerField(finalSource, formGroupName);
-        }
-
-        return () => {
-            if (formGroups && formGroupName != null) {
-                formGroups.unregisterField(finalSource, formGroupName);
-            }
-        };
-    }, [finalSource, formGroups, formGroupName]);
-
-    useApplyInputDefaultValues({
-        inputProps: { ...props, defaultValue },
-        isArrayInput: true,
-        fieldArrayInputControl: fieldProps,
-    });
-
+    const { getFieldState, formState } = useFormContext();
     const { error } = getFieldState(finalSource, formState);
-
-    // The SourceContext will be read by children of ArrayInput to compute their composed source and label
-    //
-    // <ArrayInput source="orders" /> => SourceContext is "orders"
-    //   <SimpleFormIterator> => SourceContext is "orders.0"
-    //     <DateInput source="date" /> => final source for this input will be "orders.0.date"
-    //   </SimpleFormIterator>
-    // </ArrayInput>
-    //
-    const sourceContext = React.useMemo<SourceContextValue>(
-        () => ({
-            // source is the source of the ArrayInput child
-            getSource: (source: string) => {
-                if (!source) {
-                    // SimpleFormIterator calls getSource('') to get the arraySource
-                    return parentSourceContext.getSource(arraySource);
-                }
-
-                // We want to support nesting and composition with other inputs (e.g. TranslatableInputs, ReferenceOneInput, etc),
-                // we must also take into account the parent SourceContext
-                //
-                // <ArrayInput source="orders" /> => SourceContext is "orders"
-                //   <SimpleFormIterator> => SourceContext is "orders.0"
-                //      <DateInput source="date" /> => final source for this input will be "orders.0.date"
-                //      <ArrayInput source="items" /> => SourceContext is "orders.0.items"
-                //          <SimpleFormIterator> => SourceContext is "orders.0.items.0"
-                //              <TextInput source="reference" /> => final source for this input will be "orders.0.items.0.reference"
-                //          </SimpleFormIterator>
-                //      </ArrayInput>
-                //   </SimpleFormIterator>
-                // </ArrayInput>
-                return parentSourceContext.getSource(
-                    `${arraySource}.${source}`
-                );
-            },
-            // if Array source is items, and child source is name, .0.name => resources.orders.fields.items.name
-            getLabel: (source: string) =>
-                parentSourceContext.getLabel(`${arraySource}.${source}`),
-        }),
-        [parentSourceContext, arraySource]
-    );
+    const renderHelperText = helperText !== false || !!error;
 
     if (isPending) {
+        // We handle the loading state here instead of using the loading prop
+        // of ArrayInputBase to avoid wrapping the content below inside Root
         return (
             <Labeled label={label} className={className}>
                 <LinearProgress />
             </Labeled>
         );
     }
-    const renderHelperText = helperText !== false || !!error;
 
     return (
         <Root
@@ -220,13 +125,14 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
                     isRequired={isRequired(validate)}
                 />
             </InputLabel>
-            <ArrayInputContext.Provider value={fieldProps}>
-                <OptionalResourceContextProvider value={resourceFromProps}>
-                    <SourceContextProvider value={sourceContext}>
-                        {children}
-                    </SourceContextProvider>
-                </OptionalResourceContextProvider>
-            </ArrayInputContext.Provider>
+            {/*
+                We must put the ArrayInputBase inside Root so that the FieldTitle above
+                is not inside the ArrayInputBase's SourceContext,
+                Otherwise, the ArrayInput label translation key would be wrong
+            */}
+            <ArrayInputBase {...props} defaultValue={defaultValue}>
+                {children}
+            </ArrayInputBase>
             {renderHelperText ? (
                 <FormHelperText error={!!error}>
                     <InputHelperText
@@ -242,21 +148,19 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     );
 };
 
-export const getArrayInputError = error => {
-    if (Array.isArray(error)) {
-        return undefined;
-    }
-    return error;
-};
-
 export interface ArrayInputProps
-    extends Omit<CommonInputProps, 'disabled' | 'readOnly'>,
+    extends ArrayInputBaseProps,
         Omit<
             FormControlProps,
-            'defaultValue' | 'disabled' | 'readOnly' | 'onBlur' | 'onChange'
+            | 'children'
+            | 'defaultValue'
+            | 'disabled'
+            | 'readOnly'
+            | 'onBlur'
+            | 'onChange'
         > {
     className?: string;
-    children: ReactElement;
+    loading?: React.ReactNode;
     isFetching?: boolean;
     isLoading?: boolean;
     isPending?: boolean;
