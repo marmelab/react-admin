@@ -437,7 +437,7 @@ const CustomerForm = () => (
     <SimpleForm>
         <TextInput source="first_name" validate={required()} />
         <TextInput source="last_name" validate={required()} />
-        <DateInput source="dob" label="born" validate={required()} />
+        <DateInput source="dob" label="Born" validate={required()} />
         <SelectInput source="sex" choices={sexChoices} />
     </SimpleForm>
 );
@@ -463,7 +463,7 @@ const EmployerEdit = () => {
                         <DataTable.Col source="first_name" />
                         <DataTable.Col source="last_name" />
                         <DataTable.Col label="born">
-                            <DateField source="dob" label="born" />
+                            <DateField source="dob" label="Born" />
                         </DataTable.Col>
                         <DataTable.Col source="sex">
                             <SelectField source="sex" choices={sexChoices} />
