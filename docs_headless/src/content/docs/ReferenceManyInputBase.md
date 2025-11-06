@@ -1,9 +1,12 @@
 ---
 title: "<ReferenceManyInputBase>"
 ---
+
 Use `<ReferenceManyInputBase>` in an edition or creation views to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view.
 
 `<ReferenceManyInputBase>` fetches the related records, and renders them in a sub-form. When users add, remove of update related records, the `<ReferenceManyInputBase>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInputBase>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
+
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
 ## Usage
 

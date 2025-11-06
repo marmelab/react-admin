@@ -60,10 +60,18 @@ const ReviewListDesktop = ({ selectedRow }: ReviewListDesktopProps) => {
             }}
         >
             <Column source="date" field={DateField} />
-            <Column source="customer_id">
+            {/* FIXME: Sort by reference field does not work with ra-data-graphql */}
+            <Column
+                source="customer.last_name"
+                label="resources.reviews.fields.customer_id"
+            >
                 <CustomerReferenceField source="customer_id" link={false} />
             </Column>
-            <Column source="product_id">
+            {/* FIXME: Sort by reference field does not work with ra-data-graphql */}
+            <Column
+                source="product.reference"
+                label="resources.reviews.fields.product_id"
+            >
                 <ProductReferenceField source="product_id" link={false} />
             </Column>
             <Column

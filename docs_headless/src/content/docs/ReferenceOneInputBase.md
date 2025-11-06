@@ -3,6 +3,8 @@ title: "<ReferenceOneInputBase>"
 ---
 Use `<ReferenceOneInputBase>` in an `<EditBase>` or `<CreateBase>` view to edit one-to-one relationships, e.g. to edit the details of a book in the book edition view.
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ## Usage
 
 Here is an example one-to-one relationship: a `book` has at most one `book_details` row associated to it.
