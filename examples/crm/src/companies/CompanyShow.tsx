@@ -8,7 +8,6 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemButton,
-    ListItemSecondaryAction,
     ListItemText,
     Stack,
     Typography,
@@ -143,7 +142,22 @@ const ContactsIterator = () => {
         <List dense sx={{ pt: 0 }}>
             {contacts.map(contact => (
                 <RecordContextProvider key={contact.id} value={contact}>
-                    <ListItem disablePadding>
+                    <ListItem
+                        disablePadding
+                        {...(contact.last_seen && {
+                            secondaryAction: (
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
+                                </Typography>
+                            ),
+                        })}
+                    >
                         <ListItemButton
                             component={RouterLink}
                             to={`/contacts/${contact.id}/show`}
@@ -169,19 +183,6 @@ const ContactsIterator = () => {
                                     </>
                                 }
                             />
-                            {contact.last_seen && (
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        component="span"
-                                    >
-                                        last activity{' '}
-                                        {formatDistance(contact.last_seen, now)}{' '}
-                                        ago <Status status={contact.status} />
-                                    </Typography>
-                                </ListItemSecondaryAction>
-                            )}
                         </ListItemButton>
                     </ListItem>
                 </RecordContextProvider>
@@ -216,7 +217,20 @@ const DealsIterator = () => {
         <Box>
             <List dense>
                 {deals.map(deal => (
-                    <ListItem key={deal.id} disablePadding>
+                    <ListItem
+                        key={deal.id}
+                        disablePadding
+                        secondaryAction={
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(deal.updated_at, now)} ago{' '}
+                            </Typography>
+                        }
+                    >
                         <ListItemButton
                             component={RouterLink}
                             to={`/deals/${deal.id}/show`}
@@ -239,16 +253,6 @@ const DealsIterator = () => {
                                     </>
                                 }
                             />
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(deal.updated_at, now)} ago{' '}
-                                </Typography>
-                            </ListItemSecondaryAction>
                         </ListItemButton>
                     </ListItem>
                 ))}

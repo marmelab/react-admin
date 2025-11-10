@@ -6,7 +6,6 @@ import {
     ListItemButton,
     ListItemAvatar,
     ListItemIcon,
-    ListItemSecondaryAction,
     ListItemText,
     Typography,
     useMediaQuery,
@@ -50,7 +49,29 @@ export const ContactListContent = () => {
             <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
-                        <ListItem disablePadding>
+                        <ListItem
+                            disablePadding
+                            {...(contact.last_seen && {
+                                secondaryAction: (
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        title={contact.last_seen}
+                                        sx={{
+                                            top: '10px',
+                                            transform: 'none',
+                                        }}
+                                    >
+                                        {!isSmall && 'last activity '}
+                                        {formatRelative(
+                                            contact.last_seen,
+                                            now
+                                        )}{' '}
+                                        <Status status={contact.status} />
+                                    </Typography>
+                                ),
+                            })}
+                        >
                             <ListItemButton
                                 component={Link}
                                 to={`/contacts/${contact.id}/show`}
@@ -101,27 +122,6 @@ export const ContactListContent = () => {
                                         </>
                                     }
                                 />
-                                {contact.last_seen && (
-                                    <ListItemSecondaryAction
-                                        sx={{
-                                            top: '10px',
-                                            transform: 'none',
-                                        }}
-                                    >
-                                        <Typography
-                                            variant="body2"
-                                            color="textSecondary"
-                                            title={contact.last_seen}
-                                        >
-                                            {!isSmall && 'last activity '}
-                                            {formatRelative(
-                                                contact.last_seen,
-                                                now
-                                            )}{' '}
-                                            <Status status={contact.status} />
-                                        </Typography>
-                                    </ListItemSecondaryAction>
-                                )}
                             </ListItemButton>
                         </ListItem>
                     </RecordContextProvider>
