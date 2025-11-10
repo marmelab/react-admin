@@ -51,7 +51,7 @@ npm create react-admin@latest your-admin-name -- --interactive
 The command accepts the following options:
 
 * `--interactive`: Enable the CLI interactive mode
-* `--data-provider`: Set the data provider to use ("data-fakerest", "data-simple-rest", "data-json-server", "supabase" or "none")
+* `--data-provider`: Set the data provider to use ("fakerest", "simple-rest", "json-server", "supabase" or "none")
 * `--auth-provider`: Set the auth provider to use ("local-auth-provider" or "none")
 * `--resource`: Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
 * `--install`: Set the package manager to use for installing dependencies ("yarn", "npm", "bun" or "skip" to bypass the interactive install step)
