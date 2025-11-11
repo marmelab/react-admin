@@ -3,7 +3,6 @@ import {
     List,
     ListItemAvatar,
     ListItemIcon,
-    ListItemSecondaryAction,
     ListItemText,
     ListProps,
 } from '@mui/material';
