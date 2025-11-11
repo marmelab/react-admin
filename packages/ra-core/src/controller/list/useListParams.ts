@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce.js';
+import isEqual from 'lodash/isEqual.js';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useStore } from '../../store';
@@ -132,6 +133,62 @@ export const useListParams = ({
             setParams(query);
         }
     }, [location.search]); // eslint-disable-line
+
+    const currentStoreKey = useRef(storeKey);
+    // if the location includes params (for example from a link like
+    // the categories products on the demo), we need to persist them in the
+    // store as well so that we don't lose them after a redirection back
+    // to the list
+    useEffect(
+        () => {
+            // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
+            // the same resource but different storeKeys.
+            if (currentStoreKey.current !== storeKey) {
+                // storeKey has changed
+                currentStoreKey.current = storeKey;
+                return;
+            }
+            if (disableSyncWithLocation) {
+                return;
+            }
+            const defaultParams = {
+                filter: filterDefaultValues || {},
+                page: 1,
+                perPage,
+                sort: sort.field,
+                order: sort.order,
+            };
+
+            if (
+                // The location params are not empty (we don't want to override them if provided)
+                Object.keys(queryFromLocation).length > 0 ||
+                // or the stored params are different from the location params
+                isEqual(query, queryFromLocation) ||
+                // or the stored params are not different from the default params (to keep the URL simple when possible)
+                isEqual(query, defaultParams)
+            ) {
+                return;
+            }
+            navigate({
+                search: `?${stringify({
+                    ...query,
+                    filter: JSON.stringify(query.filter),
+                    displayedFilters: JSON.stringify(query.displayedFilters),
+                })}`,
+            });
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [
+            navigate,
+            disableSyncWithLocation,
+            filterDefaultValues,
+            perPage,
+            sort,
+            query,
+            location.search,
+            params,
+        ]
+    );
 
     const changeParams = useCallback(
         action => {
