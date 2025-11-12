@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { memo } from 'react';
+import { type ReactElement, memo } from 'react';
 import {
     IconButton,
     ListItem,
@@ -27,7 +27,7 @@ const arePropsEqual = (
     isEqual(prevProps.value, nextProps.value);
 
 export const SavedQueryFilterListItem = memo(
-    (inProps: SavedQueryFilterListItemProps) => {
+    (inProps: SavedQueryFilterListItemProps): ReactElement => {
         const props = useThemeProps({
             props: inProps,
             name: PREFIX,

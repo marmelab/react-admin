@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
@@ -68,7 +68,7 @@ import { TranslatableFieldsTabContent } from './TranslatableFieldsTabContent';
  * @param props The component props
  * @param {string} props.defaultLocale The locale selected by default. Default to 'en'.
  * @param {string[]} props.locales An array of the possible locales in the form. For example [{ 'en', 'fr' }].
- * @param {ReactNode} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
+ * @param {ReactElement} props.selector The element responsible for selecting a locale. Defaults to Material UI tabs.
  */
 export const TranslatableFields = (inProps: TranslatableFieldsProps) => {
     const props = useThemeProps({
@@ -123,7 +123,7 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
     className?: string;
     record?: RaRecord;
     resource?: string;
-    selector?: ReactNode;
+    selector?: ReactElement;
     groupKey?: string;
 }
 

@@ -5,7 +5,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { memo, type ReactNode } from 'react';
+import { memo, type ReactElement } from 'react';
 import {
     IconButton,
     ListItem,
@@ -262,9 +262,9 @@ const StyledListItem = styled(ListItem, {
 });
 
 export interface FilterListItemProps extends Omit<ListItemProps, 'value'> {
-    label: ReactNode;
+    label: string | ReactElement;
     value: any;
-    icon?: ReactNode;
+    icon?: ReactElement;
     toggleFilter?: (value: any, filters: any) => any;
     isSelected?: (value: any, filters: any) => boolean;
 }

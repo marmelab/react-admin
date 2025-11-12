@@ -39,10 +39,10 @@ import { Toolbar } from './Toolbar';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {ReactNode[]} children Input elements
+ * @prop {ReactElement[]} children Input elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {ReactNode} toolbar The element displayed at the bottom of the form, containing the SaveButton
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
  * @param {Props} props
  */
