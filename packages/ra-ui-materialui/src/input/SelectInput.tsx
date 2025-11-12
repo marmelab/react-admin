@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {
-    type ReactNode,
+    type ReactElement,
     useCallback,
     useEffect,
     type ChangeEvent,
@@ -415,7 +415,7 @@ export type SelectInputProps = Omit<CommonInputProps, 'source'> &
     ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<TextFieldProps, 'label' | 'helperText' | 'classes' | 'onChange'> & {
-        emptyText?: ReactNode;
+        emptyText?: string | ReactElement;
         emptyValue?: any;
         resettable?: boolean;
         // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source

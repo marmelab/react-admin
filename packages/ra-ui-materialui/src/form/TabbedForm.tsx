@@ -67,10 +67,10 @@ import { FormTab } from './FormTab';
  * );
  *
  * @typedef {Object} Props the props you can use (other props are injected by Create or Edit)
- * @prop {ReactNode[]} FormTab elements
+ * @prop {ReactElement[]} FormTab elements
  * @prop {Object} defaultValues
  * @prop {Function} validate
- * @prop {ReactNode} toolbar The element displayed at the bottom of the form, containing the SaveButton
+ * @prop {ReactElement} toolbar The element displayed at the bottom of the form, containing the SaveButton
  *
  * @param {Props} props
  */
@@ -126,7 +126,7 @@ export interface TabbedFormProps
     resource?: string;
     syncWithLocation?: boolean;
     tabs?: ReactElement;
-    toolbar?: ReactNode | false;
+    toolbar?: ReactElement | false;
     warnWhenUnsavedChanges?: boolean;
 }
 

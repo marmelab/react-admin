@@ -1,12 +1,12 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { ReactElement } from 'react';
 import TextField from '@mui/material/TextField';
 
 export const ReferenceError = ({
     label,
     error,
 }: {
-    label?: ReactNode;
+    label?: string | ReactElement | false;
     error: Error;
 }) => (
     <TextField

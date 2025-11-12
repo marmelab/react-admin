@@ -1,4 +1,10 @@
-import React, { forwardRef, useCallback, useRef, type ReactNode } from 'react';
+import React, {
+    forwardRef,
+    useCallback,
+    useRef,
+    type ReactElement,
+    type ReactNode,
+} from 'react';
 import {
     type ComponentsOverrides,
     styled,
@@ -187,7 +193,7 @@ export type MenuItemLinkProps = Omit<
     LinkProps & MenuItemProps<'li'>,
     'placeholder' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
 > & {
-    leftIcon?: ReactNode;
+    leftIcon?: ReactElement;
     primaryText?: ReactNode;
     /**
      * @deprecated

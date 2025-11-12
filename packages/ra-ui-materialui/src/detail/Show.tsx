@@ -47,7 +47,7 @@ import { Loading } from '../layout';
  * @typedef {(showContext: Object) => ReactNode} RenderProp
  * @param {ShowProps} inProps
  * @param {RenderProp} inProps.render A function rendering the page content, receive the show context as its argument.
- * @param {ReactNode|false} inProps.actions An element to display above the page content, or false to disable actions.
+ * @param {ReactElement|false} inProps.actions An element to display above the page content, or false to disable actions.
  * @param {string} inProps.className A className to apply to the page content.
  * @param {ElementType} inProps.component The component to use as root component (div by default).
  * @param {boolean} inProps.emptyWhileLoading Do not display the page content while loading the initial data.
