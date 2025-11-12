@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { cloneElement, memo, FC, ReactElement } from 'react';
+import { cloneElement, memo, FC, ReactElement, ReactNode } from 'react';
 import { SxProps, TableBody, TableBodyProps } from '@mui/material';
 import clsx from 'clsx';
 import { Identifier, RaRecord, RecordContextProvider } from 'ra-core';
@@ -76,7 +76,7 @@ export interface DatagridBodyProps extends Omit<TableBodyProps, 'classes'> {
     className?: string;
     data?: any[];
     expand?:
-        | ReactElement
+        | ReactNode
         | FC<{
               id: Identifier;
               record: RaRecord;
