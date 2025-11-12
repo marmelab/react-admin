@@ -224,3 +224,19 @@ describe('UserShow', () => {
     });
 });
 ```
+
+## Working with Jest
+
+**Tip:** In general, we recommend using [Vitest](https://vitest.dev/) for testing React-admin applications, as it is faster and more modern than Jest. In particular, it is compatible out of the box with ESM and TypeScript, whereas Jest requires additional and experimental configuration for that. If, however, you are already using Jest, here are some tips to make it work smoothly with React-admin.
+
+Starting with version [5.13.0](https://github.com/marmelab/react-admin/pull/10995), React-admin changed the way it exports its modules to be fully compatible with ESM.
+
+- If you are using Jest in CJS mode (default), you will need to add the following configuration to your `jest.config.js` file to make sure React-admin packages are properly transformed:
+
+  ```diff
+-transformIgnorePatterns: ['node_modules/(?!(@hookform|react-hotkeys-hook))']
++transformIgnorePatterns: ['node_modules/(?!(@hookform|react-hotkeys-hook|react-admin|ra-core|ra-ui-materialui|ra-input-rich-text|ra-i18n-polyglot|ra-data-fakerest|ra-language-english))']
+  ```
+
+- If you are using Jest in ESM mode, then the React-admin packages should work without any further configuration. You shouldn't need `transformIgnorePatterns` at all.
+
