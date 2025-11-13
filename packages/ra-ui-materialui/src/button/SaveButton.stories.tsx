@@ -26,10 +26,14 @@ export const Basic = () => (
 );
 
 const MakeFormChange = () => {
-    const { setValue } = useFormContext();
+    const {
+        setValue,
+        formState: { isReady },
+    } = useFormContext();
     React.useEffect(() => {
+        if (!isReady) return;
         setValue('name', 'test', { shouldDirty: true });
-    }, [setValue]);
+    }, [isReady, setValue]);
     return null;
 };
 
