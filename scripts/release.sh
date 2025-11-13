@@ -104,6 +104,7 @@ if [ -d $RA_ENTERPRISE_PATH ]; then
         cp -r packages/* \$RA_ENTERPRISE_PATH/node_modules &&
         cd \$RA_ENTERPRISE_PATH &&
         rm -rf node_modules/react-admin/node_modules/@mui &&
+        rm -rf node_modules/react-admin/node_modules/ra-ui-materialui &&
         make build
     "
     retry_step "Run the EE tests" "
