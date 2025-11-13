@@ -14,6 +14,8 @@ import { SimpleFormIteratorBase } from '../controller/input/SimpleFormIteratorBa
 import { SimpleFormIteratorItemBase } from '../controller/input/SimpleFormIteratorItemBase';
 
 import { Confirm } from './Confirm';
+import { useGetArrayInputNewItemDefaults } from '../controller';
+import { useEvent } from '../util';
 
 const DefaultAddItemButton = (
     props: React.DetailedHTMLProps<
@@ -206,9 +208,16 @@ export const SimpleFormIterator = (props: SimpleFormIteratorProps) => {
     }, [remove]);
 
     const records = useFieldValue({ source: finalSource });
+    const getArrayInputNewItemDefaults =
+        useGetArrayInputNewItemDefaults(fields);
+
+    const getItemDefaults = useEvent((item: any = undefined) => {
+        if (item != null) return item;
+        return getArrayInputNewItemDefaults(children);
+    });
 
     return fields ? (
-        <SimpleFormIteratorBase {...props}>
+        <SimpleFormIteratorBase getItemDefaults={getItemDefaults} {...props}>
             <div
                 className={[
                     className,
