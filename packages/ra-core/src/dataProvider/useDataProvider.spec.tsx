@@ -5,7 +5,7 @@ import expect from 'expect';
 
 import { useDataProvider } from './useDataProvider';
 import { CoreAdminContext } from '../core';
-import { GetListResult } from '..';
+import { GetListResult } from '../types';
 
 import { Prefetching } from './useDataProvider.stories';
 

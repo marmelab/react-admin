@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslateLabel } from './useTranslateLabel';
 import { TestTranslationProvider } from './TestTranslationProvider';
-import { SourceContextProvider } from '..';
+import { SourceContextProvider } from '../core';
 
 export default {
     title: 'ra-core/i18n/useTranslateLabel',

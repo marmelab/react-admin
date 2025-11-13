@@ -8,7 +8,7 @@ import {
     Button,
     Typography,
 } from '@mui/material';
-import { useInfiniteGetList } from '..';
+import { useInfiniteGetList } from './useInfiniteGetList';
 
 import { CoreAdminContext } from '../core';
 import { countries } from '../storybook/data';
