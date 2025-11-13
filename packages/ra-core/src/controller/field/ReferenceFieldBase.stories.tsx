@@ -398,24 +398,8 @@ export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
 export const ZeroIndex = ({
     dataProvider = fakeRestDataProvider(
         {
-            books: [
-                {
-                    id: 1,
-                    title: 'War and Peace',
-                    author: 0,
-                    summary:
-                        "War and Peace broadly focuses on Napoleon's invasion of Russia, and the impact it had on Tsarist society. The book explores themes such as revolution, revolution and empire, the growth and decline of various states and the impact it had on their economies, culture, and society.",
-                    year: 1869,
-                },
-            ],
-            authors: [
-                {
-                    id: 0,
-                    first_name: 'Leo',
-                    last_name: 'Tolstoy',
-                    language: 'Russian',
-                },
-            ],
+            books: [{ id: 1, title: 'War and Peace', author: 0 }],
+            authors: [{ id: 0, first_name: 'Leo', last_name: 'Tolstoy' }],
         },
         process.env.NODE_ENV === 'development'
     ),
