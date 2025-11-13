@@ -72,13 +72,13 @@ export const SavedQueryFilterListItem = memo(
                 className={className}
                 sx={sx}
                 disablePadding
-                {...(isSelected && {
-                    secondaryAction: (
+                secondaryAction={
+                    isSelected ? (
                         <IconButton size="small" onClick={toggleFilter}>
                             <CancelIcon />
                         </IconButton>
-                    ),
-                })}
+                    ) : null
+                }
             >
                 <ListItemButton
                     onClick={toggleFilter}

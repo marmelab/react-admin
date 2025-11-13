@@ -51,8 +51,8 @@ export const ContactListContent = () => {
                     <RecordContextProvider key={contact.id} value={contact}>
                         <ListItem
                             disablePadding
-                            {...(contact.last_seen && {
-                                secondaryAction: (
+                            secondaryAction={
+                                contact.last_seen ? (
                                     <Typography
                                         variant="body2"
                                         color="textSecondary"
@@ -69,8 +69,8 @@ export const ContactListContent = () => {
                                         )}{' '}
                                         <Status status={contact.status} />
                                     </Typography>
-                                ),
-                            })}
+                                ) : null
+                            }
                         >
                             <ListItemButton
                                 component={Link}

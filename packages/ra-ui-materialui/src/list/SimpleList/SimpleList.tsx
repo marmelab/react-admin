@@ -124,8 +124,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                 rowSx={rowSx}
                                 rowStyle={rowStyle}
                                 resource={resource}
-                                {...((rightAvatar || rightIcon) && {
-                                    secondaryAction: (
+                                secondaryAction={
+                                    rightAvatar || rightIcon ? (
                                         <>
                                             {rightAvatar && (
                                                 <Avatar>
@@ -144,8 +144,8 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                                 </ListItemIcon>
                                             )}
                                         </>
-                                    ),
-                                })}
+                                    ) : null
+                                }
                             >
                                 <SimpleListItemContent
                                     leftAvatar={leftAvatar}

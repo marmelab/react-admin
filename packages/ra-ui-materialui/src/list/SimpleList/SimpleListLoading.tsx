@@ -38,9 +38,9 @@ export const SimpleListLoading = (inProps: SimpleListLoadingProps) => {
             {times(nbFakeLines, key => (
                 <ListItem
                     key={key}
-                    {...(hasRightAvatarOrIcon && {
-                        secondaryAction: <Avatar>&nbsp;</Avatar>,
-                    })}
+                    secondaryAction={
+                        hasRightAvatarOrIcon ? <Avatar>&nbsp;</Avatar> : null
+                    }
                 >
                     {hasLeftAvatarOrIcon && (
                         <ListItemAvatar>

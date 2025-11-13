@@ -175,8 +175,8 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
     return (
         <StyledListItem
             disablePadding
-            {...(isSelected && {
-                secondaryAction: (
+            secondaryAction={
+                isSelected ? (
                     <IconButton
                         size="small"
                         onClick={event => {
@@ -186,8 +186,8 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
                     >
                         <CancelIcon />
                     </IconButton>
-                ),
-            })}
+                ) : null
+            }
             {...rest}
         >
             <ListItemButton

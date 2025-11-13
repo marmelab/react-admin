@@ -144,8 +144,8 @@ const ContactsIterator = () => {
                 <RecordContextProvider key={contact.id} value={contact}>
                     <ListItem
                         disablePadding
-                        {...(contact.last_seen && {
-                            secondaryAction: (
+                        secondaryAction={
+                            contact.last_seen ? (
                                 <Typography
                                     variant="body2"
                                     color="textSecondary"
@@ -155,8 +155,8 @@ const ContactsIterator = () => {
                                     {formatDistance(contact.last_seen, now)} ago{' '}
                                     <Status status={contact.status} />
                                 </Typography>
-                            ),
-                        })}
+                            ) : null
+                        }
                     >
                         <ListItemButton
                             component={RouterLink}
