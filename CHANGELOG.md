@@ -1,5 +1,29 @@
 # Changelog
 
+## 5.13.0
+
+* Introduce `<ArrayInputBase>`, `<SimpleFomIteratorBase>` and `<SimpleFormIteratorItemBase>` ([#10955](https://github.com/marmelab/react-admin/pull/10955)) ([djhi](https://github.com/djhi))
+* Introduce separate selection states for lists with distinct `storeKey` ([#10953](https://github.com/marmelab/react-admin/pull/10953)) ([mikhail-fedosenko](https://github.com/mikhail-fedosenko))
+* Speed up ArrayInput ([#10926](https://github.com/marmelab/react-admin/pull/10926)) ([fzaninotto](https://github.com/fzaninotto))
+* Improve packages exports ([#10995](https://github.com/marmelab/react-admin/pull/10995)) ([djhi](https://github.com/djhi))
+* Export guessers views ([#10981](https://github.com/marmelab/react-admin/pull/10981)) ([djhi](https://github.com/djhi))
+* Add empty property to ListBase and InfiniteListBase ([#10940](https://github.com/marmelab/react-admin/pull/10940)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix `useExpanded` does not have a stable `defaultValue` ([#11028](https://github.com/marmelab/react-admin/pull/11028)) ([djhi](https://github.com/djhi))
+* [Doc] Explain how to set up Jest for RA 5.13 ([#11036](https://github.com/marmelab/react-admin/pull/11036)) ([slax57](https://github.com/slax57))
+* [Doc] Fix data provider options in Create React Admin documentation ([#11032](https://github.com/marmelab/react-admin/pull/11032)) ([slax57](https://github.com/slax57))
+* [Doc] Update README to use React 18 createRoot API ([#11031](https://github.com/marmelab/react-admin/pull/11031)) ([hamed-zeidabadi](https://github.com/hamed-zeidabadi))
+* [Doc] Update RA Core EE documentation ([#11023](https://github.com/marmelab/react-admin/pull/11023)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Fix `<LockOnMount>` invalid example ([#11019](https://github.com/marmelab/react-admin/pull/11019)) ([djhi](https://github.com/djhi))
+* [Doc] Fix incorrect documentation of EditInDialogButton ([#10943](https://github.com/marmelab/react-admin/pull/10943)) ([Madeorsk](https://github.com/Madeorsk))
+* [TypeScript] Fix usage of `ReactElement` when it should be `ReactNode` ([#11030](https://github.com/marmelab/react-admin/pull/11030)) ([djhi](https://github.com/djhi))
+* [Demo] Update lists to allow sorting by reference ([#11021](https://github.com/marmelab/react-admin/pull/11021)) ([fzaninotto](https://github.com/fzaninotto))
+* [Storybook] Fix array input stories ([#11002](https://github.com/marmelab/react-admin/pull/11002)) ([djhi](https://github.com/djhi))
+* [chore] Update `ra-core` Test UI ([#11020](https://github.com/marmelab/react-admin/pull/11020)) ([djhi](https://github.com/djhi))
+* [Chore]: Update react-admin to use ReactNode instead of ReactElement where applicable ([#10996](https://github.com/marmelab/react-admin/pull/10996)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Bump min-document from 2.19.0 to 2.19.1 ([#11029](https://github.com/marmelab/react-admin/pull/11029)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 6.3.6 to 6.4.1 ([#11026](https://github.com/marmelab/react-admin/pull/11026)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 5.13.7 to 5.14.3 ([#11025](https://github.com/marmelab/react-admin/pull/11025)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.12.3
 
 * Fix optimistic query invalidation and avoid invalidating the same query twice ([#11017](https://github.com/marmelab/react-admin/pull/11017)) ([slax57](https://github.com/slax57))
