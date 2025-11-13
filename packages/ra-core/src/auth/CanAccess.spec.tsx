@@ -8,7 +8,7 @@ import {
     NoAuthProvider,
     AccessDenied,
 } from './CanAccess.stories';
-import { AuthProvider } from '..';
+import { AuthProvider } from '../types';
 
 describe('<CanAccess>', () => {
     it('renders nothing while loading by default', async () => {

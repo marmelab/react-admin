@@ -4,7 +4,7 @@ import { Location, Route, Routes } from 'react-router';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { useRequireAccess, UseRequireAccessResult } from './useRequireAccess';
-import { TestMemoryRouter } from '..';
+import { TestMemoryRouter } from '../routing';
 
 export default {
     title: 'ra-core/auth/useRequireAccess',

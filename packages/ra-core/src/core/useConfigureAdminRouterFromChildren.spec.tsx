@@ -8,8 +8,7 @@ import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
-import { CoreLayoutProps } from '../types';
-import { AuthProvider, ResourceProps } from '..';
+import { AuthProvider, CoreLayoutProps, ResourceProps } from '../types';
 import { TestMemoryRouter } from '../routing';
 
 const ResourceDefinitionsTestComponent = () => {

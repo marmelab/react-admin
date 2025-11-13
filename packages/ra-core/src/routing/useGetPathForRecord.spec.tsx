@@ -9,7 +9,7 @@ import {
     NoAuthProvider,
     SlowLoading,
 } from './useGetPathForRecord.stories';
-import { AuthProvider } from '..';
+import { AuthProvider } from '../types';
 
 describe('useGetPathForRecord', () => {
     it('should return an edit path for a record when there is no authProvider', async () => {

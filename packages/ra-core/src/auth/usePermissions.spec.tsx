@@ -7,7 +7,7 @@ import {
     NoAuthProviderGetPermissions,
     WithAuthProviderAndGetPermissions,
 } from './usePermissions.stories';
-import { AuthProvider } from '..';
+import { AuthProvider } from '../types';
 
 describe('usePermissions', () => {
     it('should return a loading state on mount with an authProvider that supports permissions', async () => {

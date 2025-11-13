@@ -14,7 +14,7 @@ import { Resource } from 'ra-core';
 import * as React from 'react';
 
 import { AdminContext } from '../AdminContext';
-import { AdminUI } from '..';
+import { AdminUI } from '../AdminUI';
 import { Layout } from './Layout';
 
 export default {
