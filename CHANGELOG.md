@@ -43,6 +43,51 @@ This release changed the way react-admin exports its modules to be fully compati
 
 See https://marmelab.com/react-admin/UnitTesting.html#working-with-jest for more details.
 
+### Webpack configuration update
+
+If you use MUI v5 or MUI v6, you may need to update your Webpack config by adding the following rules:
+
+```js
+{
+    // Your config
+    modules: {
+        rules: [
+            // Your other rules
+            {
+                test: /\.m?js/,
+                type: "javascript/auto",
+            },
+            {
+                test: /\.m?js/,
+                resolve: {
+                fullySpecified: false,
+                },
+            },
+        ]
+    }
+}
+```
+
+### Vite configuration update
+
+If you use MUI v5, you may have to add the following alias:
+
+```js
+export default defineConfig(({ mode }) => ({
+    // Your config
+    resolve: {
+        // Your resolve config
+        alias: [
+            // Your other aliases
+            {
+                find: /^@mui\/icons-material\/(.*)/,
+                replacement: "@mui/icons-material/esm/$1",
+            },
+        ]
+    }
+});
+```
+
 ## 5.12.3
 
 * Fix optimistic query invalidation and avoid invalidating the same query twice ([#11017](https://github.com/marmelab/react-admin/pull/11017)) ([slax57](https://github.com/slax57))
