@@ -24,13 +24,11 @@
 * Bump vite from 6.3.6 to 6.4.1 ([#11026](https://github.com/marmelab/react-admin/pull/11026)) ([dependabot[bot]](https://github.com/apps/dependabot))
 * Bump astro from 5.13.7 to 5.14.3 ([#11025](https://github.com/marmelab/react-admin/pull/11025)) ([dependabot[bot]](https://github.com/apps/dependabot))
 
-### Additional Release Notes
-
-#### React-hook-form version bump
+### React-hook-form version bump
 
 This release bumps the minimum required version of `react-hook-form` to `7.65.0`.
 
-#### Jest configuration update
+### Jest configuration update
 
 This release changed the way react-admin exports its modules to be fully compatible with ESM (PR [#10995](https://github.com/marmelab/react-admin/pull/10995)). This may require you to update your Jest configuration if you are using Jest in CJS mode (the default).
 
