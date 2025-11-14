@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.13.1
+
+* Fix imports from directory ([#11039](https://github.com/marmelab/react-admin/pull/11039)) ([djhi](https://github.com/djhi))
+* Fix `<ReferenceFieldBase>` considers zero-index reference as empty ([#11042](https://github.com/marmelab/react-admin/pull/11042)) ([fzaninotto](https://github.com/fzaninotto))
+* [Storybook] Fix `<ArrayInputBase>` story issue when adding back a removed item ([#11041](https://github.com/marmelab/react-admin/pull/11041)) ([djhi](https://github.com/djhi))
+* [Storybook] Fix `<SaveButton>` Dirty story ([#11040](https://github.com/marmelab/react-admin/pull/11040)) ([djhi](https://github.com/djhi))
+* Bump astro from 5.15.3 to 5.15.6 ([#11043](https://github.com/marmelab/react-admin/pull/11043)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Fix release script copies invalid node_modules subfolder ([#11038](https://github.com/marmelab/react-admin/pull/11038)) ([slax57](https://github.com/slax57))
+
 ## 5.13.0
 
 * Introduce `<ArrayInputBase>`, `<SimpleFomIteratorBase>` and `<SimpleFormIteratorItemBase>` ([#10955](https://github.com/marmelab/react-admin/pull/10955)) ([djhi](https://github.com/djhi))
