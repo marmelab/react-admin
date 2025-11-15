@@ -3,7 +3,6 @@ import {
     List,
     ListItemAvatar,
     ListItemIcon,
-    ListItemSecondaryAction,
     ListItemText,
     ListProps,
 } from '@mui/material';
@@ -125,13 +124,33 @@ export const SimpleList = <RecordType extends RaRecord = any>(
                                 rowSx={rowSx}
                                 rowStyle={rowStyle}
                                 resource={resource}
+                                secondaryAction={
+                                    rightAvatar || rightIcon ? (
+                                        <>
+                                            {rightAvatar && (
+                                                <Avatar>
+                                                    {renderAvatar(
+                                                        record,
+                                                        rightAvatar
+                                                    )}
+                                                </Avatar>
+                                            )}
+                                            {rightIcon && (
+                                                <ListItemIcon>
+                                                    {rightIcon(
+                                                        record,
+                                                        record.id
+                                                    )}
+                                                </ListItemIcon>
+                                            )}
+                                        </>
+                                    ) : null
+                                }
                             >
                                 <SimpleListItemContent
                                     leftAvatar={leftAvatar}
                                     leftIcon={leftIcon}
                                     primaryText={primaryText}
-                                    rightAvatar={rightAvatar}
-                                    rightIcon={rightIcon}
                                     secondaryText={secondaryText}
                                     tertiaryText={tertiaryText}
                                     rowIndex={rowIndex}
@@ -163,34 +182,12 @@ export interface SimpleListProps<RecordType extends RaRecord = any>
 const SimpleListItemContent = <RecordType extends RaRecord = any>(
     props: SimpleListItemProps<RecordType>
 ) => {
-    const {
-        leftAvatar,
-        leftIcon,
-        primaryText,
-        rightAvatar,
-        rightIcon,
-        secondaryText,
-        tertiaryText,
-    } = props;
+    const { leftAvatar, leftIcon, primaryText, secondaryText, tertiaryText } =
+        props;
     const resource = useResourceContext(props);
     const record = useRecordContext<RecordType>(props);
     const getRecordRepresentation = useGetRecordRepresentation(resource);
     const translate = useTranslate();
-
-    const renderAvatar = (
-        record: RecordType,
-        avatarCallback: FunctionToElement<RecordType>
-    ) => {
-        const avatarValue = avatarCallback(record, record.id);
-        if (
-            typeof avatarValue === 'string' &&
-            (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
-        ) {
-            return <Avatar src={avatarValue} />;
-        } else {
-            return <Avatar>{avatarValue}</Avatar>;
-        }
-    };
 
     if (!record) return null;
 
@@ -250,20 +247,23 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
                             secondaryText(record, record.id))
                 }
             />
-            {(rightAvatar || rightIcon) && (
-                <ListItemSecondaryAction>
-                    {rightAvatar && (
-                        <Avatar>{renderAvatar(record, rightAvatar)}</Avatar>
-                    )}
-                    {rightIcon && (
-                        <ListItemIcon>
-                            {rightIcon(record, record.id)}
-                        </ListItemIcon>
-                    )}
-                </ListItemSecondaryAction>
-            )}
         </>
     );
+};
+
+const renderAvatar = <RecordType extends RaRecord = any>(
+    record: RecordType,
+    avatarCallback: FunctionToElement<RecordType>
+) => {
+    const avatarValue = avatarCallback(record, record.id);
+    if (
+        typeof avatarValue === 'string' &&
+        (avatarValue.startsWith('http') || avatarValue.startsWith('data:'))
+    ) {
+        return <Avatar src={avatarValue} />;
+    } else {
+        return <Avatar>{avatarValue}</Avatar>;
+    }
 };
 
 const PREFIX = 'RaSimpleList';

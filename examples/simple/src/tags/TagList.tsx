@@ -12,7 +12,6 @@ import {
     List,
     ListItem,
     ListItemText,
-    ListItemSecondaryAction,
     Collapse,
     Card,
     Stack,
@@ -76,16 +75,16 @@ const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
     const open = openChildren.includes(root.id);
     return (
         <Fragment>
-            <ListItem disablePadding style={{ paddingLeft: level * 16 }}>
+            <ListItem
+                disablePadding
+                sx={{ paddingLeft: level * 16 }}
+                secondaryAction={<EditButton record={root} />}
+            >
                 <ListItemButton onClick={() => hasChildren && toggleNode(root)}>
                     {hasChildren && open && <ExpandLess />}
                     {hasChildren && !open && <ExpandMore />}
                     {!hasChildren && <div style={{ width: 24 }}>&nbsp;</div>}
                     <ListItemText primary={root.name.en} />
-
-                    <ListItemSecondaryAction>
-                        <EditButton record={root} />
-                    </ListItemSecondaryAction>
                 </ListItemButton>
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
