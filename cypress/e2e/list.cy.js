@@ -170,6 +170,37 @@ describe('List Page', () => {
             );
         });
 
+        it('should not create duplicate selections when checking page after individual selections', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('input[type="checkbox"]').eq(1).click();
+            cy.get('input[type="checkbox"]').eq(2).click();
+            cy.contains('2 items selected');
+            ListPagePosts.toggleSelectAll();
+            cy.contains('10 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(10)
+            );
+        });
+
+        it('should handle uncheck and recheck without duplicates', () => {
+            cy.contains('1-10 of 13'); // wait for data
+            cy.get('input[type="checkbox"]').eq(1).click();
+            cy.get('input[type="checkbox"]').eq(2).click();
+            cy.get('input[type="checkbox"]').eq(3).click();
+            cy.contains('3 items selected');
+            ListPagePosts.toggleSelectAll();
+            cy.contains('10 items selected');
+            ListPagePosts.toggleSelectAll();
+            cy.get(ListPagePosts.elements.bulkActionsToolbar).should(
+                'not.be.visible'
+            );
+            ListPagePosts.toggleSelectAll();
+            cy.contains('10 items selected');
+            cy.get(ListPagePosts.elements.selectedItem).should(els =>
+                expect(els).to.have.length(10)
+            );
+        });
+
         it('should allow to trigger a custom bulk action on selected items', () => {
             cy.contains('1-10 of 13'); // wait for data
             ListPagePosts.toggleSelectAll();
