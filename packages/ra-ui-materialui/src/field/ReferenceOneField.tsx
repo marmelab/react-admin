@@ -106,7 +106,7 @@ export interface ReferenceOneFieldProps<
     /**
      * @deprecated Use the empty prop instead
      */
-    emptyText?: string | ReactNode;
+    emptyText?: ReactNode;
     empty?: ReactNode;
     offline?: ReactNode;
     queryOptions?: Omit<
