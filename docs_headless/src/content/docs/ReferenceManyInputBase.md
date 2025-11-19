@@ -59,7 +59,7 @@ const ProductEdit = () => (
 );
 ```
 
-`<ReferenceManyInputBase>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (an iterator component, usually built with [`<SimpleFormIteratorBase>`](./SimpleFormIteratorBase.md)) to edit the relationship.
+`<ReferenceManyInputBase>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (usually a `<SimpleFormIterator>`) to edit the relationship.
 
 `<ReferenceManyInputBase>` persists the changes in the reference records (variants in the above example) after persisting the changes in the main resource (product in the above example). This means that you can also use `<ReferenceManyInputBase>` in `<CreateBase>` views.
 
@@ -84,7 +84,7 @@ const ProductEdit = () => (
 
 ## `children`
 
-`<ReferenceManyInputBase>` creates an `ArrayInputContext`, so it accepts the same type of children as `<ArrayInputBase>`: a Form iterator. You can build your own form iterator by leveraging [`<SimpleFormIteratorBase>`](./SimpleFormIteratorBase.md). It renders one row for each related record, giving the user the ability to add, remove, or edit related records.
+`<ReferenceManyInputBase>` creates an `ArrayInputContext`, so it accepts the same type of children as `<ArrayInput>`: a Form iterator. React-admin bundles one such iterator: `<SimpleFormIterator>`. It renders one row for each related record, giving the user the ability to add, remove, or edit related records.
 
 ```jsx
 <ReferenceManyInputBase reference="variants" target="product_id">
@@ -97,7 +97,7 @@ const ProductEdit = () => (
 </ReferenceManyInputBase>
 ```
 
-Check out [the `<SimpleFormIteratorBase>` documentation](./SimpleFormIteratorBase.md) for more details.
+Check out [the `<SimpleFormIterator>` documentation](https://marmelab.com/react-admin/SimpleFormIterator.html) for more details.
 
 ## `defaultValue`
 
@@ -151,7 +151,7 @@ By default, ra-core-ee restricts the possible values to 25 and displays no pagin
 
 ## `rankSource`
 
-If the Form iterator you use as `ReferenceManyInputBase` children provides controls to reorder the items in the list and the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
+If the Form iterator you use as `ReferenceManyInputBase` children (e.g. `<SimpleFormIterator>`) provides controls to reorder the items in the list and the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
 
 For example, if the variants have a `rank` field, you can set the `rankSource` prop like this:
 
