@@ -4,7 +4,7 @@ sidebar:
   order: 4
 ---
 
-<iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/2loA65et3JU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 Once a user is authenticated, your application may need to check if the user has the right to access a specific resource or perform a particular action. ra-core provides two ways to do so:
 

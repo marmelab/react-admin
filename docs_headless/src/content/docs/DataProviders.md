@@ -455,7 +455,7 @@ Some data providers, like `ra-data-simple-rest`, already support query cancellat
 
 ## Adding Lifecycle Callbacks
 
-<iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/o8U-wjfUwGk" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 It often happens that you need specific data logic to be executed before or after a dataProvider call. For instance, you may want to delete the comments related to a post before deleting the post itself. The general advice is to **put that code on the server-side**. If you can't, the next best place to put this logic is the `dataProvider`.
 
@@ -516,7 +516,7 @@ Check the [withLifecycleCallbacks](./withLifecycleCallbacks.md) documentation fo
 
 If you need to build an app relying on more than one API, you may face a problem: the `<CoreAdmin>` component accepts only one `dataProvider` prop. You can combine multiple data providers into one using the `combineDataProviders` helper. It expects a function as a parameter accepting a resource name and returning a data provider for that resource.
 
-<iframe src="https://www.youtube-nocookie.com/embed/x9EZk0i6VHw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/x9EZk0i6VHw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 For instance, the following app uses `ra-data-simple-rest` for the `posts` and `comments` resources, and `ra-data-local-storage` for the `user` resource:
 
