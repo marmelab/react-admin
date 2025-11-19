@@ -67,20 +67,20 @@ const ProductEdit = () => (
 
 ## Props
 
-| Prop              | Required | Type                      | Default                          | Description                                                                                                                                                            |
-| ----------------- | -------- | ------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `target`          | Required | `string`                  | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'                                                                                      |
-| `reference`       | Required | `string`                  | -                                | The name of the resource for the referenced records, e.g. 'books'                                                                                                      |
-| `children`        | Optional | `Element`                 | -                                | One or several elements that render a list of records based on a `ListContext`                                                                                         |
-| `defaultValue`    | Optional | `array`                   | -                                | Default value of the input.                                                                                                                                            |
-| `filter`          | Optional | `Object`                  | -                                | Filters to use when fetching the related records, passed to `getManyReference()`                                                                                       |
-| `mutationOptions` | Optional | `UseMutationOptions`      | -                                | Options for the mutations (`create`, `update` and `delete`)                                                                                                            |
-| `perPage`         | Optional | `number`                  | 25                               | Maximum number of referenced records to fetch                                                                                                                          |
-| `queryOptions`    | Optional | `UseQueryOptions`         | -                                | Options for the queries (`getManyReferences`)                                                                                                                          |
-| `rankSource`    | Optional | `string`                  | -                                | Name of the field used to store the rank of each item. When defined, it enables reordering of the items.                                                 |
-| `sort`            | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                                                                    |
-| `source`          | Optional | `string`                  | `id`                             | Name of the field that carries the identity of the current record, used as origin for the relationship                                                                 |
-| `validate`        | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](https://marmelab.com/ra-core/validation) for details.                                      |
+| Prop              | Required | Type                      | Default                          | Description                                                                                                              |
+| ----------------- | -------- | ------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `target`          | Required | `string`                  | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'                                        |
+| `reference`       | Required | `string`                  | -                                | The name of the resource for the referenced records, e.g. 'books'                                                        |
+| `children`        | Optional | `Element`                 | -                                | One or several elements that render a list of records based on a `ListContext`                                           |
+| `defaultValue`    | Optional | `array`                   | -                                | Default value of the input.                                                                                              |
+| `filter`          | Optional | `Object`                  | -                                | Filters to use when fetching the related records, passed to `getManyReference()`                                         |
+| `mutationOptions` | Optional | `UseMutationOptions`      | -                                | Options for the mutations (`create`, `update` and `delete`)                                                              |
+| `perPage`         | Optional | `number`                  | 25                               | Maximum number of referenced records to fetch                                                                            |
+| `queryOptions`    | Optional | `UseQueryOptions`         | -                                | Options for the queries (`getManyReferences`)                                                                            |
+| `rankSource`      | Optional | `string`                  | -                                | Name of the field used to store the rank of each item. When defined, it enables reordering of the items.                 |
+| `sort`            | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                      |
+| `source`          | Optional | `string`                  | `id`                             | Name of the field that carries the identity of the current record, used as origin for the relationship                   |
+| `validate`        | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](https://marmelab.com/ra-core/validation) for details. |
 
 ## `children`
 
