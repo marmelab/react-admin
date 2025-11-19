@@ -113,12 +113,10 @@ describe('useDeleteMany', () => {
             expect(screen.queryByText('World')).not.toBeNull();
             expect(screen.queryByText('mutating')).not.toBeNull();
         });
-        await waitFor(() => {
-            expect(screen.queryByText('success')).not.toBeNull();
-            expect(screen.queryByText('Hello')).toBeNull();
-            expect(screen.queryByText('World')).not.toBeNull();
-            expect(screen.queryByText('mutating')).toBeNull();
-        });
+        await screen.findByText('success');
+        await screen.findByText('World');
+        expect(screen.queryByText('Hello')).toBeNull();
+        await waitFor(() => expect(screen.queryByText('mutating')).toBeNull());
 
         expect(dataProvider.deleteMany).toHaveBeenCalledWith('posts', {
             ids: [1],
