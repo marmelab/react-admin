@@ -6,7 +6,7 @@ import {
     styled,
 } from '@mui/material/styles';
 import { StackProps, useThemeProps } from '@mui/material';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
@@ -115,7 +115,7 @@ export const TranslatableInputs = (inProps: TranslatableInputsProps) => {
 
 export interface TranslatableInputsProps extends UseTranslatableOptions {
     className?: string;
-    selector?: ReactNode;
+    selector?: ReactElement;
     children: ReactNode;
     fullWidth?: boolean;
     groupKey?: string;

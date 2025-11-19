@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import type { ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,
@@ -123,7 +123,7 @@ export interface TranslatableFieldsProps extends UseTranslatableOptions {
     className?: string;
     record?: RaRecord;
     resource?: string;
-    selector?: ReactNode;
+    selector?: ReactElement;
     groupKey?: string;
 }
 
