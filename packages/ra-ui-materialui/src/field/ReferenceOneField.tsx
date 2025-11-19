@@ -1,4 +1,4 @@
-import React, { ReactElement, ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
@@ -106,7 +106,7 @@ export interface ReferenceOneFieldProps<
     /**
      * @deprecated Use the empty prop instead
      */
-    emptyText?: string | ReactElement;
+    emptyText?: ReactNode;
     empty?: ReactNode;
     offline?: ReactNode;
     queryOptions?: Omit<
