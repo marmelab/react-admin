@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import TextField from '@mui/material/TextField';
 
+// @deprecated
 export const ReferenceError = ({
     label,
     error,
