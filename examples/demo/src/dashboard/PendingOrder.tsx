@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     ListItem,
-    ListItemSecondaryAction,
     ListItemAvatar,
     ListItemText,
     Avatar,
@@ -49,17 +48,15 @@ export const PendingOrder = (props: Props) => {
                             : '',
                     })}
                 />
-                <ListItemSecondaryAction>
-                    <Box
-                        component="span"
-                        sx={{
-                            marginRight: '1em',
-                            color: 'text.primary',
-                        }}
-                    >
-                        {order.total}$
-                    </Box>
-                </ListItemSecondaryAction>
+                <Box
+                    component="span"
+                    sx={{
+                        marginRight: '1em',
+                        color: 'text.primary',
+                    }}
+                >
+                    {order.total}$
+                </Box>
             </ListItemButton>
         </ListItem>
     );

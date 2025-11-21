@@ -1,9 +1,9 @@
 import {
     Avatar,
+    Box,
     List,
     ListItemAvatar,
     ListItemIcon,
-    ListItemSecondaryAction,
     ListItemText,
     ListProps,
 } from '@mui/material';
@@ -251,7 +251,7 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
                 }
             />
             {(rightAvatar || rightIcon) && (
-                <ListItemSecondaryAction>
+                <Box>
                     {rightAvatar && (
                         <Avatar>{renderAvatar(record, rightAvatar)}</Avatar>
                     )}
@@ -260,7 +260,7 @@ const SimpleListItemContent = <RecordType extends RaRecord = any>(
                             {rightIcon(record, record.id)}
                         </ListItemIcon>
                     )}
-                </ListItemSecondaryAction>
+                </Box>
             )}
         </>
     );
