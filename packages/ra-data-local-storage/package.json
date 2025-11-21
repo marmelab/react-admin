@@ -1,62 +1,62 @@
 {
-  "name": "ra-data-local-storage",
-  "version": "5.13.1",
-  "description": "Local storage data provider for react-admin",
-  "zshy": "./src/index.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
-  "type": "module",
-  "sideEffects": false,
-  "files": [
-    "LICENSE",
-    "*.md",
-    "dist",
-    "src"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marmelab/react-admin.git"
-  },
-  "keywords": [
-    "reactjs",
-    "react",
-    "react-admin",
-    "rest",
-    "fakerest",
-    "local"
-  ],
-  "author": "François Zaninotto",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/marmelab/react-admin/issues"
-  },
-  "homepage": "https://github.com/marmelab/react-admin#readme",
-  "scripts": {
-    "build": "zshy --silent"
-  },
-  "dependencies": {
-    "lodash": "~4.17.5",
-    "ra-data-fakerest": "^5.13.1"
-  },
-  "devDependencies": {
-    "typescript": "^5.1.3",
-    "zshy": "^0.5.0"
-  },
-  "peerDependencies": {
-    "ra-core": "*"
-  },
-  "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+    "name": "ra-data-local-storage",
+    "version": "5.13.2",
+    "description": "Local storage data provider for react-admin",
+    "zshy": "./src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "type": "module",
+    "sideEffects": false,
+    "files": [
+        "LICENSE",
+        "*.md",
+        "dist",
+        "src"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "rest",
+        "fakerest",
+        "local"
+    ],
+    "author": "François Zaninotto",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "scripts": {
+        "build": "zshy --silent"
+    },
+    "dependencies": {
+        "lodash": "~4.17.5",
+        "ra-data-fakerest": "^5.13.2"
+    },
+    "devDependencies": {
+        "typescript": "^5.1.3",
+        "zshy": "^0.5.0"
+    },
+    "peerDependencies": {
+        "ra-core": "*"
+    },
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
     }
-  }
 }

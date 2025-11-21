@@ -1,67 +1,67 @@
 {
-  "name": "ra-no-code",
-  "version": "5.13.1",
-  "description": "",
-  "files": [
-    "*.md",
-    "dist",
-    "src"
-  ],
-  "zshy": "./src/index.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
-  "type": "module",
-  "sideEffects": false,
-  "authors": [
-    "Gildas Garcia"
-  ],
-  "repository": "marmelab/react-admin",
-  "homepage": "https://github.com/marmelab/react-admin#readme",
-  "bugs": "https://github.com/marmelab/react-admin/issues",
-  "license": "MIT",
-  "scripts": {
-    "build": "zshy --silent"
-  },
-  "devDependencies": {
-    "@tanstack/react-query": "^5.90.2",
-    "@testing-library/react": "^15.0.7",
-    "@testing-library/user-event": "^14.5.2",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router": "^6.22.0",
-    "react-router-dom": "^6.22.0",
-    "typescript": "^5.1.3",
-    "zshy": "^0.5.0"
-  },
-  "peerDependencies": {
-    "@mui/icons-material": "^5.16.12 || ^6.0.0 || ^7.0.0",
-    "@mui/material": "^5.16.12 || ^6.0.0 || ^7.0.0",
-    "react": "^18.0.0 || ^19.0.0",
-    "react-dom": "^18.0.0 || ^19.0.0"
-  },
-  "dependencies": {
-    "@tanstack/react-query": "^5.83.0",
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
-    "inflection": "^3.0.0",
-    "lodash": "~4.17.5",
-    "papaparse": "^5.3.0",
-    "ra-data-local-storage": "^5.13.1",
-    "react-admin": "^5.13.1",
-    "react-dropzone": "^14.2.3"
-  },
-  "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+    "name": "ra-no-code",
+    "version": "5.13.2",
+    "description": "",
+    "files": [
+        "*.md",
+        "dist",
+        "src"
+    ],
+    "zshy": "./src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "type": "module",
+    "sideEffects": false,
+    "authors": [
+        "Gildas Garcia"
+    ],
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
+    "scripts": {
+        "build": "zshy --silent"
+    },
+    "devDependencies": {
+        "@tanstack/react-query": "^5.90.2",
+        "@testing-library/react": "^15.0.7",
+        "@testing-library/user-event": "^14.5.2",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-router": "^6.22.0",
+        "react-router-dom": "^6.22.0",
+        "typescript": "^5.1.3",
+        "zshy": "^0.5.0"
+    },
+    "peerDependencies": {
+        "@mui/icons-material": "^5.16.12 || ^6.0.0 || ^7.0.0",
+        "@mui/material": "^5.16.12 || ^6.0.0 || ^7.0.0",
+        "react": "^18.0.0 || ^19.0.0",
+        "react-dom": "^18.0.0 || ^19.0.0"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.83.0",
+        "clsx": "^2.1.1",
+        "date-fns": "^3.6.0",
+        "inflection": "^3.0.0",
+        "lodash": "~4.17.5",
+        "papaparse": "^5.3.0",
+        "ra-data-local-storage": "^5.13.2",
+        "react-admin": "^5.13.2",
+        "react-dropzone": "^14.2.3"
+    },
+    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
     }
-  }
 }
