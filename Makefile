@@ -112,7 +112,11 @@ build-create-react-admin:
 	@echo "Transpiling create-react-admin files...";
 	@cd ./packages/create-react-admin && yarn build
 
-build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-local-forage build-ra-data-local-storage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-ra-i18n-polyglot build-react-admin build-ra-no-code build-create-react-admin  ## compile ES6 files to JS
+update-package-exports: ## Update the package.json "exports" field for all packages
+	@echo "Updating package exports..."
+	@yarn tsx ./scripts/update-package-exports.ts
+
+build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-local-forage build-ra-data-local-storage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-ra-i18n-polyglot build-react-admin build-ra-no-code build-create-react-admin update-package-exports  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn doc
