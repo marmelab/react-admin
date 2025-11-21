@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.13.2
+
+* Fix `<SelectAllButton>` ignores the `storeKey` ([#11060](https://github.com/marmelab/react-admin/pull/11060)) ([slax57](https://github.com/slax57))
+* Fix package exports ([#11059](https://github.com/marmelab/react-admin/pull/11059)) ([djhi](https://github.com/djhi))
+* Fix `<DataTable>` may duplicate ids in its selection state ([#11047](https://github.com/marmelab/react-admin/pull/11047)) ([Jszigeti](https://github.com/Jszigeti))
+* [Doc] Update `<ReferenceManyInputBase>` props table ([#11055](https://github.com/marmelab/react-admin/pull/11055)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Fix Youtube integrations ([#11053](https://github.com/marmelab/react-admin/pull/11053)) ([slax57](https://github.com/slax57))
+* [Doc] Fix headless FormDataConsumer doc still references react-admin, and mention SimpleFormIteratorBase ([#11050](https://github.com/marmelab/react-admin/pull/11050)) ([slax57](https://github.com/slax57))
+* [Doc] Update RA Core EE documentation ([#11037](https://github.com/marmelab/react-admin/pull/11037)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [TypeScript] Fix usage of `ReactElement` when it should be `ReactNode` ([#11046](https://github.com/marmelab/react-admin/pull/11046)) ([djhi](https://github.com/djhi))
+* [website] Remove banner to announce Shadcn Admin Kit - master ([#11048](https://github.com/marmelab/react-admin/pull/11048)) ([slax57](https://github.com/slax57))
+* [chore] Bump astro from 5.15.6 to 5.15.9 ([#11057](https://github.com/marmelab/react-admin/pull/11057)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Stabilize flaky unit tests ([#11056](https://github.com/marmelab/react-admin/pull/11056)) ([djhi](https://github.com/djhi))
+
 ## 5.13.1
 
 * Fix imports from directory ([#11039](https://github.com/marmelab/react-admin/pull/11039)) ([djhi](https://github.com/djhi))
