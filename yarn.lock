@@ -9605,7 +9605,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     ra-core: ^5.0.0
   languageName: unknown
@@ -19330,8 +19330,9 @@ __metadata:
     typescript: "npm:^5.1.3"
     yup: "npm:^0.32.11"
     zod: "npm:^3.22.1"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
+    "@tanstack/react-query": ^5.83.0
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: ^7.65.0
@@ -19349,7 +19350,7 @@ __metadata:
     fakerest: "npm:^4.0.1"
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     ra-core: ^5.0.0
   languageName: unknown
@@ -19366,7 +19367,7 @@ __metadata:
     pluralize: "npm:~7.0.0"
     ra-data-graphql: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     graphql: ^15.6.0
     ra-core: ^5.0.0
@@ -19383,7 +19384,7 @@ __metadata:
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     graphql: ^15.6.0 || ^16
     ra-core: ^5.0.0
@@ -19397,7 +19398,7 @@ __metadata:
     query-string: "npm:^7.1.3"
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   languageName: unknown
   linkType: soft
 
@@ -19409,7 +19410,7 @@ __metadata:
     lodash: "npm:~4.17.5"
     ra-data-fakerest: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     ra-core: "*"
   languageName: unknown
@@ -19422,7 +19423,7 @@ __metadata:
     lodash: "npm:~4.17.5"
     ra-data-fakerest: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     ra-core: "*"
   languageName: unknown
@@ -19435,7 +19436,7 @@ __metadata:
     query-string: "npm:^7.1.3"
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     ra-core: ^5.0.0
   languageName: unknown
@@ -19453,7 +19454,7 @@ __metadata:
     ra-language-french: "npm:^5.13.1"
     react-i18next: "npm:^14.1.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
   languageName: unknown
@@ -19466,7 +19467,7 @@ __metadata:
     node-polyglot: "npm:^2.2.2"
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   languageName: unknown
   linkType: soft
 
@@ -19501,7 +19502,7 @@ __metadata:
     react-hook-form: "npm:^7.65.0"
     tippy.js: "npm:^6.3.7"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     "@mui/icons-material": ^5.16.12 || ^6.0.0 || ^7.0.0
     "@mui/material": ^5.16.12 || ^6.0.0 || ^7.0.0
@@ -19518,7 +19519,7 @@ __metadata:
   dependencies:
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   languageName: unknown
   linkType: soft
 
@@ -19528,7 +19529,7 @@ __metadata:
   dependencies:
     ra-core: "npm:^5.13.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   languageName: unknown
   linkType: soft
 
@@ -19552,7 +19553,7 @@ __metadata:
     react-router: "npm:^6.22.0"
     react-router-dom: "npm:^6.22.0"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     "@mui/icons-material": ^5.16.12 || ^6.0.0 || ^7.0.0
     "@mui/material": ^5.16.12 || ^6.0.0 || ^7.0.0
@@ -19604,12 +19605,13 @@ __metadata:
     react-router-dom: "npm:^6.28.1"
     react-transition-group: "npm:^4.4.5"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     "@mui/icons-material": ^5.16.12 || ^6.0.0 || ^7.0.0
     "@mui/material": ^5.16.12 || ^6.0.0 || ^7.0.0
     "@mui/system": ^5.15.20 || ^6.0.0 || ^7.0.0
     "@mui/utils": ^5.15.20 || ^6.0.0 || ^7.0.0
+    "@tanstack/react-query": ^5.83.0
     csstype: ^3.1.3
     ra-core: ^5.0.0
     react: ^18.0.0 || ^19.0.0
@@ -19799,7 +19801,7 @@ __metadata:
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
     typescript: "npm:^5.1.3"
-    zshy: "npm:^0.4.4"
+    zshy: "npm:^0.5.0"
   peerDependencies:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
@@ -24536,9 +24538,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zshy@npm:^0.4.4":
-  version: 0.4.4
-  resolution: "zshy@npm:0.4.4"
+"zshy@npm:^0.5.0":
+  version: 0.5.0
+  resolution: "zshy@npm:0.5.0"
   dependencies:
     arg: "npm:^5.0.2"
     fast-glob: "npm:^3.3.2"
@@ -24547,7 +24549,7 @@ __metadata:
     typescript: ">5.5.0"
   bin:
     zshy: dist/index.cjs
-  checksum: 44965341c9c95a81da8a25f7d331669e53a041b7bdd5274111db03d39d7122cb4eb7e8a70b10832157cae6f580a32745153e7f3aadf7f7e43b3268e2950023c5
+  checksum: 6ece7ab756ccc63810f73fb4693053630611a18cfeb012beedeca20a690dc4bda94eced9b700e23c7b5ad82fc34e5ea766c9c54d7ed20adb5ecbe0adf7e35115
   languageName: node
   linkType: hard
 
