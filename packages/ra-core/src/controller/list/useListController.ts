@@ -199,6 +199,8 @@ export const useListController = <
         resource,
         sort: { field: query.sort, order: query.order },
         filter: { ...query.filter, ...filter },
+        disableSyncWithStore: storeKey === false,
+        storeKey: storeKey === false ? undefined : storeKey,
     });
 
     return {
