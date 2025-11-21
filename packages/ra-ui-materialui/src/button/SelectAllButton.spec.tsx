@@ -1,6 +1,6 @@
 import React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { Basic, Label, Limit } from './SelectAllButton.stories';
+import { Basic, Label, Limit, StoreKey } from './SelectAllButton.stories';
 
 describe('<SelectAllButton />', () => {
     it('should render a "Select All" button', async () => {
@@ -74,5 +74,14 @@ describe('<SelectAllButton />', () => {
                 })
             ).toBeNull();
         });
+    });
+
+    it('should select all items with a storeKey', async () => {
+        render(<StoreKey />);
+        await screen.findByText('War and Peace');
+        fireEvent.click(screen.getAllByRole('checkbox')[0]);
+        await screen.findByText('10 items selected');
+        fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
+        await screen.findByText('17 items selected');
     });
 });

@@ -43,7 +43,7 @@ import type { FilterPayload, RaRecord, SortPayload } from '../../types';
 export const useSelectAll = (
     params: UseSelectAllParams
 ): UseSelectAllResult => {
-    const { sort, filter } = params;
+    const { sort, filter, storeKey, disableSyncWithStore } = params;
     const resource = useResourceContext(params);
     if (!resource) {
         throw new Error(
@@ -52,7 +52,11 @@ export const useSelectAll = (
     }
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const [, { select }] = useRecordSelection({ resource });
+    const [, { select }] = useRecordSelection({
+        resource,
+        storeKey,
+        disableSyncWithStore,
+    });
     const notify = useNotify();
 
     const handleSelectAll = useEvent(
@@ -117,6 +121,8 @@ export interface UseSelectAllParams {
     resource?: string;
     sort?: SortPayload;
     filter?: FilterPayload;
+    storeKey?: string;
+    disableSyncWithStore?: boolean;
 }
 
 export interface HandleSelectAllParams<RecordType extends RaRecord = any> {
