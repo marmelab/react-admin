@@ -45,7 +45,8 @@ On our [Youtube channel](https://www.youtube.com/@react-admin), you can find som
 
 <div class="iframe-wrapper">
     <iframe
-        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP">
+        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP"
+        referrerpolicy="strict-origin-when-cross-origin">
     </iframe>
 </div>
 

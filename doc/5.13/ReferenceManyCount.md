@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-fields-referencemanycount--basic
 
 When you need to render the number of records related to another record via a one-to-many relationship (e.g. the number of comments related to a post), use the `<ReferenceManyCount>` component. It calls `dataProvider.getManyReference()` with the `pagination` parameter set to retrieve no data - only the total number of records.
 
-<iframe src="https://www.youtube-nocookie.com/embed/XCucarroK8o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/XCucarroK8o" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 

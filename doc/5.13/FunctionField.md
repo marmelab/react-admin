@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-fields-functionfield--basic
 
 If you need a special function to render a field, `<FunctionField>` is the perfect match. It executes a `render` function using the current record as parameter.
 
-<iframe src="https://www.youtube-nocookie.com/embed/gcgefw79QdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/gcgefw79QdM" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 

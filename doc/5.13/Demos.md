@@ -268,7 +268,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
 The admin of a fictional poster shop, allowing to manage sales, products, customers and reviews. Built by the core team.
 
 <div style="padding:56.25% 0 0 0;position:relative;">
-<iframe src="https://www.youtube-nocookie.com/embed/bJEo1O1oT6o" title="react admin e commerce demo" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/bJEo1O1oT6o" title="react admin e commerce demo" style="position:absolute;top:0;left:0;width:100%;height:100%;" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>
 </div>
 <br>
 
@@ -362,7 +362,7 @@ The source shows how to implement the following features:
 
 Writer's Delight lets you write notes, essays, and stories with an AI assistant. Built by the core team.
 
-<iframe src="https://www.youtube-nocookie.com/embed/XytdFN1Oqg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/XytdFN1Oqg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 * Demo: [https://marmelab.com/writers-delight/](https://marmelab.com/writers-delight/)
 * Source code: [https://github.com/marmelab/writers-delight/](https://github.com/marmelab/writers-delight/)

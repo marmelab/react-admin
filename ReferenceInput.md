@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-input-referenceinput--basic
 
 Use `<ReferenceInput>` for foreign-key values, for instance, to edit the `company_id` of a `contact` resource. 
 
-<iframe src="https://www.youtube-nocookie.com/embed/LcycR3gB0qs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/LcycR3gB0qs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 
@@ -369,7 +369,7 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 When users don't find the reference they are looking for in the list of possible values, they need to create a new reference. If they have to quit the current form to create the reference, they may lose the data they have already entered. So a common feature for `<ReferenceInput>` is to let users create a new reference on the fly.
 
-<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/CIUp5MF6A1M" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 Children of `<ReferenceInput>` (`<AutocompleteInput>`, `<SelectInput>`, etc.) allow the creation of new choices via the `onCreate` prop. This displays a new "Create new" option in the list of choices. You can leverage this capability to create a new reference record.
 
