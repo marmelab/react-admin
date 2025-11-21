@@ -142,22 +142,7 @@ const ContactsIterator = () => {
         <List dense sx={{ pt: 0 }}>
             {contacts.map(contact => (
                 <RecordContextProvider key={contact.id} value={contact}>
-                    <ListItem
-                        disablePadding
-                        secondaryAction={
-                            contact.last_seen ? (
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(contact.last_seen, now)} ago{' '}
-                                    <Status status={contact.status} />
-                                </Typography>
-                            ) : null
-                        }
-                    >
+                    <ListItem disablePadding>
                         <ListItemButton
                             component={RouterLink}
                             to={`/contacts/${contact.id}/show`}
@@ -183,6 +168,17 @@ const ContactsIterator = () => {
                                     </>
                                 }
                             />
+                            {contact.last_seen && (
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
+                                </Typography>
+                            )}
                         </ListItemButton>
                     </ListItem>
                 </RecordContextProvider>
@@ -217,20 +213,7 @@ const DealsIterator = () => {
         <Box>
             <List dense>
                 {deals.map(deal => (
-                    <ListItem
-                        key={deal.id}
-                        disablePadding
-                        secondaryAction={
-                            <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="span"
-                            >
-                                last activity{' '}
-                                {formatDistance(deal.updated_at, now)} ago{' '}
-                            </Typography>
-                        }
-                    >
+                    <ListItem key={deal.id} disablePadding>
                         <ListItemButton
                             component={RouterLink}
                             to={`/deals/${deal.id}/show`}
@@ -253,6 +236,14 @@ const DealsIterator = () => {
                                     </>
                                 }
                             />
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(deal.updated_at, now)} ago{' '}
+                            </Typography>
                         </ListItemButton>
                     </ListItem>
                 ))}

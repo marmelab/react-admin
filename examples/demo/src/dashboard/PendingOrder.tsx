@@ -25,20 +25,7 @@ export const PendingOrder = (props: Props) => {
     });
 
     return (
-        <ListItem
-            disablePadding
-            secondaryAction={
-                <Box
-                    component="span"
-                    sx={{
-                        marginRight: '1em',
-                        color: 'text.primary',
-                    }}
-                >
-                    {order.total}$
-                </Box>
-            }
-        >
+        <ListItem disablePadding>
             <ListItemButton component={Link} to={`/orders/${order.id}`}>
                 <ListItemAvatar>
                     {isPending ? (
@@ -61,6 +48,15 @@ export const PendingOrder = (props: Props) => {
                             : '',
                     })}
                 />
+                <Box
+                    component="span"
+                    sx={{
+                        marginRight: '1em',
+                        color: 'text.primary',
+                    }}
+                >
+                    {order.total}$
+                </Box>
             </ListItemButton>
         </ListItem>
     );

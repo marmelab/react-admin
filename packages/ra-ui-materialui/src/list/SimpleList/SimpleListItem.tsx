@@ -17,15 +17,7 @@ import { RowClickFunction } from '../types';
 export const SimpleListItem = <RecordType extends RaRecord = any>(
     props: SimpleListItemProps<RecordType>
 ) => {
-    const {
-        children,
-        linkType,
-        rowClick,
-        rowIndex,
-        rowSx,
-        rowStyle,
-        secondaryAction,
-    } = props;
+    const { children, linkType, rowClick, rowIndex, rowSx, rowStyle } = props;
     const resource = useResourceContext(props);
     const record = useRecordContext<RecordType>(props);
     const navigate = useNavigate();
@@ -72,7 +64,6 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
                         width: '100%',
                     },
                 }}
-                secondaryAction={secondaryAction}
             >
                 <ListItemButton
                     onClick={handleClick}

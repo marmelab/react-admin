@@ -49,29 +49,7 @@ export const ContactListContent = () => {
             <List dense>
                 {contacts.map(contact => (
                     <RecordContextProvider key={contact.id} value={contact}>
-                        <ListItem
-                            disablePadding
-                            secondaryAction={
-                                contact.last_seen ? (
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        title={contact.last_seen}
-                                        sx={{
-                                            top: '10px',
-                                            transform: 'none',
-                                        }}
-                                    >
-                                        {!isSmall && 'last activity '}
-                                        {formatRelative(
-                                            contact.last_seen,
-                                            now
-                                        )}{' '}
-                                        <Status status={contact.status} />
-                                    </Typography>
-                                ) : null
-                            }
-                        >
+                        <ListItem disablePadding>
                             <ListItemButton
                                 component={Link}
                                 to={`/contacts/${contact.id}/show`}
@@ -122,6 +100,24 @@ export const ContactListContent = () => {
                                         </>
                                     }
                                 />
+                                {contact.last_seen && (
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        title={contact.last_seen}
+                                        sx={{
+                                            top: '10px',
+                                            transform: 'none',
+                                        }}
+                                    >
+                                        {!isSmall && 'last activity '}
+                                        {formatRelative(
+                                            contact.last_seen,
+                                            now
+                                        )}{' '}
+                                        <Status status={contact.status} />
+                                    </Typography>
+                                )}
                             </ListItemButton>
                         </ListItem>
                     </RecordContextProvider>

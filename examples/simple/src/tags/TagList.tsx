@@ -12,6 +12,7 @@ import {
     List,
     ListItem,
     ListItemText,
+    ListItemSecondaryAction,
     Collapse,
     Card,
     Stack,
@@ -62,7 +63,7 @@ const Tree = () => {
                     getChildNodes={getChildNodes}
                     openChildren={openChildren}
                     toggleNode={toggleNode}
-                    level={1}
+                    level={0}
                 />
             ))}
         </List>
@@ -77,7 +78,9 @@ const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
         <Fragment>
             <ListItem
                 disablePadding
-                sx={{ paddingLeft: level * 16 }}
+                sx={theme => ({
+                    paddingLeft: theme.spacing(level * 2),
+                })}
                 secondaryAction={<EditButton record={root} />}
             >
                 <ListItemButton onClick={() => hasChildren && toggleNode(root)}>
