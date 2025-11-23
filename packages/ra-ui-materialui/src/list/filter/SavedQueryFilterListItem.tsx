@@ -72,6 +72,7 @@ export const SavedQueryFilterListItem = memo(
                 className={className}
                 sx={sx}
                 disablePadding
+                disableGutters
                 secondaryAction={
                     isSelected ? (
                         <IconButton size="small" onClick={toggleFilter}>
@@ -83,7 +84,6 @@ export const SavedQueryFilterListItem = memo(
                 <ListItemButton
                     onClick={toggleFilter}
                     selected={isSelected}
-                    disableGutters
                     className={SavedQueryFilterListItemClasses.listItemButton}
                 >
                     <ListItemText

@@ -175,6 +175,7 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
     return (
         <StyledListItem
             disablePadding
+            disableGutters
             secondaryAction={
                 isSelected ? (
                     <IconButton
@@ -191,7 +192,6 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
             {...rest}
         >
             <ListItemButton
-                disableGutters
                 onClick={handleClick}
                 selected={isSelected}
                 className={FilterListItemClasses.listItemButton}
