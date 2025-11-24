@@ -6,7 +6,6 @@ import {
     defaultDataProvider,
     Limit,
     QueryOptions,
-    StoreKey,
 } from './useSelectAll.stories';
 
 describe('useSelectAll', () => {
