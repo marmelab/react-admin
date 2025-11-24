@@ -13,7 +13,6 @@ import {
     ListItemIcon,
     type ListItemProps,
     ListItemText,
-    ListItemSecondaryAction,
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import {
@@ -174,9 +173,25 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
     const handleClick = () => setFilters(toggleFilter(value, filterValues));
 
     return (
-        <StyledListItem disablePadding {...rest}>
+        <StyledListItem
+            disablePadding
+            disableGutters
+            secondaryAction={
+                isSelected ? (
+                    <IconButton
+                        size="small"
+                        onClick={event => {
+                            event.stopPropagation();
+                            handleClick();
+                        }}
+                    >
+                        <CancelIcon />
+                    </IconButton>
+                ) : null
+            }
+            {...rest}
+        >
             <ListItemButton
-                disableGutters
                 onClick={handleClick}
                 selected={isSelected}
                 className={FilterListItemClasses.listItemButton}
@@ -197,18 +212,6 @@ export const FilterListItem = memo((inProps: FilterListItemProps) => {
                     className={FilterListItemClasses.listItemText}
                     data-selected={isSelected ? 'true' : 'false'}
                 />
-                {isSelected && (
-                    <ListItemSecondaryAction
-                        onClick={event => {
-                            event.stopPropagation();
-                            handleClick();
-                        }}
-                    >
-                        <IconButton size="small">
-                            <CancelIcon />
-                        </IconButton>
-                    </ListItemSecondaryAction>
-                )}
             </ListItemButton>
         </StyledListItem>
     );
