@@ -1,4 +1,5 @@
-import { SortPayload, useStore } from 'ra-core';
+import { useStore } from '../../store/useStore';
+import { SortPayload } from '../../types';
 
 export const useSavedQueries = (resource: string) => {
     return useStore<SavedQuery[]>(`${resource}.savedQueries`, []);
