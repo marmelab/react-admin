@@ -28,13 +28,14 @@ import {
     useListContext,
     useResourceContext,
     useTranslate,
+    extractValidSavedQueries,
+    useSavedQueries,
 } from 'ra-core';
 import { stringify } from 'query-string';
 import { useNavigate } from 'react-router';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';
-import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 

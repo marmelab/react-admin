@@ -1,6 +1,11 @@
 import * as React from 'react';
 import isEqual from 'lodash/isEqual.js';
-import { useListContext, useTranslate } from 'ra-core';
+import {
+    useListContext,
+    useTranslate,
+    useSavedQueries,
+    extractValidSavedQueries,
+} from 'ra-core';
 import {
     Button,
     Dialog,
@@ -9,8 +14,6 @@ import {
     DialogContentText,
     DialogTitle,
 } from '@mui/material';
-
-import { useSavedQueries, extractValidSavedQueries } from './useSavedQueries';
 
 export interface RemoveSavedQueryDialogProps {
     open: boolean;
