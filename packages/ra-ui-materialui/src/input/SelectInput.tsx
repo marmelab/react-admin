@@ -21,6 +21,8 @@ import {
     useChoices,
     type RaRecord,
     useGetRecordRepresentation,
+    useSupportCreateSuggestion,
+    type SupportCreateSuggestionOptions,
 } from 'ra-core';
 
 import type { CommonInputProps } from './CommonInputProps';
@@ -30,10 +32,6 @@ import {
 } from './ResettableTextField';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
-import {
-    useSupportCreateSuggestion,
-    type SupportCreateSuggestionOptions,
-} from './useSupportCreateSuggestion';
 import { LoadingInput } from './LoadingInput';
 
 /**

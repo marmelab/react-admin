@@ -14,3 +14,4 @@ export * from './SimpleFormIteratorItemContext';
 export * from './useSimpleFormIterator';
 export * from './useSimpleFormIteratorItem';
 export * from './useGetArrayInputNewItemDefaults';
+export * from './useSupportCreateSuggestion';

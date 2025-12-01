@@ -26,16 +26,14 @@ import {
     useChoices,
     type RaRecord,
     useGetRecordRepresentation,
+    type SupportCreateSuggestionOptions,
+    useSupportCreateSuggestion,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 
 import { LinearProgress } from '../layout';
 import type { CommonInputProps } from './CommonInputProps';
 import { Labeled } from '../Labeled';
-import {
-    type SupportCreateSuggestionOptions,
-    useSupportCreateSuggestion,
-} from './useSupportCreateSuggestion';
 
 /**
  * An Input component for a select box allowing multiple selections, using an array of objects for the options
