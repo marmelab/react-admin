@@ -27,3 +27,9 @@ export * from './UrlField';
 export * from './WrapperField';
 
 export type { FieldProps };
+
+/**
+ * @deprecated Import from `ra-core` or `react-admin` instead
+ * FIXME: remove the re-export in v6
+ */
+export { genericMemo } from 'ra-core';

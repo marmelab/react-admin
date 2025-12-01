@@ -6,10 +6,10 @@ import {
     SortPayload,
     FilterPayload,
     useFieldValue,
+    genericMemo,
 } from 'ra-core';
 
 import { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 
 /**
  * Renders an embedded array of objects.

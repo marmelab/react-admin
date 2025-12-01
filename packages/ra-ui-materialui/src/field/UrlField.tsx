@@ -7,10 +7,9 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useFieldValue, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
 
 import { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 
 const UrlFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,
