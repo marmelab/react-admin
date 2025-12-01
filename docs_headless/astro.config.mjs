@@ -123,6 +123,7 @@ export default defineConfig({
                         'uselist',
                         'uselistcontext',
                         'uselistcontroller',
+                        'usesavedqueries',
                         'useunselect',
                         'useunselectall',
                     ],
