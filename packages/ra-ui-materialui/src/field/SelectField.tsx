@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { ChoicesProps, useChoices, useFieldValue, useTranslate } from 'ra-core';
+import {
+    ChoicesProps,
+    useChoices,
+    useFieldValue,
+    useTranslate,
+    genericMemo,
+} from 'ra-core';
 import { Typography, TypographyProps } from '@mui/material';
 import {
     ComponentsOverrides,
@@ -9,7 +15,6 @@ import {
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 
 /**
  * Display a value in an enumeration
