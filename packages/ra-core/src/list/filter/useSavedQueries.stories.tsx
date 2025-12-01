@@ -13,7 +13,13 @@ import {
     extractValidSavedQueries,
     SavedQuery,
 } from '../..';
-import { Admin, DataTable, TextInput, BooleanInput } from '../../test-ui';
+import {
+    Admin,
+    DataTable,
+    TextInput,
+    BooleanInput,
+    Pagination,
+} from '../../test-ui';
 
 export default { title: 'ra-core/list/filter/useSavedQueries' };
 
@@ -88,7 +94,7 @@ const SavedQueries = () => {
             <ul>
                 {validSavedQueries.map(
                     (savedQuery: SavedQuery, index: number) => (
-                        <li>
+                        <li key={index}>
                             {savedQuery.label}{' '}
                             {isEqual(savedQuery.value, {
                                 filter: filterValues,
@@ -96,11 +102,7 @@ const SavedQueries = () => {
                                 perPage,
                                 displayedFilters,
                             }) ? (
-                                <button
-                                    type="button"
-                                    onClick={removeQuery}
-                                    key={index}
-                                >
+                                <button type="button" onClick={removeQuery}>
                                     Remove
                                 </button>
                             ) : (
@@ -109,7 +111,6 @@ const SavedQueries = () => {
                                     onClick={() => {
                                         applyQuery(savedQuery);
                                     }}
-                                    key={index}
                                 >
                                     Apply
                                 </button>
@@ -163,6 +164,7 @@ export const Basic = () => (
                             <DataTable.Col source="title" />
                             <DataTable.Col source="published" />
                         </DataTable>
+                        <Pagination />
                     </ListBase>
                 }
             />
