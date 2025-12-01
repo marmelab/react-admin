@@ -5,12 +5,12 @@ import {
     ResourceContextProvider,
     testDataProvider,
     useRecordContext,
+    useCreateSuggestionContext,
 } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { SelectArrayInput } from './SelectArrayInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     DifferentIdTypes,
     TranslateChoice,

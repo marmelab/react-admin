@@ -7,12 +7,12 @@ import {
     required,
     testDataProvider,
     useRecordContext,
+    useCreateSuggestionContext,
 } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 
 import { AutocompleteInput } from './AutocompleteInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     DifferentShapeInGetMany,
     InsideReferenceInput,
