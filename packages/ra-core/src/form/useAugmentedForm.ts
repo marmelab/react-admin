@@ -12,6 +12,7 @@ import {
     UseFormProps,
 } from 'react-hook-form';
 import merge from 'lodash/merge.js';
+import isEmpty from 'lodash/isEmpty.js';
 import { RaRecord } from '../types';
 import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
@@ -83,11 +84,14 @@ export const useAugmentedForm = <RecordType = any>(
     });
 
     const formRef = useRef(form);
-    const { reset } = form;
+    const { reset, formState } = form;
+    const { isReady } = formState;
 
     useEffect(() => {
+        if (!isReady) return;
+        if (isEmpty(defaultValuesIncludingRecord)) return;
         reset(defaultValuesIncludingRecord);
-    }, [defaultValuesIncludingRecord, reset]);
+    }, [defaultValuesIncludingRecord, reset, isReady]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
@@ -95,13 +99,14 @@ export const useAugmentedForm = <RecordType = any>(
     const recordFromLocation = useRecordFromLocation();
     const recordFromLocationApplied = useRef(false);
     useEffect(() => {
+        if (!isReady) return;
         if (recordFromLocation && !recordFromLocationApplied.current) {
             reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
                 keepDefaultValues: true,
             });
             recordFromLocationApplied.current = true;
         }
-    }, [defaultValuesIncludingRecord, recordFromLocation, reset]);
+    }, [defaultValuesIncludingRecord, recordFromLocation, reset, isReady]);
 
     // submit callbacks
     const handleSubmit = useCallback(
