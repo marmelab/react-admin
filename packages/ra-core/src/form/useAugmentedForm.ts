@@ -12,7 +12,6 @@ import {
     UseFormProps,
 } from 'react-hook-form';
 import merge from 'lodash/merge.js';
-import isEmpty from 'lodash/isEmpty.js';
 import { RaRecord } from '../types';
 import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
@@ -89,7 +88,6 @@ export const useAugmentedForm = <RecordType = any>(
 
     useEffect(() => {
         if (!isReady) return;
-        if (isEmpty(defaultValuesIncludingRecord)) return;
         reset(defaultValuesIncludingRecord);
     }, [defaultValuesIncludingRecord, reset, isReady]);
 
