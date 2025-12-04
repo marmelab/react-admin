@@ -10,6 +10,7 @@ import { TextInput } from '../input/TextInput';
 import { SimpleFormIterator } from '../input/ArrayInput/SimpleFormIterator';
 import { AdminContext } from '../AdminContext';
 import { Edit } from '../detail';
+import { Button } from './Button';
 
 export default {
     title: 'ra-ui-materialui/button/SaveButton',
@@ -26,15 +27,11 @@ export const Basic = () => (
 );
 
 const MakeFormChange = () => {
-    const {
-        setValue,
-        formState: { isReady },
-    } = useFormContext();
-    React.useEffect(() => {
-        if (!isReady) return;
+    const { setValue } = useFormContext();
+    const handleClick = () => {
         setValue('name', 'test', { shouldDirty: true });
-    }, [isReady, setValue]);
-    return null;
+    };
+    return <Button label="Make change" onClick={handleClick} />;
 };
 
 export const Dirty = () => (
