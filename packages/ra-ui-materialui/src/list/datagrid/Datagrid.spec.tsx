@@ -1,5 +1,11 @@
 import * as React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import {
+    render,
+    screen,
+    fireEvent,
+    waitFor,
+    within,
+} from '@testing-library/react';
 import {
     CoreAdminContext,
     testDataProvider,
@@ -10,7 +16,12 @@ import {
 import { ThemeProvider, createTheme } from '@mui/material';
 
 import { Datagrid } from './Datagrid';
-import { AccessControl, FullApp, SelectAllButton } from './Datagrid.stories';
+import {
+    AccessControl,
+    FullApp,
+    SelectAllButton,
+    Standalone,
+} from './Datagrid.stories';
 
 const TitleField = () => {
     const record = useRecordContext();
@@ -346,5 +357,25 @@ describe('<Datagrid />', () => {
                 ).toHaveLength(7)
             );
         });
+    });
+    it('should correctly select items after initial item selection followed by whole page selection', async () => {
+        render(<Standalone />);
+        await waitFor(() =>
+            expect(screen.getAllByText('The Lord of the Rings').length).toEqual(
+                2
+            )
+        );
+        fireEvent.click(
+            await within(
+                (
+                    await screen.findAllByText('The Lord of the Rings')
+                )[1].closest('tr')
+            ).findByLabelText('Select this row')
+        );
+        await screen.findByText('1 item selected');
+        expect(screen.queryByText('Select all')).toBeNull();
+        fireEvent.click(await screen.findByLabelText('Select all'));
+        await screen.findByText('7 items selected');
+        expect(screen.queryByText('Select all')).toBeNull();
     });
 });

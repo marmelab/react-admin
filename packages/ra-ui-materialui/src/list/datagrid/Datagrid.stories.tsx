@@ -439,7 +439,10 @@ const MyCustomListInteractive = () => {
 
 export const Standalone = () => (
     <ThemeProvider theme={theme}>
-        <CoreAdminContext dataProvider={dataProvider}>
+        <CoreAdminContext
+            dataProvider={dataProvider}
+            i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        >
             <h1>Static</h1>
             <MyCustomList />
             <h1>Dynamic (with useList)</h1>
