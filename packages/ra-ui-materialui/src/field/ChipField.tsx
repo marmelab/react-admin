@@ -6,11 +6,10 @@ import {
 } from '@mui/material/styles';
 import { Chip, type ChipProps, Typography } from '@mui/material';
 import clsx from 'clsx';
-import { useFieldValue, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import type { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 
 const ChipFieldImpl = <
     RecordType extends Record<string, any> = Record<string, any>,

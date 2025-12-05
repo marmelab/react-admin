@@ -8,6 +8,7 @@ import {
     ListContextProvider,
     useChoicesContext,
     useInput,
+    SupportCreateSuggestionOptions,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -17,7 +18,6 @@ import {
 
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
-import { SupportCreateSuggestionOptions } from './useSupportCreateSuggestion';
 import { Datagrid, DatagridProps, FilterButton, FilterForm } from '../list';
 import { Pagination as DefaultPagination } from '../list/pagination';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';

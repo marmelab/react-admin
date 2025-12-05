@@ -123,6 +123,7 @@ export default defineConfig({
                         'uselist',
                         'uselistcontext',
                         'uselistcontroller',
+                        'usesavedqueries',
                         'useunselect',
                         'useunselectall',
                     ],
@@ -204,6 +205,7 @@ export default defineConfig({
                         'usechoicescontext',
                         'useinput',
                         'usesourcecontext',
+                        'usesupportcreatesuggestion',
                     ],
                 },
                 {

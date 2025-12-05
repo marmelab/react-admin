@@ -5,11 +5,10 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useFieldValue, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 
 /**
  * Display a date value as a locale string.

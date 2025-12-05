@@ -4,6 +4,7 @@ import {
     ReferenceArrayFieldBase,
     type RaRecord,
     ReferenceArrayFieldBaseProps,
+    genericMemo,
 } from 'ra-core';
 import {
     type ComponentsOverrides,
@@ -16,7 +17,6 @@ import {
 import type { FieldProps } from './types';
 import { LinearProgress } from '../layout';
 import { SingleFieldList } from '../list/SingleFieldList';
-import { genericMemo } from './genericMemo';
 import { Offline } from '../Offline';
 
 /**

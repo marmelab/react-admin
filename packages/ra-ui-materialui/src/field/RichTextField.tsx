@@ -1,11 +1,10 @@
 import * as React from 'react';
 import Typography, { TypographyProps } from '@mui/material/Typography';
-import { useFieldValue, useTranslate } from 'ra-core';
+import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
 import purify from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 import {
     ComponentsOverrides,
     styled,

@@ -40,11 +40,9 @@ import {
     warning,
     useGetRecordRepresentation,
     useEvent,
-} from 'ra-core';
-import {
     type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
-} from './useSupportCreateSuggestion';
+} from 'ra-core';
 import type { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';

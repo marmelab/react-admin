@@ -11,6 +11,7 @@ import {
     useCreate,
     useListContext,
     useRecordContext,
+    useCreateSuggestionContext,
 } from 'ra-core';
 
 import AttributionIcon from '@mui/icons-material/Attribution';
@@ -41,7 +42,6 @@ import { SimpleForm } from '../form';
 import { AutocompleteInput, AutocompleteInputProps } from './AutocompleteInput';
 import { ReferenceInput } from './ReferenceInput';
 import { TextInput } from './TextInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import { delayedDataProvider } from './common';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteInput' };
