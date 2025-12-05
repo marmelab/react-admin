@@ -1,6 +1,3 @@
-import set from 'lodash/set.js';
-import unset from 'lodash/unset.js';
-import get from 'lodash/get.js';
 import { Store } from './types';
 
 type Subscription = {
@@ -21,8 +18,15 @@ type Subscription = {
  *   </Admin>
  * );
  */
-export const memoryStore = (storage: any = {}): Store => {
+export const memoryStore = (
+    initialStorage: Record<string, any> = {}
+): Store => {
+    // Use a flat Map to store key-value pairs directly without treating dots as nested paths
+    const storage = new Map<string, any>(
+        Object.entries(flatten(initialStorage))
+    );
     const subscriptions: { [key: string]: Subscription } = {};
+
     const publish = (key: string, value: any) => {
         Object.keys(subscriptions).forEach(id => {
             if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
@@ -31,36 +35,44 @@ export const memoryStore = (storage: any = {}): Store => {
             }
         });
     };
+
     return {
         setup: () => {},
         teardown: () => {
-            Object.keys(storage).forEach(key => delete storage[key]);
+            storage.clear();
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
-            return get(storage, key, defaultValue);
+            return storage.has(key)
+                ? (storage.get(key) as T)
+                : (defaultValue as T);
         },
         setItem<T = any>(key: string, value: T): void {
-            set(storage, key, value);
+            storage.set(key, value);
             publish(key, value);
         },
         removeItem(key: string): void {
-            unset(storage, key);
+            storage.delete(key);
             publish(key, undefined);
         },
         removeItems(keyPrefix: string): void {
-            const flatStorage = flatten(storage);
-            Object.keys(flatStorage).forEach(key => {
-                if (!key.startsWith(keyPrefix)) {
-                    return;
+            const keysToDelete: string[] = [];
+            storage.forEach((_, key) => {
+                if (key.startsWith(keyPrefix)) {
+                    keysToDelete.push(key);
                 }
-                unset(storage, key);
+            });
+            keysToDelete.forEach(key => {
+                storage.delete(key);
                 publish(key, undefined);
             });
         },
         reset(): void {
-            const flatStorage = flatten(storage);
-            Object.keys(flatStorage).forEach(key => {
-                unset(storage, key);
+            const keysToDelete: string[] = [];
+            storage.forEach((_, key) => {
+                keysToDelete.push(key);
+            });
+            storage.clear();
+            keysToDelete.forEach(key => {
                 publish(key, undefined);
             });
         },
