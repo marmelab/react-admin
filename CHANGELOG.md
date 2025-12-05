@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.13.3
+
+* Replace deprecated `<ListItemSecondaryAction>` component by `secondaryAction` prop ([#11033](https://github.com/marmelab/react-admin/pull/11033)) ([smeng9](https://github.com/smeng9))
+* Fix `memoryStore` does not support nested-looking keys ([#11070](https://github.com/marmelab/react-admin/pull/11070)) ([slax57](https://github.com/slax57))
+* Fix `<Datagrid>` does not show the correct number of selected items ([#11069](https://github.com/marmelab/react-admin/pull/11069)) ([djhi](https://github.com/djhi))
+* Fix values from location are not applied on Forms ([#11067](https://github.com/marmelab/react-admin/pull/11067)) ([djhi](https://github.com/djhi))
+
 ## 5.13.2
 
 * Fix `<SelectAllButton>` ignores the `storeKey` ([#11060](https://github.com/marmelab/react-admin/pull/11060)) ([slax57](https://github.com/slax57))
