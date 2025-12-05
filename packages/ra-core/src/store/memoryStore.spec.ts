@@ -40,4 +40,31 @@ describe('memoryStore', () => {
             expect(store.getItem('foo')).toEqual(undefined);
         });
     });
+
+    describe('nested-looking keys', () => {
+        it('should store and retrieve values in keys that appear nested without overriding content', () => {
+            const store = memoryStore();
+            store.setItem('foo', 'parent value');
+            store.setItem('foo.bar', 'nested value');
+
+            expect(store.getItem('foo')).toEqual('parent value');
+            expect(store.getItem('foo.bar')).toEqual('nested value');
+        });
+
+        it('should handle initial storage with nested objects', () => {
+            const initialStorage = {
+                user: {
+                    name: 'John',
+                    settings: {
+                        theme: 'dark',
+                    },
+                },
+            };
+
+            const store = memoryStore(initialStorage);
+
+            expect(store.getItem('user.name')).toEqual('John');
+            expect(store.getItem('user.settings.theme')).toEqual('dark');
+        });
+    });
 });
