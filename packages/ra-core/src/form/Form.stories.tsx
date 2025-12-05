@@ -426,20 +426,24 @@ export const MultiRoutesForm = ({
     initialRecord?: Partial<RaRecord>;
     defaultValues?: Partial<RaRecord>;
 }) => (
-    <TestMemoryRouter key={url} initialEntries={[url]}>
-        <CoreAdminContext i18nProvider={defaultI18nProvider}>
-            <Routes>
-                <Route
-                    path="/form/*"
-                    element={
-                        <RecordContextProvider value={initialRecord}>
-                            <FormWithSubRoutes defaultValues={defaultValues} />
-                        </RecordContextProvider>
-                    }
-                />
-            </Routes>
-        </CoreAdminContext>
-    </TestMemoryRouter>
+    <React.StrictMode>
+        <TestMemoryRouter key={url} initialEntries={[url]}>
+            <CoreAdminContext i18nProvider={defaultI18nProvider}>
+                <Routes>
+                    <Route
+                        path="/form/*"
+                        element={
+                            <RecordContextProvider value={initialRecord}>
+                                <FormWithSubRoutes
+                                    defaultValues={defaultValues}
+                                />
+                            </RecordContextProvider>
+                        }
+                    />
+                </Routes>
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    </React.StrictMode>
 );
 
 MultiRoutesForm.args = {
