@@ -87,7 +87,6 @@ export const useAugmentedForm = <RecordType = any>(
     const { isReady } = formState;
 
     useEffect(() => {
-        if (!isReady) return;
         reset(defaultValuesIncludingRecord);
     }, [defaultValuesIncludingRecord, reset, isReady]);
 
