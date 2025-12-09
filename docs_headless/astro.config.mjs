@@ -184,9 +184,6 @@ export default defineConfig({
                         'arrayinputbase',
                         'referenceinputbase',
                         'referencearrayinputbase',
-                        'referencemanyinputbase',
-                        'referencemanytomanyinputbase',
-                        'referenceoneinputbase',
                         'simpleformiteratorbase',
                         enterpriseEntry(
                             'referencemanyinputbase',
