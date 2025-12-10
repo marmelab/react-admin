@@ -169,13 +169,20 @@ export const useListParams = ({
             ) {
                 return;
             }
-            navigate({
-                search: `?${stringify({
-                    ...query,
-                    filter: JSON.stringify(query.filter),
-                    displayedFilters: JSON.stringify(query.displayedFilters),
-                })}`,
-            });
+            navigate(
+                {
+                    search: `?${stringify({
+                        ...query,
+                        filter: JSON.stringify(query.filter),
+                        displayedFilters: JSON.stringify(
+                            query.displayedFilters
+                        ),
+                    })}`,
+                },
+                {
+                    replace: true,
+                }
+            );
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [
