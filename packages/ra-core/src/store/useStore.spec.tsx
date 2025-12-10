@@ -82,9 +82,7 @@ describe('useStore', () => {
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <StoreContextProvider
-                value={memoryStore({ foo: { bar: 'hello' } })}
-            >
+            <StoreContextProvider value={memoryStore({ 'foo.bar': 'hello' })}>
                 <StoreReader name="foo.bar" />
                 <UpdateStore />
             </StoreContextProvider>
@@ -100,9 +98,7 @@ describe('useStore', () => {
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <StoreContextProvider
-                value={memoryStore({ foo: { bar: 'hello' } })}
-            >
+            <StoreContextProvider value={memoryStore({ 'foo.bar': 'hello' })}>
                 <StoreReader name="foo.bar" />
                 <UpdateStore />
             </StoreContextProvider>

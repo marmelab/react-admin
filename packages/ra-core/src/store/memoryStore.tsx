@@ -22,7 +22,7 @@ export const memoryStore = (
     initialStorage: Record<string, any> = {}
 ): Store => {
     // Use a flat Map to store key-value pairs directly without treating dots as nested paths
-    let storage = new Map<string, any>(Object.entries(initialStorage));
+    let storage = new Map<string, any>(Object.entries(initialStorage ?? {}));
     const subscriptions: { [key: string]: Subscription } = {};
 
     const publish = (key: string, value: any) => {
