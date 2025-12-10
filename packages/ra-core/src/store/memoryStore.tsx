@@ -22,9 +22,7 @@ export const memoryStore = (
     initialStorage: Record<string, any> = {}
 ): Store => {
     // Use a flat Map to store key-value pairs directly without treating dots as nested paths
-    const storage = new Map<string, any>(
-        Object.entries(flatten(initialStorage))
-    );
+    let storage = new Map<string, any>(Object.entries(initialStorage));
     const subscriptions: { [key: string]: Subscription } = {};
 
     const publish = (key: string, value: any) => {
@@ -37,7 +35,9 @@ export const memoryStore = (
     };
 
     return {
-        setup: () => {},
+        setup: () => {
+            storage = new Map<string, any>(Object.entries(initialStorage));
+        },
         teardown: () => {
             storage.clear();
         },
@@ -87,28 +87,4 @@ export const memoryStore = (
             };
         },
     };
-};
-
-// taken from https://stackoverflow.com/a/19101235/1333479
-const flatten = (data: any) => {
-    const result = {};
-    function doFlatten(current, prop) {
-        if (Object(current) !== current) {
-            // scalar value
-            result[prop] = current;
-        } else if (Array.isArray(current)) {
-            // array
-            result[prop] = current;
-        } else {
-            // object
-            let isEmpty = true;
-            for (const p in current) {
-                isEmpty = false;
-                doFlatten(current[p], prop ? prop + '.' + p : p);
-            }
-            if (isEmpty && prop) result[prop] = {};
-        }
-    }
-    doFlatten(data, '');
-    return result;
 };

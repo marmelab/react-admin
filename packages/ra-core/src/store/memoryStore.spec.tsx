@@ -1,6 +1,9 @@
+import * as React from 'react';
 import expect from 'expect';
-
+import { render, screen } from '@testing-library/react';
 import { memoryStore } from './memoryStore';
+import { useStore } from './useStore';
+import { StoreContextProvider } from './StoreContextProvider';
 
 describe('memoryStore', () => {
     it('should allow to store and retrieve a value', () => {
@@ -55,16 +58,33 @@ describe('memoryStore', () => {
             const initialStorage = {
                 user: {
                     name: 'John',
-                    settings: {
-                        theme: 'dark',
-                    },
+                },
+                'user.settings': {
+                    theme: 'dark',
                 },
             };
 
             const store = memoryStore(initialStorage);
 
-            expect(store.getItem('user.name')).toEqual('John');
-            expect(store.getItem('user.settings.theme')).toEqual('dark');
+            expect(store.getItem('user')).toEqual({ name: 'John' });
+            expect(store.getItem('user.settings')).toEqual({ theme: 'dark' });
         });
+    });
+
+    it('preserves the initial value in StrictMode', async () => {
+        const Component = () => {
+            const [value] = useStore('user', 'Not me');
+            return <>{value}</>;
+        };
+
+        render(
+            <React.StrictMode>
+                <StoreContextProvider value={memoryStore({ user: 'John' })}>
+                    <Component />
+                </StoreContextProvider>
+            </React.StrictMode>
+        );
+
+        await screen.findByText('John');
     });
 });
