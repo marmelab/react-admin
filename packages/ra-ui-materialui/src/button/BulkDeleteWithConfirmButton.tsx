@@ -34,6 +34,7 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
+        mutationOptions,
         onClick,
         ...rest
     } = props;
