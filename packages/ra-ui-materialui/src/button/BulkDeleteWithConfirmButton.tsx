@@ -139,6 +139,7 @@ const sanitizeRestProps = ({
     label,
     resource,
     successMessage,
+    mutationOptions,
     ...rest
 }: Omit<BulkDeleteWithConfirmButtonProps, 'icon' | 'mutationMode'>) => rest;
 
