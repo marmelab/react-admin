@@ -8,12 +8,14 @@ import { StoreContextProvider } from './StoreContextProvider';
 describe('memoryStore', () => {
     it('should allow to store and retrieve a value', () => {
         const store = memoryStore();
+        store.setup();
         store.setItem('foo', 'bar');
         expect(store.getItem('foo')).toEqual('bar');
     });
     describe('removeItem', () => {
         it('should remove an item', () => {
             const store = memoryStore();
+            store.setup();
             store.setItem('foo', 'bar');
             store.setItem('hello', 'world');
             store.removeItem('foo');
@@ -24,6 +26,7 @@ describe('memoryStore', () => {
     describe('removeItems', () => {
         it('should remove all items with the given prefix', () => {
             const store = memoryStore();
+            store.setup();
             store.setItem('foo', 'bar');
             store.setItem('foo2', 'bar2');
             store.setItem('foo3', 'bar3');
@@ -38,6 +41,7 @@ describe('memoryStore', () => {
     describe('reset', () => {
         it('should reset the store', () => {
             const store = memoryStore();
+            store.setup();
             store.setItem('foo', 'bar');
             store.reset();
             expect(store.getItem('foo')).toEqual(undefined);
@@ -47,6 +51,7 @@ describe('memoryStore', () => {
     describe('nested-looking keys', () => {
         it('should store and retrieve values in keys that appear nested without overriding content', () => {
             const store = memoryStore();
+            store.setup();
             store.setItem('foo', 'parent value');
             store.setItem('foo.bar', 'nested value');
 
@@ -65,6 +70,7 @@ describe('memoryStore', () => {
             };
 
             const store = memoryStore(initialStorage);
+            store.setup();
 
             expect(store.getItem('user')).toEqual({ name: 'John' });
             expect(store.getItem('user.settings')).toEqual({ theme: 'dark' });
