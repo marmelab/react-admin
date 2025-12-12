@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    render,
-    screen,
-    fireEvent,
-    waitFor,
-    renderHook,
-} from '@testing-library/react';
+import { render, screen, fireEvent, renderHook } from '@testing-library/react';
 
 import { useStore } from './useStore';
 import { StoreContextProvider } from './StoreContextProvider';
@@ -68,23 +62,13 @@ describe('useStore', () => {
         expect(unsubscribe).toHaveBeenCalled();
     });
 
-    it('should allow to set values', async () => {
-        const { result } = renderHook(() => useStore('foo.bar'));
-        await waitFor(() => {
-            result.current[1]('hello');
-            expect(result.current[0]).toBe('hello');
-        });
-    });
-
     it('should update all components using the same store key on update', () => {
         const UpdateStore = () => {
-            const [, setValue] = useStore('foo.bar');
+            const [, setValue] = useStore<string>('foo.bar');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <StoreContextProvider
-                value={memoryStore({ foo: { bar: 'hello' } })}
-            >
+            <StoreContextProvider value={memoryStore({ 'foo.bar': 'hello' })}>
                 <StoreReader name="foo.bar" />
                 <UpdateStore />
             </StoreContextProvider>
@@ -94,15 +78,13 @@ describe('useStore', () => {
         screen.getByText('world');
     });
 
-    it('should not update components using other store key on update', () => {
+    it('should not update components using other store key on update', async () => {
         const UpdateStore = () => {
-            const [, setValue] = useStore('other.key');
+            const [, setValue] = useStore<string>('other.key');
             return <button onClick={() => setValue('world')}>update</button>;
         };
         render(
-            <StoreContextProvider
-                value={memoryStore({ foo: { bar: 'hello' } })}
-            >
+            <StoreContextProvider value={memoryStore({ 'foo.bar': 'hello' })}>
                 <StoreReader name="foo.bar" />
                 <UpdateStore />
             </StoreContextProvider>
@@ -113,22 +95,28 @@ describe('useStore', () => {
     });
 
     it('should accept an updater function as parameter', async () => {
-        const { result } = renderHook(() => useStore('foo.bar'));
-        result.current[1]('hello');
-        let innerValue;
-        result.current[1](value => {
-            innerValue = value;
-            return 'world';
-        });
-        await waitFor(() => {
-            expect(innerValue).toBe('hello');
-        });
-        expect(result.current[0]).toBe('world');
+        const UpdateStore = () => {
+            const [, setValue] = useStore<string>('foo.bar');
+            return (
+                <button onClick={() => setValue(current => `${current} world`)}>
+                    update
+                </button>
+            );
+        };
+        render(
+            <StoreContextProvider value={memoryStore({ 'foo.bar': 'hello' })}>
+                <StoreReader name="foo.bar" />
+                <UpdateStore />
+            </StoreContextProvider>
+        );
+        screen.getByText('hello');
+        fireEvent.click(screen.getByText('update'));
+        screen.getByText('hello world');
     });
 
     it('should clear its value when the key changes', () => {
         const StoreConsumer = ({ storeKey }: { storeKey: string }) => {
-            const [value, setValue] = useStore(storeKey);
+            const [value, setValue] = useStore<string>(storeKey);
             return (
                 <>
                     <p>{value}</p>
