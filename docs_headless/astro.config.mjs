@@ -120,6 +120,10 @@ export default defineConfig({
                         'recordsiterator',
                         'filterliveform',
                         'withlistcontext',
+                        enterpriseEntry(
+                            'bulkupdateformbase',
+                            '<BulkUpdateFormBase>'
+                        ),
                         'uselist',
                         'uselistcontext',
                         'uselistcontroller',
@@ -135,6 +139,11 @@ export default defineConfig({
                         'createbase',
                         'editbase',
                         'form',
+                        enterpriseEntry('autosavebase', '<AutoSaveBase>'),
+                        enterpriseEntry(
+                            'autopersistinstorebase',
+                            '<AutoPersistInStoreBase>'
+                        ),
                         'usecreatecontext',
                         'usecreatecontroller',
                         'useeditcontext',
@@ -143,6 +152,11 @@ export default defineConfig({
                         'useregistermutationmiddleware',
                         'usesavecontext',
                         'useunique',
+                        enterpriseEntry('useautosave', 'useAutoSave'),
+                        enterpriseEntry(
+                            'useautopersistinstore',
+                            'useAutoPersistInStore'
+                        ),
                     ],
                 },
                 {
