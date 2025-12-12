@@ -16,6 +16,8 @@ The temporary form data is only saved when the user navigates away from the page
 
 Saved data is not sent to the server. It is only persisted using the [store](https://marmelab.com/ra-core/store/) and is removed when the user logs out.
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ### Usage
 
 Call `useAutoPersistInStore` inside a react-admin form:

@@ -9,6 +9,8 @@ This component can be used to create forms that update multiple records at once.
   Your browser does not support the video tag.
 </video>
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ## Usage
 
 Here's how one could implement a form that sets the role of multiple users:

@@ -4,6 +4,10 @@ title: "useAutoSave"
 
 A hook that automatically saves the form at a regular interval. It works for the `pessimistic` and `optimistic` [`mutationMode`](https://marmelab.com/ra-core/editbase/#mutationmode) but not for the `undoable`.
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
+## Usage
+
 Note that you **must** add the `resetOptions` prop with `{ keepDirtyValues: true }` to avoid having the user changes overridden by the latest update operation result.
 
 **Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.

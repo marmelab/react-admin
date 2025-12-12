@@ -9,6 +9,8 @@ A component that enables autosaving of the form. It's ideal for long data entry 
   Your browser does not support the video tag.
 </video>
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ## Usage
 
 Put `<AutoSaveBase>` inside a form built with ra-core [`<Form>`](https://marmelab.com/ra-core/form/):
