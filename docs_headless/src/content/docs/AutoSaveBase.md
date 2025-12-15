@@ -9,7 +9,7 @@ A component that enables autosaving of the form. It's ideal for long data entry 
   Your browser does not support the video tag.
 </video>
 
-This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
 ## Usage
 
