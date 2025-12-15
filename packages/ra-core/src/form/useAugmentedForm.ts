@@ -88,7 +88,7 @@ export const useAugmentedForm = <RecordType = any>(
 
     useEffect(() => {
         reset(defaultValuesIncludingRecord);
-    }, [defaultValuesIncludingRecord, reset, isReady]);
+    }, [defaultValuesIncludingRecord, reset]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
