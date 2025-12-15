@@ -4,7 +4,7 @@ title: "useAutoSave"
 
 A hook that automatically saves the form at a regular interval. It works for the `pessimistic` and `optimistic` [`mutationMode`](https://marmelab.com/ra-core/editbase/#mutationmode) but not for the `undoable`.
 
-This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+This feature requires a valid [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
 ## Usage
 
