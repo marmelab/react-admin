@@ -121,11 +121,10 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                         setColumnRanks(undefined);
                         setHiddenColumns(defaultHiddenColumns);
                     }}
-                >
-                    {translate('ra.action.reset', {
+                    label={translate('ra.action.reset', {
                         _: 'Reset',
                     })}
-                </Button>
+                />
             </Box>
         </MenuList>,
         container
