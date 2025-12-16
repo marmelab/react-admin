@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.13.4
+
+* Fix `useAugmentedForm` resets the form one too many time ([#11085](https://github.com/marmelab/react-admin/pull/11085)) ([slax57](https://github.com/slax57))
+* Fix `<BulkDeleteWithConfirmButton>`: prevent `mutationOptions` from being passed to DOM ([#11077](https://github.com/marmelab/react-admin/pull/11077)) ([devserkan](https://github.com/devserkan))
+* Fix regression in `memoryStore` ([#11075](https://github.com/marmelab/react-admin/pull/11075)) ([djhi](https://github.com/djhi))
+* [Doc] Update RA Core EE documentation ([#11078](https://github.com/marmelab/react-admin/pull/11078)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Fix `<ReferenceOneField>` doc incorrectly mentions one of `children` or `render` is required ([#11072](https://github.com/marmelab/react-admin/pull/11072)) ([slax57](https://github.com/slax57))
+* Bump @tiptap/extension-link from 2.0.3 to 2.10.4 ([#11074](https://github.com/marmelab/react-admin/pull/11074)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.13.3
 
 * Replace deprecated `<ListItemSecondaryAction>` component by `secondaryAction` prop ([#11033](https://github.com/marmelab/react-admin/pull/11033)) ([smeng9](https://github.com/smeng9))
