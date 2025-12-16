@@ -59,16 +59,14 @@ const BookShow = () => (
 | -------------- | -------- | ------------------------------------------- | -------------------------------- | ----------------------------------------------------------------------------------- |
 | `reference`    | Required | `string`                                    | -                                | The name of the resource for the referenced records, e.g. 'book_details'            |
 | `target`       | Required | string                                      | -                                | Target field carrying the relationship on the referenced resource, e.g. 'book_id'   |
-| `children`     | Optional&nbsp;* | `ReactNode`                                   | -                                | The Field element used to render the referenced record                              |
-| `render`     | Optional&nbsp;* | `(ReferenceFieldContext) => ReactNode`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
+| `children`     | Optional | `ReactNode`                                   | -                                | The Field element used to render the referenced record                              |
+| `render`       | Optional | `(ReferenceFieldContext) => ReactNode`                                   | -                                | A function that takes the `ReferenceFieldContext` and returns a React element                              |
 | `empty`        | Optional | `ReactNode`                         | -                                | The text or element to display when the referenced record is empty                   |
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `offline`      | Optional | `ReactNode`                         | -                                | The text or element to display when there is no network connectivity                   |
 | `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
-
-`*` You must provide either `children` or `render`.
 
 `<ReferenceOneField>` also accepts the [common field props](./Fields.md#common-field-props).
 
