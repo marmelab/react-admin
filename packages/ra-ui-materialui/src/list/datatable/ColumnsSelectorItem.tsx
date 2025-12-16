@@ -84,9 +84,11 @@ export const ColumnsSelectorItem = ({
             onToggle={() =>
                 isColumnHidden
                     ? setHiddenColumns(
-                          hiddenColumns.filter(column => column !== source!)
+                          hiddenColumns.filter(
+                              column => column !== sourceOrLabel!
+                          )
                       )
-                    : setHiddenColumns([...hiddenColumns, source!])
+                    : setHiddenColumns([...hiddenColumns, sourceOrLabel!])
             }
             onMove={handleMove}
         />

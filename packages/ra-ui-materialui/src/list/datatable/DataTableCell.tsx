@@ -39,7 +39,9 @@ export const DataTableCell = React.memo(
                 defaultHiddenColumns
             );
             const record = useRecordContext();
-            const isColumnHidden = hiddenColumns.includes(source!);
+            const isColumnHidden = hiddenColumns.includes(
+                source ?? (label as string)
+            );
             if (isColumnHidden) return null;
             if (!render && !field && !children && !source) {
                 throw new Error(
