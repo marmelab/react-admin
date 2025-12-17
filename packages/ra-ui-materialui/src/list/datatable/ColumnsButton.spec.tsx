@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Basic, FewColumns, LabelTypes } from './ColumnsButton.stories';
+import {
+    Basic,
+    FewColumns,
+    LabelTypes,
+    NoSource,
+} from './ColumnsButton.stories';
 
 describe('ColumnsButton', () => {
     it('should render one row per column unless they are hidden', async () => {
@@ -55,5 +60,12 @@ describe('ColumnsButton', () => {
                     .querySelectorAll('li:not(.columns-selector-actions)')
             ).toHaveLength(8);
         });
+    });
+    it('should work with columns that have no source', async () => {
+        render(<NoSource />);
+        await screen.findByText('c0 value');
+        fireEvent.click(await screen.findByText('ra.action.select_columns'));
+        fireEvent.click(await screen.findByLabelText('c_0'));
+        expect(screen.queryByText('c0 value')).toBeNull();
     });
 });
