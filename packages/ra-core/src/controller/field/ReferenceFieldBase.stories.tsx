@@ -268,18 +268,16 @@ export const QueryOptions = () => (
 const BookShowMeta = () => {
     return (
         <ShowBase>
-            <>
-                <TextField source="title" />
-                <ReferenceFieldBase
-                    reference="authors"
-                    source="author"
-                    queryOptions={{ meta: { test: true } }}
-                >
-                    <MyReferenceField>
-                        <TextField source="last_name" />
-                    </MyReferenceField>
-                </ReferenceFieldBase>
-            </>
+            <TextField source="title" />
+            <ReferenceFieldBase
+                reference="authors"
+                source="author"
+                queryOptions={{ meta: { test: true } }}
+            >
+                <MyReferenceField>
+                    <TextField source="last_name" />
+                </MyReferenceField>
+            </ReferenceFieldBase>
         </ShowBase>
     );
 };
@@ -392,6 +390,39 @@ export const WithRenderProp = ({ dataProvider = dataProviderWithAuthors }) => (
                         />
                     </ShowBase>
                 }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
+
+export const ZeroIndex = ({
+    dataProvider = fakeRestDataProvider(
+        {
+            books: [{ id: 1, title: 'War and Peace', author: 0 }],
+            authors: [{ id: 0, first_name: 'Leo', last_name: 'Tolstoy' }],
+        },
+        process.env.NODE_ENV === 'development'
+    ),
+}: {
+    dataProvider?: DataProvider;
+}) => (
+    <TestMemoryRouter initialEntries={['/books/1/show']}>
+        <CoreAdmin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                show={() => (
+                    <ShowBase>
+                        <TextField source="title" />
+                        <ReferenceFieldBase
+                            reference="authors"
+                            source="author"
+                            empty={<>Should not appear</>}
+                        >
+                            <TextField source="first_name" />
+                            <TextField source="last_name" />
+                        </ReferenceFieldBase>
+                    </ShowBase>
+                )}
             />
         </CoreAdmin>
     </TestMemoryRouter>

@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
-import { TestMemoryRouter, WithPermissions } from '..';
+import { TestMemoryRouter } from '../routing';
+import WithPermissions from './WithPermissions';
 
 export default {
     title: 'ra-core/auth/WithPermissions',

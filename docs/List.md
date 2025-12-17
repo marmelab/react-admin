@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-list-list--basic
 
 The `<List>` component is the root component for list pages. It fetches a list of records from the data provider, puts it in a [`ListContext`](./useListContext.md), renders the default list page layout (title, buttons, filters, pagination), and renders its children. Usual children of `<List>`, like [`<DataTable>`](./DataTable.md), are responsible for displaying the list of records.
 
-<iframe src="https://www.youtube-nocookie.com/embed/NNNPPmEMz6s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/NNNPPmEMz6s" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 

@@ -29,7 +29,7 @@ success() {
 retry_step() {
     local step_name="$1"
     local step_command="$2"
-    
+
     while true; do
         step "$step_name"
         if eval "$step_command"; then
@@ -43,21 +43,21 @@ retry_step() {
             echo "2. Skip this step (continue with release)"
             echo "3. Abort release"
             read -p "Choose (1/2/3): " choice
-            
+
             case $choice in
-                1) 
+                1)
                     echo "Retrying..."
-                    continue 
+                    continue
                     ;;
-                2) 
+                2)
                     warn "⚠ Skipping $step_name"
                     break
                     ;;
-                3) 
+                3)
                     error "Release aborted by user"
                     exit 1
                     ;;
-                *) 
+                *)
                     echo "Invalid choice, please enter 1, 2, or 3"
                     ;;
             esac
@@ -68,13 +68,13 @@ retry_step() {
 manual_step() {
     local step_name="$1"
     local instructions="$2"
-    
+
     while true; do
         step "$step_name"
         echo "$instructions"
         echo "Press Enter when this is done, or 'q' to quit"
         read -r response
-        
+
         if [ "$response" = "q" ] || [ "$response" = "Q" ]; then
             error "Release aborted by user"
             exit 1
@@ -104,6 +104,7 @@ if [ -d $RA_ENTERPRISE_PATH ]; then
         cp -r packages/* \$RA_ENTERPRISE_PATH/node_modules &&
         cd \$RA_ENTERPRISE_PATH &&
         rm -rf node_modules/react-admin/node_modules/@mui &&
+        rm -rf node_modules/react-admin/node_modules/ra-ui-materialui &&
         make build
     "
     retry_step "Run the EE tests" "
@@ -148,18 +149,18 @@ if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_versio
     retry_step "Update OldVersions.md" "
         sed -i \"s/^- \[v\$npm_previous_package_minor_version\].*/- [v\$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v\$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/v\$npm_previous_package_version\/docs\/Admin.md\)/\" docs/OldVersions.md
     "
-    
+
     manual_step "Review OldVersions.md" "Please review the docs/OldVersions.md file and update it if needed."
-    
+
     if [ -z "$RELEASE_DRY_RUN" ]; then
         retry_step "Commit OldVersions.md" "
             git add . &&
             git commit -m \"Update docs/OldVersions.md for version \${npm_current_package_version}\"
         "
     fi
-    
+
     retry_step "Update create-react-admin templates" "yarn run update-create-react-admin-deps \${npm_current_package_version}"
-    
+
     if [ -z "$RELEASE_DRY_RUN" ]; then
         retry_step "Commit template updates" "
             git add . &&
@@ -203,7 +204,7 @@ fi
 
 # Step 10: Publish packages
 if [ -z "$RELEASE_DRY_RUN" ]; then
-    retry_step "Publish packages" "./node_modules/.bin/lerna publish from-package"
+    retry_step "Publish packages" "./node_modules/.bin/lerna publish --no-verify-access from-package"
 else
     info "dry mode -- skipping lerna publish"
 fi

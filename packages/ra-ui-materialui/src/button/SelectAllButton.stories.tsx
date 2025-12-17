@@ -171,3 +171,33 @@ export const Limit = () => (
         <SelectAllButton label="Select all books (max 15)" limit={15} />
     </Wrapper>
 );
+
+export const StoreKey = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={() => (
+                        <List storeKey="license_components.embedded">
+                            <DataTable
+                                bulkActionsToolbar={
+                                    <BulkActionsToolbar
+                                        selectAllButton={<SelectAllButton />}
+                                    >
+                                        <BulkDeleteButton />
+                                    </BulkActionsToolbar>
+                                }
+                            >
+                                <DataTable.Col source="id" />
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="author" />
+                                <DataTable.NumberCol source="reads" />
+                            </DataTable>
+                        </List>
+                    )}
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);

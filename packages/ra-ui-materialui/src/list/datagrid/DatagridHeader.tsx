@@ -58,11 +58,11 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                 event.target.checked
                     ? selectedIds.concat(
                           data
-                              .filter(record =>
-                                  !selectedIds.includes(record.id) &&
-                                  isRowSelectable
-                                      ? isRowSelectable(record)
-                                      : true
+                              .filter(
+                                  record =>
+                                      !selectedIds.includes(record.id) &&
+                                      (!isRowSelectable ||
+                                          isRowSelectable(record))
                               )
                               .map(record => record.id)
                       )

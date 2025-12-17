@@ -24,7 +24,7 @@ export const useExpanded = (
 ): [boolean, () => void] => {
     const [expandedIds, setExpandedIds] = useStore<Identifier[]>(
         `${resource}.datagrid.expanded`,
-        []
+        emptyArray
     );
     const expanded = Array.isArray(expandedIds)
         ? // eslint-disable-next-line eqeqeq
@@ -49,6 +49,8 @@ export const useExpanded = (
 
     return [expanded, toggleExpanded];
 };
+
+const emptyArray: Identifier[] = [];
 
 /**
  * State-like hook for controlling the expanded state of many list items

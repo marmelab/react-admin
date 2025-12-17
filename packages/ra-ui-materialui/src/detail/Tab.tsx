@@ -164,7 +164,7 @@ export interface TabProps extends Omit<MuiTabProps, 'children'> {
     className?: string;
     divider?: ReactNode;
     icon?: ReactElement;
-    label: string | ReactElement;
+    label: ReactNode;
     path?: string;
     record?: RaRecord;
     spacing?: ResponsiveStyleValue<number | string>;

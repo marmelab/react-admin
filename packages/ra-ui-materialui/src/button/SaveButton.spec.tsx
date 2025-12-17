@@ -23,6 +23,7 @@ import { AdminContext } from '../AdminContext';
 import {
     AlwaysEnable,
     Basic,
+    Dirty,
     ComplexForm,
     EnabledWhenFormIsPrefilled,
 } from './SaveButton.stories';
@@ -65,6 +66,16 @@ describe('<SaveButton />', () => {
         await waitFor(() =>
             expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
                 true
+            )
+        );
+    });
+
+    it('should render an enabled button when the form is dirty', async () => {
+        render(<Dirty />);
+        fireEvent.click(await screen.findByText('Make change'));
+        await waitFor(() =>
+            expect(screen.getByLabelText('ra.action.save')['disabled']).toEqual(
+                false
             )
         );
     });

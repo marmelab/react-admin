@@ -6,7 +6,7 @@ import {
     styled,
 } from '@mui/material/styles';
 import { StackProps, useThemeProps } from '@mui/material';
-import { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import {
     TranslatableContextProvider,
     useTranslatable,

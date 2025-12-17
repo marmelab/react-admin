@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ReactElement, ElementType, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import {
     Card,
     CardContent,
@@ -104,7 +104,7 @@ export const EditView = (props: EditViewProps) => {
 
 export interface EditViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'id' | 'title'> {
-    actions?: ReactElement | false;
+    actions?: ReactNode | false;
     aside?: ReactNode;
     component?: ElementType;
     emptyWhileLoading?: boolean;

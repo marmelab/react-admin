@@ -6,7 +6,7 @@ import { QueryClient } from '@tanstack/react-query';
 import { testDataProvider } from './testDataProvider';
 import { PaginationPayload, SortPayload } from '../types';
 import { useInfiniteGetList } from './useInfiniteGetList';
-import { CoreAdminContext } from '..';
+import { CoreAdminContext } from '../core';
 
 describe('useInfiniteGetList', () => {
     const UseInfiniteGetList = ({

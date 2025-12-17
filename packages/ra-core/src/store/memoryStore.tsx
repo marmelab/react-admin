@@ -1,6 +1,3 @@
-import set from 'lodash/set.js';
-import unset from 'lodash/unset.js';
-import get from 'lodash/get.js';
 import { Store } from './types';
 
 type Subscription = {
@@ -21,8 +18,15 @@ type Subscription = {
  *   </Admin>
  * );
  */
-export const memoryStore = (storage: any = {}): Store => {
+export const memoryStore = (
+    initialStorage: Record<string, any> = {}
+): Store => {
+    // Use a flat Map to store key-value pairs directly without treating dots as nested paths
+    let storage = new Map<string, any>(Object.entries(initialStorage ?? {}));
     const subscriptions: { [key: string]: Subscription } = {};
+    let initialized = false;
+    let itemsToSetAfterInitialization: Record<string, unknown> = {};
+
     const publish = (key: string, value: any) => {
         Object.keys(subscriptions).forEach(id => {
             if (!subscriptions[id]) return; // may happen if a component unmounts after a first subscriber was notified
@@ -31,36 +35,65 @@ export const memoryStore = (storage: any = {}): Store => {
             }
         });
     };
+
     return {
-        setup: () => {},
+        setup: () => {
+            storage = new Map<string, any>(Object.entries(initialStorage));
+
+            // Because children might call setItem before the store is initialized,
+            // we store those calls parameters and apply them once the store is ready
+            if (Object.keys(itemsToSetAfterInitialization).length > 0) {
+                const items = Object.entries(itemsToSetAfterInitialization);
+                for (const [key, value] of items) {
+                    storage.set(key, value);
+                    publish(key, value);
+                }
+                itemsToSetAfterInitialization = {};
+            }
+
+            initialized = true;
+        },
         teardown: () => {
-            Object.keys(storage).forEach(key => delete storage[key]);
+            storage.clear();
         },
         getItem<T = any>(key: string, defaultValue?: T): T {
-            return get(storage, key, defaultValue);
+            return storage.has(key)
+                ? (storage.get(key) as T)
+                : (defaultValue as T);
         },
         setItem<T = any>(key: string, value: T): void {
-            set(storage, key, value);
+            // Because children might call setItem before the store is initialized,
+            // we store those calls parameters and apply them once the store is ready
+            if (!initialized) {
+                itemsToSetAfterInitialization[key] = value;
+                return;
+            }
+            storage.set(key, value);
             publish(key, value);
         },
         removeItem(key: string): void {
-            unset(storage, key);
+            storage.delete(key);
             publish(key, undefined);
         },
         removeItems(keyPrefix: string): void {
-            const flatStorage = flatten(storage);
-            Object.keys(flatStorage).forEach(key => {
-                if (!key.startsWith(keyPrefix)) {
-                    return;
+            const keysToDelete: string[] = [];
+            storage.forEach((_, key) => {
+                if (key.startsWith(keyPrefix)) {
+                    keysToDelete.push(key);
                 }
-                unset(storage, key);
+            });
+            keysToDelete.forEach(key => {
+                storage.delete(key);
                 publish(key, undefined);
             });
         },
         reset(): void {
-            const flatStorage = flatten(storage);
-            Object.keys(flatStorage).forEach(key => {
-                unset(storage, key);
+            const keysToDelete: string[] = [];
+            storage.forEach((_, key) => {
+                keysToDelete.push(key);
+            });
+            storage.clear();
+            keysToDelete.forEach(key => {
                 publish(key, undefined);
             });
         },
@@ -75,28 +108,4 @@ export const memoryStore = (storage: any = {}): Store => {
             };
         },
     };
-};
-
-// taken from https://stackoverflow.com/a/19101235/1333479
-const flatten = (data: any) => {
-    const result = {};
-    function doFlatten(current, prop) {
-        if (Object(current) !== current) {
-            // scalar value
-            result[prop] = current;
-        } else if (Array.isArray(current)) {
-            // array
-            result[prop] = current;
-        } else {
-            // object
-            let isEmpty = true;
-            for (const p in current) {
-                isEmpty = false;
-                doFlatten(current[p], prop ? prop + '.' + p : p);
-            }
-            if (isEmpty && prop) result[prop] = {};
-        }
-    }
-    doFlatten(data, '');
-    return result;
 };

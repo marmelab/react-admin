@@ -12,6 +12,7 @@ import {
     Meta,
     Offline,
     WithRenderProp,
+    ZeroIndex,
 } from './ReferenceFieldBase.stories';
 import { RecordContextProvider } from '../record';
 import { onlineManager } from '@tanstack/react-query';
@@ -183,5 +184,12 @@ describe('<ReferenceFieldBase />', () => {
         // Ensure the data is still displayed when going offline after it was loaded
         await screen.findByText('You are offline, the data may be outdated');
         await screen.findByText('Leo');
+    });
+
+    it('should not render the empty component for zero-index ids', async () => {
+        render(<ZeroIndex />);
+        await waitFor(() => {
+            expect(screen.queryByText('Leo')).not.toBeNull();
+        });
     });
 });

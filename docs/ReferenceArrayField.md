@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-fields-referencearrayfield--basic
 
 Use `<ReferenceArrayField>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
-<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 `<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md).
 

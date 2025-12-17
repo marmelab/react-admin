@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { type ReactElement, memo } from 'react';
+import { memo } from 'react';
 import {
     IconButton,
     ListItem,
     ListItemButton,
     type ListItemProps,
     ListItemText,
-    ListItemSecondaryAction,
     styled,
     type ComponentsOverrides,
     useThemeProps,
@@ -27,7 +26,7 @@ const arePropsEqual = (
     isEqual(prevProps.value, nextProps.value);
 
 export const SavedQueryFilterListItem = memo(
-    (inProps: SavedQueryFilterListItemProps): ReactElement => {
+    (inProps: SavedQueryFilterListItemProps) => {
         const props = useThemeProps({
             props: inProps,
             name: PREFIX,
@@ -69,24 +68,28 @@ export const SavedQueryFilterListItem = memo(
             isSelected ? removeFilter() : addFilter();
 
         return (
-            <StyledListItem className={className} sx={sx} disablePadding>
+            <StyledListItem
+                className={className}
+                sx={sx}
+                disablePadding
+                disableGutters
+                secondaryAction={
+                    isSelected ? (
+                        <IconButton size="small" onClick={toggleFilter}>
+                            <CancelIcon />
+                        </IconButton>
+                    ) : null
+                }
+            >
                 <ListItemButton
                     onClick={toggleFilter}
                     selected={isSelected}
-                    disableGutters
                     className={SavedQueryFilterListItemClasses.listItemButton}
                 >
                     <ListItemText
                         primary={label}
                         className={SavedQueryFilterListItemClasses.listItemText}
                     />
-                    {isSelected && (
-                        <ListItemSecondaryAction>
-                            <IconButton size="small" onClick={toggleFilter}>
-                                <CancelIcon />
-                            </IconButton>
-                        </ListItemSecondaryAction>
-                    )}
                 </ListItemButton>
             </StyledListItem>
         );

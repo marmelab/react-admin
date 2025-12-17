@@ -34,6 +34,7 @@ export const BulkDeleteWithConfirmButton = (
         icon = defaultIcon,
         label = 'ra.action.delete',
         mutationMode = 'pessimistic',
+        mutationOptions,
         onClick,
         ...rest
     } = props;
@@ -42,13 +43,13 @@ export const BulkDeleteWithConfirmButton = (
         mutationMode,
         ...rest,
         mutationOptions: {
-            ...rest.mutationOptions,
+            ...mutationOptions,
             onSettled(...args) {
                 // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
                 if (mutationMode === 'pessimistic') {
                     setOpen(false);
                 }
-                rest.mutationOptions?.onSettled?.(...args);
+                mutationOptions?.onSettled?.(...args);
             },
         },
     });
@@ -139,6 +140,7 @@ const sanitizeRestProps = ({
     label,
     resource,
     successMessage,
+    mutationOptions,
     ...rest
 }: Omit<BulkDeleteWithConfirmButtonProps, 'icon' | 'mutationMode'>) => rest;
 

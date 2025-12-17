@@ -4,6 +4,8 @@ import {
     I18nContextProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    StoreContextProvider,
+    memoryStore,
 } from 'ra-core';
 import { ThemeProvider, createTheme, Box, Paper } from '@mui/material';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
@@ -29,13 +31,15 @@ const Wrapper = ({ children }) => (
         <ThemeProvider theme={createTheme(defaultTheme)}>
             <PreferencesEditorContextProvider>
                 <TestMemoryRouter>
-                    <ResourceContextProvider value="posts">
-                        <Inspector />
-                        <Box display="flex" justifyContent="flex-end">
-                            <InspectorButton />
-                        </Box>
-                        <Paper sx={{ width: 600, m: 2 }}>{children}</Paper>
-                    </ResourceContextProvider>
+                    <StoreContextProvider value={memoryStore()}>
+                        <ResourceContextProvider value="posts">
+                            <Inspector />
+                            <Box display="flex" justifyContent="flex-end">
+                                <InspectorButton />
+                            </Box>
+                            <Paper sx={{ width: 600, m: 2 }}>{children}</Paper>
+                        </ResourceContextProvider>
+                    </StoreContextProvider>
                 </TestMemoryRouter>
             </PreferencesEditorContextProvider>
         </ThemeProvider>

@@ -6,7 +6,6 @@ import {
     ListItemButton,
     ListItemAvatar,
     ListItemIcon,
-    ListItemSecondaryAction,
     ListItemText,
     Typography,
     useMediaQuery,
@@ -102,25 +101,22 @@ export const ContactListContent = () => {
                                     }
                                 />
                                 {contact.last_seen && (
-                                    <ListItemSecondaryAction
+                                    <Typography
+                                        variant="body2"
+                                        color="textSecondary"
+                                        title={contact.last_seen}
                                         sx={{
                                             top: '10px',
                                             transform: 'none',
                                         }}
                                     >
-                                        <Typography
-                                            variant="body2"
-                                            color="textSecondary"
-                                            title={contact.last_seen}
-                                        >
-                                            {!isSmall && 'last activity '}
-                                            {formatRelative(
-                                                contact.last_seen,
-                                                now
-                                            )}{' '}
-                                            <Status status={contact.status} />
-                                        </Typography>
-                                    </ListItemSecondaryAction>
+                                        {!isSmall && 'last activity '}
+                                        {formatRelative(
+                                            contact.last_seen,
+                                            now
+                                        )}{' '}
+                                        <Status status={contact.status} />
+                                    </Typography>
                                 )}
                             </ListItemButton>
                         </ListItem>

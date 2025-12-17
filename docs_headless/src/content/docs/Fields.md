@@ -83,7 +83,7 @@ When `label` is omitted, you can use the humanized `source` property as default 
 
 If you don't find what you need in the list of available Fields, you can write your own Field component.
 
-<iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 A custom field must be a regular React component retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. Ra-core will set the `record` in this context based on the API response data at render time. If you pass a `source`, the field component needs to find the corresponding value in the `record` and render it.
 

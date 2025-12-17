@@ -222,3 +222,21 @@ describe('UserShow', () => {
     });
 });
 ```
+
+## Working with Jest
+
+:::tip
+In general, we recommend using [Vitest](https://vitest.dev/) for testing ra-core applications, as it is faster and more modern than Jest. In particular, it is compatible out of the box with ESM and TypeScript, whereas Jest requires additional and experimental configuration for that. If, however, you are already using Jest, here are some tips to make it work smoothly with ra-core.
+:::
+
+Starting with version [5.13.0](https://github.com/marmelab/react-admin/pull/10995), ra-core changed the way it exports its modules to be fully compatible with ESM.
+
+- If you are using Jest in CJS mode (default), you will need to add the following configuration to your `jest.config.js` file to make sure ra-core is properly transformed:
+
+  ```diff
+  -transformIgnorePatterns: ['node_modules/(?!(@hookform|react-hotkeys-hook))']
+  +transformIgnorePatterns: ['node_modules/(?!(@hookform|react-hotkeys-hook|ra-core|ra-i18n-polyglot|ra-data-fakerest|ra-language-english))']
+  ```
+
+- If you are using Jest in ESM mode, then the ra-core packages should work without any further configuration. You shouldn't need `transformIgnorePatterns` at all.
+

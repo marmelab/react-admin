@@ -5,7 +5,8 @@ import {
     getRecordFromLocation,
     useRecordFromLocation,
 } from './useRecordFromLocation';
-import { TestMemoryRouter, UseRecordFromLocationOptions } from '..';
+import { TestMemoryRouter } from '../routing';
+import { UseRecordFromLocationOptions } from '../form';
 
 describe('useRecordFromLocation', () => {
     const UseGetRecordFromLocation = (props: UseRecordFromLocationOptions) => {

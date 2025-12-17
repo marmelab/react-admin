@@ -12,7 +12,8 @@ As `<FormDataConsumer>` uses the render props pattern, you can avoid creating an
 
 ```tsx
 import * as React from 'react';
-import { Edit, SimpleForm, SelectInput, FormDataConsumer } from 'react-admin';
+import { EditBase, Form, FormDataConsumer } from 'ra-core';
+import { SelectInput } from 'my-ui-library';
 
 const countries = ['USA', 'UK', 'France'];
 const cities: Record<string, string[]> = {
@@ -24,8 +25,8 @@ const toChoices = (items: string[]) =>
     items.map(item => ({ id: item, name: item }));
 
 const OrderEdit = () => (
-    <Edit>
-        <SimpleForm>
+    <EditBase>
+        <Form>
             <SelectInput source="country" choices={toChoices(countries)} />
             <FormDataConsumer<{ country: string }>>
                 {({ formData, ...rest }) => (
@@ -40,8 +41,8 @@ const OrderEdit = () => (
                     />
                 )}
             </FormDataConsumer>
-        </SimpleForm>
-    </Edit>
+        </Form>
+    </EditBase>
 );
 ```
 
@@ -52,47 +53,49 @@ You may want to display or hide inputs based on the value of another input - for
 For such cases, you can use the approach described above, using the `<FormDataConsumer>` component.
 
 ```tsx
-import { FormDataConsumer } from 'react-admin';
+import { EditBase, Form, FormDataConsumer } from 'ra-core';
+import { BooleanInput, TextInput } from 'my-ui-library';
 
 const PostEdit = () => (
-    <Edit>
-        <SimpleForm shouldUnregister>
+    <EditBase>
+        <Form shouldUnregister>
             <BooleanInput source="hasEmail" />
             <FormDataConsumer<{ hasEmail: boolean }>>
                 {({ formData, ...rest }) =>
                     formData.hasEmail && <TextInput source="email" {...rest} />
                 }
             </FormDataConsumer>
-        </SimpleForm>
-    </Edit>
+        </Form>
+    </EditBase>
 );
 ```
 
 :::note
-By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<SimpleForm>` component prevents that from happening. That way, when end users hide an input, its value isn’t included in the submitted data.
+By default, `react-hook-form` submits values of unmounted input components. In the above example, the `shouldUnregister` prop of the `<Form>` component prevents that from happening. That way, when end users hide an input, its value isn’t included in the submitted data.
 :::
 
 :::note
-`shouldUnregister` should be avoided when using `<ArrayInput>` (which internally uses `useFieldArray`) as the unregister function gets called after input unmount/remount and reorder. This limitation is mentioned in the `react-hook-form` [documentation](https://react-hook-form.com/docs/usecontroller#props). If you are in such a situation, you can use the [`transform`](./EditBase.md#transform) prop to manually clean the submitted values.
+Setting [`shouldUnregister`](https://react-hook-form.com/docs/useform#shouldUnregister) on a form should be avoided when using `<ArrayInputBase>` (which internally uses `useFieldArray`) as the unregister function gets called after input unmount/remount and reorder. This limitation is mentioned in the `react-hook-form` [documentation](https://react-hook-form.com/docs/usecontroller#props). If you are in such a situation, you can use the [`transform`](./EditBase.md#transform) prop to manually clean the submitted values.
 :::
 
 ## Usage inside an ArrayInput
 
-When used inside an `<ArrayInput>`, `<FormDataConsumer>` provides one additional property to its child function called scopedFormData. It’s an object containing the current values of the currently rendered item. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
+When used inside an `<ArrayInputBase>`, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It’s an object containing the current values of the currently rendered item. This allows you to create dependencies between inputs inside a form iterator (e.g. one built with [`<SimpleFormIteratorBase>`](./SimpleFormIteratorBase.md)), as in the following example:
 
 ```tsx
-import { FormDataConsumer } from 'react-admin';
+import { EditBase, Form, ArrayInputBase, FormDataConsumer } from 'ra-core';
+import { TextInput, SelectInput, SimpleFormIterator } from 'my-ui-library';
 
 const PostEdit = () => (
-    <Edit>
-        <SimpleForm>
-            <ArrayInput source="authors">
+    <EditBase>
+        <Form>
+            <ArrayInputBase source="authors">
                 <SimpleFormIterator>
                     <TextInput source="name" />
                     <FormDataConsumer<{ name: string }>>
                         {({
                             formData, // The whole form data
-                            scopedFormData, // The data for this item of the ArrayInput
+                            scopedFormData, // The data for this item of the ArrayInputBase
                             ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
@@ -108,18 +111,18 @@ const PostEdit = () => (
                         }
                     </FormDataConsumer>
                 </SimpleFormIterator>
-            </ArrayInput>
-        </SimpleForm>
-    </Edit>
+            </ArrayInputBase>
+        </Form>
+    </EditBase>
 );
 ```
 
 :::tip
-TypeScript users will notice that scopedFormData is typed as an optional parameter. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, this parameter will be undefined. If you are inside an `<ArrayInput>`, you can safely assume that this parameter will be defined.
+TypeScript users will notice that scopedFormData is typed as an optional parameter. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInputBase>` and in that case, this parameter will be undefined. If you are inside an `<ArrayInputBase>`, you can safely assume that this parameter will be defined.
 :::
 
 :::tip
-If you need to access the effective source of an input inside an `<ArrayInput>`, for example to change the value programmatically using setValue, you will need to leverage the [`useSourceContext`](./useSourceContext.md) hook.
+If you need to access the effective source of an input inside an `<ArrayInputBase>`, for example to change the value programmatically using `setValue`, you will need to leverage the [`useSourceContext`](./useSourceContext.md) hook.
 :::
 
 ## Props
@@ -136,7 +139,7 @@ The function used to render a component based on the `formData`.
 <FormDataConsumer<{ name: string }>>
     {({
         formData, // The whole form data
-        scopedFormData, // The data for this item of the ArrayInput
+        scopedFormData, // The data for this item of the ArrayInputBase
     }) => {
         /* ... */
     }}

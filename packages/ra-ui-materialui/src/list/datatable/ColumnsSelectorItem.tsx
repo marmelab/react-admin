@@ -28,13 +28,14 @@ export const ColumnsSelectorItem = ({
     );
     const columnFilter = useDataTableColumnFilterContext();
     const translateLabel = useTranslateLabel();
-    if (!source && !label) return null;
+    if (!source && (!label || typeof label !== 'string')) return null;
+    const sourceOrLabel = source || (label as string);
     const fieldLabel = translateLabel({
         label: typeof label === 'string' ? label : undefined,
         resource,
         source,
     }) as string;
-    const isColumnHidden = hiddenColumns.includes(source!);
+    const isColumnHidden = hiddenColumns.includes(sourceOrLabel!);
     const isColumnFiltered = fieldLabelMatchesFilter(fieldLabel, columnFilter);
 
     const handleMove = (index1, index2) => {
@@ -76,16 +77,18 @@ export const ColumnsSelectorItem = ({
     return isColumnFiltered ? (
         <FieldToggle
             key={columnRank}
-            source={source!}
+            source={sourceOrLabel}
             label={fieldLabel}
             index={String(columnRank)}
             selected={!isColumnHidden}
             onToggle={() =>
                 isColumnHidden
                     ? setHiddenColumns(
-                          hiddenColumns.filter(column => column !== source!)
+                          hiddenColumns.filter(
+                              column => column !== sourceOrLabel!
+                          )
                       )
-                    : setHiddenColumns([...hiddenColumns, source!])
+                    : setHiddenColumns([...hiddenColumns, sourceOrLabel!])
             }
             onMove={handleMove}
         />

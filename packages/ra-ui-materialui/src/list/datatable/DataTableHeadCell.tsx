@@ -60,7 +60,9 @@ export const DataTableHeadCell = React.memo(
             const resource = useResourceContext();
             const translate = useTranslate();
             const translateLabel = useTranslateLabel();
-            const isColumnHidden = hiddenColumns.includes(source!);
+            const isColumnHidden = hiddenColumns.includes(
+                source ?? (label as string)
+            );
             if (isColumnHidden) return null;
             const nextSortOrder =
                 sort && sort.field === source

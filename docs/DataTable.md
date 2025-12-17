@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-list-datatable--basic
 
 The `<DataTable>` component renders a list of records as a table. It supports sorting, row selection for bulk actions, a collapsible panel, hiding and reordering columns, dynamic row and cell styles, and more.
 
-<iframe src="https://www.youtube-nocookie.com/embed/IHjBd9WrVcI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/IHjBd9WrVcI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 
@@ -150,7 +150,7 @@ const PostList = () => (
 
 Bulk action buttons appear when users select one or several rows. Clicking on a bulk action button affects all the selected records. This is useful for actions like mass deletion or mass edition.
 
-<iframe src="https://www.youtube-nocookie.com/embed/zbr1xLjAXz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/zbr1xLjAXz4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 You can disable this feature by setting the `bulkActionButtons` prop to `false`:
 
