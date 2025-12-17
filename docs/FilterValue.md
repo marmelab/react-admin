@@ -133,7 +133,7 @@ Check the [`<FilterValue.Field>`](#filtervaluefield) section below for more deta
 
 ## `operators`
 
-`<FilterValue>` needs to distinguish operators from field names containing the `_` symbol. By default, it handles all the operators added by the [`<StackedFilters>` Filter Configuration Builders](#filter-configuration-builders): `eq`, `neq`, `eq_any`, `neq_any`, `gt`, `gte`, `lt`, `lte`, `q`, `inc`, `inc_any`, `ninc_any`.
+`<FilterValue>` needs to distinguish operators from field names containing the `_` symbol. By default, it handles all the operators added by the [`<StackedFilters>` Filter Configuration Builders](./StackedFilters.md#filter-configuration-builders): `eq`, `neq`, `eq_any`, `neq_any`, `gt`, `gte`, `lt`, `lte`, `q`, `inc`, `inc_any`, `ninc_any`.
 
 If your filters use other operators, or if you want to restrict the list of accepted operators, you can pass an `operators` prop to customize the list of accepted operators.
 
