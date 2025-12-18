@@ -93,4 +93,35 @@ describe('memoryStore', () => {
 
         await screen.findByText('John');
     });
+    describe('listItems', () => {
+        it('should return an object containing all items with the given prefix', () => {
+            const store = memoryStore({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                hello: 'world',
+            });
+            store.setup();
+            expect(store.listItems('foo')).toEqual({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+            });
+        });
+        it('should return an object containing all items when no prefix is provided', () => {
+            const store = memoryStore({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                hello: 'world',
+            });
+            store.setup();
+            expect(store.listItems()).toEqual({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                hello: 'world',
+            });
+        });
+    });
 });

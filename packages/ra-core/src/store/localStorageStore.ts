@@ -148,6 +148,24 @@ export const localStorageStore = (
                 delete subscriptions[id];
             };
         },
+        listItems: (keyPrefix?: string) => {
+            const storage = getStorage();
+            const fullPrefix = `${prefix}.${keyPrefix != null ? keyPrefix : ''}`;
+
+            return Object.entries(storage).reduce(
+                (acc, [key, value]) => {
+                    if (
+                        // version is considered internal
+                        key !== `${prefix}.version` &&
+                        key.startsWith(fullPrefix)
+                    ) {
+                        acc[key.substring(prefix.length + 1)] = tryParse(value);
+                    }
+                    return acc;
+                },
+                {} as Record<string, unknown>
+            );
+        },
     };
 };
 

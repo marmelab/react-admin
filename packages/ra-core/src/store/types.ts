@@ -7,4 +7,5 @@ export interface Store {
     removeItems: (keyPrefix: string) => void;
     reset: () => void;
     subscribe: (key: string, callback: (value: any) => void) => () => void;
+    listItems?: (keyPrefix?: string) => Record<string, unknown>;
 }

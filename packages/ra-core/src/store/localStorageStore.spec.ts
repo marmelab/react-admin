@@ -68,4 +68,33 @@ describe('localStorageStore', () => {
             expect(store.getItem('foo')).toEqual(undefined); //deleted during setup
         });
     });
+    describe('listItems', () => {
+        it('should return an object containing all items with the given prefix', () => {
+            const store = localStorageStore();
+            store.setup();
+            store.setItem('foo', 'bar');
+            store.setItem('foo2', 'bar2');
+            store.setItem('foo3', 'bar3');
+            store.setItem('hello', 'world');
+            expect(store.listItems('foo')).toEqual({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+            });
+        });
+        it('should return an object containing all items when no prefix is provided', () => {
+            const store = localStorageStore();
+            store.setup();
+            store.setItem('foo', 'bar');
+            store.setItem('foo2', 'bar2');
+            store.setItem('foo3', 'bar3');
+            store.setItem('hello', 'world');
+            expect(store.listItems()).toEqual({
+                foo: 'bar',
+                foo2: 'bar2',
+                foo3: 'bar3',
+                hello: 'world',
+            });
+        });
+    });
 });
