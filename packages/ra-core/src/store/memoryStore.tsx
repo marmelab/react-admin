@@ -107,5 +107,18 @@ export const memoryStore = (
                 delete subscriptions[id];
             };
         },
+        listItems: (keyPrefix?: string) => {
+            return Array.from(storage.entries()).reduce(
+                (acc, [key, value]) => {
+                    if (keyPrefix != null && !key.startsWith(keyPrefix)) {
+                        return acc;
+                    }
+
+                    acc[key] = value;
+                    return acc;
+                },
+                {} as Record<string, unknown>
+            );
+        },
     };
 };
