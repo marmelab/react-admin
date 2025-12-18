@@ -27,3 +27,4 @@ export * from './useUnselect';
 export * from './useUnselectAll';
 export * from './useSelectAll';
 export * from './WithListContext';
+export * from './useSavedQueries';
