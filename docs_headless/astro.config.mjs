@@ -216,6 +216,7 @@ export default defineConfig({
                         'usechoicescontext',
                         'useinput',
                         'usesourcecontext',
+                        'usesupportcreatesuggestion',
                     ],
                 },
                 {

@@ -16,7 +16,12 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import * as React from 'react';
 
-import { CreateBase, Resource, TestMemoryRouter } from 'ra-core';
+import {
+    CreateBase,
+    Resource,
+    TestMemoryRouter,
+    useCreateSuggestionContext,
+} from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
@@ -26,7 +31,6 @@ import { FormInspector } from './common';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { TextInput } from './TextInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectArrayInput' };
 

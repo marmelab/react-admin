@@ -31,4 +31,14 @@ export * from './TranslatableInputs';
 export * from './TranslatableInputsTabContent';
 export * from './TranslatableInputsTabs';
 export * from './TranslatableInputsTab';
-export * from './useSupportCreateSuggestion';
+/**
+ * @deprecated Import from `ra-core` or `react-admin` instead
+ * FIXME: remove the re-export in v6
+ */
+export {
+    useSupportCreateSuggestion,
+    SupportCreateSuggestionOptions,
+    UseSupportCreateValue,
+    useCreateSuggestionContext,
+    OnCreateHandler,
+} from 'ra-core';

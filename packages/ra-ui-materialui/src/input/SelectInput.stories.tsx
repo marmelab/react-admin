@@ -15,6 +15,7 @@ import {
     TestMemoryRouter,
     required,
     useGetList,
+    useCreateSuggestionContext,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -31,7 +32,6 @@ import { FormInspector } from './common';
 import { ReferenceInput } from './ReferenceInput';
 import { SelectInput, SelectInputProps } from './SelectInput';
 import { TextInput } from './TextInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/SelectInput' };
 

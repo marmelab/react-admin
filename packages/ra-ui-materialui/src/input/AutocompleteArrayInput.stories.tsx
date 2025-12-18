@@ -22,6 +22,7 @@ import {
     required,
     testDataProvider,
     useRecordContext,
+    useCreateSuggestionContext,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -38,7 +39,6 @@ import {
 } from './AutocompleteArrayInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { TextInput } from './TextInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 
 export default { title: 'ra-ui-materialui/input/AutocompleteArrayInput' };
 

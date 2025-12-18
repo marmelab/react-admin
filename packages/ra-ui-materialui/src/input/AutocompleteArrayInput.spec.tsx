@@ -6,12 +6,12 @@ import {
     testDataProvider,
     TestTranslationProvider,
     useRecordContext,
+    useCreateSuggestionContext,
 } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
-import { useCreateSuggestionContext } from './useSupportCreateSuggestion';
 import {
     ChipProps,
     CreateItemLabel,

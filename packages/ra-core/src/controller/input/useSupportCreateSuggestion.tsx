@@ -8,7 +8,9 @@ import {
     useRef,
     useState,
 } from 'react';
-import { Identifier, OptionText, useTranslate } from 'ra-core';
+import { Identifier } from '../../types';
+import { OptionText } from '../../form/choices/useChoices';
+import { useTranslate } from '../../i18n/useTranslate';
 import set from 'lodash/set.js';
 
 /**
