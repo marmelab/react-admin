@@ -27,11 +27,11 @@ This script will ask you for more details about your project. You can use the fo
 
 Next, add the required dependencies. In addition to the `react-admin` npm package, you will need a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
-`react-admin` also depends on the `react-router-dom` package. It used to be a direct dependency of `react-router`, but it's not anymore in v7 so you'll have to add it manually. Check the version of React Router that has been installed by `create-react-router` and **use the exact same version**. At the time of writing this tutorial, it is `7.11.0`.
+`react-admin` also depends on the `react-router-dom` package. It used to be a direct dependency of `react-router`, but it's not anymore in v7 so you'll have to add it manually. Check the version of React Router that has been installed by `create-react-router` and **use the exact same version**. At the time of writing this tutorial, it is `7.10.1`.
 
 ```sh
 cd react-router-admin
-npm add react-admin ra-data-json-server react-router-dom@7.11.0
+npm add react-admin ra-data-json-server react-router-dom@7.10.1
 ```
 
 ## Adding React-Admin In A Sub Route
@@ -70,6 +70,8 @@ export default function App() {
 **Tip**: Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin/" subpath:
 
 You can now start the app in development mode with `npm run dev`. The admin should render at <http://localhost:5173/admin/>.
+
+**Tip**: If you're getting a `ReferenceError: document is not defined`error at this stage, it's probably because the versions of `react-router` and `react-router-dom` are mismatched. Make sure to use the exact same version for both packages.
 
 ## Adding an API
 
