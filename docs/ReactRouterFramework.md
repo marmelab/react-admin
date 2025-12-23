@@ -5,7 +5,7 @@ title: "React Router Framework Integration"
 
 # React Router Framework Integration
 
-[React Router Framework](https://reactrouter.com/start/framework/installation) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, it uses React Router under the hood and integrates seamlessly.
+[React Router Framework](https://reactrouter.com/start/framework/installation) (a.k.a. Remix v3) is a Node.js framework for server-side-rendered React apps. React-admin uses React Router under the hood and integrates seamlessly with React Router Framework applications.
 
 These instructions are targeting React Router v7 in Framework mode.
 
@@ -25,13 +25,13 @@ This script will ask you for more details about your project. You can use the fo
 
 ## Setting Up React-Admin In React Router
 
-Add the `react-admin` npm package, as well as a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
+Next, add the required dependencies. In addition to the `react-admin` npm package, you will need a data provider package. In this example, we'll use `ra-data-json-server` to connect to a test API provided by [JSONPlaceholder](https://jsonplaceholder.typicode.com).
 
-**Note**: `react-admin` requires the `react-router-dom` package which is not needed anymore in standard React Router applications but is still published for backward compatibility. Check the version of React Router that has been installed by `create-react-router` and use the same version. At the time of writing this tutorial, it is `7.10.1`.
+`react-admin` also depends on the `react-router-dom` package. It used to be a direct dependency of `react-router`, but it's not anymore in v7 so you'll have to add it manually. Check the version of React Router that has been installed by `create-react-router` and **use the exact same version**. At the time of writing this tutorial, it is `7.11.0`.
 
 ```sh
 cd react-router-admin
-npm add react-router-dom@7.10.1 react-admin ra-data-json-server
+npm add react-admin ra-data-json-server react-router-dom@7.11.0
 ```
 
 ## Adding React-Admin In A Sub Route
@@ -49,7 +49,7 @@ export default [
 ] satisfies RouteConfig;
 ```
 
-Now create the `routes/admin.tsx` file:
+Now create the `app/routes/admin.tsx` file:
 
 ```tsx
 import { Admin, Resource, ListGuesser } from "react-admin";
@@ -67,9 +67,9 @@ export default function App() {
 }
 ```
 
-**Tip** Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin/" subpath:
+**Tip**: Don't forget to set the `<Admin basename>` prop, so that react-admin generates links relative to the "/admin/" subpath:
 
-You can now start the app in `development` mode with `npm run dev`. The admin should render at `http://localhost:5173/admin/`, and you can use the Remix routing system to add more pages.
+You can now start the app in development mode with `npm run dev`. The admin should render at <http://localhost:5173/admin/>.
 
 ## Adding an API
 
@@ -86,9 +86,11 @@ First, create a Supabase REST API and its associated PostgreSQL database directl
 - `posts` with fields: `id`, `title`, and `body`
 - `comments` with fields: `id`, `name`, `body`, and `postId` (a foreign key to the `posts.id` field)
 
-You can populate these tables via the Supabse UI if you want. Supabase exposes a REST API at `https://YOUR_INSTANCE.supabase.co/rest/v1`.
+You can populate these tables via the Supabse UI if you want.
 
-Next, create a configuration to let the Remix app connect to Supabase. As Remix supports [`dotenv`](https://dotenv.org/) by default in `development` mode, you just need to create a `.env` file:
+Supabase exposes a REST API at `https://YOUR_INSTANCE.supabase.co/rest/v1`.
+
+Next, create a configuration to let the React-Router app connect to Supabase. As React Router supports [`dotenv`](https://dotenv.org/) by default in `development` mode, you just need to create a `.env` file:
 
 ```sh
 # In `.env`
@@ -113,7 +115,7 @@ export default [
 Then create the `app/routes/admin.api.tsx` file. Inside this file, a `loader` function should convert the GET requests into Supabase API calls, and an `action` function should do the same for POST, PUT, and DELETE requests.
 
 ```tsx
-// in /app/routes/admin.api.$.tsx
+// in app/routes/admin.api.tsx
 import type { Route } from "./+types/admin.api";
 
 // handle read requests (getOne, getList, getMany, getManyReference)
@@ -169,33 +171,24 @@ npm add @raphiniert/ra-data-postgrest
 
 Update your `vite.config.ts` to add `@raphiniert/ra-data-postgrest` to the `noExternal` array:
 
-
 ```diff
-import { vitePlugin as remix } from "@remix-run/dev";
+import { reactRouter } from "@react-router/dev/vite";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-	plugins: [
-		remix({
-			future: {
-				v3_fetcherPersist: true,
-				v3_relativeSplatPath: true,
-				v3_throwAbortReason: true,
-			},
-		}),
-		tsconfigPaths(),
-	],
-+	ssr: {
-+		noExternal: ['@raphiniert/ra-data-postgrest']
-+	},
+  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
++ ssr: {
++  noExternal: ['@raphiniert/ra-data-postgrest']
++ },
 });
 ```
 
 Finally, update your Admin dataProvider:
 
 ```jsx
-// in app/routes/admin.$.tsx
+// in app/routes/admin.tsx
 import { Admin, Resource, ListGuesser, fetchUtils } from "react-admin";
 import postgrestRestProvider, { defaultPrimaryKeys, defaultSchema } from '@raphiniert/ra-data-postgrest';
 
@@ -217,22 +210,25 @@ export default function App() {
 }
 ```
 
-That's it! Now Remix both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:5173/admin/`, and the API Proxy by visiting `http://localhost:5173/admin/api/posts`.
+That's it! Now React Router both renders the admin app and serves as a proxy to the Supabase API. You can test the app by visiting `http://localhost:5173/admin/`, and the API Proxy by visiting `http://localhost:5173/admin/api/posts`.
 
-**Note**: you may have a blank page if your database does not have any record yet. Make sure to create some using Supabase Studio.
+**Note**: You may have a blank page if your database does not have any record yet. Make sure to create some using Supabase Studio.
 
 Note that the Supabase credentials never leave the server. It's up to you to add your own authentication to the API proxy.
 
 ## Sourcemaps in production
 
 By default, Vite won't include the TypeScript sourcemaps in production builds. This means you'll only have the react-admin ESM builds for debugging.
+
 Should you prefer to have the TypeScript sources, you'll have to configure some Vite aliases:
 
 ```tsx
 // in vite.config.ts
+import { reactRouter } from "@react-router/dev/vite";
+import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
-import react from "@vitejs/plugin-react";
 
 const alias = [
   { find: 'react-admin', replacement: path.resolve(__dirname, './node_modules/react-admin/src') },
@@ -242,7 +238,10 @@ const alias = [
 ]
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [tailwindcss(), reactRouter(), tsconfigPaths()],
+  ssr: {
+    noExternal: ['@raphiniert/ra-data-postgrest']
+  },
   build: { sourcemap: true },
   resolve: { alias },
 });
