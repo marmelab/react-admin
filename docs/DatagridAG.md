@@ -247,6 +247,7 @@ If you need to use these features, you can use the [`<DatagridAGClient>`](#datag
 | `cellRenderer`      | Optional | String, Function or Element |                              | Allows to use a custom component to render the cell content                                                                            |
 | `columnDefs`        | Required | Array                       | n/a                          | The columns definitions                                                                                                                |
 | `defaultColDef`     | Optional | Object                      |                              | The default column definition (applied to all columns)                                                                                 |
+| `defaultSort`       | Optional | Object                      |                              | The default sort to apply when clearing all sort                                                                                       |
 | `getAgGridFilters`  | Optional | Function                    |                              | A function mapping react-admin filters to ag-grid filters                                                                              |
 | `getRaFilters`      | Optional | Function                    |                              | A function mapping ag-grid filters to react-admin filters                                                                              |
 | `mutationOptions`   | Optional | Object                      |                              | The mutation options                                                                                                                   |
@@ -301,7 +302,7 @@ In a column definition, you can use the `cellEditor` field to specify a custom c
 
 In addition to that, `<DatagridAG>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
 
-This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
+This allows to leverage all the power of react-admin inputs in your grid, including validation, for example to edit a reference.
 
 To use a React Admin input as `cellEditor`, you need to pass it as a *React Element*:
 
@@ -433,7 +434,36 @@ const StyledListbox = styled('ul')({
 
 **Tip:** Using a custom `cellEditor` works great in combination with a custom [`cellRenderer`](#cellrenderer).
 
-**Note:** React Admin inputs used ad `cellEditor` do not (yet) support form validation.
+You might want to always use React Admin inputs to edit your columns to leverage the validators with builtin i18n support:
+
+```tsx
+import { List, TextInput, ReferenceInput, AutocompleteInput, required } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        {
+            field: 'title',
+            cellEditor: (
+              <TextInput source="title" validate={required()} />
+            ),
+        },
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts">
+                  <AutocompleteInput validate={required()} />
+                </ReferenceInput>
+            ),
+        },
+    ];
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
 
 ### `cellRenderer`
 
@@ -559,6 +589,33 @@ export const PostList = () => {
 {% endraw %}
 
 ![DatagridAG defaultColDef](./img/DatagridAG-PostList.png)
+
+### `defaultSort`
+
+The `defaultSort` prop allows you to define what sort settings to apply when users clear the sort on a column.
+
+{% raw %}
+```tsx
+import React from 'react';
+import { List } from 'react-admin';
+import { DatagridAG } from '@react-admin/ra-datagrid-ag';
+
+export const PostList = () => {
+    const columnDefs = [
+        // Passing null allows users to clear the sort
+        { field: 'title', sortingOrder: ['asc', 'desc', null] },
+        { field: 'published_at', sortingOrder: ['asc', 'desc', null] },
+        { field: 'body', sortingOrder: ['asc', 'desc', null] },
+    ];
+
+    return (
+        <List>
+            <DatagridAG columnDefs={columnDefs} defaultSort={{ field: 'id', order: 'ASC' }} />
+        </List>
+    );
+};
+```
+{% endraw %}
 
 ### `getAgGridFilters`
 
@@ -1943,7 +2000,7 @@ In a column definition, you can use the `cellEditor` field to specify a custom c
 
 In addition to that, `<DatagridAGClient>` supports using [React Admin inputs](./Inputs.md) as `cellEditor`, such as [`<TextInput>`](./TextInput.md) or even [`<ReferenceInput>`](./ReferenceInput.md).
 
-This allows to leverage all the power of react-admin inputs in your grid, for example to edit a reference.
+This allows to leverage all the power of react-admin inputs in your grid, including validation, for example to edit a reference.
 
 To use a React Admin input as `cellEditor`, you need to pass it as a *React Element*:
 
@@ -2075,7 +2132,36 @@ const StyledListbox = styled('ul')({
 
 **Tip:** Using a custom `cellEditor` works great in combination with a custom [`cellRenderer`](#cellrenderer-1).
 
-**Note:** React Admin inputs used ad `cellEditor` do not (yet) support form validation.
+You might want to always use React Admin inputs to edit your columns to leverage the validators with builtin i18n support:
+
+```tsx
+import { List, TextInput, ReferenceInput, AutocompleteInput, required } from 'react-admin';
+import { DatagridAGClient } from '@react-admin/ra-datagrid-ag';
+
+export const CommentList = () => {
+    const columnDefs = [
+        {
+            field: 'title',
+            cellEditor: (
+              <TextInput source="title" validate={required()} />
+            ),
+        },
+        {
+            field: 'post_id',
+            cellEditor: (
+                <ReferenceInput source="post_id" reference="posts">
+                  <AutocompleteInput validate={required()} />
+                </ReferenceInput>
+            ),
+        },
+    ];
+    return (
+        <List perPage={10000} pagination={false}>
+            <DatagridAGClient columnDefs={columnDefs} />
+        </List>
+    );
+};
+```
 
 ### `cellRenderer`
 
