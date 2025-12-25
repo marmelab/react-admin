@@ -20,7 +20,7 @@ export * from './SavedQueryFilterListItem';
 export {
     FilterContext,
     useSavedQueries,
-    SavedQuery,
+    type SavedQuery,
     extractValidSavedQueries,
     areValidSavedQueries,
     isValidSavedQuery,

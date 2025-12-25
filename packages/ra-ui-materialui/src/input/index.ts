@@ -37,8 +37,8 @@ export * from './TranslatableInputsTab';
  */
 export {
     useSupportCreateSuggestion,
-    SupportCreateSuggestionOptions,
-    UseSupportCreateValue,
+    type SupportCreateSuggestionOptions,
+    type UseSupportCreateValue,
     useCreateSuggestionContext,
-    OnCreateHandler,
+    type OnCreateHandler,
 } from 'ra-core';
