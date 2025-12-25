@@ -200,7 +200,7 @@ import { fr } from 'date-fns/locale/fr'
 import { EventEdit } from './events';
 
 import { LocalizationProvider } from '@mui/x-date-pickers-pro';
-import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFnsV3';
+import { AdapterDateFns } from '@mui/x-date-pickers-pro/AdapterDateFns';
 
 export const App = () => (
     <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={fr}>
@@ -211,7 +211,7 @@ export const App = () => (
 );
 ```
 
-**Note**: To wrap your admin using a `<DateInput>`, a `<DateTimeInput>` or a `<TimeInput>`, you need to import `LocalizationProvider` from `@mui/x-date-pickers` and `AdapterDateFns` from `@mui/x-date-pickers/AdapterDateFnsV3`. But, to wrap your admin using a `<DateRangeInput>`, you need to import `LocalizationProvider` from `@mui/x-date-pickers-pro` and `AdapterDateFns` from `@mui/x-date-pickers-pro/AdapterDateFnsV3`. If you use both components, please use `@mui/x-date-pickers-pro` imports.
+**Note**: To wrap your admin using a `<DateInput>`, a `<DateTimeInput>` or a `<TimeInput>`, you need to import `LocalizationProvider` from `@mui/x-date-pickers` and `AdapterDateFns` from `@mui/x-date-pickers/AdapterDateFns`. But, to wrap your admin using a `<DateRangeInput>`, you need to import `LocalizationProvider` from `@mui/x-date-pickers-pro` and `AdapterDateFns` from `@mui/x-date-pickers-pro/AdapterDateFns`. If you use both components, please use `@mui/x-date-pickers-pro` imports.
 
 **Note:** React-admin only supports the `date-fns` adapter for now.
 
