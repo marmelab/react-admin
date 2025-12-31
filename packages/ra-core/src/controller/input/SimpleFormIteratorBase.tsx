@@ -13,6 +13,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     const {
         children,
         getItemDefaults: getItemDefaultsProp = DefaultGetItemDefaults,
+        disableAutoFocus = false,
     } = props;
     const getItemDefaults = useEvent(getItemDefaultsProp);
 
@@ -39,7 +40,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     });
 
     const addField = useEvent((item: any = undefined) => {
-        append(getItemDefaults(item));
+        append(getItemDefaults(item), { shouldFocus: !disableAutoFocus });
     });
 
     const handleReorder = useEvent((origin: number, destination: number) => {
@@ -92,4 +93,5 @@ export interface SimpleFormIteratorBaseProps
     record?: RaRecord;
     resource?: string;
     source?: string;
+    disableAutoFocus?: boolean;
 }
