@@ -3,7 +3,14 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { useWrappedSource } from '../../core/useWrappedSource';
 import { useFieldValue } from '../../util/useFieldValue';
 import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
-import { Admin, DataTable, SimpleForm, TextInput } from '../../test-ui';
+import {
+    Admin,
+    ArrayInput,
+    AutocompleteInput,
+    DataTable,
+    SimpleForm,
+    TextInput,
+} from '../../test-ui';
 import { Resource } from '../../core/Resource';
 import { ListBase } from '../list/ListBase';
 import { EditBase } from '../edit/EditBase';
@@ -18,6 +25,7 @@ import {
 } from './SimpleFormIteratorBase';
 import { useGetArrayInputNewItemDefaults } from './useGetArrayInputNewItemDefaults';
 import { useEvent } from '../../util';
+import { DateInput } from 'ra-ui-materialui';
 
 export default { title: 'ra-core/controller/input/SimpleFormIteratorBase' };
 
@@ -130,4 +138,24 @@ export const Basic = () => (
             />
         </Admin>
     </TestMemoryRouter>
+);
+
+export const WithDisableAutoFocus = () => (
+    <SimpleForm onSubmit={() => {}}>
+        <ArrayInput source="backlinks">
+            <SimpleFormIterator disableAutoFocus>
+                <AutocompleteInput
+                    source="unable_unfocus"
+                    choices={[
+                        { id: 'unfocus', name: 'None' },
+                        { id: 'admin', name: 'Admin' },
+                        { id: 'user', name: 'User' },
+                        { id: 'user_simple', name: 'UserSimple' },
+                    ]}
+                />
+                <DateInput source="date" defaultValue="" />
+                <TextInput source="url" defaultValue="" />
+            </SimpleFormIterator>
+        </ArrayInput>
+    </SimpleForm>
 );
