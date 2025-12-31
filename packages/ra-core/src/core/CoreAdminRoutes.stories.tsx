@@ -1,13 +1,12 @@
 import React from 'react';
-import { NavigateFunction, Route } from 'react-router';
-import { TestMemoryRouter } from '../routing/TestMemoryRouter';
+import { Route } from 'react-router';
+import { TestMemoryRouter, LinkBase, RouterNavigateFunction } from '../routing';
 import { testDataProvider } from '../dataProvider';
 import { CoreAdminContext } from './CoreAdminContext';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { CustomRoutes } from './CustomRoutes';
 import { Resource } from './Resource';
 import { AuthProvider, CoreLayoutProps } from '../types';
-import { Link } from 'react-router-dom';
 import { Browser } from '../storybook/FakeBrowser';
 
 export default {
@@ -19,7 +18,7 @@ export const Basic = ({
     navigateCallback,
 }: {
     authProvider?: AuthProvider;
-    navigateCallback?: (n: NavigateFunction) => void;
+    navigateCallback?: (n: RouterNavigateFunction) => void;
 }) => (
     <TestMemoryRouter navigateCallback={navigateCallback}>
         <Browser>
@@ -52,8 +51,10 @@ export const Basic = ({
 const Layout = ({ children }: CoreLayoutProps) => (
     <div>
         <div>
-            <Link to="/foo">foo</Link> <Link to="/bar">bar</Link>{' '}
-            <Link to="/posts">posts</Link> <Link to="/comments">comments</Link>
+            <LinkBase to="/foo">foo</LinkBase>{' '}
+            <LinkBase to="/bar">bar</LinkBase>{' '}
+            <LinkBase to="/posts">posts</LinkBase>{' '}
+            <LinkBase to="/comments">comments</LinkBase>
         </div>
         <div>
             <div>Layout</div>

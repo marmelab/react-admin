@@ -14,9 +14,8 @@ import {
     useRegisterMutationMiddleware,
 } from '../controller';
 import { Form, InputProps, useInput } from '../form';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, LinkBase } from '../routing';
 import { testDataProvider } from './testDataProvider';
-import { Link } from 'react-router-dom';
 import { useNotificationContext } from '../notification';
 import { useTakeUndoableMutation } from './undo';
 
@@ -242,9 +241,11 @@ export const Middleware = ({
                                 <RecordsIterator
                                     render={record => (
                                         <li>
-                                            <Link to={`/posts/${record.id}`}>
+                                            <LinkBase
+                                                to={`/posts/${record.id}`}
+                                            >
                                                 {record.title}
-                                            </Link>
+                                            </LinkBase>
                                         </li>
                                     )}
                                 />
