@@ -116,10 +116,11 @@ export const MyAppBar = () => (
     </AppBar>
 );
 ```
- 
+
 If you omit `<TitlePortal>`, `<AppBar>` will no longer display the page title. This can be done on purpose, e.g. if you want to render something completely different in the AppBar, like a company logo and a search engine:
 
 {% raw %}
+
 ```jsx
 // in src/MyAppBar.js
 import { AppBar } from 'react-admin';
@@ -137,6 +138,7 @@ const MyAppBar = () => (
     </AppBar>
 );
 ```
+
 {% endraw %}
 
 ## `color`
@@ -159,6 +161,7 @@ export const MyAppBar = () => <AppBar color="primary" />;
 Pass an `sx` prop to customize the style of the main component and the underlying elements (see [the `sx` documentation](./SX.md) for syntax and examples).
 
 {% raw %}
+
 ```jsx
 // in src/MyAppBar.js
 import { AppBar } from 'react-admin';
@@ -172,6 +175,7 @@ export const MyAppBar = () => (
     />
 );
 ```
+
 {% endraw %}
 
 This property accepts the following subclasses:
@@ -194,7 +198,7 @@ By default, the `<AppBar>` renders three buttons in addition to the user menu:
 
 If you want to reorder or remove these buttons, you can customize the toolbar by passing a `toolbar` prop.
 
-```jsx 
+```jsx
 // in src/MyAppBar.js
 import { 
     AppBar,
@@ -246,17 +250,15 @@ If your app uses [authentication](./Authentication.md), the `<AppBar>` component
   Your browser does not support the video tag.
 </video>
 
-
-The content of the user menu depends on the return value of `authProvider.getIdentity()`. The user menu icon renders an anonymous avatar, or the `avatar` property of the identity object if present. If the identity object contains a `fullName` property, it is displayed after the avatar. 
+The content of the user menu depends on the return value of `authProvider.getIdentity()`. The user menu icon renders an anonymous avatar, or the `avatar` property of the identity object if present. If the identity object contains a `fullName` property, it is displayed after the avatar.
 
 You can customize the user menu by passing a `userMenu` prop to the `<AppBar>` component.
 
 ```tsx
 import * as React from 'react';
-import { AppBar, Logout, UserMenu, useUserMenu } from 'react-admin';
+import { AppBar, Logout, UserMenu, useUserMenu, LinkBase } from 'react-admin';
 import { MenuItem, ListItemIcon, ListItemText } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { Link } from "react-router-dom";
 
 // It's important to pass the ref to allow Material UI to manage the keyboard navigation
 const SettingsMenuItem = React.forwardRef<HTMLAnchorElement>((props, ref) => {
@@ -269,7 +271,7 @@ const SettingsMenuItem = React.forwardRef<HTMLAnchorElement>((props, ref) => {
         <MenuItem
             onClick={onClose}
             ref={ref}
-            component={Link}
+            component={LinkBase}
             to="/settings"
             // It's important to pass the props to allow Material UI to manage the keyboard navigation
             {...props}
@@ -299,6 +301,7 @@ Note that you still have to include the `<Logout>` component in the user menu, a
 You can also customize the default icon by setting the `icon` prop to the `<UserMenu />` component.
 
 {% raw %}
+
 ``` jsx
 import { AppBar, UserMenu } from 'react-admin';
 import Avatar from '@mui/material/Avatar';
@@ -317,6 +320,7 @@ const MyUserMenu = props => (<UserMenu {...props} icon={<MyCustomIcon />} />);
 
 const MyAppBar = () => <AppBar userMenu={<MyUserMenu />} />;
 ```
+
 {% endraw %}
 
 Finally, you can hide the user menu by setting the `userMenu` prop to `false`.
@@ -454,6 +458,7 @@ export const MyAppbar = () => (
 If react-admin's `<AppBar>` component doesn't meet your needs, you can build your own component using Material UI's `<AppBar>`. Here is an example:
 
 {% raw %}
+
 ```jsx
 // in src/MyAppBar.js
 import { AppBar, Toolbar, Box } from '@mui/material';
@@ -469,6 +474,7 @@ export const MyAppBar = () => (
     </AppBar>
 );
 ```
+
 {% endraw %}
 
 Then, use your custom app bar in a custom `<Layout>` component:
@@ -494,4 +500,3 @@ By default, users can override the page title [in configurable mode](./Features.
   <source src="./img/TitleConfigurable.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
-

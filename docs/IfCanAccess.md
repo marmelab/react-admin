@@ -118,9 +118,8 @@ However, should you prefer to show an 'Access Denied' screen in those cases, you
 
 ```tsx
 // in src/posts/PostCreate.tsx
-import { Create, SimpleForm, TextInput } from 'react-admin';
+import { Create, SimpleForm, TextInput, Navigate } from 'react-admin';
 import { IfCanAccess } from '@react-admin/ra-rbac';
-import { Navigate } from 'react-router-dom';
 
 export const PostCreate = () => (
     <IfCanAccess action="create" fallback={<Navigate to="/access-denied" />}>
