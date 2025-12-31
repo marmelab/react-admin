@@ -5,7 +5,7 @@ title: "Routing in React-Admin Apps"
 
 # Routing
 
-React-admin uses [the react-router library](https://reactrouter.com/) to handle routing. This allows to use different routing strategies, and to integrate a react-admin app inside another app.
+React-admin uses a router abstraction layer that supports multiple routing libraries. By default, it uses [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md). This allows you to choose the routing library that best fits your needs and integrate a react-admin app inside another app.
 
 ## Route Structure
 
@@ -16,16 +16,16 @@ For each `<Resource>`, react-admin creates 4 routes:
 * `/:resource/:id/edit`: the edit page
 * `/:resource/:id/show`: the show page
 
-These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow react-admin to handle cross-resource links natively. 
+These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow react-admin to handle cross-resource links natively.
 
 **Tip**: React-admin allows to use resource names containing slashes, e.g. 'cms/categories'.
 
 ## Linking To A Page
 
-Use react-router's `<Link>` component to link to a page. Pass the path you want to link to as the `to` prop.
+Use the `<Link>` component from `react-admin` to link to a page. Pass the path you want to link to as the `to` prop.
 
 ```jsx
-import { Link } from 'react-router-dom';
+import { Link } from 'react-admin';
 
 const Dashboard = () => (
     <div>
@@ -40,8 +40,7 @@ const Dashboard = () => (
 Internally, react-admin uses a helper to build links, to allow mounting react-admin apps inside an existing app. You can use this helper, `useCreatePath`, in your components, if they have to work in admins mounted in a sub path:
 
 ```jsx
-import { Link } from 'react-router-dom';
-import { useCreatePath } from 'react-admin';
+import { Link, useCreatePath } from 'react-admin';
 
 const Dashboard = () => {
     const createPath = useCreatePath();
@@ -58,11 +57,11 @@ const Dashboard = () => {
 
 ## Reacting To A Page Change
 
-Use `react-router-dom`'s [`useLocation` hook](https://reactrouter.com/en/main/hooks/use-location) to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
+Use the `useLocation` hook from `react-admin` to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
 
 ```jsx
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-admin';
 
 export const usePageTracking = () => {
   const location = useLocation();
@@ -102,7 +101,7 @@ In addition to CRUD pages for resources, you can create as many routes as you wa
 ```jsx
 // in src/App.js
 import * as React from "react";
-import { Route } from 'react-router-dom';
+// see below for Route import
 import { Admin, Resource, CustomRoutes } from 'react-admin';
 import posts from './posts';
 import comments from './comments';
@@ -123,11 +122,21 @@ const App = () => (
 export default App;
 ```
 
-## Using A Custom Router
+The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
 
-React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+```jsx
+// for react-router
+import { Route } from 'react-router-dom';
+// for tanstack-router
+import { tanStackRouterProvider } from 'ra-core';
+const { Route } = tanStackRouterProvider;
+```
 
-But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router. 
+## Using A Custom react-router Configuration
+
+By default, react-admin uses react-router with a HashRouter. This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
+
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router.
 
 ```tsx
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -148,6 +157,24 @@ const App = () => {
     return <RouterProvider router={router} />;
 };
 ```
+
+## Using A Different Router Library
+
+React-admin supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) as an alternative.
+
+To use TanStack Router:
+
+```jsx
+import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
+
+See the [TanStack Router documentation](./TanStackRouter.md) for more details.
 
 ## Using React-Admin In A Sub Path
 
@@ -182,7 +209,7 @@ This makes all links be prefixed with `/admin`.
 
 Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
 
-If you want to use react-admin as a sub path of a larger React application, check the next section for instructions. 
+If you want to use react-admin as a sub path of a larger React application, check the next section for instructions.
 
 ## Using React-Admin Inside a Route
 
@@ -238,11 +265,11 @@ or
 
 > `useNavigate()` may be used only in the context of a `<Router>` component
 
-or 
+or
 
 > `useRoutes()` may be used only in the context of a `<Router>` component
 
-or 
+or
 
 > `useHref()` may be used only in the context of a `<Router>` component.
 

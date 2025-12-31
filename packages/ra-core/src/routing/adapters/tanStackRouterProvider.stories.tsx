@@ -1,0 +1,1066 @@
+import * as React from 'react';
+import fakeDataProvider from 'ra-data-fakerest';
+import {
+    createRouter,
+    createRootRoute,
+    createRoute,
+    RouterProvider,
+    Outlet,
+    Link as TanStackLink,
+    useRouter,
+} from '@tanstack/react-router';
+import { createHashHistory } from '@tanstack/history';
+
+import { useNavigate, useLocation, LinkBase, useBlocker } from '..';
+import { CoreAdmin, Resource, CustomRoutes } from '../../core';
+import { tanStackRouterProvider } from './tanStackRouterProvider';
+import { useRecordContext } from '../../controller';
+
+const {
+    useParams,
+    useMatch,
+    useInRouterContext,
+    useCanBlock,
+    Route,
+    Navigate,
+} = tanStackRouterProvider;
+
+export default {
+    title: 'ra-core/routing/TanStack Router Provider',
+};
+
+const dataProvider = fakeDataProvider({
+    posts: [
+        { id: 1, title: 'Post #1', body: 'Hello World' },
+        { id: 2, title: 'Post #2', body: 'Second post' },
+        { id: 3, title: 'Post #3', body: 'Third post' },
+    ],
+    comments: [
+        { id: 1, post_id: 1, body: 'Nice post!' },
+        { id: 2, post_id: 1, body: 'Great article' },
+    ],
+});
+
+const PostList = () => {
+    const navigate = useNavigate();
+    return (
+        <div style={{ padding: 20 }}>
+            <h2>Posts</h2>
+            <ul>
+                <li>
+                    <LinkBase to="/posts/1/show">Post #1</LinkBase>
+                </li>
+                <li>
+                    <LinkBase to="/posts/2/show">Post #2</LinkBase>
+                </li>
+                <li>
+                    <LinkBase to="/posts/3/show">Post #3</LinkBase>
+                </li>
+            </ul>
+            <button onClick={() => navigate('/posts/create')}>
+                Create New Post
+            </button>
+        </div>
+    );
+};
+
+const PostShow = () => {
+    const record = useRecordContext();
+    const navigate = useNavigate();
+    return (
+        <div style={{ padding: 20 }}>
+            <h2>Post Details</h2>
+            {record && (
+                <>
+                    <p>
+                        <strong>ID:</strong> {record.id}
+                    </p>
+                    <p>
+                        <strong>Title:</strong> {record.title}
+                    </p>
+                    <p>
+                        <strong>Body:</strong> {record.body}
+                    </p>
+                </>
+            )}
+            <button onClick={() => navigate('/posts')}>Back to List</button>
+            <button onClick={() => navigate(-1)}>Go Back (History)</button>
+        </div>
+    );
+};
+
+const PostEdit = () => {
+    const record = useRecordContext();
+    const navigate = useNavigate();
+    return (
+        <div style={{ padding: 20 }}>
+            <h2>Edit Post</h2>
+            {record && (
+                <form>
+                    <div>
+                        <label>Title:</label>
+                        <input defaultValue={record.title} />
+                    </div>
+                    <div>
+                        <label>Body:</label>
+                        <textarea defaultValue={record.body} />
+                    </div>
+                </form>
+            )}
+            <button onClick={() => navigate('/posts')}>Cancel</button>
+        </div>
+    );
+};
+
+const PostCreate = () => {
+    const navigate = useNavigate();
+    return (
+        <div style={{ padding: 20 }}>
+            <h2>Create Post</h2>
+            <form>
+                <div>
+                    <label>Title:</label>
+                    <input />
+                </div>
+                <div>
+                    <label>Body:</label>
+                    <textarea />
+                </div>
+            </form>
+            <button onClick={() => navigate('/posts')}>Cancel</button>
+        </div>
+    );
+};
+
+const LocationDisplay = () => {
+    const location = useLocation();
+    return (
+        <div
+            style={{
+                padding: 10,
+                background: '#f0f0f0',
+                marginTop: 20,
+                fontFamily: 'monospace',
+            }}
+        >
+            <strong>Current Location:</strong>
+            <pre>{JSON.stringify(location, null, 2)}</pre>
+            <div>window.location.hash: {window.location.hash}</div>
+        </div>
+    );
+};
+
+/**
+ * BasicStandalone: Admin creates its own TanStack Router (standalone mode)
+ * Tests basic navigation, links, and programmatic navigation.
+ */
+export const BasicStandalone = () => (
+    <CoreAdmin
+        routerProvider={tanStackRouterProvider}
+        dataProvider={dataProvider}
+    >
+        <Resource
+            name="posts"
+            list={
+                <div>
+                    <PostList />
+                    <LocationDisplay />
+                </div>
+            }
+            show={
+                <div>
+                    <PostShow />
+                    <LocationDisplay />
+                </div>
+            }
+            edit={
+                <div>
+                    <PostEdit />
+                    <LocationDisplay />
+                </div>
+            }
+            create={
+                <div>
+                    <PostCreate />
+                    <LocationDisplay />
+                </div>
+            }
+        />
+    </CoreAdmin>
+);
+
+/**
+ * EmbeddedInTanStackRouter: Admin inside an existing TanStack Router app
+ * Tests that react-admin detects existing router and uses it.
+ */
+// Nav component that uses the router for navigation
+const EmbeddedNav = () => {
+    const router = useRouter();
+    return (
+        <nav style={{ padding: 10, background: '#333', color: 'white' }}>
+            <TanStackLink to="/" style={{ color: 'white', marginRight: 20 }}>
+                Home
+            </TanStackLink>
+            {/* Link to /admin/posts to trigger react-admin's routing */}
+            <TanStackLink
+                to="/admin/posts"
+                style={{ color: 'white', marginRight: 20 }}
+            >
+                Admin
+            </TanStackLink>
+            <button
+                onClick={() => router.navigate({ to: '/' })}
+                style={{ color: 'black' }}
+            >
+                Home (Direct)
+            </button>
+        </nav>
+    );
+};
+
+// Create routes outside the component to avoid recreating on every render
+const embeddedRootRoute = createRootRoute({
+    component: () => (
+        <div>
+            <EmbeddedNav />
+            <Outlet />
+        </div>
+    ),
+});
+
+const embeddedHomeRoute = createRoute({
+    getParentRoute: () => embeddedRootRoute,
+    path: '/',
+    component: () => (
+        <div style={{ padding: 20 }}>
+            <h1>Home Page</h1>
+            <p>This is a TanStack Router app with embedded react-admin.</p>
+            <TanStackLink to="/admin">Go to Admin</TanStackLink>
+        </div>
+    ),
+});
+
+const EmbeddedAdmin = () => (
+    <CoreAdmin
+        routerProvider={tanStackRouterProvider}
+        dataProvider={dataProvider}
+        basename="/admin"
+    >
+        <Resource
+            name="posts"
+            list={
+                <div>
+                    <PostList />
+                    <LocationDisplay />
+                </div>
+            }
+            show={
+                <div>
+                    <PostShow />
+                    <LocationDisplay />
+                </div>
+            }
+        />
+    </CoreAdmin>
+);
+
+// Create two routes to handle both /admin and /admin/* paths
+// TanStack Router requires explicit route definitions for nested paths
+const embeddedAdminRoute = createRoute({
+    getParentRoute: () => embeddedRootRoute,
+    path: '/admin',
+    component: EmbeddedAdmin,
+});
+
+// Splat route to handle /admin/posts, /admin/posts/1/show, etc.
+const embeddedAdminSplatRoute = createRoute({
+    getParentRoute: () => embeddedRootRoute,
+    path: '/admin/$',
+    component: EmbeddedAdmin,
+});
+
+const embeddedRouteTree = embeddedRootRoute.addChildren([
+    embeddedHomeRoute,
+    embeddedAdminRoute,
+    embeddedAdminSplatRoute,
+]);
+
+/**
+ * EmbeddedInTanStackRouter: Admin inside an existing TanStack Router app
+ * Tests that react-admin detects existing router and uses it.
+ */
+export const EmbeddedInTanStackRouter = () => {
+    const router = React.useMemo(
+        () =>
+            createRouter({
+                routeTree: embeddedRouteTree,
+                history: createHashHistory(),
+            }),
+        []
+    );
+
+    return <RouterProvider router={router} />;
+};
+
+/**
+ * HistoryNavigation: Tests back/forward navigation
+ * Tests navigate(-1) and navigate(1) work correctly.
+ */
+export const HistoryNavigation = () => {
+    const HistoryButtons = () => {
+        const navigate = useNavigate();
+        return (
+            <div style={{ padding: 10, background: '#e0e0e0' }}>
+                <button
+                    onClick={() => navigate(-1)}
+                    style={{ marginRight: 10 }}
+                >
+                    ← Back
+                </button>
+                <button onClick={() => navigate(1)}>Forward →</button>
+            </div>
+        );
+    };
+
+    const ListWithHistory = () => (
+        <div>
+            <HistoryButtons />
+            <PostList />
+            <LocationDisplay />
+        </div>
+    );
+
+    const ShowWithHistory = () => (
+        <div>
+            <HistoryButtons />
+            <PostShow />
+            <LocationDisplay />
+        </div>
+    );
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={<ListWithHistory />}
+                show={<ShowWithHistory />}
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * RouteMatching: Tests that routes match correctly
+ * Tests resource routes, custom routes, and catch-all routes.
+ */
+export const RouteMatching = () => {
+    const Dashboard = () => (
+        <div style={{ padding: 20 }}>
+            <h2>Dashboard</h2>
+            <p>Welcome to the admin dashboard.</p>
+            <ul>
+                <li>
+                    <LinkBase to="/posts">Posts</LinkBase>
+                </li>
+            </ul>
+            <LocationDisplay />
+        </div>
+    );
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+            dashboard={Dashboard}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div>
+                        <PostList />
+                        <LocationDisplay />
+                    </div>
+                }
+                show={
+                    <div>
+                        <PostShow />
+                        <LocationDisplay />
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * LinkComponent: Tests Link component behavior
+ * Tests to, replace, state props work correctly.
+ */
+export const LinkComponent = () => {
+    const LinkTestPage = () => {
+        const location = useLocation();
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Link Component Tests</h2>
+
+                <h3>Basic Link</h3>
+                <LinkBase to="/posts/1/show">Go to Post #1</LinkBase>
+
+                <h3>Link with Replace</h3>
+                <LinkBase to="/posts/2/show" replace>
+                    Go to Post #2 (replace history)
+                </LinkBase>
+
+                <h3>Link with State</h3>
+                <LinkBase to="/posts/3/show" state={{ from: 'link-test' }}>
+                    Go to Post #3 (with state)
+                </LinkBase>
+
+                <h3>Current Location State</h3>
+                <pre>{JSON.stringify(location.state, null, 2)}</pre>
+
+                <LocationDisplay />
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={<LinkTestPage />}
+                show={
+                    <div>
+                        <PostShow />
+                        <LocationDisplay />
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * MultipleResources: Tests navigation between multiple resources
+ */
+export const MultipleResources = () => {
+    const CommentList = () => (
+        <div style={{ padding: 20 }}>
+            <h2>Comments</h2>
+            <ul>
+                <li>Comment #1: Nice post!</li>
+                <li>Comment #2: Great article</li>
+            </ul>
+            <LinkBase to="/posts">Go to Posts</LinkBase>
+            <LocationDisplay />
+        </div>
+    );
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div>
+                        <PostList />
+                        <LinkBase to="/comments">Go to Comments</LinkBase>
+                        <LocationDisplay />
+                    </div>
+                }
+                show={
+                    <div>
+                        <PostShow />
+                        <LocationDisplay />
+                    </div>
+                }
+            />
+            <Resource name="comments" list={<CommentList />} />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * CustomRoutesSupport: Tests that custom routes work with react-router's Route
+ * This is important because users import Route from react-router, not from the adapter.
+ */
+export const CustomRoutesSupport = () => {
+    const CustomPage = () => {
+        const navigate = useNavigate();
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Custom Page</h2>
+                <p>
+                    This is a custom route using react-router's Route component.
+                </p>
+                <button onClick={() => navigate('/posts')}>Go to Posts</button>
+                <LocationDisplay />
+            </div>
+        );
+    };
+
+    const CustomNoLayoutPage = () => (
+        <div style={{ padding: 20 }}>
+            <h2>Custom Page (No Layout)</h2>
+            <p>This page renders outside the layout.</p>
+            <LinkBase to="/posts">Go to Posts</LinkBase>
+            <LocationDisplay />
+        </div>
+    );
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <CustomRoutes>
+                <Route path="/custom" element={<CustomPage />} />
+            </CustomRoutes>
+            <CustomRoutes noLayout>
+                <Route
+                    path="/custom-no-layout"
+                    element={<CustomNoLayoutPage />}
+                />
+            </CustomRoutes>
+            <Resource
+                name="posts"
+                list={
+                    <div>
+                        <PostList />
+                        <div style={{ marginTop: 20 }}>
+                            <LinkBase to="/custom">Go to Custom Page</LinkBase>
+                            <br />
+                            <LinkBase to="/custom-no-layout">
+                                Go to Custom Page (No Layout)
+                            </LinkBase>
+                        </div>
+                        <LocationDisplay />
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * UseParamsTest: Tests useParams hook
+ * Displays URL parameters extracted from the current route.
+ */
+export const UseParamsTest = () => {
+    const ParamsDisplay = () => {
+        const params = useParams();
+        return (
+            <div
+                style={{
+                    padding: 10,
+                    background: '#e8f5e9',
+                    marginTop: 10,
+                    fontFamily: 'monospace',
+                }}
+            >
+                <strong>URL Params:</strong>
+                <pre data-testid="params-display">
+                    {JSON.stringify(params, null, 2)}
+                </pre>
+            </div>
+        );
+    };
+
+    const PostShowWithParams = () => {
+        const record = useRecordContext();
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Post Details</h2>
+                <ParamsDisplay />
+                {record && (
+                    <>
+                        <p>
+                            <strong>ID:</strong> {record.id}
+                        </p>
+                        <p>
+                            <strong>Title:</strong> {record.title}
+                        </p>
+                    </>
+                )}
+                <LinkBase to="/posts">Back to List</LinkBase>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div style={{ padding: 20 }}>
+                        <h2>Posts</h2>
+                        <ParamsDisplay />
+                        <ul>
+                            <li>
+                                <LinkBase to="/posts/1/show">Post #1</LinkBase>
+                            </li>
+                            <li>
+                                <LinkBase to="/posts/2/show">Post #2</LinkBase>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                show={<PostShowWithParams />}
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * UseMatchTest: Tests useMatch hook
+ * Shows active link highlighting based on current route match.
+ */
+export const UseMatchTest = () => {
+    const NavLink = ({
+        to,
+        children,
+    }: {
+        to: string;
+        children: React.ReactNode;
+    }) => {
+        const match = useMatch({ path: to, end: false });
+        return (
+            <LinkBase
+                to={to}
+                style={{
+                    display: 'inline-block',
+                    padding: '8px 16px',
+                    marginRight: 8,
+                    background: match ? '#1976d2' : '#e0e0e0',
+                    color: match ? 'white' : 'black',
+                    textDecoration: 'none',
+                    borderRadius: 4,
+                }}
+            >
+                {children}
+            </LinkBase>
+        );
+    };
+
+    const MatchDisplay = () => {
+        const postsMatch = useMatch({ path: '/posts', end: false });
+        const commentsMatch = useMatch({ path: '/comments', end: false });
+        const exactPostsMatch = useMatch({ path: '/posts', end: true });
+
+        return (
+            <div
+                style={{
+                    padding: 10,
+                    background: '#fff3e0',
+                    marginTop: 10,
+                    fontFamily: 'monospace',
+                }}
+            >
+                <strong>Match Results:</strong>
+                <div data-testid="posts-match">
+                    /posts (end: false): {postsMatch ? 'MATCH' : 'no match'}
+                </div>
+                <div data-testid="posts-exact-match">
+                    /posts (end: true): {exactPostsMatch ? 'MATCH' : 'no match'}
+                </div>
+                <div data-testid="comments-match">
+                    /comments (end: false):{' '}
+                    {commentsMatch ? 'MATCH' : 'no match'}
+                </div>
+            </div>
+        );
+    };
+
+    const NavBar = () => (
+        <nav style={{ padding: 10, background: '#f5f5f5' }}>
+            <NavLink to="/posts">Posts</NavLink>
+            <NavLink to="/comments">Comments</NavLink>
+        </nav>
+    );
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div>
+                        <NavBar />
+                        <MatchDisplay />
+                        <div style={{ padding: 20 }}>
+                            <h2>Posts List</h2>
+                            <ul>
+                                <li>
+                                    <LinkBase to="/posts/1/show">
+                                        Post #1
+                                    </LinkBase>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                show={
+                    <div>
+                        <NavBar />
+                        <MatchDisplay />
+                        <div style={{ padding: 20 }}>
+                            <h2>Post Show</h2>
+                            <LinkBase to="/posts">Back to List</LinkBase>
+                        </div>
+                    </div>
+                }
+            />
+            <Resource
+                name="comments"
+                list={
+                    <div>
+                        <NavBar />
+                        <MatchDisplay />
+                        <div style={{ padding: 20 }}>
+                            <h2>Comments List</h2>
+                        </div>
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * UseBlockerTest: Tests useBlocker hook
+ * Blocks navigation when there are unsaved changes.
+ */
+export const UseBlockerTest = () => {
+    const FormWithBlocker = () => {
+        const [isDirty, setIsDirty] = React.useState(false);
+        const [inputValue, setInputValue] = React.useState('');
+
+        const blocker = useBlocker(
+            ({ currentLocation, nextLocation }) =>
+                isDirty && currentLocation.pathname !== nextLocation.pathname
+        );
+
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Form with Unsaved Changes Warning</h2>
+                <div style={{ marginBottom: 20 }}>
+                    <label>
+                        Edit this field:{' '}
+                        <input
+                            type="text"
+                            value={inputValue}
+                            onChange={e => {
+                                setInputValue(e.target.value);
+                                setIsDirty(true);
+                            }}
+                            data-testid="form-input"
+                        />
+                    </label>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <span
+                        data-testid="dirty-status"
+                        style={{
+                            padding: '4px 8px',
+                            background: isDirty ? '#ffcdd2' : '#c8e6c9',
+                            borderRadius: 4,
+                        }}
+                    >
+                        {isDirty ? 'Unsaved changes' : 'No changes'}
+                    </span>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <button onClick={() => setIsDirty(false)}>
+                        Mark as Saved
+                    </button>
+                </div>
+                <div>
+                    <LinkBase to="/comments">Go to Comments</LinkBase>
+                </div>
+                {blocker.state === 'blocked' && (
+                    <div
+                        data-testid="blocker-dialog"
+                        style={{
+                            position: 'fixed',
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            bottom: 0,
+                            background: 'rgba(0,0,0,0.5)',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                        }}
+                    >
+                        <div
+                            style={{
+                                background: 'white',
+                                padding: 20,
+                                borderRadius: 8,
+                            }}
+                        >
+                            <h3>Unsaved Changes</h3>
+                            <p>
+                                You have unsaved changes. Are you sure you want
+                                to leave?
+                            </p>
+                            <button
+                                onClick={() => blocker.proceed?.()}
+                                data-testid="blocker-proceed"
+                            >
+                                Leave
+                            </button>
+                            <button
+                                onClick={() => blocker.reset?.()}
+                                data-testid="blocker-cancel"
+                                style={{ marginLeft: 10 }}
+                            >
+                                Stay
+                            </button>
+                        </div>
+                    </div>
+                )}
+                <div
+                    style={{
+                        marginTop: 20,
+                        padding: 10,
+                        background: '#f5f5f5',
+                        fontFamily: 'monospace',
+                    }}
+                >
+                    <strong>Blocker State:</strong>{' '}
+                    <span data-testid="blocker-state">{blocker.state}</span>
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource name="posts" list={<FormWithBlocker />} />
+            <Resource
+                name="comments"
+                list={
+                    <div style={{ padding: 20 }}>
+                        <h2>Comments</h2>
+                        <p>You navigated away from the form.</p>
+                        <LinkBase to="/posts">Back to Form</LinkBase>
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * NavigateComponent: Tests Navigate component for declarative redirects
+ */
+export const NavigateComponent = () => {
+    const RedirectPage = () => {
+        return (
+            <div>
+                <p>Redirecting...</p>
+                <Navigate to="/posts" />
+            </div>
+        );
+    };
+
+    const ConditionalRedirect = () => {
+        const [shouldRedirect, setShouldRedirect] = React.useState(false);
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Conditional Redirect</h2>
+                {shouldRedirect ? (
+                    <Navigate to="/posts" />
+                ) : (
+                    <div>
+                        <p>Click the button to trigger a redirect.</p>
+                        <button
+                            onClick={() => setShouldRedirect(true)}
+                            data-testid="trigger-redirect"
+                        >
+                            Redirect to Posts
+                        </button>
+                    </div>
+                )}
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <CustomRoutes>
+                <Route path="/redirect" element={<RedirectPage />} />
+                <Route
+                    path="/conditional-redirect"
+                    element={<ConditionalRedirect />}
+                />
+            </CustomRoutes>
+            <Resource
+                name="posts"
+                list={
+                    <div style={{ padding: 20 }}>
+                        <h2>Posts</h2>
+                        <p data-testid="posts-page">
+                            You are on the posts page.
+                        </p>
+                        <ul>
+                            <li>
+                                <LinkBase to="/redirect">
+                                    Go to Redirect Page (auto-redirects here)
+                                </LinkBase>
+                            </li>
+                            <li>
+                                <LinkBase to="/conditional-redirect">
+                                    Go to Conditional Redirect
+                                </LinkBase>
+                            </li>
+                        </ul>
+                        <LocationDisplay />
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * UseLocationTest: Tests useLocation hook in detail
+ */
+export const UseLocationTest = () => {
+    const DetailedLocationDisplay = () => {
+        const location = useLocation();
+        return (
+            <div
+                style={{
+                    padding: 20,
+                    background: '#e3f2fd',
+                    fontFamily: 'monospace',
+                }}
+            >
+                <h3>useLocation() Result:</h3>
+                <div data-testid="location-pathname">
+                    <strong>pathname:</strong> {location.pathname}
+                </div>
+                <div data-testid="location-search">
+                    <strong>search:</strong> "{location.search}"
+                </div>
+                <div data-testid="location-hash">
+                    <strong>hash:</strong> "{location.hash}"
+                </div>
+                <div data-testid="location-state">
+                    <strong>state:</strong>{' '}
+                    {JSON.stringify(location.state) || 'null'}
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div style={{ padding: 20 }}>
+                        <h2>Location Test</h2>
+                        <DetailedLocationDisplay />
+                        <div style={{ marginTop: 20 }}>
+                            <h3>Navigation Links:</h3>
+                            <ul>
+                                <li>
+                                    <LinkBase to="/posts/1/show">
+                                        Go to Post Show
+                                    </LinkBase>
+                                </li>
+                                <li>
+                                    <LinkBase
+                                        to="/posts/1/show"
+                                        state={{ from: 'list', extra: 'data' }}
+                                    >
+                                        Go to Post Show (with state)
+                                    </LinkBase>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                }
+                show={
+                    <div style={{ padding: 20 }}>
+                        <h2>Post Show</h2>
+                        <DetailedLocationDisplay />
+                        <LinkBase to="/posts">Back to List</LinkBase>
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * RouterContextTest: Tests useInRouterContext and useCanBlock hooks
+ */
+export const RouterContextTest = () => {
+    const ContextInfo = () => {
+        const isInRouter = useInRouterContext();
+        const canBlock = useCanBlock();
+
+        return (
+            <div
+                style={{
+                    padding: 20,
+                    background: '#fce4ec',
+                    fontFamily: 'monospace',
+                }}
+            >
+                <h3>Router Context Info:</h3>
+                <div data-testid="in-router-context">
+                    <strong>useInRouterContext():</strong>{' '}
+                    {isInRouter ? 'true' : 'false'}
+                </div>
+                <div data-testid="can-block">
+                    <strong>useCanBlock():</strong>{' '}
+                    {canBlock ? 'true' : 'false'}
+                </div>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+        >
+            <Resource
+                name="posts"
+                list={
+                    <div style={{ padding: 20 }}>
+                        <h2>Router Context Test</h2>
+                        <ContextInfo />
+                    </div>
+                }
+            />
+        </CoreAdmin>
+    );
+};
