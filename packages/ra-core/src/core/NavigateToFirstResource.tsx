@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { Navigate } from 'react-router';
 import { useFirstResourceWithListAccess } from './useFirstResourceWithListAccess';
-import { useCreatePath } from '../routing';
+import { useCreatePath, Navigate } from '../routing';
 
 /**
  * This component will inspect the registered resources and navigate to the first one for which users have access to the list page.

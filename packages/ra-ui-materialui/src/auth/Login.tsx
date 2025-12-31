@@ -13,8 +13,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import LockIcon from '@mui/icons-material/Lock';
-import { useNavigate } from 'react-router-dom';
-import { useCheckAuth } from 'ra-core';
+import { useCheckAuth, useNavigate } from 'ra-core';
 
 import { LoginForm as DefaultLoginForm } from './LoginForm';
 

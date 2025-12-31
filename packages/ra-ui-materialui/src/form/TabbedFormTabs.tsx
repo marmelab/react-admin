@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Children, cloneElement, isValidElement, ReactElement } from 'react';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'ra-core';
 
 export const TabbedFormTabs = (props: TabbedFormTabsProps) => {
     const { children, url, syncWithLocation, value, ...rest } = props;

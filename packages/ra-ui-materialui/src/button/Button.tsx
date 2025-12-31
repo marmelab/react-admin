@@ -12,8 +12,8 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import type { RouterLocation, RouterTo } from 'ra-core';
 import { useTranslate } from 'ra-core';
-import { Path, To } from 'react-router';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -115,7 +115,7 @@ interface Props<RootComponent extends React.ElementType> {
     children?: React.ReactNode;
     className?: string;
     component?: RootComponent;
-    to?: LocationDescriptor | To;
+    to?: LocationDescriptor | RouterTo;
     disabled?: boolean;
     label?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
@@ -156,7 +156,7 @@ const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
     };
 };
 
-export type LocationDescriptor = Partial<Path> & {
+export type LocationDescriptor = Partial<RouterLocation> & {
     redirect?: boolean;
     state?: any;
     replace?: boolean;

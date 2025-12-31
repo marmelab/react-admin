@@ -4,11 +4,11 @@ import {
     useTranslate,
     usePrevNextController,
     UsePrevNextControllerProps,
+    LinkBase,
 } from 'ra-core';
 import NavigateBefore from '@mui/icons-material/NavigateBefore';
 import NavigateNext from '@mui/icons-material/NavigateNext';
 import ErrorIcon from '@mui/icons-material/Error';
-import { Link } from 'react-router-dom';
 import {
     Box,
     Stack,
@@ -163,7 +163,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
         >
             {hasPrev && prevPath ? (
                 <IconButton
-                    component={Link}
+                    component={LinkBase}
                     to={prevPath}
                     aria-label={translate('ra.navigation.previous')}
                     size="small"
@@ -188,7 +188,7 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
 
             {hasNext && nextPath ? (
                 <IconButton
-                    component={Link}
+                    component={LinkBase}
                     to={nextPath}
                     aria-label={translate('ra.navigation.next')}
                     size="small"

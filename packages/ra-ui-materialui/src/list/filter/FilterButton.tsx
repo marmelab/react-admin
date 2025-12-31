@@ -30,9 +30,9 @@ import {
     useTranslate,
     extractValidSavedQueries,
     useSavedQueries,
+    useNavigate,
 } from 'ra-core';
 import { stringify } from 'query-string';
-import { useNavigate } from 'react-router';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';

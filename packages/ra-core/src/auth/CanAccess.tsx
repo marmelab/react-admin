@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { Navigate } from 'react-router';
 import { useCanAccess, UseCanAccessOptions } from './useCanAccess';
 import { RaRecord } from '../types';
-import { useBasename } from '../routing';
+import { useBasename, Navigate } from '../routing';
 
 /**
  * A component that only displays its children after checking whether users are authorized to access the provided resource and action.

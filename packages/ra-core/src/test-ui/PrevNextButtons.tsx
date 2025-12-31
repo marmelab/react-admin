@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { LinkBase } from '../routing';
 import type { RaRecord } from '../types';
 import { useTranslate } from '../i18n/useTranslate';
 import {
@@ -36,7 +36,9 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
     return (
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             {hasPrev && prevPath ? (
-                <Link to={prevPath}>{translate('ra.navigation.previous')}</Link>
+                <LinkBase to={prevPath}>
+                    {translate('ra.navigation.previous')}
+                </LinkBase>
             ) : (
                 <span style={{ opacity: 0.5 }}>
                     {translate('ra.navigation.previous')}
@@ -50,7 +52,9 @@ export const PrevNextButtons = <RecordType extends RaRecord = any>(
             )}
 
             {hasNext && nextPath ? (
-                <Link to={nextPath}>{translate('ra.navigation.next')}</Link>
+                <LinkBase to={nextPath}>
+                    {translate('ra.navigation.next')}
+                </LinkBase>
             ) : (
                 <span style={{ opacity: 0.5 }}>
                     {translate('ra.navigation.next')}

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { isValidElement, ReactElement, ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import {
     ComponentsOverrides,
     Tab as MuiTab,
@@ -9,7 +8,13 @@ import {
     styled,
 } from '@mui/material';
 import { ResponsiveStyleValue, useThemeProps } from '@mui/system';
-import { useTranslate, RaRecord, useSplatPathBase } from 'ra-core';
+import {
+    useTranslate,
+    RaRecord,
+    useSplatPathBase,
+    LinkBase,
+    useLocation,
+} from 'ra-core';
 import clsx from 'clsx';
 
 import { Labeled } from '../Labeled';
@@ -88,7 +93,7 @@ export const Tab = (inProps: TabProps) => {
             ? splatPathBase
             : `${splatPathBase}/${value}`;
     const propsForLink = {
-        component: Link,
+        component: LinkBase,
         to: { ...location, pathname: newPathName },
     };
 
