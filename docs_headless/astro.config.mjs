@@ -306,7 +306,7 @@ export default defineConfig({
                 },
                 {
                     label: 'Recipes',
-                    items: ['caching', 'unittesting'],
+                    items: ['caching', 'unittesting', 'tanstackrouter'],
                 },
             ],
             components: {

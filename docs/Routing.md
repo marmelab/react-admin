@@ -5,20 +5,86 @@ title: "Routing in React-Admin Apps"
 
 # Routing
 
-React-admin uses a router abstraction layer that supports multiple routing libraries. By default, it uses [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md). This allows you to choose the routing library that best fits your needs and integrate a react-admin app inside another app.
+React-admin uses a declarative approach to routing, letting you declare routes via `<Resource>` (for CRUD routes) and `<CustomRoutes>` (for all other routes).
 
-## Route Structure
+It relies on a router abstraction layer that supports multiple routing libraries. By default, it's powered by [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md).
 
-For each `<Resource>`, react-admin creates 4 routes:
+## Route Components
+
+[`<Resource>`](./Resource.md) is a shortcut to associate page components to CRUD routes:
 
 * `/:resource`: the list page
 * `/:resource/create`: the create page
 * `/:resource/:id/edit`: the edit page
 * `/:resource/:id/show`: the show page
 
-These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow react-admin to handle cross-resource links natively.
+So the following code:
 
-**Tip**: React-admin allows to use resource names containing slashes, e.g. 'cms/categories'.
+```tsx
+// in src/App.js
+import * as React from "react";
+import { CoreAdmin, Resource } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import { PostList, PostCreate, PostEdit, PostShow } from './posts';
+import { CommentList, CommentCreate, CommentEdit, CommentShow } from './comments';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
+        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} show={CommentShow} />
+    </CoreAdmin>
+);
+```
+
+Will create the following routes:
+
+* `/posts` → PostList
+* `/posts/create` → PostCreate
+* `/posts/:id/edit` → PostEdit
+* `/posts/:id/show` → PostShow
+* `/comments` → CommentList
+* `/comments/create` → CommentCreate
+* `/comments/:id/edit` → CommentEdit
+* `/comments/:id/show` → CommentShow
+
+These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow react-admin to handle cross-resource links natively. react-admin allows to use resource names containing slashes, e.g. 'cms/categories'.
+
+In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
+
+```tsx
+// in src/App.js
+import * as React from "react";
+// see below for Route import
+import { CoreAdmin, Resource, CustomRoutes } from 'react-admin';
+import { dataProvider } from './dataProvider';
+import posts from './posts';
+import comments from './comments';
+import Settings from './Settings';
+import Profile from './Profile';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider}>
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </CoreAdmin>
+);
+
+export default App;
+```
+
+The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
+
+```jsx
+// for react-router
+import { Route } from 'react-router-dom';
+// for tanstack-router
+import { tanStackRouterProvider } from 'react-admin';
+const { Route } = tanStackRouterProvider;
+```
 
 ## Linking To A Page
 
@@ -93,44 +159,6 @@ export const MyLayout = ({ children }) => {
 > `useLocation()` may be used only in the context of a `<Router>` component
 
 ... or a location that doesn't reflect the actual app location. See [the troubleshooting section](#troubleshooting) for a solution.
-
-## Adding Custom Pages
-
-In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
-
-```jsx
-// in src/App.js
-import * as React from "react";
-// see below for Route import
-import { Admin, Resource, CustomRoutes } from 'react-admin';
-import posts from './posts';
-import comments from './comments';
-import Settings from './Settings';
-import Profile from './Profile';
-
-const App = () => (
-    <Admin dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        <Resource name="posts" {...posts} />
-        <Resource name="comments" {...comments} />
-        <CustomRoutes>
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile" element={<Profile />} />
-        </CustomRoutes>
-    </Admin>
-);
-
-export default App;
-```
-
-The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
-
-```jsx
-// for react-router
-import { Route } from 'react-router-dom';
-// for tanstack-router
-import { tanStackRouterProvider } from 'ra-core';
-const { Route } = tanStackRouterProvider;
-```
 
 ## Using A Custom react-router Configuration
 

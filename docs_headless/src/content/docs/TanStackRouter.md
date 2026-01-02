@@ -1,15 +1,14 @@
 ---
-layout: default
 title: "TanStack Router Integration"
+sidebar:
+  order: 7
 ---
 
-# TanStack Router Integration
-
-React-admin supports [TanStack Router](https://tanstack.com/router/latest) as an alternative to react-router. This allows you to use react-admin in a TanStack Start application.
+Ra-core supports [TanStack Router](https://tanstack.com/router/latest) as an alternative to react-router. This allows you to use ra-core in a TanStack Start application.
 
 ## Installation
 
-To use TanStack Router with react-admin, install the required packages:
+To use TanStack Router with ra-core, install the required packages:
 
 ```bash
 npm install @tanstack/react-router @tanstack/history
@@ -21,32 +20,38 @@ These packages are optional peer dependencies of `ra-core`, so they won't be ins
 
 ## Configuration
 
-To use TanStack Router, pass the `tanStackRouterProvider` to the `<Admin>` component:
+To use TanStack Router, pass the `tanStackRouterProvider` to the `<CoreAdmin>` component:
 
-```tsx
-import { Admin, Resource, ListGuesser, tanStackRouterProvider } from 'react-admin';
+```jsx
+import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
 import { dataProvider } from './dataProvider';
+import { PostList, PostEdit, PostCreate, PostShow } from './posts';
 
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         routerProvider={tanStackRouterProvider}
     >
-        <Resource name="posts" list={ListGuesser} />
-        <Resource name="comments" list={ListGuesser} />
-    </Admin>
+        <Resource
+            name="posts"
+            list={PostList}
+            edit={PostEdit}
+            create={PostCreate}
+            show={PostShow}
+        />
+    </CoreAdmin>
 );
 
 export default App;
 ```
 
-That's it! React-admin will now use TanStack Router for all routing operations.
+That's it! Ra-core will now use TanStack Router for all routing operations.
 
 ## Standalone Mode
 
-When using `tanStackRouterProvider` without an existing TanStack Router, react-admin creates its own router automatically. This is called **standalone mode**.
+When using `tanStackRouterProvider` without an existing TanStack Router, ra-core creates its own router automatically. This is called **standalone mode**.
 
-In standalone mode, react-admin:
+In standalone mode, ra-core:
 
 - Creates a TanStack Router with hash-based history (URLs like `/#/posts`)
 - Handles all route matching internally
@@ -54,25 +59,25 @@ In standalone mode, react-admin:
 
 This is the simplest setup and requires no additional configuration.
 
-```tsx
-// Standalone mode - react-admin creates the router
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+```jsx
+// Standalone mode - ra-core creates the router
+import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
 
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         routerProvider={tanStackRouterProvider}
     >
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 ## Embedded Mode
 
-If your application already uses TanStack Router, you can embed react-admin inside it. React-admin detects the existing router context and uses it instead of creating its own.
+If your application already uses TanStack Router, you can embed ra-core inside it. Ra-core detects the existing router context and uses it instead of creating its own.
 
-```tsx
+```jsx
 import * as React from 'react';
 import {
     createRouter,
@@ -83,7 +88,7 @@ import {
     Link,
 } from '@tanstack/react-router';
 import { createHashHistory } from '@tanstack/history';
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit } from './posts';
 
@@ -106,18 +111,18 @@ const homeRoute = createRoute({
     component: () => <div>Welcome to my app!</div>,
 });
 
-// Mount react-admin at /admin
+// Mount ra-core at /admin
 const adminRoute = createRoute({
     getParentRoute: () => rootRoute,
     path: '/admin',
     component: () => (
-        <Admin
+        <CoreAdmin
             dataProvider={dataProvider}
             routerProvider={tanStackRouterProvider}
             basename="/admin"
         >
             <Resource name="posts" list={PostList} edit={PostEdit} />
-        </Admin>
+        </CoreAdmin>
     ),
 });
 
@@ -133,19 +138,19 @@ const App = () => <RouterProvider router={router} />;
 export default App;
 ```
 
-**Important**: When embedding react-admin, set the `basename` prop to match the path where react-admin is mounted. In the example above, react-admin is mounted at `/admin`, so `basename="/admin"`.
+**Important**: When embedding ra-core, set the `basename` prop to match the path where ra-core is mounted. In the example above, ra-core is mounted at `/admin`, so `basename="/admin"`.
 
 ## Custom Routes
 
 Custom routes work the same way as with react-router. You can use `<CustomRoutes>` to add custom pages:
 
-```tsx
-import { Admin, Resource, CustomRoutes, tanStackRouterProvider } from 'react-admin';
+```jsx
+import { CoreAdmin, Resource, CustomRoutes, tanStackRouterProvider } from 'ra-core';
 
 const { Route } = tanStackRouterProvider;
 
 const App = () => (
-    <Admin
+    <CoreAdmin
         dataProvider={dataProvider}
         routerProvider={tanStackRouterProvider}
     >
@@ -157,23 +162,23 @@ const App = () => (
             <Route path="/public" element={<PublicPage />} />
         </CustomRoutes>
         <Resource name="posts" list={PostList} />
-    </Admin>
+    </CoreAdmin>
 );
 ```
 
 ## Using Router Hooks
 
-When using TanStack Router, import routing hooks from `react-admin` instead of directly from TanStack Router:
+When using TanStack Router, import routing hooks from `ra-core` instead of directly from TanStack Router:
 
-```tsx
+```jsx
 // Recommended - router-agnostic
-import { useNavigate, useLocation, useParams } from 'react-admin';
+import { useNavigate, useLocation, useParams } from 'ra-core';
 ```
 
-The hooks from `react-admin` work with both react-router and TanStack Router, making your code portable:
+The hooks from `ra-core` work with both react-router and TanStack Router, making your code portable:
 
-```tsx
-import { useNavigate, useLocation, useParams } from 'react-admin';
+```jsx
+import { useNavigate, useLocation, useParams } from 'ra-core';
 
 const MyComponent = () => {
     const navigate = useNavigate();
@@ -198,18 +203,15 @@ const MyComponent = () => {
 
 ## Navigation Blocking
 
-TanStack Router supports navigation blocking out of the box. The `warnWhenUnsavedChanges` feature in react-admin forms works automatically:
+TanStack Router supports navigation blocking out of the box. The `warnWhenUnsavedChanges` feature in ra-core forms works automatically:
 
-```tsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
+```jsx
+import { Form } from 'ra-core';
 
 const PostEdit = () => (
-    <Edit>
-        <SimpleForm warnWhenUnsavedChanges>
-            <TextInput source="title" />
-            <TextInput source="body" multiline />
-        </SimpleForm>
-    </Edit>
+    <Form warnWhenUnsavedChanges>
+        {/* form fields */}
+    </Form>
 );
 ```
 
@@ -217,10 +219,10 @@ Unlike react-router (which requires a Data Router for blocking to work), TanStac
 
 ## Linking Between Pages
 
-Use the `LinkBase` component from `react-admin` for router-agnostic links:
+Use the `LinkBase` component from `ra-core` for router-agnostic links:
 
-```tsx
-import { LinkBase } from 'react-admin';
+```jsx
+import { LinkBase } from 'ra-core';
 
 const Dashboard = () => (
     <div>
@@ -234,8 +236,8 @@ const Dashboard = () => (
 
 Or use `useCreatePath` for dynamic paths:
 
-```tsx
-import { LinkBase, useCreatePath } from 'react-admin';
+```jsx
+import { LinkBase, useCreatePath } from 'ra-core';
 
 const Dashboard = () => {
     const createPath = useCreatePath();
@@ -261,19 +263,19 @@ The TanStack Router adapter has some limitations compared to native TanStack Rou
 
 ### Type Safety
 
-TanStack Router's main feature is compile-time type safety based on route definitions. The react-admin adapter doesn't provide this level of type safety because react-admin generates routes dynamically from `<Resource>` components.
+TanStack Router's main feature is compile-time type safety based on route definitions. The ra-core adapter doesn't provide this level of type safety because ra-core generates routes dynamically from `<Resource>` components.
 
 ### Search Params
 
-TanStack Router treats search params as typed objects with validation. The adapter uses string-based search (`?key=value`) for compatibility with react-admin's list filters.
+TanStack Router treats search params as typed objects with validation. The adapter uses string-based search (`?key=value`) for compatibility with ra-core's list filters.
 
 ### Route Loaders
 
-TanStack Router's data loading features (`loader`, `beforeLoad`) are not used by the adapter. React-admin handles data loading through its own `dataProvider` system.
+TanStack Router's data loading features (`loader`, `beforeLoad`) are not used by the adapter. Ra-core handles data loading through its own `dataProvider` system.
 
 ### File-Based Routing
 
-TanStack Router supports file-based routing similar to Next.js. This feature is not compatible with react-admin's declarative `<Resource>` approach.
+TanStack Router supports file-based routing similar to Next.js. This feature is not compatible with ra-core's declarative `<Resource>` approach.
 
 ## Troubleshooting
 
@@ -281,7 +283,7 @@ TanStack Router supports file-based routing similar to Next.js. This feature is 
 
 If custom routes are not working, ensure your Route elements have the expected props:
 
-```tsx
+```jsx
 // Good - has path and element
 <Route path="/custom" element={<CustomPage />} />
 
@@ -293,4 +295,4 @@ If custom routes are not working, ensure your Route elements have the expected p
 
 ### History Not Working in Embedded Mode
 
-When embedding react-admin in an existing TanStack Router app, make sure both routers use the same history type. If your parent app uses hash history, react-admin will work correctly. If it uses browser history, set up your routes accordingly.
+When embedding ra-core in an existing TanStack Router app, make sure both routers use the same history type. If your parent app uses hash history, ra-core will work correctly. If it uses browser history, set up your routes accordingly.
