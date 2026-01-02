@@ -90,7 +90,14 @@ const MatchedPathContext = React.createContext<string>('');
 const ParamsContext = React.createContext<Record<string, string>>({});
 
 /**
- * Standalone path matcher similar to react-router's
+ * Standalone path matcher similar to react-router's.
+ *
+ * This function implements a safe, segment-based matching algorithm to avoid
+ * Polynomial Regular Expression (ReDoS) vulnerabilities that can occur when
+ * using regex-based matching on uncontrolled data.
+ *
+ * Instead of constructing a RegExp from the path pattern, it splits both
+ * the pattern and pathname into segments and compares them iteratively.
  */
 const matchPath = (
     pattern: string | { path: string; end?: boolean },
@@ -135,85 +142,78 @@ const matchPath = (
         return null;
     }
 
-    // Convert path pattern to regex
-    // First, escape special regex characters, then replace param placeholders
-    const paramNames: string[] = [];
-    let normalizedPath = path.replace(/\/$/, ''); // Remove trailing slash
-
-    // Normalize: ensure path starts with / for matching
+    // Normalize path
+    let normalizedPath = path;
     if (!normalizedPath.startsWith('/')) {
         normalizedPath = '/' + normalizedPath;
     }
-
-    // Check if path ends with splat (/*) - we'll need to capture this
-    const hasSplat = normalizedPath.endsWith('/*') || normalizedPath === '/*';
-
-    // Calculate the static base path (before splat or params)
-    const staticBase = normalizedPath
-        .replace(/\/\*$/, '')
-        .replace(/\/:[^/]+.*$/, '');
-
-    let regexPattern = normalizedPath;
-
-    // Escape special regex characters first (except : and *)
-    regexPattern = regexPattern.replace(/[.+?^${}()|[\]\\]/g, '\\$&');
-
-    // Replace :param patterns with capture groups
-    regexPattern = regexPattern.replace(/:(\w+)/g, (_, paramName) => {
-        paramNames.push(paramName);
-        return '([^/]+)';
-    });
-
-    // Replace /* with optional slash + catch-all pattern
-    // This allows posts/* to match both /posts and /posts/anything
-    if (hasSplat) {
-        paramNames.push('*');
+    // Remove trailing slash for consistency, unless it's just "/"
+    if (normalizedPath.length > 1 && normalizedPath.endsWith('/')) {
+        normalizedPath = normalizedPath.slice(0, -1);
     }
-    regexPattern = regexPattern.replace(/\/\*/g, '(?:/(.*))?');
 
-    // Replace standalone * with catch-all pattern
-    regexPattern = regexPattern.replace(/\*/g, '(.*)');
+    const hasSplat = normalizedPath.endsWith('/*');
 
-    const regex = new RegExp(`^${regexPattern}${end ? '/?$' : '(?:/|$)'}`);
-    const match = pathname.match(regex);
+    // Split into segments
+    const pathSegments = normalizedPath.split('/').filter(Boolean);
+    const pathnameSegments = pathname.split('/').filter(Boolean);
 
-    if (!match) return null;
+    // If splat, remove the '*' from path segments for matching loop
+    if (hasSplat) {
+        // The last segment should be '*'
+        if (pathSegments[pathSegments.length - 1] === '*') {
+            pathSegments.pop();
+        }
+    }
+
+    // Check lengths
+    if (pathSegments.length > pathnameSegments.length) {
+        return null;
+    }
+
+    if (end && !hasSplat && pathnameSegments.length > pathSegments.length) {
+        return null;
+    }
 
     const params: Record<string, string> = {};
-    paramNames.forEach((name, index) => {
-        params[name] = match[index + 1] ?? '';
-    });
 
-    const matchedPathname = match[0].replace(/\/$/, '') || '/';
+    // Match segments
+    for (let i = 0; i < pathSegments.length; i++) {
+        const pathSegment = pathSegments[i];
+        const pathnameSegment = pathnameSegments[i];
 
-    // pathnameBase is the consumed portion of the path (before the splat).
-    // For routes with dynamic segments like `:id/*`, we need to include
-    // the matched dynamic segments, not just the static portion.
-    // This is used by nested Routes to calculate the remaining path.
-    let pathnameBase: string;
-    if (hasSplat) {
-        // For splat routes, calculate base by removing what the splat matched
-        const splatValue = params['*'] || '';
-        if (splatValue) {
-            // Remove the splat portion and the preceding slash
-            pathnameBase =
-                matchedPathname.slice(
-                    0,
-                    matchedPathname.length - splatValue.length - 1
-                ) || '/';
+        if (pathSegment.startsWith(':')) {
+            const paramName = pathSegment.slice(1);
+            params[paramName] = pathnameSegment;
         } else {
-            // Splat matched empty string - base is the full matched path
-            pathnameBase = matchedPathname;
+            if (pathSegment !== pathnameSegment) {
+                return null;
+            }
         }
-    } else {
-        // For non-splat routes, the full match is consumed
-        pathnameBase = matchedPathname;
     }
+
+    // Handle splat capture
+    if (hasSplat) {
+        const remainingSegments = pathnameSegments.slice(pathSegments.length);
+        const splatValue = remainingSegments.join('/');
+        params['*'] = splatValue;
+    }
+
+    let matchedLength = pathSegments.length;
+    if (hasSplat) {
+        matchedLength = pathnameSegments.length;
+    }
+
+    const matchedSegments = pathnameSegments.slice(0, matchedLength);
+    const matchedPathname = '/' + matchedSegments.join('/');
+
+    const baseSegments = pathnameSegments.slice(0, pathSegments.length);
+    const pathnameBase = '/' + baseSegments.join('/');
 
     return {
         params,
-        pathname: matchedPathname,
-        pathnameBase,
+        pathname: matchedPathname === '//' ? '/' : matchedPathname,
+        pathnameBase: pathnameBase === '//' ? '/' : pathnameBase,
     };
 };
 

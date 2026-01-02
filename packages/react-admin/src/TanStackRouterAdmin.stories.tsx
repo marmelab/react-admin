@@ -117,8 +117,8 @@ const dataProvider = fakeRestDataProvider(
             },
         ],
     },
-    true
-); // true enables logging
+    process.env.NODE_ENV === 'development'
+);
 
 // Post List component
 const PostList = () => (

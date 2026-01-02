@@ -29,17 +29,20 @@ export default {
     title: 'ra-core/routing/TanStack Router Provider',
 };
 
-const dataProvider = fakeDataProvider({
-    posts: [
-        { id: 1, title: 'Post #1', body: 'Hello World' },
-        { id: 2, title: 'Post #2', body: 'Second post' },
-        { id: 3, title: 'Post #3', body: 'Third post' },
-    ],
-    comments: [
-        { id: 1, post_id: 1, body: 'Nice post!' },
-        { id: 2, post_id: 1, body: 'Great article' },
-    ],
-});
+const dataProvider = fakeDataProvider(
+    {
+        posts: [
+            { id: 1, title: 'Post #1', body: 'Hello World' },
+            { id: 2, title: 'Post #2', body: 'Second post' },
+            { id: 3, title: 'Post #3', body: 'Third post' },
+        ],
+        comments: [
+            { id: 1, post_id: 1, body: 'Nice post!' },
+            { id: 2, post_id: 1, body: 'Great article' },
+        ],
+    },
+    process.env.NODE_ENV === 'development'
+);
 
 const PostList = () => {
     const navigate = useNavigate();

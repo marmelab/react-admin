@@ -261,6 +261,50 @@ describe('tanStackRouterProvider', () => {
             });
         });
 
+        describe('ReDoS avoidance and edge cases', () => {
+            it('should handle long paths efficiently', () => {
+                const longPath =
+                    '/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z';
+                const pattern =
+                    '/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z';
+                expect(matchPath(pattern, longPath)).not.toBeNull();
+            });
+
+            it('should handle long paths with mismatch at the end efficiently', () => {
+                const longPath =
+                    '/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z/mismatch';
+                const pattern =
+                    '/a/b/c/d/e/f/g/h/i/j/k/l/m/n/o/p/q/r/s/t/u/v/w/x/y/z/match';
+                expect(matchPath(pattern, longPath)).toBeNull();
+            });
+
+            it('should handle paths with multiple slashes', () => {
+                expect(matchPath('/a/b', '///a///b///')).toEqual({
+                    params: {},
+                    pathname: '/a/b',
+                    pathnameBase: '/a/b',
+                });
+            });
+
+            it('should handle special characters in path segments', () => {
+                expect(
+                    matchPath('/files/:filename', '/files/image.png')
+                ).toEqual({
+                    params: { filename: 'image.png' },
+                    pathname: '/files/image.png',
+                    pathnameBase: '/files/image.png',
+                });
+
+                expect(
+                    matchPath('/search/:query', '/search/foo+bar%20baz')
+                ).toEqual({
+                    params: { query: 'foo+bar%20baz' },
+                    pathname: '/search/foo+bar%20baz',
+                    pathnameBase: '/search/foo+bar%20baz',
+                });
+            });
+        });
+
         describe('end option', () => {
             it('should match exact path when end=true (default)', () => {
                 expect(matchPath('/posts', '/posts')).not.toBeNull();
