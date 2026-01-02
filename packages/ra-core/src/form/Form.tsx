@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { ReactNode, useContext } from 'react';
+import { ReactNode } from 'react';
 import {
     FormProvider,
     FieldValues,
     UseFormProps,
     SubmitHandler,
 } from 'react-hook-form';
-import {
-    UNSAFE_DataRouterContext,
-    UNSAFE_DataRouterStateContext,
-} from 'react-router';
 
 import { FormGroupsProvider } from './groups/FormGroupsProvider';
 import { RaRecord } from '../types';
@@ -23,6 +19,7 @@ import {
     SourceContextValue,
     useResourceContext,
 } from '../core';
+import { useCanBlock } from '../routing';
 import { ValidateForm } from './validation/getSimpleValidationResolver';
 import { WarnWhenUnsavedChanges } from './WarnWhenUnsavedChanges';
 import { useAugmentedForm } from './useAugmentedForm';
@@ -75,11 +72,10 @@ export function Form<RecordType = any>(props: FormProps<RecordType>) {
         }),
         [resource]
     );
-    const dataRouterContext = useContext(UNSAFE_DataRouterContext);
-    const dataRouterStateContext = useContext(UNSAFE_DataRouterStateContext);
+    const canBlock = useCanBlock();
     if (
         warnWhenUnsavedChanges &&
-        (!dataRouterContext || !dataRouterStateContext) &&
+        !canBlock &&
         process.env.NODE_ENV === 'development'
     ) {
         console.error(
@@ -102,15 +98,13 @@ export function Form<RecordType = any>(props: FormProps<RecordType>) {
                         >
                             {children}
                         </form>
-                        {warnWhenUnsavedChanges &&
-                            dataRouterContext &&
-                            dataRouterStateContext && (
-                                <WarnWhenUnsavedChangesComponent
-                                    enable
-                                    formRootPathName={formRootPathname}
-                                    formControl={form.control}
-                                />
-                            )}
+                        {warnWhenUnsavedChanges && canBlock && (
+                            <WarnWhenUnsavedChangesComponent
+                                enable
+                                formRootPathName={formRootPathname}
+                                formControl={form.control}
+                            />
+                        )}
                     </FormGroupsProvider>
                 </FormProvider>
             </SourceContextProvider>

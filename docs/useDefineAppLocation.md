@@ -15,8 +15,7 @@ This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" 
 In the following example, the `<SongEditForArtist>` component is a [nested resource](https://marmelab.com/react-admin/Resource.html#nested-resources) rendering at the `/artists/:id/songs/:songId` path. It uses `useDefineAppLocation` to define the app location as `artists.edit.songs.edit`, and passes the `record` and `song` objects as parameters to let the breadcrumb component render the record and song names.
 
 ```tsx
-import { useParams } from 'react-router-dom';
-import { Edit, SimpleForm, TextInput, DateInput, useGetOne } from 'react-admin';
+import { Edit, SimpleForm, TextInput, DateInput, useGetOne, useParams } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
 
 const SongEditForArtist = () => {

@@ -22,8 +22,8 @@ import {
     useRecordContext,
     useGetPathForRecordCallback,
     useResourceDefinition,
+    useNavigate,
 } from 'ra-core';
-import { useNavigate } from 'react-router-dom';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
 import { DataTableClasses } from './DataTableRoot';

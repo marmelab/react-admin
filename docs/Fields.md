@@ -608,8 +608,7 @@ And now you can use a regular Field component, and the label displays correctly 
 A custom Field component might need to display a link to another record. Build the URL to the distant record using the resource name and the id, as follows:
 
 ```js
-import { useRecordContext, useGetOne } from 'react-admin';
-import { Link } from 'react-router-dom';
+import { useRecordContext, useGetOne, Link } from 'react-admin';
 
 const AuthorField = () => {
     const post = useRecordContext();

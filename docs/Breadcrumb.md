@@ -885,9 +885,8 @@ Let's see how the components for the songs list and detail pages define their ap
 {% raw %}
 ```jsx
 // in src/songs/SongList.js
-import { useGetOne, List, SearchInput, DataTable, DateField } from 'react-admin';
+import { useGetOne, List, SearchInput, DataTable, DateField, useParams } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
-import { useParams } from 'react-router-dom';
 
 export const SongList = () => {
     const { id } = useParams();
@@ -929,9 +928,8 @@ const EditSongButton = () => {
 
 ```jsx
 // in src/songs/SongDetail.js
-import { useGetOne, Edit, SimpleForm, TextInput, DateInput } from 'react-admin';
+import { useGetOne, Edit, SimpleForm, TextInput, DateInput, useParams } from 'react-admin';
 import { useDefineAppLocation } from '@react-admin/ra-navigation';
-import { useParams } from 'react-router-dom';
 
 export const SongDetail = () => {
     const { id, songId } = useParams();

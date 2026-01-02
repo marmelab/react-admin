@@ -7,11 +7,13 @@ import {
     useState,
     ErrorInfo,
 } from 'react';
-import { Routes, Route } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import { CoreAdminRoutes } from './CoreAdminRoutes';
-import { useResetErrorBoundaryOnLocationChange } from '../routing';
+import {
+    useResetErrorBoundaryOnLocationChange,
+    useRouterProvider,
+} from '../routing';
 import { Ready } from '../util';
 import { DefaultTitleContextProvider } from './DefaultTitleContext';
 import type {
@@ -317,6 +319,7 @@ export interface CoreAdminUIProps {
 
 export const CoreAdminUI = (props: CoreAdminUIProps) => {
     const [errorInfo, setErrorInfo] = useState<ErrorInfo>({});
+    const { Route, Routes } = useRouterProvider();
     const {
         authCallbackPage: LoginCallbackPage = false,
         catchAll = Noop,

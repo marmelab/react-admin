@@ -101,6 +101,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         queryClient,
         ready,
         requireAuth,
+        routerProvider,
         store,
         title = 'React Admin',
     } = props;
@@ -111,6 +112,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
             dataProvider={dataProvider}
             i18nProvider={i18nProvider}
             queryClient={queryClient}
+            routerProvider={routerProvider}
             store={store}
         >
             <CoreAdminUI

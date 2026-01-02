@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from '../routing';
 import type { RaRecord } from '../types';
 import { useResourceContext } from '../core/useResourceContext';
 import { useRecordContext } from '../controller/record/useRecordContext';

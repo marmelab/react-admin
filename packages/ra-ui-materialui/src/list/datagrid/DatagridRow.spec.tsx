@@ -5,12 +5,12 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import { useLocation } from 'react-router-dom';
 import {
     ResourceDefinitionContextProvider,
     useRecordContext,
     TestMemoryRouter,
     RecordContextProvider,
+    useLocation,
 } from 'ra-core';
 
 import { AdminContext } from '../../AdminContext';

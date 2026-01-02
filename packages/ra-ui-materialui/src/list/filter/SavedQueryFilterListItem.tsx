@@ -12,9 +12,8 @@ import {
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import isEqual from 'lodash/isEqual.js';
-import { useNavigate } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { useListContext, SavedQuery } from 'ra-core';
+import { useListContext, SavedQuery, useNavigate } from 'ra-core';
 
 const arePropsEqual = (
     prevProps: SavedQueryFilterListItemProps,

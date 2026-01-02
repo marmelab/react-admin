@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { useGetPathForRecord } from './useGetPathForRecord';
-import { Link } from 'react-router-dom';
 import {
     AuthProvider,
     CoreAdminContext,
@@ -8,6 +7,7 @@ import {
     ResourceContextProvider,
     ResourceDefinitionContextProvider,
     TestMemoryRouter,
+    LinkBase,
 } from '..';
 import { QueryClient } from '@tanstack/react-query';
 
@@ -17,17 +17,25 @@ export default {
 
 const EditLink = () => {
     const path = useGetPathForRecord({ link: 'edit' });
-    return path ? <Link to={path}>Edit</Link> : <span>Edit no link</span>;
+    return path ? (
+        <LinkBase to={path}>Edit</LinkBase>
+    ) : (
+        <span>Edit no link</span>
+    );
 };
 
 const ShowLink = () => {
     const path = useGetPathForRecord({ link: 'show' });
-    return path ? <Link to={path}>Show</Link> : <span>Show no link</span>;
+    return path ? (
+        <LinkBase to={path}>Show</LinkBase>
+    ) : (
+        <span>Show no link</span>
+    );
 };
 
 const InferredLink = () => {
     const path = useGetPathForRecord();
-    return path ? <Link to={path}>Link</Link> : <span>No link</span>;
+    return path ? <LinkBase to={path}>Link</LinkBase> : <span>No link</span>;
 };
 
 export const NoAuthProvider = () => (

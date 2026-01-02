@@ -4,52 +4,117 @@ sidebar:
   order: 6
 ---
 
-Ra-core uses [the react-router library](https://reactrouter.com/) to handle routing. This allows to use different routing strategies, and to integrate an ra-core app inside another app.
+Ra-core uses a declarative approach to routing, letting you declare routes via `<Resource>` (for CRUD routes) and `<CustomRoutes>` (for all other routes).
 
-## Route Structure
+It relies on a router abstraction layer that supports multiple routing libraries. By default, it's powered by [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md).
 
-For each `<Resource>`, ra-core creates 4 routes:
+## Route Components
+
+[`<Resource>`](./Resource.md) is a shortcut to associate page components to CRUD routes:
 
 * `/:resource`: the list page
 * `/:resource/create`: the create page
 * `/:resource/:id/edit`: the edit page
 * `/:resource/:id/show`: the show page
 
-These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow ra-core to handle cross-resource links natively.
+So the following code:
 
-**Tip**: Ra-core allows to use resource names containing slashes, e.g. 'cms/categories'.
+```jsx
+// in src/App.js
+import * as React from "react";
+import { CoreAdmin, Resource } from 'ra-core';
+import { dataProvider } from './dataProvider';
+import { PostList, PostCreate, PostEdit, PostShow } from './posts';
+import { CommentList, CommentCreate, CommentEdit, CommentShow } from './comments';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider}>
+        <Resource name="posts" list={PostList} create={PostCreate} edit={PostEdit} show={PostShow} />
+        <Resource name="comments" list={CommentList} create={CommentCreate} edit={CommentEdit} show={CommentShow} />
+    </CoreAdmin>
+);
+```
+
+Will create the following routes:
+
+* `/posts` → PostList
+* `/posts/create` → PostCreate
+* `/posts/:id/edit` → PostEdit
+* `/posts/:id/show` → PostShow
+* `/comments` → CommentList
+* `/comments/create` → CommentCreate
+* `/comments/:id/edit` → CommentEdit
+* `/comments/:id/show` → CommentShow
+
+These routes are fixed (i.e. they cannot be changed via configuration). Having constant routing rules allow ra-core to handle cross-resource links natively.Ra-core allows to use resource names containing slashes, e.g. 'cms/categories'.
+
+In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
+
+```jsx
+// in src/App.js
+import * as React from "react";
+// see below for Route import
+import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
+import { dataProvider } from './dataProvider';
+import posts from './posts';
+import comments from './comments';
+import Settings from './Settings';
+import Profile from './Profile';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider}>
+        <Resource name="posts" {...posts} />
+        <Resource name="comments" {...comments} />
+        <CustomRoutes>
+            <Route path="/settings" element={<Settings />} />
+            <Route path="/profile" element={<Profile />} />
+        </CustomRoutes>
+    </CoreAdmin>
+);
+
+export default App;
+```
+
+The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
+
+```jsx
+// for react-router
+import { Route } from 'react-router-dom';
+// for tanstack-router
+import { tanStackRouterProvider } from 'ra-core';
+const { Route } = tanStackRouterProvider;
+```
 
 ## Linking To A Page
 
-Use react-router's `<Link>` component to link to a page. Pass the path you want to link to as the `to` prop.
+Use the `LinkBase` component from `ra-core` to link to a page. Pass the path you want to link to as the `to` prop.
 
 ```jsx
-import { Link } from 'react-router-dom';
+import { LinkBase } from 'ra-core';
 
 const Dashboard = () => (
     <div>
         <h1>Dashboard</h1>
-        <Link to="/posts">Posts</Link>
-        <Link to="/posts/create">Create a new post</Link>
-        <Link to="/posts/123/show">My favorite post</Link>
+        <LinkBase to="/posts">Posts</LinkBase>
+        <LinkBase to="/posts/create">Create a new post</LinkBase>
+        <LinkBase to="/posts/123/show">My favorite post</LinkBase>
     </div>
 );
 ```
 
-Internally, ra-core uses a helper to build links, to allow mounting ra-core apps inside an existing app. You can use this helper, `useCreatePath`, in your components, if they have to work in admins mounted in a sub path:
+Internally, ra-core uses a helper to build links to CRUD pages. You can use this helper, `useCreatePath`, in your components, especially if they have to work in admins mounted in a sub path:
 
 ```jsx
-import { Link } from 'react-router-dom';
-import { useCreatePath } from 'ra-core';
+import { LinkBase, useCreatePath } from 'ra-core';
 
 const Dashboard = () => {
     const createPath = useCreatePath();
     return (
         <div>
             <h1>Dashboard</h1>
-            <Link to={createPath({ resource: 'posts', type: 'list' })}>Posts</Link>
-            <Link to={createPath({ resource: 'posts', type: 'create' })}>Create a new post</Link>
-            <Link to={createPath({ resource: 'posts', type: 'show', id: 123 })}>My favorite post</Link>
+            <LinkBase to={createPath({ resource: 'posts', type: 'list' })}>Posts</LinkBase>
+            <LinkBase to={createPath({ resource: 'posts', type: 'create' })}>Create a new post</LinkBase>
+            <LinkBase to={createPath({ resource: 'posts', type: 'show', id: 123 })}>My favorite post</LinkBase>
         </div>
     );
 }
@@ -57,11 +122,11 @@ const Dashboard = () => {
 
 ## Reacting To A Page Change
 
-Use `react-router-dom`'s [`useLocation` hook](https://reactrouter.com/en/main/hooks/use-location) to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
+Use the `useLocation` hook from `ra-core` to perform some side effect whenever the current location changes. For instance, if you want to add an analytics event when the user visits a page, you can do it like this:
 
 ```jsx
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'ra-core';
 
 export const usePageTracking = () => {
   const location = useLocation();
@@ -86,43 +151,17 @@ export const MyLayout = ({ children }) => {
 }
 ```
 
-**Tip**: When using `useLocation`, you may get an error saying:
+:::tip
+When using `useLocation`, you may get a location that doesn't reflect the actual app location, or an error saying:
 
 > `useLocation()` may be used only in the context of a `<Router>` component
 
-... or a location that doesn't reflect the actual app location. See [the troubleshooting section](#troubleshooting) for a solution.
+See [the troubleshooting section](#troubleshooting) for a solution.
+:::
 
-## Adding Custom Pages
+## Using A Custom react-router Configuration
 
-In addition to CRUD pages for resources, you can create as many routes as you want for your custom pages. Use [the `<CustomRoutes>` component](./CustomRoutes.md) to do so.
-
-```jsx
-// in src/App.js
-import * as React from "react";
-import { Route } from 'react-router-dom';
-import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import posts from './posts';
-import comments from './comments';
-import Settings from './Settings';
-import Profile from './Profile';
-
-const App = () => (
-    <CoreAdmin dataProvider={simpleRestProvider('http://path.to.my.api')}>
-        <Resource name="posts" {...posts} />
-        <Resource name="comments" {...comments} />
-        <CustomRoutes>
-            <Route path="/settings" element={<Settings />} />
-            <Route path="/profile" element={<Profile />} />
-        </CustomRoutes>
-    </CoreAdmin>
-);
-
-export default App;
-```
-
-## Using A Custom Router
-
-Ra-core uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
+By default, ra-core uses react-router with a HashRouter. This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
 
 But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. Ra-core will detect that it's already inside a router, and skip its own router.
 
@@ -145,6 +184,24 @@ const App = () => {
     return <RouterProvider router={router} />;
 };
 ```
+
+## Using A Different Router Library
+
+Ra-core supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) as an alternative.
+
+To use TanStack Router:
+
+```jsx
+import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+        <Resource name="posts" list={PostList} />
+    </CoreAdmin>
+);
+```
+
+See the [TanStack Router documentation](./TanStackRouter.md) for more details.
 
 ## Using Ra-Core In A Sub Path
 
@@ -179,7 +236,7 @@ This makes all links be prefixed with `/admin`.
 
 Note that it is your responsibility to serve the admin from the sub path, e.g. by setting the `base` field in `vite.config.ts` if you use [Vite.js](https://vitejs.dev/config/shared-options.html#base), or the `homepage` field in `package.json` if you use [Create React App](https://create-react-app.dev/docs/deployment/#building-for-relative-paths).
 
-If you want to use ra-core as a sub path of a larger React application, check the next section for instructions. 
+If you want to use ra-core as a sub path of a larger React application, check the next section for instructions.
 
 ## Using Ra-Core Inside a Route
 
@@ -235,11 +292,11 @@ or
 
 > `useNavigate()` may be used only in the context of a `<Router>` component
 
-or 
+or
 
 > `useRoutes()` may be used only in the context of a `<Router>` component
 
-or 
+or
 
 > `useHref()` may be used only in the context of a `<Router>` component.
 
@@ -263,4 +320,3 @@ If there are duplicates, you need to make sure to use only the same version as r
   }
 }
 ```
-

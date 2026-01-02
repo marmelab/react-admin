@@ -7,12 +7,12 @@ import {
     Resource,
     testDataProvider,
     TestMemoryRouter,
+    LinkBase,
 } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { AccessDenied } from './AccessDenied';
-import { Link } from 'react-router-dom';
 
 export default {
     title: 'ra-ui-materialui/layout/AccessDenied',
@@ -68,7 +68,7 @@ const PostList = () => (
     <div style={{ marginTop: 10 }}>
         <div>Post list</div>
         <div>
-            <Link to="/users">User list</Link>
+            <LinkBase to="/users">User list</LinkBase>
         </div>
     </div>
 );

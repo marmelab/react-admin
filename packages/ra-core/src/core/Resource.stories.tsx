@@ -1,7 +1,6 @@
 import * as React from 'react';
-import { NavigateFunction, Route } from 'react-router';
-import { Link } from 'react-router-dom';
-import { TestMemoryRouter } from '../routing';
+import { Route } from 'react-router';
+import { TestMemoryRouter, LinkBase, RouterNavigateFunction } from '../routing';
 import { Resource } from './Resource';
 import { CoreAdmin } from './CoreAdmin';
 
@@ -12,27 +11,28 @@ export default {
 const PostList = () => (
     <div>
         <div>PostList</div>
-        <Link to="/posts/create">create</Link> <Link to="/posts/123">edit</Link>{' '}
-        <Link to="/posts/123/show">show</Link>{' '}
-        <Link to="/posts/customroute">custom</Link>
+        <LinkBase to="/posts/create">create</LinkBase>{' '}
+        <LinkBase to="/posts/123">edit</LinkBase>{' '}
+        <LinkBase to="/posts/123/show">show</LinkBase>{' '}
+        <LinkBase to="/posts/customroute">custom</LinkBase>
     </div>
 );
 const PostEdit = () => (
     <div>
         <div>PostEdit</div>
-        <Link to="/posts">list</Link>
+        <LinkBase to="/posts">list</LinkBase>
     </div>
 );
 const PostCreate = () => (
     <div>
         <div>PostCreate</div>
-        <Link to="/posts">list</Link>
+        <LinkBase to="/posts">list</LinkBase>
     </div>
 );
 const PostShow = () => (
     <div>
         <div>PostShow</div>
-        <Link to="/posts">list</Link>
+        <LinkBase to="/posts">list</LinkBase>
     </div>
 );
 const PostIcon = () => <div>PostIcon</div>;
@@ -40,7 +40,7 @@ const PostIcon = () => <div>PostIcon</div>;
 const PostCustomRoute = () => (
     <div>
         <div>PostCustomRoute</div>
-        <Link to="/posts">list</Link>
+        <LinkBase to="/posts">list</LinkBase>
     </div>
 );
 
@@ -58,7 +58,7 @@ const resource = {
 export const Basic = ({
     navigateCallback,
 }: {
-    navigateCallback?: (n: NavigateFunction) => void;
+    navigateCallback?: (n: RouterNavigateFunction) => void;
 }) => (
     <TestMemoryRouter navigateCallback={navigateCallback}>
         <CoreAdmin loading={Loading}>
