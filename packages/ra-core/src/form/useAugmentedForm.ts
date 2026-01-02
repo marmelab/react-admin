@@ -7,6 +7,7 @@ import {
 } from 'react';
 import {
     FieldValues,
+    KeepStateOptions,
     SubmitHandler,
     useForm,
     UseFormProps,
@@ -43,6 +44,7 @@ export const useAugmentedForm = <RecordType = any>(
         defaultValues,
         formRootPathname,
         resolver,
+        resetOptions,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
@@ -86,9 +88,17 @@ export const useAugmentedForm = <RecordType = any>(
     const { reset, formState } = form;
     const { isReady } = formState;
 
+    const previousRecordId = useRef(record?.id);
+
     useEffect(() => {
-        reset(defaultValuesIncludingRecord);
-    }, [defaultValuesIncludingRecord, reset]);
+        const recordIdChanged = record?.id !== previousRecordId.current;
+        previousRecordId.current = record?.id;
+
+        reset(
+            defaultValuesIncludingRecord,
+            recordIdChanged ? undefined : resetOptions
+        );
+    }, [defaultValuesIncludingRecord, reset, resetOptions, record?.id]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
@@ -154,6 +164,7 @@ export interface UseFormOwnProps<RecordType = any> {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
+    resetOptions?: KeepStateOptions;
     onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
