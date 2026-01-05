@@ -86,7 +86,9 @@ const OrderEdit = () => (
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
 | `disabled` | Optional | `boolean` | `false` | If true, all buttons are disabled. |
+| `disableAutoFocus` | Optional | `boolean` | `false` | Prevent focusing the first input when adding a new row |
 | `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
+
 
 ## `addButton`
 
@@ -415,9 +417,27 @@ The `disabled` prop set to true makes the children input not mutable, focusable,
 
 Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
 
+## `disableAutoFocus`
+
+By default, `<SimpleFormIterator>` focuses the first input of a newly added row.
+This behavior comes from `react-hook-form`'s `useFieldArray.append`.
+
+You can disable this behavior by setting the `disableAutoFocus` prop.
+
+```jsx
+<ArrayInput source="items">
+    <SimpleFormIterator disableAutoFocus>
+        <TextInput source="name" />
+        <NumberInput source="price" />
+        <NumberInput source="quantity" />
+    </SimpleFormIterator>
+</ArrayInput> 
+```
+
 ## `sx`
 
 You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
+
 
 This property accepts the following subclasses:
 

@@ -25,7 +25,6 @@ import {
 } from './SimpleFormIteratorBase';
 import { useGetArrayInputNewItemDefaults } from './useGetArrayInputNewItemDefaults';
 import { useEvent } from '../../util';
-import { DateInput } from 'ra-ui-materialui';
 
 export default { title: 'ra-core/controller/input/SimpleFormIteratorBase' };
 
@@ -141,21 +140,22 @@ export const Basic = () => (
 );
 
 export const WithDisableAutoFocus = () => (
-    <SimpleForm onSubmit={() => {}}>
-        <ArrayInput source="backlinks">
-            <SimpleFormIterator disableAutoFocus>
-                <AutocompleteInput
-                    source="unable_unfocus"
-                    choices={[
-                        { id: 'unfocus', name: 'None' },
-                        { id: 'admin', name: 'Admin' },
-                        { id: 'user', name: 'User' },
-                        { id: 'user_simple', name: 'UserSimple' },
-                    ]}
-                />
-                <DateInput source="date" defaultValue="" />
-                <TextInput source="url" defaultValue="" />
-            </SimpleFormIterator>
-        </ArrayInput>
-    </SimpleForm>
+    <TestMemoryRouter>
+        <Admin dataProvider={{} as any}>
+            <SimpleForm onSubmit={() => {}}>
+                <ArrayInput source="items">
+                    <SimpleFormIterator disableAutoFocus>
+                        <AutocompleteInput
+                            source="choice"
+                            choices={[
+                                { id: 'a', name: 'A' },
+                                { id: 'b', name: 'B' },
+                            ]}
+                        />
+                        <TextInput source="url" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            </SimpleForm>
+        </Admin>
+    </TestMemoryRouter>
 );
