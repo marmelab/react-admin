@@ -7,7 +7,6 @@ import {
 } from 'react';
 import {
     FieldValues,
-    KeepStateOptions,
     SubmitHandler,
     useForm,
     UseFormProps,
@@ -164,7 +163,6 @@ export interface UseFormOwnProps<RecordType = any> {
     defaultValues?: any;
     formRootPathname?: string;
     record?: Partial<RaRecord>;
-    resetOptions?: KeepStateOptions;
     onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
