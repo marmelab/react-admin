@@ -9,6 +9,6 @@
     "devDependencies": {
         "cypress": "^15.8.1",
         "cypress-vite": "^1.7.0",
-        "express": "^4.20.0"
+        "express": "^4.22.1"
     }
 }
