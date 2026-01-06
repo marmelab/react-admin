@@ -328,3 +328,12 @@ export const Large = () => (
         </Edit>
     </AdminContext>
 );
+
+export const DisableAutoFocus = () => (
+    <Wrapper>
+        <SimpleFormIterator disableAutoFocus>
+            <TextInput source="name" />
+            <TextInput source="role" />
+        </SimpleFormIterator>
+    </Wrapper>
+);
