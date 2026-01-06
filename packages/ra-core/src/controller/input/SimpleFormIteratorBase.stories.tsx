@@ -3,14 +3,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { useWrappedSource } from '../../core/useWrappedSource';
 import { useFieldValue } from '../../util/useFieldValue';
 import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
-import {
-    Admin,
-    ArrayInput,
-    AutocompleteInput,
-    DataTable,
-    SimpleForm,
-    TextInput,
-} from '../../test-ui';
+import { Admin, DataTable, SimpleForm, TextInput } from '../../test-ui';
 import { Resource } from '../../core/Resource';
 import { ListBase } from '../list/ListBase';
 import { EditBase } from '../edit/EditBase';
@@ -82,7 +75,7 @@ const AddItemButton = () => {
     );
 };
 
-export const Basic = () => (
+export const Basic = (props: Partial<SimpleFormIteratorBaseProps>) => (
     <TestMemoryRouter initialEntries={['/posts/1']}>
         <Admin
             dataProvider={fakeRestDataProvider({
@@ -125,7 +118,7 @@ export const Basic = () => (
                             <div>
                                 <div>Tags:</div>
                                 <ArrayInputBase source="tags">
-                                    <SimpleFormIterator>
+                                    <SimpleFormIterator {...props}>
                                         <TextInput source="name" />
                                         <TextInput source="color" />
                                     </SimpleFormIterator>
@@ -138,24 +131,9 @@ export const Basic = () => (
         </Admin>
     </TestMemoryRouter>
 );
-
-export const WithDisableAutoFocus = () => (
-    <TestMemoryRouter>
-        <Admin dataProvider={{} as any}>
-            <SimpleForm onSubmit={() => {}}>
-                <ArrayInput source="items">
-                    <SimpleFormIterator disableAutoFocus>
-                        <AutocompleteInput
-                            source="choice"
-                            choices={[
-                                { id: 'a', name: 'A' },
-                                { id: 'b', name: 'B' },
-                            ]}
-                        />
-                        <TextInput source="url" />
-                    </SimpleFormIterator>
-                </ArrayInput>
-            </SimpleForm>
-        </Admin>
-    </TestMemoryRouter>
-);
+Basic.args = {
+    disableAutoFocus: false,
+};
+Basic.argTypes = {
+    disableAutoFocus: { control: 'boolean' },
+};
