@@ -77,7 +77,9 @@ const OrderEdit = () => (
 | `children` | Optional | `ReactElement` | - | List of inputs to display for each row |
 | `className` | Optional | `string` | - | Applied to the root element (`<ul>`) |
 | `disableAdd` | Optional | `boolean` | `false` | When true, the user cannot add new rows |
+| `disableAutoFocus` | Optional | `boolean` | `false` | Prevent focusing the first input when adding a new row |
 | `disableClear` | Optional | `boolean` | `false` | When true, the user cannot clear the array |
+| `disabled` | Optional | `boolean` | `false` | If true, all buttons are disabled. |
 | `disableRemove` | Optional | `boolean` | `false` | When true, the user cannot remove rows |
 | `disableReordering` | Optional | `boolean` | `false` | When true, the user cannot reorder rows |
 | `fullWidth` | Optional | `boolean` | `true` | Set to false to glue the actions to last input |
@@ -85,8 +87,6 @@ const OrderEdit = () => (
 | `inline` | Optional | `boolean` | `false` | When true, inputs are put on the same line |
 | `removeButton` | Optional | `ReactElement` | - | Component to render for the remove button |
 | `reOrderButtons` | Optional | `ReactElement` | - | Component to render for the up / down button |
-| `disabled` | Optional | `boolean` | `false` | If true, all buttons are disabled. |
-| `disableAutoFocus` | Optional | `boolean` | `false` | Prevent focusing the first input when adding a new row |
 | `sx` | Optional | `SxProps` | - | Material UI shortcut for defining custom styles |
 
 
@@ -213,6 +213,23 @@ When true, the Add button isn't rendered, so users cannot add new rows.
 </SimpleFormIterator>
 ```
 
+## `disableAutoFocus`
+
+By default, `<SimpleFormIterator>` focuses the first input of a newly added row.
+This behavior comes from `react-hook-form`'s [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray) `append()` method.
+
+You can disable this behavior by setting the `disableAutoFocus` prop.
+
+```jsx
+<ArrayInput source="items">
+    <SimpleFormIterator disableAutoFocus>
+        <TextInput source="name" />
+        <NumberInput source="price" />
+        <NumberInput source="quantity" />
+    </SimpleFormIterator>
+</ArrayInput> 
+```
+
 ## `disableClear`
 
 When true, the array clear button isn't rendered, so the user cannot clear the array.
@@ -225,6 +242,19 @@ When true, the array clear button isn't rendered, so the user cannot clear the a
 </SimpleFormIterator>
 ```
 
+## `disabled`
+
+The `disabled` prop set to true makes the children input not mutable, focusable, or even submitted with the form.
+
+```jsx
+<SimpleFormIterator disabled>
+    <TextInput source="name" />
+    <NumberInput source="price" />
+    <NumberInput source="quantity" />
+</SimpleFormIterator>
+```
+
+Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
 
 ## `disableRemove`
 
@@ -403,41 +433,9 @@ The `readOnly` prop set to true makes the children input not mutable, meaning th
 
 Contrary to disabled controls, read-only controls are still focusable and are submitted with the form.
 
-## `disabled`
-
-The `disabled` prop set to true makes the children input not mutable, focusable, or even submitted with the form.
-
-```jsx
-<SimpleFormIterator disabled>
-    <TextInput source="name" />
-    <NumberInput source="price" />
-    <NumberInput source="quantity" />
-</SimpleFormIterator>
-```
-
-Contrary to read-only controls, disabled controls can not receive focus and are not submitted with the form.
-
-## `disableAutoFocus`
-
-By default, `<SimpleFormIterator>` focuses the first input of a newly added row.
-This behavior comes from `react-hook-form`'s `useFieldArray.append`.
-
-You can disable this behavior by setting the `disableAutoFocus` prop.
-
-```jsx
-<ArrayInput source="items">
-    <SimpleFormIterator disableAutoFocus>
-        <TextInput source="name" />
-        <NumberInput source="price" />
-        <NumberInput source="quantity" />
-    </SimpleFormIterator>
-</ArrayInput> 
-```
-
 ## `sx`
 
 You can override the style of the root element (a `<div>` element) as well as those of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples).
-
 
 This property accepts the following subclasses:
 

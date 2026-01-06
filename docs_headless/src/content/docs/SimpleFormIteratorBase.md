@@ -65,11 +65,11 @@ const AddItemButton = () => {
 
 ## Props
 
-| Prop              | Required | Type           | Default               | Description                                   |
-|-------------------|----------|----------------|-----------------------|-----------------------------------------------|
-| `children`        | Optional | `ReactNode` | -                     | List of inputs to display for each array item |
-| `disableAutoFocus` | Optional | `boolean` | `false` | Prevent focusing the first input when adding a new item |
+| Prop               | Required | Type        | Default | Description                                             |
+| ------------------ | -------- | ----------- | ------- | ------------------------------------------------------- |
+| `children`         | Optional | `ReactNode` | -       | List of inputs to display for each array item           |
+| `disableAutoFocus` | Optional | `boolean`   | `false` | Prevent focusing the first input when adding a new item |
 
 ## `disableAutoFocus`
 
-When true, prevents `useFieldArray.append` from focusing the first field of a newly added item by passing `{ shouldFocus: false }`.
+When true, will pass `{ shouldFocus: false }` to `react-hook-form`'s [`useFieldArray`](https://react-hook-form.com/docs/usefieldarray) `append()` method when adding a new item, preventing the first input of the newly added item from being focused automatically.
