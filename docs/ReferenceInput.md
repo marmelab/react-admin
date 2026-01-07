@@ -114,7 +114,7 @@ See the [`children`](#children) section for more details.
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
 
-**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them.
+**Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them. The same goes for validation: pass `validate` to the child input (`<AutocompleteInput>`, `<SelectInput>`, `<RadioButtonGroupInput>`, etc.), not to `<ReferenceInput>`. This also applies to other reference inputs like [`<ReferenceArrayInput>`](./ReferenceArrayInput.md).
 
 ## `children`
 

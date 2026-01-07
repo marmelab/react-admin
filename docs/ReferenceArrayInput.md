@@ -111,7 +111,7 @@ See the [`children`](#children) section for more details.
 | `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
 
-**Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them.
+**Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them. The same is true for validation: put the `validate` prop on the child input (`<AutocompleteArrayInput>`, `<SelectArrayInput>`, `<DualListInput>`, etc.), not on `<ReferenceArrayInput>`.
 
 ## `children`
 
