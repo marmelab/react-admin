@@ -764,7 +764,7 @@ const CompanyInput = () => {
 As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
 
 ```jsx
-import { ReferenceInput, AutocompleteInput } from 'react-admin';
+import { ReferenceInput, AutocompleteInput, required } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id">
@@ -772,10 +772,13 @@ const CompanyInput = () => (
             label="Company"
             source="company_id"
             optionText="name"
+            validate={required()}
         />
     </ReferenceInput>
 );
 ```
+
+**Tip**: If you need validation (e.g. `required()`), put the `validate` prop on the child input (`<AutocompleteInput>`). `<ReferenceInput>` doesn't accept validation props.
 
 `<ReferenceInput>` is a headless component that:
  
