@@ -113,6 +113,18 @@ See the [`children`](#children) section for more details.
 
 **Note**: `<ReferenceArrayInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) ; it is the responsability of children to apply them. The same is true for validation: put the `validate` prop on the child input (`<AutocompleteArrayInput>`, `<SelectArrayInput>`, `<DualListInput>`, etc.), not on `<ReferenceArrayInput>`.
 
+## Validation
+
+`<ReferenceArrayInput>` doesn't accept a `validate` prop. Put validation on the child input instead (`<AutocompleteArrayInput>`, `<SelectArrayInput>`, `<DualListInput>`, etc.).
+
+```jsx
+import { ReferenceArrayInput, SelectArrayInput, required } from 'react-admin';
+
+<ReferenceArrayInput source="tag_ids" reference="tags">
+    <SelectArrayInput validate={required()} />
+</ReferenceArrayInput>
+```
+
 ## `children`
 
 By default, `<ReferenceArrayInput>` renders an [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) to let end users select the reference record.

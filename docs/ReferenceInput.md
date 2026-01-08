@@ -116,6 +116,18 @@ See the [`children`](#children) section for more details.
 
 **Note**: `<ReferenceInput>` doesn't accept the [common input props](./Inputs.md#common-input-props) (like `label`) ; it is the responsibility of the child component to apply them. The same goes for validation: pass `validate` to the child input (`<AutocompleteInput>`, `<SelectInput>`, `<RadioButtonGroupInput>`, etc.), not to `<ReferenceInput>`. This also applies to other reference inputs like [`<ReferenceArrayInput>`](./ReferenceArrayInput.md).
 
+## Validation
+
+`<ReferenceInput>` doesn't accept a `validate` prop. Put validation on the child input instead (`<AutocompleteInput>`, `<SelectInput>`, `<RadioButtonGroupInput>`, etc.).
+
+```jsx
+import { ReferenceInput, SelectInput, required } from 'react-admin';
+
+<ReferenceInput source="company_id" reference="companies">
+    <SelectInput validate={required()} />
+</ReferenceInput>
+```
+
 ## `children`
 
 By default, `<ReferenceInput>` renders an [`<AutocompleteInput>`](./AutocompleteInput.md) to let end users select the reference record.
