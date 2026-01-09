@@ -386,7 +386,7 @@ const CompanyInput = () => {
 As this is a common task, react-admin provides a shortcut to do the same in a declarative way: [`<ReferenceInput>`](./ReferenceInput.md):
 
 ```jsx
-import { ReferenceInput, RadioButtonGroupInput } from 'react-admin';
+import { ReferenceInput, RadioButtonGroupInput, required } from 'react-admin';
 
 const CompanyInput = () => (
     <ReferenceInput reference="companies" source="company_id">
@@ -394,10 +394,13 @@ const CompanyInput = () => (
             label="Company"
             source="company_id"
             optionText="name"
+            validate={required()}
         />
     </ReferenceInput>
 );
 ```
+
+**Tip**: If you need validation (e.g. `required()`), put the `validate` prop on the child `<RadioButtonGroupInput>`. `<ReferenceInput>` doesn't accept validation props.
 
 `<ReferenceInput>` is a headless component that:
  

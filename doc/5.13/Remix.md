@@ -7,7 +7,7 @@ title: "Remix Integration"
 
 [Remix](https://remix.run/) is a Node.js framework for server-side-rendered React apps. But even if react-admin is designed to build Single-Page Applications, Remix and react-admin integrate seamlessly.
 
-These instructions are targeting Remix v2.
+These instructions are targeting Remix v2. For Remix v3 check out the [React Router Framework Integration](ReactRouterFramework.md) guide.
 
 ## Setting Up Remix
 
@@ -44,19 +44,19 @@ import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-	plugins: [
-		remix({
-			future: {
-				v3_fetcherPersist: true,
-				v3_relativeSplatPath: true,
-				v3_throwAbortReason: true,
-			},
-		}),
-		tsconfigPaths(),
-	],
-+	ssr: {
-+		noExternal: ['ra-data-json-server'] // or the dataProvider you are using
-+	},
+ plugins: [
+  remix({
+   future: {
+    v3_fetcherPersist: true,
+    v3_relativeSplatPath: true,
+    v3_throwAbortReason: true,
+   },
+  }),
+  tsconfigPaths(),
+ ],
++ ssr: {
++  noExternal: ['ra-data-json-server'] // or the dataProvider you are using
++ },
 });
 ```
 
@@ -189,26 +189,25 @@ npm add @raphiniert/ra-data-postgrest
 
 Update your `vite.config.ts` to add `@raphiniert/ra-data-postgrest` to the `noExternal` array:
 
-
 ```diff
 import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig({
-	plugins: [
-		remix({
-			future: {
-				v3_fetcherPersist: true,
-				v3_relativeSplatPath: true,
-				v3_throwAbortReason: true,
-			},
-		}),
-		tsconfigPaths(),
-	],
-+	ssr: {
-+		noExternal: ['@raphiniert/ra-data-postgrest']
-+	},
+ plugins: [
+  remix({
+   future: {
+    v3_fetcherPersist: true,
+    v3_relativeSplatPath: true,
+    v3_throwAbortReason: true,
+   },
+  }),
+  tsconfigPaths(),
+ ],
++ ssr: {
++  noExternal: ['@raphiniert/ra-data-postgrest']
++ },
 });
 ```
 
