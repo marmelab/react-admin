@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.13.5
+
+* Fix `<Form>` ignores `resetOptions` when record changes ([#11099](https://github.com/marmelab/react-admin/pull/11099)) ([Jszigeti](https://github.com/Jszigeti))
+* Fix `<ColumnsSelector>` cannot hide `<DataTable.Col>` items with no `source` ([#11088](https://github.com/marmelab/react-admin/pull/11088)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Clarify validation prop usage on `<ReferenceInput>` / `<ReferenceArrayInput>` ([#11104](https://github.com/marmelab/react-admin/pull/11104)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Add tutorial for React Router Framework ([#11100](https://github.com/marmelab/react-admin/pull/11100)) ([djhi](https://github.com/djhi))
+* [Doc] Update `<DatagridAG>` docs following `ra-datagrid-ag` 7.0.0 release ([#11097](https://github.com/marmelab/react-admin/pull/11097)) ([slax57](https://github.com/slax57))
+* [Doc] Update `AdapterDateFns` imports for MUIX v8 ([#11090](https://github.com/marmelab/react-admin/pull/11090)) ([djhi](https://github.com/djhi))
+* [Doc] Document `<FilterValue>` ([#11086](https://github.com/marmelab/react-admin/pull/11086)) ([djhi](https://github.com/djhi))
+* [chore] Fix security vulnerabilities in `qs` and `systeminformation` ([#11103](https://github.com/marmelab/react-admin/pull/11103)) ([slax57](https://github.com/slax57))
+* Bump react-router from 6.28.1 to 6.30.2 ([#11106](https://github.com/marmelab/react-admin/pull/11106)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump storybook from 8.6.11 to 8.6.15 ([#11098](https://github.com/marmelab/react-admin/pull/11098)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.13.4
 
 * Fix `useAugmentedForm` resets the form one too many time ([#11085](https://github.com/marmelab/react-admin/pull/11085)) ([slax57](https://github.com/slax57))
