@@ -603,12 +603,10 @@ describe('tanStackRouterProvider', () => {
 
             fireEvent.click(screen.getByText('Admin'));
 
-            await waitFor(
-                () => {
-                    expect(screen.getByText('Posts')).toBeInTheDocument();
-                },
-                { timeout: 3000 }
-            );
+            await screen.findByText('Posts');
+
+            // Wait for data to load before clicking
+            await screen.findByText('Post #1');
 
             fireEvent.click(screen.getByText('Post #1'));
 

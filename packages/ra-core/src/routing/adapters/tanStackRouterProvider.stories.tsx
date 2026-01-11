@@ -12,9 +12,17 @@ import {
 import { createHashHistory } from '@tanstack/history';
 
 import { useNavigate, useLocation, LinkBase, useBlocker } from '..';
+import {
+    ListBase,
+    ShowBase,
+    EditBase,
+    CreateBase,
+    useRecordContext,
+} from '../../controller';
 import { CoreAdmin, Resource, CustomRoutes } from '../../core';
+import { Form } from '../../form';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
-import { useRecordContext } from '../../controller';
+import { TextInput } from '../../test-ui';
 
 const {
     useParams,
@@ -47,91 +55,101 @@ const dataProvider = fakeDataProvider(
 const PostList = () => {
     const navigate = useNavigate();
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Posts</h2>
-            <ul>
-                <li>
-                    <LinkBase to="/posts/1/show">Post #1</LinkBase>
-                </li>
-                <li>
-                    <LinkBase to="/posts/2/show">Post #2</LinkBase>
-                </li>
-                <li>
-                    <LinkBase to="/posts/3/show">Post #3</LinkBase>
-                </li>
-            </ul>
-            <button onClick={() => navigate('/posts/create')}>
-                Create New Post
-            </button>
-        </div>
+        <ListBase
+            resource="posts"
+            render={({ data }) => (
+                <div style={{ padding: 20 }}>
+                    <h2>Posts</h2>
+                    <ul>
+                        {data?.map(record => (
+                            <li key={record.id}>
+                                <LinkBase to={`/posts/${record.id}/show`}>
+                                    {record.title}
+                                </LinkBase>
+                            </li>
+                        ))}
+                    </ul>
+                    <button onClick={() => navigate('/posts/create')}>
+                        Create New Post
+                    </button>
+                </div>
+            )}
+        />
     );
 };
 
 const PostShow = () => {
-    const record = useRecordContext();
     const navigate = useNavigate();
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Post Details</h2>
-            {record && (
-                <>
-                    <p>
-                        <strong>ID:</strong> {record.id}
-                    </p>
-                    <p>
-                        <strong>Title:</strong> {record.title}
-                    </p>
-                    <p>
-                        <strong>Body:</strong> {record.body}
-                    </p>
-                </>
+        <ShowBase
+            resource="posts"
+            render={({ record }) => (
+                <div style={{ padding: 20 }}>
+                    <h2>Post Details</h2>
+                    {record && (
+                        <>
+                            <dl>
+                                <dt>ID:</dt>
+                                <dd>{record.id}</dd>
+                            </dl>
+                            <dl>
+                                <dt>Title:</dt>
+                                <dd>{record.title}</dd>
+                            </dl>
+                            <dl>
+                                <dt>Body:</dt>
+                                <dd>{record.body}</dd>
+                            </dl>
+                            <button
+                                onClick={() => navigate(`/posts/${record.id}`)}
+                            >
+                                Edit
+                            </button>
+                        </>
+                    )}
+                    <button onClick={() => navigate('/posts')}>
+                        Back to List
+                    </button>
+                    <button onClick={() => navigate(-1)}>
+                        Go Back (History)
+                    </button>
+                </div>
             )}
-            <button onClick={() => navigate('/posts')}>Back to List</button>
-            <button onClick={() => navigate(-1)}>Go Back (History)</button>
-        </div>
+        />
     );
 };
 
 const PostEdit = () => {
-    const record = useRecordContext();
     const navigate = useNavigate();
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Edit Post</h2>
-            {record && (
-                <form>
-                    <div>
-                        <label>Title:</label>
-                        <input defaultValue={record.title} />
-                    </div>
-                    <div>
-                        <label>Body:</label>
-                        <textarea defaultValue={record.body} />
-                    </div>
-                </form>
-            )}
-            <button onClick={() => navigate('/posts')}>Cancel</button>
-        </div>
+        <EditBase resource="posts">
+            <div style={{ padding: 20 }}>
+                <h2>Edit Post</h2>
+                <Form>
+                    <TextInput source="title" />
+                    <TextInput source="body" />
+                    <button type="submit">Save</button>
+                    <button onClick={() => navigate('/posts')}>Cancel</button>
+                </Form>
+            </div>
+        </EditBase>
     );
 };
 
 const PostCreate = () => {
     const navigate = useNavigate();
     return (
-        <div style={{ padding: 20 }}>
-            <h2>Create Post</h2>
-            <form>
-                <div>
-                    <label>Title:</label>
-                    <input />
-                </div>
-                <div>
-                    <label>Body:</label>
-                    <textarea />
-                </div>
-            </form>
-            <button onClick={() => navigate('/posts')}>Cancel</button>
-        </div>
+        <CreateBase resource="posts" redirect="list">
+            <div style={{ padding: 20 }}>
+                <h2>Create Post</h2>
+                <Form>
+                    <TextInput source="title" />
+                    <TextInput source="body" />
+                    <button type="submit">Save</button>
+                    <button onClick={() => navigate('/posts')}>Cancel</button>
+                </Form>
+            </div>
+        </CreateBase>
     );
 };
 
@@ -260,6 +278,18 @@ const EmbeddedAdmin = () => (
             show={
                 <div>
                     <PostShow />
+                    <LocationDisplay />
+                </div>
+            }
+            edit={
+                <div>
+                    <PostEdit />
+                    <LocationDisplay />
+                </div>
+            }
+            create={
+                <div>
+                    <PostCreate />
                     <LocationDisplay />
                 </div>
             }
