@@ -274,23 +274,3 @@ TanStack Router's data loading features (`loader`, `beforeLoad`) are not used by
 ### File-Based Routing
 
 TanStack Router supports file-based routing similar to Next.js. This feature is not compatible with react-admin's declarative `<Resource>` approach.
-
-## Troubleshooting
-
-### Routes Not Matching
-
-If custom routes are not working, ensure your Route elements have the expected props:
-
-```tsx
-// Good - has path and element
-<Route path="/custom" element={<CustomPage />} />
-
-// Bad - missing element
-<Route path="/custom">
-    <CustomPage />
-</Route>
-```
-
-### History Not Working in Embedded Mode
-
-When embedding react-admin in an existing TanStack Router app, make sure both routers use the same history type. If your parent app uses hash history, react-admin will work correctly. If it uses browser history, set up your routes accordingly.

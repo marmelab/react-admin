@@ -159,7 +159,27 @@ When using `useLocation`, you may get a location that doesn't reflect the actual
 See [the troubleshooting section](#troubleshooting) for a solution.
 :::
 
-## Using A Custom react-router Configuration
+## Using A Different Router Library
+
+Ra-core supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) as an alternative.
+
+To use TanStack Router:
+
+```jsx
+import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+        <Resource name="posts" list={PostList} />
+    </CoreAdmin>
+);
+```
+
+See the [TanStack Router documentation](./TanStackRouter.md) for more details.
+
+## React-Router Configuration
+
+### Using Another Routing Strategy
 
 By default, ra-core uses react-router with a HashRouter. This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
 
@@ -185,25 +205,7 @@ const App = () => {
 };
 ```
 
-## Using A Different Router Library
-
-Ra-core supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) as an alternative.
-
-To use TanStack Router:
-
-```jsx
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
-
-const App = () => (
-    <CoreAdmin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
-        <Resource name="posts" list={PostList} />
-    </CoreAdmin>
-);
-```
-
-See the [TanStack Router documentation](./TanStackRouter.md) for more details.
-
-## Using Ra-Core In A Sub Path
+### Using Ra-Core In A Sub Path
 
 Ra-core links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), ra-core works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 
@@ -238,7 +240,7 @@ Note that it is your responsibility to serve the admin from the sub path, e.g. b
 
 If you want to use ra-core as a sub path of a larger React application, check the next section for instructions.
 
-## Using Ra-Core Inside a Route
+### Using Ra-Core Inside a Route
 
 You can include an ra-core app inside another app, using a react-router `<Route>`:
 
@@ -282,7 +284,7 @@ export const StoreAdmin = () => (
 
 This will let ra-core build absolute URLs including the sub path.
 
-## Troubleshooting
+### Troubleshooting
 
 When using custom routing configurations, you may encounter strange error messages like:
 
