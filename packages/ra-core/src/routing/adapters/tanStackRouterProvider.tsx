@@ -241,8 +241,16 @@ const mapHistoryAction = (action: string): 'POP' | 'PUSH' | 'REPLACE' => {
 
 const useLocation = (): RouterLocation => {
     const location = useTanStackLocation();
+    const basename = useBasename();
+
+    // Strip basename from pathname (like react-router does)
+    let pathname = location.pathname;
+    if (basename && pathname.startsWith(basename)) {
+        pathname = pathname.slice(basename.length) || '/';
+    }
+
     return {
-        pathname: location.pathname,
+        pathname,
         search: location.searchStr ?? '',
         hash: location.hash ?? '',
         state: location.state,
@@ -326,7 +334,15 @@ const useMatch = (pattern: {
     end?: boolean;
 }): RouterMatch | null => {
     const location = useTanStackLocation();
-    return matchPath(pattern, location.pathname);
+    const basename = useBasename();
+
+    // Strip basename from pathname for matching (like react-router does)
+    let pathname = location.pathname;
+    if (basename && pathname.startsWith(basename)) {
+        pathname = pathname.slice(basename.length) || '/';
+    }
+
+    return matchPath(pattern, pathname);
 };
 
 const useBlocker = (
