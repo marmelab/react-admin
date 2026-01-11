@@ -45,10 +45,10 @@ redirect('edit', 'posts', 1, {}, { record: { post_id: record.id } });
 
 Note that `useRedirect` allows redirection to an absolute URL outside the current React app.
 
-**Tip:** For even more specific navigation, you can use the [`useNavigate`](https://reactrouter.com/en/main/hooks/use-navigate) hook from `react-router-dom` as follows:
+**Tip:** For even more specific navigation, you can use the `useNavigate` hook from `react-admin` as follows:
 
 ```jsx
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-admin';
 
 const MyPageButton = () => {
     const navigate = useNavigate();

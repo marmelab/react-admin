@@ -9,6 +9,7 @@ import {
     ResourceProps,
     ListBase,
     ResourceDefinitionContextProvider,
+    type RouterLocation,
 } from 'ra-core';
 import defaultMessages from 'ra-language-english';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -20,7 +21,6 @@ import {
     Switch,
     ThemeOptions,
 } from '@mui/material';
-import { Location } from 'react-router';
 
 import { AdminUI } from '../../AdminUI';
 import { AdminContext, AdminContextProps } from '../../AdminContext';
@@ -138,7 +138,7 @@ export const LinkType = ({
     locationCallback,
 }: {
     linkType: string | FunctionLinkType | false;
-    locationCallback?: (l: Location) => void;
+    locationCallback?: (l: RouterLocation) => void;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
         <AdminContext>
@@ -189,7 +189,7 @@ export const RowClick = ({
     locationCallback,
     rowClick,
 }: {
-    locationCallback?: (l: Location) => void;
+    locationCallback?: (l: RouterLocation) => void;
     rowClick: string | RowClickFunction | false;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>

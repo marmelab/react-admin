@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { memo } from 'react';
 import ImageEye from '@mui/icons-material/RemoveRedEye';
-import { Link } from 'react-router-dom';
 import {
     type RaRecord,
     useResourceContext,
@@ -11,6 +10,7 @@ import {
     useGetResourceLabel,
     useGetRecordRepresentation,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -84,7 +84,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
 
     return (
         <StyledButton
-            component={Link}
+            component={LinkBase}
             to={createPath({ type: 'show', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation
@@ -119,7 +119,7 @@ interface Props<RecordType extends RaRecord = any> {
 }
 
 export type ShowButtonProps<RecordType extends RaRecord = any> =
-    Props<RecordType> & Omit<ButtonProps<typeof Link>, 'to'>;
+    Props<RecordType> & Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 const PureShowButton = memo(
     ShowButton,

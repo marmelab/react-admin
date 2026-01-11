@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
-import { TestMemoryRouter } from '../routing';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { TestMemoryRouter, useLocation, useNavigate } from '../routing';
 
 /**
  * This is a storybook decorator that wrap the story inside a fake browser.

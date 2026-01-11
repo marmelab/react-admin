@@ -1,10 +1,9 @@
 import * as React from 'react';
-import { Location } from 'react-router';
 import { QueryClient } from '@tanstack/react-query';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import { CanAccess } from './CanAccess';
-import { TestMemoryRouter } from '../routing/TestMemoryRouter';
+import { TestMemoryRouter, RouterLocation } from '../routing';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 export default {
@@ -28,7 +27,7 @@ export const Basic = ({
 }: {
     authProvider?: AuthProvider;
     basename?: string;
-    locationCallback?: (location: Location) => void;
+    locationCallback?: (location: RouterLocation) => void;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>
         <CoreAdminContext

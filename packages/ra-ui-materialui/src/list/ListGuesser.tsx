@@ -9,8 +9,8 @@ import {
     useResourceContext,
     RaRecord,
     usePrevious,
+    useLocation,
 } from 'ra-core';
-import { useLocation } from 'react-router';
 
 import { ListProps } from './List';
 import { ListView, ListViewProps } from './ListView';

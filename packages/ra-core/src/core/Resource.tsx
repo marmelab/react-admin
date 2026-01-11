@@ -1,14 +1,14 @@
 import * as React from 'react';
 import { ComponentType, isValidElement } from 'react';
-import { Route, Routes } from 'react-router-dom';
 import { isValidElementType } from 'react-is';
 
 import { ResourceProps } from '../types';
 import { ResourceContextProvider } from './ResourceContextProvider';
-import { RestoreScrollPosition } from '../routing/RestoreScrollPosition';
+import { RestoreScrollPosition, useRouterProvider } from '../routing';
 
 export const Resource = (props: ResourceProps) => {
     const { create, edit, list, name, show } = props;
+    const { Route, Routes } = useRouterProvider();
 
     return (
         <ResourceContextProvider value={name}>

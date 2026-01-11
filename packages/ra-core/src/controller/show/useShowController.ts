@@ -1,5 +1,3 @@
-import { useParams } from 'react-router-dom';
-
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord } from '../../types';
 import {
@@ -8,7 +6,7 @@ import {
     UseGetOneOptions,
 } from '../../dataProvider';
 import { useTranslate } from '../../i18n';
-import { RedirectionSideEffect, useRedirect } from '../../routing';
+import { RedirectionSideEffect, useRedirect, useParams } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useResourceContext,
@@ -81,7 +79,7 @@ export const useShowController = <
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const { id: routeId } = useParams<'id'>();
+    const { id: routeId } = useParams<{ id?: string }>();
     if (!routeId && !propsId) {
         throw new Error(
             'useShowController requires an id prop or a route with an /:id? parameter.'

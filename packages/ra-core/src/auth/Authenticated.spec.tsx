@@ -1,13 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { memoryStore } from '../store';
 import { CoreAdminContext } from '../core';
 import { useNotificationContext } from '../notification';
 import { Authenticated } from './Authenticated';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, useLocation } from '../routing';
 
 describe('<Authenticated>', () => {
     const Foo = () => <div>Foo</div>;

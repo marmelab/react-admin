@@ -1,7 +1,6 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import { CoreAdmin, CoreAdminContext, CoreAdminUI, Resource } from '../../core';
 import { AuthProvider, DataProvider } from '../../types';
 import {
@@ -9,7 +8,7 @@ import {
     useInfiniteListController,
 } from './useInfiniteListController';
 import { Browser } from '../../storybook/FakeBrowser';
-import { TestMemoryRouter } from '../../routing';
+import { TestMemoryRouter, LinkBase } from '../../routing';
 import { useAuthState } from '../..';
 
 export default {
@@ -59,7 +58,7 @@ const List = params => {
                     </ul>
                 </div>
             )}
-            <Link to="/">Dashboard</Link>
+            <LinkBase to="/">Dashboard</LinkBase>
         </div>
     );
 };
@@ -69,7 +68,7 @@ const Dashboard = () => {
     return (
         <div style={styles.mainContainer}>
             <div>Dashboard view</div>
-            <Link to="/posts">List</Link>
+            <LinkBase to="/posts">List</LinkBase>
         </div>
     );
 };
@@ -344,7 +343,7 @@ const AccessDenied = () => {
     return (
         <div>
             <div>Access denied</div>
-            <Link to="/posts">List</Link>
+            <LinkBase to="/posts">List</LinkBase>
         </div>
     );
 };

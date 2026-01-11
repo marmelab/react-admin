@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Children, cloneElement, ReactElement, isValidElement } from 'react';
 import Tabs, { TabsProps } from '@mui/material/Tabs';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'ra-core';
 import { TabProps } from './Tab';
 
 export const TabbedShowLayoutTabs = ({

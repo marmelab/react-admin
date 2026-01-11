@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { useLocation } from 'react-router-dom';
 import {
     usePreferenceInput,
     usePreference,
     useRecordContext,
     useTranslate,
+    useLocation,
 } from 'ra-core';
 import { TextField } from '@mui/material';
 

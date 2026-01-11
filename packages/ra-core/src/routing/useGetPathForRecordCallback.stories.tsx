@@ -12,9 +12,9 @@ import {
     useGetPathForRecordCallback,
     useListController,
     WithRecord,
+    useNavigate,
+    LinkBase,
 } from '..';
-import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
 
 export default {
     title: 'ra-core/routing/useGetPathForRecordCallback',
@@ -112,7 +112,7 @@ export const AccessControl = ({
             accessDenied={() => (
                 <div>
                     <p>Access denied</p>
-                    <Link to="/">Back to list</Link>
+                    <LinkBase to="/">Back to list</LinkBase>
                 </div>
             )}
         >
@@ -195,7 +195,7 @@ const BookShow = () => (
                     </div>
                 )}
             />
-            <Link to="..">Back to list</Link>
+            <LinkBase to="..">Back to list</LinkBase>
         </div>
     </ShowBase>
 );
@@ -212,7 +212,7 @@ const BookEdit = () => (
                     </div>
                 )}
             />
-            <Link to="..">Back to list</Link>
+            <LinkBase to="..">Back to list</LinkBase>
         </div>
     </EditBase>
 );

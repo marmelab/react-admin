@@ -117,6 +117,7 @@ export const Admin = (props: AdminProps) => {
         queryClient,
         ready,
         requireAuth,
+        routerProvider,
         store = defaultStore,
         theme,
         title = 'React Admin',
@@ -138,6 +139,7 @@ export const Admin = (props: AdminProps) => {
             i18nProvider={i18nProvider}
             lightTheme={lightTheme}
             queryClient={queryClient}
+            routerProvider={routerProvider}
             store={store}
             theme={theme}
         >

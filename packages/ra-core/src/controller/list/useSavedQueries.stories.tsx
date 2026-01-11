@@ -1,6 +1,5 @@
 import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { useNavigate } from 'react-router';
 import queryString from 'query-string';
 import isEqual from 'lodash/isEqual.js';
 import {
@@ -12,6 +11,7 @@ import {
     useSavedQueries,
     extractValidSavedQueries,
     SavedQuery,
+    useNavigate,
 } from '../..';
 import {
     Admin,

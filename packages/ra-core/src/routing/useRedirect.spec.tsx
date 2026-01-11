@@ -2,8 +2,9 @@ import * as React from 'react';
 import { useEffect } from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { CoreAdminContext } from '../core';
+import { useLocation } from './useLocation';
 
 import { RedirectionSideEffect, useRedirect } from './useRedirect';
 import { testDataProvider } from '../dataProvider';

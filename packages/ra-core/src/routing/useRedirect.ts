@@ -1,16 +1,22 @@
 import { useCallback } from 'react';
-import { useNavigate, To } from 'react-router-dom';
 import { Identifier, RaRecord } from '../types';
 
 import { useBasename } from './useBasename';
 import { CreatePathType, useCreatePath } from './useCreatePath';
+import { useNavigate } from './useNavigate';
+import type { RouterLocation } from './RouterProvider';
+
+/**
+ * Target for redirection - can be a path string or a location object
+ */
+type RedirectTarget = string | Partial<RouterLocation>;
 
 type RedirectToFunction = (
     resource?: string,
     id?: Identifier,
     data?: Partial<RaRecord>,
     state?: object
-) => To;
+) => RedirectTarget;
 
 export type RedirectionSideEffect = CreatePathType | false | RedirectToFunction;
 
@@ -49,7 +55,7 @@ export const useRedirect = () => {
             if (!redirectTo) {
                 return;
             } else if (typeof redirectTo === 'function') {
-                const target: To = redirectTo(resource, id, data);
+                const target: RedirectTarget = redirectTo(resource, id, data);
                 const absoluteTarget =
                     typeof target === 'string'
                         ? `${basename}${target.startsWith('/') ? '' : '/'}${target}`

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { parse } from 'query-string';
-import { Location, useLocation } from 'react-router-dom';
 import isEqual from 'lodash/isEqual.js';
 import { RaRecord } from '../types';
+import { useLocation, RouterLocation } from '../routing';
 
 /**
  * A hook that returns the record to use to override the values in a form
@@ -52,7 +52,7 @@ export type UseRecordFromLocationOptions = {
  * state or is serialized in the url search part.
  */
 export const getRecordFromLocation = (
-    { state, search }: Location,
+    { state, search }: RouterLocation,
     {
         searchSource = 'source',
         stateSource = 'record',

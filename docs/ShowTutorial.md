@@ -21,8 +21,7 @@ Here is how you could write a simple book show view, leveraging react-admin's [d
 
 {% raw %}
 ```jsx
-import { useParams } from 'react-router-dom';
-import { useGetOne, useRedirect, Title } from 'react-admin';
+import { useGetOne, useRedirect, Title, useParams } from 'react-admin';
 import { Card, Stack, Typography } from '@mui/material';
 
 /**
@@ -72,9 +71,8 @@ This example uses the `useGetOne` hook instead of `fetch` because `useGetOne` al
 When you build Show views like the one above, you have to repeat quite a lot of code for each field. React-admin Field components can help avoid that repetition. The following example leverages the `<Labeled>`, `<TextField>`, and `<DateField>` components for that purpose:
 
 ```diff
-import { useParams } from 'react-router-dom';
 -import { useGetOne, useRedirect, Title } from 'react-admin';
-+import { useGetOne, useRedirect, Title, Labeled, TextField, DateField } from 'react-admin';
++import { useGetOne, useRedirect, Title, Labeled, TextField, DateField, useParams } from 'react-admin';
 -import { Card, Stack, Typography } from '@mui/material';
 +import { Card, Stack } from '@mui/material';
 
@@ -118,9 +116,8 @@ const BookShow = () => {
 Field components require a `record` to render, but they can grab it from a `RecordContext` instead of the `record` prop. Creating such a context with `<RecordContextProvider>` allows to reduce even more the amount of code you need to write for each field.
 
 ```diff
-import { useParams } from 'react-router-dom';
 -import { useGetOne, useRedirect, Title, Labeled, TextField, DateField } from 'react-admin';
-+import { useGetOne, useRedirect, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
++import { useGetOne, useRedirect, RecordContextProvider, Title, Labeled, TextField, DateField, useParams } from 'react-admin';
 import { Card, Stack } from '@mui/material';
 
 const BookShow = () => {
@@ -159,9 +156,8 @@ const BookShow = () => {
 Displaying a stack of fields with a label is such a common task that react-admin provides a helper component for that. It's called [`<SimpleShowLayout>`](./SimpleShowLayout.md):
 
 ```diff
-import { useParams } from 'react-router-dom';
 -import { useGetOne, useRedirect, RecordContextProvider, Title, Labeled, TextField, DateField } from 'react-admin';
-+import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
++import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField, useParams } from 'react-admin';
 -import { Card, Stack } from '@mui/material';
 +import { Card } from '@mui/material';
 
@@ -202,8 +198,7 @@ const BookShow = () => {
 The initial logic that grabs the id from the location and fetches the record from the API is also common, and react-admin exposes [the `useShowController` hook](./useShowController.md) to do it: 
 
 ```diff
--import { useParams } from 'react-router-dom';
--import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
+-import { useGetOne, useRedirect, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField, useParams } from 'react-admin';
 +import { useShowController, RecordContextProvider, SimpleShowLayout, Title, TextField, DateField } from 'react-admin';
 import { Card } from '@mui/material';
 

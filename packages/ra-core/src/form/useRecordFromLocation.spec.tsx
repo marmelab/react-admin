@@ -1,11 +1,10 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
-import { Location } from 'react-router-dom';
 import {
     getRecordFromLocation,
     useRecordFromLocation,
 } from './useRecordFromLocation';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, type RouterLocation } from '../routing';
 import { UseRecordFromLocationOptions } from '../form';
 
 describe('useRecordFromLocation', () => {
@@ -54,7 +53,7 @@ describe('useRecordFromLocation', () => {
 });
 
 describe('getRecordFromLocation', () => {
-    const location: Location = {
+    const location: RouterLocation = {
         key: 'a_key',
         pathname: '/foo',
         search: '',

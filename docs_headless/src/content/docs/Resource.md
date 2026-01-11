@@ -50,7 +50,13 @@ The routes call the following `dataProvider` methods:
 * `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
 * `create` calls `create()` on submission
 
-**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+:::tip
+Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+:::
+
+:::tip
+Ra-core allows to use resource names containing slashes, e.g. 'cms/categories'.
+:::
 
 ## Props
 

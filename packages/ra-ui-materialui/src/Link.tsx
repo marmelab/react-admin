@@ -1,16 +1,14 @@
 import * as React from 'react';
 import clsx from 'clsx';
 import {
-    Link as RRLink,
-    type LinkProps as RRLinkProps,
-} from 'react-router-dom';
-import {
     styled,
     Link as MuiLink,
     type LinkProps as MuiLinkProps,
     type ComponentsOverrides,
     useThemeProps,
 } from '@mui/material';
+import type { LinkBaseProps } from 'ra-core';
+import { LinkBase } from 'ra-core';
 
 export const Link = (inProps: LinkProps) => {
     const props = useThemeProps({
@@ -21,7 +19,7 @@ export const Link = (inProps: LinkProps) => {
 
     return (
         <StyledMuiLink
-            component={RRLink}
+            component={LinkBase}
             to={to}
             className={clsx(LinkClasses.link, className)}
             {...rest}
@@ -44,7 +42,7 @@ const StyledMuiLink = styled(MuiLink, {
 
 // @see https://mui.com/material-ui/guides/composition/#with-typescript
 export interface LinkProps
-    extends MuiLinkProps<React.ElementType<any>, RRLinkProps> {
+    extends MuiLinkProps<React.ElementType<any>, LinkBaseProps> {
     className?: string;
 }
 

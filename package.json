@@ -44,6 +44,7 @@
         "@storybook/react-webpack5": "^8.6.11",
         "@storybook/source-loader": "^8.6.11",
         "@storybook/test": "^8.6.11",
+        "@tanstack/react-router": "^1.143.11",
         "@types/babel__preset-env": "^7",
         "@types/eslint-plugin-jsx-a11y": "^6",
         "@types/gh-pages": "^6",

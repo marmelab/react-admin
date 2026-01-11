@@ -15,7 +15,7 @@ React-admin is specifically designed to build [Single-Page Applications (SPA)](h
 
 The SPA architecture ensures that react-admin apps are [exceptionally fast](./Features.md#fast), easy to host, and compatible with existing APIs without requiring a dedicated backend. 
 
-To achieve this, react-admin utilizes an internal router, powered by `react-router`, to display the appropriate screen when the user clicks on a link. Developers can define routes using the [`<Resource>`](./Resource.md) component for CRUD routes and the [`<CustomRoutes>`](./CustomRoutes.md) component for other routes.
+To achieve this, react-admin utilizes an internal router to display the appropriate screen when the user clicks on a link. By default, this router is powered by [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md) through the `routerProvider` prop. Developers can define routes using the [`<Resource>`](./Resource.md) component for CRUD routes and the [`<CustomRoutes>`](./CustomRoutes.md) component for other routes.
 
 For example, the following react-admin application:
 

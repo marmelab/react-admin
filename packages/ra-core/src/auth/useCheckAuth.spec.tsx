@@ -2,13 +2,16 @@ import * as React from 'react';
 import { useState, useEffect } from 'react';
 import expect from 'expect';
 import { screen, render, waitFor } from '@testing-library/react';
-import { Location } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useCheckAuth } from './useCheckAuth';
 import { AuthContext } from './AuthContext';
 
-import { BasenameContextProvider, TestMemoryRouter } from '../routing';
+import {
+    BasenameContextProvider,
+    TestMemoryRouter,
+    RouterLocation,
+} from '../routing';
 import { useNotify } from '../notification/useNotify';
 import { AuthProvider } from '../types';
 
@@ -59,7 +62,7 @@ describe('useCheckAuth', () => {
     });
 
     it('should not logout if user is authenticated', async () => {
-        let location: Location;
+        let location: RouterLocation;
         render(
             <TestMemoryRouter
                 initialEntries={['/']}
@@ -82,7 +85,7 @@ describe('useCheckAuth', () => {
     });
 
     it('should logout if user is not authenticated', async () => {
-        let location: Location;
+        let location: RouterLocation;
         render(
             <TestMemoryRouter
                 initialEntries={['/']}
@@ -105,7 +108,7 @@ describe('useCheckAuth', () => {
     });
 
     it('should not logout if has no credentials and passed logoutOnFailure as false', async () => {
-        let location: Location;
+        let location: RouterLocation;
         render(
             <TestMemoryRouter
                 initialEntries={['/']}
@@ -131,7 +134,7 @@ describe('useCheckAuth', () => {
     });
 
     it('should logout without showing a notification when authProvider returns error with message false', async () => {
-        let location: Location;
+        let location: RouterLocation;
         render(
             <TestMemoryRouter
                 initialEntries={['/']}
@@ -159,7 +162,7 @@ describe('useCheckAuth', () => {
     });
 
     it('should take basename into account when redirecting to login', async () => {
-        let location: Location;
+        let location: RouterLocation;
         render(
             <TestMemoryRouter
                 initialEntries={['/foo']}

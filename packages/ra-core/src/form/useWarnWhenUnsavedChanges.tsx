@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Control, useFormState } from 'react-hook-form';
-import { useBlocker } from 'react-router-dom';
 import { useTranslate } from '../i18n';
+import { useBlocker } from '../routing/useBlocker';
 
 /**
  * Display a confirmation dialog if the form has unsaved changes.

@@ -2,7 +2,12 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
-import { AdminRouter } from '../routing';
+import {
+    AdminRouter,
+    RouterProviderContext,
+    RouterProvider,
+    reactRouterProvider,
+} from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
@@ -164,6 +169,25 @@ export interface CoreAdminContextProps {
      * );
      */
     i18nProvider?: I18nProvider;
+
+    /**
+     * The router provider for custom routing implementations
+     *
+     * Use this to integrate react-admin with alternative routers like TanStack Router.
+     * Defaults to react-router-dom.
+     *
+     * @see https://marmelab.com/react-admin/Admin.html#routerprovider
+     * @example
+     * import { Admin } from 'react-admin';
+     * import { tanStackRouterProvider } from 'react-admin';
+     *
+     * const App = () => (
+     *     <Admin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+     *         ...
+     *     </Admin>
+     * );
+     */
+    routerProvider?: RouterProvider;
 }
 
 export const CoreAdminContext = (props: CoreAdminContextProps) => {
@@ -175,6 +199,7 @@ export const CoreAdminContext = (props: CoreAdminContextProps) => {
         store = defaultStore,
         children,
         queryClient,
+        routerProvider = reactRouterProvider,
     } = props;
 
     if (!dataProvider) {
@@ -204,26 +229,28 @@ React-admin requires a valid dataProvider function to work.`);
     );
 
     return (
-        <AuthContext.Provider value={finalAuthProvider}>
-            <DataProviderContext.Provider value={finalDataProvider}>
-                <StoreContextProvider value={store}>
-                    <PreferencesEditorContextProvider>
-                        <QueryClientProvider client={finalQueryClient}>
-                            <AdminRouter basename={basename}>
-                                <I18nContextProvider value={i18nProvider}>
-                                    <NotificationContextProvider>
-                                        <UndoableMutationsContextProvider>
-                                            <ResourceDefinitionContextProvider>
-                                                {children}
-                                            </ResourceDefinitionContextProvider>
-                                        </UndoableMutationsContextProvider>
-                                    </NotificationContextProvider>
-                                </I18nContextProvider>
-                            </AdminRouter>
-                        </QueryClientProvider>
-                    </PreferencesEditorContextProvider>
-                </StoreContextProvider>
-            </DataProviderContext.Provider>
-        </AuthContext.Provider>
+        <RouterProviderContext.Provider value={routerProvider}>
+            <AuthContext.Provider value={finalAuthProvider}>
+                <DataProviderContext.Provider value={finalDataProvider}>
+                    <StoreContextProvider value={store}>
+                        <PreferencesEditorContextProvider>
+                            <QueryClientProvider client={finalQueryClient}>
+                                <AdminRouter basename={basename}>
+                                    <I18nContextProvider value={i18nProvider}>
+                                        <NotificationContextProvider>
+                                            <UndoableMutationsContextProvider>
+                                                <ResourceDefinitionContextProvider>
+                                                    {children}
+                                                </ResourceDefinitionContextProvider>
+                                            </UndoableMutationsContextProvider>
+                                        </NotificationContextProvider>
+                                    </I18nContextProvider>
+                                </AdminRouter>
+                            </QueryClientProvider>
+                        </PreferencesEditorContextProvider>
+                    </StoreContextProvider>
+                </DataProviderContext.Provider>
+            </AuthContext.Provider>
+        </RouterProviderContext.Provider>
     );
 };

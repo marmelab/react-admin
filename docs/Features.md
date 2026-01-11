@@ -320,14 +320,13 @@ It leverages the `useListController` hook:
 {% raw %}
 
 ```jsx
-import { useListController } from 'ra-core'; 
+import { useListController, LinkBase } from 'react-admin';
 import { Card, Table, Button } from 'antd';
 import {
   CheckCircleOutlined,
   PlusOutlined,
   EditOutlined,
 } from '@ant-design/icons';
-import { Link } from 'react-router-dom';
 
 const PostList = () => {
   const { data, page, total, setPage, isPending } = useListController({
@@ -340,9 +339,9 @@ const PostList = () => {
   return (
     <>
       <div style={{ margin: 10, textAlign: 'right' }}>
-        <Link to="/posts/create">
+        <LinkBase to="/posts/create">
           <Button icon={<PlusOutlined />}>Create</Button>
-        </Link>
+        </LinkBase>
       </div>
       <Card bodyStyle={{ padding: '0' }} loading={isPending}>
         <Table
@@ -375,9 +374,9 @@ const columns = [
   {
     title: 'Actions',
     render: (_, record) => (
-      <Link to={`/posts/${record.id}`}>
+      <LinkBase to={`/posts/${record.id}`}>
         <Button icon={<EditOutlined />}>Edit</Button>
-      </Link>
+      </LinkBase>
     ),
   },
 ];
