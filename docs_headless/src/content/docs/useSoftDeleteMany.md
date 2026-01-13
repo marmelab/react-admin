@@ -4,6 +4,8 @@ title: "useSoftDeleteMany"
 
 This hook allows calling `dataProvider.softDeleteMany()` when the callback is executed and deleting an array of records based on their `ids`.
 
+**Tip:** If you need an undoable UI action, see [`useBulkSoftDeleteWithUndoController`](./useBulkSoftDeleteWithUndoController.md).
+
 ```tsx
 const [softDeleteMany, { data, isPending, error }] = useSoftDeleteMany(
     resource,

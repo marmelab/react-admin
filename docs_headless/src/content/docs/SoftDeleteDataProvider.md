@@ -22,6 +22,134 @@ yarn add @react-admin/ra-core-ee
 
 You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://react-admin-ee.marmelab.com) for more details.
 
+## Usage
+
+`ra-core-ee` contains base components and hooks to implement soft deletion in your application.
+
+At minimum, you will need to leverage [`useSoftDelete`](./useSoftDelete.md) to implement your own `<SoftDeleteButton>`, and replace the standard `<DeleteButton>` in your list and show views with it.
+
+This will call `dataProvider.softDelete()` instead of `dataProvider.delete()` for the selected record.
+
+If you also want the users to be able to restore the soft deleted records, or to permanently delete them, you can implement the following components:
+
+- `RestoreButton`: calls [`useRestoreOne`](./useRestoreOne.md) to restore a soft deleted record.
+- `HardDeleteButton`: calls [`useHardDelete`](./useHardDelete.md) to permanently delete a soft deleted record.
+
+You can also implement bulk variants for all three actions:
+
+- `softDeleteMany`: [`useSoftDeleteMany`](./useSoftDeleteMany.md)
+- `restoreMany`: [`useRestoreMany`](./useRestoreMany.md)
+- `hardDeleteMany`: [`useHardDeleteMany`](./useHardDeleteMany.md)
+
+If you want undoable buttons, use the controller hooks for these three actions:
+
+- `useSoftDeleteWithUndoController`: [`useSoftDeleteWithUndoController`](./useSoftDeleteWithUndoController.md)
+- `useRestoreWithUndoController`: [`useRestoreWithUndoController`](./useRestoreWithUndoController.md)
+- `useDeletePermanentlyWithUndoController`: [`useDeletePermanentlyWithUndoController`](./useDeletePermanentlyWithUndoController.md)
+
+Here is a minimal example of the three buttons:
+
+```tsx
+import * as React from 'react';
+import {
+    useRecordContext,
+    useResourceContext,
+} from 'ra-core';
+import {
+    useSoftDelete,
+    useRestoreOne,
+    useHardDelete,
+} from '@react-admin/ra-core-ee';
+
+export const SoftDeleteButton = () => {
+    const record = useRecordContext();
+    const resource = useResourceContext();
+    const [softDelete, { isPending }] = useSoftDelete();
+
+    if (!record) return null;
+
+    const handleClick = () => {
+        softDelete(resource, { id: record.id });
+    };
+
+    return (
+        <button type="button" onClick={handleClick} disabled={isPending}>
+            Archive
+        </button>
+    );
+};
+
+export const RestoreButton = () => {
+    const record = useRecordContext();
+    const [restoreOne, { isPending }] = useRestoreOne();
+
+    if (!record) return null;
+
+    const handleClick = () => {
+        restoreOne({ id: record.id });
+    };
+
+    return (
+        <button type="button" onClick={handleClick} disabled={isPending}>
+            Restore
+        </button>
+    );
+};
+
+export const HardDeleteButton = () => {
+    const record = useRecordContext();
+    const [hardDelete, { isPending }] = useHardDelete();
+
+    if (!record) return null;
+
+    const handleClick = () => {
+        hardDelete({ id: record.id });
+    };
+
+    return (
+        <button type="button" onClick={handleClick} disabled={isPending}>
+            Delete permanently
+        </button>
+    );
+};
+```
+
+To build a trash view, use [`<DeletedRecordsListBase>`](./DeletedRecordsListBase.md) and render it with your own list layout. This component fetches deleted records with `dataProvider.getListDeleted()` and gives you full control over the UI.
+
+Here is a minimal "Trash" page using `DeletedRecordsListBase` and the `RestoreButton` / `HardDeleteButton` above:
+
+```tsx
+import * as React from 'react';
+import { WithListContext } from 'ra-core';
+import {
+    DeletedRecordsListBase,
+    DeletedRecordRepresentation,
+} from '@react-admin/ra-core-ee';
+import { RestoreButton, HardDeleteButton } from './buttons';
+
+export const Trash = () => (
+    <DeletedRecordsListBase>
+        <WithListContext
+            render={({ isPending, data }) =>
+                isPending ? null : (
+                    <ul>
+                        {data.map(record => (
+                            <li key={record.id}>
+                                <div><strong>{record.resource}</strong></div>
+                                <div>Deleted at: {record.deleted_at}</div>
+                                <DeletedRecordRepresentation record={record} />
+                                <RestoreButton />
+                                <HardDeleteButton />
+                            </li>
+                        ))}
+                    </ul>
+                )
+            }
+        />
+    </DeletedRecordsListBase>
+);
+```
+
 ## Data Provider 
 
 ### Methods
@@ -195,7 +323,6 @@ Each data provider verb has its own hook so you can use them in custom component
 - `restoreMany`: [`useRestoreMany`](./useRestoreMany.md)
 - `hardDelete`: [`useHardDelete`](./useHardDelete.md)
 - `hardDeleteMany`: [`useHardDeleteMany`](./useHardDeleteMany.md)
-
 
 ## `createMany`
 
