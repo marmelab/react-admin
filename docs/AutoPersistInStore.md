@@ -69,7 +69,7 @@ You can override this key by passing a custom function as the `getStoreKey` prop
 />
 ```
 
-### `notification`
+## `notification`
 
 When `<AutoPersistInStore>` component applies the changes from the store to a form, react-admin informs users with a notification.
 This notification also provides them a way to revert the changes from the store.
