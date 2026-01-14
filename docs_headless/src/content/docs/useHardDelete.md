@@ -4,6 +4,8 @@ title: "useHardDelete"
 
 This hook allows calling `dataProvider.hardDelete()` when the callback is executed and deleting a single deleted record based on its `id`.
 
+**Tip:** If you need an undoable UI action, see [`useDeletePermanentlyWithUndoController`](./useDeletePermanentlyWithUndoController.md).
+
 **Warning**: The `id` here is the ID of the *deleted record*, and **not** the ID of the actual record that has been deleted.
 
 ```tsx
