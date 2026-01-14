@@ -4,6 +4,8 @@ title: "useSoftDelete"
 
 This hook allows calling `dataProvider.softDelete()` when the callback is executed and deleting a single record based on its `id`.
 
+**Tip:** If you need an undoable UI action, see [`useSoftDeleteWithUndoController`](./useSoftDeleteWithUndoController.md).
+
 ```tsx
 const [softDeleteOne, { data, isPending, error }] = useSoftDelete(
     resource,
