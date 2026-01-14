@@ -184,7 +184,7 @@ const matchPath = (
 
         if (pathSegment.startsWith(':')) {
             const paramName = pathSegment.slice(1);
-            params[paramName] = pathnameSegment;
+            params[paramName] = decodeURIComponent(pathnameSegment);
         } else {
             if (pathSegment !== pathnameSegment) {
                 return null;
@@ -196,7 +196,7 @@ const matchPath = (
     if (hasSplat) {
         const remainingSegments = pathnameSegments.slice(pathSegments.length);
         const splatValue = remainingSegments.join('/');
-        params['*'] = splatValue;
+        params['*'] = decodeURIComponent(splatValue);
     }
 
     let matchedLength = pathSegments.length;
@@ -282,18 +282,34 @@ const useNavigate = (): RouterNavigateFunction => {
                 return `${basename}${path}`;
             };
 
-            // Handle object navigation { pathname, search, hash, state }
-            if (typeof to === 'object' && to !== null && 'pathname' in to) {
+            // Handle object navigation { pathname?, search?, hash?, state? }
+            // This covers both { pathname: '/foo' } and { search: '?bar=1' }
+            if (typeof to === 'object' && to !== null) {
                 const loc = to as Partial<RouterLocation>;
-                navigate({
-                    to: resolvePath(loc.pathname ?? '/'),
-                    search: loc.search
-                        ? Object.fromEntries(new URLSearchParams(loc.search))
-                        : undefined,
-                    hash: loc.hash,
-                    state: loc.state || options?.state,
-                    replace: options?.replace,
-                } as any);
+                // If no pathname provided, keep current pathname
+                const currentPath = router.state.location.pathname;
+                const targetPath = loc.pathname ?? currentPath;
+                const resolvedPath = resolvePath(targetPath);
+
+                // Build the full URL with search and hash
+                // We use the history API directly to avoid TanStack Router's
+                // search param serialization which can cause double-encoding
+                let url = resolvedPath;
+                if (loc.search) {
+                    url += loc.search.startsWith('?')
+                        ? loc.search
+                        : `?${loc.search}`;
+                }
+                if (loc.hash) {
+                    url += loc.hash.startsWith('#') ? loc.hash : `#${loc.hash}`;
+                }
+
+                const state = loc.state || options?.state;
+                if (options?.replace) {
+                    router.history.replace(url, state);
+                } else {
+                    router.history.push(url, state);
+                }
                 return;
             }
 
@@ -486,6 +502,12 @@ interface RouteConfig {
     children?: RouteConfig[];
 }
 
+/**
+ * Context for passing matched route's children to Outlet.
+ * This allows Outlet to render nested JSX-defined routes.
+ */
+const RouteChildrenContext = React.createContext<RouteConfig[] | null>(null);
+
 const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     const currentLocation = useTanStackLocation();
     const basename = useBasename();
@@ -565,7 +587,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                 const newMatchedPath = parentMatchedPath || '/';
                 return { route, matchedPath: newMatchedPath, params: {} };
             }
-            if (route.path) {
+            if (route.path !== undefined) {
                 const match = matchPath(route.path, pathname);
                 if (match) {
                     // Calculate new matched path by combining parent + matched portion
@@ -624,16 +646,42 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     // Wrap in context providers so nested Routes can:
     // 1. Strip the matched path (MatchedPathContext)
     // 2. Access accumulated params (ParamsContext)
+    // 3. Access route children for Outlet rendering (RouteChildrenContext)
     return (
         <MatchedPathContext.Provider value={matchResult.matchedPath}>
             <ParamsContext.Provider value={mergedParams}>
-                {matchResult.route.element}
+                <RouteChildrenContext.Provider
+                    value={matchResult.route.children || null}
+                >
+                    {matchResult.route.element}
+                </RouteChildrenContext.Provider>
             </ParamsContext.Provider>
         </MatchedPathContext.Provider>
     );
 };
 
 const Outlet = (_props: RouterOutletProps) => {
+    const routeChildren = React.useContext(RouteChildrenContext);
+
+    // If we have JSX-defined children from a parent Route, render them as nested Routes
+    if (routeChildren && routeChildren.length > 0) {
+        return (
+            <RouteChildrenContext.Provider value={null}>
+                <Routes>
+                    {routeChildren.map((child, index) => (
+                        <Route
+                            key={child.path || index}
+                            path={child.path}
+                            index={child.index}
+                            element={child.element}
+                        />
+                    ))}
+                </Routes>
+            </RouteChildrenContext.Provider>
+        );
+    }
+
+    // Fall back to TanStack's Outlet for native route trees
     return <TanStackOutlet />;
 };
 
@@ -650,6 +698,7 @@ const InternalRouter = ({
     if (!routerRef.current) {
         const rootRoute = createRootRoute({
             component: () => <>{children}</>,
+            validateSearch: (search: Record<string, unknown>) => search,
         });
 
         routerRef.current = createRouter({

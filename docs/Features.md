@@ -320,7 +320,7 @@ It leverages the `useListController` hook:
 {% raw %}
 
 ```jsx
-import { useListController, LinkBase } from 'react-admin';
+import { useListController, LinkBase } from 'ra-core';
 import { Card, Table, Button } from 'antd';
 import {
   CheckCircleOutlined,

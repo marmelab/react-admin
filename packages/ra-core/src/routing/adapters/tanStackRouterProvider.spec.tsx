@@ -20,6 +20,9 @@ import {
     NavigateComponent,
     UseLocationTest,
     RouterContextTest,
+    NestedRoutesWithOutlet,
+    NestedResources,
+    QueryParameters,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -197,6 +200,30 @@ describe('tanStackRouterProvider', () => {
                     pathnameBase: '/posts',
                 });
             });
+
+            it('should decode URL-encoded params', () => {
+                // UTF-8 characters: 衣類/衣類 encoded
+                expect(
+                    matchPath(
+                        '/comments/:id',
+                        '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E'
+                    )
+                ).toEqual({
+                    params: { id: '衣類/衣類' },
+                    pathname: '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
+                    pathnameBase: '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
+                });
+            });
+
+            it('should decode URL-encoded params with spaces', () => {
+                expect(
+                    matchPath('/posts/:id', '/posts/hello%20world')
+                ).toEqual({
+                    params: { id: 'hello world' },
+                    pathname: '/posts/hello%20world',
+                    pathnameBase: '/posts/hello%20world',
+                });
+            });
         });
 
         describe('splat patterns (path/*)', () => {
@@ -229,6 +256,16 @@ describe('tanStackRouterProvider', () => {
                     params: { '*': 'users/1/edit' },
                     pathname: '/admin/users/1/edit',
                     pathnameBase: '/admin',
+                });
+            });
+
+            it('should decode URL-encoded splat values', () => {
+                expect(
+                    matchPath('/files/*', '/files/path%2Fto%2Ffile%20name.txt')
+                ).toEqual({
+                    params: { '*': 'path/to/file name.txt' },
+                    pathname: '/files/path%2Fto%2Ffile%20name.txt',
+                    pathnameBase: '/files',
                 });
             });
         });
@@ -295,10 +332,11 @@ describe('tanStackRouterProvider', () => {
                     pathnameBase: '/files/image.png',
                 });
 
+                // %20 is decoded to space, + stays as + (not form encoding)
                 expect(
                     matchPath('/search/:query', '/search/foo+bar%20baz')
                 ).toEqual({
-                    params: { query: 'foo+bar%20baz' },
+                    params: { query: 'foo+bar baz' },
                     pathname: '/search/foo+bar%20baz',
                     pathnameBase: '/search/foo+bar%20baz',
                 });
@@ -1158,6 +1196,162 @@ describe('tanStackRouterProvider', () => {
             expect(screen.getByTestId('can-block').textContent).toContain(
                 'true'
             );
+        });
+    });
+
+    describe('Nested Routes with Outlet', () => {
+        it('should render the default tab content', async () => {
+            render(<NestedRoutesWithOutlet />);
+            await screen.findByText('Post #1');
+
+            fireEvent.click(screen.getByText('Post #1'));
+            await screen.findByText('Tabbed Layout (like TabbedShowLayout)');
+
+            // Should render the first tab (content) by default
+            expect(screen.getByTestId('content-tab')).toBeInTheDocument();
+            expect(
+                screen.getByText(
+                    'This is the content tab (first tab, default).'
+                )
+            ).toBeInTheDocument();
+        });
+
+        it('should navigate between tabs using Outlet', async () => {
+            render(<NestedRoutesWithOutlet />);
+            await screen.findByText('Post #1');
+
+            fireEvent.click(screen.getByText('Post #1'));
+            await screen.findByTestId('content-tab');
+
+            // Click on the second tab (Metadata)
+            fireEvent.click(screen.getByText('Metadata Tab'));
+            await screen.findByTestId('metadata-tab');
+
+            expect(
+                screen.getByText('This is the metadata tab (second tab).')
+            ).toBeInTheDocument();
+            expect(screen.queryByTestId('content-tab')).not.toBeInTheDocument();
+        });
+
+        it('should navigate back to first tab', async () => {
+            render(<NestedRoutesWithOutlet />);
+            await waitFor(() => {
+                expect(screen.getByText('Post #1')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Post #1'));
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByTestId('content-tab')
+                    ).toBeInTheDocument();
+                },
+                { timeout: 3000 }
+            );
+
+            // Go to second tab
+            fireEvent.click(screen.getByText('Metadata Tab'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('metadata-tab')).toBeInTheDocument();
+            });
+
+            // Go back to first tab
+            fireEvent.click(screen.getByText('Content Tab'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('content-tab')).toBeInTheDocument();
+            });
+
+            expect(
+                screen.queryByTestId('metadata-tab')
+            ).not.toBeInTheDocument();
+        });
+    });
+
+    describe('Nested Resources (Route children of Resource)', () => {
+        it('should navigate to child routes defined inside Resource', async () => {
+            render(<NestedResources />);
+            await screen.findByText('Post #1');
+
+            fireEvent.click(screen.getByText('Post #1'));
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText('Post Details')
+                    ).toBeInTheDocument();
+                },
+                { timeout: 3000 }
+            );
+        });
+    });
+
+    describe('Query Parameters', () => {
+        it('should update URL with query parameters when sorting', async () => {
+            render(<QueryParameters />);
+            await screen.findByText('Posts with Query Parameters');
+
+            // Initially no search params
+            expect(screen.getByTestId('current-search').textContent).toContain(
+                '(empty)'
+            );
+
+            // Click sort by title
+            fireEvent.click(screen.getByTestId('sort-title'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('current-search').textContent
+                ).toContain('sort=title');
+            });
+
+            expect(screen.getByTestId('current-sort').textContent).toContain(
+                'title'
+            );
+        });
+
+        it('should update URL with query parameters when changing page', async () => {
+            render(<QueryParameters />);
+            await screen.findByText('Posts with Query Parameters');
+
+            // Click page 2
+            fireEvent.click(screen.getByTestId('page-2'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('current-search').textContent
+                ).toContain('page=2');
+            });
+
+            expect(screen.getByTestId('current-page').textContent).toContain(
+                '2'
+            );
+        });
+
+        it('should preserve query parameters across multiple updates', async () => {
+            render(<QueryParameters />);
+            await screen.findByText('Posts with Query Parameters');
+
+            // Set sort
+            fireEvent.click(screen.getByTestId('sort-title'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('current-search').textContent
+                ).toContain('sort=title');
+            });
+
+            // Set page
+            fireEvent.click(screen.getByTestId('page-3'));
+
+            await waitFor(() => {
+                const search =
+                    screen.getByTestId('current-search').textContent || '';
+                expect(search).toContain('sort=title');
+                expect(search).toContain('page=3');
+            });
         });
     });
 });

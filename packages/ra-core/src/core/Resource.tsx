@@ -18,6 +18,7 @@ export const Resource = (props: ResourceProps) => {
                 )}
                 {show && <Route path=":id/show/*" element={getElement(show)} />}
                 {edit && <Route path=":id/*" element={getElement(edit)} />}
+                {props.children}
                 {list && (
                     <Route
                         path="/*"
@@ -30,7 +31,6 @@ export const Resource = (props: ResourceProps) => {
                         }
                     />
                 )}
-                {props.children}
             </Routes>
         </ResourceContextProvider>
     );

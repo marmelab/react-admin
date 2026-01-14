@@ -34,6 +34,7 @@ import {
     SimpleShowLayout,
     Create,
     ReferenceManyField,
+    TabbedShowLayout,
 } from 'ra-ui-materialui';
 import { Box, Card, CardContent, Typography, Button } from '@mui/material';
 
@@ -109,7 +110,7 @@ const dataProvider = fakeRestDataProvider(
                 created_at: '2024-02-02',
             },
             {
-                id: 5,
+                id: '類/衣',
                 post_id: 4,
                 author: 'Eve',
                 body: 'Awesome tutorial!',
@@ -190,6 +191,22 @@ const CommentList = () => (
             <EditButton />
         </Datagrid>
     </List>
+);
+
+const CommentShow = () => (
+    <Show>
+        <TabbedShowLayout>
+            <TabbedShowLayout.Tab label="content">
+                <TextField source="author" />
+                <TextField source="body" />
+            </TabbedShowLayout.Tab>
+            <TabbedShowLayout.Tab label="metadata">
+                <TextField source="id" />
+                <ReferenceField source="post_id" reference="posts" />
+                <DateField source="created_at" />
+            </TabbedShowLayout.Tab>
+        </TabbedShowLayout>
+    </Show>
 );
 
 // Comment Edit component
@@ -337,6 +354,7 @@ export const FullApp = () => (
         <Resource
             name="comments"
             list={CommentList}
+            show={CommentShow}
             edit={CommentEdit}
             create={CommentCreate}
             recordRepresentation={record => `Comment by ${record.author}`}

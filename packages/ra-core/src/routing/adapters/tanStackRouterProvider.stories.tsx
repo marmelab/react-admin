@@ -171,6 +171,17 @@ const LocationDisplay = () => {
     );
 };
 
+const LayoutWithLocationDisplay = ({
+    children,
+}: {
+    children: React.ReactNode;
+}) => (
+    <div>
+        {children}
+        <LocationDisplay />
+    </div>
+);
+
 /**
  * BasicStandalone: Admin creates its own TanStack Router (standalone mode)
  * Tests basic navigation, links, and programmatic navigation.
@@ -179,33 +190,14 @@ export const BasicStandalone = () => (
     <CoreAdmin
         routerProvider={tanStackRouterProvider}
         dataProvider={dataProvider}
+        layout={LayoutWithLocationDisplay}
     >
         <Resource
             name="posts"
-            list={
-                <div>
-                    <PostList />
-                    <LocationDisplay />
-                </div>
-            }
-            show={
-                <div>
-                    <PostShow />
-                    <LocationDisplay />
-                </div>
-            }
-            edit={
-                <div>
-                    <PostEdit />
-                    <LocationDisplay />
-                </div>
-            }
-            create={
-                <div>
-                    <PostCreate />
-                    <LocationDisplay />
-                </div>
-            }
+            list={PostList}
+            show={PostShow}
+            edit={PostEdit}
+            create={PostCreate}
         />
     </CoreAdmin>
 );
@@ -266,33 +258,14 @@ const EmbeddedAdmin = () => (
         routerProvider={tanStackRouterProvider}
         dataProvider={dataProvider}
         basename="/admin"
+        layout={LayoutWithLocationDisplay}
     >
         <Resource
             name="posts"
-            list={
-                <div>
-                    <PostList />
-                    <LocationDisplay />
-                </div>
-            }
-            show={
-                <div>
-                    <PostShow />
-                    <LocationDisplay />
-                </div>
-            }
-            edit={
-                <div>
-                    <PostEdit />
-                    <LocationDisplay />
-                </div>
-            }
-            create={
-                <div>
-                    <PostCreate />
-                    <LocationDisplay />
-                </div>
-            }
+            list={PostList}
+            show={PostShow}
+            edit={PostEdit}
+            create={PostCreate}
         />
     </CoreAdmin>
 );
@@ -319,7 +292,7 @@ const embeddedRouteTree = embeddedRootRoute.addChildren([
 ]);
 
 /**
- * EmbeddedInTanStackRouter: Admin inside an existing TanStack Router app
+ * Admin inside an existing TanStack Router app
  * Tests that react-admin detects existing router and uses it.
  */
 export const EmbeddedInTanStackRouter = () => {
@@ -336,8 +309,7 @@ export const EmbeddedInTanStackRouter = () => {
 };
 
 /**
- * HistoryNavigation: Tests back/forward navigation
- * Tests navigate(-1) and navigate(1) work correctly.
+ * Tests back/forward navigation
  */
 export const HistoryNavigation = () => {
     const HistoryButtons = () => {
@@ -359,7 +331,6 @@ export const HistoryNavigation = () => {
         <div>
             <HistoryButtons />
             <PostList />
-            <LocationDisplay />
         </div>
     );
 
@@ -367,7 +338,6 @@ export const HistoryNavigation = () => {
         <div>
             <HistoryButtons />
             <PostShow />
-            <LocationDisplay />
         </div>
     );
 
@@ -375,6 +345,7 @@ export const HistoryNavigation = () => {
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
         >
             <Resource
                 name="posts"
@@ -386,7 +357,7 @@ export const HistoryNavigation = () => {
 };
 
 /**
- * RouteMatching: Tests that routes match correctly
+ * Tests that routes match correctly
  * Tests resource routes, custom routes, and catch-all routes.
  */
 export const RouteMatching = () => {
@@ -399,7 +370,6 @@ export const RouteMatching = () => {
                     <LinkBase to="/posts">Posts</LinkBase>
                 </li>
             </ul>
-            <LocationDisplay />
         </div>
     );
 
@@ -408,28 +378,14 @@ export const RouteMatching = () => {
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
             dashboard={Dashboard}
+            layout={LayoutWithLocationDisplay}
         >
-            <Resource
-                name="posts"
-                list={
-                    <div>
-                        <PostList />
-                        <LocationDisplay />
-                    </div>
-                }
-                show={
-                    <div>
-                        <PostShow />
-                        <LocationDisplay />
-                    </div>
-                }
-            />
+            <Resource name="posts" list={PostList} show={PostShow} />
         </CoreAdmin>
     );
 };
 
 /**
- * LinkComponent: Tests Link component behavior
  * Tests to, replace, state props work correctly.
  */
 export const LinkComponent = () => {
@@ -454,8 +410,6 @@ export const LinkComponent = () => {
 
                 <h3>Current Location State</h3>
                 <pre>{JSON.stringify(location.state, null, 2)}</pre>
-
-                <LocationDisplay />
             </div>
         );
     };
@@ -464,23 +418,15 @@ export const LinkComponent = () => {
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
         >
-            <Resource
-                name="posts"
-                list={<LinkTestPage />}
-                show={
-                    <div>
-                        <PostShow />
-                        <LocationDisplay />
-                    </div>
-                }
-            />
+            <Resource name="posts" list={LinkTestPage} show={PostShow} />
         </CoreAdmin>
     );
 };
 
 /**
- * MultipleResources: Tests navigation between multiple resources
+ * Tests navigation between multiple resources
  */
 export const MultipleResources = () => {
     const CommentList = () => (
@@ -491,7 +437,6 @@ export const MultipleResources = () => {
                 <li>Comment #2: Great article</li>
             </ul>
             <LinkBase to="/posts">Go to Posts</LinkBase>
-            <LocationDisplay />
         </div>
     );
 
@@ -499,6 +444,7 @@ export const MultipleResources = () => {
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
         >
             <Resource
                 name="posts"
@@ -506,25 +452,15 @@ export const MultipleResources = () => {
                     <div>
                         <PostList />
                         <LinkBase to="/comments">Go to Comments</LinkBase>
-                        <LocationDisplay />
                     </div>
                 }
-                show={
-                    <div>
-                        <PostShow />
-                        <LocationDisplay />
-                    </div>
-                }
+                show={PostShow}
             />
-            <Resource name="comments" list={<CommentList />} />
+            <Resource name="comments" list={CommentList} />
         </CoreAdmin>
     );
 };
 
-/**
- * CustomRoutesSupport: Tests that custom routes work with react-router's Route
- * This is important because users import Route from react-router, not from the adapter.
- */
 export const CustomRoutesSupport = () => {
     const CustomPage = () => {
         const navigate = useNavigate();
@@ -535,7 +471,6 @@ export const CustomRoutesSupport = () => {
                     This is a custom route using react-router's Route component.
                 </p>
                 <button onClick={() => navigate('/posts')}>Go to Posts</button>
-                <LocationDisplay />
             </div>
         );
     };
@@ -553,6 +488,7 @@ export const CustomRoutesSupport = () => {
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
         >
             <CustomRoutes>
                 <Route path="/custom" element={<CustomPage />} />
@@ -575,7 +511,6 @@ export const CustomRoutesSupport = () => {
                                 Go to Custom Page (No Layout)
                             </LinkBase>
                         </div>
-                        <LocationDisplay />
                     </div>
                 }
             />
@@ -584,7 +519,6 @@ export const CustomRoutesSupport = () => {
 };
 
 /**
- * UseParamsTest: Tests useParams hook
  * Displays URL parameters extracted from the current route.
  */
 export const UseParamsTest = () => {
@@ -656,7 +590,6 @@ export const UseParamsTest = () => {
 };
 
 /**
- * UseMatchTest: Tests useMatch hook
  * Shows active link highlighting based on current route match.
  */
 export const UseMatchTest = () => {
@@ -773,7 +706,6 @@ export const UseMatchTest = () => {
 };
 
 /**
- * UseBlockerTest: Tests useBlocker hook
  * Blocks navigation when there are unsaved changes.
  */
 export const UseBlockerTest = () => {
@@ -901,9 +833,6 @@ export const UseBlockerTest = () => {
     );
 };
 
-/**
- * NavigateComponent: Tests Navigate component for declarative redirects
- */
 export const NavigateComponent = () => {
     const RedirectPage = () => {
         return (
@@ -976,9 +905,6 @@ export const NavigateComponent = () => {
     );
 };
 
-/**
- * UseLocationTest: Tests useLocation hook in detail
- */
 export const UseLocationTest = () => {
     const DetailedLocationDisplay = () => {
         const location = useLocation();
@@ -1094,6 +1020,248 @@ export const RouterContextTest = () => {
                     </div>
                 }
             />
+        </CoreAdmin>
+    );
+};
+
+const { Routes, Outlet: RouterOutlet } = tanStackRouterProvider;
+
+export const NestedResources = () => (
+    <CoreAdmin
+        routerProvider={tanStackRouterProvider}
+        dataProvider={dataProvider}
+        layout={LayoutWithLocationDisplay}
+    >
+        <Resource name="posts" list={<PostList />}>
+            <Route path=":id/show" element={<PostShow />} />
+        </Resource>
+    </CoreAdmin>
+);
+
+/**
+ * Tests that query parameters work correctly (for list sorting, filtering, pagination).
+ * This tests the navigate({ search: '?...' }) pattern used by useListParams.
+ */
+export const QueryParameters = () => {
+    const ListWithQueryParams = () => {
+        const location = useLocation();
+        const navigate = useNavigate();
+
+        // Parse current query params
+        const searchParams = new URLSearchParams(location.search);
+        const sort = searchParams.get('sort') || 'id';
+        const order = searchParams.get('order') || 'ASC';
+        const page = searchParams.get('page') || '1';
+
+        const setSort = (field: string, newOrder: string) => {
+            navigate({
+                search: `?sort=${field}&order=${newOrder}&page=${page}`,
+            });
+        };
+
+        const setPage = (newPage: number) => {
+            navigate({
+                search: `?sort=${sort}&order=${order}&page=${newPage}`,
+            });
+        };
+
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Posts with Query Parameters</h2>
+                <div
+                    style={{
+                        padding: 10,
+                        background: '#e3f2fd',
+                        marginBottom: 20,
+                        fontFamily: 'monospace',
+                    }}
+                >
+                    <div data-testid="current-search">
+                        Current search: {location.search || '(empty)'}
+                    </div>
+                    <div data-testid="current-sort">
+                        Sort: {sort} {order}
+                    </div>
+                    <div data-testid="current-page">Page: {page}</div>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <strong>Sort by:</strong>{' '}
+                    <button
+                        onClick={() =>
+                            setSort(
+                                'id',
+                                sort === 'id' && order === 'ASC'
+                                    ? 'DESC'
+                                    : 'ASC'
+                            )
+                        }
+                        data-testid="sort-id"
+                    >
+                        ID {sort === 'id' ? (order === 'ASC' ? '↑' : '↓') : ''}
+                    </button>{' '}
+                    <button
+                        onClick={() =>
+                            setSort(
+                                'title',
+                                sort === 'title' && order === 'ASC'
+                                    ? 'DESC'
+                                    : 'ASC'
+                            )
+                        }
+                        data-testid="sort-title"
+                    >
+                        Title{' '}
+                        {sort === 'title' ? (order === 'ASC' ? '↑' : '↓') : ''}
+                    </button>
+                </div>
+                <div style={{ marginBottom: 20 }}>
+                    <strong>Page:</strong>{' '}
+                    <button onClick={() => setPage(1)} data-testid="page-1">
+                        1
+                    </button>{' '}
+                    <button onClick={() => setPage(2)} data-testid="page-2">
+                        2
+                    </button>{' '}
+                    <button onClick={() => setPage(3)} data-testid="page-3">
+                        3
+                    </button>
+                </div>
+                <ul>
+                    <li>Post #1</li>
+                    <li>Post #2</li>
+                    <li>Post #3</li>
+                </ul>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
+        >
+            <Resource name="posts" list={<ListWithQueryParams />} />
+        </CoreAdmin>
+    );
+};
+
+/**
+ * This tests the pattern where a parent Route has child Routes and uses Outlet
+ * to render the matched child (like TabbedShowLayout).
+ */
+export const NestedRoutesWithOutlet = () => {
+    const TabbedLayout = () => {
+        const location = useLocation();
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Tabbed Layout (like TabbedShowLayout)</h2>
+                <Routes>
+                    <Route
+                        path="/*"
+                        element={
+                            <div>
+                                <nav
+                                    style={{
+                                        display: 'flex',
+                                        gap: 10,
+                                        marginBottom: 20,
+                                    }}
+                                >
+                                    <LinkBase
+                                        to="/posts/1/show"
+                                        style={{
+                                            padding: '8px 16px',
+                                            background:
+                                                location.pathname.endsWith(
+                                                    '/show'
+                                                )
+                                                    ? '#1976d2'
+                                                    : '#e0e0e0',
+                                            color: location.pathname.endsWith(
+                                                '/show'
+                                            )
+                                                ? 'white'
+                                                : 'black',
+                                            textDecoration: 'none',
+                                            borderRadius: 4,
+                                        }}
+                                    >
+                                        Content Tab
+                                    </LinkBase>
+                                    <LinkBase
+                                        to="/posts/1/show/1"
+                                        style={{
+                                            padding: '8px 16px',
+                                            background:
+                                                location.pathname.endsWith('/1')
+                                                    ? '#1976d2'
+                                                    : '#e0e0e0',
+                                            color: location.pathname.endsWith(
+                                                '/1'
+                                            )
+                                                ? 'white'
+                                                : 'black',
+                                            textDecoration: 'none',
+                                            borderRadius: 4,
+                                        }}
+                                    >
+                                        Metadata Tab
+                                    </LinkBase>
+                                </nav>
+                                <div
+                                    style={{
+                                        border: '1px solid #ccc',
+                                        padding: 20,
+                                        borderRadius: 4,
+                                    }}
+                                >
+                                    <RouterOutlet />
+                                </div>
+                            </div>
+                        }
+                    >
+                        <Route
+                            path=""
+                            element={
+                                <div data-testid="content-tab">
+                                    <h3>Content Tab</h3>
+                                    <p>
+                                        This is the content tab (first tab,
+                                        default).
+                                    </p>
+                                    <p>Title: Hello World</p>
+                                    <p>Body: Welcome to react-admin!</p>
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="1"
+                            element={
+                                <div data-testid="metadata-tab">
+                                    <h3>Metadata Tab</h3>
+                                    <p>
+                                        This is the metadata tab (second tab).
+                                    </p>
+                                    <p>ID: 1</p>
+                                    <p>Created: 2024-01-15</p>
+                                    <p>Author: Admin</p>
+                                </div>
+                            }
+                        />
+                    </Route>
+                </Routes>
+            </div>
+        );
+    };
+
+    return (
+        <CoreAdmin
+            routerProvider={tanStackRouterProvider}
+            dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
+        >
+            <Resource name="posts" list={PostList} show={TabbedLayout} />
         </CoreAdmin>
     );
 };
