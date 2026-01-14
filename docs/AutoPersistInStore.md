@@ -41,9 +41,10 @@ It works both on create and edit forms.
 
 ## Props
 
-| Prop                  | Required | Type       | Default                                                  | Description                                                           |
+| Prop                  | Required | Type       | Default                            | Description                                                                                 |
 | --------------------- | -------- | ---------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
-| `getStoreKey`         | -        | `function` | -                                                        | Function to use your own store key.                                   |
+| `getStoreKey`         | -        | `function` | -                                  | Function to use your own store key.                                                         |
+| `notification`        | -        | `ReactNode` | `<AutoPersistNotification>`       | The element used to show the notification, that allows users to reset the form.             |
 | `notificationMessage` | -        | `string`   | "Applied previous unsaved changes" | Notification message to inform users that their previously saved changes have been applied. |
 
 ## `getStoreKey`
@@ -66,6 +67,43 @@ You can override this key by passing a custom function as the `getStoreKey` prop
             `my-custom-persist-key-${resource}-${record && record.hasOwnProperty('id') ? record.id : 'create'}`
     }
 />
+```
+
+## `notification`
+
+When `<AutoPersistInStore>` component applies the changes from the store to a form, react-admin informs users with a notification.
+This notification also provides them a way to revert the changes from the store.
+
+You can make your own element and pass it using the `notification` prop:
+
+```tsx
+import { Translate, useCloseNotification, useEvent } from 'react-admin';
+import { AutoPersistInStore, useAutoPersistInStoreContext } from '@react-admin/ra-form-layout';
+import { Alert } from '@mui/material';
+
+const MyAutoPersistInStore = () => (
+    <AutoPersistInStore notification={<AutoPersistNotification />} />
+);
+
+const AutoPersistNotification = () => {
+    const closeNotification = useCloseNotification();
+    const { reset } = useAutoPersistInStoreContext();
+
+    const cancel = useEvent((event: React.MouseEvent) => {
+        event.preventDefault();
+        reset();
+        closeNotification();
+    });
+
+    return (
+        <Alert
+            severity="info"
+            action={<Button label="ra.action.cancel" onClick={cancel} />}
+        >
+          <Translate i18nKey="ra-form-layout.auto_persist_in_store.applied_changes" />
+        </Alert>
+    );
+};
 ```
 
 ## `notificationMessage`
