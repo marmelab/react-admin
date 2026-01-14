@@ -210,19 +210,21 @@ describe('tanStackRouterProvider', () => {
                     )
                 ).toEqual({
                     params: { id: '衣類/衣類' },
-                    pathname: '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
-                    pathnameBase: '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
+                    pathname:
+                        '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
+                    pathnameBase:
+                        '/comments/%E8%A1%A3%E9%A1%9E%2F%E8%A1%A3%E9%A1%9E',
                 });
             });
 
             it('should decode URL-encoded params with spaces', () => {
-                expect(
-                    matchPath('/posts/:id', '/posts/hello%20world')
-                ).toEqual({
-                    params: { id: 'hello world' },
-                    pathname: '/posts/hello%20world',
-                    pathnameBase: '/posts/hello%20world',
-                });
+                expect(matchPath('/posts/:id', '/posts/hello%20world')).toEqual(
+                    {
+                        params: { id: 'hello world' },
+                        pathname: '/posts/hello%20world',
+                        pathnameBase: '/posts/hello%20world',
+                    }
+                );
             });
         });
 
