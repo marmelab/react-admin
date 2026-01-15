@@ -34,7 +34,7 @@ describe('ColumnsButton', () => {
             screen
                 .getByRole('menu')
                 .querySelectorAll('li:not(.columns-selector-actions)')
-        ).toHaveLength(8); // 7 columns + the filter input li
+        ).toHaveLength(7);
         // Typing a filter
         fireEvent.change(
             screen.getByPlaceholderText('ra.action.search_columns'),
@@ -48,7 +48,7 @@ describe('ColumnsButton', () => {
                 screen
                     .getByRole('menu')
                     .querySelectorAll('li:not(.columns-selector-actions)')
-            ).toHaveLength(2); // only the column with 'DiA' in its label should remain + the filter input li
+            ).toHaveLength(1);
         });
         screen.getByLabelText('Téstïng diàcritics');
         // Clear the filter
@@ -58,7 +58,7 @@ describe('ColumnsButton', () => {
                 screen
                     .getByRole('menu')
                     .querySelectorAll('li:not(.columns-selector-actions)')
-            ).toHaveLength(8);
+            ).toHaveLength(7);
         });
     });
     it('should work with columns that have no source', async () => {

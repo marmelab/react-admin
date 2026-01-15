@@ -67,9 +67,9 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     const shouldDisplaySearchInput = childrenArray.length > 5;
 
     return createPortal(
-        <MenuList>
+        <Box>
             {shouldDisplaySearchInput ? (
-                <Box component="li" tabIndex={-1}>
+                <Box sx={{ mb: 1 }}>
                     <ResettableTextField
                         hiddenLabel
                         label=""
@@ -94,39 +94,40 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                         resettable
                         autoFocus
                         size="small"
-                        sx={{ mb: 1 }}
                     />
                 </Box>
             ) : null}
-            {paddedColumnRanks.map((position, index) => (
-                <DataTableColumnRankContext.Provider
-                    value={position}
-                    key={index}
-                >
-                    <DataTableColumnFilterContext.Provider
-                        value={columnFilter}
+            <MenuList>
+                {paddedColumnRanks.map((position, index) => (
+                    <DataTableColumnRankContext.Provider
+                        value={position}
                         key={index}
                     >
-                        {childrenArray[position]}
-                    </DataTableColumnFilterContext.Provider>
-                </DataTableColumnRankContext.Provider>
-            ))}
-            <Box
-                component="li"
-                className="columns-selector-actions"
-                sx={{ textAlign: 'center', mt: 1 }}
-            >
-                <Button
-                    onClick={() => {
-                        setColumnRanks(undefined);
-                        setHiddenColumns(defaultHiddenColumns);
-                    }}
-                    label={translate('ra.action.reset', {
-                        _: 'Reset',
-                    })}
-                />
-            </Box>
-        </MenuList>,
+                        <DataTableColumnFilterContext.Provider
+                            value={columnFilter}
+                            key={index}
+                        >
+                            {childrenArray[position]}
+                        </DataTableColumnFilterContext.Provider>
+                    </DataTableColumnRankContext.Provider>
+                ))}
+                <Box
+                    component="li"
+                    className="columns-selector-actions"
+                    sx={{ textAlign: 'center', mt: 1 }}
+                >
+                    <Button
+                        onClick={() => {
+                            setColumnRanks(undefined);
+                            setHiddenColumns(defaultHiddenColumns);
+                        }}
+                        label={translate('ra.action.reset', {
+                            _: 'Reset',
+                        })}
+                    />
+                </Box>
+            </MenuList>
+        </Box>,
         container
     );
 };
