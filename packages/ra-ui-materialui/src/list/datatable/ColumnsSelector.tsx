@@ -67,7 +67,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     const shouldDisplaySearchInput = childrenArray.length > 5;
 
     return createPortal(
-        <Box>
+        <Box sx={{ px: 1, pt: 1 }}>
             {shouldDisplaySearchInput ? (
                 <Box sx={{ mb: 1 }}>
                     <ResettableTextField
@@ -97,7 +97,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                     />
                 </Box>
             ) : null}
-            <MenuList>
+            <MenuList sx={{ pt: 0 }}>
                 {paddedColumnRanks.map((position, index) => (
                     <DataTableColumnRankContext.Provider
                         value={position}
