@@ -5,7 +5,7 @@ title: "Advanced Tutorials"
 
 # Advanced Tutorials
 
-If you want to learn the best practices of react-admin development by example, you've come to the right place. This page lists the advanced tutorials we've published on [the react-admin blog](https://marmelab.com/en/blog/#react-admin).
+If you want to learn the best practices of react-admin development by example, you've come to the right place. This page lists the advanced tutorials we've published on [the react-admin blog](https://marmelab.com/blog/tags/react-admin).
 
 * 2025-01: [Handling Relationships in React Admin](https://marmelab.com/blog/2025/02/06/handling-relationships-in-react-admin.html)
 * 2025-01: [How to build a CMS with React-Admin](https://marmelab.com/blog/2025/01/24/how-to-build-a-cms-with-react-admin.html)
