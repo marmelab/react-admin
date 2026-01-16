@@ -38,7 +38,7 @@
         "url": "https://github.com/marmelab/react-admin/issues"
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
-    "gitHead": "bcbde4afb671717fbff2278b327cf94706665793",
+    "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
     "exports": {
         ".": {
             "import": {
