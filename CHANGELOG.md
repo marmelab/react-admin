@@ -1,5 +1,14 @@
 # Changelog
 
+## 5.13.6
+
+* [Doc] Update link to marmelab blog ([#11117](https://github.com/marmelab/react-admin/pull/11117)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Update `<AutoPersistInStore>` documentation ([#11110](https://github.com/marmelab/react-admin/pull/11110)) ([djhi](https://github.com/djhi))
+* [Doc] Update Soft Delete headless documentation ([#11109](https://github.com/marmelab/react-admin/pull/11109)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Fix `Validation` section position ([#11107](https://github.com/marmelab/react-admin/pull/11107)) ([WiXSL](https://github.com/WiXSL))
+* Bump h3 from 1.15.4 to 1.15.5 ([#11116](https://github.com/marmelab/react-admin/pull/11116)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump devalue from 5.5.0 to 5.6.2 ([#11115](https://github.com/marmelab/react-admin/pull/11115)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.13.5
 
 * Fix `<Form>` ignores `resetOptions` when record changes ([#11099](https://github.com/marmelab/react-admin/pull/11099)) ([Jszigeti](https://github.com/Jszigeti))
