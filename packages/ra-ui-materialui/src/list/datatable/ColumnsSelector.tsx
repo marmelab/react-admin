@@ -67,7 +67,7 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
     const shouldDisplaySearchInput = childrenArray.length > 5;
 
     return createPortal(
-        <Box sx={{ px: 1, pt: 1 }}>
+        <Box sx={{ pt: 1 }}>
             {shouldDisplaySearchInput ? (
                 <Box sx={{ mb: 1 }}>
                     <ResettableTextField
