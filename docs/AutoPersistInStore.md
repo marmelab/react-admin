@@ -44,8 +44,8 @@ It works both on create and edit forms.
 | Prop                  | Required | Type       | Default                            | Description                                                                                 |
 | --------------------- | -------- | ---------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
 | `getStoreKey`         | -        | `function` | -                                  | Function to use your own store key.                                                         |
-| `notification`        | -        | `ReactNode` | `<AutoPersistNotification>`       | The element used to show the notification, that allows users to reset the form.             |
-| `notificationMessage` | -        | `string`   | "Applied previous unsaved changes" | Notification message to inform users that their previously saved changes have been applied. |
+| `notification`        | -        | `ReactNode` | `<AutoPersist Notification>`       | The element used to show the notification, that allows users to reset the form.             |
+| `notification Message` | -        | `string`   | "Applied previous unsaved changes" | Notification message to inform users that their previously saved changes have been applied. |
 
 ## `getStoreKey`
 
