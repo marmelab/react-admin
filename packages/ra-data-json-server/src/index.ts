@@ -16,6 +16,7 @@ import { fetchUtils, DataProvider } from 'ra-core';
  * update           => PUT http://my.api.url/posts/123
  * updateMany       => PUT http://my.api.url/posts/123, PUT http://my.api.url/posts/456, PUT http://my.api.url/posts/789
  * delete           => DELETE http://my.api.url/posts/123
+ * deleteMany       => DELETE http://my.api.url/posts/123, DELETE http://my.api.url/posts/456, DELETE http://my.api.url/posts/789
  *
  * @example
  *
