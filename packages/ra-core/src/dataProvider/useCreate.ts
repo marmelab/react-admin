@@ -258,13 +258,10 @@ export type UseCreateOptions<
     RecordType extends Omit<RaRecord, 'id'> = any,
     MutationError = unknown,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
-> = Omit<
-    UseMutationOptions<
-        ResultRecordType,
-        MutationError,
-        Partial<UseCreateMutateParams<RecordType>>
-    >,
-    'mutationFn'
+> = UseMutationOptions<
+    ResultRecordType,
+    MutationError,
+    Partial<UseCreateMutateParams<RecordType>>
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
