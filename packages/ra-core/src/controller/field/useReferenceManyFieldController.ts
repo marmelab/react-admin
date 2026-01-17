@@ -360,8 +360,8 @@ export const useReferenceManyFieldController = <
 };
 
 export interface UseReferenceManyFieldControllerParams<
-    RecordType extends RaRecord = RaRecord,
-    ReferenceRecordType extends RaRecord = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends Record<string, any> = Record<string, any>,
     ErrorType = Error,
 > {
     debounce?: number;
@@ -371,7 +371,7 @@ export interface UseReferenceManyFieldControllerParams<
     record?: RecordType;
     reference: string;
     resource?: string;
-    exporter?: Exporter<ReferenceRecordType> | false;
+    exporter?: Exporter<ReferenceRecordType & RaRecord> | false;
     sort?: SortPayload;
     source?: string;
     storeKey?: string;

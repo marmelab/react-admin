@@ -82,7 +82,7 @@ const ArrayFieldImpl = <
 ) => {
     const { children, resource, perPage, sort, filter, exporter } = props;
     const data = useFieldValue(props) || emptyArray;
-    const listContext = useList({
+    const listContext = useList<RecordType>({
         data,
         resource,
         perPage,

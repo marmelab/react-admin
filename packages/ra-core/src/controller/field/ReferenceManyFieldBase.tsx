@@ -167,7 +167,7 @@ export const ReferenceManyFieldBase = <
 };
 
 export interface ReferenceManyFieldBaseProps<
-    RecordType extends RaRecord = RaRecord,
+    RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends RaRecord = RaRecord,
 > extends UseReferenceManyFieldControllerParams<
         RecordType,
