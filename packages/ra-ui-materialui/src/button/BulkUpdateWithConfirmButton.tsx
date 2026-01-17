@@ -19,117 +19,133 @@ import { Confirm } from '../layout';
 import { Button, type ButtonProps } from './Button';
 import { humanize, inflect } from 'inflection';
 
-export const BulkUpdateWithConfirmButton = (
-    inProps: BulkUpdateWithConfirmButtonProps
-) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
-    const translate = useTranslate();
-    const resource = useResourceContext(props);
-    const [isOpen, setOpen] = useState(false);
-    const { selectedIds } = useListContext();
+export const BulkUpdateWithConfirmButton = React.forwardRef(
+    function BulkUpdateWithConfirmButton(
+        inProps: BulkUpdateWithConfirmButtonProps,
+        ref: React.ForwardedRef<HTMLButtonElement>
+    ) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
+        const translate = useTranslate();
+        const resource = useResourceContext(props);
+        const [isOpen, setOpen] = useState(false);
+        const { selectedIds } = useListContext();
 
-    const {
-        confirmTitle = 'ra.message.bulk_update_title',
-        confirmContent = 'ra.message.bulk_update_content',
-        data,
-        icon = defaultIcon,
-        label = 'ra.action.update',
-        mutationMode = 'pessimistic',
-        onClick,
-        ...rest
-    } = props;
-    const { handleUpdate, isPending } = useBulkUpdateController({
-        ...rest,
-        mutationMode,
-        mutationOptions: {
-            ...rest.mutationOptions,
-            onSettled(...args) {
-                // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
-                if (mutationMode === 'pessimistic') {
-                    setOpen(false);
-                }
-                rest.mutationOptions?.onSettled?.(...args);
+        const {
+            confirmTitle = 'ra.message.bulk_update_title',
+            confirmContent = 'ra.message.bulk_update_content',
+            data,
+            icon = defaultIcon,
+            label = 'ra.action.update',
+            mutationMode = 'pessimistic',
+            onClick,
+            ...rest
+        } = props;
+        const { handleUpdate, isPending } = useBulkUpdateController({
+            ...rest,
+            mutationMode,
+            mutationOptions: {
+                ...rest.mutationOptions,
+                onSettled(...args) {
+                    // In pessimistic mode, we wait for the mutation to be completed (either successfully or with an error) before closing
+                    if (mutationMode === 'pessimistic') {
+                        setOpen(false);
+                    }
+                    rest.mutationOptions?.onSettled?.(...args);
+                },
             },
-        },
-    });
+        });
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        setOpen(true);
-    };
+        const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            setOpen(true);
+        };
 
-    const handleDialogClose = (e: React.MouseEvent) => {
-        e.stopPropagation();
-        setOpen(false);
-    };
-
-    const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        // We close the dialog immediately here for optimistic/undoable modes instead of in onSuccess/onError
-        // to avoid reimplementing the default side effects
-        if (mutationMode !== 'pessimistic') {
+        const handleDialogClose = (e: React.MouseEvent) => {
+            e.stopPropagation();
             setOpen(false);
-        }
-        handleUpdate(data);
+        };
 
-        if (typeof onClick === 'function') {
-            onClick(e);
-        }
-    };
+        const handleConfirm = (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            // We close the dialog immediately here for optimistic/undoable modes instead of in onSuccess/onError
+            // to avoid reimplementing the default side effects
+            if (mutationMode !== 'pessimistic') {
+                setOpen(false);
+            }
+            handleUpdate(data);
 
-    return (
-        <Fragment>
-            <StyledButton
-                onClick={handleClick}
-                label={label}
-                {...sanitizeRestProps(rest)}
-            >
-                {icon}
-            </StyledButton>
-            <Confirm
-                isOpen={isOpen}
-                loading={isPending}
-                title={confirmTitle}
-                content={confirmContent}
-                titleTranslateOptions={{
-                    smart_count: selectedIds.length,
-                    name: translate(`resources.${resource}.forcedCaseName`, {
+            if (typeof onClick === 'function') {
+                onClick(e);
+            }
+        };
+
+        return (
+            <Fragment>
+                <StyledButton
+                    ref={ref}
+                    onClick={handleClick}
+                    label={label}
+                    {...sanitizeRestProps(rest)}
+                >
+                    {icon}
+                </StyledButton>
+                <Confirm
+                    isOpen={isOpen}
+                    loading={isPending}
+                    title={confirmTitle}
+                    content={confirmContent}
+                    titleTranslateOptions={{
                         smart_count: selectedIds.length,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
+                        name: translate(
+                            `resources.${resource}.forcedCaseName`,
+                            {
                                 smart_count: selectedIds.length,
-                                _: resource
-                                    ? inflect(resource, selectedIds.length)
-                                    : undefined,
-                            }),
-                            true
+                                _: humanize(
+                                    translate(`resources.${resource}.name`, {
+                                        smart_count: selectedIds.length,
+                                        _: resource
+                                            ? inflect(
+                                                  resource,
+                                                  selectedIds.length
+                                              )
+                                            : undefined,
+                                    }),
+                                    true
+                                ),
+                            }
                         ),
-                    }),
-                }}
-                contentTranslateOptions={{
-                    smart_count: selectedIds.length,
-                    name: translate(`resources.${resource}.forcedCaseName`, {
+                    }}
+                    contentTranslateOptions={{
                         smart_count: selectedIds.length,
-                        _: humanize(
-                            translate(`resources.${resource}.name`, {
+                        name: translate(
+                            `resources.${resource}.forcedCaseName`,
+                            {
                                 smart_count: selectedIds.length,
-                                _: resource
-                                    ? inflect(resource, selectedIds.length)
-                                    : undefined,
-                            }),
-                            true
+                                _: humanize(
+                                    translate(`resources.${resource}.name`, {
+                                        smart_count: selectedIds.length,
+                                        _: resource
+                                            ? inflect(
+                                                  resource,
+                                                  selectedIds.length
+                                              )
+                                            : undefined,
+                                    }),
+                                    true
+                                ),
+                            }
                         ),
-                    }),
-                }}
-                onConfirm={handleConfirm}
-                onClose={handleDialogClose}
-            />
-        </Fragment>
-    );
-};
+                    }}
+                    onConfirm={handleConfirm}
+                    onClose={handleDialogClose}
+                />
+            </Fragment>
+        );
+    }
+);
 
 const sanitizeRestProps = ({
     label,

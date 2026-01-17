@@ -37,7 +37,10 @@ import { Button, ButtonProps } from './Button';
  *     </List>
  * );
  */
-export const BulkExportButton = (inProps: BulkExportButtonProps) => {
+export const BulkExportButton = React.forwardRef(function BulkExportButton(
+    inProps: BulkExportButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -70,6 +73,7 @@ export const BulkExportButton = (inProps: BulkExportButtonProps) => {
 
     return (
         <StyledButton
+            ref={ref}
             onClick={handleClick}
             label={label}
             {...sanitizeRestProps(rest)}
@@ -77,7 +81,7 @@ export const BulkExportButton = (inProps: BulkExportButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 const defaultIcon = <DownloadIcon />;
 

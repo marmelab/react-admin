@@ -2,6 +2,7 @@ import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
+import { Tooltip } from '@mui/material';
 
 import {
     AuthProvider,
@@ -69,6 +70,18 @@ export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
         <AdminContext i18nProvider={defaultI18nProvider()}>
             <ResourceContextProvider value="books">
                 <CreateButton {...buttonProps} />
+            </ResourceContextProvider>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
+export const WithTooltip = () => (
+    <TestMemoryRouter>
+        <AdminContext i18nProvider={defaultI18nProvider()}>
+            <ResourceContextProvider value="books">
+                <Tooltip title="Create book">
+                    <CreateButton />
+                </Tooltip>
             </ResourceContextProvider>
         </AdminContext>
     </TestMemoryRouter>
