@@ -5256,10 +5256,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/history@npm:1.141.0":
-  version: 1.141.0
-  resolution: "@tanstack/history@npm:1.141.0"
-  checksum: b564e6617e612a5b77657ecd9b7ae9c73e6a808f1a5600471aedd4ce878cd3f9b48cc31a1b7e1ac9c1ed9b1f321599ee6023335d8474b1d1c86bb127e78cef28
+"@tanstack/history@npm:1.145.7, @tanstack/history@npm:^1.0.0":
+  version: 1.145.7
+  resolution: "@tanstack/history@npm:1.145.7"
+  checksum: 6c4b0a987639aa08a3e2b87c466edc20ac4701e15821fa4b2833abc78d6e047da3f9f73032377fe4f3d492a22f7829339b509d549dab509c58dc4985a590a09c
   languageName: node
   linkType: hard
 
@@ -5301,19 +5301,19 @@ __metadata:
   linkType: hard
 
 "@tanstack/react-router@npm:^1.143.11":
-  version: 1.143.11
-  resolution: "@tanstack/react-router@npm:1.143.11"
+  version: 1.150.0
+  resolution: "@tanstack/react-router@npm:1.150.0"
   dependencies:
-    "@tanstack/history": "npm:1.141.0"
+    "@tanstack/history": "npm:1.145.7"
     "@tanstack/react-store": "npm:^0.8.0"
-    "@tanstack/router-core": "npm:1.143.6"
+    "@tanstack/router-core": "npm:1.150.0"
     isbot: "npm:^5.1.22"
     tiny-invariant: "npm:^1.3.3"
     tiny-warning: "npm:^1.0.3"
   peerDependencies:
     react: ">=18.0.0 || >=19.0.0"
     react-dom: ">=18.0.0 || >=19.0.0"
-  checksum: de0b17082c3cea3d5b795c067eae9f19059ba8efe4900b06a5288616c8c003368e9e26b9c54113d445eff258f0778d1b6cbf37661caedf9d86c5e16415d87a92
+  checksum: 447cd14cfb9bdd2bf1ff18aec47bfca95fb48779a55b3533b35d978054cc183316f3b35e2a5bdc8e46ea803bf2b5b53de5fc08133bb7cc48aa05463f628fc157
   languageName: node
   linkType: hard
 
@@ -5330,18 +5330,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/router-core@npm:1.143.6":
-  version: 1.143.6
-  resolution: "@tanstack/router-core@npm:1.143.6"
+"@tanstack/router-core@npm:1.150.0":
+  version: 1.150.0
+  resolution: "@tanstack/router-core@npm:1.150.0"
   dependencies:
-    "@tanstack/history": "npm:1.141.0"
+    "@tanstack/history": "npm:1.145.7"
     "@tanstack/store": "npm:^0.8.0"
     cookie-es: "npm:^2.0.0"
     seroval: "npm:^1.4.1"
     seroval-plugins: "npm:^1.4.0"
     tiny-invariant: "npm:^1.3.3"
     tiny-warning: "npm:^1.0.3"
-  checksum: 7e3f6f2537f645db160bbdcd2b98d37714e17db9f1448d918d4bd38877b0d68c3b96a8486cf0f8701a8e7faaf620a518432d4920ad6951627802cc5047a0a01f
+  checksum: a8900591d72fbd31c13b7f8916f2295bfc2879e0ccd009b595ec1093af80353099341ba4feba2a10776bf6e6601f492a153d154b0bfba4822e91d3df432e8dd0
   languageName: node
   linkType: hard
 
@@ -19639,6 +19639,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-router-tanstack@workspace:packages/ra-router-tanstack"
   dependencies:
+    "@tanstack/history": "npm:^1.0.0"
+    "@tanstack/react-router": "npm:^1.143.11"
     ra-core: "npm:^5.13.4"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -19824,7 +19826,6 @@ __metadata:
     "@storybook/react-webpack5": "npm:^8.6.11"
     "@storybook/source-loader": "npm:^8.6.11"
     "@storybook/test": "npm:^8.6.11"
-    "@tanstack/react-router": "npm:^1.143.11"
     "@types/babel__preset-env": "npm:^7"
     "@types/eslint-plugin-jsx-a11y": "npm:^6"
     "@types/gh-pages": "npm:^6"

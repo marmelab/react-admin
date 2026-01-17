@@ -618,9 +618,7 @@ describe('tanStackRouterProvider', () => {
         it('should navigate back in history with navigate(-1)', async () => {
             render(<HistoryNavigation />);
 
-            await waitFor(() => {
-                expect(screen.getByText('Posts')).toBeInTheDocument();
-            });
+            await screen.findByText('Post #1');
 
             fireEvent.click(screen.getByText('Post #1'));
 
