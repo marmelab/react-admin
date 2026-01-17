@@ -19,76 +19,82 @@ import { humanize, singularize } from 'inflection';
 
 import { Button, type ButtonProps } from './Button';
 
-export const UpdateWithUndoButton = (inProps: UpdateWithUndoButtonProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
-    const record = useRecordContext(props);
-    const resource = useResourceContext(props);
+export const UpdateWithUndoButton = React.forwardRef(
+    function UpdateWithUndoButton(
+        inProps: UpdateWithUndoButtonProps,
+        ref: React.ForwardedRef<HTMLElement>
+    ) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
+        const record = useRecordContext(props);
+        const resource = useResourceContext(props);
 
-    const {
-        data,
-        label: labelProp,
-        icon = defaultIcon,
-        onClick,
-        ...rest
-    } = props;
-    const { handleUpdate, isPending } = useUpdateController(rest);
-    const translate = useTranslate();
-    const getRecordRepresentation = useGetRecordRepresentation(resource);
-    let recordRepresentation = getRecordRepresentation(record);
-    const resourceName = translate(`resources.${resource}.forcedCaseName`, {
-        smart_count: 1,
-        _: humanize(
-            translate(`resources.${resource}.name`, {
-                smart_count: 1,
-                _: resource ? singularize(resource) : undefined,
-            }),
-            true
-        ),
-    });
-    // We don't support React elements for this
-    if (React.isValidElement(recordRepresentation)) {
-        recordRepresentation = `#${record?.id}`;
+        const {
+            data,
+            label: labelProp,
+            icon = defaultIcon,
+            onClick,
+            ...rest
+        } = props;
+        const { handleUpdate, isPending } = useUpdateController(rest);
+        const translate = useTranslate();
+        const getRecordRepresentation = useGetRecordRepresentation(resource);
+        let recordRepresentation = getRecordRepresentation(record);
+        const resourceName = translate(`resources.${resource}.forcedCaseName`, {
+            smart_count: 1,
+            _: humanize(
+                translate(`resources.${resource}.name`, {
+                    smart_count: 1,
+                    _: resource ? singularize(resource) : undefined,
+                }),
+                true
+            ),
+        });
+        // We don't support React elements for this
+        if (React.isValidElement(recordRepresentation)) {
+            recordRepresentation = `#${record?.id}`;
+        }
+        const label = useResourceTranslation({
+            resourceI18nKey: `resources.${resource}.action.update`,
+            baseI18nKey: 'ra.action.update',
+            options: {
+                name: resourceName,
+                recordRepresentation,
+            },
+            userText: labelProp,
+        });
+
+        const handleClick = e => {
+            if (!record) {
+                throw new Error(
+                    'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
+                );
+            }
+            handleUpdate(data);
+            if (typeof onClick === 'function') {
+                onClick(e);
+            }
+            e.stopPropagation();
+        };
+
+        return (
+            <StyledButton
+                ref={ref}
+                onClick={handleClick}
+                // avoid double translation
+                label={<>{label}</>}
+                // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
+                aria-label={typeof label === 'string' ? label : undefined}
+                disabled={isPending}
+                {...sanitizeRestProps(rest)}
+            >
+                {icon}
+            </StyledButton>
+        );
     }
-    const label = useResourceTranslation({
-        resourceI18nKey: `resources.${resource}.action.update`,
-        baseI18nKey: 'ra.action.update',
-        options: {
-            name: resourceName,
-            recordRepresentation,
-        },
-        userText: labelProp,
-    });
-
-    const handleClick = e => {
-        if (!record) {
-            throw new Error(
-                'The UpdateWithUndoButton must be used inside a RecordContext.Provider or must be passed a record prop.'
-            );
-        }
-        handleUpdate(data);
-        if (typeof onClick === 'function') {
-            onClick(e);
-        }
-        e.stopPropagation();
-    };
-
-    return (
-        <StyledButton
-            onClick={handleClick}
-            // avoid double translation
-            label={<>{label}</>}
-            // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
-            aria-label={typeof label === 'string' ? label : undefined}
-            disabled={isPending}
-            {...sanitizeRestProps(rest)}
-        >
-            {icon}
-        </StyledButton>
-    );
-};
+);
 
 const defaultIcon = <ActionUpdate />;
 

@@ -51,7 +51,10 @@ import { Button, type ButtonProps } from './Button';
  *     </List>
  * );
  */
-export const SelectAllButton = (inProps: SelectAllButtonProps) => {
+export const SelectAllButton = React.forwardRef(function SelectAllButton(
+    inProps: SelectAllButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -85,13 +88,14 @@ export const SelectAllButton = (inProps: SelectAllButtonProps) => {
 
     return (
         <StyledButton
+            ref={ref}
             label={label}
             onClick={handleClick}
             type="button"
             {...rest}
         />
     );
-};
+});
 
 export type SelectAllButtonProps<RecordType extends RaRecord = any> =
     ButtonProps & {

@@ -33,7 +33,10 @@ import { Button, type ButtonProps, type LocationDescriptor } from './Button';
  *     <CreateButton label="Create comment" />
  * );
  */
-const CreateButton = (inProps: CreateButtonProps) => {
+const CreateButton = React.forwardRef(function CreateButton(
+    inProps: CreateButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -88,6 +91,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
     }
     return isSmall ? (
         <StyledFab
+            ref={ref}
             component={Link}
             to={createPath({ resource, type: 'create' })}
             state={state}
@@ -103,6 +107,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
         </StyledFab>
     ) : (
         <StyledButton
+            ref={ref}
             component={Link}
             to={createPath({ resource, type: 'create' })}
             state={state}
@@ -118,7 +123,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = new Map([

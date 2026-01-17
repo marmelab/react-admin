@@ -12,7 +12,10 @@ import {
 
 import { Button, ButtonProps } from './Button';
 
-export const CloneButton = (inProps: CloneButtonProps) => {
+export const CloneButton = React.forwardRef(function CloneButton(
+    inProps: CloneButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -30,6 +33,7 @@ export const CloneButton = (inProps: CloneButtonProps) => {
     const pathname = createPath({ resource, type: 'create' });
     return (
         <StyledButton
+            ref={ref}
             component={Link}
             to={
                 record
@@ -49,7 +53,7 @@ export const CloneButton = (inProps: CloneButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 const defaultIcon = <Queue />;
 

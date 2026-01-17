@@ -34,7 +34,10 @@ import {
  *     </List>
  * );
  */
-export const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
+export const BulkUpdateButton = React.forwardRef(function BulkUpdateButton(
+    props: BulkUpdateButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const {
         mutationMode = 'undoable',
         data = defaultData,
@@ -45,15 +48,16 @@ export const BulkUpdateButton = (props: BulkUpdateButtonProps) => {
     });
 
     return mutationMode === 'undoable' ? (
-        <BulkUpdateWithUndoButton data={data} {...rest} />
+        <BulkUpdateWithUndoButton ref={ref} data={data} {...rest} />
     ) : (
         <BulkUpdateWithConfirmButton
             mutationMode={mutationMode}
+            ref={ref}
             data={data}
             {...rest}
         />
     );
-};
+});
 
 interface Props {
     mutationMode?: MutationMode;

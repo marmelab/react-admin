@@ -34,7 +34,10 @@ import {
  *     </List>
  * );
  */
-export const BulkDeleteButton = (inProps: BulkDeleteButtonProps) => {
+export const BulkDeleteButton = React.forwardRef(function BulkDeleteButton(
+    inProps: BulkDeleteButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const { mutationMode = 'undoable', ...props } = useThemeProps({
         name: PREFIX,
         props: inProps,
@@ -54,11 +57,15 @@ export const BulkDeleteButton = (inProps: BulkDeleteButtonProps) => {
         return null;
     }
     return mutationMode === 'undoable' ? (
-        <BulkDeleteWithUndoButton {...props} />
+        <BulkDeleteWithUndoButton ref={ref} {...props} />
     ) : (
-        <BulkDeleteWithConfirmButton mutationMode={mutationMode} {...props} />
+        <BulkDeleteWithConfirmButton
+            ref={ref}
+            mutationMode={mutationMode}
+            {...props}
+        />
     );
-};
+});
 
 interface Props {
     mutationMode?: MutationMode;

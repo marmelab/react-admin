@@ -10,7 +10,10 @@ import {
 
 import { Button, ButtonProps } from './Button';
 
-export const RefreshButton = (inProps: RefreshButtonProps) => {
+export const RefreshButton = React.forwardRef(function RefreshButton(
+    inProps: RefreshButtonProps,
+    ref: React.ForwardedRef<HTMLElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -35,11 +38,11 @@ export const RefreshButton = (inProps: RefreshButtonProps) => {
     );
 
     return (
-        <StyledButton label={label} onClick={handleClick} {...rest}>
+        <StyledButton ref={ref} label={label} onClick={handleClick} {...rest}>
             {icon}
         </StyledButton>
     );
-};
+});
 
 const defaultIcon = <NavigationRefresh />;
 
