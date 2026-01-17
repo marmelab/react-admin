@@ -4,6 +4,7 @@ import {
     RecordContextProvider,
     useListContext,
     useRecordContext,
+    testDataProvider,
     TestMemoryRouter,
     ResourceContextProvider,
 } from 'ra-core';
@@ -18,6 +19,7 @@ import { ChipField } from './ChipField';
 import { SimpleShowLayout } from '../detail';
 import { TextField } from './TextField';
 import { Pagination } from '../list/pagination';
+import { ExportButton } from '../button';
 
 export default { title: 'ra-ui-materialui/fields/ArrayField' };
 
@@ -130,6 +132,29 @@ export const ListContext = () => (
             </SingleFieldList>
             <SortButton /> <FilterButton />
         </ArrayField>
+    </TestMemoryRouter>
+);
+
+const noopExporter = () => undefined;
+
+export const WithExporter = () => (
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            })}
+        >
+            <ArrayField
+                record={{ id: 123, books }}
+                source="books"
+                exporter={noopExporter}
+            >
+                <ExportButton />
+                <SingleFieldList linkType={false}>
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ArrayField>
+        </AdminContext>
     </TestMemoryRouter>
 );
 

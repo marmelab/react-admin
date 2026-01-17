@@ -30,7 +30,7 @@ import { Notification } from '../layout/Notification';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectAllButton, BulkDeleteButton } from '../button';
+import { ExportButton, SelectAllButton, BulkDeleteButton } from '../button';
 import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
@@ -119,6 +119,23 @@ const Wrapper = ({
 export const Basic = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+const noopExporter = () => undefined;
+
+export const WithExporter = () => (
+    <Wrapper>
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            exporter={noopExporter}
+        >
+            <ExportButton />
             <DataTable>
                 <DataTable.Col source="title" />
             </DataTable>

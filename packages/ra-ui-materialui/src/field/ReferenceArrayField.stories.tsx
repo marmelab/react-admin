@@ -14,6 +14,7 @@ import { DataTable, Pagination } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
+import { ExportButton } from '../button';
 import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
@@ -66,6 +67,31 @@ export const Children = () => (
                 <SimpleShowLayout>
                     <TextField source="name" />
                     <ReferenceArrayField source="members" reference="artists">
+                        <DataTable bulkActionButtons={false}>
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="name" />
+                        </DataTable>
+                    </ReferenceArrayField>
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);
+
+const noopExporter = () => undefined;
+
+export const WithExporter = () => (
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <ReferenceArrayField
+                        source="members"
+                        reference="artists"
+                        exporter={noopExporter}
+                    >
+                        <ExportButton />
                         <DataTable bulkActionButtons={false}>
                             <DataTable.Col source="id" />
                             <DataTable.Col source="name" />
