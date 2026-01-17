@@ -1104,7 +1104,7 @@ describe('useUpdate', () => {
         });
         it('when optimistic, it accepts middlewares and displays error and error side effects when dataProvider promise rejects', async () => {
             jest.spyOn(console, 'error').mockImplementation(() => {});
-            render(<WithMiddlewaresErrorOptimistic timeout={10} />);
+            render(<WithMiddlewaresErrorOptimistic timeout={200} />);
             await screen.findByText('Hello');
             screen.getByText('Update title').click();
             await waitFor(() => {
