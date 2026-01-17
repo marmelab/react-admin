@@ -8,6 +8,7 @@ import {
     FilterPayload,
     useFieldValue,
     genericMemo,
+    RaRecord,
 } from 'ra-core';
 
 import { FieldProps } from './types';
@@ -82,13 +83,13 @@ const ArrayFieldImpl = <
 ) => {
     const { children, resource, perPage, sort, filter, exporter } = props;
     const data = useFieldValue(props) || emptyArray;
-    const listContext = useList<RecordType>({
-        data,
+    const listContext = useList({
+        data: data as RaRecord[],
         resource,
         perPage,
         sort,
         filter,
-        exporter,
+        exporter: exporter as Exporter<RaRecord> | false,
     });
     return (
         <ListContextProvider value={listContext}>
@@ -107,7 +108,7 @@ export interface ArrayFieldProps<
     perPage?: number;
     sort?: SortPayload;
     filter?: FilterPayload;
-    exporter?: Exporter<RecordType> | false;
+    exporter?: Exporter<any> | false;
 }
 
 const emptyArray = [];
