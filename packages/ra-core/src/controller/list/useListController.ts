@@ -4,6 +4,7 @@ import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
 import {
+    useDataProvider,
     useGetList,
     UseGetListHookValue,
     UseGetListOptions,
@@ -14,6 +15,7 @@ import { useListParams } from './useListParams';
 import { useSelectAll } from './useSelectAll';
 import { defaultExporter } from '../../export';
 import { SORT_ASC } from './queryReducer';
+import { useEvent } from '../../util';
 import type {
     FilterPayload,
     SortPayload,
@@ -90,6 +92,7 @@ export const useListController = <
 
     const translate = useTranslate();
     const notify = useNotify();
+    const dataProvider = useDataProvider();
 
     const [query, queryModifiers] = useListParams({
         debounce,
@@ -203,6 +206,28 @@ export const useListController = <
         storeKey: storeKey === false ? undefined : storeKey,
     });
 
+    const getData = useEvent(
+        async ({
+            maxResults,
+            meta: metaOverride,
+        }: GetDataOptions<RecordType> = {}) => {
+            if (total === 0) {
+                return [];
+            }
+            const limit =
+                maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
+            const { data } = await dataProvider.getList(resource, {
+                sort: currentSort,
+                filter: filter
+                    ? { ...query.filterValues, ...filter }
+                    : query.filterValues,
+                pagination: { page: 1, perPage: limit },
+                meta: metaOverride ?? meta,
+            });
+            return data;
+        }
+    );
+
     return {
         sort: currentSort,
         data,
@@ -234,6 +259,7 @@ export const useListController = <
         setSort: queryModifiers.setSort,
         showFilter: queryModifiers.showFilter,
         total,
+        getData,
         hasNextPage: pageInfo
             ? pageInfo.hasNextPage
             : total != null
@@ -457,6 +483,8 @@ const defaultSort = {
     order: SORT_ASC,
 } as const;
 
+const DEFAULT_MAX_RESULTS = 1000;
+
 export const injectedProps = [
     'sort',
     'data',
@@ -464,6 +492,7 @@ export const injectedProps = [
     'displayedFilters',
     'error',
     'exporter',
+    'getData',
     'filterValues',
     'hasNextPage',
     'hasPreviousPage',
@@ -508,11 +537,17 @@ export const sanitizeListRestProps = props =>
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
+export interface GetDataOptions<RecordType extends RaRecord = any> {
+    maxResults?: number;
+    meta?: any;
+}
+
 export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     sort: SortPayload;
     defaultTitle?: string;
     displayedFilters: any;
     exporter?: Exporter | false;
+    getData?: (options?: GetDataOptions<RecordType>) => Promise<RecordType[]>;
     filter?: FilterPayload;
     filterValues: any;
     hideFilter: (filterName: string) => void;

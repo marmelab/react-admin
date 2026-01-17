@@ -8,7 +8,11 @@ import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
-import type { ListControllerResult, HandleSelectAllParams } from '../list';
+import type {
+    GetDataOptions,
+    HandleSelectAllParams,
+    ListControllerResult,
+} from '../list';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -270,6 +274,43 @@ export const useReferenceManyFieldController = <
         }
     );
 
+    const getData = useEvent(
+        async ({
+            maxResults,
+            meta: metaOverride,
+        }: GetDataOptions<ReferenceRecordType> = {}) => {
+            if (recordValue == null || total === 0) {
+                return [];
+            }
+            const limit =
+                maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
+            const { data } = await queryClient.fetchQuery({
+                queryKey: [
+                    resource,
+                    'getManyReference',
+                    {
+                        target,
+                        id: recordValue,
+                        pagination: { page: 1, perPage: limit },
+                        sort,
+                        filter: filterValues,
+                        meta: metaOverride ?? meta,
+                    },
+                ],
+                queryFn: () =>
+                    dataProvider.getManyReference(reference, {
+                        target,
+                        id: recordValue,
+                        pagination: { page: 1, perPage: limit },
+                        sort,
+                        filter: filterValues,
+                        meta: metaOverride ?? meta,
+                    }),
+            });
+            return data;
+        }
+    );
+
     return {
         sort,
         data,
@@ -305,6 +346,7 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
+        getData,
     } as ListControllerResult<ReferenceRecordType, ErrorType>;
 };
 
@@ -334,3 +376,4 @@ export interface UseReferenceManyFieldControllerParams<
 }
 
 const defaultFilter = {};
+const DEFAULT_MAX_RESULTS = 1000;
