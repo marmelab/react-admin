@@ -326,6 +326,7 @@ export const useReferenceManyFieldController = <
         defaultTitle: undefined,
         displayedFilters,
         error,
+        exporter,
         filterValues,
         hideFilter,
         isFetching,
