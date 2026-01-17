@@ -7,7 +7,13 @@ import lodashDebounce from 'lodash/debounce.js';
 import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
+import {
+    Exporter,
+    FilterPayload,
+    Identifier,
+    RaRecord,
+    SortPayload,
+} from '../../types';
 import type {
     GetDataOptions,
     HandleSelectAllParams,
@@ -18,6 +24,7 @@ import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 import { useRecordContext } from '../record';
+import { defaultExporter } from '../../export';
 
 /**
  * Fetch reference records, and return them when available
@@ -62,6 +69,7 @@ export const useReferenceManyFieldController = <
         reference,
         target,
         filter = defaultFilter,
+        exporter = defaultExporter,
         source = 'id',
         page: initialPage,
         perPage: initialPerPage,
@@ -351,6 +359,7 @@ export const useReferenceManyFieldController = <
 };
 
 export interface UseReferenceManyFieldControllerParams<
+    exporter,
     RecordType extends Record<string, any> = Record<string, any>,
     ReferenceRecordType extends Record<string, any> = Record<string, any>,
     ErrorType = Error,
@@ -362,6 +371,7 @@ export interface UseReferenceManyFieldControllerParams<
     record?: RecordType;
     reference: string;
     resource?: string;
+    exporter?: Exporter<ReferenceRecordType> | false;
     sort?: SortPayload;
     source?: string;
     storeKey?: string;

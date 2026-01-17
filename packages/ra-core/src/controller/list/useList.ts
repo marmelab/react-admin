@@ -3,13 +3,14 @@ import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 
 import { removeEmpty } from '../../util';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { Exporter, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
 import { GetDataOptions, ListControllerResult } from './useListController';
 import { flattenObject } from '../../dataProvider/fetch';
+import { defaultExporter } from '../../export';
 
 const refetch = () => {
     throw new Error(
@@ -68,6 +69,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         perPage: initialPerPage = 1000,
         sort: initialSort,
         filterCallback = defaultFilterCallback,
+        exporter = defaultExporter,
     } = props;
     const resource = useResourceContext(props);
 
@@ -273,6 +275,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         defaultTitle: '',
         error: error ?? null,
         displayedFilters,
+        exporter,
         filterValues,
         hasNextPage:
             finalItems?.total == null
@@ -321,6 +324,7 @@ export interface UseListOptions<
     sort?: SortPayload;
     resource?: string;
     filterCallback?: (record: RecordType) => boolean;
+    exporter?: Exporter<RecordType> | false;
 }
 
 export type UseListValue<
