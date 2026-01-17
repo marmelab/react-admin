@@ -17,11 +17,11 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import { Divider } from '@mui/material';
-import { Outlet, Routes, Route } from 'react-router-dom';
 import {
     type RaRecord,
     useRecordContext,
     OptionalRecordContextProvider,
+    useRouterProvider,
 } from 'ra-core';
 
 import {
@@ -95,6 +95,7 @@ export const TabbedShowLayout = (inProps: TabbedShowLayoutProps) => {
         value,
         ...rest
     } = props;
+    const { Route, Routes, Outlet } = useRouterProvider();
     const record = useRecordContext(props);
     const nonNullChildren = Children.toArray(children).filter(
         child => child !== null

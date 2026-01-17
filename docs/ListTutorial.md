@@ -695,13 +695,13 @@ For instance, if you have a list of posts ordered by publication date, and you w
 {% raw %}
 ```tsx
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
+import { LinkBase } from 'react-admin';
 import { stringify } from 'query-string';
 
 const SortByViews = () => (
     <Button
         color="primary"
-        component={Link}
+        component={LinkBase}
         to={{
             pathname: '/posts',
             search: stringify({

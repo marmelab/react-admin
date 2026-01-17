@@ -10,8 +10,8 @@ import {
     ListContext,
     ResourceContextProvider,
     ResourceDefinitionContextProvider,
+    type RouterLocation,
 } from 'ra-core';
-import { Location } from 'react-router';
 
 import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
@@ -91,7 +91,7 @@ describe('<SimpleList />', () => {
     ])(
         'Providing %s as linkType should render a link for each item',
         async (_, linkType, expectedUrl) => {
-            let location: Location;
+            let location: RouterLocation;
             render(
                 <LinkType
                     linkType={linkType}
@@ -161,7 +161,7 @@ describe('<SimpleList />', () => {
     ])(
         'Providing %s as rowClick should render a link for each item',
         async (_, rowClick, expectedUrls) => {
-            let location: Location;
+            let location: RouterLocation;
             render(
                 <RowClick
                     rowClick={rowClick}

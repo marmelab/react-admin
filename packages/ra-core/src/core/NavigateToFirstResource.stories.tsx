@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, LinkBase } from '../routing';
 import { CoreAdmin } from './CoreAdmin';
 import { Resource } from './Resource';
 import { Browser } from '../storybook/FakeBrowser';
 import { QueryClient } from '@tanstack/react-query';
 import { AuthProvider } from '../types';
-import { Link } from 'react-router-dom';
 
 export default {
     title: 'ra-core/core/NavigateToFirstResource',
@@ -66,7 +65,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
                 list={() => (
                     <div>
                         <div>Posts</div>
-                        <Link to="/">Go home</Link>
+                        <LinkBase to="/">Go home</LinkBase>
                     </div>
                 )}
             />
@@ -75,7 +74,7 @@ const AccessControlAdmin = ({ queryClient }: { queryClient: QueryClient }) => {
                 list={() => (
                     <div>
                         <div>Users</div>
-                        <Link to="/">Go home</Link>
+                        <LinkBase to="/">Go home</LinkBase>
                     </div>
                 )}
             />

@@ -7,9 +7,8 @@ import {
     useThemeProps,
 } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
-import { useTranslate } from 'ra-core';
+import { useTranslate, LinkBase } from 'ra-core';
 import { Button } from '../button';
-import { Link } from 'react-router-dom';
 
 export const AuthError = (inProps: AuthErrorProps) => {
     const props = useThemeProps({
@@ -29,7 +28,11 @@ export const AuthError = (inProps: AuthErrorProps) => {
             <div className={AuthErrorClasses.message}>
                 <h1>{translate(title, { _: title })}</h1>
                 <div>{translate(message, { _: message })}</div>
-                <Button component={Link} to="/login" label="ra.auth.sign_in">
+                <Button
+                    component={LinkBase}
+                    to="/login"
+                    label="ra.auth.sign_in"
+                >
                     <LockIcon />
                 </Button>
             </div>

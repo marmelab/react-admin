@@ -2,7 +2,7 @@ import * as React from 'react';
 import expect from 'expect';
 import { waitFor, render, screen } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
-import { Location } from 'react-router';
+import { RouterLocation } from '../routing';
 import { Basic } from './useRequireAccess.stories';
 
 describe('useRequireAccess', () => {
@@ -78,7 +78,7 @@ describe('useRequireAccess', () => {
     });
 
     it('should redirect to /access-denied when users do not have access in an Admin with basename', async () => {
-        let location: Location;
+        let location: RouterLocation;
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -103,7 +103,7 @@ describe('useRequireAccess', () => {
     });
 
     it('should redirect to /authentication-error when auth.canAccess call fails in an Admin with basename', async () => {
-        let location: Location;
+        let location: RouterLocation;
         const authProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),

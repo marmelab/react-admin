@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useQuery, UseQueryOptions } from '@tanstack/react-query';
-import { useLocation } from 'react-router';
-import { useRedirect } from '../routing';
+import { useRedirect, useLocation } from '../routing';
 import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
 import { useEvent } from '../util';

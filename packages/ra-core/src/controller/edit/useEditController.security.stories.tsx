@@ -1,14 +1,13 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 import { Browser } from '../../storybook/FakeBrowser';
 import { CoreAdmin } from '../../core/CoreAdmin';
 import { CoreAdminContext } from '../../core/CoreAdminContext';
 import { CoreAdminUI } from '../../core/CoreAdminUI';
 import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
-import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
+import { TestMemoryRouter, LinkBase } from '../../routing';
 import { EditControllerProps, useEditController } from './useEditController';
 import { useAuthState } from '../..';
 
@@ -42,7 +41,7 @@ const PostList = () => {
     return (
         <div style={styles.mainContainer}>
             <div>List view</div>
-            <Link to="/posts/1">Edit</Link>
+            <LinkBase to="/posts/1">Edit</LinkBase>
         </div>
     );
 };
@@ -62,7 +61,7 @@ const Post = (props: Partial<EditControllerProps>) => {
                     {params.record.title} - {params.record.votes} votes
                 </div>
             )}
-            <Link to="/posts">List</Link>
+            <LinkBase to="/posts">List</LinkBase>
         </div>
     );
 };
@@ -196,7 +195,7 @@ const AccessControlAdmin = ({
                     list={
                         <div>
                             <div>List</div>
-                            <Link to="/posts/1">Edit</Link>
+                            <LinkBase to="/posts/1">Edit</LinkBase>
                         </div>
                     }
                     edit={<Post />}

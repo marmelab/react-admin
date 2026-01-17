@@ -1,7 +1,6 @@
 import * as React from 'react';
 import fakeDataProvider from 'ra-data-fakerest';
 import { QueryClient } from '@tanstack/react-query';
-import { Link } from 'react-router-dom';
 
 import { Browser } from '../../storybook/FakeBrowser';
 import { CoreAdmin } from '../../core/CoreAdmin';
@@ -10,7 +9,7 @@ import { CoreAdminUI } from '../../core/CoreAdminUI';
 import { Resource } from '../../core/Resource';
 import { AuthProvider, DataProvider } from '../../types';
 import { ListControllerProps, useListController } from './useListController';
-import { TestMemoryRouter } from '../../routing/TestMemoryRouter';
+import { TestMemoryRouter, LinkBase } from '../../routing';
 import { useAuthState } from '../..';
 
 export default {
@@ -48,7 +47,7 @@ const Dashboard = () => {
     return (
         <div style={styles.mainContainer}>
             <div>Dashboard view</div>
-            <Link to="/posts">List</Link>
+            <LinkBase to="/posts">List</LinkBase>
         </div>
     );
 };
@@ -73,7 +72,7 @@ const Posts = (props: Partial<ListControllerProps>) => {
                     </ul>
                 </div>
             )}
-            <Link to="/">Dashboard</Link>
+            <LinkBase to="/">Dashboard</LinkBase>
         </div>
     );
 };
@@ -249,7 +248,7 @@ const AccessDenied = () => {
     return (
         <div>
             <div>Access denied</div>
-            <Link to="/posts">List</Link>
+            <LinkBase to="/posts">List</LinkBase>
         </div>
     );
 };

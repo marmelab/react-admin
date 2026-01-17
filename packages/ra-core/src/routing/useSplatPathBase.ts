@@ -1,4 +1,5 @@
-import { useLocation, useParams } from 'react-router-dom';
+import { useLocation } from './useLocation';
+import { useParams } from './useParams';
 
 /**
  * Utility hook to get the base path of a splat path.

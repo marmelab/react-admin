@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from './useLocation';
 
 /**
  * Scroll the window to top when the target location contains the _scrollToTop state

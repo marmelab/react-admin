@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
-import { useParams } from 'react-router-dom';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { RaRecord, MutationMode, TransformData } from '../../types';
-import { useRedirect, RedirectionSideEffect } from '../../routing';
+import { useRedirect, RedirectionSideEffect, useParams } from '../../routing';
 import { useNotify } from '../../notification';
 import {
     useGetOne,
@@ -83,7 +82,7 @@ export const useEditController = <
     const translate = useTranslate();
     const notify = useNotify();
     const redirect = useRedirect();
-    const { id: routeId } = useParams<'id'>();
+    const { id: routeId } = useParams<{ id?: string }>();
     if (!routeId && !propsId) {
         throw new Error(
             'useEditController requires an id prop or a route with an /:id? parameter.'

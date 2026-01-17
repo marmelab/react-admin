@@ -1,25 +1,22 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
-import {
-    useInRouterContext,
-    createHashRouter,
-    RouterProvider,
-    FutureConfig,
-} from 'react-router-dom';
 
 import { BasenameContextProvider } from './BasenameContextProvider';
+import { useRouterProvider } from './RouterProviderContext';
 
 /**
- * Creates a react-router Router unless the app is already inside existing router.
- * Also creates a BasenameContext with the basename prop
+ * Creates a Router unless the app is already inside existing router.
+ * Also creates a BasenameContext with the basename prop.
+ *
+ * Uses the RouterWrapper from the configured routerProvider to create
+ * the appropriate router type (HashRouter by default with react-router).
  */
 export const AdminRouter = ({ basename = '', children }: AdminRouterProps) => {
+    const { RouterWrapper, useInRouterContext } = useRouterProvider();
     const isInRouter = useInRouterContext();
-    const Router = isInRouter ? DummyRouter : InternalRouter;
 
     return (
         <BasenameContextProvider basename={isInRouter ? basename : ''}>
-            <Router basename={basename}>{children}</Router>
+            <RouterWrapper basename={basename}>{children}</RouterWrapper>
         </BasenameContextProvider>
     );
 };
@@ -28,34 +25,3 @@ export interface AdminRouterProps {
     basename?: string;
     children: React.ReactNode;
 }
-
-const DummyRouter = ({
-    children,
-}: {
-    children: ReactNode;
-    basename?: string;
-}) => <>{children}</>;
-
-const routerProviderFuture: Partial<
-    Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
-> = { v7_startTransition: false, v7_relativeSplatPath: false };
-
-const InternalRouter = ({
-    children,
-    basename,
-}: {
-    children: ReactNode;
-    basename?: string;
-}) => {
-    const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
-        basename,
-        future: {
-            v7_fetcherPersist: false,
-            v7_normalizeFormMethod: false,
-            v7_partialHydration: false,
-            v7_relativeSplatPath: false,
-            v7_skipActionErrorRevalidation: false,
-        },
-    });
-    return <RouterProvider router={router} future={routerProviderFuture} />;
-};
