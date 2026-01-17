@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     CoreAdminContext,
     ListContextProvider,
+    downloadCSV,
     testDataProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -16,7 +17,13 @@ const dataProvider = testDataProvider({
     getList: () => Promise.resolve({ data: [], total: 0 }),
 });
 
-const noopExporter = () => undefined;
+const simpleExporter = records => {
+    const header = 'id,title';
+    const rows = records.map(
+        record => `${record.id},${record.title ?? record.name ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
 
 export const Basic = () => (
     <CoreAdminContext dataProvider={dataProvider}>
@@ -26,7 +33,7 @@ export const Basic = () => (
                     {
                         resource: 'posts',
                         filterValues: {},
-                        exporter: noopExporter,
+                        exporter: simpleExporter,
                         total: 1,
                     } as any
                 }
@@ -45,7 +52,7 @@ export const WithGetData = () => (
                     {
                         resource: 'posts',
                         filterValues: {},
-                        exporter: noopExporter,
+                        exporter: simpleExporter,
                         total: 1,
                         getData: () =>
                             Promise.resolve([{ id: 1, title: 'Book' }]),

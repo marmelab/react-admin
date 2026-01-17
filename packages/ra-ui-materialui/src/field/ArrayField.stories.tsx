@@ -7,6 +7,7 @@ import {
     testDataProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    downloadCSV,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -135,7 +136,13 @@ export const ListContext = () => (
     </TestMemoryRouter>
 );
 
-const noopExporter = () => undefined;
+const simpleExporter = records => {
+    const header = 'id,title';
+    const rows = records.map(
+        record => `${record.id},${record.title ?? record.name ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
 
 export const WithExporter = () => (
     <TestMemoryRouter>
@@ -147,7 +154,7 @@ export const WithExporter = () => (
             <ArrayField
                 record={{ id: 123, books }}
                 source="books"
-                exporter={noopExporter}
+                exporter={simpleExporter}
             >
                 <ExportButton />
                 <SingleFieldList linkType={false}>

@@ -4,6 +4,7 @@ import { Alert, CardContent } from '@mui/material';
 import {
     IsOffline,
     ResourceDefinitionContextProvider,
+    downloadCSV,
     useIsOffline,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
@@ -78,7 +79,13 @@ export const Children = () => (
     </AdminContext>
 );
 
-const noopExporter = () => undefined;
+const simpleExporter = records => {
+    const header = 'id,name';
+    const rows = records.map(
+        record => `${record.id},${record.name ?? record.title ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
 
 export const WithExporter = () => (
     <AdminContext dataProvider={dataProvider} defaultTheme="light">
@@ -89,7 +96,7 @@ export const WithExporter = () => (
                     <ReferenceArrayField
                         source="members"
                         reference="artists"
-                        exporter={noopExporter}
+                        exporter={simpleExporter}
                     >
                         <ExportButton />
                         <DataTable bulkActionButtons={false}>

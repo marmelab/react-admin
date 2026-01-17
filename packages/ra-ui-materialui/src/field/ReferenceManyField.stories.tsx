@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
     useIsOffline,
     IsOffline,
+    downloadCSV,
 } from 'ra-core';
 import { Admin, ListGuesser, Resource } from 'react-admin';
 import type { AdminProps } from 'react-admin';
@@ -126,14 +127,20 @@ export const Basic = () => (
     </Wrapper>
 );
 
-const noopExporter = () => undefined;
+const simpleExporter = records => {
+    const header = 'id,title';
+    const rows = records.map(
+        record => `${record.id},${record.title ?? record.name ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
 
 export const WithExporter = () => (
     <Wrapper>
         <ReferenceManyField
             reference="books"
             target="author_id"
-            exporter={noopExporter}
+            exporter={simpleExporter}
         >
             <ExportButton />
             <DataTable>
