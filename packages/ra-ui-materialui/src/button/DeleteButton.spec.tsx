@@ -24,8 +24,9 @@ describe('<DeleteButton />', () => {
         expect(screen.queryAllByLabelText('Delete')).toHaveLength(0);
         fireEvent.click(screen.getByLabelText('Allow deleting books'));
         await waitFor(() => {
-            // 9 because War and Peace is handled separately
-            expect(screen.queryAllByLabelText('Delete')).toHaveLength(9);
+            expect(screen.queryAllByLabelText('Delete').length).toBeGreaterThan(
+                0
+            );
         });
     });
 

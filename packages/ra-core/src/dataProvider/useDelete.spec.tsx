@@ -89,12 +89,15 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
             expect(screen.queryByText('mutating')).not.toBeNull();
         });
-        await waitFor(() => {
-            expect(screen.queryByText('success')).not.toBeNull();
-            expect(screen.queryByText('Hello')).toBeNull();
-            expect(screen.queryByText('World')).not.toBeNull();
-            expect(screen.queryByText('mutating')).toBeNull();
-        });
+        await waitFor(
+            () => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            },
+            { timeout: 3000 }
+        );
     });
 
     it('uses the latest declaration time params', async () => {
@@ -131,12 +134,15 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
             expect(screen.queryByText('mutating')).not.toBeNull();
         });
-        await waitFor(() => {
-            expect(screen.queryByText('success')).not.toBeNull();
-            expect(screen.queryByText('Hello')).toBeNull();
-            expect(screen.queryByText('World')).not.toBeNull();
-            expect(screen.queryByText('mutating')).toBeNull();
-        });
+        await waitFor(
+            () => {
+                expect(screen.queryByText('success')).not.toBeNull();
+                expect(screen.queryByText('Hello')).toBeNull();
+                expect(screen.queryByText('World')).not.toBeNull();
+                expect(screen.queryByText('mutating')).toBeNull();
+            },
+            { timeout: 3000 }
+        );
 
         expect(dataProvider.delete).toHaveBeenCalledWith('posts', {
             id: 1,

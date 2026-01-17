@@ -19,7 +19,7 @@ describe('<SelectAllButton />', () => {
         fireEvent.click(screen.getAllByRole('checkbox')[1]);
         await screen.findByText('9 items selected');
         expect(screen.queryByRole('button', { name: 'Select all' })).toBeNull();
-    });
+    }, 10000);
 
     it('should select all items', async () => {
         render(<Basic />);

@@ -1,5 +1,6 @@
 import { chipClasses } from '@mui/material/Chip';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import expect from 'expect';
 import {
     ListContext,
@@ -292,42 +293,40 @@ describe('<FilterForm />', () => {
     });
 
     it('should not reapply previous filter form values when clearing nested AutocompleteArrayInput', async () => {
+        const user = userEvent.setup();
         render(<WithAutoCompleteArrayInput />);
 
         // Open Posts List
-        fireEvent.click(await screen.findByText('Posts'));
+        await user.click(await screen.findByText('Posts'));
 
         // Set nested filter value to 'bar'
-        fireEvent.click(await screen.findByLabelText('Add filter'));
-        fireEvent.click(
+        await user.click(await screen.findByLabelText('Add filter'));
+        await user.click(
             await screen.findByRole('menuitemcheckbox', { name: 'Nested' })
         );
-        fireEvent.click(await screen.findByText('bar'));
-        fireEvent.blur(await screen.findByLabelText('Nested'));
+        const nestedInput = await screen.findByLabelText('Nested');
+        await user.click(nestedInput);
+        await user.keyboard('{ArrowDown}');
+        await user.click(await screen.findByRole('option', { name: 'bar' }));
+        fireEvent.blur(nestedInput);
         await screen.findByText('1-7 of 7');
         expect(screen.queryByRole('button', { name: 'bar' })).not.toBeNull();
 
         // Navigate to Dashboard
-        fireEvent.click(await screen.findByText('Dashboard'));
+        await user.click(await screen.findByText('Dashboard'));
         // Navigate back to Posts List
-        fireEvent.click(await screen.findByText('Posts'));
+        await user.click(await screen.findByText('Posts'));
         // Filter should still be applied
         await screen.findByText('1-7 of 7');
         expect(screen.queryByRole('button', { name: 'bar' })).not.toBeNull();
 
         // Clear nested filter value
-        fireEvent.mouseDown(
-            await screen.findByLabelText('Nested', { selector: 'input' })
-        );
-        fireEvent.keyDown(
-            await screen.findByLabelText('Nested', { selector: 'input' }),
-            {
-                key: 'Backspace',
-            }
-        );
-        fireEvent.blur(
-            await screen.findByLabelText('Nested', { selector: 'input' })
-        );
+        const nestedInputField = await screen.findByLabelText('Nested', {
+            selector: 'input',
+        });
+        fireEvent.mouseDown(nestedInputField);
+        fireEvent.keyDown(nestedInputField, { key: 'Backspace' });
+        fireEvent.blur(nestedInputField);
 
         // Wait until filter is cleared
         await screen.findByText('1-10 of 13');
