@@ -51,4 +51,48 @@ describe('<ExportButton />', () => {
             expect(exporter).toHaveBeenCalled();
         });
     });
+
+    it('should use getData from the ListContext when available', async () => {
+        const exporter = jest.fn().mockName('exporter');
+        const getData = jest.fn().mockResolvedValueOnce([{ id: 1 }]);
+        const dataProvider = testDataProvider({
+            getList: jest.fn().mockResolvedValueOnce({ data: [], total: 0 }),
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <ListContextProvider
+                        value={
+                            {
+                                resource: 'test',
+                                filterValues: {},
+                                getData,
+                            } as any
+                        }
+                    >
+                        <ExportButton
+                            exporter={exporter}
+                            meta={{ pass: 'meta' }}
+                        />
+                    </ListContextProvider>
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+
+        fireEvent.click(screen.getByLabelText('ra.action.export'));
+
+        await waitFor(() => {
+            expect(getData).toHaveBeenCalledWith({
+                maxResults: 1000,
+                meta: { pass: 'meta' },
+            });
+            expect(dataProvider.getList).not.toHaveBeenCalled();
+            expect(exporter).toHaveBeenCalled();
+            const [call] = exporter.mock.calls;
+            expect(call[0]).toEqual([{ id: 1 }]);
+            expect(call[1]).toEqual(expect.any(Function));
+            expect(call[3]).toBe('test');
+        });
+    });
 });
