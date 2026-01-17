@@ -64,6 +64,7 @@ const {
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
     meta, // Additional information about the list, like facets & statistics
+    getData, // Async callback that returns the full list data (ignores pagination)
     isPending, // Boolean, true until the data is available
     isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
     isLoading, // Boolean, true until the data is fetched for the first time
