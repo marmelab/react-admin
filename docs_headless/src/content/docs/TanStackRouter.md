@@ -11,19 +11,18 @@ Ra-core supports [TanStack Router](https://tanstack.com/router/latest) as an alt
 To use TanStack Router with ra-core, install the required packages:
 
 ```bash
-npm install @tanstack/react-router @tanstack/history
+npm install ra-router-tanstack @tanstack/react-router @tanstack/history
 # or
-yarn add @tanstack/react-router @tanstack/history
+yarn add ra-router-tanstack @tanstack/react-router @tanstack/history
 ```
-
-These packages are optional peer dependencies of `ra-core`, so they won't be installed automatically.
 
 ## Configuration
 
-To use TanStack Router, pass the `tanStackRouterProvider` to the `<CoreAdmin>` component:
+To use TanStack Router, set the `<Admin routerProvider>` to `tanStackRouterProvider`:
 
 ```jsx
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit, PostCreate, PostShow } from './posts';
 
@@ -61,7 +60,8 @@ This is the simplest setup and requires no additional configuration.
 
 ```jsx
 // Standalone mode - ra-core creates the router
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const App = () => (
     <CoreAdmin
@@ -88,7 +88,8 @@ import {
     Link,
 } from '@tanstack/react-router';
 import { createHashHistory } from '@tanstack/history';
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit } from './posts';
 
@@ -142,10 +143,11 @@ export default App;
 
 ## Custom Routes
 
-Custom routes work the same way as with react-router. You can use `<CustomRoutes>` to add custom pages:
+You can use `<CustomRoutes>` to add custom pages. Use the `Route` component from `tanStackRouterProvider` to define routes:
 
 ```jsx
-import { CoreAdmin, Resource, CustomRoutes, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const { Route } = tanStackRouterProvider;
 

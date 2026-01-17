@@ -9,13 +9,8 @@ import {
 } from '@tanstack/react-router';
 import { createHashHistory } from '@tanstack/history';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import {
-    tanStackRouterProvider,
-    CustomRoutes,
-    useGetList,
-    Resource,
-    LinkBase,
-} from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
+import { CustomRoutes, useGetList, Resource, LinkBase } from 'ra-core';
 import {
     List,
     Datagrid,

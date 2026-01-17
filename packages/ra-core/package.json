@@ -15,14 +15,9 @@
     "type": "module",
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/index.cjs"
-            }
+            "types": "./dist/index.d.cts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
         }
     },
     "sideEffects": false,
@@ -62,22 +57,12 @@
         "zshy": "^0.5.0"
     },
     "peerDependencies": {
-        "@tanstack/history": "^1.0.0",
         "@tanstack/react-query": "^5.83.0",
-        "@tanstack/react-router": "^1.0.0",
         "react": "^18.0.0 || ^19.0.0",
         "react-dom": "^18.0.0 || ^19.0.0",
         "react-hook-form": "^7.65.0",
         "react-router": "^6.28.1 || ^7.1.1",
         "react-router-dom": "^6.28.1 || ^7.1.1"
-    },
-    "peerDependenciesMeta": {
-        "@tanstack/history": {
-            "optional": true
-        },
-        "@tanstack/react-router": {
-            "optional": true
-        }
     },
     "dependencies": {
         "date-fns": "^3.6.0",

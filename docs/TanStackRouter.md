@@ -12,19 +12,18 @@ React-admin supports [TanStack Router](https://tanstack.com/router/latest) as an
 To use TanStack Router with react-admin, install the required packages:
 
 ```bash
-npm install @tanstack/react-router @tanstack/history
+npm install ra-router-tanstack @tanstack/react-router @tanstack/history
 # or
-yarn add @tanstack/react-router @tanstack/history
+yarn add ra-router-tanstack @tanstack/react-router @tanstack/history
 ```
-
-These packages are optional peer dependencies of `ra-core`, so they won't be installed automatically.
 
 ## Configuration
 
-To use TanStack Router, pass the `tanStackRouterProvider` to the `<Admin>` component:
+To use TanStack Router, set the `<Admin routerProvider>` to `tanStackRouterProvider`:
 
 ```tsx
-import { Admin, Resource, ListGuesser, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource, ListGuesser } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 
 const App = () => (
@@ -56,7 +55,8 @@ This is the simplest setup and requires no additional configuration.
 
 ```tsx
 // Standalone mode - react-admin creates the router
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const App = () => (
     <Admin
@@ -83,7 +83,8 @@ import {
     Link,
 } from '@tanstack/react-router';
 import { createHashHistory } from '@tanstack/history';
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 import { PostList, PostEdit } from './posts';
 
@@ -137,10 +138,11 @@ export default App;
 
 ## Custom Routes
 
-Custom routes work the same way as with react-router. You can use `<CustomRoutes>` to add custom pages:
+You can use `<CustomRoutes>` to add custom pages. Use the `Route` component from `tanStackRouterProvider` to define routes:
 
 ```tsx
-import { Admin, Resource, CustomRoutes, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource, CustomRoutes } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const { Route } = tanStackRouterProvider;
 

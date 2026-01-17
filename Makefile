@@ -43,6 +43,10 @@ build-ra-core:
 	@echo "Transpiling ra-core files...";
 	@cd ./packages/ra-core && yarn build
 
+build-ra-router-tanstack:
+	@echo "Transpiling ra-router-tanstack files...";
+	@cd ./packages/ra-router-tanstack && yarn build
+
 build-ra-ui-materialui:
 	@echo "Transpiling ra-ui-materialui files...";
 	@cd ./packages/ra-ui-materialui && yarn build
@@ -116,7 +120,7 @@ update-package-exports: ## Update the package.json "exports" field for all packa
 	@echo "Updating package exports..."
 	@yarn tsx ./scripts/update-package-exports.ts
 
-build: build-ra-core build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-local-forage build-ra-data-local-storage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-ra-i18n-polyglot build-react-admin build-ra-no-code build-create-react-admin update-package-exports  ## compile ES6 files to JS
+build: build-ra-core build-ra-router-tanstack build-ra-data-fakerest build-ra-ui-materialui build-ra-data-json-server build-ra-data-local-forage build-ra-data-local-storage build-ra-data-simple-rest build-ra-data-graphql build-ra-data-graphql-simple build-ra-input-rich-text build-data-generator build-ra-language-english build-ra-language-french build-ra-i18n-i18next build-ra-i18n-polyglot build-react-admin build-ra-no-code build-create-react-admin update-package-exports  ## compile ES6 files to JS
 
 doc: ## compile doc as html and launch doc web server
 	@yarn doc

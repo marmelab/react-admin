@@ -26,8 +26,8 @@ import type {
     RouterRouteProps,
     RouterRoutesProps,
     RouterOutletProps,
-} from '../RouterProvider';
-import { useBasename } from '../useBasename';
+} from 'ra-core';
+import { useBasename } from 'ra-core';
 
 /**
  * TanStack Router adapter for react-admin.

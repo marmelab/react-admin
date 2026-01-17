@@ -11,18 +11,36 @@ import {
 } from '@tanstack/react-router';
 import { createHashHistory } from '@tanstack/history';
 
-import { useNavigate, useLocation, LinkBase, useBlocker } from '..';
 import {
+    useNavigate,
+    useLocation,
+    LinkBase,
+    useBlocker,
     ListBase,
     ShowBase,
     EditBase,
     CreateBase,
     useRecordContext,
-} from '../../controller';
-import { CoreAdmin, Resource, CustomRoutes } from '../../core';
-import { Form } from '../../form';
+    CoreAdmin,
+    Resource,
+    CustomRoutes,
+    Form,
+    useInput,
+    type InputProps,
+} from 'ra-core';
+
+// Simple TextInput for stories - uses ra-core's useInput hook
+const TextInput = (props: InputProps) => {
+    const { id, field } = useInput(props);
+    return (
+        <div>
+            <label htmlFor={id}>{props.source}</label>
+            <br />
+            <input id={id} {...field} type="text" />
+        </div>
+    );
+};
 import { tanStackRouterProvider } from './tanStackRouterProvider';
-import { TextInput } from '../../test-ui';
 
 const {
     useParams,
@@ -34,7 +52,7 @@ const {
 } = tanStackRouterProvider;
 
 export default {
-    title: 'ra-core/routing/TanStack Router Provider',
+    title: 'ra-routing-tanstack/TanStack Router Provider',
 };
 
 const dataProvider = fakeDataProvider(
