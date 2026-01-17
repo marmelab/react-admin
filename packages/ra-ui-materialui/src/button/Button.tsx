@@ -29,12 +29,16 @@ import { Path, To } from 'react-router';
  *
  */
 type ButtonComponent = <RootComponent extends React.ElementType = 'button'>(
-    props: ButtonProps<RootComponent> & React.RefAttributes<HTMLElement>
+    props: ButtonProps<RootComponent> &
+        React.RefAttributes<HTMLButtonElement | HTMLAnchorElement>
 ) => React.ReactElement | null;
 
 export const Button = React.forwardRef(function Button<
     RootComponent extends React.ElementType = 'button',
->(inProps: ButtonProps<RootComponent>, ref: React.ForwardedRef<HTMLElement>) {
+>(
+    inProps: ButtonProps<RootComponent>,
+    ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>
+) {
     const props = useThemeProps({ props: inProps, name: PREFIX });
     const {
         alignIcon = 'left',
@@ -65,7 +69,7 @@ export const Button = React.forwardRef(function Button<
         label && !disabled ? (
             <Tooltip title={translatedLabel}>
                 <IconButton
-                    ref={ref}
+                    ref={ref as React.Ref<HTMLButtonElement>}
                     // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
                     aria-label={
                         typeof translatedLabel === 'string'
@@ -83,7 +87,7 @@ export const Button = React.forwardRef(function Button<
             </Tooltip>
         ) : (
             <IconButton
-                ref={ref}
+                ref={ref as React.Ref<HTMLButtonElement>}
                 className={className}
                 color={color}
                 disabled={disabled}
@@ -96,7 +100,7 @@ export const Button = React.forwardRef(function Button<
         )
     ) : (
         <StyledButton
-            ref={ref}
+            ref={ref as React.Ref<HTMLButtonElement>}
             className={className}
             color={color}
             size={size}

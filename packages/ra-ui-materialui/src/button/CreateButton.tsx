@@ -35,7 +35,7 @@ import { Button, type ButtonProps, type LocationDescriptor } from './Button';
  */
 const CreateButton = React.forwardRef(function CreateButton(
     inProps: CreateButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLAnchorElement>
 ) {
     const props = useThemeProps({
         props: inProps,

@@ -35,7 +35,10 @@ import { Button, ButtonProps } from './Button';
  */
 export const EditButton = React.forwardRef(function EditButton<
     RecordType extends RaRecord = any,
->(inProps: EditButtonProps<RecordType>, ref: React.ForwardedRef<HTMLElement>) {
+>(
+    inProps: EditButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,

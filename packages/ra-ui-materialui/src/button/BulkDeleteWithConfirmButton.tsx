@@ -23,7 +23,7 @@ import { humanize, inflect } from 'inflection';
 export const BulkDeleteWithConfirmButton = React.forwardRef(
     function BulkDeleteWithConfirmButton(
         inProps: BulkDeleteWithConfirmButtonProps,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

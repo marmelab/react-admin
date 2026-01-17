@@ -36,7 +36,7 @@ import {
  */
 export const BulkUpdateButton = React.forwardRef(function BulkUpdateButton(
     props: BulkUpdateButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const {
         mutationMode = 'undoable',

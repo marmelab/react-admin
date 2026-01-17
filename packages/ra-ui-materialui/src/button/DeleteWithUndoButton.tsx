@@ -24,7 +24,7 @@ import {
 export const DeleteWithUndoButton = React.forwardRef(
     function DeleteWithUndoButton<RecordType extends RaRecord = any>(
         inProps: DeleteWithUndoButtonProps<RecordType>,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

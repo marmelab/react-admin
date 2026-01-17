@@ -35,7 +35,10 @@ import { Button, ButtonProps } from './Button';
  */
 const ShowButton = React.forwardRef(function ShowButton<
     RecordType extends RaRecord = any,
->(inProps: ShowButtonProps<RecordType>, ref: React.ForwardedRef<HTMLElement>) {
+>(
+    inProps: ShowButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,

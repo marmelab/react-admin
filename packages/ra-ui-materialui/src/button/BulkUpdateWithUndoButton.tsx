@@ -16,7 +16,7 @@ import { Button, type ButtonProps } from './Button';
 export const BulkUpdateWithUndoButton = React.forwardRef(
     function BulkUpdateWithUndoButton(
         inProps: BulkUpdateWithUndoButtonProps,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

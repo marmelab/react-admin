@@ -28,7 +28,7 @@ import { Button, ButtonProps } from './Button';
 export const DeleteWithConfirmButton = React.forwardRef(
     function DeleteWithConfirmButton<RecordType extends RaRecord = any>(
         inProps: DeleteWithConfirmButtonProps<RecordType>,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

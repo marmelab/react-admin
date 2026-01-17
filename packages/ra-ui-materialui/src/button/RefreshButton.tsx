@@ -12,7 +12,7 @@ import { Button, ButtonProps } from './Button';
 
 export const RefreshButton = React.forwardRef(function RefreshButton(
     inProps: RefreshButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const props = useThemeProps({
         props: inProps,

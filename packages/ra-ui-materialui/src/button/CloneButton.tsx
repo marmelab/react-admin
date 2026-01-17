@@ -14,7 +14,7 @@ import { Button, ButtonProps } from './Button';
 
 export const CloneButton = React.forwardRef(function CloneButton(
     inProps: CloneButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLAnchorElement>
 ) {
     const props = useThemeProps({
         props: inProps,

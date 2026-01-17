@@ -53,7 +53,7 @@ import { Button, type ButtonProps } from './Button';
  */
 export const SelectAllButton = React.forwardRef(function SelectAllButton(
     inProps: SelectAllButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const props = useThemeProps({
         props: inProps,

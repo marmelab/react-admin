@@ -39,7 +39,7 @@ import { Button, ButtonProps } from './Button';
  */
 export const BulkExportButton = React.forwardRef(function BulkExportButton(
     inProps: BulkExportButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const props = useThemeProps({
         props: inProps,

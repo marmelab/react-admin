@@ -12,7 +12,7 @@ import { Button, ButtonProps } from './Button';
 
 export const ExportButton = React.forwardRef(function ExportButton(
     props: ExportButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const {
         maxResults = 1000,

@@ -36,7 +36,7 @@ import {
  */
 export const BulkDeleteButton = React.forwardRef(function BulkDeleteButton(
     inProps: BulkDeleteButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const { mutationMode = 'undoable', ...props } = useThemeProps({
         name: PREFIX,

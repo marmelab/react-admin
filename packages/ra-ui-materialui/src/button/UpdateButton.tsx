@@ -32,7 +32,7 @@ import { useThemeProps } from '@mui/material/styles';
  */
 export const UpdateButton = React.forwardRef(function UpdateButton(
     props: UpdateButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLButtonElement>
 ) {
     const { mutationMode = 'undoable', ...rest } = useThemeProps({
         name: PREFIX,

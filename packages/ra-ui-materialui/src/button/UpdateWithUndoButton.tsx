@@ -22,7 +22,7 @@ import { Button, type ButtonProps } from './Button';
 export const UpdateWithUndoButton = React.forwardRef(
     function UpdateWithUndoButton(
         inProps: UpdateWithUndoButtonProps,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

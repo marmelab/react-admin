@@ -28,7 +28,7 @@ export const UpdateWithConfirmButton = React.forwardRef(
         MutationOptionsError extends Error = Error,
     >(
         inProps: UpdateWithConfirmButtonProps<RecordType, MutationOptionsError>,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

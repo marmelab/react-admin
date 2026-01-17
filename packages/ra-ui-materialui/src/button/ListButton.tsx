@@ -44,7 +44,7 @@ import { Button, type ButtonProps } from './Button';
  */
 export const ListButton = React.forwardRef(function ListButton(
     inProps: ListButtonProps,
-    ref: React.ForwardedRef<HTMLElement>
+    ref: React.ForwardedRef<HTMLAnchorElement>
 ) {
     const props = useThemeProps({
         props: inProps,

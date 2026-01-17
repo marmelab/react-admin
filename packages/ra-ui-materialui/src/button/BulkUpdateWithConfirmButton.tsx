@@ -22,7 +22,7 @@ import { humanize, inflect } from 'inflection';
 export const BulkUpdateWithConfirmButton = React.forwardRef(
     function BulkUpdateWithConfirmButton(
         inProps: BulkUpdateWithConfirmButtonProps,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,

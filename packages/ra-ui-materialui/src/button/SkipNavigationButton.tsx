@@ -9,7 +9,7 @@ import { Button, type ButtonProps } from './Button';
 export const SkipNavigationButton = React.forwardRef(
     function SkipNavigationButton(
         inProps: ButtonProps,
-        ref: React.ForwardedRef<HTMLElement>
+        ref: React.ForwardedRef<HTMLButtonElement>
     ) {
         const props = useThemeProps({
             props: inProps,
