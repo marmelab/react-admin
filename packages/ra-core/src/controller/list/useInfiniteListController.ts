@@ -204,10 +204,7 @@ export const useInfiniteListController = <
     );
 
     const getData = useEvent(
-        async ({
-            maxResults,
-            meta: metaOverride,
-        }: GetDataOptions<RecordType> = {}) => {
+        async ({ maxResults, meta: metaOverride }: GetDataOptions = {}) => {
             if (total === 0) {
                 return [];
             }

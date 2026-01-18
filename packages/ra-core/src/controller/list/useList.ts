@@ -256,7 +256,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     }, [data, selectionModifiers]);
 
     const getData = useCallback(
-        async ({ maxResults }: GetDataOptions<RecordType> = {}) => {
+        async ({ maxResults }: GetDataOptions = {}) => {
             if (isPending || !data) {
                 return [];
             }

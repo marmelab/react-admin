@@ -207,10 +207,7 @@ export const useListController = <
     });
 
     const getData = useEvent(
-        async ({
-            maxResults,
-            meta: metaOverride,
-        }: GetDataOptions<RecordType> = {}) => {
+        async ({ maxResults, meta: metaOverride }: GetDataOptions = {}) => {
             if (total === 0) {
                 return [];
             }
@@ -537,7 +534,7 @@ export const sanitizeListRestProps = props =>
         .filter(propName => !injectedProps.includes(propName))
         .reduce((acc, key) => ({ ...acc, [key]: props[key] }), {});
 
-export interface GetDataOptions<RecordType extends RaRecord = any> {
+export interface GetDataOptions {
     maxResults?: number;
     meta?: any;
 }
@@ -547,7 +544,8 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     defaultTitle?: string;
     displayedFilters: any;
     exporter?: Exporter | false;
-    getData?: (options?: GetDataOptions<RecordType>) => Promise<RecordType[]>;
+    // FIXME: make non-optional in next major
+    getData?: (options?: GetDataOptions) => Promise<RecordType[]>;
     filter?: FilterPayload;
     filterValues: any;
     hideFilter: (filterName: string) => void;
