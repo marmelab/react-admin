@@ -237,7 +237,7 @@ export const useReferenceManyFieldController = <
             try {
                 const results = await queryClient.fetchQuery({
                     queryKey: [
-                        resource,
+                        reference,
                         'getManyReference',
                         {
                             target,
@@ -283,10 +283,7 @@ export const useReferenceManyFieldController = <
     );
 
     const getData = useEvent(
-        async ({
-            maxResults,
-            meta: metaOverride,
-        }: GetDataOptions<ReferenceRecordType> = {}) => {
+        async ({ maxResults, meta: metaOverride }: GetDataOptions = {}) => {
             if (recordValue == null || total === 0) {
                 return [];
             }
@@ -294,7 +291,7 @@ export const useReferenceManyFieldController = <
                 maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
             const { data } = await queryClient.fetchQuery({
                 queryKey: [
-                    resource,
+                    reference,
                     'getManyReference',
                     {
                         target,
