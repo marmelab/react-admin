@@ -141,7 +141,10 @@ describe('<List />', () => {
                     resource: 'posts',
                 }}
             >
-                <ListView permanentFilter={{ is_published: true }} />
+                <ListView
+                    permanentFilter={{ is_published: true }}
+                    empty={<div>No posts found</div>}
+                />
             </ListContextProvider>
         );
 
