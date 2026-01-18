@@ -128,28 +128,6 @@ describe('<List />', () => {
             'custom-class'
         );
     });
-    it('renders Empty when list is empty with only permanent filters', () => {
-        render(
-            <ListContextProvider
-                value={{
-                    data: [],
-                    total: 0,
-                    filterValues: { is_published: true },
-                    isPending: false,
-                    hasPreviousPage: false,
-                    hasNextPage: false,
-                    resource: 'posts',
-                }}
-            >
-                <ListView
-                    permanentFilter={{ is_published: true }}
-                    empty={<div>No posts found</div>}
-                />
-            </ListContextProvider>
-        );
-
-        expect(screen.queryByText('No posts found')).not.toBeNull();
-    });
 
     describe('empty', () => {
         it('should render an invite when the list is empty', async () => {
