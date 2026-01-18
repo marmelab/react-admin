@@ -6,6 +6,7 @@ import {
     testDataProvider,
     useListContext,
     TestMemoryRouter,
+    ListContextProvider,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -14,6 +15,7 @@ import { List } from './List';
 import { Filter } from './filter';
 import { TextInput } from '../input';
 import { Notification } from '../layout';
+import { ListView } from './ListView';
 import {
     Basic,
     Title,
@@ -125,6 +127,25 @@ describe('<List />', () => {
         expect(screen.queryByTestId('themed-list').classList).toContain(
             'custom-class'
         );
+    });
+    it('renders Empty when list is empty with only permanent filters', () => {
+        render(
+            <ListContextProvider
+                value={{
+                    data: [],
+                    total: 0,
+                    filterValues: { is_published: true },
+                    isPending: false,
+                    hasPreviousPage: false,
+                    hasNextPage: false,
+                    resource: 'posts',
+                }}
+            >
+                <ListView permanentFilter={{ is_published: true }} />
+            </ListContextProvider>
+        );
+
+        expect(screen.queryByText('No posts found')).not.toBeNull();
     });
 
     describe('empty', () => {

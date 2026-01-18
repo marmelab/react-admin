@@ -104,7 +104,11 @@ export const List = <RecordType extends RaRecord = any>(
             // Disable offline support from ListBase as it is handled by ListView to keep the ListView container
             offline={false}
         >
-            <ListView<RecordType> {...rest} render={render} />
+            <ListView<RecordType>
+                {...rest}
+                render={render}
+                permanentFilter={filter}
+            />
         </ListBase>
     );
 };

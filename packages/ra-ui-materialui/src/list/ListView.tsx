@@ -41,6 +41,7 @@ export const ListView = <RecordType extends RaRecord = any>(
         render,
         offline = defaultOffline,
         error,
+        permanentFilter = {},
         ...rest
     } = props;
     const listContext = useListContext<RecordType>();
@@ -72,6 +73,12 @@ export const ListView = <RecordType extends RaRecord = any>(
     ) {
         return null;
     }
+
+    const permanentKeys = Object.keys(permanentFilter || {});
+    const userFilterKeys = Object.keys(filterValues).filter(
+        key => !permanentKeys.includes(key)
+    );
+    const hasUserFilter = userFilterKeys.length > 0;
 
     const renderList = () => (
         <div
@@ -115,7 +122,7 @@ export const ListView = <RecordType extends RaRecord = any>(
                 // @ts-ignore FIXME total may be undefined when using partial pagination but the ListControllerResult type is wrong about it
                 data.length === 0)) &&
         // the user didn't set any filters
-        !Object.keys(filterValues).length &&
+        !hasUserFilter &&
         // there is an empty page component
         empty !== false;
 
@@ -425,6 +432,15 @@ export interface ListViewProps<RecordType extends RaRecord = any> {
      * );
      */
     sx?: SxProps<Theme>;
+
+    /**
+     * Permanent filters applied to the list.
+     * These filters are not set by the user and should not prevent the empty
+     * page from being displayed when the list has no results.
+     *
+     * @see https://marmelab.com/react-admin/List.html#filter
+     */
+    permanentFilter?: Record<string, any>;
 }
 
 const PREFIX = 'RaList';
