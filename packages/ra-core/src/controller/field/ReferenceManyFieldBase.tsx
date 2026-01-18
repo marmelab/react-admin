@@ -68,6 +68,7 @@ export const ReferenceManyFieldBase = <
         error,
         loading,
         filter = defaultFilter,
+        exporter,
         offline,
         page = 1,
         perPage = 25,
@@ -87,6 +88,7 @@ export const ReferenceManyFieldBase = <
     >({
         debounce,
         filter,
+        exporter,
         page,
         perPage,
         record,

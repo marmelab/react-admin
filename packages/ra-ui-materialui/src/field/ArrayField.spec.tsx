@@ -4,6 +4,7 @@ import {
     CoreAdminContext,
     ResourceContextProvider,
     testDataProvider,
+    useListContext,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 
@@ -156,5 +157,39 @@ describe('<ArrayField />', () => {
                 )
             ).toBeTruthy();
         });
+    });
+
+    it('should expose getData with the full list', async () => {
+        const ListContextWatcher = () => {
+            const { getData } = useListContext();
+            const [count, setCount] = React.useState<number | null>(null);
+
+            React.useEffect(() => {
+                if (!getData) return;
+                getData().then(records => setCount(records.length));
+            }, [getData]);
+
+            return count !== null ? <span>count:{count}</span> : null;
+        };
+
+        render(
+            <Wrapper>
+                <ArrayField
+                    source="arr"
+                    perPage={1}
+                    record={{
+                        id: 123,
+                        arr: [
+                            { id: 1, foo: 'bar' },
+                            { id: 2, foo: 'baz' },
+                        ],
+                    }}
+                >
+                    <ListContextWatcher />
+                </ArrayField>
+            </Wrapper>
+        );
+
+        await screen.findByText('count:2');
     });
 });

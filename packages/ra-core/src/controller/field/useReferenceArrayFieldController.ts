@@ -1,9 +1,10 @@
 import get from 'lodash/get.js';
-import { RaRecord, SortPayload } from '../../types';
+import { Exporter, RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
 import { useNotify } from '../../notification';
 import { UseQueryOptions } from '@tanstack/react-query';
+import { defaultExporter } from '../../export';
 
 export interface UseReferenceArrayFieldControllerParams<
     RecordType extends RaRecord = RaRecord,
@@ -11,6 +12,7 @@ export interface UseReferenceArrayFieldControllerParams<
     ErrorType = Error,
 > {
     filter?: any;
+    exporter?: Exporter<ReferenceRecordType> | false;
     page?: number;
     perPage?: number;
     record?: RecordType;
@@ -63,6 +65,7 @@ export const useReferenceArrayFieldController = <
 ): ListControllerResult<ReferenceRecordType, ErrorType> => {
     const {
         filter = defaultFilter,
+        exporter = defaultExporter,
         page = 1,
         perPage = 1000,
         record,
@@ -114,6 +117,7 @@ export const useReferenceArrayFieldController = <
     const listProps = useList<ReferenceRecordType, ErrorType>({
         data,
         error,
+        exporter,
         filter,
         isFetching,
         isLoading,

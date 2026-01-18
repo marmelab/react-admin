@@ -76,6 +76,7 @@ const PostShow = () => (
 |------------|----------|-------------------|---------|------------------------------------------|
 | `children` | Required | `ReactNode`       |         | The component to render the list.        |
 | `filter`   | Optional | `object`          |         | The filter to apply to the list.         |
+| `exporter` | Optional | `function`        | `defaultExporter` | The function called by export buttons in the list context. |
 | `perPage`  | Optional | `number`          | 1000    | The number of items to display per page. |
 | `sort`     | Optional | `{ field, order}` |         | The sort to apply to the list.           |
 

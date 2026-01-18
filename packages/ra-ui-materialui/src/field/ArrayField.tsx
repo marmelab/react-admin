@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import {
+    Exporter,
     ListContextProvider,
     useList,
     SortPayload,
     FilterPayload,
     useFieldValue,
     genericMemo,
+    RaRecord,
 } from 'ra-core';
 
 import { FieldProps } from './types';
@@ -79,9 +81,16 @@ const ArrayFieldImpl = <
 >(
     props: ArrayFieldProps<RecordType>
 ) => {
-    const { children, resource, perPage, sort, filter } = props;
+    const { children, resource, perPage, sort, filter, exporter } = props;
     const data = useFieldValue(props) || emptyArray;
-    const listContext = useList({ data, resource, perPage, sort, filter });
+    const listContext = useList({
+        data: data as RaRecord[],
+        resource,
+        perPage,
+        sort,
+        filter,
+        exporter: exporter as Exporter<RaRecord> | false,
+    });
     return (
         <ListContextProvider value={listContext}>
             {children}
@@ -99,6 +108,7 @@ export interface ArrayFieldProps<
     perPage?: number;
     sort?: SortPayload;
     filter?: FilterPayload;
+    exporter?: Exporter<any> | false;
 }
 
 const emptyArray = [];

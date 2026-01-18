@@ -462,6 +462,7 @@ describe('useListController', () => {
                 displayedFilters: undefined,
                 error: undefined,
                 exporter: undefined,
+                getData: undefined,
                 filterValues: undefined,
                 hasCreate: undefined,
                 hideFilter: undefined,

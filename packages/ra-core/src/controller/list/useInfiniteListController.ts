@@ -7,14 +7,14 @@ import type {
 import { useAuthenticated, useRequireAccess } from '../../auth';
 import { useTranslate } from '../../i18n';
 import { useNotify } from '../../notification';
-import { useInfiniteGetList } from '../../dataProvider';
+import { useDataProvider, useInfiniteGetList } from '../../dataProvider';
 import { defaultExporter } from '../../export';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
 import { useListParams } from './useListParams';
 import { useSelectAll } from './useSelectAll';
 import type { UseInfiniteGetListOptions } from '../../dataProvider';
-import type { ListControllerResult } from './useListController';
+import type { GetDataOptions, ListControllerResult } from './useListController';
 import type {
     RaRecord,
     SortPayload,
@@ -22,6 +22,7 @@ import type {
     Exporter,
     GetInfiniteListResult,
 } from '../../types';
+import { useEvent } from '../../util';
 
 /**
  * Prepare data for the InfiniteList view
@@ -84,6 +85,7 @@ export const useInfiniteListController = <
 
     const translate = useTranslate();
     const notify = useNotify();
+    const dataProvider = useDataProvider();
 
     const [query, queryModifiers] = useListParams({
         debounce,
@@ -201,6 +203,25 @@ export const useInfiniteListController = <
         [data]
     );
 
+    const getData = useEvent(
+        async ({ maxResults, meta: metaOverride }: GetDataOptions = {}) => {
+            if (total === 0) {
+                return [];
+            }
+            const limit =
+                maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
+            const { data } = await dataProvider.getList(resource, {
+                sort: currentSort,
+                filter: filter
+                    ? { ...query.filterValues, ...filter }
+                    : query.filterValues,
+                pagination: { page: 1, perPage: limit },
+                meta: metaOverride ?? meta,
+            });
+            return data;
+        }
+    );
+
     return {
         sort: currentSort,
         data: unwrappedData,
@@ -238,6 +259,7 @@ export const useInfiniteListController = <
         fetchPreviousPage,
         isFetchingPreviousPage,
         meta: responseMeta,
+        getData,
     } as InfiniteListControllerResult<RecordType, ErrorType>;
 };
 
@@ -282,3 +304,5 @@ export type InfiniteListControllerResult<
         ErrorType
     >['isFetchingPreviousPage'];
 };
+
+const DEFAULT_MAX_RESULTS = 1000;
