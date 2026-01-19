@@ -427,7 +427,7 @@ describe('<List />', () => {
             expect(
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
-        }, 10000);
+        });
         it('should not be displayed if the user reaches the limit by a manual selection', async () => {
             render(
                 <SelectAllLimit
@@ -481,7 +481,7 @@ describe('<List />', () => {
             expect(
                 screen.queryByRole('button', { name: 'Select all' })
             ).toBeNull();
-        }, 10000);
+        });
         it('should select all items', async () => {
             render(<Default />);
             await screen.findByText('War and Peace');
@@ -489,7 +489,7 @@ describe('<List />', () => {
             await screen.findByText('10 items selected');
             fireEvent.click(screen.getByRole('button', { name: 'Select all' }));
             await screen.findByText('13 items selected');
-        }, 10000);
+        });
         it('should select the maximum items possible up to the selectAllLimit', async () => {
             render(<SelectAllLimit />);
             await screen.findByText('War and Peace');
@@ -500,7 +500,7 @@ describe('<List />', () => {
             await screen.findByText(
                 'There are too many elements to select them all. Only the first 11 elements were selected.'
             );
-        }, 10000);
+        });
     });
     it('should render the default offline component node when offline', async () => {
         const { rerender } = render(<Offline isOnline={false} />);
