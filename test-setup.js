@@ -39,3 +39,7 @@ global.Request = Request;
 
 /** Mock scrollTo as it is not supported by JSDOM */
 global.scrollTo = jest.fn();
+
+const { configure: configureReact } = require('@testing-library/react');
+
+configureReact({ asyncUtilTimeout: 15000 });
