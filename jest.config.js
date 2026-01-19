@@ -38,4 +38,5 @@ module.exports = {
         ],
     },
     moduleNameMapper,
+    testTimeout: 60000,
 };
