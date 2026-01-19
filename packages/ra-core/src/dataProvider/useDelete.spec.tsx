@@ -77,8 +77,33 @@ describe('useDelete', () => {
     });
 
     it('uses the latest declaration time mutationMode', async () => {
+        const posts = [
+            { id: 1, title: 'Hello' },
+            { id: 2, title: 'World' },
+        ];
+        let resolveDelete: (() => void) | undefined;
+        const dataProvider = {
+            getList: () =>
+                Promise.resolve({
+                    data: posts,
+                    total: posts.length,
+                }),
+            delete: jest.fn((_, params) => {
+                return new Promise(resolve => {
+                    resolveDelete = () => {
+                        const index = posts.findIndex(
+                            post => post.id === params.id
+                        );
+                        if (index !== -1) {
+                            posts.splice(index, 1);
+                        }
+                        resolve({ data: params.previousData });
+                    };
+                });
+            }),
+        } as any;
         // This story uses the pessimistic mode by default
-        render(<MutationMode />);
+        render(<MutationMode dataProvider={dataProvider} />);
         await waitFor(() => new Promise(resolve => setTimeout(resolve, 0)));
         fireEvent.click(screen.getByText('Change mutation mode to optimistic'));
         fireEvent.click(screen.getByText('Delete first post'));
@@ -89,15 +114,13 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
             expect(screen.queryByText('mutating')).not.toBeNull();
         });
-        await waitFor(
-            () => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            },
-            { timeout: 3000 }
-        );
+        resolveDelete?.();
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
     });
 
     it('uses the latest declaration time params', async () => {
@@ -105,20 +128,24 @@ describe('useDelete', () => {
             { id: 1, title: 'Hello' },
             { id: 2, title: 'World' },
         ];
+        let resolveDelete: (() => void) | undefined;
         const dataProvider = {
-            getList: () => {
-                return Promise.resolve({
+            getList: () =>
+                Promise.resolve({
                     data: posts,
                     total: posts.length,
-                });
-            },
+                }),
             delete: jest.fn((_, params) => {
                 return new Promise(resolve => {
-                    setTimeout(() => {
-                        const index = posts.findIndex(p => p.id === params.id);
-                        posts.splice(index, 1);
+                    resolveDelete = () => {
+                        const index = posts.findIndex(
+                            post => post.id === params.id
+                        );
+                        if (index !== -1) {
+                            posts.splice(index, 1);
+                        }
                         resolve({ data: params.previousData });
-                    }, 1000);
+                    };
                 });
             }),
         } as any;
@@ -134,15 +161,13 @@ describe('useDelete', () => {
             expect(screen.queryByText('World')).not.toBeNull();
             expect(screen.queryByText('mutating')).not.toBeNull();
         });
-        await waitFor(
-            () => {
-                expect(screen.queryByText('success')).not.toBeNull();
-                expect(screen.queryByText('Hello')).toBeNull();
-                expect(screen.queryByText('World')).not.toBeNull();
-                expect(screen.queryByText('mutating')).toBeNull();
-            },
-            { timeout: 3000 }
-        );
+        resolveDelete?.();
+        await waitFor(() => {
+            expect(screen.queryByText('success')).not.toBeNull();
+            expect(screen.queryByText('Hello')).toBeNull();
+            expect(screen.queryByText('World')).not.toBeNull();
+            expect(screen.queryByText('mutating')).toBeNull();
+        });
 
         expect(dataProvider.delete).toHaveBeenCalledWith('posts', {
             id: 1,
