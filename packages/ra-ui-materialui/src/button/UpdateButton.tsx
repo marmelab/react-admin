@@ -30,18 +30,25 @@ import { useThemeProps } from '@mui/material/styles';
  *     </Edit>
  * );
  */
-export const UpdateButton = (props: UpdateButtonProps) => {
+export const UpdateButton = React.forwardRef(function UpdateButton(
+    props: UpdateButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const { mutationMode = 'undoable', ...rest } = useThemeProps({
         name: PREFIX,
         props: props,
     });
 
     return mutationMode === 'undoable' ? (
-        <UpdateWithUndoButton {...rest} />
+        <UpdateWithUndoButton ref={ref} {...rest} />
     ) : (
-        <UpdateWithConfirmButton mutationMode={mutationMode} {...rest} />
+        <UpdateWithConfirmButton
+            ref={ref}
+            mutationMode={mutationMode}
+            {...rest}
+        />
     );
-};
+});
 
 export type UpdateButtonProps =
     | ({

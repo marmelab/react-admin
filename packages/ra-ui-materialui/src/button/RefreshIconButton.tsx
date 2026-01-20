@@ -5,7 +5,10 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import NavigationRefresh from '@mui/icons-material/Refresh';
 import { useRefresh, useTranslate } from 'ra-core';
 
-export const RefreshIconButton = (props: RefreshIconButtonProps) => {
+export const RefreshIconButton = React.forwardRef(function RefreshIconButton(
+    props: RefreshIconButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const {
         label = 'ra.action.refresh',
         icon = defaultIcon,
@@ -29,6 +32,7 @@ export const RefreshIconButton = (props: RefreshIconButtonProps) => {
     return (
         <Tooltip title={label && translate(label, { _: 'Refresh' })}>
             <IconButton
+                ref={ref}
                 aria-label={label && translate(label, { _: 'Refresh' })}
                 className={className}
                 color="inherit"
@@ -39,7 +43,7 @@ export const RefreshIconButton = (props: RefreshIconButtonProps) => {
             </IconButton>
         </Tooltip>
     );
-};
+});
 
 const defaultIcon = <NavigationRefresh />;
 

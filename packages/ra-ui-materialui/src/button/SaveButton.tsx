@@ -49,9 +49,12 @@ import {
  *     return <SaveButton {...props} mutationOptions={{ onSuccess }} />;
  * }
  */
-export const SaveButton = <RecordType extends RaRecord = any>(
-    inProps: SaveButtonProps<RecordType>
-) => {
+export const SaveButton = React.forwardRef(function SaveButton<
+    RecordType extends RaRecord = any,
+>(
+    inProps: SaveButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -135,6 +138,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
 
     return (
         <StyledButton
+            ref={ref}
             variant={variant}
             type={type}
             color={color}
@@ -156,7 +160,7 @@ export const SaveButton = <RecordType extends RaRecord = any>(
             {displayedLabel}
         </StyledButton>
     );
-};
+});
 
 const circularProgressStyle = {
     '&.MuiCircularProgress-root': {

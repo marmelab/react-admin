@@ -33,9 +33,12 @@ import { Button, ButtonProps } from './Button';
  *     <EditButton label="Edit comment" />
  * );
  */
-export const EditButton = <RecordType extends RaRecord = any>(
-    inProps: EditButtonProps<RecordType>
-) => {
+export const EditButton = React.forwardRef(function EditButton<
+    RecordType extends RaRecord = any,
+>(
+    inProps: EditButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -82,6 +85,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
 
     return (
         <StyledButton
+            ref={ref}
             component={Link}
             to={createPath({ type: 'edit', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
@@ -96,7 +100,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = {

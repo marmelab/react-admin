@@ -13,43 +13,47 @@ import {
 
 import { Button, type ButtonProps } from './Button';
 
-export const BulkUpdateWithUndoButton = (
-    inProps: BulkUpdateWithUndoButtonProps
-) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
+export const BulkUpdateWithUndoButton = React.forwardRef(
+    function BulkUpdateWithUndoButton(
+        inProps: BulkUpdateWithUndoButtonProps,
+        ref: React.ForwardedRef<HTMLButtonElement>
+    ) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
 
-    const {
-        data,
-        label = 'ra.action.update',
-        icon = defaultIcon,
-        onClick,
-        ...rest
-    } = props;
+        const {
+            data,
+            label = 'ra.action.update',
+            icon = defaultIcon,
+            onClick,
+            ...rest
+        } = props;
 
-    const { handleUpdate, isPending } = useBulkUpdateController(rest);
+        const { handleUpdate, isPending } = useBulkUpdateController(rest);
 
-    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.stopPropagation();
-        handleUpdate(data);
-        if (typeof onClick === 'function') {
-            onClick(e);
-        }
-    };
+        const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+            e.stopPropagation();
+            handleUpdate(data);
+            if (typeof onClick === 'function') {
+                onClick(e);
+            }
+        };
 
-    return (
-        <StyledButton
-            onClick={handleClick}
-            label={label}
-            disabled={isPending}
-            {...sanitizeRestProps(rest)}
-        >
-            {icon}
-        </StyledButton>
-    );
-};
+        return (
+            <StyledButton
+                ref={ref}
+                onClick={handleClick}
+                label={label}
+                disabled={isPending}
+                {...sanitizeRestProps(rest)}
+            >
+                {icon}
+            </StyledButton>
+        );
+    }
+);
 
 const defaultIcon = <ActionUpdate />;
 

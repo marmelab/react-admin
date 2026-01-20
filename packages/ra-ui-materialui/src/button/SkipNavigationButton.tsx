@@ -6,21 +6,27 @@ import {
 } from '@mui/material/styles';
 import { Button, type ButtonProps } from './Button';
 
-export const SkipNavigationButton = (inProps: ButtonProps) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
-    return (
-        <StyledButton
-            onClick={skipToContent}
-            className={'skip-nav-button'}
-            label="ra.navigation.skip_nav"
-            variant="contained"
-            {...props}
-        />
-    );
-};
+export const SkipNavigationButton = React.forwardRef(
+    function SkipNavigationButton(
+        inProps: ButtonProps,
+        ref: React.ForwardedRef<HTMLButtonElement>
+    ) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
+        return (
+            <StyledButton
+                ref={ref}
+                onClick={skipToContent}
+                className={'skip-nav-button'}
+                label="ra.navigation.skip_nav"
+                variant="contained"
+                {...props}
+            />
+        );
+    }
+);
 
 const PREFIX = 'RaSkipNavigationButton';
 

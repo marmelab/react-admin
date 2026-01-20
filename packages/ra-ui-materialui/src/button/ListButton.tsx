@@ -42,7 +42,10 @@ import { Button, type ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-export const ListButton = (inProps: ListButtonProps) => {
+export const ListButton = React.forwardRef(function ListButton(
+    inProps: ListButtonProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -82,6 +85,7 @@ export const ListButton = (inProps: ListButtonProps) => {
 
     return (
         <StyledButton
+            ref={ref}
             component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
@@ -94,7 +98,7 @@ export const ListButton = (inProps: ListButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = {

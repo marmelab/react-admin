@@ -10,7 +10,10 @@ import {
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
 
-export const ExportButton = (props: ExportButtonProps) => {
+export const ExportButton = React.forwardRef(function ExportButton(
+    props: ExportButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const {
         maxResults = 1000,
         onClick,
@@ -76,6 +79,7 @@ export const ExportButton = (props: ExportButtonProps) => {
 
     return (
         <Button
+            ref={ref}
             onClick={handleClick}
             label={label}
             disabled={total === 0}
@@ -84,7 +88,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             {icon}
         </Button>
     );
-};
+});
 
 const defaultIcon = <DownloadIcon />;
 
