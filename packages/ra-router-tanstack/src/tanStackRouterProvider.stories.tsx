@@ -1082,6 +1082,69 @@ export const NestedResources = () => (
     </CoreAdmin>
 );
 
+const PostEditWithLinkToComments = () => {
+    const navigate = useNavigate();
+    return (
+        <ShowBase
+            resource="posts"
+            render={({ record }) => (
+                <div style={{ padding: 20 }}>
+                    <h2>Post Details</h2>
+                    {record && <h3>{record.title}</h3>}
+                    <button onClick={() => navigate('/posts')}>
+                        Back to List
+                    </button>
+                    <button
+                        onClick={() => navigate(`/posts/${record.id}/comments`)}
+                    >
+                        View Comments
+                    </button>
+                </div>
+            )}
+        />
+    );
+};
+
+const CommentList = () => {
+    const { post_id } = useParams();
+    const navigate = useNavigate();
+    return (
+        <ListBase
+            resource="comments"
+            filter={{ post_id }}
+            render={({ data }) => (
+                <div style={{ padding: 20 }}>
+                    <h2>Comments for Post {post_id}</h2>
+                    <ul>
+                        {data?.map(record => (
+                            <li key={record.id}>{record.body}</li>
+                        ))}
+                    </ul>
+                    <button onClick={() => navigate(`/posts/${post_id}/show`)}>
+                        Back to Post
+                    </button>
+                </div>
+            )}
+        />
+    );
+};
+
+export const NestedResourcesPrecedence = () => (
+    <CoreAdmin
+        routerProvider={tanStackRouterProvider}
+        dataProvider={dataProvider}
+        layout={LayoutWithLocationDisplay}
+    >
+        <Resource
+            name="posts"
+            list={PostList}
+            edit={PostEditWithLinkToComments}
+        >
+            <Route path=":post_id/comments" element={<CommentList />} />
+        </Resource>
+    </CoreAdmin>
+);
+
 /**
  * Tests that query parameters work correctly (for list sorting, filtering, pagination).
  * This tests the navigate({ search: '?...' }) pattern used by useListParams.

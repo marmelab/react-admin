@@ -24,6 +24,7 @@ import {
     NestedResources,
     QueryParameters,
     PathlessLayoutRoutes,
+    NestedResourcesPrecedence,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -719,7 +720,9 @@ describe('tanStackRouterProvider', () => {
                 expect(screen.getByText('Post Details')).toBeInTheDocument();
             });
             // Check that search params are preserved in location
-            expect(screen.getByText(/\"search\": \"\?foo=bar\"/)).toBeInTheDocument();
+            expect(
+                screen.getByText(/\"search\": \"\?foo=bar\"/)
+            ).toBeInTheDocument();
         });
 
         it('should support location object with only search (no pathname)', async () => {
@@ -730,14 +733,20 @@ describe('tanStackRouterProvider', () => {
                 ).toBeInTheDocument();
             });
 
-            fireEvent.click(screen.getByText('Go to same page with search param'));
+            fireEvent.click(
+                screen.getByText('Go to same page with search param')
+            );
 
             await waitFor(() => {
                 // Should stay on the same page (Link Tests page)
-                expect(screen.getByText('Link Component Tests')).toBeInTheDocument();
+                expect(
+                    screen.getByText('Link Component Tests')
+                ).toBeInTheDocument();
             });
             // Check that search params are added
-            expect(screen.getByText(/\"search\": \"\?foo=bar\"/)).toBeInTheDocument();
+            expect(
+                screen.getByText(/\"search\": \"\?foo=bar\"/)
+            ).toBeInTheDocument();
         });
     });
 
@@ -1439,6 +1448,31 @@ describe('tanStackRouterProvider', () => {
             await waitFor(() => {
                 expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
                 expect(screen.getByTestId('comments-page')).toBeInTheDocument();
+            });
+        });
+    });
+
+    describe('Resource Children (Route as children of Resource)', () => {
+        it('should navigate to child routes without matching parent edit route', async () => {
+            render(<NestedResourcesPrecedence />);
+
+            // Wait for posts list to load
+            await screen.findByText('Post #1');
+
+            // Click on a post to go to edit page
+            fireEvent.click(screen.getByText('Post #1'));
+
+            // Wait for edit page
+            await screen.findByText('Post Details');
+
+            // Click to view comments (child route)
+            fireEvent.click(screen.getByText('View Comments'));
+
+            // Should navigate to comments page, not stay on edit
+            await waitFor(() => {
+                expect(
+                    screen.getByText(/Comments for Post/)
+                ).toBeInTheDocument();
             });
         });
     });

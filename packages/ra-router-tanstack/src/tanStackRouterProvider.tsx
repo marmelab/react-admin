@@ -616,7 +616,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
             if (child.index && (path === '/' || path === '')) {
                 return true;
             }
-            if (child.path) {
+            if (child.path !== undefined) {
                 const match = matchPath({ path: child.path, end: false }, path);
                 if (match) return true;
             }
@@ -628,8 +628,65 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
         return false;
     };
 
+    // Check if a route pattern has a catch-all at the end
+    const hasCatchAll = (path: string): boolean => {
+        return path.endsWith('/*') || path === '*';
+    };
+
+    // Check if routeB is more specific than routeA when both match the same path
+    // A route is more specific if it matches more segments with static/param patterns
+    // before resorting to a catch-all
+    const isMoreSpecific = (pathA: string, pathB: string): boolean => {
+        const segmentsA = pathA.split('/').filter(Boolean);
+        const segmentsB = pathB.split('/').filter(Boolean);
+
+        // Count non-catchall segments
+        const nonCatchallA = segmentsA.filter(s => s !== '*').length;
+        const nonCatchallB = segmentsB.filter(s => s !== '*').length;
+
+        // More non-catchall segments = more specific
+        if (nonCatchallB > nonCatchallA) return true;
+
+        // Same number of non-catchall segments, but B has no catchall while A does
+        if (
+            nonCatchallB === nonCatchallA &&
+            hasCatchAll(pathA) &&
+            !hasCatchAll(pathB)
+        ) {
+            return true;
+        }
+
+        // If B has more static segments, it's more specific
+        const staticA = segmentsA.filter(
+            s => !s.startsWith(':') && s !== '*'
+        ).length;
+        const staticB = segmentsB.filter(
+            s => !s.startsWith(':') && s !== '*'
+        ).length;
+        if (staticB > staticA) return true;
+
+        return false;
+    };
+
     // Find matching route and calculate the new matched path
     const matchResult = useMemo(() => {
+        // Helper to calculate matched path
+        const calcMatchedPath = (matchedPortion: string): string => {
+            if (!parentMatchedPath || parentMatchedPath === '/') {
+                return matchedPortion;
+            } else if (matchedPortion === '/') {
+                return parentMatchedPath;
+            } else {
+                return `${parentMatchedPath}${matchedPortion}`;
+            }
+        };
+
+        let bestMatch: {
+            route: RouteConfig;
+            matchedPath: string;
+            params: Record<string, string | undefined>;
+        } | null = null;
+
         for (const route of routes) {
             if (route.index && (pathname === '/' || pathname === '')) {
                 // Index route: matched path stays the same
@@ -641,7 +698,6 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
             // Match if any child route would match the pathname
             if (route.path === undefined && route.children) {
                 if (childRouteMatches(route.children, pathname)) {
-                    // Pathless layout doesn't consume any path
                     const newMatchedPath = parentMatchedPath || '/';
                     return { route, matchedPath: newMatchedPath, params: {} };
                 }
@@ -650,27 +706,46 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
             if (route.path !== undefined) {
                 const match = matchPath(route.path, pathname);
                 if (match) {
-                    // Calculate new matched path by combining parent + matched portion
                     const matchedPortion = match.pathnameBase || '/';
-                    let newMatchedPath: string;
-                    if (!parentMatchedPath || parentMatchedPath === '/') {
-                        // No parent or root parent - just use matched portion
-                        newMatchedPath = matchedPortion;
-                    } else if (matchedPortion === '/') {
-                        // Matched root - keep parent
-                        newMatchedPath = parentMatchedPath;
-                    } else {
-                        // Combine parent and matched portion
-                        newMatchedPath = `${parentMatchedPath}${matchedPortion}`;
-                    }
-                    return {
+                    const newMatchedPath = calcMatchedPath(matchedPortion);
+
+                    const currentMatch = {
                         route,
                         matchedPath: newMatchedPath,
                         params: match.params,
                     };
+
+                    // If no best match yet, use this one
+                    if (!bestMatch) {
+                        bestMatch = currentMatch;
+                        // If this match doesn't use a catch-all, return immediately
+                        if (!hasCatchAll(route.path)) {
+                            return bestMatch;
+                        }
+                        // Otherwise, keep looking for more specific matches
+                        continue;
+                    }
+
+                    // Check if this route is more specific than the current best
+                    if (
+                        bestMatch.route.path &&
+                        isMoreSpecific(bestMatch.route.path, route.path)
+                    ) {
+                        bestMatch = currentMatch;
+                        // If this match doesn't use a catch-all, return immediately
+                        if (!hasCatchAll(route.path)) {
+                            return bestMatch;
+                        }
+                    }
                 }
             }
         }
+
+        // If we found a match (possibly a catch-all), return it
+        if (bestMatch) {
+            return bestMatch;
+        }
+
         // Check for catch-all route (path="*")
         const catchAll = routes.find(r => r.path === '*');
         if (catchAll) {
@@ -682,7 +757,14 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
             };
         }
         return null;
-    }, [routes, pathname, parentMatchedPath, fullPathname]);
+    }, [
+        routes,
+        parentMatchedPath,
+        pathname,
+        childRouteMatches,
+        isMoreSpecific,
+        fullPathname,
+    ]);
 
     // Now that all hooks have been called, we can safely return early
     // if we're outside the basename scope
