@@ -151,16 +151,18 @@ export const WithExporter = () => (
                 getList: () => Promise.resolve({ data: [], total: 0 }),
             })}
         >
-            <ArrayField
-                record={{ id: 123, books }}
-                source="books"
-                exporter={simpleExporter}
-            >
-                <ExportButton />
-                <SingleFieldList linkType={false}>
-                    <ChipField source="title" />
-                </SingleFieldList>
-            </ArrayField>
+            <Card sx={{ m: 1, p: 1 }}>
+                <ArrayField
+                    record={{ id: 123, books }}
+                    source="books"
+                    exporter={simpleExporter}
+                >
+                    <SingleFieldList linkType={false}>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                    <ExportButton />
+                </ArrayField>
+            </Card>
         </AdminContext>
     </TestMemoryRouter>
 );

@@ -3,11 +3,11 @@ title: "useListController"
 storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 ---
 
-`useListController` contains the headless logic of list components. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit. 
+`useListController` contains the headless logic of list components. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit.
 
 ![List view built with Ant Design](../../img/list_ant_design.png)
 
-`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape. 
+`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape.
 
 `useListController` is used internally by [`<ListBase>`](./ListBase.md). If your list view uses ra-core components, prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
 
@@ -208,17 +208,15 @@ const FlopPosts = (
 
 You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
 
-
 ## Return Value
 
-`useListController` returns an object with the following keys: 
+`useListController` returns an object with the following keys:
 
 ```jsx
 const {
     // Data
     data, // Array of the list records, e.g. [{ id: 123, title: 'hello world' }, { ... }
     total, // Total number of results for the current filters, excluding pagination. Useful to build the pagination controls, e.g. 23      
-    getData, // Async callback that returns the full list data (ignores pagination)
     isPending, // Boolean, true until the data is available
     isFetching, // Boolean, true while the data is being fetched, false once the data is fetched
     isLoading, // Boolean, true until the data is fetched for the first time
@@ -247,6 +245,7 @@ const {
     defaultTitle, // Translated title based on the resource, e.g. 'Posts'
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
+    getData, // Callback that returns the full list data (ignores pagination)
 } = useListController();
 ```
 
@@ -254,9 +253,9 @@ const {
 
 The `setFilters` method is used to update the filters. It takes three arguments:
 
-- `filters`: an object containing the new filter values
-- `displayedFilters`: an object containing the new displayed filters
-- `debounced`: set to true to debounce the call to setFilters (false by default)
+* `filters`: an object containing the new filter values
+* `displayedFilters`: an object containing the new displayed filters
+* `debounced`: set to true to debounce the call to setFilters (false by default)
 
 You can use it to update the list filters:
 

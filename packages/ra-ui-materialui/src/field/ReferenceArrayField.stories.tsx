@@ -11,7 +11,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
-import { DataTable, Pagination } from '../list';
+import { DataTable, Pagination, SingleFieldList } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
@@ -98,11 +98,8 @@ export const WithExporter = () => (
                         reference="artists"
                         exporter={simpleExporter}
                     >
+                        <SingleFieldList />
                         <ExportButton />
-                        <DataTable bulkActionButtons={false}>
-                            <DataTable.Col source="id" />
-                            <DataTable.Col source="name" />
-                        </DataTable>
                     </ReferenceArrayField>
                 </SimpleShowLayout>
             </Show>

@@ -6,7 +6,7 @@ storybook_path: ra-ui-materialui-fields-arrayfield--basic
 
 # `<ArrayField>`
 
-`<ArrayField>` renders an embedded array of objects. 
+`<ArrayField>` renders an embedded array of objects.
 
 ![ArrayField](./img/array-field.webp)
 
@@ -76,7 +76,7 @@ const PostShow = () => (
 |------------|----------|-------------------|---------|------------------------------------------|
 | `children` | Required | `ReactNode`       |         | The component to render the list.        |
 | `filter`   | Optional | `object`          |         | The filter to apply to the list.         |
-| `exporter` | Optional | `function`        | `defaultExporter` | The function called by export buttons in the list context. |
+| `exporter` | Optional | `function`        | `default Exporter` | The function called by export buttons in the list context. |
 | `perPage`  | Optional | `number`          | 1000    | The number of items to display per page. |
 | `sort`     | Optional | `{ field, order}` |         | The sort to apply to the list.           |
 
@@ -159,6 +159,7 @@ const PostShow = () => (
 You can use the `filter` prop to display only a subset of the items in the array. For instance, to display only the backlinks for a particular day:
 
 {% raw %}
+
 ```jsx
 <ArrayField source="backlinks" filter={{ date: '2012-08-10T00:00:00.000Z' }}>
     <DataTable>
@@ -168,13 +169,14 @@ You can use the `filter` prop to display only a subset of the items in the array
     </DataTable>
 </ArrayField>
 ```
+
 {% endraw %}
 
 The filtering capabilities are very limited. For instance, there is no "greater than" or "less than" operator. You can only filter on the equality of a field.
 
 ## `perPage`
 
-If the value is a large array, and you don't need to display all the items, you can use the `perPage` prop to limit the number of items displayed. 
+If the value is a large array, and you don't need to display all the items, you can use the `perPage` prop to limit the number of items displayed.
 
 As `<ArrayField>` creates a [`ListContext`](./useListContext.md), you can use the `<Pagination>` component to navigate through the items.
 
@@ -210,6 +212,7 @@ const PostShow = () => (
 By default, `<ArrayField>` displays the items in the order they are stored in the field. You can use the `sort` prop to change the sort order.
 
 {% raw %}
+
 ```jsx
 <ArrayField source="tags" sort={{ field: 'name', order: 'ASC' }}>
     <SingleFieldList linkType={false}>
@@ -217,6 +220,7 @@ By default, `<ArrayField>` displays the items in the order they are stored in th
     </SingleFieldList>
 </ArrayField>
 ```
+
 {% endraw %}
 
 ## Using The List Context
