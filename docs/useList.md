@@ -66,6 +66,7 @@ const MyComponent = () => {
 `useList` expects an object with the following keys:
 
 * [`data`](#data)
+* [`exporter`](#exporter)
 * [`filter`](#filter)
 * [`filterCallback`](#filtercallback)
 * [`isFetching`](#isfetching)
@@ -86,6 +87,23 @@ const { data } = useList({
         { id: 3, name: 'Jean-Claude' },
     ],
 });
+```
+
+## `exporter`
+
+The function called by export buttons in this list context. Defaults to `defaultExporter`.
+
+```jsx
+import { downloadCSV } from 'react-admin';
+import jsonExport from 'jsonexport/dist';
+
+const exporter = records => {
+    jsonExport(records, (err, csv) => {
+        downloadCSV(csv, 'actors');
+    });
+};
+
+const listContext = useList({ data, exporter });
 ```
 
 ## `filter`

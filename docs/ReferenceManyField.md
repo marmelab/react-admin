@@ -6,7 +6,7 @@ storybook_path: ra-ui-materialui-fields-referencemanyfield--basic
 
 # `<ReferenceManyField>`
 
-`<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource. 
+`<ReferenceManyField>` is useful for displaying a list of related records via a one-to-many relationship, when the foreign key is carried by the referenced resource.
 
 <iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
@@ -97,6 +97,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records.                                |
 | `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records     |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records, passed to `getManyReference()`    |
+| `exporter`     | Optional | `function`                                                                        | `default Exporter`                | The function called by export buttons in the list context                          |
 | `loading`      | Optional | `ReactNode`                                                                       | -                                | The component to render while fetching the related records                          |
 | `offline`      | Optional | `ReactNode`                                                                       | -                                | Element to display when there are no related records because of lack of network connectivity. |
 | `pagination`   | Optional | `Element`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination) |
@@ -120,7 +121,7 @@ This example leverages [`<SingleFieldList>`](./SingleFieldList.md) to display an
 - [`<SimpleList>`](./SimpleList.md)
 - [`<EditableDatagrid>`](./EditableDatagrid.md)
 - [`<Calendar>`](./Calendar.md)
-- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how). 
+- Or a component of your own (check the [`<WithListContext>`](./WithListContext.md) and the [`useListContext`](./useListContext.md) chapters to learn how).
 
 For instance, use a `<DataTable>` to render the related records in a table:
 
@@ -451,9 +452,11 @@ Use the `queryOptions` prop to pass options to [the `dataProvider.getMany()` que
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceManyField queryOptions={{ meta: { foo: 'bar' } }} />
 ```
+
 {% endraw %}
 
 ## `reference`
@@ -505,6 +508,7 @@ This allows to inline the render logic for the list of related records.
 By default, it orders the possible values by id desc. You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
+
 ```jsx
 <ReferenceManyField
   target="post_id"
@@ -514,6 +518,7 @@ By default, it orders the possible values by id desc. You can change this order 
    ...
 </ReferenceManyField>
 ```
+
 {% endraw %}
 
 ## `source`
@@ -539,6 +544,7 @@ If you want to display multiple lists of the same reference and keep distinct se
 In the example below, both lists use the same reference ('books'), but their selection states are stored separately (under the store keys `'authors.1.books.selectedIds'` and `'custom.selectedIds'` respectively). This allows to use both components in the same page, each having its own state.
 
 {% raw %}
+
 ```jsx
 <Stack direction="row" spacing={2}>
     <ReferenceManyField
@@ -566,6 +572,7 @@ In the example below, both lists use the same reference ('books'), but their sel
     </ReferenceManyField>
 </Stack>
 ```
+
 {% endraw %}
 
 ## `target`
@@ -583,11 +590,12 @@ Name of the field carrying the relationship on the referenced resource. For inst
 
 ## Rendering Only One Record
 
-Although you are in a one-to-many relationship, you may want to render only one record. For instance, in a book with several reviews, you may want to display only the last. Or, for a product with many prices, you may want to display only the one in euros. 
+Although you are in a one-to-many relationship, you may want to render only one record. For instance, in a book with several reviews, you may want to display only the last. Or, for a product with many prices, you may want to display only the one in euros.
 
 In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md) instead of `<ReferenceManyField>`.
 
 {% raw %}
+
 ```jsx
 <ReferenceOneField
     label="Latest review"
@@ -599,9 +607,11 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
     <TextField source="body" />
 </ReferenceOneField>
 ```
+
 {% endraw %}
 
 {% raw %}
+
 ```jsx
 <ReferenceOneField
     label="Price (€)"
@@ -612,6 +622,7 @@ In these cases, use [the `<ReferenceOneField>` component](./ReferenceOneField.md
     <NumberField source="price" />
 </ReferenceOneField>
 ```
+
 {% endraw %}
 
 ## Adding or editing a related record
@@ -624,6 +635,7 @@ To allow users to create or edit a record without leaving the current view, use 
 </video>
 
 {% raw %}
+
 ```jsx
 import { Edit, SimpleForm, TextInput, ReferenceManyField, WithRecord, DataTable } from 'react-admin';
 import { CreateInDialogButton, EditInDialogButton } from "@react-admin/ra-form-layout";
@@ -667,4 +679,5 @@ const EmployerEdit = () => (
   </Edit>
 )
 ```
+
 {% endraw %}

@@ -30,23 +30,29 @@ export const ExportButton = React.forwardRef(function ExportButton(
         sort,
         exporter: exporterFromContext,
         total,
+        getData,
     } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            dataProvider
-                .getList(resource, {
-                    sort,
-                    filter: filter
-                        ? { ...filterValues, ...filter }
-                        : filterValues,
-                    pagination: { page: 1, perPage: maxResults },
-                    meta,
-                })
+            const fetchData = getData
+                ? getData({ maxResults, meta })
+                : dataProvider
+                      .getList(resource, {
+                          sort,
+                          filter: filter
+                              ? { ...filterValues, ...filter }
+                              : filterValues,
+                          pagination: { page: 1, perPage: maxResults },
+                          meta,
+                      })
+                      .then(({ data }) => data);
+
+            Promise.resolve(fetchData)
                 .then(
-                    ({ data }) =>
+                    data =>
                         exporter &&
                         exporter(
                             data,
@@ -68,6 +74,7 @@ export const ExportButton = React.forwardRef(function ExportButton(
             exporter,
             filter,
             filterValues,
+            getData,
             maxResults,
             notify,
             onClick,

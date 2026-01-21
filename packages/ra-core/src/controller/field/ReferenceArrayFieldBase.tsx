@@ -2,7 +2,7 @@ import * as React from 'react';
 import { type ReactNode } from 'react';
 
 import type { UseQueryOptions } from '@tanstack/react-query';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { Exporter, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useRecordContext } from '../record';
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { ResourceContextProvider } from '../../core';
@@ -78,6 +78,7 @@ export const ReferenceArrayFieldBase = <
         loading,
         empty,
         filter,
+        exporter,
         offline,
         page = 1,
         perPage,
@@ -93,6 +94,7 @@ export const ReferenceArrayFieldBase = <
         ReferenceRecordType
     >({
         filter,
+        exporter,
         page,
         perPage,
         record,
@@ -175,6 +177,7 @@ export interface ReferenceArrayFieldBaseProps<
     loading?: ReactNode;
     empty?: ReactNode;
     filter?: FilterPayload;
+    exporter?: Exporter<ReferenceRecordType> | false;
     offline?: ReactNode;
     page?: number;
     perPage?: number;

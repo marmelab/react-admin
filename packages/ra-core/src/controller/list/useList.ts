@@ -3,13 +3,14 @@ import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 
 import { removeEmpty } from '../../util';
-import { FilterPayload, RaRecord, SortPayload } from '../../types';
+import { Exporter, FilterPayload, RaRecord, SortPayload } from '../../types';
 import { useResourceContext } from '../../core';
 import usePaginationState from '../usePaginationState';
 import useSortState from '../useSortState';
 import { useRecordSelection } from './useRecordSelection';
-import { ListControllerResult } from './useListController';
+import { GetDataOptions, ListControllerResult } from './useListController';
 import { flattenObject } from '../../dataProvider/fetch';
+import { defaultExporter } from '../../export';
 
 const refetch = () => {
     throw new Error(
@@ -67,7 +68,8 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         page: initialPage = 1,
         perPage: initialPerPage = 1000,
         sort: initialSort,
-        filterCallback = (record: RecordType) => Boolean(record),
+        filterCallback = defaultFilterCallback,
+        exporter = defaultExporter,
     } = props;
     const resource = useResourceContext(props);
 
@@ -166,16 +168,12 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         }
     }, [filter]);
 
-    // We do all the data processing (filtering, sorting, paginating) client-side
-    useEffect(
-        () => {
-            if (isPending || !data) return;
-            let tempData = data;
-
-            // 1. filter
+    const applyFilterAndSort = useCallback(
+        (records: RecordType[]) => {
+            let tempData = records;
             if (filterValues) {
                 const flattenFilterValues = flattenObject(filterValues);
-                tempData = data
+                tempData = records
                     .filter(record =>
                         Object.entries(flattenFilterValues).every(
                             ([filterName, filterValue]) => {
@@ -208,9 +206,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
                     )
                     .filter(filterCallback);
             }
-            const filteredLength = tempData.length;
-
-            // 2. sort
             if (sort.field) {
                 tempData = tempData.sort((a, b) => {
                     if (get(a, sort.field) > get(b, sort.field)) {
@@ -223,24 +218,35 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
                 });
             }
 
-            // 3. paginate
-            tempData = tempData.slice((page - 1) * perPage, page * perPage);
+            return tempData;
+        },
+        [filterValues, filterCallback, sort.field, sort.order]
+    );
+
+    // We do all the data processing (filtering, sorting, paginating) client-side
+    useEffect(
+        () => {
+            if (isPending || !data) return;
+            const filteredAndSorted = applyFilterAndSort(data);
+            const filteredLength = filteredAndSorted.length;
+            const paginatedData = filteredAndSorted.slice(
+                (page - 1) * perPage,
+                page * perPage
+            );
 
             setFinalItems({
-                data: tempData,
+                data: paginatedData,
                 total: filteredLength,
             });
         }, // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             // eslint-disable-next-line react-hooks/exhaustive-deps
             JSON.stringify(data),
-            filterValues,
+            applyFilterAndSort,
             isPending,
             page,
             perPage,
             setFinalItems,
-            sort.field,
-            sort.order,
         ]
     );
 
@@ -249,12 +255,27 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         selectionModifiers.select(allIds);
     }, [data, selectionModifiers]);
 
+    const getData = useCallback(
+        async ({ maxResults }: GetDataOptions = {}) => {
+            if (isPending || !data) {
+                return [];
+            }
+            const filteredAndSorted = applyFilterAndSort(data);
+            if (maxResults != null) {
+                return filteredAndSorted.slice(0, maxResults);
+            }
+            return filteredAndSorted;
+        },
+        [applyFilterAndSort, data, isPending]
+    );
+
     return {
         sort,
         data: isPending ? undefined : finalItems?.data ?? [],
         defaultTitle: '',
         error: error ?? null,
         displayedFilters,
+        exporter,
         filterValues,
         hasNextPage:
             finalItems?.total == null
@@ -282,6 +303,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         setSort,
         showFilter,
         total: finalItems?.total,
+        getData,
     } as UseListValue<RecordType, ErrorType>;
 };
 
@@ -302,6 +324,7 @@ export interface UseListOptions<
     sort?: SortPayload;
     resource?: string;
     filterCallback?: (record: RecordType) => boolean;
+    exporter?: Exporter<RecordType> | false;
 }
 
 export type UseListValue<
@@ -310,3 +333,4 @@ export type UseListValue<
 > = ListControllerResult<RecordType, ErrorType>;
 
 const defaultFilter = {};
+const defaultFilterCallback = (record: RaRecord) => Boolean(record);

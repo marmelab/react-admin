@@ -7,13 +7,25 @@ import lodashDebounce from 'lodash/debounce.js';
 import { removeEmpty, useEvent } from '../../util';
 import { useDataProvider, useGetManyReference } from '../../dataProvider';
 import { useNotify } from '../../notification';
-import { FilterPayload, Identifier, RaRecord, SortPayload } from '../../types';
-import type { ListControllerResult, HandleSelectAllParams } from '../list';
+import {
+    Exporter,
+    FilterPayload,
+    Identifier,
+    RaRecord,
+    SortPayload,
+} from '../../types';
+import type {
+    GetDataOptions,
+    HandleSelectAllParams,
+    ListControllerResult,
+} from '../list';
+import { DEFAULT_MAX_RESULTS } from '../list/useListController';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
 import { useResourceContext } from '../../core';
 import { useRecordContext } from '../record';
+import { defaultExporter } from '../../export';
 
 /**
  * Fetch reference records, and return them when available
@@ -58,6 +70,7 @@ export const useReferenceManyFieldController = <
         reference,
         target,
         filter = defaultFilter,
+        exporter = defaultExporter,
         source = 'id',
         page: initialPage,
         perPage: initialPerPage,
@@ -225,7 +238,7 @@ export const useReferenceManyFieldController = <
             try {
                 const results = await queryClient.fetchQuery({
                     queryKey: [
-                        resource,
+                        reference,
                         'getManyReference',
                         {
                             target,
@@ -270,6 +283,40 @@ export const useReferenceManyFieldController = <
         }
     );
 
+    const getData = useEvent(
+        async ({ maxResults, meta: metaOverride }: GetDataOptions = {}) => {
+            if (recordValue == null || total === 0) {
+                return [];
+            }
+            const limit =
+                maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
+            const { data } = await queryClient.fetchQuery({
+                queryKey: [
+                    reference,
+                    'getManyReference',
+                    {
+                        target,
+                        id: recordValue,
+                        pagination: { page: 1, perPage: limit },
+                        sort,
+                        filter: filterValues,
+                        meta: metaOverride ?? meta,
+                    },
+                ],
+                queryFn: () =>
+                    dataProvider.getManyReference(reference, {
+                        target,
+                        id: recordValue,
+                        pagination: { page: 1, perPage: limit },
+                        sort,
+                        filter: filterValues,
+                        meta: metaOverride ?? meta,
+                    }),
+            });
+            return data;
+        }
+    );
+
     return {
         sort,
         data,
@@ -277,6 +324,7 @@ export const useReferenceManyFieldController = <
         defaultTitle: undefined,
         displayedFilters,
         error,
+        exporter,
         filterValues,
         hideFilter,
         isFetching,
@@ -305,6 +353,7 @@ export const useReferenceManyFieldController = <
         setSort,
         showFilter,
         total,
+        getData,
     } as ListControllerResult<ReferenceRecordType, ErrorType>;
 };
 
@@ -320,6 +369,7 @@ export interface UseReferenceManyFieldControllerParams<
     record?: RecordType;
     reference: string;
     resource?: string;
+    exporter?: Exporter<ReferenceRecordType & RaRecord> | false;
     sort?: SortPayload;
     source?: string;
     storeKey?: string;

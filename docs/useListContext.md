@@ -92,6 +92,7 @@ const {
     defaultTitle, // Translated title based on the resource, e.g. 'Posts'
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
+    getData, // Callback that returns the full list data (ignores pagination)
 } = useListContext();
 ```
 

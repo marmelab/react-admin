@@ -6,11 +6,11 @@ storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 
 # `useListController`
 
-`useListController` contains the headless logic of the [`<List>`](./List.md) component. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit than Material UI. 
+`useListController` contains the headless logic of the [`<List>`](./List.md) component. It's useful to create a custom List view. It's also the base hook when building a custom view with another UI kit than Material UI.
 
 ![List view built with Ant Design](./img/list_ant_design.png)
 
-`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape. 
+`useListController` reads the list parameters from the URL, calls `dataProvider.getList()`, prepares callbacks for modifying the pagination, filters, sort and selection, and returns them together with the data. Its return value matches the [`ListContext`](./useListContext.md) shape.
 
 `useListController` is used internally by [`<List>`](./List.md) and [`<ListBase>`](./ListBase.md). If your list view uses react-admin components like [`<DataTable>`](./DataTable.md), prefer [`<ListBase>`](./ListBase.md) to `useListController` as it takes care of creating a `<ListContext>`.
 
@@ -21,6 +21,7 @@ storybook_path: ra-core-controller-list-uselistcontroller--authenticated
 Here the code for the post list view above, built with [Ant Design](https://ant.design/):
 
 {% raw %}
+
 ```jsx
 import { useListController } from 'react-admin'; 
 import { Card, Table, Button } from 'antd';
@@ -86,6 +87,7 @@ const columns = [
 
 export default PostList;
 ```
+
 {% endraw %}
 
 When using react-admin components, it's common to call `useListController()` without parameters, and to put the result in a `ListContext` to make it available to the rest of the component tree.
@@ -110,17 +112,21 @@ const MyList = () => {
 
 `useListController` expects an object as parameter. All keys are optional.
 
-* [`debounce`](./List.md#debounce): Debounce time in ms for the setFilters callbacks
-* [`disableAuthentication`](./List.md#disableauthentication): Set to true to allow anonymous access to the list
-* [`disableSyncWithLocation`](./List.md#disablesyncwithlocation): Set to true to have more than one list per page
-* [`exporter`](./List.md#exporter): Exporter function
-* [`filter`](./List.md#filter-permanent-filter): Permanent filter, forced over the user filter
-* [`filterDefaultValues`](./List.md#filterdefaultvalues): Default values for the filter form
-* [`perPage`](./List.md#perpage): Number of results per page
-* [`queryOptions`](./List.md#queryoptions): React-query options for the useQuery call
-* [`resource`](./List.md#resource): Resource name, e.g. 'posts' ; defaults to the current resource context
-* [`sort`](./List.md#sort): Current sort value, e.g. `{ field: 'published_at', order: 'DESC' }`
-* [`storeKey`](#storekey): Key used to differentiate the list from another sharing the same resource, in store managed states
+| Prop                      | Type                    | Default | Description                                                                                      |
+|---------------------------|-------------------------|---------|--------------------------------------------------------------------------------------------------|
+| `debounce`                | `number`                | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters.     |
+| `disableAuthentication`   | `boolean`               | `false` | Set to `true` to disable the authentication check.                                               |
+| `disableSyncWithLocation` | `boolean`               | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.                |
+| `exporter`                | `function`              | -       | The function to call to export the list.                                                         |
+| `filter`                  | `object`                | -       | The permanent filter values, forced over the user filter                                         |
+| `filterDefaultValues`     | `object`                | -       | The default filter values.                                                                       |
+| `perPage`                 | `number`                | `10`    | The number of records to fetch per page.                                                         |
+| `queryOptions`            | `object`                | -       | The options to pass to the `useQuery` hook.                                                      |
+| `resource`                | `string`                | -       | The resource name, e.g. `posts`.                                                                 |
+| `sort`                    | `object`                | -       | The initial sort parameters, e.g. `{ field: 'published_at', order: 'DESC' }`.                     |
+| `storeKey`                | `string` &#124; `false` | -       | The key to use to store the current filter & sort. Pass `false` to disable store synchronization |
+
+Check [the `<List>` component documentation](./List.md) for more details about these parameters.
 
 Here are their default values:
 
@@ -178,6 +184,7 @@ If you want to disable the storage of list parameters altogether for a given lis
 In the example below, both lists `TopPosts` and `FlopPosts` use the same resource ('posts'), but their controller states are stored separately (under the store keys `'top'` and `'flop'` respectively).
 
 {% raw %}
+
 ```jsx
 import { useListController } from 'react-admin';
 
@@ -211,14 +218,14 @@ const FlopPosts = (
     <OrderedPostList storeKey="flop" sort={{ field: 'votes', order: 'ASC' }} />
 );
 ```
+
 {% endraw %}
 
 You can disable this feature by setting the `storeKey` prop to `false`. When disabled, parameters will not be persisted in the store.
 
-
 ## Return Value
 
-`useListController` returns an object with the following keys: 
+`useListController` returns an object with the following keys:
 
 ```jsx
 const {
@@ -253,6 +260,7 @@ const {
     defaultTitle, // Translated title based on the resource, e.g. 'Posts'
     resource, // Resource name, deduced from the location. e.g. 'posts'
     refetch, // Callback for fetching the list data again
+    getData, // Callback that returns the full list data (ignores pagination)
 } = useListController();
 ```
 
@@ -260,9 +268,9 @@ const {
 
 The `setFilters` method is used to update the filters. It takes three arguments:
 
-- `filters`: an object containing the new filter values
-- `displayedFilters`: an object containing the new displayed filters
-- `debounced`: set to true to debounce the call to setFilters (false by default)
+* `filters`: an object containing the new filter values
+* `displayedFilters`: an object containing the new displayed filters
+* `debounced`: set to true to debounce the call to setFilters (false by default)
 
 You can use it to update the list filters:
 

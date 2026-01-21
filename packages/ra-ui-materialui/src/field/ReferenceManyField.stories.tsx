@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
     useIsOffline,
     IsOffline,
+    downloadCSV,
 } from 'ra-core';
 import { Admin, ListGuesser, Resource } from 'react-admin';
 import type { AdminProps } from 'react-admin';
@@ -30,7 +31,7 @@ import { Notification } from '../layout/Notification';
 import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { SelectAllButton, BulkDeleteButton } from '../button';
+import { ExportButton, SelectAllButton, BulkDeleteButton } from '../button';
 import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
@@ -119,6 +120,29 @@ const Wrapper = ({
 export const Basic = () => (
     <Wrapper>
         <ReferenceManyField reference="books" target="author_id">
+            <DataTable>
+                <DataTable.Col source="title" />
+            </DataTable>
+        </ReferenceManyField>
+    </Wrapper>
+);
+
+const simpleExporter = records => {
+    const header = 'id,title';
+    const rows = records.map(
+        record => `${record.id},${record.title ?? record.name ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
+
+export const WithExporter = () => (
+    <Wrapper>
+        <ReferenceManyField
+            reference="books"
+            target="author_id"
+            exporter={simpleExporter}
+        >
+            <ExportButton />
             <DataTable>
                 <DataTable.Col source="title" />
             </DataTable>
