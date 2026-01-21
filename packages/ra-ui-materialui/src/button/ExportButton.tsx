@@ -71,6 +71,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             exporter,
             filter,
             filterValues,
+            getData,
             maxResults,
             notify,
             onClick,

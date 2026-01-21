@@ -480,7 +480,7 @@ const defaultSort = {
     order: SORT_ASC,
 } as const;
 
-const DEFAULT_MAX_RESULTS = 1000;
+export const DEFAULT_MAX_RESULTS = 1000;
 
 export const injectedProps = [
     'sort',

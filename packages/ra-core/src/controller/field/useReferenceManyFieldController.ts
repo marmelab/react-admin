@@ -19,6 +19,7 @@ import type {
     HandleSelectAllParams,
     ListControllerResult,
 } from '../list';
+import { DEFAULT_MAX_RESULTS } from '../list/useListController';
 import usePaginationState from '../usePaginationState';
 import { useRecordSelection } from '../list/useRecordSelection';
 import useSortState from '../useSortState';
@@ -383,4 +384,3 @@ export interface UseReferenceManyFieldControllerParams<
 }
 
 const defaultFilter = {};
-const DEFAULT_MAX_RESULTS = 1000;
