@@ -33,9 +33,12 @@ import { Button, ButtonProps } from './Button';
  *     );
  * };
  */
-const ShowButton = <RecordType extends RaRecord = any>(
-    inProps: ShowButtonProps<RecordType>
-) => {
+const ShowButton = React.forwardRef(function ShowButton<
+    RecordType extends RaRecord = any,
+>(
+    inProps: ShowButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -85,6 +88,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
     return (
         <StyledButton
             component={LinkBase}
+            ref={ref}
             to={createPath({ type: 'show', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation
@@ -97,7 +101,7 @@ const ShowButton = <RecordType extends RaRecord = any>(
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = {

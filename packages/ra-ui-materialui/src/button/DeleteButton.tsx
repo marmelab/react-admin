@@ -52,9 +52,12 @@ import {
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = <RecordType extends RaRecord = any>(
-    inProps: DeleteButtonProps<RecordType>
-) => {
+export const DeleteButton = React.forwardRef(function DeleteButton<
+    RecordType extends RaRecord = any,
+>(
+    inProps: DeleteButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const props = useThemeProps({
         name: PREFIX,
         props: inProps,
@@ -85,16 +88,17 @@ export const DeleteButton = <RecordType extends RaRecord = any>(
           : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
-        <DeleteWithUndoButton<RecordType> record={record} {...rest} />
+        <DeleteWithUndoButton ref={ref} record={record} {...rest} />
     ) : (
-        <DeleteWithConfirmButton<RecordType>
+        <DeleteWithConfirmButton
             // @ts-ignore I looked for the error for one hour without finding it
             mutationMode={finalMutationMode}
+            ref={ref}
             record={record}
             {...rest}
         />
     );
-};
+});
 
 export type DeleteButtonProps<
     RecordType extends RaRecord = any,

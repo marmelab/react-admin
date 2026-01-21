@@ -13,40 +13,44 @@ import {
 
 import { Button, type ButtonProps } from './Button';
 
-export const BulkDeleteWithUndoButton = (
-    inProps: BulkDeleteWithUndoButtonProps
-) => {
-    const props = useThemeProps({
-        props: inProps,
-        name: PREFIX,
-    });
-    const {
-        label = 'ra.action.delete',
-        icon = defaultIcon,
-        onClick,
-        ...rest
-    } = props;
-    const { handleDelete, isPending } = useBulkDeleteController(rest);
+export const BulkDeleteWithUndoButton = React.forwardRef(
+    function BulkDeleteWithUndoButton(
+        inProps: BulkDeleteWithUndoButtonProps,
+        ref: React.ForwardedRef<HTMLButtonElement>
+    ) {
+        const props = useThemeProps({
+            props: inProps,
+            name: PREFIX,
+        });
+        const {
+            label = 'ra.action.delete',
+            icon = defaultIcon,
+            onClick,
+            ...rest
+        } = props;
+        const { handleDelete, isPending } = useBulkDeleteController(rest);
 
-    const handleClick = e => {
-        handleDelete();
-        if (typeof onClick === 'function') {
-            onClick(e);
-        }
-    };
+        const handleClick = e => {
+            handleDelete();
+            if (typeof onClick === 'function') {
+                onClick(e);
+            }
+        };
 
-    return (
-        <StyledButton
-            onClick={handleClick}
-            label={label}
-            disabled={isPending}
-            color="error"
-            {...sanitizeRestProps(rest)}
-        >
-            {icon}
-        </StyledButton>
-    );
-};
+        return (
+            <StyledButton
+                ref={ref}
+                onClick={handleClick}
+                label={label}
+                disabled={isPending}
+                color="error"
+                {...sanitizeRestProps(rest)}
+            >
+                {icon}
+            </StyledButton>
+        );
+    }
+);
 
 const defaultIcon = <ActionDelete />;
 
