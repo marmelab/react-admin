@@ -523,7 +523,7 @@ const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
  */
 const Route = (_props: RouterRouteProps): null => null;
 interface RouteConfig {
-    path: string;
+    path?: string;
     element?: ReactNode;
     index?: boolean;
     children?: RouteConfig[];
@@ -590,7 +590,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                         React.isValidElement(child) && isRouteElement(child)
                 )
                 .map(child => ({
-                    path: (child.props as RouterRouteProps).path ?? '',
+                    path: (child.props as RouterRouteProps).path,
                     element: (child.props as RouterRouteProps).element,
                     index: (child.props as RouterRouteProps).index,
                     children: (child.props as RouterRouteProps).children
@@ -606,6 +606,28 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     // Get parent params to merge with current match params
     const parentParams = React.useContext(ParamsContext);
 
+    // Helper to check if any child route matches the pathname
+    const childRouteMatches = (
+        children: RouteConfig[] | undefined,
+        path: string
+    ): boolean => {
+        if (!children) return false;
+        for (const child of children) {
+            if (child.index && (path === '/' || path === '')) {
+                return true;
+            }
+            if (child.path) {
+                const match = matchPath({ path: child.path, end: false }, path);
+                if (match) return true;
+            }
+            // Recursively check nested pathless layouts
+            if (!child.path && child.children) {
+                if (childRouteMatches(child.children, path)) return true;
+            }
+        }
+        return false;
+    };
+
     // Find matching route and calculate the new matched path
     const matchResult = useMemo(() => {
         for (const route of routes) {
@@ -614,6 +636,17 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                 const newMatchedPath = parentMatchedPath || '/';
                 return { route, matchedPath: newMatchedPath, params: {} };
             }
+
+            // Pathless layout route: path is undefined (not empty string) and has children
+            // Match if any child route would match the pathname
+            if (route.path === undefined && route.children) {
+                if (childRouteMatches(route.children, pathname)) {
+                    // Pathless layout doesn't consume any path
+                    const newMatchedPath = parentMatchedPath || '/';
+                    return { route, matchedPath: newMatchedPath, params: {} };
+                }
+            }
+
             if (route.path !== undefined) {
                 const match = matchPath(route.path, pathname);
                 if (match) {

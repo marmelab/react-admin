@@ -23,6 +23,7 @@ import {
     NestedRoutesWithOutlet,
     NestedResources,
     QueryParameters,
+    PathlessLayoutRoutes,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -1407,6 +1408,37 @@ describe('tanStackRouterProvider', () => {
                     screen.getByTestId('current-search').textContent || '';
                 expect(search).toContain('sort=title');
                 expect(search).toContain('page=3');
+            });
+        });
+    });
+
+    describe('Pathless Layout Routes', () => {
+        it('should match pathless layout routes with child routes', async () => {
+            window.location.hash = '#/posts';
+
+            render(<PathlessLayoutRoutes />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+        });
+
+        it('should navigate between child routes within pathless layout', async () => {
+            window.location.hash = '#/posts';
+
+            render(<PathlessLayoutRoutes />);
+
+            await waitFor(() => {
+                expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Comments'));
+
+            await waitFor(() => {
+                expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
+                expect(screen.getByTestId('comments-page')).toBeInTheDocument();
             });
         });
     });
