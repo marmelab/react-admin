@@ -852,6 +852,15 @@ export const UseBlockerTest = () => {
 };
 
 export const NavigateComponent = () => {
+    const DummyPage = () => {
+        return (
+            <div>
+                <p>Dummy page</p>
+                <Navigate to={{ pathname: '/posts', search: '?foo=bar' }} />
+            </div>
+        );
+    };
+
     const RedirectPage = () => {
         return (
             <div>
@@ -887,8 +896,10 @@ export const NavigateComponent = () => {
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
             dataProvider={dataProvider}
+            layout={LayoutWithLocationDisplay}
         >
             <CustomRoutes>
+                <Route path="/dummy" element={<DummyPage />} />
                 <Route path="/redirect" element={<RedirectPage />} />
                 <Route
                     path="/conditional-redirect"
@@ -914,8 +925,12 @@ export const NavigateComponent = () => {
                                     Go to Conditional Redirect
                                 </LinkBase>
                             </li>
+                            <li>
+                                <LinkBase to="/dummy">
+                                    Go to redirect with params
+                                </LinkBase>
+                            </li>
                         </ul>
-                        <LocationDisplay />
                     </div>
                 }
             />

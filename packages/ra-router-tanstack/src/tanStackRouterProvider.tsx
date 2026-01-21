@@ -472,18 +472,41 @@ Link.displayName = 'Link';
 const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
     const basename = useBasename();
 
+    // Handle both string and object forms of `to`
+    let resolvedPath: string;
+    let search: string | undefined;
+    let hash: string | undefined;
+
+    if (typeof to === 'string') {
+        resolvedPath = to;
+    } else {
+        resolvedPath = to.pathname || '/';
+        search = to.search;
+        hash = to.hash;
+        // Merge state from object with state prop (prop takes precedence)
+        state = state ?? to.state;
+    }
+
     // Prepend basename to the path (like react-router does)
     // Only prepend if path doesn't already start with basename
-    let resolvedTo = to;
-    if (typeof to === 'string' && basename && to.startsWith('/')) {
-        if (!to.startsWith(basename + '/') && to !== basename) {
-            resolvedTo = `${basename}${to}`;
+    if (basename && resolvedPath.startsWith('/')) {
+        if (
+            !resolvedPath.startsWith(basename + '/') &&
+            resolvedPath !== basename
+        ) {
+            resolvedPath = `${basename}${resolvedPath}`;
         }
     }
 
     return (
         <TanStackNavigate
-            to={resolvedTo as string}
+            to={resolvedPath}
+            search={
+                search
+                    ? Object.fromEntries(new URLSearchParams(search))
+                    : undefined
+            }
+            hash={hash}
             replace={replace}
             state={state}
         />

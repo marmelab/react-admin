@@ -1084,6 +1084,27 @@ describe('tanStackRouterProvider', () => {
             });
         });
 
+        it('should preserve search params on redirect', async () => {
+            render(<NavigateComponent />);
+            await waitFor(() => {
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Go to redirect with params'));
+
+            // Should immediately redirect back to posts with search params
+            await waitFor(() => {
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            expect(
+                screen.getByText(/\"pathname\": \"\/posts\"/)
+            ).toBeInTheDocument();
+            expect(
+                screen.getByText(/\"search\": \"\?foo=bar\"/)
+            ).toBeInTheDocument();
+        });
+
         it('should redirect conditionally when state changes', async () => {
             render(<NavigateComponent />);
             await waitFor(() => {
