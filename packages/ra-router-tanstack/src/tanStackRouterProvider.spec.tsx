@@ -703,6 +703,41 @@ describe('tanStackRouterProvider', () => {
                 ).toBeInTheDocument();
             });
         });
+
+        it('should support location object with pathname and search', async () => {
+            render(<LinkComponent />);
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Go to Post #4 (with search)')
+                ).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Go to Post #4 (with search)'));
+
+            await waitFor(() => {
+                expect(screen.getByText('Post Details')).toBeInTheDocument();
+            });
+            // Check that search params are preserved in location
+            expect(screen.getByText(/\"search\": \"\?foo=bar\"/)).toBeInTheDocument();
+        });
+
+        it('should support location object with only search (no pathname)', async () => {
+            render(<LinkComponent />);
+            await waitFor(() => {
+                expect(
+                    screen.getByText('Go to same page with search param')
+                ).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Go to same page with search param'));
+
+            await waitFor(() => {
+                // Should stay on the same page (Link Tests page)
+                expect(screen.getByText('Link Component Tests')).toBeInTheDocument();
+            });
+            // Check that search params are added
+            expect(screen.getByText(/\"search\": \"\?foo=bar\"/)).toBeInTheDocument();
+        });
     });
 
     describe('Routes', () => {

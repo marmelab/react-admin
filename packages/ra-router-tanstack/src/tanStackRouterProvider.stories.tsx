@@ -61,6 +61,7 @@ const dataProvider = fakeDataProvider(
             { id: 1, title: 'Post #1', body: 'Hello World' },
             { id: 2, title: 'Post #2', body: 'Second post' },
             { id: 3, title: 'Post #3', body: 'Third post' },
+            { id: 4, title: 'Post #4', body: 'Fourth post' },
         ],
         comments: [
             { id: 1, post_id: 1, body: 'Nice post!' },
@@ -426,8 +427,17 @@ export const LinkComponent = () => {
                     Go to Post #3 (with state)
                 </LinkBase>
 
-                <h3>Current Location State</h3>
-                <pre>{JSON.stringify(location.state, null, 2)}</pre>
+                <h3>Link with Location object</h3>
+                <LinkBase
+                    to={{ pathname: '/posts/4/show', search: '?foo=bar' }}
+                >
+                    Go to Post #4 (with search)
+                </LinkBase>
+
+                <h3>Link with no pathname change</h3>
+                <LinkBase to={{ search: '?foo=bar' }}>
+                    Go to same page with search param
+                </LinkBase>
             </div>
         );
     };

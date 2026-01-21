@@ -424,6 +424,7 @@ const useBlocker = (
 const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
     ({ to, replace, state, children, ...rest }, ref) => {
         const basename = useBasename();
+        const currentLocation = useTanStackLocation();
 
         // Helper to prepend basename to absolute paths
         const resolvePath = (path: string) => {
@@ -434,12 +435,15 @@ const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
             return `${basename}${path}`;
         };
 
-        // Handle object `to` with pathname (e.g., { pathname: '/path', search: '?foo=bar' })
+        // Handle object `to` (e.g., { pathname: '/path', search: '?foo=bar' })
         let resolvedTo: string;
         let resolvedState = state;
-        if (typeof to === 'object' && to !== null && 'pathname' in to) {
+        if (typeof to === 'object' && to !== null) {
             const loc = to as Partial<RouterLocation>;
-            let path = resolvePath(loc.pathname ?? '/');
+            // If no pathname provided, use current pathname to stay on current page
+            let path = loc.pathname
+                ? resolvePath(loc.pathname)
+                : currentLocation.pathname;
             if (loc.search) {
                 path += loc.search.startsWith('?')
                     ? loc.search
