@@ -607,26 +607,29 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     const parentParams = React.useContext(ParamsContext);
 
     // Helper to check if any child route matches the pathname
-    const childRouteMatches = (
-        children: RouteConfig[] | undefined,
-        path: string
-    ): boolean => {
-        if (!children) return false;
-        for (const child of children) {
-            if (child.index && (path === '/' || path === '')) {
-                return true;
+    const childRouteMatches = useCallback(
+        (children: RouteConfig[] | undefined, path: string): boolean => {
+            if (!children) return false;
+            for (const child of children) {
+                if (child.index && (path === '/' || path === '')) {
+                    return true;
+                }
+                if (child.path !== undefined) {
+                    const match = matchPath(
+                        { path: child.path, end: false },
+                        path
+                    );
+                    if (match) return true;
+                }
+                // Recursively check nested pathless layouts
+                if (!child.path && child.children) {
+                    if (childRouteMatches(child.children, path)) return true;
+                }
             }
-            if (child.path !== undefined) {
-                const match = matchPath({ path: child.path, end: false }, path);
-                if (match) return true;
-            }
-            // Recursively check nested pathless layouts
-            if (!child.path && child.children) {
-                if (childRouteMatches(child.children, path)) return true;
-            }
-        }
-        return false;
-    };
+            return false;
+        },
+        []
+    );
 
     // Check if a route pattern has a catch-all at the end
     const hasCatchAll = (path: string): boolean => {
@@ -636,37 +639,40 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     // Check if routeB is more specific than routeA when both match the same path
     // A route is more specific if it matches more segments with static/param patterns
     // before resorting to a catch-all
-    const isMoreSpecific = (pathA: string, pathB: string): boolean => {
-        const segmentsA = pathA.split('/').filter(Boolean);
-        const segmentsB = pathB.split('/').filter(Boolean);
+    const isMoreSpecific = useCallback(
+        (pathA: string, pathB: string): boolean => {
+            const segmentsA = pathA.split('/').filter(Boolean);
+            const segmentsB = pathB.split('/').filter(Boolean);
 
-        // Count non-catchall segments
-        const nonCatchallA = segmentsA.filter(s => s !== '*').length;
-        const nonCatchallB = segmentsB.filter(s => s !== '*').length;
+            // Count non-catchall segments
+            const nonCatchallA = segmentsA.filter(s => s !== '*').length;
+            const nonCatchallB = segmentsB.filter(s => s !== '*').length;
 
-        // More non-catchall segments = more specific
-        if (nonCatchallB > nonCatchallA) return true;
+            // More non-catchall segments = more specific
+            if (nonCatchallB > nonCatchallA) return true;
 
-        // Same number of non-catchall segments, but B has no catchall while A does
-        if (
-            nonCatchallB === nonCatchallA &&
-            hasCatchAll(pathA) &&
-            !hasCatchAll(pathB)
-        ) {
-            return true;
-        }
+            // Same number of non-catchall segments, but B has no catchall while A does
+            if (
+                nonCatchallB === nonCatchallA &&
+                hasCatchAll(pathA) &&
+                !hasCatchAll(pathB)
+            ) {
+                return true;
+            }
 
-        // If B has more static segments, it's more specific
-        const staticA = segmentsA.filter(
-            s => !s.startsWith(':') && s !== '*'
-        ).length;
-        const staticB = segmentsB.filter(
-            s => !s.startsWith(':') && s !== '*'
-        ).length;
-        if (staticB > staticA) return true;
+            // If B has more static segments, it's more specific
+            const staticA = segmentsA.filter(
+                s => !s.startsWith(':') && s !== '*'
+            ).length;
+            const staticB = segmentsB.filter(
+                s => !s.startsWith(':') && s !== '*'
+            ).length;
+            if (staticB > staticA) return true;
 
-        return false;
-    };
+            return false;
+        },
+        []
+    );
 
     // Find matching route and calculate the new matched path
     const matchResult = useMemo(() => {

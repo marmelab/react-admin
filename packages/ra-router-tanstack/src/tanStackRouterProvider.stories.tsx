@@ -409,39 +409,34 @@ export const RouteMatching = () => {
  * Tests to, replace, state props work correctly.
  */
 export const LinkComponent = () => {
-    const LinkTestPage = () => {
-        const location = useLocation();
-        return (
-            <div style={{ padding: 20 }}>
-                <h2>Link Component Tests</h2>
+    const LinkTestPage = () => (
+        <div style={{ padding: 20 }}>
+            <h2>Link Component Tests</h2>
 
-                <h3>Basic Link</h3>
-                <LinkBase to="/posts/1/show">Go to Post #1</LinkBase>
+            <h3>Basic Link</h3>
+            <LinkBase to="/posts/1/show">Go to Post #1</LinkBase>
 
-                <h3>Link with Replace</h3>
-                <LinkBase to="/posts/2/show" replace>
-                    Go to Post #2 (replace history)
-                </LinkBase>
+            <h3>Link with Replace</h3>
+            <LinkBase to="/posts/2/show" replace>
+                Go to Post #2 (replace history)
+            </LinkBase>
 
-                <h3>Link with State</h3>
-                <LinkBase to="/posts/3/show" state={{ from: 'link-test' }}>
-                    Go to Post #3 (with state)
-                </LinkBase>
+            <h3>Link with State</h3>
+            <LinkBase to="/posts/3/show" state={{ from: 'link-test' }}>
+                Go to Post #3 (with state)
+            </LinkBase>
 
-                <h3>Link with Location object</h3>
-                <LinkBase
-                    to={{ pathname: '/posts/4/show', search: '?foo=bar' }}
-                >
-                    Go to Post #4 (with search)
-                </LinkBase>
+            <h3>Link with Location object</h3>
+            <LinkBase to={{ pathname: '/posts/4/show', search: '?foo=bar' }}>
+                Go to Post #4 (with search)
+            </LinkBase>
 
-                <h3>Link with no pathname change</h3>
-                <LinkBase to={{ search: '?foo=bar' }}>
-                    Go to same page with search param
-                </LinkBase>
-            </div>
-        );
-    };
+            <h3>Link with no pathname change</h3>
+            <LinkBase to={{ search: '?foo=bar' }}>
+                Go to same page with search param
+            </LinkBase>
+        </div>
+    );
 
     return (
         <CoreAdmin

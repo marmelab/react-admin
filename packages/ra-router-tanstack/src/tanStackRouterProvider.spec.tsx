@@ -721,7 +721,7 @@ describe('tanStackRouterProvider', () => {
             });
             // Check that search params are preserved in location
             expect(
-                screen.getByText(/\"search\": \"\?foo=bar\"/)
+                screen.getByText(/"search": "\?foo=bar"/)
             ).toBeInTheDocument();
         });
 
@@ -745,7 +745,7 @@ describe('tanStackRouterProvider', () => {
             });
             // Check that search params are added
             expect(
-                screen.getByText(/\"search\": \"\?foo=bar\"/)
+                screen.getByText(/"search": "\?foo=bar"/)
             ).toBeInTheDocument();
         });
     });
@@ -1143,10 +1143,10 @@ describe('tanStackRouterProvider', () => {
             });
 
             expect(
-                screen.getByText(/\"pathname\": \"\/posts\"/)
+                screen.getByText(/"pathname": "\/posts"/)
             ).toBeInTheDocument();
             expect(
-                screen.getByText(/\"search\": \"\?foo=bar\"/)
+                screen.getByText(/"search": "\?foo=bar"/)
             ).toBeInTheDocument();
         });
 
