@@ -475,6 +475,7 @@ Link.displayName = 'Link';
 
 const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
     const basename = useBasename();
+    const currentLocation = useTanStackLocation();
 
     // Handle both string and object forms of `to`
     let resolvedPath: string;
@@ -484,7 +485,8 @@ const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
     if (typeof to === 'string') {
         resolvedPath = to;
     } else {
-        resolvedPath = to.pathname || '/';
+        // If no pathname provided, use current pathname to stay on current page
+        resolvedPath = to.pathname ?? currentLocation.pathname;
         search = to.search;
         hash = to.hash;
         // Merge state from object with state prop (prop takes precedence)

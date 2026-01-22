@@ -886,6 +886,60 @@ export const NavigateComponent = () => {
         );
     };
 
+    // Page that uses Navigate with only search params (no pathname)
+    // This should stay on the current page but update search params
+    const SearchOnlyRedirectPage = () => {
+        const location = useLocation();
+        const hasUpdatedParam = location.search.includes('updated');
+
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Search-Only Redirect Page</h2>
+                <p data-testid="search-only-page">
+                    This page tests Navigate with only search params.
+                </p>
+                {!hasUpdatedParam && (
+                    <LinkBase to={{ search: '?updated=true' }}>
+                        <button data-testid="trigger-search-redirect">
+                            Update search params only
+                        </button>
+                    </LinkBase>
+                )}
+                {hasUpdatedParam && (
+                    <p data-testid="search-updated">
+                        Search params updated successfully!
+                    </p>
+                )}
+            </div>
+        );
+    };
+
+    // Page that demonstrates Navigate with only search (redirects once)
+    const NavigateSearchOnlyPage = () => {
+        const location = useLocation();
+        const hasRedirected = location.search.includes('redirected');
+
+        // Only render Navigate if we haven't already redirected
+        // This prevents infinite navigation loops
+        if (!hasRedirected) {
+            return (
+                <div>
+                    <p>Redirecting with search only...</p>
+                    <Navigate to={{ search: '?redirected=true' }} replace />
+                </div>
+            );
+        }
+
+        return (
+            <div style={{ padding: 20 }}>
+                <h2>Navigate Search-Only Test</h2>
+                <p data-testid="navigate-search-only-page">
+                    Successfully navigated with search-only (no pathname).
+                </p>
+            </div>
+        );
+    };
+
     return (
         <CoreAdmin
             routerProvider={tanStackRouterProvider}
@@ -898,6 +952,14 @@ export const NavigateComponent = () => {
                 <Route
                     path="/conditional-redirect"
                     element={<ConditionalRedirect />}
+                />
+                <Route
+                    path="/search-only-redirect"
+                    element={<SearchOnlyRedirectPage />}
+                />
+                <Route
+                    path="/navigate-search-only"
+                    element={<NavigateSearchOnlyPage />}
                 />
             </CustomRoutes>
             <Resource
@@ -922,6 +984,16 @@ export const NavigateComponent = () => {
                             <li>
                                 <LinkBase to="/dummy">
                                     Go to redirect with params
+                                </LinkBase>
+                            </li>
+                            <li>
+                                <LinkBase to="/search-only-redirect">
+                                    Go to search-only redirect test (Link)
+                                </LinkBase>
+                            </li>
+                            <li>
+                                <LinkBase to="/navigate-search-only">
+                                    Go to Navigate search-only test
                                 </LinkBase>
                             </li>
                         </ul>

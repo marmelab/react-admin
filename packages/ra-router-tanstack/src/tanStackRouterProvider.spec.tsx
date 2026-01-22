@@ -1170,6 +1170,33 @@ describe('tanStackRouterProvider', () => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
         });
+
+        it('should support location object with only search (no pathname)', async () => {
+            render(<NavigateComponent />);
+            await waitFor(() => {
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            // Navigate to the Navigate search-only test page
+            // This page uses <Navigate to={{ search: '?redirected=true' }} replace />
+            // which should stay on the same pathname but add search params
+            fireEvent.click(screen.getByText('Go to Navigate search-only test'));
+
+            // Should show the success message after redirecting
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('navigate-search-only-page')
+                ).toBeInTheDocument();
+            });
+
+            // Should stay on /navigate-search-only but with search params added
+            expect(
+                screen.getByText(/"pathname": "\/navigate-search-only"/)
+            ).toBeInTheDocument();
+
+            // The search params should contain 'redirected'
+            expect(screen.getByText(/redirected/)).toBeInTheDocument();
+        });
     });
 
     describe('useLocation', () => {
