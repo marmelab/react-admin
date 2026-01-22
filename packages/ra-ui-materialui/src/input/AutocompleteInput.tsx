@@ -16,6 +16,7 @@ import {
     Autocomplete,
     type AutocompleteChangeReason,
     type AutocompleteProps,
+    AutocompleteRenderInputParams,
     Chip,
     TextField,
     type TextFieldProps,
@@ -857,6 +858,12 @@ export interface AutocompleteInputProps<
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
     source?: string;
     TextFieldProps?: TextFieldProps;
+    renderInput?: AutocompleteProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >['renderInput'];
 }
 
 /**
