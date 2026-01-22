@@ -82,7 +82,7 @@ The `Route` element depends on the routing library you use:
 // for react-router
 import { Route } from 'react-router-dom';
 // for tanstack-router
-import { tanStackRouterProvider } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 const { Route } = tanStackRouterProvider;
 ```
 
@@ -167,7 +167,8 @@ React-admin supports multiple routing libraries through its router abstraction l
 To use TanStack Router:
 
 ```jsx
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const App = () => (
     <Admin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>

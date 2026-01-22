@@ -10,13 +10,12 @@ Lets you define custom pages in your ra-core application, using [react-router-do
 
 ## Usage
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<CoreAdmin>`. Declare as many [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Route>` as you want inside them.
-Alternatively, you can add your custom routes to resources. They will be available under the resource prefix.
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<CoreAdmin>`. Declare as many `<Route>` as you want inside them.
 
 ```jsx
 // in src/App.js
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import { Route } from "react-router-dom";
+// see below for Route import
 
 import { dataProvider } from './dataProvider';
 import posts from './posts';
@@ -36,6 +35,16 @@ const App = () => (
 );
 
 export default App;
+```
+
+The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
+
+```jsx
+// for react-router
+import { Route } from 'react-router-dom';
+// for tanstack-router
+import { tanStackRouterProvider } from 'ra-router-tanstack';
+const { Route } = tanStackRouterProvider;
 ```
 
 Now, when a user browses to `/settings` or `/profile`, the components you defined will appear in the main part of the screen.

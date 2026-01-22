@@ -872,7 +872,8 @@ Ra-core uses a router abstraction layer that allows you to choose between differ
 To use TanStack Router, pass the `tanStackRouterProvider` to the `routerProvider` prop:
 
 ```tsx
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 
 const App = () => (

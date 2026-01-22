@@ -25,22 +25,9 @@ import {
     Resource,
     CustomRoutes,
     Form,
-    useInput,
     RouterProviderContext,
-    type InputProps,
+    testUI,
 } from 'ra-core';
-
-// Simple TextInput for stories - uses ra-core's useInput hook
-const TextInput = (props: InputProps) => {
-    const { id, field } = useInput(props);
-    return (
-        <div>
-            <label htmlFor={id}>{props.source}</label>
-            <br />
-            <input id={id} {...field} type="text" />
-        </div>
-    );
-};
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
 const {
@@ -51,6 +38,7 @@ const {
     Route,
     Navigate,
 } = tanStackRouterProvider;
+const { TextInput } = testUI;
 
 export default {
     title: 'ra-routing-tanstack/TanStack Router Provider',

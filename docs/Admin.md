@@ -1058,7 +1058,8 @@ React-admin uses a router abstraction layer that allows you to choose between di
 To use TanStack Router, pass the `tanStackRouterProvider` to the `routerProvider` prop:
 
 ```tsx
-import { Admin, Resource, tanStackRouterProvider } from 'react-admin';
+import { Admin, Resource } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 import { dataProvider } from './dataProvider';
 
 const App = () => (

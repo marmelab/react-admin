@@ -81,7 +81,7 @@ The `Route` element depends on the routing library you use (e.g. `react-router` 
 // for react-router
 import { Route } from 'react-router-dom';
 // for tanstack-router
-import { tanStackRouterProvider } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 const { Route } = tanStackRouterProvider;
 ```
 
@@ -166,7 +166,8 @@ Ra-core supports multiple routing libraries through its router abstraction layer
 To use TanStack Router:
 
 ```jsx
-import { CoreAdmin, Resource, tanStackRouterProvider } from 'ra-core';
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const App = () => (
     <CoreAdmin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
