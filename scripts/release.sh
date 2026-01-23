@@ -91,6 +91,27 @@ fi
 
 info "Starting the release process"
 
+# Step 0: Check npm authentication
+if [ -z "$RELEASE_DRY_RUN" ]; then
+    retry_step "Check npm authentication" "
+        if npm whoami > /dev/null 2>&1; then
+            echo \"✓ npm authentication verified\"
+        else
+            echo \"✗ You appear to not be logged in to npm\"
+            echo \"Please run 'npm login' (in a new terminal) to authenticate with npm\"
+            echo \"Press Enter after logging in, or 'q' to quit\"
+            read -r response
+            if [ \"\$response\" = \"q\" ] || [ \"\$response\" = \"Q\" ]; then
+                echo \"Release aborted by user\"
+                exit 1
+            fi
+            npm whoami > /dev/null 2>&1
+        fi
+    "
+else
+    info "dry mode -- skipping npm authentication check"
+fi
+
 # Step 1: Install
 retry_step "make install" "make install"
 
@@ -204,7 +225,7 @@ fi
 
 # Step 10: Publish packages
 if [ -z "$RELEASE_DRY_RUN" ]; then
-    retry_step "Publish packages" "./node_modules/.bin/lerna publish --no-verify-access from-package"
+    retry_step "Publish packages" "./node_modules/.bin/lerna publish from-package"
 else
     info "dry mode -- skipping lerna publish"
 fi
