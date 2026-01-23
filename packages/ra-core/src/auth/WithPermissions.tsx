@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Children, ComponentType, createElement } from 'react';
-import { Location } from 'react-router-dom';
 
 import warning from '../util/warning';
+import type { RouterLocation } from '../routing';
 import { useAuthenticated } from './useAuthenticated';
 import usePermissions from './usePermissions';
 
@@ -19,7 +19,7 @@ export interface WithPermissionsProps {
     children?: WithPermissionsChildren;
     component?: ComponentType<any>;
     loading?: ComponentType<any>;
-    location?: Location;
+    location?: RouterLocation;
     render?: WithPermissionsChildren;
     staticContext?: object;
     [key: string]: any;

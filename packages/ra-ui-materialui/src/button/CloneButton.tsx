@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { memo, ReactNode } from 'react';
 import Queue from '@mui/icons-material/Queue';
-import { Link } from 'react-router-dom';
 import { stringify } from 'query-string';
-import { useResourceContext, useRecordContext, useCreatePath } from 'ra-core';
+import {
+    useResourceContext,
+    useRecordContext,
+    useCreatePath,
+    LinkBase,
+} from 'ra-core';
 import {
     ComponentsOverrides,
     styled,
@@ -33,8 +37,8 @@ export const CloneButton = React.forwardRef(function CloneButton(
     const pathname = createPath({ resource, type: 'create' });
     return (
         <StyledButton
+            component={LinkBase}
             ref={ref}
-            component={Link}
             to={
                 record
                     ? {
@@ -74,7 +78,7 @@ interface Props {
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
+export type CloneButtonProps = Props & ButtonProps;
 
 export default memo(CloneButton);
 

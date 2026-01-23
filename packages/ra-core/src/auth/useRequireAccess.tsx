@@ -1,12 +1,11 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router';
 import { RaRecord } from '../types';
 import {
     useCanAccess,
     UseCanAccessOptions,
     UseCanAccessResult,
 } from './useCanAccess';
-import { useBasename } from '../routing';
+import { useBasename, useNavigate } from '../routing';
 
 /**
  * A hook that calls the authProvider.canAccess() method for a provided resource and action (and optionally a record).

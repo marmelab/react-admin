@@ -152,8 +152,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import ErrorIcon from '@mui/icons-material/Report';
 import History from '@mui/icons-material/History';
-import { Title, useTranslate } from 'react-admin';
-import { useLocation } from 'react-router-dom';
+import { Title, useTranslate, useLocation } from 'react-admin';
 
 export const MyError = ({
     error,

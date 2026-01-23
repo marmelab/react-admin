@@ -20,8 +20,8 @@ import {
     useRecordContext,
     useGetPathForRecordCallback,
     useResourceDefinition,
+    useNavigate,
 } from 'ra-core';
-import { useNavigate } from 'react-router-dom';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';

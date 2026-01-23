@@ -5,7 +5,6 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import clsx from 'clsx';
-import { Link, type LinkProps, useMatch } from 'react-router-dom';
 import {
     MenuItem,
     type MenuItemProps,
@@ -17,7 +16,14 @@ import {
     useForkRef,
     Typography,
 } from '@mui/material';
-import { useTranslate, useBasename, useEvent } from 'ra-core';
+import type { LinkBaseProps } from 'ra-core';
+import {
+    useTranslate,
+    useBasename,
+    useEvent,
+    LinkBase,
+    useMatch,
+} from 'ra-core';
 import { useHotkeys } from 'react-hotkeys-hook';
 import { useSidebarState } from './useSidebarState';
 import { KeyboardShortcut } from '../KeyboardShortcut';
@@ -184,7 +190,7 @@ export const MenuItemLink = forwardRef<any, MenuItemLinkProps>(
 );
 
 export type MenuItemLinkProps = Omit<
-    LinkProps & MenuItemProps<'li'>,
+    LinkBaseProps & MenuItemProps<'li'>,
     'placeholder' | 'onPointerEnterCapture' | 'onPointerLeaveCapture'
 > & {
     leftIcon?: ReactNode;
@@ -240,8 +246,8 @@ const StyledMenuItem = styled(MenuItem, {
     },
 }));
 
-const LinkRef = forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => (
-    <Link ref={ref} {...props} />
+const LinkRef = forwardRef<HTMLAnchorElement, LinkBaseProps>((props, ref) => (
+    <LinkBase ref={ref} {...props} />
 ));
 
 declare module '@mui/material/styles' {

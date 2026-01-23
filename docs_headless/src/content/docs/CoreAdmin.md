@@ -141,6 +141,7 @@ Here are all the props accepted by the component:
 | `queryClient`         | Optional | `QueryClient`  | -              | The react-query client                                          |
 | `ready`               | Optional | `Component`    | `Ready`        | The content of the ready page                                   |
 | `requireAuth`         | Optional | `boolean`      | `false`        | Flag to require authentication for all routes                   |
+| `routerProvider`      | Optional | `RouterProvider`| `reactRouterProvider`| The router provider for navigation                         |
 | `store`               | Optional | `Store`        | -              | The Store for managing user preferences                         |
 | `title`               | Optional | `string`       | -              | The error page title                                            |
 
@@ -864,6 +865,28 @@ const App = () => (
 );
 ```
 
+## `routerProvider`
+
+Ra-core uses a router abstraction layer that allows you to choose between different routing libraries. By default, it uses [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md).
+
+To use TanStack Router, pass the `tanStackRouterProvider` to the `routerProvider` prop:
+
+```tsx
+import { CoreAdmin, Resource } from 'ra-core';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <CoreAdmin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+        <Resource name="posts" list={PostList} />
+    </CoreAdmin>
+);
+```
+
+See the [TanStack Router documentation](./TanStackRouter.md) for more details on using TanStack Router with ra-core.
+
+**Tip**: When using `tanStackRouterProvider`, navigation blocking (used by `warnWhenUnsavedChanges`) works out of the box, without requiring a Data Router setup.
+
 ## `store`
 
 The `<CoreAdmin>` component initializes a [Store](./Store.md) for user preferences using `localStorage` as the storage engine. You can override this by passing a custom `store` prop.
@@ -1077,11 +1100,15 @@ const App = () => (
 export default App;
 ```
 
-## Using A Custom Router
+## Using A Different Router Library
 
-Ra-core uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+Ra-core supports multiple routing libraries through its [router abstraction](./Routing.md). By default, it uses react-router, but you can also use [TanStack Router](./TanStackRouter.md) via the [`routerProvider`](#routerprovider) prop.
 
-But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. Ra-core will detect that it's already inside a router, and skip its own router. 
+## Using A Custom react-router Configuration
+
+By default, ra-core uses react-router with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
+
+But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. Ra-core will detect that it's already inside a router, and skip its own router.
 
 ```tsx
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
@@ -1103,7 +1130,7 @@ const App = () => {
 };
 ```
 
-## Using React-Admin In A Sub Path
+## Using Ra-Core In A Sub Path
 
 Ra-core links are absolute (e.g. `/posts/123/show`). If you serve your admin from a sub path (e.g. `/admin`), ra-core works seamlessly as it only appends a hash (URLs will look like `/admin#/posts/123/show`).
 

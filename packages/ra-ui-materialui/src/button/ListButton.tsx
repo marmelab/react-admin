@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ActionList from '@mui/icons-material/List';
-import { Link } from 'react-router-dom';
 import {
     useResourceContext,
     useCreatePath,
     useCanAccess,
     useGetResourceLabel,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -85,8 +85,8 @@ export const ListButton = React.forwardRef(function ListButton(
 
     return (
         <StyledButton
+            component={LinkBase}
             ref={ref}
-            component={Link}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation

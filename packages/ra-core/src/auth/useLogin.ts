@@ -1,11 +1,10 @@
 import { useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
 
 import { useNotificationContext } from '../notification';
-import { useBasename } from '../routing';
+import { useBasename, useLocation, useNavigate } from '../routing';
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { removeDoubleSlashes } from '../routing/useCreatePath';
-import { useQueryClient } from '@tanstack/react-query';
 
 /**
  * Get a callback for calling the authProvider.login() method

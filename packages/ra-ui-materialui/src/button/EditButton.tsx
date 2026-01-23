@@ -7,7 +7,6 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
-import { Link } from 'react-router-dom';
 import {
     type RaRecord,
     useResourceContext,
@@ -17,6 +16,7 @@ import {
     useGetResourceLabel,
     useGetRecordRepresentation,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -85,8 +85,8 @@ export const EditButton = React.forwardRef(function EditButton<
 
     return (
         <StyledButton
+            component={LinkBase}
             ref={ref}
-            component={Link}
             to={createPath({ type: 'edit', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation

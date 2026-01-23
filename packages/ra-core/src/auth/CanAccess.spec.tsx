@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Location } from 'react-router';
+import { RouterLocation } from '../routing';
 import {
     Basic,
     CustomLoading,
@@ -92,7 +92,7 @@ describe('<CanAccess>', () => {
     });
     it('redirects to the /authentication-error route by default in case of error', async () => {
         let rejectCheckAuth;
-        let location: Location;
+        let location: RouterLocation;
         const authProvider: AuthProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),
@@ -120,7 +120,7 @@ describe('<CanAccess>', () => {
     });
     it('redirects to the /authentication-error route by default in case of error in an Admin with a basename', async () => {
         let rejectCheckAuth;
-        let location: Location;
+        let location: RouterLocation;
         const authProvider: AuthProvider = {
             login: () => Promise.reject('bad method'),
             logout: () => Promise.reject('bad method'),

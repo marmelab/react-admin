@@ -10,8 +10,9 @@ import {
     useGetPathForRecordCallback,
     useRecordContext,
     useResourceContext,
+    useNavigate,
+    LinkBase,
 } from 'ra-core';
-import { Link, useNavigate } from 'react-router-dom';
 import { RowClickFunction } from '../types';
 
 export const SimpleListItem = <RecordType extends RaRecord = any>(
@@ -87,7 +88,7 @@ export const SimpleListItem = <RecordType extends RaRecord = any>(
                 }}
             >
                 <ListItemButton
-                    component={Link}
+                    component={LinkBase}
                     to={pathForRecord}
                     style={rowStyle ? rowStyle(record, rowIndex) : undefined}
                     sx={rowSx?.(record, rowIndex)}

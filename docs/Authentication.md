@@ -252,14 +252,13 @@ For instance, to add a "forgot password" link to the login page:
 
 ```jsx
 import { Box, Link } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { Login, LoginForm } from 'react-admin';
+import { Login, LoginForm, LinkBase } from 'react-admin';
 
 const MyLogin = () => (
     <Login>
         <LoginForm />
         <Box textAlign="center" mb={1}>
-            <Link component={RouterLink} to="/forgot-password">
+            <Link component={LinkBase} to="/forgot-password">
                 Forgot password?
             </Link>
         </Box>
@@ -272,7 +271,6 @@ const MyLogin = () => (
 You can also customize the login form fields, by setting the `LoginForm` children:
 
 ```jsx
-import { Link as RouterLink } from 'react-router-dom';
 import { Login, LoginForm, TextInput, PasswordInput, required } from 'react-admin';
 
 const MyLogin = () => (
@@ -431,6 +429,7 @@ export const authProvider = {
 ![Auth0 login flow diagram](./img/authProvider-OAuth-flow.png)
 {% comment %}
 Diagram source:
+
 ```mermaid
 sequenceDiagram
     autonumber
@@ -445,7 +444,8 @@ sequenceDiagram
     Note over RA: handleCallback()<br/>Auth0Client.handleRedirectCallback()
     RA->>U: Redirects to /posts
 ```
-Edited with https://mermaid.live/edit
+
+Edited with <https://mermaid.live/edit>
 {% endcomment %}
 
 **Tip:** You can choose when to redirect users to the third-party authentication service, such as directly in the `AuthProvider.checkAuth()` method or when they click a button on a [custom login page](#customizing-the-login-component).

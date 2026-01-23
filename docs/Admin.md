@@ -159,6 +159,7 @@ Here are all the props accepted by the component:
 | `queryClient`         | Optional | `QueryClient`   | -                    | The react-query client                                              |
 | `ready`               | Optional | `Component`     | `Ready`              | The content of the ready page                                       |
 | `requireAuth`         | Optional | `boolean`       | `false`              | Flag to require authentication for all routes                       |
+| `routerProvider`      | Optional | `RouterProvider`| `reactRouterProvider`| The router provider for navigation                                  |
 | `store`               | Optional | `Store`         | -                    | The Store for managing user preferences                             |
 | `theme`               | Optional | `object`        | `default LightTheme` | The main (light) theme configuration                                |
 | `title`               | Optional | `string`        | -                    | The error page title                                                |
@@ -1050,6 +1051,28 @@ const App = () => (
 );
 ```
 
+## `routerProvider`
+
+React-admin uses a router abstraction layer that allows you to choose between different routing libraries. By default, it uses [react-router](https://reactrouter.com/), but you can also use [TanStack Router](./TanStackRouter.md).
+
+To use TanStack Router, pass the `tanStackRouterProvider` to the `routerProvider` prop:
+
+```tsx
+import { Admin, Resource } from 'react-admin';
+import { tanStackRouterProvider } from 'ra-router-tanstack';
+import { dataProvider } from './dataProvider';
+
+const App = () => (
+    <Admin dataProvider={dataProvider} routerProvider={tanStackRouterProvider}>
+        <Resource name="posts" list={PostList} />
+    </Admin>
+);
+```
+
+See the [TanStack Router documentation](./TanStackRouter.md) for more details on using TanStack Router with react-admin.
+
+**Tip**: When using `tanStackRouterProvider`, navigation blocking (used by `warnWhenUnsavedChanges`) works out of the box, without requiring a Data Router setup.
+
 ## `store`
 
 The `<Admin>` component initializes a [Store](./Store.md) for user preferences using `localStorage` as the storage engine. You can override this by passing a custom `store` prop.
@@ -1156,9 +1179,13 @@ const App = () => (
 export default App;
 ```
 
-## Using A Custom Router
+## Using A Different Router Library
 
-React-admin uses [the react-router library](https://reactrouter.com/) to handle routing, with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers. 
+React-admin supports multiple routing libraries through its [router abstraction](./Routing.md). By default, it uses react-router, but you can also use [TanStack Router](./TanStackRouter.md) via the [`routerProvider`](#routerprovider) prop.
+
+## Using A Custom react-router Configuration
+
+By default, react-admin uses react-router with a [HashRouter](https://reactrouter.com/en/6/router-components/hash-router#hashrouter). This means that the hash portion of the URL (i.e. `#/posts/123` in the example) contains the main application route. This strategy has the benefit of working without a server, and with legacy web browsers.
 
 But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router. 
 
