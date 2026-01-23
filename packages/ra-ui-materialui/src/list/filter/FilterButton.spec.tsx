@@ -351,45 +351,29 @@ describe('<FilterButton />', () => {
         });
 
         it('should close the filter menu on removing all filters', async () => {
+            const user = userEvent.setup();
             render(<WithAutoCompleteArrayInput />);
 
             // Open Posts List
-            userEvent.click(await screen.findByText('Posts'));
+            await user.click(await screen.findByText('Posts'));
 
-            await waitFor(() => {
-                expect(screen.queryAllByRole('checkbox')).toHaveLength(11);
-            });
+            await screen.findByText('1-10 of 13');
 
-            userEvent.click(await screen.findByLabelText('Open'));
-            userEvent.click(await screen.findByText('Sint...'));
+            await user.click(await screen.findByLabelText('Open'));
+            await user.click(await screen.findByText('Sint...'));
 
             await screen.findByLabelText('Add filter');
             expect(screen.queryAllByText('Close')).toHaveLength(0);
-            await waitFor(
-                () => {
-                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-                },
-                { timeout: 10000 }
-            );
-            userEvent.click(screen.getByLabelText('Add filter'));
-            userEvent.click(await screen.findByText('Remove all filters'));
+            await screen.findByText('1-1 of 1');
+            await user.click(screen.getByLabelText('Add filter'));
+            await user.click(await screen.findByText('Remove all filters'));
 
-            await waitFor(
-                () => {
-                    expect(screen.getAllByRole('checkbox')).toHaveLength(11);
-                },
-                { timeout: 10000 }
-            );
+            await screen.findByText('1-10 of 13');
 
-            userEvent.click(await screen.findByLabelText('Open'));
-            userEvent.click(await screen.findByText('Sint...'));
+            await user.click(await screen.findByLabelText('Open'));
+            await user.click(await screen.findByText('Sint...'));
 
-            await waitFor(
-                () => {
-                    expect(screen.getAllByRole('checkbox')).toHaveLength(2);
-                },
-                { timeout: 10000 }
-            );
+            await screen.findByText('1-1 of 1');
 
             expect(screen.queryByText('Save current query...')).toBeNull();
         }, 20000);

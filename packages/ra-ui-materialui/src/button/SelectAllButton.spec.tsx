@@ -1,5 +1,5 @@
 import React from 'react';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { Basic, Label, Limit, StoreKey } from './SelectAllButton.stories';
 
 describe('<SelectAllButton />', () => {
@@ -18,7 +18,11 @@ describe('<SelectAllButton />', () => {
         await screen.findByRole('button', { name: 'Select all' });
         fireEvent.click(screen.getAllByRole('checkbox')[1]);
         await screen.findByText('9 items selected');
-        expect(screen.queryByRole('button', { name: 'Select all' })).toBeNull();
+        await waitFor(() => {
+            expect(
+                screen.queryByRole('button', { name: 'Select all' })
+            ).toBeNull();
+        });
     });
 
     it('should select all items', async () => {

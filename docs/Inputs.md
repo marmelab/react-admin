@@ -889,7 +889,7 @@ Now the component will render with a label:
 ```html
 <label>Position</label>
 <span>
-    <input name="lat" type="number" placeholder="longitude" value={record.lat} />
+    <input name="lat" type="number" placeholder="latitude" value={record.lat} />
     <input name="lng" type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```

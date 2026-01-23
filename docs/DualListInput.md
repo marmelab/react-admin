@@ -134,6 +134,8 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceArrayInput>
 ```
 
+**Tip**: If you need validation (e.g. `required()`), put the `validate` prop on the child `<DualListInput>`. `<ReferenceArrayInput>` doesn't accept validation props.
+
 If you have an *array of values* for the options, turn it into an array of objects with the `id` and `name` properties:
 
 ```jsx

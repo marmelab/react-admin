@@ -2,7 +2,7 @@
 
 A frontend Framework for building single-page applications running in the browser on top of REST/GraphQL APIs, using TypeScript, [React](https://facebook.github.io/react/) and [Material Design](https://material.io/). Open sourced and maintained by [marmelab](https://marmelab.com/).
 
-[Home page](https://marmelab.com/react-admin/) - [Documentation](https://marmelab.com/react-admin/documentation.html) - [Examples](#examples) - [Blog](https://marmelab.com/en/blog/#react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](#support)
+[Home page](https://marmelab.com/react-admin/) - [Documentation](https://marmelab.com/react-admin/documentation.html) - [Examples](#examples) - [Blog](https://marmelab.com/blog/tags/react-admin) - [Releases](https://github.com/marmelab/react-admin/releases) - [Support](#support)
 
 [![react-admin-demo](https://marmelab.com/react-admin/img/react-admin-demo-still.png)](https://www.youtube.com/watch?v=bJEo1O1oT6o)
 

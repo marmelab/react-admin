@@ -43,6 +43,7 @@ export const useAugmentedForm = <RecordType = any>(
         defaultValues,
         formRootPathname,
         resolver,
+        resetOptions,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
@@ -86,9 +87,17 @@ export const useAugmentedForm = <RecordType = any>(
     const { reset, formState } = form;
     const { isReady } = formState;
 
+    const previousRecordId = useRef(record?.id);
+
     useEffect(() => {
-        reset(defaultValuesIncludingRecord);
-    }, [defaultValuesIncludingRecord, reset]);
+        const recordIdChanged = record?.id !== previousRecordId.current;
+        previousRecordId.current = record?.id;
+
+        reset(
+            defaultValuesIncludingRecord,
+            recordIdChanged ? undefined : resetOptions
+        );
+    }, [defaultValuesIncludingRecord, reset, resetOptions, record?.id]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);

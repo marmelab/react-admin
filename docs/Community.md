@@ -88,7 +88,7 @@ If your problem is related to a library used by react-admin, you should ask for 
 
 The Marmelab blog has more than 70 articles about react-admin:
 
-* [https://marmelab.com/en/blog/#react-admin](https://marmelab.com/en/blog/#react-admin)
+* [https://marmelab.com/blog/tags/react-admin](https://marmelab.com/blog/tags/react-admin)
 
 You'll find tutorials, tips and tricks, version highlights, real-world use cases, and more. Come back often, we publish new articles every week!
 

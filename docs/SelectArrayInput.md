@@ -132,6 +132,8 @@ If you need to *fetch* the options from another resource, you're actually editin
 </ReferenceArrayInput>
 ```
 
+**Tip**: If you need validation (e.g. `required()`), put the `validate` prop on the child `<SelectArrayInput>`. `<ReferenceArrayInput>` doesn't accept validation props.
+
 You can also pass an *array of strings* for the choices:
 
 ```jsx

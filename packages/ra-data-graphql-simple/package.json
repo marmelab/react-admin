@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql-simple",
-    "version": "5.13.4",
+    "version": "5.13.6",
     "description": "A GraphQL simple data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -36,7 +36,7 @@
         "graphql-ast-types-browser": "~1.0.2",
         "lodash": "~4.17.5",
         "pluralize": "~7.0.0",
-        "ra-data-graphql": "^5.13.4"
+        "ra-data-graphql": "^5.13.6"
     },
     "peerDependencies": {
         "graphql": "^15.6.0",
@@ -47,7 +47,7 @@
         "typescript": "^5.1.3",
         "zshy": "^0.5.0"
     },
-    "gitHead": "587df4c27bfcec4a756df4f95e5fc14728dfc0d7",
+    "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
     "files": [
         "dist"
     ],
