@@ -1,12 +1,10 @@
 import * as React from 'react';
 import { ReactNode, forwardRef, useCallback, useMemo } from 'react';
 import {
-    useNavigate as useTanStackNavigate,
     useLocation as useTanStackLocation,
     useRouter,
     useBlocker as useTanStackBlocker,
     Link as TanStackLink,
-    Navigate as TanStackNavigate,
     Outlet as TanStackOutlet,
     createRouter,
     createRootRoute,
@@ -259,7 +257,6 @@ const useLocation = (): RouterLocation => {
 };
 
 const useNavigate = (): RouterNavigateFunction => {
-    const navigate = useTanStackNavigate();
     const router = useRouter();
     const basename = useBasename();
 
@@ -289,38 +286,40 @@ const useNavigate = (): RouterNavigateFunction => {
                 // If no pathname provided, keep current pathname
                 const currentPath = router.state.location.pathname;
                 const targetPath = loc.pathname ?? currentPath;
-                const resolvedPath = resolvePath(targetPath);
+                let resolvedPath = resolvePath(targetPath);
 
-                // Build the full URL with search and hash
-                // We use the history API directly to avoid TanStack Router's
-                // search param serialization which can cause double-encoding
-                let url = resolvedPath;
+                // Append search and hash directly to the path to preserve the raw
+                // query string format. TanStack Router's search prop uses JSON
+                // serialization which is incompatible with standard URL query strings.
                 if (loc.search) {
-                    url += loc.search.startsWith('?')
+                    resolvedPath += loc.search.startsWith('?')
                         ? loc.search
                         : `?${loc.search}`;
                 }
                 if (loc.hash) {
-                    url += loc.hash.startsWith('#') ? loc.hash : `#${loc.hash}`;
+                    resolvedPath += loc.hash.startsWith('#')
+                        ? loc.hash
+                        : `#${loc.hash}`;
                 }
 
                 const state = loc.state || options?.state;
-                if (options?.replace) {
-                    router.history.replace(url, state);
-                } else {
-                    router.history.push(url, state);
-                }
+                router.navigate({
+                    to: resolvedPath,
+                    state,
+                    replace: options?.replace,
+                });
                 return;
             }
 
             // Handle string path
-            navigate({
-                to: resolvePath(to as string),
+            const resolvedPath = resolvePath(to as string);
+            router.navigate({
+                to: resolvedPath,
                 state: options?.state,
                 replace: options?.replace,
-            } as any);
+            });
         },
-        [navigate, router, basename]
+        [router, basename]
     ) as RouterNavigateFunction;
 };
 
@@ -361,6 +360,19 @@ const useMatch = (pattern: {
     return matchPath(pattern, pathname);
 };
 
+// Helper to convert search object to search string
+const serializeSearch = (search: Record<string, unknown>): string => {
+    if (!search || Object.keys(search).length === 0) return '';
+    const params = new URLSearchParams();
+    for (const [key, value] of Object.entries(search)) {
+        if (value !== undefined && value !== null) {
+            params.append(key, String(value));
+        }
+    }
+    const str = params.toString();
+    return str ? `?${str}` : '';
+};
+
 const useBlocker = (
     shouldBlock: RouterBlockerFunction | boolean
 ): RouterBlocker => {
@@ -375,17 +387,24 @@ const useBlocker = (
         shouldBlockFn: ({ current, next, action }) => {
             const currentShouldBlock = shouldBlockRef.current;
             if (typeof currentShouldBlock === 'function') {
+                // TanStack Router's ShouldBlockFnLocation only provides pathname and search (as object).
+                // It doesn't provide hash or state at this level. We serialize search to a string
+                // and use empty values for hash/state as they're not available.
                 return currentShouldBlock({
                     currentLocation: {
                         pathname: current.pathname,
-                        search: '',
+                        search: serializeSearch(
+                            current.search as Record<string, unknown>
+                        ),
                         hash: '',
                         state: {},
                         key: '',
                     },
                     nextLocation: {
                         pathname: next.pathname,
-                        search: '',
+                        search: serializeSearch(
+                            next.search as Record<string, unknown>
+                        ),
                         hash: '',
                         state: {},
                         key: '',
@@ -405,7 +424,11 @@ const useBlocker = (
             reset: blocker.reset!,
             location: {
                 pathname: blocker.next?.pathname ?? '',
-                search: '',
+                search: blocker.next
+                    ? serializeSearch(
+                          blocker.next.search as Record<string, unknown>
+                      )
+                    : '',
                 hash: '',
                 state: {},
                 key: '',
@@ -438,21 +461,28 @@ const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
         // Handle object `to` (e.g., { pathname: '/path', search: '?foo=bar' })
         let resolvedTo: string;
         let resolvedState = state;
+
         if (typeof to === 'object' && to !== null) {
             const loc = to as Partial<RouterLocation>;
             // If no pathname provided, use current pathname to stay on current page
-            let path = loc.pathname
+            resolvedTo = loc.pathname
                 ? resolvePath(loc.pathname)
                 : currentLocation.pathname;
+
+            // Append search and hash directly to the path to preserve the raw
+            // query string format. TanStack Router's search prop uses JSON
+            // serialization which is incompatible with standard URL query strings.
             if (loc.search) {
-                path += loc.search.startsWith('?')
+                resolvedTo += loc.search.startsWith('?')
                     ? loc.search
                     : `?${loc.search}`;
             }
             if (loc.hash) {
-                path += loc.hash.startsWith('#') ? loc.hash : `#${loc.hash}`;
+                resolvedTo += loc.hash.startsWith('#')
+                    ? loc.hash
+                    : `#${loc.hash}`;
             }
-            resolvedTo = path;
+
             resolvedState = loc.state || state;
         } else {
             resolvedTo = resolvePath(to as string);
@@ -475,20 +505,30 @@ Link.displayName = 'Link';
 
 const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
     const basename = useBasename();
+    const router = useRouter();
     const currentLocation = useTanStackLocation();
 
     // Handle both string and object forms of `to`
     let resolvedPath: string;
-    let search: string | undefined;
-    let hash: string | undefined;
 
     if (typeof to === 'string') {
         resolvedPath = to;
     } else {
         // If no pathname provided, use current pathname to stay on current page
         resolvedPath = to.pathname ?? currentLocation.pathname;
-        search = to.search;
-        hash = to.hash;
+
+        // Append search and hash directly to the path to preserve the raw
+        // query string format. TanStack Router's search prop uses JSON
+        // serialization which is incompatible with standard URL query strings.
+        if (to.search) {
+            resolvedPath += to.search.startsWith('?')
+                ? to.search
+                : `?${to.search}`;
+        }
+        if (to.hash) {
+            resolvedPath += to.hash.startsWith('#') ? to.hash : `#${to.hash}`;
+        }
+
         // Merge state from object with state prop (prop takes precedence)
         state = state ?? to.state;
     }
@@ -504,19 +544,20 @@ const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
         }
     }
 
-    return (
-        <TanStackNavigate
-            to={resolvedPath}
-            search={
-                search
-                    ? Object.fromEntries(new URLSearchParams(search))
-                    : undefined
-            }
-            hash={hash}
-            replace={replace}
-            state={state}
-        />
-    );
+    // Use TanStack Router's navigate function
+    const previousPathRef = React.useRef<string | null>(null);
+    React.useLayoutEffect(() => {
+        if (previousPathRef.current !== resolvedPath) {
+            router.navigate({
+                to: resolvedPath,
+                state,
+                replace,
+            });
+            previousPathRef.current = resolvedPath;
+        }
+    }, [router, resolvedPath, replace, state]);
+
+    return null;
 };
 
 /**
