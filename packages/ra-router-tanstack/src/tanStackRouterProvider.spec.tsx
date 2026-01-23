@@ -1180,7 +1180,9 @@ describe('tanStackRouterProvider', () => {
             // Navigate to the Navigate search-only test page
             // This page uses <Navigate to={{ search: '?redirected=true' }} replace />
             // which should stay on the same pathname but add search params
-            fireEvent.click(screen.getByText('Go to Navigate search-only test'));
+            fireEvent.click(
+                screen.getByText('Go to Navigate search-only test')
+            );
 
             // Should show the success message after redirecting
             await waitFor(() => {
