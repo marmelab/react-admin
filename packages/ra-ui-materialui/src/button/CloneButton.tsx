@@ -73,6 +73,7 @@ const sanitizeRestProps = ({
 }: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
 
 interface Props {
+    resource?: string;
     record?: any;
     icon?: ReactNode;
     scrollToTop?: boolean;
