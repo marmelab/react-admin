@@ -79,7 +79,7 @@ interface Props {
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps<typeof LinkBase>;
+export type CloneButtonProps = Props & Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 export default memo(CloneButton);
 

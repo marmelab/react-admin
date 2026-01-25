@@ -122,7 +122,7 @@ interface Props<RecordType extends RaRecord = any> {
 }
 
 export type EditButtonProps<RecordType extends RaRecord = any> =
-    Props<RecordType> & ButtonProps<typeof LinkBase>;
+    Props<RecordType> & Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 const PREFIX = 'RaEditButton';
 
