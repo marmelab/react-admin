@@ -25,6 +25,7 @@ import {
     QueryParameters,
     PathlessLayoutRoutes,
     NestedResourcesPrecedence,
+    PathlessLayoutRoutesPriority,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -1477,6 +1478,30 @@ describe('tanStackRouterProvider', () => {
             await waitFor(() => {
                 expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
                 expect(screen.getByTestId('comments-page')).toBeInTheDocument();
+            });
+        });
+
+        it('should match the most specific layout route within pathless layout routes', async () => {
+            window.location.hash = '#/posts';
+
+            render(<PathlessLayoutRoutesPriority />);
+
+            await waitFor(() => {
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('User'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('users-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Block a user'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('block-user-page')
+                ).toBeInTheDocument();
             });
         });
     });

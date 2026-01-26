@@ -1481,3 +1481,107 @@ export const PathlessLayoutRoutes = () => {
         </RouterProviderContext.Provider>
     );
 };
+
+export const PathlessLayoutRoutesPriority = () => {
+    const { RouterWrapper } = tanStackRouterProvider;
+
+    return (
+        <RouterProviderContext.Provider value={tanStackRouterProvider}>
+            <RouterWrapper>
+                <div data-testid="layout-wrapper">
+                    <nav>
+                        <LinkBase to="/posts" style={{ marginRight: 10 }}>
+                            Posts
+                        </LinkBase>
+                        <LinkBase to="/comments" style={{ marginRight: 10 }}>
+                            Comments
+                        </LinkBase>
+                        <LinkBase
+                            to="/users/john_doe"
+                            style={{ marginRight: 10 }}
+                        >
+                            User
+                        </LinkBase>
+                        <LinkBase
+                            to="/users/jane_doe/block"
+                            style={{ marginRight: 10 }}
+                        >
+                            Block a user
+                        </LinkBase>
+                    </nav>
+                    <div
+                        style={{
+                            border: '2px solid blue',
+                            padding: 20,
+                            marginTop: 10,
+                        }}
+                    >
+                        <Routes>
+                            <Route
+                                path="/posts"
+                                element={
+                                    <div data-testid="posts-page">
+                                        Posts Page
+                                    </div>
+                                }
+                            />
+                            <Route
+                                path="/comments"
+                                element={
+                                    <div data-testid="comments-page">
+                                        Comments Page
+                                    </div>
+                                }
+                            />
+                            <Route
+                                element={
+                                    <div
+                                        style={{
+                                            border: '2px solid green',
+                                            padding: 20,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        <RouterOutlet />
+                                    </div>
+                                }
+                            >
+                                <Route
+                                    path="/users/*"
+                                    element={
+                                        <div data-testid="users-page">
+                                            Users View
+                                        </div>
+                                    }
+                                />
+                            </Route>
+                            <Route
+                                element={
+                                    <div
+                                        style={{
+                                            border: '2px solid red',
+                                            padding: 20,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        <RouterOutlet />
+                                    </div>
+                                }
+                            >
+                                <Route
+                                    path="/users/:username/block"
+                                    element={
+                                        <div data-testid="block-user-page">
+                                            Block a user
+                                        </div>
+                                    }
+                                />
+                            </Route>
+                        </Routes>
+                    </div>
+                </div>
+                <LocationDisplay />
+            </RouterWrapper>
+        </RouterProviderContext.Provider>
+    );
+};
