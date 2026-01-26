@@ -115,7 +115,7 @@ interface Props {
     scrollToTop?: boolean;
 }
 
-export type ListButtonProps = Props & ButtonProps;
+export type ListButtonProps = Props & Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 const PREFIX = 'RaListButton';
 
