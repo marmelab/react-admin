@@ -27,3 +27,4 @@ cypress/downloads
 .env
 .claude/settings.local.json
 .npmrc
+/packs
