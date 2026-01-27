@@ -190,3 +190,7 @@ check-documentation-videos-format: ## Check the documentation format
 
 release: ## Start the release process and publish the packages to npm using lerna
 	./scripts/release.sh
+
+pack: ## Create NPM packages for all publishable packages in ./packs
+	mkdir -p packs
+	yarn workspaces foreach -A --no-private pack --out ../../packs/%s-%v.tar.gz
