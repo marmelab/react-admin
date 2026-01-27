@@ -1,15 +1,15 @@
 import * as React from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import expect from 'expect';
-import { NavigateFunction, Route } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import { CoreAdminContext } from './CoreAdminContext';
+import { RouterNavigateFunction, TestMemoryRouter } from '../routing';
 import { CoreAdminRoutes } from './CoreAdminRoutes';
 import { Resource } from './Resource';
 import { CustomRoutes } from './CustomRoutes';
 import { CoreLayoutProps } from '../types';
 import { testDataProvider } from '../dataProvider';
-import { TestMemoryRouter } from '../routing';
 import { Basic } from './CoreAdminRoutes.stories';
 
 const Layout = ({ children }: CoreLayoutProps) => <div>Layout {children}</div>;
@@ -23,7 +23,7 @@ describe('<CoreAdminRoutes>', () => {
 
     describe('With resources as regular children', () => {
         it('should render resources and custom routes with and without layout', async () => {
-            let navigate: NavigateFunction | null = null;
+            let navigate: RouterNavigateFunction | null = null;
             render(
                 <Basic
                     navigateCallback={n => {
@@ -47,7 +47,7 @@ describe('<CoreAdminRoutes>', () => {
 
     describe('With children returned from a function as children', () => {
         it('should render resources and custom routes with and without layout when there is no authProvider', async () => {
-            let navigate: NavigateFunction | null = null;
+            let navigate: RouterNavigateFunction | null = null;
             render(
                 <TestMemoryRouter
                     navigateCallback={n => {
@@ -99,7 +99,7 @@ describe('<CoreAdminRoutes>', () => {
         });
 
         it('should render resources and custom routes with and without layout when there is an authProvider', async () => {
-            let navigate: NavigateFunction | null = null;
+            let navigate: RouterNavigateFunction | null = null;
             const authProvider = {
                 login: jest.fn().mockResolvedValue(''),
                 logout: jest.fn().mockResolvedValue(''),
@@ -183,7 +183,7 @@ describe('<CoreAdminRoutes>', () => {
             };
             const Custom = () => <>Custom</>;
 
-            let navigate: NavigateFunction | null = null;
+            let navigate: RouterNavigateFunction | null = null;
             render(
                 <TestMemoryRouter
                     navigateCallback={n => {

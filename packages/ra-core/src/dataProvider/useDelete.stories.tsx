@@ -20,12 +20,16 @@ import { useTakeUndoableMutation } from './undo';
 
 export default { title: 'ra-core/dataProvider/useDelete' };
 
-export const MutationMode = () => {
+export const MutationMode = ({
+    dataProvider,
+}: {
+    dataProvider?: DataProvider;
+}) => {
     const posts = [
         { id: 1, title: 'Hello' },
         { id: 2, title: 'World' },
     ];
-    const dataProvider = {
+    const defaultDataProvider = {
         getList: () => {
             return Promise.resolve({
                 data: posts,
@@ -45,7 +49,7 @@ export const MutationMode = () => {
     return (
         <CoreAdminContext
             queryClient={new QueryClient()}
-            dataProvider={dataProvider}
+            dataProvider={dataProvider ?? defaultDataProvider}
         >
             <MutationModeCore />
         </CoreAdminContext>

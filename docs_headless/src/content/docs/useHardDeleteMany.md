@@ -4,6 +4,8 @@ title: "useHardDeleteMany"
 
 This hook allows calling `dataProvider.hardDeleteMany()` when the callback is executed and deleting an array of deleted records based on their `ids`.
 
+**Tip:** If you need an undoable UI action, see [`useBulkDeletePermanentlyWithUndoController`](./useBulkDeletePermanentlyWithUndoController.md).
+
 **Warning**: The `ids` here are the IDs of the *deleted records*, and **not** the IDs of the actual records that have been deleted.
 
 ```tsx

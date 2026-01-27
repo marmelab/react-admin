@@ -338,7 +338,7 @@ const { data } = useGetOne('posts', { id: 123, meta: { embed: ['author'] } });
 
 ## Setting A Field Label
 
-<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 React-admin Field layout components like [`<Datagrid>`](./Datagrid.md) and [`<SimpleShowLayout>`](./SimpleShowLayout.md) inspect their children and use their `label` prop to set the table headers or the field labels.
 
@@ -472,7 +472,7 @@ const BookList = () => (
 
 If you don't find what you need in the list of available Fields, you can write your own Field component.
 
-<iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/tTNDAssRJhU" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 A custom field must be a regular React component retrieving the `record` from the `RecordContext` with the `useRecordContext` hook. React-admin will set the `record` in this context based on the API response data at render time. If you pass a `source`, the field component needs to find the corresponding value in the `record` and render it.
 
@@ -608,8 +608,7 @@ And now you can use a regular Field component, and the label displays correctly 
 A custom Field component might need to display a link to another record. Build the URL to the distant record using the resource name and the id, as follows:
 
 ```js
-import { useRecordContext, useGetOne } from 'react-admin';
-import { Link } from 'react-router-dom';
+import { useRecordContext, useGetOne, Link } from 'react-admin';
 
 const AuthorField = () => {
     const post = useRecordContext();

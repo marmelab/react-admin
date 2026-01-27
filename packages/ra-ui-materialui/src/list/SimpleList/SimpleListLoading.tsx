@@ -10,7 +10,6 @@ import {
     type ListProps,
     ListItem,
     ListItemAvatar,
-    ListItemSecondaryAction,
     ListItemText,
 } from '@mui/material';
 import { useTimeout } from 'ra-core';
@@ -37,7 +36,12 @@ export const SimpleListLoading = (inProps: SimpleListLoadingProps) => {
     return oneSecondHasPassed ? (
         <StyledList className={className} {...rest}>
             {times(nbFakeLines, key => (
-                <ListItem key={key}>
+                <ListItem
+                    key={key}
+                    secondaryAction={
+                        hasRightAvatarOrIcon ? <Avatar>&nbsp;</Avatar> : null
+                    }
+                >
                     {hasLeftAvatarOrIcon && (
                         <ListItemAvatar>
                             <Avatar>&nbsp;</Avatar>
@@ -64,11 +68,6 @@ export const SimpleListLoading = (inProps: SimpleListLoadingProps) => {
                             hasSecondaryText ? <Placeholder /> : undefined
                         }
                     />
-                    {hasRightAvatarOrIcon && (
-                        <ListItemSecondaryAction>
-                            <Avatar>&nbsp;</Avatar>
-                        </ListItemSecondaryAction>
-                    )}
                 </ListItem>
             ))}
         </StyledList>

@@ -18,22 +18,15 @@ yarn add @react-admin/ra-core-ee
 
 ```tsx
 import { EditBase, Form } from 'ra-core';
-import { LockOnMount, useLockCallbacks } from '@react-admin/ra-core-ee';
+import { LockOnMount } from '@react-admin/ra-core-ee';
+import { TextInput } from 'my-react-admin-ui-lib';
 
 const PostEdit = () => (
     <EditBase>
-        <PostEditForm />
-        <LockOnMount />
+        <Form>
+            <TextInput source="title" />
+            <LockOnMount />
+        </Form>
     </EditBase>
 );
-
-const PostEditForm = () => {
-    const { isPending, isLocked } = useLockCallbacks();
-
-    if (isPending) {
-        return <p>Loading...</p>;
-    }
-
-    return <Form disabled={isLocked}>{/* ... */}</Form>;
-};
 ```

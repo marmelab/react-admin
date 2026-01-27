@@ -1,14 +1,11 @@
 import * as React from 'react';
 import { useState, useEffect, useCallback } from 'react';
-
-import {
-    CloseNotificationContext,
-    type NotificationPayload,
-    undoableEventEmitter,
-    useNotificationContext,
-    useTakeUndoableMutation,
-    useTranslate,
-} from '../';
+import { useTranslate } from '../i18n/useTranslate';
+import { useNotificationContext } from '../notification/useNotificationContext';
+import { CloseNotificationContext } from '../notification/CloseNotificationContext';
+import type { NotificationPayload } from '../notification/types';
+import undoableEventEmitter from '../dataProvider/undoableEventEmitter';
+import { useTakeUndoableMutation } from '../dataProvider/undo/useTakeUndoableMutation';
 
 /**
  * Provides a way to show a notification.
@@ -60,6 +57,7 @@ export const Notification = () => {
 
     const handleRequestClose = useCallback(() => {
         setOpen(false);
+        setCurrentNotification(undefined);
     }, [setOpen]);
 
     const handleExited = useCallback(() => {

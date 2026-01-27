@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useGetRecordId } from './useGetRecordId';
 import { render, screen } from '@testing-library/react';
 import { Route, Routes } from 'react-router-dom';
-import { RecordContextProvider } from '..';
+import { RecordContextProvider } from '../controller';
 
 import { TestMemoryRouter } from '../routing';
 

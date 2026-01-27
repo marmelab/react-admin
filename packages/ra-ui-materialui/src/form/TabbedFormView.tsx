@@ -9,7 +9,6 @@ import {
     useState,
 } from 'react';
 import clsx from 'clsx';
-import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
 import { CardContent, Divider } from '@mui/material';
 import {
     type ComponentsOverrides,
@@ -18,7 +17,13 @@ import {
     type Theme,
     useThemeProps,
 } from '@mui/material/styles';
-import { useResourceContext, useSplatPathBase } from 'ra-core';
+import {
+    useResourceContext,
+    useSplatPathBase,
+    useRouterProvider,
+    useLocation,
+    useMatchPath,
+} from 'ra-core';
 import { Toolbar } from './Toolbar';
 import { TabbedFormTabs, getTabbedFormTabFullPath } from './TabbedFormTabs';
 
@@ -37,7 +42,9 @@ export const TabbedFormView = (inProps: TabbedFormViewProps) => {
         toolbar = DefaultToolbar,
         ...rest
     } = props;
+    const { Route, Routes } = useRouterProvider();
     const location = useLocation();
+    const matchPath = useMatchPath();
     const resource = useResourceContext(props);
     const [tabValue, setTabValue] = useState(0);
     const splatPathBase = useSplatPathBase();

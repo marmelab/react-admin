@@ -17,8 +17,7 @@ import { useBasename } from './useBasename';
  * hand, e.g. '/articles/1/show'.
  *
  * @example
- * import { useCreatePath, useRecordContext } from 'react-admin';
- * import { useNavigate } from 'react-router-dom';
+ * import { useCreatePath, useRecordContext, useNavigate } from 'react-admin';
  *
  * const PostEditButton = () => {
  *     const createPath = useCreatePath();

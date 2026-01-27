@@ -1,12 +1,12 @@
 import * as React from 'react';
 import ActionList from '@mui/icons-material/List';
-import { Link } from 'react-router-dom';
 import {
     useResourceContext,
     useCreatePath,
     useCanAccess,
     useGetResourceLabel,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -42,7 +42,10 @@ import { Button, type ButtonProps } from './Button';
  *     </Edit>
  * );
  */
-export const ListButton = (inProps: ListButtonProps) => {
+export const ListButton = React.forwardRef(function ListButton(
+    inProps: ListButtonProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -82,7 +85,8 @@ export const ListButton = (inProps: ListButtonProps) => {
 
     return (
         <StyledButton
-            component={Link}
+            component={LinkBase}
+            ref={ref}
             to={createPath({ type: 'list', resource })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation
@@ -94,7 +98,7 @@ export const ListButton = (inProps: ListButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = {

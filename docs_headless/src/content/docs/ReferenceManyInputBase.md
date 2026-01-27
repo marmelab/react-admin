@@ -1,9 +1,12 @@
 ---
 title: "<ReferenceManyInputBase>"
 ---
+
 Use `<ReferenceManyInputBase>` in an edition or creation views to edit one-to-many relationships, e.g. to edit the variants of a product in the product edition view.
 
 `<ReferenceManyInputBase>` fetches the related records, and renders them in a sub-form. When users add, remove of update related records, the `<ReferenceManyInputBase>` component stores these changes locally. When the users actually submit the form, `<ReferenceManyInputBase>` computes a diff with the existing relationship, and sends the related changes (additions, deletions, and updates) to the server.
+
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
 
 ## Usage
 
@@ -56,7 +59,7 @@ const ProductEdit = () => (
 );
 ```
 
-`<ReferenceManyInputBase>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (usually a `<SimpleFormIterator>`) to edit the relationship.
+`<ReferenceManyInputBase>` requires a `reference` and a `target` prop to know which entity to fetch, and a child component (an iterator component, usually built with [`<SimpleFormIteratorBase>`](./SimpleFormIteratorBase.md)) to edit the relationship.
 
 `<ReferenceManyInputBase>` persists the changes in the reference records (variants in the above example) after persisting the changes in the main resource (product in the above example). This means that you can also use `<ReferenceManyInputBase>` in `<CreateBase>` views.
 
@@ -64,24 +67,24 @@ const ProductEdit = () => (
 
 ## Props
 
-| Prop              | Required | Type                      | Default                          | Description                                                                                                                                                            |
-| ----------------- | -------- | ------------------------- | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `target`          | Required | `string`                  | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'                                                                                      |
-| `reference`       | Required | `string`                  | -                                | The name of the resource for the referenced records, e.g. 'books'                                                                                                      |
-| `children`        | Optional | `ReactNode`                 | -                                | One or several elements that render a list of records based on a `ListContext`                                                                                         |
-| `defaultValue`    | Optional | `array`                   | -                                | Default value of the input.                                                                                                                                            |
-| `filter`          | Optional | `Object`                  | -                                | Filters to use when fetching the related records, passed to `getManyReference()`                                                                                       |
-| `mutationOptions` | Optional | `UseMutationOptions`      | -                                | Options for the mutations (`create`, `update` and `delete`)                                                                                                            |
-| `perPage`         | Optional | `number`                  | 25                               | Maximum number of referenced records to fetch                                                                                                                          |
-| `queryOptions`    | Optional | `UseQueryOptions`         | -                                | Options for the queries (`getManyReferences`)                                                                                                                          |
-| `rankSource`    | Optional | `string`                  | -                                | Name of the field used to store the rank of each item. When defined, it enables reordering of the items.                                                 |
-| `sort`            | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                                                                    |
-| `source`          | Optional | `string`                  | `id`                             | Name of the field that carries the identity of the current record, used as origin for the relationship                                                                 |
-| `validate`        | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](https://marmelab.com/ra-core/validation) for details.                                      |
+| Prop              | Required | Type                      | Default                          | Description                                                                                                              |
+| ----------------- | -------- | ------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `target`          | Required | `string`                  | -                                | Target field carrying the relationship on the referenced resource, e.g. 'user_id'                                        |
+| `reference`       | Required | `string`                  | -                                | The name of the resource for the referenced records, e.g. 'books'                                                        |
+| `children`        | Optional | `Element`                 | -                                | One or several elements that render a list of records based on a `ListContext`                                           |
+| `defaultValue`    | Optional | `array`                   | -                                | Default value of the input.                                                                                              |
+| `filter`          | Optional | `Object`                  | -                                | Filters to use when fetching the related records, passed to `getManyReference()`                                         |
+| `mutationOptions` | Optional | `UseMutationOptions`      | -                                | Options for the mutations (`create`, `update` and `delete`)                                                              |
+| `perPage`         | Optional | `number`                  | 25                               | Maximum number of referenced records to fetch                                                                            |
+| `queryOptions`    | Optional | `UseQueryOptions`         | -                                | Options for the queries (`getManyReferences`)                                                                            |
+| `rankSource`      | Optional | `string`                  | -                                | Name of the field used to store the rank of each item. When defined, it enables reordering of the items.                 |
+| `sort`            | Optional | `{ field, order }`        | `{ field: 'id', order: 'DESC' }` | Sort order to use when fetching the related records, passed to `getManyReference()`                                      |
+| `source`          | Optional | `string`                  | `id`                             | Name of the field that carries the identity of the current record, used as origin for the relationship                   |
+| `validate`        | Optional | `Function` &#124; `array` | -                                | Validation rules for the array. See the [Validation Documentation](https://marmelab.com/ra-core/validation) for details. |
 
 ## `children`
 
-`<ReferenceManyInputBase>` creates an `ArrayInputContext`, so it accepts the same type of children as `<ArrayInput>`: a Form iterator. React-admin bundles one such iterator: `<SimpleFormIterator>`. It renders one row for each related record, giving the user the ability to add, remove, or edit related records.
+`<ReferenceManyInputBase>` creates an `ArrayInputContext`, so it accepts the same type of children as `<ArrayInputBase>`: a Form iterator. You can build your own form iterator by leveraging [`<SimpleFormIteratorBase>`](./SimpleFormIteratorBase.md). It renders one row for each related record, giving the user the ability to add, remove, or edit related records.
 
 ```jsx
 <ReferenceManyInputBase reference="variants" target="product_id">
@@ -94,7 +97,7 @@ const ProductEdit = () => (
 </ReferenceManyInputBase>
 ```
 
-Check out [the `<SimpleFormIterator>` documentation](https://marmelab.com/react-admin/SimpleFormIterator.html) for more details.
+Check out [the `<SimpleFormIteratorBase>` documentation](./SimpleFormIteratorBase.md) for more details.
 
 ## `defaultValue`
 
@@ -148,7 +151,7 @@ By default, ra-core-ee restricts the possible values to 25 and displays no pagin
 
 ## `rankSource`
 
-If the Form iterator you use as `ReferenceManyInputBase` children (e.g. `<SimpleFormIterator>`) provides controls to reorder the items in the list and the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
+If the Form iterator you use as `ReferenceManyInputBase` children provides controls to reorder the items in the list and the related records have a numeric rank field, you can enable the reordering feature by setting the `rankSource` prop.
 
 For example, if the variants have a `rank` field, you can set the `rankSource` prop like this:
 

@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { Link, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
 import { BasenameContextProvider } from './BasenameContextProvider';
 import { useBasename } from './useBasename';
 import { useCreatePath } from './useCreatePath';
 import { FakeBrowserDecorator } from '../storybook//FakeBrowser';
+import { LinkBase } from './LinkBase';
 
 export default {
     title: 'ra-core/routing/useCreatePath',
@@ -18,17 +19,17 @@ const Home = () => {
             <h1>Home</h1>
             <ul>
                 <li>
-                    <Link
+                    <LinkBase
                         to={createPath({
                             resource: 'posts',
                             type: 'list',
                         })}
                     >
                         Post list
-                    </Link>
+                    </LinkBase>
                 </li>
                 <li>
-                    <Link
+                    <LinkBase
                         to={createPath({
                             resource: 'posts',
                             type: 'edit',
@@ -36,7 +37,7 @@ const Home = () => {
                         })}
                     >
                         Post detail
-                    </Link>
+                    </LinkBase>
                 </li>
             </ul>
         </>
@@ -48,7 +49,7 @@ const PostList = () => {
     return (
         <div>
             <h1>Posts</h1>
-            <Link to={`${basename}/`}>Home</Link>
+            <LinkBase to={`${basename}/`}>Home</LinkBase>
         </div>
     );
 };
@@ -58,7 +59,7 @@ const PostDetail = () => {
     return (
         <div>
             <h1>Post 123</h1>
-            <Link to={`${basename}/`}>Home</Link>
+            <LinkBase to={`${basename}/`}>Home</LinkBase>
         </div>
     );
 };
@@ -79,7 +80,7 @@ export const SubPath = () => (
                 <>
                     <h1>Main</h1>
                     <div>
-                        <Link to="/admin">Go to admin</Link>
+                        <LinkBase to="/admin">Go to admin</LinkBase>
                     </div>
                 </>
             }

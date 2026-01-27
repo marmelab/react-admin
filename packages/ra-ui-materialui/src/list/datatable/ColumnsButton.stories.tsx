@@ -101,3 +101,15 @@ export const LabelTypes = () => (
         </DataTable>
     </Wrapper>
 );
+
+export const NoSource = () => (
+    <Wrapper aside={<ColumnsButton />} actions={null}>
+        <DataTable bulkActionButtons={false}>
+            <DataTable.Col label="c_0">c0 value</DataTable.Col>
+            <DataTable.Col label="c_1">c1 value</DataTable.Col>
+            <DataTable.Col label="c_2">c2 value</DataTable.Col>
+            <DataTable.Col label="c_3">c3 value</DataTable.Col>
+            <DataTable.Col label="c_4">c4 value</DataTable.Col>
+        </DataTable>
+    </Wrapper>
+);

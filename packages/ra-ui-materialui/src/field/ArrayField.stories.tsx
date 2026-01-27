@@ -4,8 +4,10 @@ import {
     RecordContextProvider,
     useListContext,
     useRecordContext,
+    testDataProvider,
     TestMemoryRouter,
     ResourceContextProvider,
+    downloadCSV,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -18,6 +20,7 @@ import { ChipField } from './ChipField';
 import { SimpleShowLayout } from '../detail';
 import { TextField } from './TextField';
 import { Pagination } from '../list/pagination';
+import { ExportButton } from '../button';
 
 export default { title: 'ra-ui-materialui/fields/ArrayField' };
 
@@ -130,6 +133,37 @@ export const ListContext = () => (
             </SingleFieldList>
             <SortButton /> <FilterButton />
         </ArrayField>
+    </TestMemoryRouter>
+);
+
+const simpleExporter = records => {
+    const header = 'id,title';
+    const rows = records.map(
+        record => `${record.id},${record.title ?? record.name ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
+
+export const WithExporter = () => (
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={testDataProvider({
+                getList: () => Promise.resolve({ data: [], total: 0 }),
+            })}
+        >
+            <Card sx={{ m: 1, p: 1 }}>
+                <ArrayField
+                    record={{ id: 123, books }}
+                    source="books"
+                    exporter={simpleExporter}
+                >
+                    <SingleFieldList linkType={false}>
+                        <ChipField source="title" />
+                    </SingleFieldList>
+                    <ExportButton />
+                </ArrayField>
+            </Card>
+        </AdminContext>
     </TestMemoryRouter>
 );
 

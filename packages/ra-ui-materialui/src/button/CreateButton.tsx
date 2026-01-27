@@ -9,14 +9,15 @@ import {
 import clsx from 'clsx';
 import isEqual from 'lodash/isEqual.js';
 import merge from 'lodash/merge.js';
+import type { RouterTo } from 'ra-core';
 import {
     useCreatePath,
     useCanAccess,
     useGetResourceLabel,
     useResourceContext,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
-import { Link, type To } from 'react-router-dom';
 
 import { Button, type ButtonProps, type LocationDescriptor } from './Button';
 
@@ -33,7 +34,10 @@ import { Button, type ButtonProps, type LocationDescriptor } from './Button';
  *     <CreateButton label="Create comment" />
  * );
  */
-const CreateButton = (inProps: CreateButtonProps) => {
+const CreateButton = React.forwardRef(function CreateButton(
+    inProps: CreateButtonProps,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -88,7 +92,8 @@ const CreateButton = (inProps: CreateButtonProps) => {
     }
     return isSmall ? (
         <StyledFab
-            component={Link}
+            component={LinkBase}
+            ref={ref}
             to={createPath({ resource, type: 'create' })}
             state={state}
             // @ts-ignore FabProps ships its own runtime palette `FabPropsColorOverrides` provoking an overlap error with `ButtonProps`
@@ -103,7 +108,8 @@ const CreateButton = (inProps: CreateButtonProps) => {
         </StyledFab>
     ) : (
         <StyledButton
-            component={Link}
+            component={LinkBase}
+            ref={ref}
             to={createPath({ resource, type: 'create' })}
             state={state}
             className={clsx(CreateButtonClasses.root, className)}
@@ -118,7 +124,7 @@ const CreateButton = (inProps: CreateButtonProps) => {
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = new Map([
@@ -132,10 +138,11 @@ interface Props {
     resource?: string;
     icon?: React.ReactNode;
     scrollToTop?: boolean;
-    to?: LocationDescriptor | To;
+    to?: LocationDescriptor | RouterTo;
 }
 
-export type CreateButtonProps = Props & Omit<ButtonProps<typeof Link>, 'to'>;
+export type CreateButtonProps = Props &
+    Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 const PREFIX = 'RaCreateButton';
 

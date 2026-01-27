@@ -6,7 +6,7 @@ import React, {
     useCallback,
     memo,
     FC,
-    ReactElement,
+    ReactNode,
 } from 'react';
 import clsx from 'clsx';
 import { TableCell, TableRow, TableRowProps, Checkbox } from '@mui/material';
@@ -20,8 +20,8 @@ import {
     useRecordContext,
     useGetPathForRecordCallback,
     useResourceDefinition,
+    useNavigate,
 } from 'ra-core';
-import { useNavigate } from 'react-router-dom';
 
 import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
@@ -254,7 +254,7 @@ export interface DatagridRowProps
     extends Omit<TableRowProps, 'id' | 'classes'> {
     className?: string;
     expand?:
-        | ReactElement
+        | ReactNode
         | FC<{
               id: Identifier;
               record: RaRecord;

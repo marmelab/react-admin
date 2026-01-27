@@ -270,6 +270,33 @@ describe('DataTable', () => {
             fireEvent.click(checkboxes[4], { shiftKey: true });
             await screen.findByText('4 items selected');
         });
+        it('should not create duplicate selections when checking page after individual selections', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[1]);
+            fireEvent.click(checkboxes[2]);
+            await screen.findByText('2 items selected');
+            fireEvent.click(checkboxes[0]);
+            await screen.findByText('5 items selected');
+            const selectAllButton = await screen.findByText('Select all');
+            selectAllButton.click();
+            await screen.findByText('7 items selected');
+        });
+        it('should handle uncheck and recheck without duplicates', async () => {
+            render(<Basic />);
+            const checkboxes = await screen.findAllByRole('checkbox');
+            fireEvent.click(checkboxes[1]);
+            fireEvent.click(checkboxes[2]);
+            await screen.findByText('2 items selected');
+            fireEvent.click(checkboxes[0]);
+            await screen.findByText('5 items selected');
+            fireEvent.click(checkboxes[0]);
+            await waitFor(() => {
+                expect(screen.queryByText('items selected')).toBeNull();
+            });
+            fireEvent.click(checkboxes[0]);
+            await screen.findByText('5 items selected');
+        });
     });
     describe('isRowSelectable', () => {
         it('should allow to disable row selection', async () => {

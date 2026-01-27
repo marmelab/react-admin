@@ -90,6 +90,7 @@ title: "Index"
 * [`<FilterListSection>`](./FilterLiveForm.md#usage)
 * [`<FilterLiveForm>`](./FilterLiveForm.md)
 * [`<FilterLiveSearch>`](./FilterLiveSearch.md)
+* [`<FilterValue>`](./FilterValue.md)
 * [`<Form>`](./Form.md)
 * [`<FormDataConsumer>`](./Inputs.md#linking-two-inputs)
 * [`<FormFillerButton>`](./FormFillerButton.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />

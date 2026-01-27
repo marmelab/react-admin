@@ -4,6 +4,8 @@ title: "useRestoreOne"
 
 This hook allows calling `dataProvider.restoreOne()` when the callback is executed and restoring a single deleted record based on its `id`.
 
+**Tip:** If you need an undoable UI action, see [`useRestoreWithUndoController`](./useRestoreWithUndoController.md).
+
 **Warning**: The `id` here is the ID of the *deleted record*, and **not** the ID of the actual record that has been deleted.
 
 ```tsx

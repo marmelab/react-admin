@@ -12,8 +12,8 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import type { RouterLocation, RouterTo } from 'ra-core';
 import { useTranslate } from 'ra-core';
-import { Path, To } from 'react-router';
 
 /**
  * A generic Button with side icon. Only the icon is displayed on small screens.
@@ -28,9 +28,17 @@ import { Path, To } from 'react-router';
  * </Button>
  *
  */
-export const Button = <RootComponent extends React.ElementType = 'button'>(
-    inProps: ButtonProps<RootComponent>
-) => {
+type ButtonComponent = <RootComponent extends React.ElementType = 'button'>(
+    props: ButtonProps<RootComponent> &
+        React.RefAttributes<HTMLButtonElement | HTMLAnchorElement>
+) => React.ReactElement | null;
+
+export const Button = React.forwardRef(function Button<
+    RootComponent extends React.ElementType = 'button',
+>(
+    inProps: ButtonProps<RootComponent>,
+    ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>
+) {
     const props = useThemeProps({ props: inProps, name: PREFIX });
     const {
         alignIcon = 'left',
@@ -61,6 +69,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
         label && !disabled ? (
             <Tooltip title={translatedLabel}>
                 <IconButton
+                    ref={ref as React.Ref<HTMLButtonElement>}
                     // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
                     aria-label={
                         typeof translatedLabel === 'string'
@@ -78,6 +87,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
             </Tooltip>
         ) : (
             <IconButton
+                ref={ref as React.Ref<HTMLButtonElement>}
                 className={className}
                 color={color}
                 disabled={disabled}
@@ -90,6 +100,7 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
         )
     ) : (
         <StyledButton
+            ref={ref as React.Ref<HTMLButtonElement>}
             className={className}
             color={color}
             size={size}
@@ -108,14 +119,14 @@ export const Button = <RootComponent extends React.ElementType = 'button'>(
             {translatedLabel}
         </StyledButton>
     );
-};
+}) as ButtonComponent;
 
 interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
     children?: React.ReactNode;
     className?: string;
     component?: RootComponent;
-    to?: LocationDescriptor | To;
+    to?: LocationDescriptor | RouterTo;
     disabled?: boolean;
     label?: React.ReactNode;
     size?: 'small' | 'medium' | 'large';
@@ -156,7 +167,7 @@ const getLinkParams = (locationDescriptor?: LocationDescriptor | string) => {
     };
 };
 
-export type LocationDescriptor = Partial<Path> & {
+export type LocationDescriptor = Partial<RouterLocation> & {
     redirect?: boolean;
     state?: any;
     replace?: boolean;

@@ -132,6 +132,50 @@ describe('<ReferenceManyField />', () => {
         });
     });
 
+    it('should expose getData with the full list', async () => {
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+        const dataProvider = testDataProvider({
+            getManyReference: jest.fn((_resource, params) => {
+                const { page, perPage } = params.pagination;
+                const start = (page - 1) * perPage;
+                return Promise.resolve<any>({
+                    data: data.slice(start, start + perPage),
+                    total: data.length,
+                });
+            }),
+        });
+
+        const ListContextWatcher = () => {
+            const { getData } = useListContext();
+            const [count, setCount] = React.useState<number | null>(null);
+
+            React.useEffect(() => {
+                if (!getData) return;
+                getData().then(records => setCount(records.length));
+            }, [getData]);
+
+            return count !== null ? <span>count:{count}</span> : null;
+        };
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <ReferenceManyField {...defaultProps} perPage={1}>
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                        <ListContextWatcher />
+                    </ReferenceManyField>
+                </ThemeProvider>
+            </AdminContext>
+        );
+
+        await screen.findByText('count:2');
+    });
+
     it('should support record with string identifier', async () => {
         const data = [
             { id: 'abc-1', title: 'hello' },

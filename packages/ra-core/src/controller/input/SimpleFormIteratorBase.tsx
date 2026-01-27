@@ -13,6 +13,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     const {
         children,
         getItemDefaults: getItemDefaultsProp = DefaultGetItemDefaults,
+        disableAutoFocus = false,
     } = props;
     const getItemDefaults = useEvent(getItemDefaultsProp);
 
@@ -23,7 +24,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
         );
     }
 
-    const { append, fields, move, remove, replace } = useArrayInput(props);
+    const { append, fields, move, remove } = useArrayInput(props);
     const { trigger, getValues } = useFormContext();
 
     const removeField = useEvent((index: number) => {
@@ -39,7 +40,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     });
 
     const addField = useEvent((item: any = undefined) => {
-        append(getItemDefaults(item));
+        append(getItemDefaults(item), { shouldFocus: !disableAutoFocus });
     });
 
     const handleReorder = useEvent((origin: number, destination: number) => {
@@ -47,7 +48,7 @@ export const SimpleFormIteratorBase = (props: SimpleFormIteratorBaseProps) => {
     });
 
     const handleArrayClear = useEvent(() => {
-        replace([]);
+        remove();
     });
 
     const context = useMemo(
@@ -92,4 +93,5 @@ export interface SimpleFormIteratorBaseProps
     record?: RaRecord;
     resource?: string;
     source?: string;
+    disableAutoFocus?: boolean;
 }

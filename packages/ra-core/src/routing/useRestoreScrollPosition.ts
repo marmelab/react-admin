@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
-import { useLocation } from 'react-router';
 import debounce from 'lodash/debounce.js';
 
 import { useStore } from '../store';
+import { useLocation } from './useLocation';
 
 /**
  * A hook that tracks the scroll position and restores it when the component mounts.

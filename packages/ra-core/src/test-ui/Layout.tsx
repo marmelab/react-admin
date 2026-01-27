@@ -1,6 +1,8 @@
-import { useRefresh, useResourceDefinitions, useTranslate } from '../';
 import * as React from 'react';
-import { Link } from 'react-router-dom';
+import { LinkBase } from '../routing';
+import { useResourceDefinitions } from '../core/useResourceDefinitions';
+import { useTranslate } from '../i18n/useTranslate';
+import { useRefresh } from '../dataProvider/useRefresh';
 import { Notification } from './Notification';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -34,11 +36,11 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
                         {Object.values(resources).map(resource =>
                             resource.hasList ? (
                                 <li key={resource.name}>
-                                    <Link to={`/${resource.name}`}>
+                                    <LinkBase to={`/${resource.name}`}>
                                         {`${resource.name
                                             .substring(0, 1)
                                             .toUpperCase()}${resource.name.substring(1)}`}
-                                    </Link>
+                                    </LinkBase>
                                 </li>
                             ) : null
                         )}

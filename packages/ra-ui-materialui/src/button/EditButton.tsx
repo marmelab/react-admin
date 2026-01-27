@@ -7,7 +7,6 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import ContentCreate from '@mui/icons-material/Create';
-import { Link } from 'react-router-dom';
 import {
     type RaRecord,
     useResourceContext,
@@ -17,6 +16,7 @@ import {
     useGetResourceLabel,
     useGetRecordRepresentation,
     useResourceTranslation,
+    LinkBase,
 } from 'ra-core';
 
 import { Button, ButtonProps } from './Button';
@@ -33,9 +33,12 @@ import { Button, ButtonProps } from './Button';
  *     <EditButton label="Edit comment" />
  * );
  */
-export const EditButton = <RecordType extends RaRecord = any>(
-    inProps: EditButtonProps<RecordType>
-) => {
+export const EditButton = React.forwardRef(function EditButton<
+    RecordType extends RaRecord = any,
+>(
+    inProps: EditButtonProps<RecordType>,
+    ref: React.ForwardedRef<HTMLAnchorElement>
+) {
     const props = useThemeProps({
         props: inProps,
         name: PREFIX,
@@ -82,7 +85,8 @@ export const EditButton = <RecordType extends RaRecord = any>(
 
     return (
         <StyledButton
-            component={Link}
+            component={LinkBase}
+            ref={ref}
             to={createPath({ type: 'edit', resource, id: record.id })}
             state={scrollStates[String(scrollToTop)]}
             // avoid double translation
@@ -96,7 +100,7 @@ export const EditButton = <RecordType extends RaRecord = any>(
             {icon}
         </StyledButton>
     );
-};
+});
 
 // avoids using useMemo to get a constant value for the link state
 const scrollStates = {

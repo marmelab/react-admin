@@ -6,7 +6,7 @@ sidebar:
 
 `<Resource>` components define the CRUD routes of a ra-core application. 
 
-<iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 In ra-core terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
@@ -50,7 +50,13 @@ The routes call the following `dataProvider` methods:
 * `edit` calls `getOne()` on mount, and `update()` or `delete()` on submission
 * `create` calls `create()` on submission
 
-**Tip**: Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+:::tip
+Which API endpoint does a resource rely on? The `<Resource>` component doesn't know this mapping - it's [the `dataProvider`'s job](./DataProviders.md) to define it.
+:::
+
+:::tip
+Ra-core allows to use resource names containing slashes, e.g. 'cms/categories'.
+:::
 
 ## Props
 

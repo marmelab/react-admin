@@ -21,9 +21,8 @@ Here is how you could write a book edition view in pure React, leveraging react-
 
 ```jsx
 import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
-import { useGetOne, useUpdate, Title } from "react-admin";
+import { useGetOne, useUpdate, Title, useParams, useNavigate } from "react-admin";
 import { Card, TextField, Button, Stack, MenuItem } from "@mui/material";
 
 export const BookEdit = () => {
@@ -95,11 +94,10 @@ We can avoid the call to `useForm` by putting its logic inside a custom componen
 
 ```diff
 import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 -import { useForm, Controller } from "react-hook-form";
 +import { Controller } from "react-hook-form";
 -import { useGetOne, useUpdate, Title } from "react-admin";
-+import { useGetOne, useUpdate, Title, Form } from "react-admin";
++import { useGetOne, useUpdate, Title, Form, useParams, useNavigate } from "react-admin";
 import { Card, TextField, Stack, MenuItem } from "@mui/material";
 
 export const BookEdit = () => {
@@ -167,10 +165,9 @@ Displaying inputs in a Stack is a common UI pattern. [The `<SimpleForm>` compone
 
 ```diff
 import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 import { Controller } from "react-hook-form";
 -import { useGetOne, useUpdate, Title, Form } from "react-admin";
-+import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
++import { useGetOne, useUpdate, Title, SimpleForm, useParams, useNavigate } from "react-admin";
 -import { Card, TextField, Stack, MenuItem } from "@mui/material";
 +import { Card, TextField, MenuItem } from "@mui/material";
 
@@ -232,10 +229,9 @@ Wrapping form inputs with a `<Controller>` tag is a common pattern, so react-adm
 
 ```diff
 import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 -import { Controller } from "react-hook-form";
 -import { useGetOne, useUpdate, Title, SimpleForm } from "react-admin";
-+import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
++import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput, useParams, useNavigate } from "react-admin";
 -import { Card, TextField, MenuItem } from "@mui/material";
 +import { Card } from "@mui/material";
 
@@ -296,9 +292,8 @@ Instead of passing the `record` and `onSubmit` callback to the `<SimpleForm>` el
 {% raw %}
 ```diff
 import * as React from "react";
-import { useParams, useNavigate } from "react-router-dom";
 -import { useGetOne, useUpdate, Title, SimpleForm, TextInput, SelectInput } from "react-admin";
-+import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
++import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput, useParams, useNavigate } from "react-admin";
 import { Card } from "@mui/material";
 
 export const BookEdit = () => {
@@ -351,8 +346,7 @@ The initial logic that grabs the id from the location, fetches the record from t
 {% raw %}
 ```diff
 import * as React from "react";
--import { useParams, useNavigate } from "react-router-dom";
--import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
+-import { useGetOne, useUpdate, Title, EditContextProvider, SimpleForm, TextInput, SelectInput, useParams, useNavigate } from "react-admin";
 +import { useEditController, Title, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
 import { Card } from "@mui/material";
 

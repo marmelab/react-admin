@@ -4,13 +4,13 @@ import {
     type SortPayload,
     type ExtractRecordPaths,
     type HintedString,
+    genericMemo,
 } from 'ra-core';
 import { type SxProps, type TableCellProps } from '@mui/material';
 
 import { DataTableCell } from './DataTableCell';
 import { DataTableHeadCell } from './DataTableHeadCell';
 import { ColumnsSelectorItem } from './ColumnsSelectorItem';
-import { genericMemo } from '../../field/genericMemo';
 
 // FIXME remove custom type when using TypeScript >= 5.4 as it is now native
 type NoInfer<T> = T extends infer U ? U : never;

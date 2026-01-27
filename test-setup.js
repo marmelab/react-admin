@@ -5,6 +5,11 @@
 import '@testing-library/jest-dom';
 import '@testing-library/jest-dom/jest-globals';
 
+// TextEncoder/TextDecoder are required by TanStack Router
+import { TextEncoder, TextDecoder } from 'util';
+global.TextEncoder = TextEncoder;
+global.TextDecoder = TextDecoder;
+
 // Make the CI fail if console.error in tests
 let error = console.error;
 console.error = (...args) => {
@@ -39,3 +44,7 @@ global.Request = Request;
 
 /** Mock scrollTo as it is not supported by JSDOM */
 global.scrollTo = jest.fn();
+
+const { configure: configureReact } = require('@testing-library/react');
+
+configureReact({ asyncUtilTimeout: 15000 });

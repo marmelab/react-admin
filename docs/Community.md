@@ -45,7 +45,8 @@ On our [Youtube channel](https://www.youtube.com/@react-admin), you can find som
 
 <div class="iframe-wrapper">
     <iframe
-        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP">
+        src="https://www.youtube.com/embed/videoseries?si=-m56_m4W9dEcJjw5&amp;list=PLBCskKfEEuGvgjdpfvH4ZAIGx4UJAUNwP"
+        referrerpolicy="strict-origin-when-cross-origin">
     </iframe>
 </div>
 
@@ -87,7 +88,7 @@ If your problem is related to a library used by react-admin, you should ask for 
 
 The Marmelab blog has more than 70 articles about react-admin:
 
-* [https://marmelab.com/en/blog/#react-admin](https://marmelab.com/en/blog/#react-admin)
+* [https://marmelab.com/blog/tags/react-admin](https://marmelab.com/blog/tags/react-admin)
 
 You'll find tutorials, tips and tricks, version highlights, real-world use cases, and more. Come back often, we publish new articles every week!
 

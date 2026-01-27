@@ -86,6 +86,8 @@ The `<ListBase>` component accepts the following props:
 | `debounce`                | Optional                | `number`    | `500`   | The debounce delay in milliseconds to apply when users change the sort or filter parameters. |
 | `disableAuthentication`   | Optional                | `boolean`   | `false` | Set to `true` to disable the authentication check.                                           |
 | `disableSyncWithLocation` | Optional                | `boolean`   | `false` | Set to `true` to disable the synchronization of the list parameters with the URL.            |
+| `empty`                   | Optional                | `ReactNode` | -       | The component to display when the list is empty.                                             |
+| `emptyWhileLoading`       | Optional                | `boolean`   | -       | Set to `true` to return `null` while the list is loading.                                    |
 | `error`                   | Optional                | `ReactNode` | -       | The component to render when failing to load the list of records.                            |
 | `exporter`                | Optional                | `function`  | -       | The function to call to export the list.                                                     |
 | `filter`                  | Optional                | `object`    | -       | The permanent filter values.                                                                 |
@@ -207,6 +209,90 @@ const Dashboard = () => (
             </ListBase>
         </ResourceContextProvider>
     </div>
+);
+```
+
+## `empty`
+
+By default, `<ListBase>` renders the children when there is no result and no active filter. If you want for instance to invite users to create the first record, you can render a custom component via the `empty` prop:
+
+```jsx
+import { ListBase } from 'ra-core';
+import { Link } from 'react-router';
+
+const Empty = () => (
+    <div>
+        <h4>
+            No product available
+        </h4>
+        <Link to="/products/create">Create the first product</Link>
+    </div>
+);
+
+const ProductList = () => (
+    <ListBase empty={<Empty />}>
+        ...
+    </ListBase>
+);
+```
+
+The `empty` component can call the [`useListContext()`](./useListContext.md) hook to receive the same props as the `ListBase` child component.
+
+## `emptyWhileLoading`
+
+Many list view components return null when the data is loading. If you use a custom view component as the `<ListBase>` children instead, you'll have to handle the case where the `data` is not yet defined.
+
+That means that the following will fail on load with a "ReferenceError: data is not defined" error:
+
+```jsx
+import { ListBase, useListContext } from 'ra-core';
+
+const SimpleBookList = () => {
+    const { data } = useListContext();
+    return (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, by {book.author} ({book.year})
+                </li>
+            ))}
+        </ul>
+    );
+}
+
+const BookList = () => (
+    <ListBase>
+        <SimpleBookList />
+    </ListBase>
+);
+```
+
+You can handle this case by getting the `isPending` variable from the [`useListContext`](./useListContext.md) hook:
+
+```jsx
+const SimpleBookList = () => {
+    const { data, isPending } = useListContext();
+    if (isPending) return null;
+    return (
+        <ul>
+            {data.map(book => (
+                <li key={book.id}>
+                    <i>{book.title}</i>, by {book.author} ({book.year})
+                </li>
+            ))}
+        </ul>
+    );
+}
+```
+
+The `<ListBase emptyWhileLoading>` prop provides a convenient shortcut for that use case. When enabled, `<ListBase>` won't render its child until `data` is defined.
+
+```diff
+const BookList = () => (
+-   <ListBase>
++   <ListBase emptyWhileLoading>
+        <SimpleBookList />
+    </ListBase>
 );
 ```
 

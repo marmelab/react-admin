@@ -219,8 +219,7 @@ Pass a custom React element as a child of `<SearchWithResult>` to customize the 
 {% raw %}
 ```tsx
 import { Card, CardContent } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Admin } from 'react-admin';
+import { Admin, Link } from 'react-admin';
 import {
     SearchWithResult,
     SearchResultsPanel,
@@ -327,8 +326,7 @@ You can also completely replace the search result item component:
 
 ```tsx
 import { Card, CardContent } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Admin } from 'react-admin';
+import { Admin, Link } from 'react-admin';
 import {
     SearchWithResult,
     SearchResultsPanel,

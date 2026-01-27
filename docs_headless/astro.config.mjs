@@ -120,9 +120,14 @@ export default defineConfig({
                         'recordsiterator',
                         'filterliveform',
                         'withlistcontext',
+                        enterpriseEntry(
+                            'bulkupdateformbase',
+                            '<BulkUpdateFormBase>'
+                        ),
                         'uselist',
                         'uselistcontext',
                         'uselistcontroller',
+                        'usesavedqueries',
                         'useunselect',
                         'useunselectall',
                     ],
@@ -135,6 +140,11 @@ export default defineConfig({
                         'createbase',
                         'editbase',
                         'form',
+                        enterpriseEntry('autosavebase', '<AutoSaveBase>'),
+                        enterpriseEntry(
+                            'autopersistinstorebase',
+                            '<AutoPersistInStoreBase>'
+                        ),
                         'usecreatecontext',
                         'usecreatecontroller',
                         'useeditcontext',
@@ -143,6 +153,11 @@ export default defineConfig({
                         'useregistermutationmiddleware',
                         'usesavecontext',
                         'useunique',
+                        enterpriseEntry('useautosave', 'useAutoSave'),
+                        enterpriseEntry(
+                            'useautopersistinstore',
+                            'useAutoPersistInStore'
+                        ),
                     ],
                 },
                 {
@@ -184,9 +199,6 @@ export default defineConfig({
                         'arrayinputbase',
                         'referenceinputbase',
                         'referencearrayinputbase',
-                        'referencemanyinputbase',
-                        'referencemanytomanyinputbase',
-                        'referenceoneinputbase',
                         'simpleformiteratorbase',
                         enterpriseEntry(
                             'referencemanyinputbase',
@@ -204,6 +216,7 @@ export default defineConfig({
                         'usechoicescontext',
                         'useinput',
                         'usesourcecontext',
+                        'usesupportcreatesuggestion',
                     ],
                 },
                 {
@@ -269,20 +282,41 @@ export default defineConfig({
                         enterpriseEntry('<DeletedRecordRepresentation>'),
                         enterpriseEntry('addSoftDeleteBasedOnResource'),
                         enterpriseEntry('addSoftDeleteInPlace'),
-                        enterpriseEntry('useSoftDelete'),
-                        enterpriseEntry('useSoftDeleteMany'),
+                        enterpriseEntry(
+                            'useBulkDeletePermanentlyWithUndoController'
+                        ),
+                        enterpriseEntry('useBulkRestoreWithUndoController'),
+                        enterpriseEntry('useBulkSoftDeleteWithUndoController'),
+                        enterpriseEntry('useDeletedRecordsListController'),
+                        enterpriseEntry(
+                            'useDeletePermanentlyWithUndoController'
+                        ),
+                        enterpriseEntry('useHardDelete'),
+                        enterpriseEntry('useHardDeleteMany'),
                         enterpriseEntry('useGetListDeleted'),
                         enterpriseEntry('useGetOneDeleted'),
                         enterpriseEntry('useRestoreOne'),
                         enterpriseEntry('useRestoreMany'),
-                        enterpriseEntry('useHardDelete'),
-                        enterpriseEntry('useHardDeleteMany'),
-                        enterpriseEntry('useDeletedRecordsListController'),
+                        enterpriseEntry('useRestoreWithUndoController'),
+                        enterpriseEntry('useSoftDelete'),
+                        enterpriseEntry('useSoftDeleteMany'),
+                        enterpriseEntry('useSoftDeleteWithUndoController'),
+                    ],
+                },
+                {
+                    label: 'History',
+                    items: [
+                        enterpriseEntry('HistoryFeatures', 'Setting up'),
+                        enterpriseEntry('useAddRevisionAfterMutation'),
+                        enterpriseEntry('useApplyChangesBasedOnSearchParam'),
+                        enterpriseEntry('useDeleteRevisions'),
+                        enterpriseEntry('useGenerateChangeMessage'),
+                        enterpriseEntry('useGetRevisions'),
                     ],
                 },
                 {
                     label: 'Recipes',
-                    items: ['caching', 'unittesting'],
+                    items: ['caching', 'unittesting', 'tanstackrouter'],
                 },
             ],
             components: {

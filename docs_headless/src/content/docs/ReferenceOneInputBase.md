@@ -3,6 +3,8 @@ title: "<ReferenceOneInputBase>"
 ---
 Use `<ReferenceOneInputBase>` in an `<EditBase>` or `<CreateBase>` view to edit one-to-one relationships, e.g. to edit the details of a book in the book edition view.
 
+This feature requires a valid is an [Enterprise Edition](https://marmelab.com/ra-enterprise/) subscription.
+
 ## Usage
 
 Here is an example one-to-one relationship: a `book` has at most one `book_details` row associated to it.
@@ -56,11 +58,11 @@ const BookEdit = () => (
 | ----------------- | -------- | -------------------- | ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `target`          | Required | `string`             | -                               | Target field carrying the relationship on the referenced resource, e.g. 'book_id' |
 | `reference`       | Required | `string`             | -                               | The name of the resource for the referenced records, e.g. 'book_details' |
-| `children`        | Optional | `ReactNode`            | -                               | One or several input elements that accept a `source` prop |
+| `children`        | Optional | `Element`            | -                               | One or several input elements that accept a `source` prop |
 | `defaultValue`    | Optional | `Object`             | -                               | Default value for the related record (in case it does not yet exist) |
-| `error`           | Optional | `ReactNode`            | -                               | The element to display when an error occurs while loading a reference |
+| `error`           | Optional | `Element`            | -                               | The element to display when an error occurs while loading a reference |
 | `filter`          | Optional | `Object`             | -                               | Filters to use when fetching the related record, passed to `getManyReference() |
-| `loading`         | Optional | `ReactNode`            | -                               | The element to display while loading a reference |
+| `loading`         | Optional | `Element`            | -                               | The element to display while loading a reference |
 | `mutationOptions` | Optional | `UseMutationOptions` | -                               | Options for the mutations (`create` and `update`) |
 | `render`          | Optional | `Function`            | -                               | A function that returns the children to display. Takes precedence over `children` |
 | `sort`            | Optional | `{ field, order }`   | `{ field: 'id', order: 'ASC' }` | Sort order to use when fetching the related record, passed to `getManyReference() |

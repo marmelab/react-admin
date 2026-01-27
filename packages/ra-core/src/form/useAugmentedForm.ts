@@ -43,6 +43,7 @@ export const useAugmentedForm = <RecordType = any>(
         defaultValues,
         formRootPathname,
         resolver,
+        resetOptions,
         reValidateMode = 'onChange',
         onSubmit,
         sanitizeEmptyValues,
@@ -76,28 +77,42 @@ export const useAugmentedForm = <RecordType = any>(
 
     const form = useForm({
         criteriaMode,
-        values: defaultValuesIncludingRecord,
+        defaultValues: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
         ...rest,
     });
 
     const formRef = useRef(form);
+    const { reset, formState } = form;
+    const { isReady } = formState;
+
+    const previousRecordId = useRef(record?.id);
+
+    useEffect(() => {
+        const recordIdChanged = record?.id !== previousRecordId.current;
+        previousRecordId.current = record?.id;
+
+        reset(
+            defaultValuesIncludingRecord,
+            recordIdChanged ? undefined : resetOptions
+        );
+    }, [defaultValuesIncludingRecord, reset, resetOptions, record?.id]);
 
     // notify on invalid form
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
 
     const recordFromLocation = useRecordFromLocation();
     const recordFromLocationApplied = useRef(false);
-    const { reset } = form;
     useEffect(() => {
+        if (!isReady) return;
         if (recordFromLocation && !recordFromLocationApplied.current) {
             reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
                 keepDefaultValues: true,
             });
             recordFromLocationApplied.current = true;
         }
-    }, [defaultValuesIncludingRecord, recordFromLocation, reset]);
+    }, [defaultValuesIncludingRecord, recordFromLocation, reset, isReady]);
 
     // submit callbacks
     const handleSubmit = useCallback(

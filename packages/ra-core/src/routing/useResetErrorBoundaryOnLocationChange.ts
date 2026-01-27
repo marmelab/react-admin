@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useLocation } from 'react-router';
+import { useLocation } from './useLocation';
 
 /**
  * A hook to use inside the component passed to FallbackComponent

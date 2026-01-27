@@ -1,6 +1,8 @@
 import * as React from 'react';
 import usePermissions from './usePermissions';
-import { CoreAdminContext, TestMemoryRouter, useLogin, useLogout } from '..';
+import { CoreAdminContext } from '../core';
+import { TestMemoryRouter } from '../routing';
+import { useLogin, useLogout } from '../auth';
 
 export default {
     title: 'ra-core/auth/useLogin',

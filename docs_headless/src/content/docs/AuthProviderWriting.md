@@ -372,7 +372,7 @@ const authProvider = {
 | **Response format** | `{ id: string \| number, fullName?: string, avatar?: string }` |
 | **Error format**    | `Error`                                                        |
 
-Admin components often adapt their behavior based on the current user identity. For instance, a [lock system](https://react-admin-ee.marmelab.com/documentation/ra-core-ee#locks) may allow edition only if the lock owner is the current user. It is also common to display the current user name and avatar in the app main menu.
+Admin components often adapt their behavior based on the current user identity. For instance, a [lock system](./RealtimeFeatures.md#locks) may allow edition only if the lock owner is the current user. It is also common to display the current user name and avatar in the app main menu.
 
 Ra-core delegates the storage of the connected user identity to the `authProvider`. If it exposes a `getIdentity()` method, ra-core will call it to read the user details. 
 

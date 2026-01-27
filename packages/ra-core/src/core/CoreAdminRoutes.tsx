@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { Children, ComponentType } from 'react';
-import { Route, Routes } from 'react-router-dom';
 import { WithPermissions, LogoutOnMount, useAuthState } from '../auth';
-import { useScrollToTop } from '../routing';
+import { useScrollToTop, useRouterProvider } from '../routing';
 import {
     AdminChildren,
     CatchAllComponent,
@@ -16,6 +15,7 @@ import { NavigateToFirstResource } from './NavigateToFirstResource';
 
 export const CoreAdminRoutes = (props: CoreAdminRoutesProps) => {
     useScrollToTop();
+    const { Route, Routes } = useRouterProvider();
 
     const {
         customRoutesWithLayout,

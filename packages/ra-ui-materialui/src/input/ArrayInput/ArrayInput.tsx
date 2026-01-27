@@ -17,7 +17,9 @@ import {
     type ComponentsOverrides,
     useThemeProps,
 } from '@mui/material';
-import { LinearProgress } from '../../layout';
+import get from 'lodash/get.js';
+
+import { LinearProgress } from '../../layout/LinearProgress';
 import { InputHelperText } from '../InputHelperText';
 import { sanitizeInputRestProps } from '../sanitizeInputRestProps';
 import { Labeled } from '../../Labeled';
@@ -85,8 +87,18 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
 
     const parentSourceContext = useSourceContext();
     const finalSource = parentSourceContext.getSource(arraySource);
-    const { getFieldState, formState } = useFormContext();
-    const { error } = getFieldState(finalSource, formState);
+    const { subscribe } = useFormContext();
+
+    const [error, setError] = React.useState<any>();
+    React.useEffect(() => {
+        return subscribe({
+            formState: { errors: true },
+            callback: ({ errors }) => {
+                const error = get(errors ?? {}, finalSource);
+                setError(error);
+            },
+        });
+    }, [finalSource, subscribe]);
     const renderHelperText = helperText !== false || !!error;
 
     if (isPending) {

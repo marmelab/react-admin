@@ -17,8 +17,7 @@ storybook_path: ra-core-controller-useeditcontroller--authenticated
 Use `useEditController` to create a custom Edition view, with exactly the content you need. 
 
 ```jsx
-import { useParams } from "react-router-dom";
-import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput } from "react-admin";
+import { useEditController, EditContextProvider, SimpleForm, TextInput, SelectInput, useParams } from "react-admin";
 import { Card } from "@mui/material";
 
 export const BookEdit = () => {

@@ -1,5 +1,5 @@
-import { Translate } from '../';
 import * as React from 'react';
+import { Translate } from '../i18n/Translate';
 
 export const Confirm = ({
     isOpen,

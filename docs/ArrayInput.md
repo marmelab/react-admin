@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-input-arrayinput--basic
 
 To edit arrays of data embedded inside a record, `<ArrayInput>` creates a list of sub-forms.
 
-<iframe src="https://www.youtube-nocookie.com/embed/-8OFsP7CiVc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/-8OFsP7CiVc" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 

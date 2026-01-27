@@ -4,6 +4,8 @@ title: "useRestoreMany"
 
 This hook allows calling `dataProvider.restoreMany()` when the callback is executed and restoring an array of deleted records based on their `ids`.
 
+**Tip:** If you need an undoable UI action, see [`useBulkRestoreWithUndoController`](./useBulkRestoreWithUndoController.md).
+
 **Warning**: The `ids` here are the IDs of the *deleted records*, and **not** the IDs of the actual records that have been deleted.
 
 ```tsx

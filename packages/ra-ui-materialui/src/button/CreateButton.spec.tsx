@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { fireEvent, render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import expect from 'expect';
-import { Basic, AccessControl, Label } from './CreateButton.stories';
+import {
+    Basic,
+    AccessControl,
+    Label,
+    WithTooltip,
+} from './CreateButton.stories';
 
 const invalidButtonDomProps = {
     redirect: 'list',
@@ -45,5 +51,13 @@ describe('<CreateButton />', () => {
         fireEvent.click(screen.getByText('English', { selector: 'button' }));
         fireEvent.click(await screen.findByText('Français'));
         await screen.findByText('Nouveau livre');
+    });
+
+    it('should allow wrapping in a tooltip', async () => {
+        render(<WithTooltip />);
+        const user = userEvent.setup();
+        const button = await screen.findByLabelText('Create book');
+        await user.hover(button);
+        await screen.findByText('Create book');
     });
 });

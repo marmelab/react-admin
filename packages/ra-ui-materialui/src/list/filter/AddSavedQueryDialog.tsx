@@ -1,6 +1,11 @@
 import * as React from 'react';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import { useListContext, useTranslate } from 'ra-core';
+import {
+    useListContext,
+    useTranslate,
+    extractValidSavedQueries,
+    useSavedQueries,
+} from 'ra-core';
 import {
     Button,
     Dialog,
@@ -9,8 +14,6 @@ import {
     DialogTitle,
     TextField,
 } from '@mui/material';
-
-import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 
 export const AddSavedQueryDialog = ({
     open,

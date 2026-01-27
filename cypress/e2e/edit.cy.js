@@ -215,7 +215,7 @@ describe('Edit Page', () => {
         );
     });
 
-    it('should intialize the form correctly when cloning from edit', () => {
+    it('should initialize the form correctly when cloning from edit', () => {
         EditPostPage.navigate();
         cy.get(EditPostPage.elements.input('title')).should(el =>
             expect(el).to.have.value('Sed quo et et fugiat modi')

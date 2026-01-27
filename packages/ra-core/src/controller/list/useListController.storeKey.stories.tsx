@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
 import fakeDataProvider from 'ra-data-fakerest';
 
 import {
@@ -13,6 +12,7 @@ import { localStorageStore } from '../../store';
 import { FakeBrowserDecorator } from '../../storybook/FakeBrowser';
 import { CoreLayoutProps, SortPayload } from '../../types';
 import { useListController } from './useListController';
+import { LinkBase } from '../../routing';
 
 export default {
     title: 'ra-core/controller/list/useListController',
@@ -99,12 +99,12 @@ const OrderedPostList = ({
 const MinimalLayout = (props: CoreLayoutProps) => {
     return (
         <div style={styles.mainContainer}>
-            <Link aria-label="top" to={`/top`}>
+            <LinkBase aria-label="top" to={`/top`}>
                 Go to Top List
-            </Link>{' '}
-            <Link aria-label="flop" to={`/flop`}>
+            </LinkBase>{' '}
+            <LinkBase aria-label="flop" to={`/flop`}>
                 Go to Flop List
-            </Link>
+            </LinkBase>
             <br />
             <br />
             {props.children}
@@ -146,12 +146,12 @@ export const ListsUsingSameResource = () => {
 const NoStoreLayout = (props: CoreLayoutProps) => {
     return (
         <div style={styles.mainContainer}>
-            <Link aria-label="store" to={`/store`}>
+            <LinkBase aria-label="store" to={`/store`}>
                 Go to Store List
-            </Link>{' '}
-            <Link aria-label="nostore" to={`/nostore`}>
+            </LinkBase>{' '}
+            <LinkBase aria-label="nostore" to={`/nostore`}>
                 Go to No Store List
-            </Link>
+            </LinkBase>
             <br />
             <br />
             {props.children}

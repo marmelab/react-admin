@@ -10,7 +10,10 @@ import {
 } from 'ra-core';
 import { Button, ButtonProps } from './Button';
 
-export const ExportButton = (props: ExportButtonProps) => {
+export const ExportButton = React.forwardRef(function ExportButton(
+    props: ExportButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>
+) {
     const {
         maxResults = 1000,
         onClick,
@@ -27,23 +30,29 @@ export const ExportButton = (props: ExportButtonProps) => {
         sort,
         exporter: exporterFromContext,
         total,
+        getData,
     } = useListContext();
     const exporter = customExporter || exporterFromContext;
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const handleClick = useCallback(
         event => {
-            dataProvider
-                .getList(resource, {
-                    sort,
-                    filter: filter
-                        ? { ...filterValues, ...filter }
-                        : filterValues,
-                    pagination: { page: 1, perPage: maxResults },
-                    meta,
-                })
+            const fetchData = getData
+                ? getData({ maxResults, meta })
+                : dataProvider
+                      .getList(resource, {
+                          sort,
+                          filter: filter
+                              ? { ...filterValues, ...filter }
+                              : filterValues,
+                          pagination: { page: 1, perPage: maxResults },
+                          meta,
+                      })
+                      .then(({ data }) => data);
+
+            Promise.resolve(fetchData)
                 .then(
-                    ({ data }) =>
+                    data =>
                         exporter &&
                         exporter(
                             data,
@@ -65,6 +74,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             exporter,
             filter,
             filterValues,
+            getData,
             maxResults,
             notify,
             onClick,
@@ -76,6 +86,7 @@ export const ExportButton = (props: ExportButtonProps) => {
 
     return (
         <Button
+            ref={ref}
             onClick={handleClick}
             label={label}
             disabled={total === 0}
@@ -84,7 +95,7 @@ export const ExportButton = (props: ExportButtonProps) => {
             {icon}
         </Button>
     );
-};
+});
 
 const defaultIcon = <DownloadIcon />;
 

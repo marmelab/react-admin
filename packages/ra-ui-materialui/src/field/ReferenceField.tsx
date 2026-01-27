@@ -17,6 +17,7 @@ import {
     ReferenceFieldBase,
     useReferenceFieldContext,
     UseReferenceFieldControllerResult,
+    genericMemo,
 } from 'ra-core';
 import type { UseQueryOptions } from '@tanstack/react-query';
 import clsx from 'clsx';
@@ -24,7 +25,6 @@ import clsx from 'clsx';
 import { LinearProgress } from '../layout';
 import { Link } from '../Link';
 import type { FieldProps } from './types';
-import { genericMemo } from './genericMemo';
 import { visuallyHidden } from '@mui/utils';
 import { Offline } from '../Offline';
 

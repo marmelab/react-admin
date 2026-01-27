@@ -1,12 +1,12 @@
-import * as React from 'react';
-import { useCallback } from 'react';
+import { Checkbox } from '@mui/material';
 import {
     useDataTableCallbacksContext,
     useDataTableDataContext,
     useDataTableSelectedIdsContext,
     useTranslate,
 } from 'ra-core';
-import { Checkbox } from '@mui/material';
+import * as React from 'react';
+import { useCallback } from 'react';
 
 export const SelectPageCheckbox = () => {
     const data = useDataTableDataContext();
@@ -22,11 +22,11 @@ export const SelectPageCheckbox = () => {
                 event.target.checked
                     ? selectedIds.concat(
                           data
-                              .filter(record =>
-                                  !selectedIds.includes(record.id) &&
-                                  isRowSelectable
-                                      ? isRowSelectable(record)
-                                      : true
+                              .filter(
+                                  record =>
+                                      !selectedIds.includes(record.id) &&
+                                      (!isRowSelectable ||
+                                          isRowSelectable(record))
                               )
                               .map(record => record.id)
                       )

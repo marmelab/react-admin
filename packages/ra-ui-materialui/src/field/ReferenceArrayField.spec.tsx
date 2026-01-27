@@ -132,6 +132,54 @@ describe('<ReferenceArrayField />', () => {
         expect(container.firstChild?.textContent).toBe('');
     });
 
+    it('should expose getData with the full list', async () => {
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+        const dataProvider = testDataProvider({
+            getMany: jest.fn((_resource, params) =>
+                Promise.resolve<any>({
+                    data: data.filter(record =>
+                        (params.ids as any[]).includes(record.id)
+                    ),
+                })
+            ),
+        });
+
+        const ListContextWatcher = () => {
+            const { getData } = useListContext();
+            const [count, setCount] = React.useState<number | null>(null);
+
+            React.useEffect(() => {
+                if (!getData) return;
+                getData().then(records => setCount(records.length));
+            }, [getData]);
+
+            return count !== null ? <span>count:{count}</span> : null;
+        };
+
+        render(
+            <AdminContext dataProvider={dataProvider}>
+                <ThemeProvider theme={theme}>
+                    <ReferenceArrayField
+                        source="tag_ids"
+                        reference="tags"
+                        perPage={1}
+                        record={{ id: 123, tag_ids: [1, 2] }}
+                    >
+                        <SingleFieldList>
+                            <TextField source="title" />
+                        </SingleFieldList>
+                        <ListContextWatcher />
+                    </ReferenceArrayField>
+                </ThemeProvider>
+            </AdminContext>
+        );
+
+        await screen.findByText('count:2');
+    });
+
     it('should support record with string identifier', () => {
         const data = [
             { id: 'abc-1', title: 'hello' },

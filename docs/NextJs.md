@@ -7,7 +7,7 @@ title: "Next.Js Integration"
 
 React-admin runs seamlessly on [Next.js](https://nextjs.org/), with minimal configuration.
 
-<iframe src="https://www.youtube-nocookie.com/embed/S3eGZEQ0WmQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/S3eGZEQ0WmQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 Next.js 13 proposes 2 ways to build a React project: 
 

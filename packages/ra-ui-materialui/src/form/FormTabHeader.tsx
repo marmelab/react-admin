@@ -1,9 +1,14 @@
 import * as React from 'react';
 import { ReactElement, ReactNode } from 'react';
-import { Link, useLocation } from 'react-router-dom';
 import { Tab as MuiTab, TabProps as MuiTabProps } from '@mui/material';
 import clsx from 'clsx';
-import { useTranslate, useFormGroup, useSplatPathBase } from 'ra-core';
+import {
+    useTranslate,
+    useFormGroup,
+    useSplatPathBase,
+    LinkBase,
+    useLocation,
+} from 'ra-core';
 
 import { TabbedFormClasses } from './TabbedFormView';
 
@@ -26,7 +31,7 @@ export const FormTabHeader = ({
             ? splatPathBase
             : `${splatPathBase}/${value}`;
     const propsForLink = {
-        component: Link,
+        component: LinkBase,
         to: { ...location, pathname: newPathName },
     };
 

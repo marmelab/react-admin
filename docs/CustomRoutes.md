@@ -6,20 +6,18 @@ storybook_path: ra-core-core-customroutes--authenticated-custom-route
 
 # `<CustomRoutes>`
 
-Lets you define custom pages in your react-admin application, using [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Routes>` elements.
+Lets you define custom pages in your react-admin application, using `<Route>` elements.
 
-<iframe src="https://www.youtube-nocookie.com/embed/aanhV-3SLtI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
-
+<iframe src="https://www.youtube-nocookie.com/embed/aanhV-3SLtI" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 ## Usage
 
-To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes) `<Route>` as you want inside them.
-Alternatively, you can add your custom routes to resources. They will be available under the resource prefix.
+To register your own routes, pass one or several `<CustomRoutes>` elements as children of `<Admin>`. Declare as many `<Route>` as you want inside them.
 
 ```jsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
-import { Route } from "react-router-dom";
+// see below for Route import
 
 import { dataProvider } from './dataProvider';
 import posts from './posts';
@@ -41,13 +39,25 @@ const App = () => (
 export default App;
 ```
 
+The `Route` element depends on the routing library you use (e.g. `react-router` or `tanstack-router`):
+
+```jsx
+// for react-router
+import { Route } from 'react-router-dom';
+// for tanstack-router
+import { tanStackRouterProvider } from 'ra-router-tanstack';
+const { Route } = tanStackRouterProvider;
+```
+
 Now, when a user browses to `/settings` or `/profile`, the components you defined will appear in the main part of the screen.
 
 **Tip**: Custom routes don't automatically appear in the menu. You have to manually [customize the menu](#adding-custom-routes-to-the-menu) if you want custom routes to be accessible from the menu.
 
+**Tip**: You can add custom routes as children of `Resource` elements. They will be available under the resource prefix.
+
 ## `children`
 
-`children` of the `<CustomRoutes>` component must be `<Route>` elements from [react-router-dom](https://reactrouter.com/en/6/start/concepts#defining-routes), mapping a `path` with a custom `element`.
+`children` of the `<CustomRoutes>` component must be `<Route>` elements, mapping a `path` with a custom `element`.
 
 ```jsx
 // in src/App.js
@@ -70,7 +80,9 @@ const App = () => (
 export default App;
 ```
 
-You can learn more about the `<Route>` element in the [react-router-dom documentation](https://reactrouter.com/en/6/start/concepts#defining-routes).
+You can learn more about the `<Route>` element in the [react-router documentation](https://reactrouter.com/en/6/start/concepts#defining-routes).
+
+**Tip**: React-admin's router abstraction uses duck-typing to detect Route elements, so you can use any `Route` component that has `path`, `element`, or `index` props. This works with both [react-router](https://reactrouter.com/) and [TanStack Router](./TanStackRouter.md).
 
 ## `noLayout`
 
@@ -219,14 +231,38 @@ To learn more about custom menus, check [the `<Menu>` documentation](./Menu.md).
 
 ## Linking To Custom Routes
 
-You can link to your pages using [react-router's Link component](https://reactrouter.com/en/main/components/link). Make sure to use the same value in the `<Link to>` prop as in the `<Route path>` prop.
+You can link to your pages using the `LinkBase` component from `react-admin`. Make sure to use the same value in the `<LinkBase to>` prop as in the `<Route path>` prop.
 
 ```jsx
-import { Link as RouterLink } from 'react-router-dom';
+import { LinkBase } from 'react-admin';
+
+const SettingsButton = () => (
+    <LinkBase to="/settings">
+        Settings
+    </LinkBase>
+);
+```
+
+If you need to use Material UI's `Link` component with router functionality, you can combine them:
+
+```jsx
+import { LinkBase } from 'react-admin';
 import { Link } from '@mui/material';
 
 const SettingsButton = () => (
-    <Link component={RouterLink} to="/settings">
+    <Link component={LinkBase} to="/settings">
+        Settings
+    </Link>
+);
+```
+
+Combining the Router Link and the MUI Link is so common that react-admin provides a `Link` component that does exactly this:
+
+```jsx
+import { Link } from 'react-admin';
+
+const SettingsButton = () => (
+    <Link to="/settings">
         Settings
     </Link>
 );
@@ -267,8 +303,9 @@ const App = () => (
 This is usually useful for nested resources, such as books on authors:
 
 {% raw %}
+
 ```jsx
-// in src/App.jss
+// in src/App.jsx
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
 import { Route } from "react-router-dom";
 
@@ -280,9 +317,8 @@ const App = () => (
     </Admin>
 );
 
-// in src/BookList.jss
-import { useParams } from 'react-router-dom';
-import { List, DataTable } from 'react-admin';
+// in src/BookList.jsx
+import { useParams, List, DataTable } from 'react-admin';
 
 const BookList = () => {
     const { authorId } = useParams();
@@ -297,6 +333,7 @@ const BookList = () => {
     );
 };
 ```
+
 {% endraw %}
 
 **Tip**: In the above example, the `resource="books"` prop is required in `<List>` because the `ResourceContext` defaults to `authors` inside the `<Resource name="authors">`.

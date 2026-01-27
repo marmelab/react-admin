@@ -4,16 +4,18 @@ import { Alert, CardContent } from '@mui/material';
 import {
     IsOffline,
     ResourceDefinitionContextProvider,
+    downloadCSV,
     useIsOffline,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 
 import { AdminContext } from '../AdminContext';
-import { DataTable, Pagination } from '../list';
+import { DataTable, Pagination, SingleFieldList } from '../list';
 import { ReferenceArrayField } from './ReferenceArrayField';
 import { TextField } from './TextField';
 import { Show, SimpleShowLayout } from '../detail';
+import { ExportButton } from '../button';
 import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceArrayField' };
@@ -70,6 +72,34 @@ export const Children = () => (
                             <DataTable.Col source="id" />
                             <DataTable.Col source="name" />
                         </DataTable>
+                    </ReferenceArrayField>
+                </SimpleShowLayout>
+            </Show>
+        </ResourceDefinitionContextProvider>
+    </AdminContext>
+);
+
+const simpleExporter = records => {
+    const header = 'id,name';
+    const rows = records.map(
+        record => `${record.id},${record.name ?? record.title ?? ''}`
+    );
+    downloadCSV([header, ...rows].join('\n'), 'export');
+};
+
+export const WithExporter = () => (
+    <AdminContext dataProvider={dataProvider} defaultTheme="light">
+        <ResourceDefinitionContextProvider definitions={resouceDefs}>
+            <Show resource="bands" id={1} sx={{ width: 600 }}>
+                <SimpleShowLayout>
+                    <TextField source="name" />
+                    <ReferenceArrayField
+                        source="members"
+                        reference="artists"
+                        exporter={simpleExporter}
+                    >
+                        <SingleFieldList />
+                        <ExportButton />
                     </ReferenceArrayField>
                 </SimpleShowLayout>
             </Show>

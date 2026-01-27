@@ -12,8 +12,7 @@ import {
     type TypographyProps,
     SvgIcon,
 } from '@mui/material';
-import { useTranslate, useFieldValue } from 'ra-core';
-import { genericMemo } from './genericMemo';
+import { useTranslate, useFieldValue, genericMemo } from 'ra-core';
 import type { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 

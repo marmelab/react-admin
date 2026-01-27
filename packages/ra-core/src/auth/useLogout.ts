@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useRef } from 'react';
-import { useLocation, useNavigate, Path } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 
 import useAuthProvider, { defaultAuthParams } from './useAuthProvider';
 import { useResetStore } from '../store';
-import { useBasename } from '../routing';
+import { useBasename, useLocation, useNavigate } from '../routing';
 import { removeDoubleSlashes } from '../routing/useCreatePath';
+import type { RouterLocation } from '../routing/RouterProvider';
 
 /**
  * Get a callback for calling the authProvider.logout() method,
@@ -30,12 +30,8 @@ const useLogout = (): Logout => {
     const queryClient = useQueryClient();
     const resetStore = useResetStore();
     const navigate = useNavigate();
-    // useNavigate forces rerenders on every navigation, even if we don't use the result
-    // see https://github.com/remix-run/react-router/issues/7634
-    // so we use a ref to bail out of rerenders when we don't need to
-    const navigateRef = useRef(navigate);
     const location = useLocation();
-    const locationRef = useRef(location);
+    const locationRef = useRef<RouterLocation>(location);
     const basename = useBasename();
     const loginUrl = removeDoubleSlashes(
         `${basename}/${defaultAuthParams.loginUrl}`
@@ -54,8 +50,7 @@ const useLogout = (): Logout => {
      */
     useEffect(() => {
         locationRef.current = location;
-        navigateRef.current = navigate;
-    }, [location, navigate]);
+    }, [location]);
 
     const logout: Logout = useCallback(
         (
@@ -89,7 +84,7 @@ const useLogout = (): Logout => {
                     // redirectTo is an internal location that may contain a query string, e.g. '/login?foo=bar'
                     // we must split it to pass a structured location to navigate()
                     const redirectToParts = finalRedirectTo.split('?');
-                    const newLocation: Partial<Path> = {
+                    const newLocation: Partial<RouterLocation> = {
                         pathname: redirectToParts[0],
                     };
                     let newLocationOptions = {};
@@ -118,7 +113,7 @@ const useLogout = (): Logout => {
                     // the `usePermissions` query would reset, causing the `CoreAdminRoutes` component to
                     // rerender the `LogoutOnMount` component leading to an infinite loop.
                     setTimeout(() => {
-                        navigateRef.current(newLocation, newLocationOptions);
+                        navigate(newLocation, newLocationOptions);
 
                         resetStore();
                         queryClient.clear();
@@ -127,7 +122,7 @@ const useLogout = (): Logout => {
                     return redirectFromLogout;
                 });
             } else {
-                navigateRef.current(
+                navigate(
                     {
                         pathname: loginUrl,
                     },
@@ -144,7 +139,7 @@ const useLogout = (): Logout => {
                 return Promise.resolve();
             }
         },
-        [authProvider, resetStore, loginUrl, queryClient]
+        [authProvider, resetStore, loginUrl, queryClient, navigate]
     );
 
     return logout;

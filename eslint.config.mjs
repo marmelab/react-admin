@@ -192,4 +192,16 @@ export default defineConfig([
             },
         },
     },
+    {
+        name: 'jest-setup-rules',
+        files: ['test-setup.js', 'test-global-setup.js'],
+        languageOptions: {
+            globals: {
+                ...globals.jest,
+            },
+        },
+        rules: {
+            'import/no-extraneous-dependencies': 'off',
+        },
+    },
 ]);

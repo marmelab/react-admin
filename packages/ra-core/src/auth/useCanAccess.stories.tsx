@@ -3,7 +3,7 @@ import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { useCanAccess, UseCanAccessResult } from './useCanAccess';
 import { QueryClient } from '@tanstack/react-query';
-import { TestMemoryRouter } from '..';
+import { TestMemoryRouter } from '../routing';
 import { Route, Routes } from 'react-router';
 
 export default {

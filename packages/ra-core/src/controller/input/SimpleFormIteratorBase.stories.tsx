@@ -75,7 +75,7 @@ const AddItemButton = () => {
     );
 };
 
-export const Basic = () => (
+export const Basic = (props: Partial<SimpleFormIteratorBaseProps>) => (
     <TestMemoryRouter initialEntries={['/posts/1']}>
         <Admin
             dataProvider={fakeRestDataProvider({
@@ -118,7 +118,7 @@ export const Basic = () => (
                             <div>
                                 <div>Tags:</div>
                                 <ArrayInputBase source="tags">
-                                    <SimpleFormIterator>
+                                    <SimpleFormIterator {...props}>
                                         <TextInput source="name" />
                                         <TextInput source="color" />
                                     </SimpleFormIterator>
@@ -131,3 +131,9 @@ export const Basic = () => (
         </Admin>
     </TestMemoryRouter>
 );
+Basic.args = {
+    disableAutoFocus: false,
+};
+Basic.argTypes = {
+    disableAutoFocus: { control: 'boolean' },
+};

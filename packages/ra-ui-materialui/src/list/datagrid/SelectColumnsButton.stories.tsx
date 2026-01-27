@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { PreferencesEditorContextProvider, TestMemoryRouter } from 'ra-core';
+import {
+    memoryStore,
+    PreferencesEditorContextProvider,
+    StoreContextProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import { Box } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
@@ -44,22 +49,27 @@ export const Basic = () => (
         <PreferencesEditorContextProvider>
             <QueryClientProvider client={new QueryClient()}>
                 <TestMemoryRouter>
-                    <Box p={2}>
-                        <Box textAlign="right">
-                            <SelectColumnsButton resource="books" />
+                    <StoreContextProvider value={memoryStore()}>
+                        <Box p={2}>
+                            <Box textAlign="right">
+                                <SelectColumnsButton resource="books" />
+                            </Box>
+                            <DatagridConfigurable
+                                resource="books"
+                                data={data}
+                                sort={{ field: 'title', order: 'ASC' }}
+                                bulkActionButtons={false}
+                            >
+                                <TextField source="id" />
+                                <TextField
+                                    source="title"
+                                    label="Original title"
+                                />
+                                <TextField source="author" />
+                                <TextField source="year" />
+                            </DatagridConfigurable>
                         </Box>
-                        <DatagridConfigurable
-                            resource="books"
-                            data={data}
-                            sort={{ field: 'title', order: 'ASC' }}
-                            bulkActionButtons={false}
-                        >
-                            <TextField source="id" />
-                            <TextField source="title" label="Original title" />
-                            <TextField source="author" />
-                            <TextField source="year" />
-                        </DatagridConfigurable>
-                    </Box>
+                    </StoreContextProvider>
                 </TestMemoryRouter>
             </QueryClientProvider>
         </PreferencesEditorContextProvider>
@@ -71,23 +81,28 @@ export const WithPreferenceKey = () => (
         <PreferencesEditorContextProvider>
             <QueryClientProvider client={new QueryClient()}>
                 <TestMemoryRouter>
-                    <Box p={2}>
-                        <Box textAlign="right">
-                            <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
+                    <StoreContextProvider value={memoryStore()}>
+                        <Box p={2}>
+                            <Box textAlign="right">
+                                <SelectColumnsButton preferenceKey="just-a-key.to_test_with" />
+                            </Box>
+                            <DatagridConfigurable
+                                resource="books"
+                                preferenceKey="just-a-key.to_test_with"
+                                data={data}
+                                sort={{ field: 'title', order: 'ASC' }}
+                                bulkActionButtons={false}
+                            >
+                                <TextField source="id" />
+                                <TextField
+                                    source="title"
+                                    label="Original title"
+                                />
+                                <TextField source="author" />
+                                <TextField source="year" />
+                            </DatagridConfigurable>
                         </Box>
-                        <DatagridConfigurable
-                            resource="books"
-                            preferenceKey="just-a-key.to_test_with"
-                            data={data}
-                            sort={{ field: 'title', order: 'ASC' }}
-                            bulkActionButtons={false}
-                        >
-                            <TextField source="id" />
-                            <TextField source="title" label="Original title" />
-                            <TextField source="author" />
-                            <TextField source="year" />
-                        </DatagridConfigurable>
-                    </Box>
+                    </StoreContextProvider>
                 </TestMemoryRouter>
             </QueryClientProvider>
         </PreferencesEditorContextProvider>

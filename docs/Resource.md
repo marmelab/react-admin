@@ -8,7 +8,7 @@ storybook_path: ra-core-core-resource--basic
 
 `<Resource>` components define the CRUD routes of a react-admin application. 
 
-<iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/AURvUMu-Fb4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 In react-admin terms, a *resource* is a string that refers to an entity type (like 'products', 'subscribers', or 'tags'). *Records* are objects with an `id` field, and two records of the same *resource* have the same field structure (e.g. all posts records have a title, a publication date, etc.). 
 
@@ -98,7 +98,7 @@ The routing will map the component as follows:
 * `edit` (usually using [the `<Edit>` component](./Edit.md))
 * `show` (usually using [the `<Show>` component](./Show.md))
 
-**Tip**: Under the hood, `<Resource>` uses [react-router](https://reactrouter.com/web/guides/quick-start) to create several routes:
+**Tip**: Under the hood, `<Resource>` uses the [router abstraction](./Routing.md) to create several routes:
 
 * `/` maps to the `list` component
 * `/create` maps to the `create` component
@@ -135,8 +135,7 @@ The `BookList` component can grab the `authorId` parameter from the URL using th
 {% raw %}
 ```jsx
 // in src/BookList.jsx
-import { List, DataTable } from 'react-admin';
-import { useParams } from 'react-router-dom';
+import { List, DataTable, useParams } from 'react-admin';
 
 export const BookList = () => {
     const { authorId } = useParams();
@@ -354,13 +353,12 @@ This setup creates four routes:
 - `/artists/:id/songs` renders the `<SongList>` element
 - `/artists/:id/songs/:songId` renders the `<SongDetail>` element
 
-In order to display a list of songs for the selected artist, `<SongList>` should filter the songs by the `id` parameter. To do so, use the `useParams` hook from `react-router-dom`:
+In order to display a list of songs for the selected artist, `<SongList>` should filter the songs by the `id` parameter. To do so, use the `useParams` hook from `react-admin`:
 
 {% raw %}
 ```jsx
 // in src/SongList.jsx
-import { List, DataTable, useRecordContext, DateField } from 'react-admin';
-import { useParams } from 'react-router-dom';
+import { List, DataTable, useRecordContext, DateField, useParams } from 'react-admin';
 import { Button } from '@mui/material';
 
 export const SongList = () => {
@@ -401,8 +399,7 @@ In the `<SongDetail>` component, you must also use the `useParams` hook to get t
 {% raw %}
 ```jsx
 // in src/SongDetail.jsx
-import { Edit, SimpleForm, TextInput } from 'react-admin';
-import { useParams } from 'react-router-dom';
+import { Edit, SimpleForm, TextInput, useParams } from 'react-admin';
 
 export const SongDetail = () => {
     const { id, songId } = useParams();

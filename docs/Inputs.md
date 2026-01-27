@@ -858,7 +858,7 @@ export default LatLngInput;
 
 ### Using `<Labeled>`
 
-<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/fWc7c0URQMQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 This component lacks a label. React-admin provides the `<Labeled>` component for that:
 
@@ -889,7 +889,7 @@ Now the component will render with a label:
 ```html
 <label>Position</label>
 <span>
-    <input name="lat" type="number" placeholder="longitude" value={record.lat} />
+    <input name="lat" type="number" placeholder="latitude" value={record.lat} />
     <input name="lng" type="number" placeholder="longitude" value={record.lng} />
 </span>
 ```

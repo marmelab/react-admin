@@ -2,8 +2,8 @@ import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { useForm, useFormContext, FormProvider } from 'react-hook-form';
-import { Route, Routes, useNavigate, useParams } from 'react-router-dom';
-import { TestMemoryRouter } from '../routing';
+import { Route, Routes } from 'react-router-dom';
+import { TestMemoryRouter, useNavigate, useParams } from '../routing';
 
 import { useWarnWhenUnsavedChanges } from './useWarnWhenUnsavedChanges';
 

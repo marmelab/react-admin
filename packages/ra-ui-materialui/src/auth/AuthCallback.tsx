@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { useHandleAuthCallback } from 'ra-core';
-import { Loading } from '..';
+import { Loading } from '../layout/Loading';
 import { AuthError } from './AuthError';
 
 /**

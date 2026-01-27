@@ -8,10 +8,14 @@ import {
 } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
 import HelpIcon from '@mui/icons-material/HelpOutline';
-import { useListContext, useTranslate } from 'ra-core';
+import {
+    useListContext,
+    useTranslate,
+    extractValidSavedQueries,
+    useSavedQueries,
+} from 'ra-core';
 import isEqual from 'lodash/isEqual.js';
 
-import { extractValidSavedQueries, useSavedQueries } from './useSavedQueries';
 import { RemoveSavedQueryIconButton } from './RemoveSavedQueryIconButton';
 import { AddSavedQueryIconButton } from './AddSavedQueryIconButton';
 import { SavedQueryFilterListItem } from './SavedQueryFilterListItem';

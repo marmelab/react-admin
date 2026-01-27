@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { RecordContextProvider, WithListContext } from '../';
+import { RecordContextProvider } from '../controller/record';
+import { WithListContext } from '../controller/list/WithListContext';
 
 export const SimpleList = ({
     children,

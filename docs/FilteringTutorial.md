@@ -319,7 +319,7 @@ When a user adds or remove a filter, react-admin changes the `filter` query para
 
 **Tip**: Once a user sets a filter, react-admin persists the filter value in the application state, so that when the user comes back to the list, they should see the filtered list. That's a design choice.
 
-**Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<Link>` component or the `useNavigate()` hook from `react-router-dom`.
+**Tip**: You can change the filters programmatically by updating the query parameter, e.g. using the `<LinkBase>` component or the `useNavigate()` hook from `react-admin`.
 
 ## Linking To A Pre-Filtered List
 
@@ -330,9 +330,8 @@ For instance, if you have a list of tags, you can display a button for each cate
 {% raw %}
 
 ```jsx
-import { useTranslate, useRecordContext } from 'react-admin';
+import { useTranslate, useRecordContext, LinkBase } from 'react-admin';
 import Button from '@mui/material/Button';
-import { Link } from 'react-router-dom';
 
 const LinkToRelatedProducts = () => {
     const record = useRecordContext();
@@ -340,7 +339,7 @@ const LinkToRelatedProducts = () => {
     return record ? (
         <Button
             color="primary"
-            component={Link}
+            component={LinkBase}
             to={{
                 pathname: '/posts',
                 search: `filter=${JSON.stringify({ category_id: record.id })}`,
@@ -640,6 +639,7 @@ const PostFilterForm = () => {
 To finish, create a `<ListAction>` component and pass it to the `<List>` component using the `actions` prop:
 
 {% raw %}
+
 ```jsx
 import { TopToolbar, ExportButton } from 'react-admin';
 import { Box } from '@mui/material';
@@ -660,6 +660,7 @@ export const PostList = () => (
     </List>
 );
 ```
+
 {% endraw %}
 
 **Tip**: No need to pass any `filters` to the list anymore, as the `<PostFilterForm>` component will display them.

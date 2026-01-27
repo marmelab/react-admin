@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { QueryClient } from '@tanstack/react-query';
-import { Location, Route, Routes } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { AuthProvider } from '../types';
 import { CoreAdminContext } from '../core';
 import { useRequireAccess, UseRequireAccessResult } from './useRequireAccess';
-import { TestMemoryRouter } from '..';
+import { TestMemoryRouter, RouterLocation } from '../routing';
 
 export default {
     title: 'ra-core/auth/useRequireAccess',
@@ -56,7 +56,7 @@ export const Basic = ({
 }: {
     authProvider?: AuthProvider | null;
     basename?: string;
-    locationCallback?: (l: Location) => void;
+    locationCallback?: (l: RouterLocation) => void;
     queryClient?: QueryClient;
 }) => (
     <TestMemoryRouter locationCallback={locationCallback}>

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { CoreAdminContext, useStore, memoryStore } from 'ra-core';
+import { CoreAdminContext, memoryStore, StoreSetter } from 'ra-core';
 import expect from 'expect';
-import { render, screen, renderHook } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { useTheme } from './useTheme';
 import { AdminContext } from '../AdminContext';
 import { ThemeTestWrapper } from '../layout/ThemeTestWrapper';
@@ -99,32 +99,21 @@ describe('useTheme', () => {
         expect(screen.queryByText('dark')).not.toBeNull();
     });
 
-    it('should return theme from settings when available', () => {
-        const { result: storeResult } = renderHook(() => useStore('theme'), {
-            wrapper: ({ children }: any) => (
-                <AdminContext
-                    authProvider={authProvider}
-                    darkTheme={defaultDarkTheme}
-                >
-                    {children}
-                </AdminContext>
-            ),
-        });
-        const [_, setTheme] = storeResult.current;
-        setTheme('dark');
-
-        const { result: themeResult } = renderHook(() => useTheme(), {
-            wrapper: ({ children }: any) => (
-                <AdminContext
-                    authProvider={authProvider}
-                    darkTheme={defaultDarkTheme}
-                >
-                    {children}
-                </AdminContext>
-            ),
-        });
-        const [theme, __] = themeResult.current;
-
-        expect(theme).toEqual('dark');
+    it('should return theme from settings when available', async () => {
+        const ThemeViewer = () => {
+            const [theme] = useTheme();
+            return <>{theme}</>;
+        };
+        render(
+            <AdminContext
+                authProvider={authProvider}
+                darkTheme={defaultDarkTheme}
+            >
+                <StoreSetter name="theme" value="dark">
+                    <ThemeViewer />
+                </StoreSetter>
+            </AdminContext>
+        );
+        await screen.findByText('dark');
     });
 });

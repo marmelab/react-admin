@@ -8,7 +8,6 @@ import {
     ListItem,
     ListItemAvatar,
     ListItemButton,
-    ListItemSecondaryAction,
     ListItemText,
     Stack,
     Typography,
@@ -170,17 +169,15 @@ const ContactsIterator = () => {
                                 }
                             />
                             {contact.last_seen && (
-                                <ListItemSecondaryAction>
-                                    <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        component="span"
-                                    >
-                                        last activity{' '}
-                                        {formatDistance(contact.last_seen, now)}{' '}
-                                        ago <Status status={contact.status} />
-                                    </Typography>
-                                </ListItemSecondaryAction>
+                                <Typography
+                                    variant="body2"
+                                    color="textSecondary"
+                                    component="span"
+                                >
+                                    last activity{' '}
+                                    {formatDistance(contact.last_seen, now)} ago{' '}
+                                    <Status status={contact.status} />
+                                </Typography>
                             )}
                         </ListItemButton>
                     </ListItem>
@@ -239,16 +236,14 @@ const DealsIterator = () => {
                                     </>
                                 }
                             />
-                            <ListItemSecondaryAction>
-                                <Typography
-                                    variant="body2"
-                                    color="textSecondary"
-                                    component="span"
-                                >
-                                    last activity{' '}
-                                    {formatDistance(deal.updated_at, now)} ago{' '}
-                                </Typography>
-                            </ListItemSecondaryAction>
+                            <Typography
+                                variant="body2"
+                                color="textSecondary"
+                                component="span"
+                            >
+                                last activity{' '}
+                                {formatDistance(deal.updated_at, now)} ago{' '}
+                            </Typography>
                         </ListItemButton>
                     </ListItem>
                 ))}

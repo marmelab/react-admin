@@ -60,8 +60,7 @@ The component renders nothing by default. It will save the current form values 3
 
 ```tsx
 import { AutoSave } from '@react-admin/ra-form-layout';
-import { Edit, PrevNextButton, SaveButton, SimpleForm, TextInput, Toolbar } from 'react-admin';
-import { useParams } from 'react-router';
+import { Edit, PrevNextButton, SaveButton, SimpleForm, TextInput, Toolbar, useParams } from 'react-admin';
 
 const AutoSaveToolbar = () => (
     <Toolbar>

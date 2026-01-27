@@ -1,5 +1,5 @@
 import * as React from 'react';
-import type { ElementType, ReactElement, ReactNode } from 'react';
+import type { ElementType, ReactNode } from 'react';
 import {
     Card,
     type ComponentsOverrides,
@@ -55,8 +55,8 @@ export const CreateView = (props: CreateViewProps) => {
 
 export interface CreateViewProps
     extends Omit<React.HTMLAttributes<HTMLDivElement>, 'title'> {
-    actions?: ReactElement | false;
-    aside?: ReactElement;
+    actions?: ReactNode | false;
+    aside?: ReactNode;
     component?: ElementType;
     sx?: SxProps<Theme>;
     title?: ReactNode;

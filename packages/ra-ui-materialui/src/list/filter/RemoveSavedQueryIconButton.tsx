@@ -1,14 +1,12 @@
 import * as React from 'react';
-import { ReactElement, useState } from 'react';
+import { useState } from 'react';
 import { IconButton, IconButtonProps } from '@mui/material';
 import RemoveIcon from '@mui/icons-material/RemoveCircleOutline';
 import { useTranslate } from 'ra-core';
 
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';
 
-export const RemoveSavedQueryIconButton = (
-    props: IconButtonProps
-): ReactElement => {
+export const RemoveSavedQueryIconButton = (props: IconButtonProps) => {
     const [confirmationOpen, setConfirmationOpen] = useState(false);
     const handleConfirmationClose = (): void => {
         setConfirmationOpen(false);

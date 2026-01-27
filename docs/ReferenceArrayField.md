@@ -8,7 +8,7 @@ storybook_path: ra-ui-materialui-fields-referencearrayfield--basic
 
 Use `<ReferenceArrayField>` to display a list of related records, via a one-to-many relationship materialized by an array of foreign keys.
 
-<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;"></iframe>
+<iframe src="https://www.youtube-nocookie.com/embed/UeM31-65Wc4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="aspect-ratio: 16 / 9;width:100%;margin-bottom:1em;" referrerpolicy="strict-origin-when-cross-origin"></iframe>
 
 `<ReferenceArrayField>` fetches a list of referenced records (using the `dataProvider.getMany()` method), and puts them in a [`ListContext`](./useListContext.md). It then renders each related record, using its [`recordRepresentation`](./Resource.md#recordrepresentation), in a [`<ChipField>`](./ChipField.md).
 
@@ -90,6 +90,7 @@ You can change how the list of related records is rendered by passing a custom c
 | `empty`        | Optional | `ReactNode`                                                                       | -                                | The component to render when the related records list is empty                                         |
 | `error`        | Optional | `ReactNode`                                                                       | -                                | The component to render when an error occurs while fetching the related records                        |
 | `filter`       | Optional | `Object`                                                                          | -                                | Filters to use when fetching the related records (the filtering is done client-side)                   |
+| `exporter`     | Optional | `function`                                                                        | `defaultExporter`                | The function called by export buttons in the list context                                                |
 | `loading`      | Optional | `ReactNode`                                                                       | `<LinearProgress>`             | The component to render while fetching the related records                                             |
 | `offline`      | Optional | `ReactNode`                                                              | `<Offline variant="inline" />` | The component to render when there is no connectivity and the record isn't in the cache |
 | `pagination`   | Optional | `ReactNode`                                                                         | -                                | Pagination element to display pagination controls. empty by default (no pagination)                    |

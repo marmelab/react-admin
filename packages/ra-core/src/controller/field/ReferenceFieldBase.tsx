@@ -77,7 +77,7 @@ export const ReferenceFieldBase = <
         !!controllerError && error !== false && error !== undefined;
     const shouldRenderEmpty =
         !isPaused &&
-        (!id ||
+        (id == null ||
             (!referenceRecord &&
                 !controllerError &&
                 !isPending &&
