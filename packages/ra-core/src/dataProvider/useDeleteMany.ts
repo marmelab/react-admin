@@ -90,7 +90,11 @@ export const useDeleteMany = <
 ): UseDeleteManyResult<RecordType, MutationError> => {
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
-    const { mutationMode = 'pessimistic', ...mutationOptions } = options;
+    const {
+        mutationMode = 'pessimistic',
+        onSettled,
+        ...mutationOptions
+    } = options;
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
@@ -247,16 +251,17 @@ export const useDeleteMany = <
                 ];
                 return queryKeys;
             },
-            onSettled: (
-                result,
-                error,
-                variables,
-                context: { snapshot: Snapshot }
-            ) => {
+            onSettled: (...args) => {
+                const [, , , mutateResult] = args;
+
                 // For deletion, we always refetch after error or success:
-                context.snapshot.forEach(([queryKey]) => {
-                    queryClient.invalidateQueries({ queryKey });
-                });
+                (mutateResult as { snapshot: Snapshot }).snapshot.forEach(
+                    ([queryKey]) => {
+                        queryClient.invalidateQueries({ queryKey });
+                    }
+                );
+
+                onSettled?.(...args);
             },
         }
     );
