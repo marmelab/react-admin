@@ -149,16 +149,12 @@ describe('useCreate', () => {
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localCreate;
-        let settled = false;
+        const onSettled = jest.fn();
         const Dummy = () => {
             const [create] = useCreate(
                 'foo',
                 { data: { bar: 'baz' } },
-                {
-                    onSettled: () => {
-                        settled = true;
-                    },
-                }
+                { onSettled }
             );
             localCreate = create;
             return <span />;
@@ -171,7 +167,7 @@ describe('useCreate', () => {
         );
         localCreate('foo', { data: { foo: 456 } });
         await waitFor(() => {
-            expect(settled).toBe(true);
+            expect(onSettled).toHaveBeenCalled();
         });
     });
 

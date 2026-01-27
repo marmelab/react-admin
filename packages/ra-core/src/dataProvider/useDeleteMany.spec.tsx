@@ -153,16 +153,12 @@ describe('useDeleteMany', () => {
             deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
         });
         let localDeleteMany;
-        let settled = false;
+        const onSettled = jest.fn();
         const Dummy = () => {
             const [deleteMany] = useDeleteMany(
                 'foo',
                 { ids: [1, 2] },
-                {
-                    onSettled: () => {
-                        settled = true;
-                    },
-                }
+                { onSettled }
             );
             localDeleteMany = deleteMany;
             return <span />;
@@ -175,7 +171,7 @@ describe('useDeleteMany', () => {
         );
         localDeleteMany('foo', { ids: [3, 4] });
         await waitFor(() => {
-            expect(settled).toBe(true);
+            expect(onSettled).toHaveBeenCalled();
         });
     });
 

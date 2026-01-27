@@ -212,7 +212,7 @@ describe('useDelete', () => {
             delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
         });
         let localDeleteOne;
-        let settled = false;
+        const onSettled = jest.fn();
         const Dummy = () => {
             const [deleteOne] = useDelete(
                 'foo',
@@ -220,11 +220,7 @@ describe('useDelete', () => {
                     id: 1,
                     previousData: { id: 1, bar: 'bar' },
                 },
-                {
-                    onSettled: () => {
-                        settled = true;
-                    },
-                }
+                { onSettled }
             );
             localDeleteOne = deleteOne;
             return <span />;
@@ -240,7 +236,7 @@ describe('useDelete', () => {
             previousData: { foo: 456 },
         });
         await waitFor(() => {
-            expect(settled).toBe(true);
+            expect(onSettled).toHaveBeenCalled();
         });
     });
 
