@@ -744,6 +744,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                         childMatch &&
                         // If no best match yet, or the child route is more specific than the current best, use this one
                         (!bestMatch ||
+                            childMatch.route.index ||
                             (bestMatch.route.path !== undefined &&
                                 childMatch.route.path !== undefined &&
                                 isMoreSpecific(

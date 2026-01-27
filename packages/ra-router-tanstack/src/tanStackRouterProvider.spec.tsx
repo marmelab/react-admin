@@ -27,6 +27,7 @@ import {
     NestedResourcesPrecedence,
     PathlessLayoutRoutesPriority,
     PathlessLayoutRoutesWithEmptyRoute,
+    PathlessLayoutRoutesWithIndexRoute,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -1517,6 +1518,22 @@ describe('tanStackRouterProvider', () => {
         });
 
         fireEvent.click(screen.getByText('Home (path="")'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('home-page')).toBeInTheDocument();
+        });
+    });
+
+    it('should match the index route as most specific within pathless layout routes', async () => {
+        window.location.hash = '#/posts';
+
+        render(<PathlessLayoutRoutesWithIndexRoute />);
+
+        await waitFor(() => {
+            expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByText('Home (index)'));
 
         await waitFor(() => {
             expect(screen.getByTestId('home-page')).toBeInTheDocument();
