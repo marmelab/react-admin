@@ -26,6 +26,7 @@ import {
     PathlessLayoutRoutes,
     NestedResourcesPrecedence,
     PathlessLayoutRoutesPriority,
+    PathlessLayoutRoutesWithEmptyRoute,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -1503,6 +1504,22 @@ describe('tanStackRouterProvider', () => {
                     screen.getByTestId('block-user-page')
                 ).toBeInTheDocument();
             });
+        });
+    });
+
+    it('should match the empty path route as most specific within pathless layout routes', async () => {
+        window.location.hash = '#/posts';
+
+        render(<PathlessLayoutRoutesWithEmptyRoute />);
+
+        await waitFor(() => {
+            expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByText('Home (path="")'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('home-page')).toBeInTheDocument();
         });
     });
 

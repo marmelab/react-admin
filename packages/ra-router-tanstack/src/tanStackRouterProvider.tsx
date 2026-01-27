@@ -651,7 +651,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
 
     // Check if a route pattern has a catch-all at the end
     const hasCatchAll = (path: string | undefined): boolean => {
-        return !path || path.endsWith('/*') || path === '*';
+        return path === undefined || path.endsWith('/*') || path === '*';
     };
 
     // Check if routeB is more specific than routeA when both match the same path
@@ -744,8 +744,8 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                         childMatch &&
                         // If no best match yet, or the child route is more specific than the current best, use this one
                         (!bestMatch ||
-                            (bestMatch.route.path &&
-                                childMatch.route.path &&
+                            (bestMatch.route.path !== undefined &&
+                                childMatch.route.path !== undefined &&
                                 isMoreSpecific(
                                     bestMatch.route.path,
                                     childMatch.route.path
@@ -782,7 +782,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                         // If no best match yet, or this route is more specific than the current best, use this one
                         if (
                             !bestMatch ||
-                            (bestMatch.route.path &&
+                            (bestMatch.route.path !== undefined &&
                                 isMoreSpecific(
                                     bestMatch.route.path,
                                     route.path

@@ -1585,3 +1585,86 @@ export const PathlessLayoutRoutesPriority = () => {
         </RouterProviderContext.Provider>
     );
 };
+
+export const PathlessLayoutRoutesWithEmptyRoute = () => {
+    const { RouterWrapper } = tanStackRouterProvider;
+
+    return (
+        <RouterProviderContext.Provider value={tanStackRouterProvider}>
+            <RouterWrapper>
+                <p style={{ marginBottom: 10 }}>
+                    Expected: "/" renders Home Page (path=""). If you see
+                    Catch-all Page instead, path="" is being treated as
+                    catch-all.
+                </p>
+                <Routes>
+                    <Route
+                        path="*"
+                        element={
+                            <div data-testid="catchall-page">
+                                Catch-all Page
+                            </div>
+                        }
+                    />
+                    <Route
+                        element={
+                            <div data-testid="layout-wrapper">
+                                <h2>Layout Wrapper</h2>
+                                <nav>
+                                    <LinkBase
+                                        to="/posts"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Posts
+                                    </LinkBase>
+                                    <LinkBase to="/comments">Comments</LinkBase>
+                                </nav>
+                                <nav>
+                                    <LinkBase
+                                        to="/"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Home (path="")
+                                    </LinkBase>
+                                </nav>
+                                <div
+                                    style={{
+                                        border: '2px solid blue',
+                                        padding: 20,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    <RouterOutlet />
+                                </div>
+                            </div>
+                        }
+                    >
+                        <Route
+                            path=""
+                            element={
+                                <div data-testid="home-page">
+                                    Home Page (path="")
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="/posts"
+                            element={
+                                <div data-testid="posts-page">Posts Page</div>
+                            }
+                        />
+                        <Route
+                            path="/comments"
+                            element={
+                                <div data-testid="comments-page">
+                                    Comments Page
+                                </div>
+                            }
+                        />
+                    </Route>
+                </Routes>
+                <LocationDisplay />
+            </RouterWrapper>
+        </RouterProviderContext.Provider>
+    );
+};
