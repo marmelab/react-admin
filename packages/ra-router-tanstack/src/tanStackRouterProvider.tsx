@@ -650,8 +650,8 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
     const parentParams = React.useContext(ParamsContext);
 
     // Check if a route pattern has a catch-all at the end
-    const hasCatchAll = (path: string): boolean => {
-        return path.endsWith('/*') || path === '*';
+    const hasCatchAll = (path: string | undefined): boolean => {
+        return !path || path.endsWith('/*') || path === '*';
     };
 
     // Check if routeB is more specific than routeA when both match the same path
@@ -760,7 +760,7 @@ const Routes = ({ children, location: locationProp }: RouterRoutesProps) => {
                         };
 
                         // If this match doesn't use a catch-all, return immediately
-                        if (!hasCatchAll(bestMatch.route.path!)) {
+                        if (!hasCatchAll(bestMatch.route.path)) {
                             return routeForBestMatch;
                         }
                         // Otherwise, keep looking for more specific matches
