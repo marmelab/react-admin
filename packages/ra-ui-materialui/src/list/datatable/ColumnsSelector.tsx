@@ -111,22 +111,21 @@ export const ColumnsSelector = ({ children }: ColumnsSelectorProps) => {
                         </DataTableColumnFilterContext.Provider>
                     </DataTableColumnRankContext.Provider>
                 ))}
-                <Box
-                    component="li"
-                    className="columns-selector-actions"
-                    sx={{ textAlign: 'center', mt: 1 }}
-                >
-                    <Button
-                        onClick={() => {
-                            setColumnRanks(undefined);
-                            setHiddenColumns(defaultHiddenColumns);
-                        }}
-                        label={translate('ra.action.reset', {
-                            _: 'Reset',
-                        })}
-                    />
-                </Box>
             </MenuList>
+            <Box
+                className="columns-selector-actions"
+                sx={{ textAlign: 'center', mb: 1 }}
+            >
+                <Button
+                    onClick={() => {
+                        setColumnRanks(undefined);
+                        setHiddenColumns(defaultHiddenColumns);
+                    }}
+                    label={translate('ra.action.reset', {
+                        _: 'Reset',
+                    })}
+                />
+            </Box>
         </Box>,
         container
     );
