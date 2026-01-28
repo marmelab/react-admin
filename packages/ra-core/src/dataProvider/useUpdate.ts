@@ -305,13 +305,10 @@ export interface UseUpdateMutateParams<RecordType extends RaRecord = any> {
 export type UseUpdateOptions<
     RecordType extends RaRecord = any,
     ErrorType = Error,
-> = Omit<
-    UseMutationOptions<
-        RecordType,
-        ErrorType,
-        Partial<UseUpdateMutateParams<RecordType>>
-    >,
-    'mutationFn'
+> = UseMutationOptions<
+    RecordType,
+    ErrorType,
+    Partial<UseUpdateMutateParams<RecordType>>
 > & {
     mutationMode?: MutationMode;
     returnPromise?: boolean;
