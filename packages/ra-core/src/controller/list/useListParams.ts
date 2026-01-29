@@ -107,9 +107,10 @@ export const useListParams = ({
         disableSyncWithLocation,
     ];
 
-    const queryFromLocation = disableSyncWithLocation
-        ? {}
-        : parseQueryFromLocation(location);
+    const queryFromLocation = useMemo(
+        () => (disableSyncWithLocation ? {} : parseQueryFromLocation(location)),
+        [location, disableSyncWithLocation]
+    );
 
     const query = useMemo(
         () =>
@@ -138,63 +139,59 @@ export const useListParams = ({
     // the categories products on the demo), we need to persist them in the
     // store as well so that we don't lose them after a redirection back
     // to the list
-    useEffect(
-        () => {
-            // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
-            // the same resource but different storeKeys.
-            if (currentStoreKey.current !== storeKey) {
-                // storeKey has changed
-                currentStoreKey.current = storeKey;
-                return;
-            }
-            if (disableSyncWithLocation) {
-                return;
-            }
-            const defaultParams = {
-                filter: filterDefaultValues || {},
-                page: 1,
-                perPage,
-                sort: sort.field,
-                order: sort.order,
-            };
-
-            if (
-                // The location params are not empty (we don't want to override them if provided)
-                Object.keys(queryFromLocation).length > 0 ||
-                // or the stored params are different from the location params
-                isEqual(query, queryFromLocation) ||
-                // or the stored params are not different from the default params (to keep the URL simple when possible)
-                isEqual(query, defaultParams)
-            ) {
-                return;
-            }
-            navigate(
-                {
-                    search: `?${stringify({
-                        ...query,
-                        filter: JSON.stringify(query.filter),
-                        displayedFilters: JSON.stringify(
-                            query.displayedFilters
-                        ),
-                    })}`,
-                },
-                {
-                    replace: true,
-                }
-            );
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [
-            navigate,
-            disableSyncWithLocation,
-            filterDefaultValues,
+    useEffect(() => {
+        // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
+        // the same resource but different storeKeys.
+        if (currentStoreKey.current !== storeKey) {
+            // storeKey has changed
+            currentStoreKey.current = storeKey;
+            return;
+        }
+        if (disableSyncWithLocation) {
+            return;
+        }
+        const defaultParams = {
+            filter: filterDefaultValues || {},
+            page: 1,
             perPage,
-            sort,
-            query,
-            location.search,
-            params,
-        ]
-    );
+            sort: sort.field,
+            order: sort.order,
+        };
+
+        if (
+            // The location params are not empty (we don't want to override them if provided)
+            Object.keys(queryFromLocation).length > 0 ||
+            // or the stored params are the same as the location params
+            isEqual(query, queryFromLocation) ||
+            // or the stored params are the same as the default params (to keep the URL simple when possible)
+            isEqual(query, defaultParams)
+        ) {
+            return;
+        }
+        navigate(
+            {
+                search: `?${stringify({
+                    ...query,
+                    filter: JSON.stringify(query.filter),
+                    displayedFilters: JSON.stringify(query.displayedFilters),
+                })}`,
+            },
+            {
+                replace: true,
+            }
+        );
+    }, [
+        navigate,
+        disableSyncWithLocation,
+        filterDefaultValues,
+        perPage,
+        sort,
+        query,
+        queryFromLocation,
+        location.search,
+        params,
+        storeKey,
+    ]);
 
     const changeParams = useCallback(
         action => {
@@ -340,7 +337,7 @@ const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
             query[field] = JSON.parse(query[field]);
-        } catch (err) {
+        } catch {
             delete query[field];
         }
     }
