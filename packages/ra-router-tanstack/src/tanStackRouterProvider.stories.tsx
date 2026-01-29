@@ -1481,3 +1481,268 @@ export const PathlessLayoutRoutes = () => {
         </RouterProviderContext.Provider>
     );
 };
+
+export const PathlessLayoutRoutesPriority = () => {
+    const { RouterWrapper } = tanStackRouterProvider;
+
+    return (
+        <RouterProviderContext.Provider value={tanStackRouterProvider}>
+            <RouterWrapper>
+                <div data-testid="layout-wrapper">
+                    <nav>
+                        <LinkBase to="/posts" style={{ marginRight: 10 }}>
+                            Posts
+                        </LinkBase>
+                        <LinkBase to="/comments" style={{ marginRight: 10 }}>
+                            Comments
+                        </LinkBase>
+                        <LinkBase
+                            to="/users/john_doe"
+                            style={{ marginRight: 10 }}
+                        >
+                            User
+                        </LinkBase>
+                        <LinkBase
+                            to="/users/jane_doe/block"
+                            style={{ marginRight: 10 }}
+                        >
+                            Block a user
+                        </LinkBase>
+                    </nav>
+                    <div
+                        style={{
+                            border: '2px solid blue',
+                            padding: 20,
+                            marginTop: 10,
+                        }}
+                    >
+                        <Routes>
+                            <Route
+                                path="/posts"
+                                element={
+                                    <div data-testid="posts-page">
+                                        Posts Page
+                                    </div>
+                                }
+                            />
+                            <Route
+                                path="/comments"
+                                element={
+                                    <div data-testid="comments-page">
+                                        Comments Page
+                                    </div>
+                                }
+                            />
+                            <Route
+                                element={
+                                    <div
+                                        style={{
+                                            border: '2px solid green',
+                                            padding: 20,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        <RouterOutlet />
+                                    </div>
+                                }
+                            >
+                                <Route
+                                    path="/users/*"
+                                    element={
+                                        <div data-testid="users-page">
+                                            Users View
+                                        </div>
+                                    }
+                                />
+                            </Route>
+                            <Route
+                                element={
+                                    <div
+                                        style={{
+                                            border: '2px solid red',
+                                            padding: 20,
+                                            marginTop: 10,
+                                        }}
+                                    >
+                                        <RouterOutlet />
+                                    </div>
+                                }
+                            >
+                                <Route
+                                    path="/users/:username/block"
+                                    element={
+                                        <div data-testid="block-user-page">
+                                            Block a user
+                                        </div>
+                                    }
+                                />
+                            </Route>
+                        </Routes>
+                    </div>
+                </div>
+                <LocationDisplay />
+            </RouterWrapper>
+        </RouterProviderContext.Provider>
+    );
+};
+
+export const PathlessLayoutRoutesWithEmptyRoute = () => {
+    const { RouterWrapper } = tanStackRouterProvider;
+
+    return (
+        <RouterProviderContext.Provider value={tanStackRouterProvider}>
+            <RouterWrapper>
+                <p style={{ marginBottom: 10 }}>
+                    Expected: "/" renders Home Page (path=""). If you see
+                    Catch-all Page instead, path="" is being treated as
+                    catch-all.
+                </p>
+                <Routes>
+                    <Route
+                        path="*"
+                        element={
+                            <div data-testid="catchall-page">
+                                Catch-all Page
+                            </div>
+                        }
+                    />
+                    <Route
+                        element={
+                            <div data-testid="layout-wrapper">
+                                <h2>Layout Wrapper</h2>
+                                <nav>
+                                    <LinkBase
+                                        to="/posts"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Posts
+                                    </LinkBase>
+                                    <LinkBase to="/comments">Comments</LinkBase>
+                                </nav>
+                                <nav>
+                                    <LinkBase
+                                        to="/"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Home (path="")
+                                    </LinkBase>
+                                </nav>
+                                <div
+                                    style={{
+                                        border: '2px solid blue',
+                                        padding: 20,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    <RouterOutlet />
+                                </div>
+                            </div>
+                        }
+                    >
+                        <Route
+                            path=""
+                            element={
+                                <div data-testid="home-page">
+                                    Home Page (path="")
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="/posts"
+                            element={
+                                <div data-testid="posts-page">Posts Page</div>
+                            }
+                        />
+                        <Route
+                            path="/comments"
+                            element={
+                                <div data-testid="comments-page">
+                                    Comments Page
+                                </div>
+                            }
+                        />
+                    </Route>
+                </Routes>
+                <LocationDisplay />
+            </RouterWrapper>
+        </RouterProviderContext.Provider>
+    );
+};
+
+export const PathlessLayoutRoutesWithIndexRoute = () => {
+    const { RouterWrapper } = tanStackRouterProvider;
+
+    return (
+        <RouterProviderContext.Provider value={tanStackRouterProvider}>
+            <RouterWrapper>
+                <Routes>
+                    <Route
+                        path="*"
+                        element={
+                            <div data-testid="catchall-page">
+                                Catch-all Page
+                            </div>
+                        }
+                    />
+                    <Route
+                        element={
+                            <div data-testid="layout-wrapper">
+                                <h2>Layout Wrapper</h2>
+                                <nav>
+                                    <LinkBase
+                                        to="/posts"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Posts
+                                    </LinkBase>
+                                    <LinkBase to="/comments">Comments</LinkBase>
+                                </nav>
+                                <nav>
+                                    <LinkBase
+                                        to="/"
+                                        style={{ marginRight: 10 }}
+                                    >
+                                        Home (index)
+                                    </LinkBase>
+                                </nav>
+                                <div
+                                    style={{
+                                        border: '2px solid blue',
+                                        padding: 20,
+                                        marginTop: 10,
+                                    }}
+                                >
+                                    <RouterOutlet />
+                                </div>
+                            </div>
+                        }
+                    >
+                        <Route
+                            index
+                            element={
+                                <div data-testid="home-page">
+                                    Home Page (index)
+                                </div>
+                            }
+                        />
+                        <Route
+                            path="/posts"
+                            element={
+                                <div data-testid="posts-page">Posts Page</div>
+                            }
+                        />
+                        <Route
+                            path="/comments"
+                            element={
+                                <div data-testid="comments-page">
+                                    Comments Page
+                                </div>
+                            }
+                        />
+                    </Route>
+                </Routes>
+                <LocationDisplay />
+            </RouterWrapper>
+        </RouterProviderContext.Provider>
+    );
+};

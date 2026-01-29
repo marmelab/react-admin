@@ -25,6 +25,9 @@ import {
     QueryParameters,
     PathlessLayoutRoutes,
     NestedResourcesPrecedence,
+    PathlessLayoutRoutesPriority,
+    PathlessLayoutRoutesWithEmptyRoute,
+    PathlessLayoutRoutesWithIndexRoute,
 } from './tanStackRouterProvider.stories';
 import { tanStackRouterProvider } from './tanStackRouterProvider';
 
@@ -1478,6 +1481,62 @@ describe('tanStackRouterProvider', () => {
                 expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
                 expect(screen.getByTestId('comments-page')).toBeInTheDocument();
             });
+        });
+
+        it('should match the most specific layout route within pathless layout routes', async () => {
+            window.location.hash = '#/posts';
+
+            render(<PathlessLayoutRoutesPriority />);
+
+            await waitFor(() => {
+                expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('User'));
+
+            await waitFor(() => {
+                expect(screen.getByTestId('users-page')).toBeInTheDocument();
+            });
+
+            fireEvent.click(screen.getByText('Block a user'));
+
+            await waitFor(() => {
+                expect(
+                    screen.getByTestId('block-user-page')
+                ).toBeInTheDocument();
+            });
+        });
+    });
+
+    it('should match the empty path route as most specific within pathless layout routes', async () => {
+        window.location.hash = '#/posts';
+
+        render(<PathlessLayoutRoutesWithEmptyRoute />);
+
+        await waitFor(() => {
+            expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByText('Home (path="")'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('home-page')).toBeInTheDocument();
+        });
+    });
+
+    it('should match the index route as most specific within pathless layout routes', async () => {
+        window.location.hash = '#/posts';
+
+        render(<PathlessLayoutRoutesWithIndexRoute />);
+
+        await waitFor(() => {
+            expect(screen.getByTestId('posts-page')).toBeInTheDocument();
+        });
+
+        fireEvent.click(screen.getByText('Home (index)'));
+
+        await waitFor(() => {
+            expect(screen.getByTestId('home-page')).toBeInTheDocument();
         });
     });
 
