@@ -1,5 +1,13 @@
 # Changelog
 
+## 5.14.1
+
+* Fix `onSettled` call when provided in hook time options ([#11139](https://github.com/marmelab/react-admin/pull/11139)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix the most specific matching route when using pathless routes ([#11138](https://github.com/marmelab/react-admin/pull/11138)) ([Madeorsk](https://github.com/Madeorsk))
+* Prevent dragging column below the Reset button ([#11140](https://github.com/marmelab/react-admin/pull/11140)) ([Madeorsk](https://github.com/Madeorsk))
+* [TypeScript] Fix  `ref` type regression when wrapping react-admin Button components ([#11135](https://github.com/marmelab/react-admin/pull/11135)) ([WiXSL](https://github.com/WiXSL))
+* [chore] Compile packages for es2020 instead of es5 ([#11136](https://github.com/marmelab/react-admin/pull/11136)) ([djhi](https://github.com/djhi))
+
 ## 5.14.0
 
 * Add router abstraction and TanStack Router adapter ([#11102](https://github.com/marmelab/react-admin/pull/11102)) ([fzaninotto](https://github.com/fzaninotto))
