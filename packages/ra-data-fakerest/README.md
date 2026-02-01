@@ -109,6 +109,21 @@ const App = () => (
 );
 ```
 
+### Random delay
+
+You can also pass `true` to use a random delay between 500ms and 1500ms, or an object `{ min: number, max: number }` to specify a custom range.
+
+```jsx
+// random delay between 500ms and 1500ms
+const dataProvider2 = fakeDataProvider({ /* data here */ }, false, true);
+
+// random delay between 200ms and 1000ms
+const dataProvider3 = fakeDataProvider({ /* data here */ }, false, { min: 200, max: 1000 });
+
+// random delay between 0 and 500ms (max only)
+const dataProvider4 = fakeDataProvider({ /* data here */ }, false, { max: 500 });
+```
+
 ## Inspecting the Data
 
 `ra-data-fakerest` makes its internal database accessible in the global scope under the `_database` key. You can use it to inspect the data in your browser console.
