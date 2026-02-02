@@ -72,7 +72,7 @@ If you can't find a Data Provider for your backend below, no worries! [Writing a
 * ![marmelab Logo](./img/backend-logos/marmelab.png "marmelab Logo")**[REST](https://en.wikipedia.org/wiki/Representational_state_transfer)**: [marmelab/ra-data-simple-rest](https://github.com/marmelab/react-admin/tree/master/packages/ra-data-simple-rest)
 * ![soul logo](./img/backend-logos/soul.png "Soul Logo")**[Soul](https://thevahidal.github.io/soul/)**/**[SQLite](https://www.sqlite.org/index.html)**: [DeepBlueCLtd/RA-Soul](https://github.com/DeepBlueCLtd/RA-Soul)
 * ![spring Logo](./img/backend-logos/spring.svg "spring Logo")**[Spring Boot](https://spring.io/projects/spring-boot)**: [vishpat/ra-data-springboot-rest](https://github.com/vishpat/ra-data-springboot-rest)
-* ![spring Logo](./img/backend-logos/spring.svg "spring Logo")**[Spring Boot (REST)](https://spring.io/projects/spring-boot)**: [femrek/ra-spring-json-server](https://github.com/femrek/ra-spring-json-server)
+* ![spring Logo](./img/backend-logos/spring.svg "spring Logo")**[Spring Boot (REST)](https://spring.io/projects/spring-boot)**: [femrek/ra-spring-data-provider](https://github.com/femrek/ra-spring-data-provider)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v3/v4](https://strapi.io/)**: [nazirov91/ra-strapi-rest](https://github.com/nazirov91/ra-strapi-rest)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v4](https://strapi.io/)**: [garridorafa/ra-strapi-v4-rest](https://github.com/garridorafa/ra-strapi-v4-rest)
 * ![strapi Logo](./img/backend-logos/strapi.png "strapi Logo")**[Strapi v5](https://strapi.io/)**: [marmelab/ra-strapi](https://github.com/marmelab/ra-strapi/tree/main/packages/ra-strapi)
