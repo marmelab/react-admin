@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="24"
+   height="24"
+   viewBox="0 0 24 24"
+   fill="none"
+   stroke="currentColor"
+   stroke-width="2"
+   stroke-linecap="round"
+   stroke-linejoin="round"
+   class="feather feather-trash-2"
+   version="1.1"
+   id="svg2"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <polyline
+     points="3 6 5 6 21 6"
+     id="polyline1"
+     style="stroke:#ea1763;stroke-opacity:1" />
+  <path
+     d="m 19,6 v 14 a 2,2 0 0 1 -2,2 H 7 A 2,2 0 0 1 5,20 V 6 M 8,6 V 4 a 2,2 0 0 1 2,-2 h 4 a 2,2 0 0 1 2,2 v 2"
+     id="path1"
+     style="stroke:#ea1763;stroke-opacity:1" />
+  <line
+     x1="10"
+     y1="11"
+     x2="10"
+     y2="17"
+     id="line1"
+     style="stroke:#ea1763;stroke-opacity:1" />
+  <line
+     x1="14"
+     y1="11"
+     x2="14"
+     y2="17"
+     id="line2"
+     style="stroke:#ea1763;stroke-opacity:1" />
+</svg>
