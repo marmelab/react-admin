@@ -135,10 +135,6 @@ export const useListParams = ({
     }, [location.search]); // eslint-disable-line
 
     const currentStoreKey = useRef(storeKey);
-    // if the location includes params (for example from a link like
-    // the categories products on the demo), we need to persist them in the
-    // store as well so that we don't lose them after a redirection back
-    // to the list
     useEffect(() => {
         // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
         // the same resource but different storeKeys.
@@ -151,6 +147,7 @@ export const useListParams = ({
             return;
         }
         const defaultParams = {
+            displayedFilters: {},
             filter: filterDefaultValues || {},
             page: 1,
             perPage,
@@ -168,6 +165,7 @@ export const useListParams = ({
         ) {
             return;
         }
+        console.log({ query, queryFromLocation, defaultParams });
         navigate(
             {
                 search: `?${stringify({
