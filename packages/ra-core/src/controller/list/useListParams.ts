@@ -147,7 +147,6 @@ export const useListParams = ({
             return;
         }
         const defaultParams = {
-            displayedFilters: {},
             filter: filterDefaultValues || {},
             page: 1,
             perPage,
@@ -155,17 +154,21 @@ export const useListParams = ({
             order: sort.order,
         };
 
+        const {
+            displayedFilters: _displayedFilters,
+            ...queryWithoutDisplayedFilters
+        } = query;
+
         if (
             // The location params are not empty (we don't want to override them if provided)
             Object.keys(queryFromLocation).length > 0 ||
             // or the stored params are the same as the location params
-            isEqual(query, queryFromLocation) ||
+            isEqual(queryWithoutDisplayedFilters, queryFromLocation) ||
             // or the stored params are the same as the default params (to keep the URL simple when possible)
-            isEqual(query, defaultParams)
+            isEqual(queryWithoutDisplayedFilters, defaultParams)
         ) {
             return;
         }
-        console.log({ query, queryFromLocation, defaultParams });
         navigate(
             {
                 search: `?${stringify({
