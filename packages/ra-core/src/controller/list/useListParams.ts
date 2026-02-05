@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
 import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce.js';
-
+import isEqual from 'lodash/isEqual.js';
 import { useStore } from '../../store';
 import { useNavigate, useLocation } from '../../routing';
 import queryReducer, {
@@ -107,9 +107,10 @@ export const useListParams = ({
         disableSyncWithLocation,
     ];
 
-    const queryFromLocation = disableSyncWithLocation
-        ? {}
-        : parseQueryFromLocation(location);
+    const queryFromLocation = useMemo(
+        () => (disableSyncWithLocation ? {} : parseQueryFromLocation(location)),
+        [location, disableSyncWithLocation]
+    );
 
     const query = useMemo(
         () =>
@@ -132,6 +133,66 @@ export const useListParams = ({
             setParams(query);
         }
     }, [location.search]); // eslint-disable-line
+
+    const currentStoreKey = useRef(storeKey);
+    useEffect(() => {
+        // If the storeKey has changed, ignore the first effect call. This avoids conflicts between lists sharing
+        // the same resource but different storeKeys.
+        if (currentStoreKey.current !== storeKey) {
+            // storeKey has changed
+            currentStoreKey.current = storeKey;
+            return;
+        }
+        if (disableSyncWithLocation) {
+            return;
+        }
+        const defaultParams = {
+            filter: filterDefaultValues || {},
+            page: 1,
+            perPage,
+            sort: sort.field,
+            order: sort.order,
+        };
+
+        const {
+            displayedFilters: _displayedFilters,
+            ...queryWithoutDisplayedFilters
+        } = query;
+
+        if (
+            // The location params are not empty (we don't want to override them if provided)
+            Object.keys(queryFromLocation).length > 0 ||
+            // or the stored params are the same as the location params
+            isEqual(queryWithoutDisplayedFilters, queryFromLocation) ||
+            // or the stored params are the same as the default params (to keep the URL simple when possible)
+            isEqual(queryWithoutDisplayedFilters, defaultParams)
+        ) {
+            return;
+        }
+        navigate(
+            {
+                search: `?${stringify({
+                    ...query,
+                    filter: JSON.stringify(query.filter),
+                    displayedFilters: JSON.stringify(query.displayedFilters),
+                })}`,
+            },
+            {
+                replace: true,
+            }
+        );
+    }, [
+        navigate,
+        disableSyncWithLocation,
+        filterDefaultValues,
+        perPage,
+        sort,
+        query,
+        queryFromLocation,
+        location.search,
+        params,
+        storeKey,
+    ]);
 
     const changeParams = useCallback(
         action => {
@@ -277,7 +338,7 @@ const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
             query[field] = JSON.parse(query[field]);
-        } catch (err) {
+        } catch {
             delete query[field];
         }
     }
