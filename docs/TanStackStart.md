@@ -100,7 +100,7 @@ import { createFileRoute, Link } from '@tanstack/react-router';
 
 function Home() {
     return (
-        <div style={{ padding: 24 }}>
+        <div>
             <h1>TanStack Start + React-Admin</h1>
             <p>
                 Go to the admin at <Link to="/admin">/admin</Link>
