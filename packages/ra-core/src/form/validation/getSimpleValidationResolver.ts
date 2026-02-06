@@ -1,15 +1,15 @@
-import { FieldValues } from 'react-hook-form';
+import { FieldValues, useForm } from 'react-hook-form';
 
 /**
  * Convert a simple validation function that returns an object matching the form shape with errors
  * to a validation resolver compatible with react-hook-form.
  *
  * @example
- * const validate = (values: any) => {
+ * const validate = (values: { username: string }) => {
  *     if (values.username == null || values.username.trim() === '') {
  *         return { username: 'Required' };
  *     }
- * }
+ * };
  *
  * const validationResolver = getSimpleValidationResolver(validate);
  *
@@ -23,12 +23,15 @@ import { FieldValues } from 'react-hook-form';
  * );
  */
 export const getSimpleValidationResolver =
-    (validate: ValidateForm) => async (data: FieldValues) => {
+    <TFieldValues extends FieldValues = FieldValues>(
+        validate: ValidateForm<TFieldValues>
+    ) =>
+    async (data: TFieldValues) => {
         const errors = await validate(data);
 
         // If there are no errors, early return the form values
         if (!errors || isEmptyObject(errors)) {
-            return { values: data, errors: {} };
+            return { values: data as TFieldValues, errors: {} };
         }
 
         // Else, we return an error object shaped like errors but having for each leaf
@@ -40,12 +43,12 @@ export const getSimpleValidationResolver =
         //   e.g. with an ArrayInput we can get something like: `{backlinks: [{}, {}]}`
         // If, after transformation, there are no errors, we return the form values
         if (!transformedErrors || isEmptyObject(transformedErrors)) {
-            return { values: data, errors: {} };
+            return { values: data as TFieldValues, errors: {} };
         }
 
         // Else return the errors and no values
         return {
-            values: {},
+            values: {} as TFieldValues,
             errors: transformedErrors,
         };
     };
@@ -103,6 +106,9 @@ const isRaTranslationObj = (obj: object) =>
 const isEmptyObject = (obj: object) =>
     obj == null || Object.getOwnPropertyNames(obj).length === 0;
 
-export type ValidateForm = (
-    data: FieldValues
-) => FieldValues | Promise<FieldValues>;
+export type ValidateForm<TFieldValues extends FieldValues = FieldValues> = (
+    data: TFieldValues
+) =>
+    | Partial<Record<keyof TFieldValues, any>>
+    | undefined
+    | Promise<Partial<Record<keyof TFieldValues, any>>>;
