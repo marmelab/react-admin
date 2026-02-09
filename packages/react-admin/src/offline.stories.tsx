@@ -84,6 +84,10 @@ export const FullApp = () => {
         <PersistQueryClientProvider
             client={queryClient}
             persistOptions={{ persister: asyncStoragePersister }}
+            onSuccess={() => {
+                // Resume mutations after initial restore from localStorage is successful
+                queryClient.resumePausedMutations();
+            }}
         >
             <Admin
                 dataProvider={dataProvider}
