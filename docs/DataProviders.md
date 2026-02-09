@@ -888,3 +888,170 @@ export default App;
 ```
 
 **Tip**: This example uses the function version of `setState` (`setDataProvider(() => dataProvider)`) instead of the more classic version (`setDataProvider(dataProvider)`). This is because some legacy Data Providers are actually functions, and `setState` would call them immediately on mount.
+
+## Offline Support
+
+React-admin supports offline/local-first applications. To enable this feature, install the following react-query packages:
+
+```sh
+yarn add @tanstack/react-query-persist-client @tanstack/query-async-storage-persister
+```
+
+Then, register default functions for react-admin mutations on the `QueryClient` to enable resumable mutations (mutations triggered while offline). React-admin provides the `addOfflineSupportToQueryClient` function for this:
+
+```ts
+// in src/queryClient.ts
+import { addOfflineSupportToQueryClient } from 'react-admin';
+import { QueryClient } from '@tanstack/react-query';
+import { dataProvider } from './dataProvider';
+
+const baseQueryClient = new QueryClient();
+
+export const queryClient = addOfflineSupportToQueryClient({
+    queryClient: baseQueryClient,
+    dataProvider,
+    resources: ['posts', 'comments'],
+});
+```
+
+Finally, wrap your `<Admin>` inside a [`<PersistQueryClientProvider>`](https://tanstack.com/query/latest/docs/framework/react/plugins/persistQueryClient#persistqueryclientprovider):
+
+{% raw %}
+```tsx
+// in src/App.tsx
+import { Admin, Resource } from 'react-admin';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
+import { queryClient } from './queryClient';
+import { dataProvider } from './dataProvider';
+import { posts } from './posts';
+import { comments } from './comments';
+
+const localStoragePersister = createAsyncStoragePersister({
+    storage: window.localStorage,
+});
+
+export const App = () => (
+    <PersistQueryClientProvider
+        client={queryClient}
+        persistOptions={{ persister: localStoragePersister }}
+        onSuccess={() => {
+            // resume mutations after initial restore from localStorage is successful
+            queryClient.resumePausedMutations();
+        }}
+    >
+        <Admin queryClient={queryClient} dataProvider={dataProvider}>
+            <Resource name="posts" {...posts} />
+            <Resource name="comments" {...comments} />
+        </Admin>
+    </PersistQueryClientProvider>
+)
+```
+{% endraw %}
+
+This is enough to make all the standard react-admin features support offline scenarios.
+
+## Adding Offline Support To Custom Mutations
+
+If you have [custom mutations](./Actions.md#calling-custom-methods) on your dataProvider, you can enable offline support for them too. For instance, if your `dataProvider` exposes a `banUser()` method:
+
+```ts
+const dataProvider = {
+    getList: /* ... */,
+    getOne: /* ... */,
+    getMany: /* ... */,
+    getManyReference: /* ... */,
+    create: /* ... */,
+    update: /* ... */,
+    updateMany: /* ... */,
+    delete: /* ... */,
+    deleteMany: /* ... */,
+    banUser: (userId: string) => {
+        return fetch(`/api/user/${userId}/ban`, { method: 'POST' })
+            .then(response => response.json());
+    },
+}
+
+export type MyDataProvider = DataProvider & {
+    banUser: (userId: string) => Promise<{ data: RaRecord }>
+}
+```
+
+First, you must set a `mutationKey` for this mutation:
+
+{% raw %}
+```tsx
+const BanUserButton = ({ userId }: { userId: string }) => {
+    const dataProvider = useDataProvider();
+    const { mutate, isPending } = useMutation({
+        mutationKey: ['banUser'],
+        mutationFn: (userId) => dataProvider.banUser(userId)
+    });
+    return <Button label="Ban" onClick={() => mutate(userId)} disabled={isPending} />;
+};
+```
+{% endraw %}
+
+**Tip**: Note that unlike the [_Calling Custom Methods_ example](./Actions.md#calling-custom-methods), we passed `userId` to the `mutate` function. This is necessary so that React Query passes it too to the default function when resuming the mutation.
+
+Then, register a default function for it:
+
+```ts
+// in src/queryClient.ts
+import { addOfflineSupportToQueryClient } from 'react-admin';
+import { QueryClient } from '@tanstack/react-query';
+import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
+import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+import { dataProvider } from './dataProvider';
+
+const baseQueryClient = new QueryClient();
+
+export const queryClient = addOfflineSupportToQueryClient({
+    queryClient: baseQueryClient,
+    dataProvider,
+    resources: ['posts', 'comments'],
+});
+
+queryClient.setMutationDefaults('banUser', {
+    mutationFn: async (userId) => {
+        return dataProvider.banUser(userId);
+    },
+});
+```
+
+## Handling Errors For Resumed Mutations
+
+If you enabled offline support, users might trigger mutations while being actually offline. When they're back online, TanStack Query will _resume_ those mutations and they might fail for other reasons (server side validation or errors). However, as users might have navigated away from the page that triggered the mutation, they won't see any notification.
+
+To handle this scenario, you must register default `onError` side effects for all mutations (react-admin default ones or custom). If you want to leverage react-admin notifications, you can use a custom layout:
+
+```tsx
+// in src/Layout.tsx
+export const MyLayout = ({ children }: { children: React.ReactNode }) => {
+    const queryClient = useQueryClient();
+    const notify = useNotify();
+
+    React.useEffect(() => {
+        const mutationKeyFilter = []; // An empty array targets all mutations 
+        queryClient.setMutationDefaults(mutationKeyFilter, {
+            onSettled(data, error) {
+                if (error) {
+                    notify(error.message, { type: 'error' });
+                }
+            },
+        });
+    }, [queryClient, notify]);
+
+    return (
+        <Layout>
+            {children}
+        </Layout>
+    );
+}
+```
+
+Note that this simple example will only show the error message as it was received. Users may not have the context to understand the error (what record or operation it relates to).
+Here are some ideas for a better user experience:
+
+- make sure your messages allow users to go to the pages related to the errors (you can leverage [custom notifications](./useNotify.md#custom-notification-content) for that)
+- store the notifications somewhere (server side or not) and show them in a custom page with proper links, etc.
