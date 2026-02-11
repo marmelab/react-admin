@@ -12,12 +12,12 @@ import type { DataProvider } from '../types';
  * import { addOfflineSupportToQueryClient } from 'react-admin';
  * import { QueryClient } from '@tanstack/react-query';
  * import { PersistQueryClientProvider } from '@tanstack/react-query-persist-client';
- * import { createSyncStoragePersister } from '@tanstack/query-sync-storage-persister';
+ * import { createAsyncStoragePersister } from '@tanstack/query-async-storage-persister';
  * import { dataProvider } from './dataProvider';
  * import { posts } from './posts';
  * import { comments } from './comments';
  *
- * const localStoragePersister = createSyncStoragePersister({
+ * const localStoragePersister = createAsyncStoragePersister({
  *     storage: window.localStorage,
  * });
  *
@@ -61,7 +61,6 @@ import type { DataProvider } from '../types';
  *   queryClient: new QueryClient(),
  *   dataProvider,
  *   resources: ['posts', 'comments'],
- *   mutations: [...DataProviderMutations, 'myCustomMutation'],
  * });
  *
  * const App = () => (
