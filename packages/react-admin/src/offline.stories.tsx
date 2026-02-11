@@ -63,7 +63,11 @@ const dataProvider = {
 };
 type CustomDataProvider = typeof dataProvider;
 
-export const FullApp = () => {
+export const FullApp = ({
+    failMutations = false,
+}: {
+    failMutations?: boolean;
+}) => {
     const queryClient = addOfflineSupportToQueryClient({
         dataProvider,
         queryClient: new QueryClient({
@@ -80,6 +84,40 @@ export const FullApp = () => {
         storage: localStorage,
     });
 
+    const localDataProvider = failMutations
+        ? {
+              ...dataProvider,
+              create: resource => {
+                  return Promise.reject(
+                      new Error(`Server error: cannot create ${resource}`)
+                  );
+              },
+              update: resource => {
+                  return Promise.reject(
+                      new Error(`Server error: cannot update ${resource}`)
+                  );
+              },
+              updateMany: resource => {
+                  return Promise.reject(
+                      new Error(`Server error: cannot update ${resource}`)
+                  );
+              },
+              delete: resource => {
+                  return Promise.reject(
+                      new Error(`Server error: cannot delete ${resource}`)
+                  );
+              },
+              deleteMany: resource => {
+                  return Promise.reject(
+                      new Error(`Server error: cannot delete ${resource}`)
+                  );
+              },
+              emptyStock: () => {
+                  return Promise.reject('Could not empty stock');
+              },
+          }
+        : dataProvider;
+
     return (
         <PersistQueryClientProvider
             client={queryClient}
@@ -90,7 +128,7 @@ export const FullApp = () => {
             }}
         >
             <Admin
-                dataProvider={dataProvider}
+                dataProvider={localDataProvider}
                 queryClient={queryClient}
                 layout={CustomLayout}
             >
@@ -104,6 +142,16 @@ export const FullApp = () => {
             </Admin>
         </PersistQueryClientProvider>
     );
+};
+
+FullApp.args = {
+    failMutations: false,
+};
+
+FullApp.argTypes = {
+    failMutations: {
+        type: 'boolean',
+    },
 };
 
 const ProductList = () => (
@@ -211,12 +259,14 @@ const EmptyStockButton = () => {
     );
 };
 
-const CustomLayout = ({ children }) => (
-    <Layout appBar={CustomAppBar}>
-        {children}
-        <ReactQueryDevtools initialIsOpen={false} />
-    </Layout>
-);
+const CustomLayout = ({ children }) => {
+    return (
+        <Layout appBar={CustomAppBar}>
+            {children}
+            <ReactQueryDevtools initialIsOpen={false} />
+        </Layout>
+    );
+};
 
 const CustomAppBar = () => {
     const isOffline = useIsOffline();
