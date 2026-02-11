@@ -26,6 +26,14 @@ export const reactAdminFetchActions = [
     ...fetchActionsWithArrayOfRecordsResponse,
 ];
 
+export const DATAPROVIDER_MUTATIONS = [
+    'create',
+    'delete',
+    'update',
+    'updateMany',
+    'deleteMany',
+];
+
 export const sanitizeFetchType = (fetchType: string) => {
     switch (fetchType) {
         case GET_LIST:
