@@ -85,7 +85,7 @@ export const useReference = <
         otherQueryOptions
     );
     return {
-        referenceRecord: error ? undefined : data ? data[0] : undefined,
+        referenceRecord: data ? data[0] : undefined,
         refetch,
         error,
         isLoading,
