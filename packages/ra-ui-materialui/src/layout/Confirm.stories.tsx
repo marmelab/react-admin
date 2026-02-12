@@ -6,7 +6,11 @@ export default {
     title: 'ra-ui-materialui/layout/Confirm',
 };
 
-export const BackClick = () => {
+export const BackClick = ({
+    confirmColor,
+}: {
+    confirmColor?: 'primary' | 'warning';
+}) => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [isClicked, setIsClicked] = React.useState(false);
 
@@ -35,11 +39,20 @@ export const BackClick = () => {
                     title="Delete Item"
                     content="Are you sure you want to delete this item?"
                     confirm="Yes"
-                    confirmColor="primary"
+                    confirmColor={confirmColor}
                     onConfirm={() => setIsOpen(false)}
                     onClose={() => setIsOpen(false)}
                 />
             </div>
         </>
     );
+};
+BackClick.args = {
+    confirmColor: 'primary',
+};
+BackClick.argTypes = {
+    confirmColor: {
+        control: { type: 'select' },
+        options: ['primary', 'warning'],
+    },
 };
