@@ -224,4 +224,4 @@ refresh();                         // Invalidate all queries
 ## Deprecations
 
 - Use DataTable instead of Datagrid
-- Use useCanAccess instead of usePermissions
+- Prefer `<CanAccess>` and `useCanAccess` for authorization checks
