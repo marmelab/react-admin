@@ -44,6 +44,7 @@ It works both on create and edit forms.
 | Prop                  | Required | Type       | Default                            | Description                                                                                 |
 | --------------------- | -------- | ---------- | -------------------------------------------------------- | --------------------------------------------------------------------- |
 | `getStoreKey`         | -        | `function` | -                                  | Function to use your own store key.                                                         |
+| `maxAge`              | -        | `number`    | -                                    | The age in seconds before a stored value is removed from the store  |
 | `notification`        | -        | `ReactNode` | `<AutoPersist Notification>`       | The element used to show the notification, that allows users to reset the form.             |
 | `notification Message` | -        | `string`   | "Applied previous unsaved changes" | Notification message to inform users that their previously saved changes have been applied. |
 
@@ -66,6 +67,20 @@ You can override this key by passing a custom function as the `getStoreKey` prop
         (resource: ResourceContextValue, record: RaRecord<Identifier> | undefined) =>
             `my-custom-persist-key-${resource}-${record && record.hasOwnProperty('id') ? record.id : 'create'}`
     }
+/>
+```
+
+## `maxAge`
+
+Storing many values in the `store` (especially with `localStorage`) may consume all the allowed space depending on the browser. You can provide a number of seconds to the `maxAge` prop so that older values are automatically removed whenever new values are stored.
+
+**Note**: This feature requires a [Store](./Store.md) that implements the `listItems` function (both `localStorageStore` and `memoryStore` do).
+
+**Note**: This feature is disabled when providing the `getStoreKey` prop.
+
+```tsx
+<AutoPersistInStore
+    maxAge={10 * 60} // 10 minutes
 />
 ```
 

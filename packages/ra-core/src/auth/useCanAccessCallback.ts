@@ -5,6 +5,7 @@ import {
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
 import { HintedString } from '../types';
+import { useMemo } from 'react';
 
 /**
  * A hook that returns a function you can call to determine whether user has access to the given resource
@@ -49,6 +50,7 @@ export const useCanAccessCallback = <
     > = {}
 ) => {
     const authProvider = useAuthProvider();
+    const authProviderHasCanAccess = !!authProvider?.canAccess;
 
     const { mutateAsync } = useMutation<
         UseCanAccessCallbackResult,
@@ -67,7 +69,10 @@ export const useCanAccessCallback = <
         ...options,
     });
 
-    return mutateAsync;
+    return useMemo(
+        () => (authProviderHasCanAccess ? mutateAsync : () => true),
+        [authProviderHasCanAccess, mutateAsync]
+    );
 };
 
 export type UseCanAccessCallback<
