@@ -12,7 +12,7 @@ This component prevents data loss in forms by automatically saving the form data
   Your browser does not support the video tag.
 </video>
 
-The temporary form data is only saved when the user navigates away from the page, and it is removed when the user submits the form or closes the tab. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
+The temporary form data is saved as soon as the user makes a change, and it is removed when the user submits the form. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
 
 Saved data is not sent to the server. It is only persisted using the [store](https://marmelab.com/ra-core/store/) and is removed when the user logs out.
 
