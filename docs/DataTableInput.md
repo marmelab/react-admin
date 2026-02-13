@@ -205,6 +205,7 @@ const SupplierActions = () => (
 
 Use `dataTableProps` to customize table behavior (hidden columns, row selectability, etc.):
 
+{% raw %}
 ```tsx
 <ReferenceInput source="preferred_supplier_id" reference="suppliers">
     <DataTableInput
@@ -220,11 +221,13 @@ Use `dataTableProps` to customize table behavior (hidden columns, row selectabil
     </DataTableInput>
 </ReferenceInput>
 ```
+{% endraw %}
 
 ## `dialogProps`
 
 Use `dialogProps` to customize the underlying Material UI dialog:
 
+{% raw %}
 ```tsx
 <ReferenceInput source="preferred_supplier_id" reference="suppliers">
     <DataTableInput
@@ -237,3 +240,4 @@ Use `dialogProps` to customize the underlying Material UI dialog:
     </DataTableInput>
 </ReferenceInput>
 ```
+{% endraw %}
