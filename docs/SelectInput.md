@@ -54,6 +54,8 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: If you need to let users select multiple items in the list, check out the [`<SelectArrayInput>`](./SelectArrayInput.md) component.
 
+**Tip**: If your options are numerous or require several columns to disambiguate choices, use [`<DataTableInput>`](./DataTableInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />.
+
 ## Props
 
 | Prop              | Required | Type                                      | Default            | Description                                                                                                                            |

@@ -52,6 +52,8 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) component.
 
+**Tip**: If users need to compare multiple fields before choosing (e.g. team, region, SLA, status), use [`<DataTableInput>`](./DataTableInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />.
+
 ## Props
 
 | Prop                       | Required | Type                                            | Default                                    | Description                                                                                                                                                                                                         |

@@ -134,13 +134,28 @@ The child can be:
 - [`<SelectArrayInput>`](./SelectArrayInput.md)
 - [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 - [`<DualListInput>`](./DualListInput.md)
-- [`<CheckboxGroupInput>`](./CheckboxGroupInput.md),
+- [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
+- [`<DataTableInput>`](./DataTableInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> from `@react-admin/ra-form-layout`
 
 ```jsx
 import { ReferenceArrayInput, SelectInput } from 'react-admin';
 
 <ReferenceArrayInput source="tags_ids" reference="tags">
     <SelectArrayInput />
+</ReferenceArrayInput>
+```
+
+```jsx
+import { DataTableInput } from '@react-admin/ra-form-layout';
+import { DataTable, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput source="reviewer_ids" reference="users">
+    <DataTableInput multiple>
+        <DataTable.Col source="full_name" />
+        <DataTable.Col source="team" />
+        <DataTable.Col source="timezone" />
+        <DataTable.Col source="location" />
+    </DataTableInput>
 </ReferenceArrayInput>
 ```
 

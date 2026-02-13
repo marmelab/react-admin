@@ -45,6 +45,8 @@ Each `<DataTable.Col>` defines one column of the table: its `source` (used for s
 - [`<SingleFieldList>`](./SingleFieldList.md) renders a single field for each record
 - [`<DatagridAG>`](./DatagridAG.md)<img class="icon" src="./img/premium.svg" /> is a more advanced spreadsheet component with support for aggregation, pivoting, row grouping, infinite scroll, etc.
 
+**Tip**: If you need to let users select records through a table in a form, use [`<DataTableInput>`](./DataTableInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" />.
+
 ## Props
 
 | Prop                 | Required | Type                    | Default               | Description                                                   |

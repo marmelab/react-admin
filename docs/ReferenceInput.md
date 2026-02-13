@@ -142,6 +142,22 @@ import { ReferenceInput, SelectInput } from 'react-admin';
 </ReferenceInput>
 ```
 
+If your users need to compare multiple fields before selecting a record, you can use [`<DataTableInput>`](./DataTableInput.md)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> from `@react-admin/ra-form-layout`:
+
+```jsx
+import { DataTableInput } from '@react-admin/ra-form-layout';
+import { DataTable, ReferenceInput } from 'react-admin';
+
+<ReferenceInput source="company_id" reference="companies">
+    <DataTableInput>
+        <DataTable.Col source="company_name" />
+        <DataTable.Col source="country" />
+        <DataTable.Col source="city" />
+        <DataTable.Col source="industry" />
+    </DataTableInput>
+</ReferenceInput>
+```
+
 You can even use a component of your own as child, provided it detects a `ChoicesContext` is available and gets their choices from it.
 
 The choices context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
