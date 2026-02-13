@@ -248,7 +248,7 @@ If you want to see what react-admin is capable of, or if you want to learn from 
         </div>
     </div>
     <div class="card">
-        <a href="#broadcom-layer-7-api-hub" class="no-decoration"><img src="https://marmelab.com/static/bcb26e245e6e50e8f13631a156727d2e/46097/API_Hub.png" alt="Developer Portal"></a>
+        <a href="#broadcom-layer-7-api-hub" class="no-decoration"><img src="./img/developer-portal.png" alt="Developer Portal"></a>
         <div class="content-card">
             <a href="#broadcom-layer-7-api-hub" class="no-decoration">
                 <p class="title-card"><b>Developer portal</b></p>
