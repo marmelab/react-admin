@@ -159,7 +159,7 @@ In addition to the [common input props](./Inputs.md#common-input-props), `<DataT
 | `dialogProps`    | Optional | `DialogProps`                             | -                                                   | Props forwarded to the selection dialog |
 | `filters`        | Optional | `ReactElement` &#124; `ReactElement[]` &#124; `false` | -                                         | Filters displayed in the dialog toolbar |
 | `multiple`       | Optional | `boolean`                                 | `false`                                             | Enables multiple selection (value becomes an array of ids) |
-| `optionText`     | Optional | `OptionText`                              | resource `recordRepresentation` or `name`           | Label used for selected chips in standalone mode |
+| `optionText`     | Optional | `OptionText`                              | resource `recordRepresentation` or `name`           | Field used as label for selected chips in standalone mode |
 | `optionValue`    | Optional | `string`                                  | `id`                                                | Field used as choice value in standalone mode |
 | `pagination`     | Optional | `ReactNode`                               | [`<Pagination />`](./Pagination.md)                 | Pagination element rendered below the table |
 | `title`          | Optional | `string`                                  | `ra-form-layout.inputs.datatable_input.dialog_title` | Dialog title (translation key or plain string) |
