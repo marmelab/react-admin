@@ -145,6 +145,8 @@ import { ReferenceArrayInput, SelectInput } from 'react-admin';
 </ReferenceArrayInput>
 ```
 
+When your users need to compare several columns before selecting related records, you can use `<DataTableInput>` as child:
+
 ```jsx
 import { DataTableInput } from '@react-admin/ra-form-layout';
 import { DataTable, ReferenceArrayInput } from 'react-admin';
@@ -158,6 +160,8 @@ import { DataTable, ReferenceArrayInput } from 'react-admin';
     </DataTableInput>
 </ReferenceArrayInput>
 ```
+
+![DataTableInput in ReferenceArrayInput](./img/reference-array-input-datatable-input-dialog.png)
 
 You can even use a component of your own as child, provided it detects a `ChoicesContext` is available and gets their choices from it.
 

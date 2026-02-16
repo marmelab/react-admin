@@ -158,6 +158,8 @@ import { DataTable, ReferenceInput } from 'react-admin';
 </ReferenceInput>
 ```
 
+![DataTableInput in ReferenceInput](./img/reference-input-datatable-input-dialog.png)
+
 You can even use a component of your own as child, provided it detects a `ChoicesContext` is available and gets their choices from it.
 
 The choices context value can be accessed with the [`useChoicesContext`](./useChoicesContext.md) hook.
