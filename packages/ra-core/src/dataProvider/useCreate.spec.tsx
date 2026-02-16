@@ -144,6 +144,33 @@ describe('useCreate', () => {
         });
     });
 
+    it('calls onSettled when provided in hook time options', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localCreate;
+        const onSettled = jest.fn();
+        const Dummy = () => {
+            const [create] = useCreate(
+                'foo',
+                { data: { bar: 'baz' } },
+                { onSettled }
+            );
+            localCreate = create;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localCreate('foo', { data: { foo: 456 } });
+        await waitFor(() => {
+            expect(onSettled).toHaveBeenCalled();
+        });
+    });
+
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),

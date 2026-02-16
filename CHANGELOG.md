@@ -1,5 +1,49 @@
 # Changelog
 
+## 5.14.2
+
+* Fix `<ReferenceFieldBase>` does not work offline ([#11163](https://github.com/marmelab/react-admin/pull/11163)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Confirm>` button hover background transparency when type is warning ([#11160](https://github.com/marmelab/react-admin/pull/11160)) ([mjsarfatti](https://github.com/mjsarfatti))
+* [Doc] Update AutoPersistInStoreBase documentation ([#11159](https://github.com/marmelab/react-admin/pull/11159)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add react-admin Skill and AI coding assistant instructions ([#11158](https://github.com/marmelab/react-admin/pull/11158)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<AutoPersistInStore>` documentation to mention cache eviction ([#11157](https://github.com/marmelab/react-admin/pull/11157)) ([slax57](https://github.com/slax57))
+* [Doc] Offline Support Documentation ([#11152](https://github.com/marmelab/react-admin/pull/11152)) ([djhi](https://github.com/djhi))
+* [Doc]: Add TanStack Start section ([#11151](https://github.com/marmelab/react-admin/pull/11151)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Update RA Core EE documentation ([#11148](https://github.com/marmelab/react-admin/pull/11148)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add Spring Boot (REST) data provider to `DataProviderList.md` ([#11141](https://github.com/marmelab/react-admin/pull/11141)) ([femrek](https://github.com/femrek))
+* [TypeScript] Add generic type parameters to `getSimpleValidationResolver` ([#11150](https://github.com/marmelab/react-admin/pull/11150)) ([Gabriel-Malenowitch](https://github.com/Gabriel-Malenowitch))
+* [Demo] Fix vite configuration for tutorial example ([#11154](https://github.com/marmelab/react-admin/pull/11154)) ([Madeorsk](https://github.com/Madeorsk))
+* [chore] Upgrade to vite 7 ([#11153](https://github.com/marmelab/react-admin/pull/11153)) ([WiXSL](https://github.com/WiXSL))
+* Bump qs from 6.14.1 to 6.14.2 ([#11164](https://github.com/marmelab/react-admin/pull/11164)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump webpack from 5.94.0 to 5.105.0 ([#11155](https://github.com/marmelab/react-admin/pull/11155)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.14.1
+
+* Fix `onSettled` call when provided in hook time options ([#11139](https://github.com/marmelab/react-admin/pull/11139)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix `CustomRoutes` with TanStack Router ([#11138](https://github.com/marmelab/react-admin/pull/11138)) ([Madeorsk](https://github.com/Madeorsk))
+* Fix `ColumnsButton` allows dragging column below the Reset button ([#11140](https://github.com/marmelab/react-admin/pull/11140)) ([Madeorsk](https://github.com/Madeorsk))
+* [TypeScript] Fix  `ref` type regression when wrapping react-admin Button components ([#11135](https://github.com/marmelab/react-admin/pull/11135)) ([WiXSL](https://github.com/WiXSL))
+* [chore] Compile packages for es2020 instead of es5 ([#11136](https://github.com/marmelab/react-admin/pull/11136)) ([djhi](https://github.com/djhi))
+
+## 5.14.0
+
+* Add router abstraction and TanStack Router adapter ([#11102](https://github.com/marmelab/react-admin/pull/11102)) ([fzaninotto](https://github.com/fzaninotto))
+* Add ability to use `<ExportButton>` in every list ([#11119](https://github.com/marmelab/react-admin/pull/11119)) ([WiXSL](https://github.com/WiXSL))
+* Add `forwardRef` to react-admin buttons to support tooltips ([#11122](https://github.com/marmelab/react-admin/pull/11122)) ([WiXSL](https://github.com/WiXSL))
+* Add ability to disable auto focus in the first input of newly added rows with `<SimpleFormIterator disableAutoFocus>` ([#11101](https://github.com/marmelab/react-admin/pull/11101)) ([AarishMansur](https://github.com/AarishMansur))
+* Add `Store.listItems` method ([#11096](https://github.com/marmelab/react-admin/pull/11096)) ([djhi](https://github.com/djhi))
+* Add `useSupportCreateSuggestions` primitives to ra-core ([#11094](https://github.com/marmelab/react-admin/pull/11094)) ([slax57](https://github.com/slax57))
+* Add `genericMemo` to `ra-core` ([#11093](https://github.com/marmelab/react-admin/pull/11093)) ([slax57](https://github.com/slax57))
+* Add `useSavedQueries` primitives to `ra-core` ([#11092](https://github.com/marmelab/react-admin/pull/11092)) ([slax57](https://github.com/slax57))
+* Fix `ColumnsSelector` search input should stay fixed above menu list ([#11114](https://github.com/marmelab/react-admin/pull/11114)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Fix Inputs doc code example ([#11125](https://github.com/marmelab/react-admin/pull/11125)) ([gartner](https://github.com/gartner))
+* [Doc] Add `deleteMany` method to README and source code docs for json-server Data Provider ([#11118](https://github.com/marmelab/react-admin/pull/11118)) ([femrek](https://github.com/femrek))
+* [Chore] Update Cypress ([#11127](https://github.com/marmelab/react-admin/pull/11127)) ([fzaninotto](https://github.com/fzaninotto))
+* [chore] Stabilize flaky tests ([#11121](https://github.com/marmelab/react-admin/pull/11121)) ([WiXSL](https://github.com/WiXSL))
+* Bump lodash from 4.17.21 to 4.17.23 ([#11129](https://github.com/marmelab/react-admin/pull/11129)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump lodash-es from 4.17.21 to 4.17.23 ([#11128](https://github.com/marmelab/react-admin/pull/11128)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump diff from 5.2.0 to 5.2.2 ([#11126](https://github.com/marmelab/react-admin/pull/11126)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.13.6
 
 * [Doc] Update link to marmelab blog ([#11117](https://github.com/marmelab/react-admin/pull/11117)) ([WiXSL](https://github.com/WiXSL))

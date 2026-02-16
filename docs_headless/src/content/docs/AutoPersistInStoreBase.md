@@ -12,7 +12,7 @@ This component prevents data loss in forms by automatically saving the form data
   Your browser does not support the video tag.
 </video>
 
-The temporary form data is only saved when the user navigates away from the page, and it is removed when the user submits the form or closes the tab. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
+The temporary form data is saved as soon as the user makes a change, and it is removed when the user submits the form. Users can opt out of the prefilling by clicking the "Cancel" button in the notification.
 
 Saved data is not sent to the server. It is only persisted using the [store](https://marmelab.com/ra-core/store/) and is removed when the user logs out.
 
@@ -66,6 +66,7 @@ It works both on create and edit forms.
 | --------------------- | -------- | ----------- | ------------------------------------ | ------------------------------------ |
 | `notification`        | Required | `ReactNode` | -                                    | A Notification element.              |
 | `getStoreKey`         | -        | `function`  | -                                    | Function to use your own store key.  |
+| `maxAge`              | -        | `number`    | -                                    | The age in seconds before a stored value is removed from the store  |
 
 ### `getStoreKey`
 
@@ -86,6 +87,21 @@ You can override this key by passing a custom function as the `getStoreKey` prop
         (resource: ResourceContextValue, record: RaRecord<Identifier> | undefined) =>
             `my-custom-persist-key-${resource}-${record && record.hasOwnProperty('id') ? record.id : 'create'}`
     }
+    notification={<AutoPersistNotification />}
+/>
+```
+
+### `maxAge`
+
+Storing many values in the `store` (especially with `localStorage`) may consume all the allowed space depending on the browser. You can provide a number of seconds to the `maxAge` prop so that older values are automatically removed whenever new values are stored.
+
+**Note**: This feature requires a [Store](https://marmelab.com/ra-core/store/) that implements the `listItems` function (both `localStorageStore` and `memoryStore` do).
+
+**Note**: This feature is disabled when providing the `getStoreKey` prop.
+
+```tsx
+<AutoPersistInStoreBase 
+    maxAge={10 * 60} // 10 minutes
     notification={<AutoPersistNotification />}
 />
 ```

@@ -207,6 +207,39 @@ describe('useDelete', () => {
         });
     });
 
+    it('calls onSettled when provided in hook time options', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        let localDeleteOne;
+        const onSettled = jest.fn();
+        const Dummy = () => {
+            const [deleteOne] = useDelete(
+                'foo',
+                {
+                    id: 1,
+                    previousData: { id: 1, bar: 'bar' },
+                },
+                { onSettled }
+            );
+            localDeleteOne = deleteOne;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteOne('foo', {
+            id: 1,
+            previousData: { foo: 456 },
+        });
+        await waitFor(() => {
+            expect(onSettled).toHaveBeenCalled();
+        });
+    });
+
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),

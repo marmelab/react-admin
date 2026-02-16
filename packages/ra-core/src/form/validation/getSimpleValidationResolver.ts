@@ -5,11 +5,11 @@ import { FieldValues } from 'react-hook-form';
  * to a validation resolver compatible with react-hook-form.
  *
  * @example
- * const validate = (values: any) => {
+ * const validate = (values: { username: string }) => {
  *     if (values.username == null || values.username.trim() === '') {
  *         return { username: 'Required' };
  *     }
- * }
+ * };
  *
  * const validationResolver = getSimpleValidationResolver(validate);
  *
@@ -23,7 +23,10 @@ import { FieldValues } from 'react-hook-form';
  * );
  */
 export const getSimpleValidationResolver =
-    (validate: ValidateForm) => async (data: FieldValues) => {
+    <TFieldValues extends FieldValues = FieldValues>(
+        validate: ValidateForm<TFieldValues>
+    ) =>
+    async (data: TFieldValues) => {
         const errors = await validate(data);
 
         // If there are no errors, early return the form values
@@ -103,6 +106,9 @@ const isRaTranslationObj = (obj: object) =>
 const isEmptyObject = (obj: object) =>
     obj == null || Object.getOwnPropertyNames(obj).length === 0;
 
-export type ValidateForm = (
-    data: FieldValues
-) => FieldValues | Promise<FieldValues>;
+export type ValidateForm<TFieldValues extends FieldValues = FieldValues> = (
+    data: TFieldValues
+) =>
+    | Partial<Record<keyof TFieldValues, any>>
+    | undefined
+    | Promise<Partial<Record<keyof TFieldValues, any>> | undefined>;

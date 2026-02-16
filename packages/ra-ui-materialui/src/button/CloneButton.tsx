@@ -73,12 +73,13 @@ const sanitizeRestProps = ({
 }: Omit<CloneButtonProps, 'label' | 'scrollToTop' | 'icon'>) => rest;
 
 interface Props {
+    resource?: string;
     record?: any;
     icon?: ReactNode;
     scrollToTop?: boolean;
 }
 
-export type CloneButtonProps = Props & ButtonProps;
+export type CloneButtonProps = Props & Omit<ButtonProps<typeof LinkBase>, 'to'>;
 
 export default memo(CloneButton);
 

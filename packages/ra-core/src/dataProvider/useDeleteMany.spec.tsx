@@ -148,6 +148,33 @@ describe('useDeleteMany', () => {
         });
     });
 
+    it('calls onSettled when provided in hook time options', async () => {
+        const dataProvider = testDataProvider({
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        let localDeleteMany;
+        const onSettled = jest.fn();
+        const Dummy = () => {
+            const [deleteMany] = useDeleteMany(
+                'foo',
+                { ids: [1, 2] },
+                { onSettled }
+            );
+            localDeleteMany = deleteMany;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+        localDeleteMany('foo', { ids: [3, 4] });
+        await waitFor(() => {
+            expect(onSettled).toHaveBeenCalled();
+        });
+    });
+
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
             deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
