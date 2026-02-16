@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.14.2
+
+* Fix `<ReferenceFieldBase>` does not work offline ([#11163](https://github.com/marmelab/react-admin/pull/11163)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `<Confirm>` button hover background transparency when type is warning ([#11160](https://github.com/marmelab/react-admin/pull/11160)) ([mjsarfatti](https://github.com/mjsarfatti))
+* [Doc] Update AutoPersistInStoreBase documentation ([#11159](https://github.com/marmelab/react-admin/pull/11159)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add react-admin Skill and AI coding assistant instructions ([#11158](https://github.com/marmelab/react-admin/pull/11158)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Update `<AutoPersistInStore>` documentation to mention cache eviction ([#11157](https://github.com/marmelab/react-admin/pull/11157)) ([slax57](https://github.com/slax57))
+* [Doc] Offline Support Documentation ([#11152](https://github.com/marmelab/react-admin/pull/11152)) ([djhi](https://github.com/djhi))
+* [Doc]: Add TanStack Start section ([#11151](https://github.com/marmelab/react-admin/pull/11151)) ([WiXSL](https://github.com/WiXSL))
+* [Doc] Update RA Core EE documentation ([#11148](https://github.com/marmelab/react-admin/pull/11148)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Doc] Add Spring Boot (REST) data provider to `DataProviderList.md` ([#11141](https://github.com/marmelab/react-admin/pull/11141)) ([femrek](https://github.com/femrek))
+* [TypeScript] Add generic type parameters to `getSimpleValidationResolver` ([#11150](https://github.com/marmelab/react-admin/pull/11150)) ([Gabriel-Malenowitch](https://github.com/Gabriel-Malenowitch))
+* [Demo] Fix vite configuration for tutorial example ([#11154](https://github.com/marmelab/react-admin/pull/11154)) ([Madeorsk](https://github.com/Madeorsk))
+* [chore] Upgrade to vite 7 ([#11153](https://github.com/marmelab/react-admin/pull/11153)) ([WiXSL](https://github.com/WiXSL))
+* Bump qs from 6.14.1 to 6.14.2 ([#11164](https://github.com/marmelab/react-admin/pull/11164)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump webpack from 5.94.0 to 5.105.0 ([#11155](https://github.com/marmelab/react-admin/pull/11155)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.14.1
 
 * Fix `onSettled` call when provided in hook time options ([#11139](https://github.com/marmelab/react-admin/pull/11139)) ([Madeorsk](https://github.com/Madeorsk))
