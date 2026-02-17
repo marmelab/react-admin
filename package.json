@@ -25,7 +25,11 @@
         "update-changelog": "tsx scripts/update-changelog.ts",
         "update-milestones": "tsx scripts/update-milestones.ts",
         "create-github-release": "tsx scripts/create-github-release.ts",
-        "update-create-react-admin-deps": "tsx scripts/update-create-react-admin-deps.ts"
+        "update-create-react-admin-deps": "tsx scripts/update-create-react-admin-deps.ts",
+        "run-offline": "cd examples/ra-offline && yarn dev",
+        "build-offline": "cd examples/ra-offline && yarn build",
+        "preview-offline": "cd examples/ra-offline && yarn preview",
+        "serve-offline": "cd examples/ra-offline && yarn serve"
     },
     "devDependencies": {
         "@babel/plugin-proposal-class-properties": "^7.18.6",
