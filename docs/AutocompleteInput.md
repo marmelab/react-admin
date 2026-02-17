@@ -15,7 +15,7 @@ It renders using [Material UI's `<Autocomplete>`](https://mui.com/material-ui/re
   Your browser does not support the video tag.
 </video>
 
-This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc. 
+This input allows editing record fields that are scalar values, e.g. `123`, `'admin'`, etc.
 
 ## Usage
 
@@ -32,8 +32,9 @@ import { AutocompleteInput } from 'react-admin';
 ```
 
 By default, the possible choices are built from the `choices` prop, using:
-  - the `id` field as the option value,
-  - the `name` field as the option text
+
+- the `id` field as the option value,
+- the `name` field as the option text
 
 The form value for the source must be the selected value, e.g.
 
@@ -47,10 +48,12 @@ The form value for the source must be the selected value, e.g.
 
 **Tip**: React-admin includes other components to edit such values:
 
- - [`<SelectInput>`](./SelectInput.md) renders a dropdown
- - [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
+- [`<SelectInput>`](./SelectInput.md) renders a dropdown
+- [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md) renders a list of radio buttons
 
 **Tip**: If you need to let users select more than one item in the list, check out the [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) component.
+
+**Tip**: If users need to compare multiple fields before choosing (e.g. team, region, SLA, status), use [`<DataTableInput>`](./DataTableInput.md).
 
 ## Props
 
@@ -152,6 +155,7 @@ To allow users to add new options, pass a React element as the `create` prop. `<
 </video>
 
 {% raw %}
+
 ```jsx
 import { 
     Create, 
@@ -218,6 +222,7 @@ const CreateAuthor = () => {
     );
 };
 ```
+
 {% endraw %}
 
 **Tip**: In development with `React.StrictMode`, you may run into an issue where the `<AutocompleteInput>` menu reopens after clicking the create item when the [`openOnFocus`](https://mui.com/material-ui/api/autocomplete/#autocomplete-prop-openOnFocus) prop is set to `true` which is the default with React-admin. If that bothers you, set the `openOnFocus` prop to `false`.
@@ -315,7 +320,7 @@ If the input isn't required (using `validate={required()}`), and you need a choi
 
 The `emptyText` prop accepts either a string or a React Element.
 
-And if you want to hide that empty choice, make the input required. 
+And if you want to hide that empty choice, make the input required.
 
 ```jsx
 <AutocompleteInput source="author_id" choices={choices} validate={required()} />
@@ -331,7 +336,7 @@ You can override this value with the `emptyValue` prop.
 <AutocompleteInput source="author_id" choices={choices} emptyValue={0} />
 ```
 
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
+**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value ('') to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component.
 
 ## `filterToQuery`
 
@@ -339,7 +344,7 @@ When used inside a [`<ReferenceInput>`](./ReferenceInput.md), whenever users typ
 
 By default, the filter is built using the `q` parameter. This means that if the user types the string 'lorem', the filter will be `{ q: 'lorem' }`.
 
-You can customize the filter by setting the `filterToQuery` prop. It should be a function that returns a filter object. 
+You can customize the filter by setting the `filterToQuery` prop. It should be a function that returns a filter object.
 
 ```jsx
 const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
@@ -408,6 +413,7 @@ type OnChange = (
 In the following example, the `onChange` prop is used to update the `language` field whenever the user selects a new author:
 
 {% raw %}
+
 ```tsx
 import * as React from 'react';
 import {
@@ -454,11 +460,12 @@ const BookCreate = () => (
     </Create>
 );
 ```
+
 {% endraw %}
 
 ## `onCreate`
 
-Use the `onCreate` prop to allow users to create new options on the fly. This is equivalent to MUI's `<AutoComplete freeSolo>` prop. 
+Use the `onCreate` prop to allow users to create new options on the fly. This is equivalent to MUI's `<AutoComplete freeSolo>` prop.
 
 <video controls playsinline muted>
   <source src="./img/AutocompleteInput-onCreate.mp4" type="video/mp4"/>
@@ -690,9 +697,11 @@ In that case, set the `translateChoice` prop to `false`.
 `<AutocompleteInput>` renders a [Material UI `<Autocomplete>` component](https://mui.com/material-ui/react-autocomplete/) and it accepts the `<Autocomplete>` props:
 
 {% raw %}
+
 ```jsx
 <AutocompleteInput source="category" size="large" />
 ```
+
 {% endraw %}
 
 ## Fetching Choices
@@ -719,11 +728,11 @@ const CountryInput = () => {
 
 The `isPending` prop is used to display a loading indicator while the data is being fetched.
 
-However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section). 
+However, most of the time, if you need to populate a `<AutocompleteInput>` with choices fetched from another resource, it's because you are trying to set a foreign key. In that case, you should use [`<ReferenceInput>`](./ReferenceInput.md) to fetch the choices instead (see next section).
 
 ## Selecting a Foreign Key
 
-If you use `<AutocompleteInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices. 
+If you use `<AutocompleteInput>` to set a foreign key for a many-to-one or a one-to-one relationship, you'll have to [fetch choices](#fetching-choices), as explained in the previous section. You'll also have to fetch the record corresponding to the current value of the foreign key, as it may not be in the list of choices.
 
 For example, if a `contact` has one `company` via the `company_id` foreign key, a contact form can let users select a company as follows:
 
@@ -781,18 +790,18 @@ const CompanyInput = () => (
 **Tip**: If you need validation (e.g. `required()`), put the `validate` prop on the child input (`<AutocompleteInput>`). `<ReferenceInput>` doesn't accept validation props.
 
 `<ReferenceInput>` is a headless component that:
- 
- - fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
- - puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isPending` state,
- - and renders its child component
+
+- fetches a list of records with `dataProvider.getList()` and `dataProvider.getOne()`, using the `reference` prop for the resource,
+- puts the result of the fetch in the `ChoiceContext` as the `choices` prop, as well as the `isPending` state,
+- and renders its child component
 
 When rendered as a child of `<ReferenceInput>`, `<AutocompleteInput>` reads that `ChoiceContext` to populate its own `choices` and `isPending` props. It also sends the current input prop to the `useGetList` hook, so that the list of choices is filtered as the user types.
 
 In fact, you can simplify the code even further:
 
 - `<ReferenceInput>` puts all its props inside the `ChoiceContext`, including `source`, so `<AutocompleteInput>` doesn't need to repeat it.
-- You can also put the `label` prop on the `<ReferenceInput>` rather than `<AutocompleteInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization). 
-- `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<AutocompleteInput>` will default to `optionText="name"`. 
+- You can also put the `label` prop on the `<ReferenceInput>` rather than `<AutocompleteInput>` so that it looks just like [`<ReferenceField>`](./ReferenceField.md) (for easier memorization).
+- `<AutocompleteInput>` uses the [`recordRepresentation`](./Resource.md#recordrepresentation) to determine how to represent the related choices. In the example above, the `companies` resource uses `name` as its `recordRepresentation`, so `<AutocompleteInput>` will default to `optionText="name"`.
 - `<ReferenceInput>`'s default child is `<AutocompleteInput>`, so you can omit it entirely.
 
 The code for the `<CompanyInput>` component can be reduced to:
@@ -893,6 +902,7 @@ The `<AutocompleteInput>` can allow users to create a new choice if either the `
 Use the `onCreate` prop when you only require users to provide a simple string and a `prompt` is enough. You can return either the new choice directly or a Promise resolving to the new choice.
 
 {% raw %}
+
 ```js
 import { AutocompleteInput, Create, SimpleForm, TextInput } from 'react-admin';
 
@@ -920,11 +930,13 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
 
 Use the `create` prop when you want a more polished or complex UI. For example a Material UI `<Dialog>` asking for multiple fields because the choices are from a referenced resource.
 
 {% raw %}
+
 ```js
 import {
     AutocompleteInput,
@@ -991,6 +1003,7 @@ const CreateCategory = () => {
     );
 };
 ```
+
 {% endraw %}
 
 **Tip:** As showcased in this example, react-admin provides a convenient hook for accessing the filter the user has already input in the `<AutocompleteInput>`: `useCreateSuggestionContext`.
@@ -998,6 +1011,7 @@ const CreateCategory = () => {
 The `Create %{item}` option will only be displayed once the user has already set a filter (by typing in some input). If you expect your users to create new items often, you can make this more user-friendly by adding a placeholder text like this:
 
 {% raw %}
+
 ```diff
 const PostCreate = () => {
     const categories = [
@@ -1026,4 +1040,5 @@ const PostCreate = () => {
     );
 }
 ```
+
 {% endraw %}
