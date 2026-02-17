@@ -74,7 +74,6 @@ export const ListView = <RecordType extends RaRecord = any>(
     }
 
     const renderList = () => {
-        console.log('renderList', { data, total, pagination });
         return (
             <div
                 className={clsx(ListClasses.main, {
