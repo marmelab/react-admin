@@ -14,10 +14,9 @@ Use `<ReferenceArrayInput>` to edit an array of reference values, i.e. to let us
   Your browser does not support the video tag.
 </video>
 
-
 ## Usage
 
-For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record. 
+For instance, a post record has a `tag_ids` field, which is an array of foreign keys to tags record.
 
 ```
 ┌──────────────┐       ┌────────────┐
@@ -134,7 +133,8 @@ The child can be:
 - [`<SelectArrayInput>`](./SelectArrayInput.md)
 - [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md)
 - [`<DualListInput>`](./DualListInput.md)
-- [`<CheckboxGroupInput>`](./CheckboxGroupInput.md),
+- [`<CheckboxGroupInput>`](./CheckboxGroupInput.md)
+- [`<DataTableInput>`](./DataTableInput.md)
 
 ```jsx
 import { ReferenceArrayInput, SelectInput } from 'react-admin';
@@ -143,6 +143,24 @@ import { ReferenceArrayInput, SelectInput } from 'react-admin';
     <SelectArrayInput />
 </ReferenceArrayInput>
 ```
+
+When your users need to compare several columns before selecting related records, you can use `<DataTableInput>` as child:
+
+```jsx
+import { DataTableInput } from '@react-admin/ra-form-layout';
+import { DataTable, ReferenceArrayInput } from 'react-admin';
+
+<ReferenceArrayInput source="reviewer_ids" reference="users">
+    <DataTableInput multiple>
+        <DataTable.Col source="full_name" />
+        <DataTable.Col source="team" />
+        <DataTable.Col source="timezone" />
+        <DataTable.Col source="location" />
+    </DataTableInput>
+</ReferenceArrayInput>
+```
+
+![DataTableInput in ReferenceArrayInput](./img/reference-array-input-datatable-input-dialog.png)
 
 You can even use a component of your own as child, provided it detects a `ChoicesContext` is available and gets their choices from it.
 
@@ -165,9 +183,11 @@ You can make the `getList()` call lazy by using the `enableGetChoices` prop. Thi
 You can filter the query used to populate the possible values. Use the `filter` prop for that.
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayInput source="tags_ids" reference="tags" filter={{ is_published: true }} />
 ```
+
 {% endraw %}
 
 **Note**: When users type a search term in the `<AutocompleteArrayInput>`, this doesn't affect the `filter` prop. Check the [Customizing the filter query](#customizing-the-filter-query) section below for details on how that filter works.
@@ -240,7 +260,7 @@ You can pass either a React element or a string to the `offline` prop:
 
 ## `parse`
 
-By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`. 
+By default, children of `<ReferenceArrayInput>` transform the empty form value (an empty string) into `null` before passing it to the `dataProvider`.
 
 If you want to change this behavior, you have to pass a custom `parse` prop to the `<ReferenceArrayInput>` *child component*, because  **`<ReferenceArrayInput>` doesn't have a `parse` prop**. It is the responsibility of the child component to parse the input value.
 
@@ -281,6 +301,7 @@ Use the `queryOptions` prop to pass options to the `dataProvider.getList()` quer
 For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayInput 
     source="tag_ids"
@@ -288,6 +309,7 @@ For instance, to pass [a custom `meta`](./Actions.md#meta-parameter):
     queryOptions={{ meta: { foo: 'bar' } }}
 />
 ```
+
 {% endraw %}
 
 ## `reference`
@@ -316,11 +338,12 @@ You can override this default by specifying the `optionText` prop in the child c
 
 ## `sort`
 
-By default, `<ReferenceArrayInput>` orders the possible values by `id` desc. 
+By default, `<ReferenceArrayInput>` orders the possible values by `id` desc.
 
 You can change this order by setting the `sort` prop (an object with `field` and `order` properties).
 
 {% raw %}
+
 ```jsx
 <ReferenceArrayInput 
     source="tag_ids"
@@ -328,6 +351,7 @@ You can change this order by setting the `sort` prop (an object with `field` and
     sort={{ field: 'name', order: 'ASC' }}
 />
 ```
+
 {% endraw %}
 
 ## `source`
