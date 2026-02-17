@@ -1,31 +1,56 @@
-import { Admin, EditGuesser, ListGuesser, Resource } from "react-admin";
+import {
+  Admin,
+  EditGuesser,
+  ListGuesser,
+  Resource,
+  addOfflineSupportToQueryClient,
+} from "react-admin";
+import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
+import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import jsonDataProvider from "ra-data-json-server";
 import { QueryClient } from "@tanstack/react-query";
-import { experimental_createQueryPersister } from "@tanstack/react-query-persist-client";
 import { Layout } from "./Layout";
 
-const persister = experimental_createQueryPersister({
-  storage: localStorage,
-});
+const dataProvider = jsonDataProvider("https://jsonplaceholder.typicode.com");
 
-const queryClient = new QueryClient({
+const baseQueryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: false,
-      persister: persister.persisterFn,
+      gcTime: 1000 * 60 * 60 * 24, // 24 hours
+      networkMode: "offlineFirst",
+    },
+    mutations: {
+      networkMode: "offlineFirst",
     },
   },
 });
 
-const dataProvider = jsonDataProvider("https://jsonplaceholder.typicode.com");
+export const queryClient = addOfflineSupportToQueryClient({
+  queryClient: baseQueryClient,
+  dataProvider,
+  resources: ["posts", "comments", "users"],
+});
+
+const localStoragePersister = createAsyncStoragePersister({
+  storage: window.localStorage,
+});
 
 export const App = () => (
-  <Admin
-    layout={Layout}
-    dataProvider={dataProvider}
-    queryClient={queryClient}
-    disableTelemetry
+  <PersistQueryClientProvider
+    client={queryClient}
+    persistOptions={{ persister: localStoragePersister }}
+    onSuccess={() => {
+      // resume mutations after initial restore from localStorage is successful
+      queryClient.resumePausedMutations();
+    }}
   >
-    <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
-  </Admin>
+    <Admin
+      layout={Layout}
+      dataProvider={dataProvider}
+      queryClient={queryClient}
+      disableTelemetry
+    >
+      <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
+    </Admin>
+  </PersistQueryClientProvider>
 );
