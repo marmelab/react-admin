@@ -18,6 +18,10 @@ It combines:
 
 `<DataTableInput>` is a good alternative to [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), and [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md) when you have many choices, or when users need more than one field to identify each choice.
 
+Test it live in [the Enterprise Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-form-layout-listinputs-datatableinput--basic).
+
+## Usage
+
 First, install the `@react-admin/ra-form-layout` package:
 
 ```sh
@@ -27,10 +31,6 @@ yarn add @react-admin/ra-form-layout
 ```
 
 **Tip**: `@react-admin/ra-form-layout` is hosted in a private npm registry. You need an [Enterprise Edition](https://react-admin-ee.marmelab.com/) subscription to access it.
-
-Test it live in [the Enterprise Storybook](https://react-admin.github.io/ra-enterprise/?path=/story/ra-form-layout-listinputs-datatableinput--basic).
-
-## Usage
 
 Like `<SelectInput>`, `<DataTableInput>` can be used with a `choices` array. The difference is that you define table columns as children with `<DataTable.Col>`.
 
@@ -159,11 +159,11 @@ In addition to the [common input props](./Inputs.md#common-input-props), `<DataT
 | `dialogProps`    | Optional | `DialogProps`                             | -                                                   | Props forwarded to the selection dialog |
 | `filters`        | Optional | `ReactElement` &#124; `ReactElement[]` &#124; `false` | -                                         | Filters displayed in the dialog toolbar |
 | `multiple`       | Optional | `boolean`                                 | `false`                                             | Enables multiple selection (value becomes an array of ids) |
-| `optionText`     | Optional | `OptionText`                              | resource `recordRepresentation` or `name`           | Field used as label for selected chips in standalone mode |
+| `optionText`     | Optional | `OptionText`                              | resource `record Representation` or `name`           | Field used as label for selected chips in standalone mode |
 | `optionValue`    | Optional | `string`                                  | `id`                                                | Field used as choice value in standalone mode |
 | `pagination`     | Optional | `ReactNode`                               | [`<Pagination />`](./Pagination.md)                 | Pagination element rendered below the table |
-| `title`          | Optional | `string`                                  | `ra-form-layout.inputs.datatable_input.dialog_title` | Dialog title (translation key or plain string) |
-| `translateChoice`| Optional | `boolean`                                 | `true`                                              | Whether to translate `optionText` values |
+| `title`          | Optional | `string`                                  | `ra-form-layout. inputs. datatable_input. dialog_title` | Dialog title (translation key or plain string) |
+| `translate Choice`| Optional | `boolean`                                 | `true`                                              | Whether to translate `optionText` values |
 
 ## `filters` and `actions`
 
@@ -203,9 +203,10 @@ const SupplierActions = () => (
 
 ## `dataTableProps`
 
-Use `dataTableProps` to customize table behavior (hidden columns, row selectability, etc.):
+Use `dataTableProps` to customize table behavior (hidden columns, row selectability, etc.). You can use any of the [`<DataTable>` props](./DataTable.md#props) except `children`, which is reserved for columns:
 
 {% raw %}
+
 ```tsx
 <ReferenceInput source="preferred_supplier_id" reference="suppliers">
     <DataTableInput
@@ -221,13 +222,15 @@ Use `dataTableProps` to customize table behavior (hidden columns, row selectabil
     </DataTableInput>
 </ReferenceInput>
 ```
+
 {% endraw %}
 
 ## `dialogProps`
 
-Use `dialogProps` to customize the underlying Material UI dialog:
+Use `dialogProps` to customize the underlying Material UI dialog (size, transition, etc.). You can use any of the [`<Dialog>` props](https://mui.com/material-ui/api/dialog/):
 
 {% raw %}
+
 ```tsx
 <ReferenceInput source="preferred_supplier_id" reference="suppliers">
     <DataTableInput
@@ -240,4 +243,5 @@ Use `dialogProps` to customize the underlying Material UI dialog:
     </DataTableInput>
 </ReferenceInput>
 ```
+
 {% endraw %}
