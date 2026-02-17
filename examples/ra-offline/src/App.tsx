@@ -1,15 +1,11 @@
-import {
-  Admin,
-  EditGuesser,
-  ListGuesser,
-  Resource,
-  addOfflineSupportToQueryClient,
-} from "react-admin";
+import { Admin, Resource, addOfflineSupportToQueryClient } from "react-admin";
 import { PersistQueryClientProvider } from "@tanstack/react-query-persist-client";
 import { createAsyncStoragePersister } from "@tanstack/query-async-storage-persister";
 import jsonDataProvider from "ra-data-json-server";
 import { QueryClient } from "@tanstack/react-query";
 import { Layout } from "./Layout";
+import { PostList } from "./PostList";
+import { PostEdit } from "./PostEdit";
 
 const dataProvider = jsonDataProvider("https://jsonplaceholder.typicode.com");
 
@@ -50,7 +46,7 @@ export const App = () => (
       queryClient={queryClient}
       disableTelemetry
     >
-      <Resource name="posts" list={ListGuesser} edit={EditGuesser} />
+      <Resource name="posts" list={PostList} edit={PostEdit} />
     </Admin>
   </PersistQueryClientProvider>
 );
