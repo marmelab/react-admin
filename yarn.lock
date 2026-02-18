@@ -20110,7 +20110,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-core@npm:^5.14.1, ra-core@npm:^5.14.2, ra-core@workspace:packages/ra-core":
+"ra-core@npm:^5.14.2, ra-core@workspace:packages/ra-core":
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
@@ -20399,9 +20399,7 @@ __metadata:
     globals: "npm:^16.0.0"
     https-localhost: "npm:^4.7.1"
     prettier: "npm:^3.3.3"
-    ra-core: "npm:^5.14.1"
     ra-data-json-server: "npm:^5.14.1"
-    ra-ui-materialui: "npm:^5.14.1"
     react: "npm:^19.0.0"
     react-admin: "npm:^5.14.1"
     react-dom: "npm:^19.0.0"
@@ -20432,7 +20430,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"ra-ui-materialui@npm:^5.14.1, ra-ui-materialui@npm:^5.14.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
+"ra-ui-materialui@npm:^5.14.2, ra-ui-materialui@workspace:packages/ra-ui-materialui":
   version: 0.0.0-use.local
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
