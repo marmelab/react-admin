@@ -199,6 +199,12 @@ const englishMessages: TranslationMessages = {
                 'Are you sure you want to remove that item from your list of saved queries?',
             help: 'Filter the list and save this query for later',
         },
+        guesser: {
+            empty: {
+                title: 'No data to display',
+                message: 'Please check your data provider',
+            },
+        },
         configurable: {
             customize: 'Customize',
             configureMode: 'Configure this page',
