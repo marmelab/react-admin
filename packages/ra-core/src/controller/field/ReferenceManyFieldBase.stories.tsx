@@ -416,9 +416,9 @@ const AuthorList = ({ source }) => {
 };
 
 // test queryOptions type, it should support onSuccess and onError
-export const QueryOptions = () => (
+export const QueryOptions = ({ dataProvider }) => (
     <TestMemoryRouter initialEntries={['/authors/1/show']}>
-        <CoreAdmin dataProvider={dataProviderWithAuthors}>
+        <CoreAdmin dataProvider={dataProvider}>
             <Resource
                 name="authors"
                 show={
@@ -431,6 +431,7 @@ export const QueryOptions = () => (
                                 onSuccess: () =>
                                     console.log('Query successful'),
                                 onError: () => console.log('Query failed'),
+                                retry: false,
                             }}
                         >
                             <AuthorList source="title" />
@@ -441,3 +442,18 @@ export const QueryOptions = () => (
         </CoreAdmin>
     </TestMemoryRouter>
 );
+
+QueryOptions.args = {
+    dataProvider: dataProviderWithAuthors,
+};
+
+QueryOptions.argTypes = {
+    dataProvider: {
+        control: { type: 'radio' },
+        options: ['No error', 'With Error'],
+        mapping: {
+            'No error': dataProviderWithAuthors,
+            'With Error': dataProviderWithAuthorsError,
+        },
+    },
+};
