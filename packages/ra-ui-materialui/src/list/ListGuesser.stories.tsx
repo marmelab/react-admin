@@ -194,6 +194,10 @@ const delayedDataProvider = fakeRestProvider(
     process.env.NODE_ENV !== 'test',
     300
 );
+const emptyDataProvider = fakeRestProvider(
+    { products: [] },
+    process.env.NODE_ENV !== 'test'
+);
 
 const ListGuesserWithProdLogs = () => <ListGuesser enableLog />;
 
@@ -216,6 +220,21 @@ export const ManyResources = () => (
             <Resource
                 name="tags"
                 list={ListGuesserWithProdLogs}
+                recordRepresentation="name"
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+export const Empty = () => (
+    <AdminContext
+        dataProvider={emptyDataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+    >
+        <AdminUI>
+            <Resource
+                name="products"
+                list={ListGuesser}
                 recordRepresentation="name"
             />
         </AdminUI>
