@@ -414,3 +414,30 @@ const AuthorList = ({ source }) => {
         </p>
     );
 };
+
+// test queryOptions type, it should support onSuccess and onError
+export const QueryOptions = () => (
+    <TestMemoryRouter initialEntries={['/authors/1/show']}>
+        <CoreAdmin dataProvider={dataProviderWithAuthors}>
+            <Resource
+                name="authors"
+                show={
+                    <ShowBase>
+                        <ReferenceManyFieldBase
+                            target="author"
+                            source="id"
+                            reference="books"
+                            queryOptions={{
+                                onSuccess: () =>
+                                    console.log('Query successful'),
+                                onError: () => console.log('Query failed'),
+                            }}
+                        >
+                            <AuthorList source="title" />
+                        </ReferenceManyFieldBase>
+                    </ShowBase>
+                }
+            />
+        </CoreAdmin>
+    </TestMemoryRouter>
+);
