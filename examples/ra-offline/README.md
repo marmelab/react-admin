@@ -23,7 +23,7 @@ npm run build
 npm run preview
 ```
 
-Use the DevTools to simulate Offline mode when needed.
+Use the Browser DevTools (or phone Airplane mode) to simulate Offline mode when needed. Using TanStack Query DevTools does not work.
 
 ## Limitations
 

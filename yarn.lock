@@ -5671,7 +5671,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@tanstack/react-query-devtools@npm:^5.90.2, @tanstack/react-query-devtools@npm:^5.91.3":
+"@tanstack/react-query-devtools@npm:^5.90.2, @tanstack/react-query-devtools@npm:^5.90.22, @tanstack/react-query-devtools@npm:^5.91.3":
   version: 5.91.3
   resolution: "@tanstack/react-query-devtools@npm:5.91.3"
   dependencies:
@@ -20386,6 +20386,7 @@ __metadata:
     "@mui/material": "npm:^7.0.1"
     "@tanstack/query-async-storage-persister": "npm:^5.90.22"
     "@tanstack/react-query": "npm:^5.90.21"
+    "@tanstack/react-query-devtools": "npm:^5.90.22"
     "@tanstack/react-query-persist-client": "npm:^5.90.22"
     "@types/node": "npm:^20.10.7"
     "@types/react": "npm:^18.3.3"
