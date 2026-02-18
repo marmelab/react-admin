@@ -50,9 +50,9 @@ export default defineConfig(({ mode }) => ({
         "maskable-icon-512x512.png",
       ],
       manifest: {
-        name: "My Awesome App",
-        short_name: "MyApp",
-        description: "My Awesome App description",
+        name: "React-Admin Offline",
+        short_name: "RA Offline",
+        description: "React-Admin Offline Demo",
         theme_color: "#ffffff",
         icons: [
           {
