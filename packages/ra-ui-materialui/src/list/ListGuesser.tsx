@@ -71,7 +71,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             debounce={debounce}
             disableAuthentication={disableAuthentication}
             disableSyncWithLocation={disableSyncWithLocation}
-            empty={empty === undefined ? <GuesserEmpty /> : empty}
+            empty={empty === undefined ? <ListGuesserEmpty /> : empty}
             exporter={exporter}
             filter={filter}
             filterDefaultValues={filterDefaultValues}
@@ -157,18 +157,18 @@ ${inferredChild.getRepresentation()}
     return <ListView {...rest}>{child}</ListView>;
 };
 
-const GuesserEmpty = (inProps: GuesserEmptyProps) => {
+const ListGuesserEmpty = (inProps: ListGuesserEmptyProps) => {
     const props = useThemeProps({
         props: inProps,
-        name: GUESSER_EMPTY_PREFIX,
+        name: LIST_GUESSER_EMPTY_PREFIX,
     });
     const { className } = props;
     const translate = useTranslate();
 
     return (
-        <GuesserEmptyRoot className={className}>
-            <Box className={GuesserEmptyClasses.message}>
-                <Inbox className={GuesserEmptyClasses.icon} />
+        <ListGuesserEmptyRoot className={className}>
+            <Box className={ListGuesserEmptyClasses.message}>
+                <Inbox className={ListGuesserEmptyClasses.icon} />
                 <Typography variant="h4" paragraph>
                     {translate('ra.guesser.empty.title', {
                         _: 'No data to display',
@@ -180,32 +180,32 @@ const GuesserEmpty = (inProps: GuesserEmptyProps) => {
                     })}
                 </Typography>
             </Box>
-        </GuesserEmptyRoot>
+        </ListGuesserEmptyRoot>
     );
 };
 
-interface GuesserEmptyProps {
+interface ListGuesserEmptyProps {
     className?: string;
 }
 
-const GUESSER_EMPTY_PREFIX = 'RaGuesserEmpty';
+const LIST_GUESSER_EMPTY_PREFIX = 'RaListGuesserEmpty';
 
-const GuesserEmptyClasses = {
-    message: `${GUESSER_EMPTY_PREFIX}-message`,
-    icon: `${GUESSER_EMPTY_PREFIX}-icon`,
+const ListGuesserEmptyClasses = {
+    message: `${LIST_GUESSER_EMPTY_PREFIX}-message`,
+    icon: `${LIST_GUESSER_EMPTY_PREFIX}-icon`,
 };
 
-const GuesserEmptyRoot = styled('span', {
-    name: GUESSER_EMPTY_PREFIX,
+const ListGuesserEmptyRoot = styled('span', {
+    name: LIST_GUESSER_EMPTY_PREFIX,
     overridesResolver: (props, styles) => styles.root,
 })(({ theme }) => ({
     flex: 1,
-    [`& .${GuesserEmptyClasses.message}`]: {
+    [`& .${ListGuesserEmptyClasses.message}`]: {
         textAlign: 'center',
         margin: '0 1em',
         color: (theme.vars || theme).palette.text.disabled,
     },
-    [`& .${GuesserEmptyClasses.icon}`]: {
+    [`& .${ListGuesserEmptyClasses.icon}`]: {
         width: '9em',
         height: '9em',
     },
