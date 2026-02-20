@@ -63,4 +63,42 @@ describe('ra-data-fakerest', () => {
             }).rejects.toThrow();
         });
     });
+
+    describe('delay', () => {
+        it.each([
+            { label: 'undefined', delay: undefined, min: 0, max: 20 },
+            { label: 'false', delay: false, min: 0, max: 20 },
+            { label: 'number', delay: 100, min: 100, max: 150 },
+            { label: 'true', delay: true, min: 500, max: 1550 },
+            {
+                label: 'object',
+                delay: { min: 100, max: 200 },
+                min: 100,
+                max: 250,
+            },
+            { label: 'min 0', delay: { min: 0, max: 100 }, min: 0, max: 150 },
+            { label: 'min only', delay: { min: 100 }, min: 100, max: 150 },
+            { label: 'max only', delay: { max: 100 }, min: 0, max: 150 },
+            { label: 'empty object', delay: {}, min: 0, max: 20 },
+        ])(
+            'should delay the response correctly when delay is $label',
+            async ({ delay, min, max }) => {
+                const dataProvider = fakerestDataProvider(
+                    { posts: [{ id: 0, title: 'Hello, world!' }] },
+                    false,
+                    delay
+                );
+                const start = Date.now();
+                await dataProvider.getOne('posts', { id: 0 });
+                const end = Date.now();
+                const duration = end - start;
+
+                expect(duration).toBeGreaterThanOrEqual(min);
+                if (max > 20) {
+                    // Only check max for non-immediate responses to avoid flakiness
+                    expect(duration).toBeLessThanOrEqual(max);
+                }
+            }
+        );
+    });
 });
