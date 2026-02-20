@@ -48,9 +48,6 @@ build-offline: ## build the offline example
 preview-offline: ## preview the offline example
 	@yarn preview-offline
 
-serve-offline: ## serve the offline example (force reinstall service worker)
-	@yarn serve-offline
-
 build-ra-core:
 	@echo "Transpiling ra-core files...";
 	@cd ./packages/ra-core && yarn build

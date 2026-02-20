@@ -5,7 +5,6 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "serve": "REINSTALL=true PORT=4433 serve dist",
     "type-check": "tsc --noEmit",
     "lint": "eslint --fix --ext .js,.jsx,.ts,.tsx ./src",
     "format": "prettier --write ./src"
