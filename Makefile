@@ -39,6 +39,15 @@ run-crm: ## run the crm example
 build-crm: ## build the crm example
 	@yarn build-crm
 
+run-offline: ## run the offline example (dev mode)
+	@yarn run-offline
+
+build-offline: ## build the offline example
+	@yarn build-offline
+
+preview-offline: ## preview the offline example
+	@yarn preview-offline
+
 build-ra-core:
 	@echo "Transpiling ra-core files...";
 	@cd ./packages/ra-core && yarn build

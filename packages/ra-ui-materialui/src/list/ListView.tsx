@@ -73,32 +73,34 @@ export const ListView = <RecordType extends RaRecord = any>(
         return null;
     }
 
-    const renderList = () => (
-        <div
-            className={clsx(ListClasses.main, {
-                [ListClasses.noActions]:
-                    !(filters || actions) || showOffline || showError,
-            })}
-        >
-            {filters || actions ? (
-                <ListToolbar
-                    className={ListClasses.actions}
-                    filters={filters}
-                    actions={actions}
-                />
-            ) : null}
-            <Content className={ListClasses.content}>
-                {showOffline
-                    ? offline
-                    : showError
-                      ? error
-                      : render
-                        ? render(listContext)
-                        : children}
-            </Content>
-            {!errorState && pagination !== false && pagination}
-        </div>
-    );
+    const renderList = () => {
+        return (
+            <div
+                className={clsx(ListClasses.main, {
+                    [ListClasses.noActions]:
+                        !(filters || actions) || showOffline || showError,
+                })}
+            >
+                {filters || actions ? (
+                    <ListToolbar
+                        className={ListClasses.actions}
+                        filters={filters}
+                        actions={actions}
+                    />
+                ) : null}
+                <Content className={ListClasses.content}>
+                    {showOffline
+                        ? offline
+                        : showError
+                          ? error
+                          : render
+                            ? render(listContext)
+                            : children}
+                </Content>
+                {pagination !== false ? pagination : null}
+            </div>
+        );
+    };
 
     const renderEmpty = () =>
         empty !== false && <div className={ListClasses.noResults}>{empty}</div>;
