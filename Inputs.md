@@ -13,9 +13,9 @@ Input components are usually wrappers around Material UI form components, bound 
 
 ## Usage
 
-Input components must be used inside a Form element (e.g. [`<Form>`](./Form.md), [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md)). These components create a [`react-hook-form`](https://react-hook-form.com/) form and context. 
+Input components must be used inside a Form element (e.g. [`<Form>`](./Form.md), [`<SimpleForm>`](./SimpleForm.md), [`<TabbedForm>`](./TabbedForm.md)). These components create a [`react-hook-form`](https://react-hook-form.com/) form and context.
 
-Input components require a `source` prop. 
+Input components require a `source` prop.
 
 ```tsx
 import { Edit, SimpleForm, ReferenceInput, SelectInput, TextInput, required } from 'react-admin';
@@ -74,12 +74,12 @@ React-admin provides a set of Input components, each one designed for a specific
 | Date                  | `'2022-10-23'`                                               | [`<DateInput>`](./DateInput.md)                                                                                                                                                                                                                 |
 | Time                  | `'14:30:00'`                                                 | [`<TimeInput>`](./TimeInput.md)                                                                                                                                                                                                                 |
 | Date & time           | `'2022-10-24T19:40:28.003Z'`                                 | [`<DateTimeInput>`](./DateTimeInput.md)                                                                                                                                                                                                         |
-| Object                | `{ foo: 'bar' }`                                             | All inputs (see [ `source`](#source))                                                                                                                                                                                                           |
-| Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md)                                                                                                   |
+| Object                | `{ foo: 'bar' }`                                             | All inputs (see [`source`](#source))                                                                                                                                                                                                           |
+| Enum                  | `'foo'`                                                      | [`<SelectInput>`](./SelectInput.md), [`<AutocompleteInput>`](./AutocompleteInput.md), [`<RadioButtonGroupInput>`](./RadioButtonGroupInput.md), [`<DataTableInput>`](./DataTableInput.md) |
 | Tree node             | `42`                                                         | [`<TreeInput>`](./TreeInput.md)                                                                                                                                                                                                                 |
 | Foreign key           | `42`                                                         | [`<ReferenceInput>`](./ReferenceInput.md)                                                                                                                                                                                                       |
 | Array of objects      | `[{ item: 'jeans', qty: 3 }, { item: 'shirt', qty: 1 }]`     | [`<ArrayInput>`](./ArrayInput.md)                                                                                                                                                                                                               |
-| Array of Enums        | `['foo', 'bar']`                                             | [`<TextArrayInput>`](./TextArrayInput.md), [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md) |
+| Array of Enums        | `['foo', 'bar']`                                             | [`<TextArrayInput>`](./TextArrayInput.md), [`<SelectArrayInput>`](./SelectArrayInput.md), [`<AutocompleteArrayInput>`](./AutocompleteArrayInput.md), [`<CheckboxGroupInput>`](./CheckboxGroupInput.md), [`<DualListInput>`](./DualListInput.md), [`<DataTableInput>`](./DataTableInput.md) |
 | Array of foreign keys | `[42, 43]`                                                   | [`<ReferenceArrayInput>`](./ReferenceArrayInput.md)                                                                                                                                                                                             |
 | Translations          | `{ en: 'Hello', fr: 'Bonjour' }`                             | [`<TranslatableInputs>`](./TranslatableInputs.md)                                                                                                                                                                                               |
 | Related records       | `[{ id: 42, title: 'Hello' }, { id: 43, title: 'World' }]`   | [`<ReferenceManyInput>`](./ReferenceManyInput.md), [`<ReferenceManyToManyInput>`](./ReferenceManyToManyInput.md), [`<ReferenceNodeInput>`](./ReferenceNodeInput.md), [`<ReferenceOneInput>`](./ReferenceOneInput.md)                            |
@@ -99,17 +99,20 @@ The `className` prop is passed to the root element.
 Value of the input if the record has no value for the `source`.
 
 {% raw %}
+
 ```tsx
 <Form record={{ id: 123, title: 'Lorem ipsum' }}>
     <NumberInput source="age" defaultValue={18} /> {/* input initially renders with value 18 */}
     <TextInput source="title" defaultValue="Hello, World!" /> {/* input initially renders with value "Lorem ipsum" */}
 </Form>
 ```
+
 {% endraw %}
 
 React-admin will ignore these default values if the Form already defines [a form-wide `defaultValues`](./Form.md#defaultvalues):
 
 {% raw %}
+
 ```tsx
 import { Create, SimpleForm, TextInput, NumberInput } from 'react-admin';
 import { RichTextInput } from 'ra-input-rich-text';
@@ -129,6 +132,7 @@ export const PostCreate = () => (
     </Create>
 );
 ```
+
 {% endraw %}
 
 **Tip**: `defaultValue` cannot use a function as value. For default values computed at render time, set the `defaultValues` at the form level.
@@ -214,6 +218,7 @@ By default, all inputs expand to fill the form width. Set the `fullWidth` prop t
 A good way to avoid too wide inputs on desktop is to limit the width of the form itself. You can do this by setting the `sx` prop on the `<SimpleForm>` component:
 
 {% raw %}
+
 ```tsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
 
@@ -226,6 +231,7 @@ const PostEdit = () => (
     </Edit>
 );
 ```
+
 {% endraw %}
 
 Note that the best way to layout inputs is to use the [Grid component](./BoxStackGrid.md#grid) to create a responsive layout, while still allowing inputs to expand to fill the available space. For example, to produce the following layout:
@@ -233,6 +239,7 @@ Note that the best way to layout inputs is to use the [Grid component](./BoxStac
 ![input full width](./img/input-grid.webp)
 
 {% raw %}
+
 ```jsx
 import { Grid, InputAdornment } from '@mui/material';
 import {
@@ -298,6 +305,7 @@ export const ProductEditDetails = () => (
 
 const req = [required()];
 ```
+
 {% endraw %}
 
 Also, if you want to prevent the input from expanding in the entire app, you can set the following fields in a [custom application theme](./AppTheme.md):
@@ -393,11 +401,13 @@ const defaultParse = (value: string) => value === '' ? null : value;
 Specifies the field of the record that the input should edit.
 
 {% raw %}
+
 ```tsx
 <Form record={{ id: 123, title: 'Hello, world!' }}>
     <TextInput source="title" /> {/* default value is "Hello, world!" */}
 </Form>
 ```
+
 {% endraw %}
 
 If you edit a record with a complex structure, you can use a path as the `source` parameter. For instance, if the API returns the following 'book' record:
@@ -424,6 +434,7 @@ Then you can display a text input to edit the author's first name as follows:
 Each individual input supports an `sx` prop to pass custom styles to the underlying component, relying on [Material UI system](https://mui.com/system/basics/#the-sx-prop).
 
 {% raw %}
+
 ```tsx
 <TextInput
     source="title"
@@ -436,6 +447,7 @@ Each individual input supports an `sx` prop to pass custom styles to the underly
     }}
 />
 ```
+
 {% endraw %}
 
 Refer to the documentation of each input component to see what inner classes you can override.
@@ -501,8 +513,8 @@ The data format returned by the input component may not be what your API desires
 
 Mnemonic for the two functions:
 
-- `parse()`: input -> record
-- `format()`: record -> input
+* `parse()`: input -> record
+* `format()`: record -> input
 
 Let's look at a simple example. Say the user would like to input values of 0-100 to a percentage field but your API (hence record) expects 0-1.0. You can use simple `parse()` and `format()` functions to archive the transform:
 
@@ -546,7 +558,7 @@ const dateParser = value => {
     //value is a string of "YYYY-MM-DD" format
     const match = dateParseRegex.exec(value);
     if (match === null || match.length === 0) return;
-	const d = new Date(parseInt(match[1]), parseInt(match[2], 10) - 1, parseInt(match[3]));
+ const d = new Date(parseInt(match[1]), parseInt(match[2], 10) - 1, parseInt(match[3]));
     if (isNaN(d.getDate())) return;
     return d;
 };
@@ -555,7 +567,7 @@ const dateParser = value => {
 <DateInput source="isodate" format={dateFormatter} parse={dateParser} defaultValue={new Date()} />
 ```
 
-**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`. 
+**Tip:** A common usage for this feature is to deal with empty values. Indeed, HTML form inputs always return strings, even for numbers and booleans, however most backends expect a value like `null`. This is why, by default, all react-admin inputs will store the value `null` when the HTML input value is `''`.
 
 **Tip**: If you need to do this globally, including for custom input components that do not use [the `useInput` hook](#the-useinput-hook), have a look at [the `sanitizeEmptyValues` prop of the `<Form>` component](./Form.md#sanitizeemptyvalues).
 
@@ -564,10 +576,10 @@ const dateParser = value => {
 React-admin Form components initialize the input based on the current [`RecordContext`](./useRecordContext.md) values. If the `RecordContext` is empty or the matching property for this input is empty, the input will be empty.
 If a record property is not `undefined`, it is not considered empty:
 
-- An empty string is a valid value
-- `0` is a valid value
-- `null` is a valid value
-- An empty array is a valid value
+* An empty string is a valid value
+* `0` is a valid value
+* `null` is a valid value
+* An empty array is a valid value
 
 In all those cases, the value will not be considered empty and the [default value](#defaultvalue) won't be applied.
 
@@ -952,10 +964,10 @@ export default LatLngInput;
 
 React-admin adds functionality to react-hook-form:
 
-- handling of custom event emitters like `onChange`,
-- support for an array of validators,
-- detection of required fields to add an asterisk to the field label,
-- parse and format to translate record values to form values and vice-versa.
+* handling of custom event emitters like `onChange`,
+* support for an array of validators,
+* detection of required fields to add an asterisk to the field label,
+* parse and format to translate record values to form values and vice-versa.
 
 So internally, react-admin components use another hook, which wraps react-hook-form's `useController()` hook. It's called `useInput()`; use it instead of `useController()` to create form inputs that have the exact same API as react-admin Input components:
 
@@ -1112,14 +1124,14 @@ const BoundedTextField = (props: BoundedTextFieldProps) => {
 
 You can find components for react-admin in third-party repositories.
 
-- [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
-- [react-admin-mui-dateinputs](https://www.npmjs.com/package/react-admin-mui-dateinputs): a collection of Date/Time Inputs for react-admin based on [MUI X Date Pickers](https://mui.com/x/react-date-pickers/date-picker/).
-- [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
-- [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
-- [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
-- [Gist quentin-decre/ed6ed417637edf7c4e4570b3f6954321](https://gist.github.com/quentin-decre/ed6ed417637edf7c4e4570b3f6954321): Google Maps Places API integration to your DataProvider to easily have locations autocomplete input using ReferenceInput and AutocompleteInput.
+* [alexgschwend/react-admin-color-picker](https://github.com/alexgschwend/react-admin-color-picker): a color input using [React Color](https://casesandberg.github.io/react-color/), a collection of color pickers.
+* [react-admin-mui-dateinputs](https://www.npmjs.com/package/react-admin-mui-dateinputs): a collection of Date/Time Inputs for react-admin based on [MUI X Date Pickers](https://mui.com/x/react-date-pickers/date-picker/).
+* [MrHertal/react-admin-json-view](https://github.com/MrHertal/react-admin-json-view): JSON field and input for react-admin.
+* [@bb-tech/ra-components](https://github.com/bigbasket/ra-components): `JsonInput` which allows only valid JSON as input, `JsonField` to view JSON properly on show card and `TrimField` to trim the fields while showing in `Datagrid` in `List` component.
+* [@react-page/react-admin](https://react-page.github.io/docs/#/integration-react-admin): ReactPage is a rich content editor and comes with a ready-to-use React-admin input component. [check out the demo](https://react-page.github.io/examples/reactadmin)
+* [Gist quentin-decre/ed6ed417637edf7c4e4570b3f6954321](https://gist.github.com/quentin-decre/ed6ed417637edf7c4e4570b3f6954321): Google Maps Places API integration to your DataProvider to easily have locations autocomplete input using ReferenceInput and AutocompleteInput.
 
-- **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
+* **DEPRECATED V3** [LoicMahieu/aor-tinymce-input](https://github.com/LoicMahieu/aor-tinymce-input): a TinyMCE component, useful for editing HTML
 
 ## Hiding the label
 
