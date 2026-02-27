@@ -1,6 +1,6 @@
 {
     "name": "ra-data-local-forage",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "LocalForage data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -41,7 +41,7 @@
     "dependencies": {
         "localforage": "^1.7.1",
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^5.14.2"
+        "ra-data-fakerest": "^5.14.3"
     },
     "devDependencies": {
         "typescript": "^5.1.3",

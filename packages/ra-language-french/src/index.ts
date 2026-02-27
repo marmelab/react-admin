@@ -207,6 +207,12 @@ const frenchMessages: TranslationMessages = {
                 'Etes-vous sûr(e) de vouloir supprimer cette requête de votre liste de requêtes ?',
             help: 'Filtrez la liste et ajoutez cette requête à votre liste',
         },
+        guesser: {
+            empty: {
+                title: 'Aucune donnée à afficher',
+                message: 'Veuillez vérifier votre dataProvider',
+            },
+        },
         configurable: {
             customize: 'Personnaliser',
             configureMode: 'Configurer cette page',

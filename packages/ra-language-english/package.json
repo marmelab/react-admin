@@ -1,6 +1,6 @@
 {
     "name": "ra-language-english",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "English messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -20,7 +20,7 @@
         "build": "zshy --silent"
     },
     "dependencies": {
-        "ra-core": "^5.14.2"
+        "ra-core": "^5.14.3"
     },
     "devDependencies": {
         "typescript": "^5.1.3",

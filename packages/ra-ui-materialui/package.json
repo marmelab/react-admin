@@ -1,6 +1,6 @@
 {
     "name": "ra-ui-materialui",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "UI Components for react-admin with Material UI",
     "files": [
         "*.md",
@@ -41,9 +41,9 @@
         "expect": "^27.4.6",
         "file-api": "~0.10.4",
         "ignore-styles": "~5.0.1",
-        "ra-core": "^5.14.2",
-        "ra-i18n-polyglot": "^5.14.2",
-        "ra-language-english": "^5.14.2",
+        "ra-core": "^5.14.3",
+        "ra-i18n-polyglot": "^5.14.3",
+        "ra-language-english": "^5.14.3",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.65.0",

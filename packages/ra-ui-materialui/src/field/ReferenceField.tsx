@@ -160,7 +160,7 @@ export const ReferenceFieldView = <
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
 
-    if (error) {
+    if (error && referenceRecord == null) {
         return (
             <div>
                 <ErrorIcon role="presentation" color="error" fontSize="small" />

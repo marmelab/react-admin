@@ -52,6 +52,21 @@ describe('withLifecycleCallbacks', () => {
         dataProvider.getMany('posts', { ids: [1, 2] });
         expect(resourceCallback.beforeGetMany).toHaveBeenCalled();
     });
+    it('should return the right type for augmented Data Providers', async () => {
+        const dataProvider = withLifecycleCallbacks(
+            {
+                ...testDataProvider(),
+                getFoo: async () => 'foo',
+            },
+            [
+                {
+                    resource: 'posts',
+                    beforeGetOne: jest.fn(params => Promise.resolve(params)),
+                },
+            ]
+        );
+        expect(dataProvider.getFoo).toBeDefined();
+    });
 
     describe('beforeGetList', () => {
         it('should update the getList parameters', async () => {

@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.14.3
+
+* Add default empty component and i18n messages to `ListGuesser` ([#11165](https://github.com/marmelab/react-admin/pull/11165)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<Edit>`, `<ReferenceField>` and `<List>` to better support offline mode ([#11161](https://github.com/marmelab/react-admin/pull/11161)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Add DataTableInput dedicated page and cross references ([#11162](https://github.com/marmelab/react-admin/pull/11162)) ([WiXSL](https://github.com/WiXSL))
+* [TypeScript] Fix withLifecycleCallback return type for augmented data providers ([#11170](https://github.com/marmelab/react-admin/pull/11170)) ([fzaninotto](https://github.com/fzaninotto))
+* [TypeScript] Fix ReferenceManyField queryOptions type doesn't support error and success callbacks ([#11166](https://github.com/marmelab/react-admin/pull/11166)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump rollup from 2.79.2 to 2.80.0 ([#11175](https://github.com/marmelab/react-admin/pull/11175)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump storybook from 8.6.15 to 8.6.17 ([#11174](https://github.com/marmelab/react-admin/pull/11174)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump devalue from 5.6.2 to 5.6.3 ([#11168](https://github.com/marmelab/react-admin/pull/11168)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump systeminformation from 5.29.1 to 5.31.1 ([#11167](https://github.com/marmelab/react-admin/pull/11167)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.14.2
 
 * Fix `<ReferenceFieldBase>` does not work offline ([#11163](https://github.com/marmelab/react-admin/pull/11163)) ([fzaninotto](https://github.com/fzaninotto))

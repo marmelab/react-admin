@@ -1,9 +1,18 @@
 import * as React from 'react';
 import expect from 'expect';
 import { fireEvent, render, screen } from '@testing-library/react';
-import { ManyResources } from './ListGuesser.stories';
+import { Empty, ManyResources } from './ListGuesser.stories';
 
 describe('<ListGuesser />', () => {
+    it('should render an empty state dedicated to guessers', async () => {
+        render(<Empty />);
+
+        await screen.findByText('No data to display');
+        expect(
+            screen.getByText('Please check your data provider')
+        ).toBeTruthy();
+    });
+
     it('should log the guessed List views based on the fetched records', async () => {
         const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
         render(<ManyResources />);

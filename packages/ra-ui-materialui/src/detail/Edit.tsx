@@ -72,6 +72,7 @@ export const Edit = <RecordType extends RaRecord = any>(
         authLoading = defaultAuthLoading,
         loading,
         error,
+        redirectOnError,
         ...rest
     } = props;
 
@@ -94,7 +95,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             authLoading={authLoading}
             loading={loading}
             // Disable redirect on error as it is handled by EditView to display the error in the EditView container
-            redirectOnError={error ? false : undefined}
+            redirectOnError={redirectOnError ?? (error ? false : undefined)}
             // Disable offline support from EditBase as it is handled by EditView to keep the EditView container
             offline={false}
         >

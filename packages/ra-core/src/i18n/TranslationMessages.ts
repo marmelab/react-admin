@@ -194,6 +194,12 @@ export interface TranslationMessages extends StringMap {
             remove_message: string;
             help: string;
         };
+        guesser?: {
+            empty: {
+                title: string;
+                message: string;
+            };
+        };
         configurable?: {
             customize: string;
             configureMode: string;
