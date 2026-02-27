@@ -170,12 +170,9 @@ const dataProviderWithCustomMethod = {
         id: Identifier,
         data: Partial<Omit<SalesFormData, 'password'>>
     ): Promise<Partial<Omit<SalesFormData, 'password'>>> {
-        const { data: previousData } = await dataProvider.getOne<Sale>(
-            'sales',
-            {
-                id,
-            }
-        );
+        const { data: previousData } = await dataProvider.getOne('sales', {
+            id,
+        });
 
         if (!previousData) {
             throw new Error('User not found');
@@ -186,10 +183,10 @@ const dataProviderWithCustomMethod = {
             data,
             previousData,
         });
-        return sale;
+        return sale as Sale;
     },
     async isInitialized(): Promise<boolean> {
-        const sales = await dataProvider.getList<Sale>('sales', {
+        const sales = await dataProvider.getList('sales', {
             filter: {},
             pagination: { page: 1, perPage: 1 },
             sort: { field: 'id', order: 'ASC' },
@@ -204,12 +201,9 @@ const dataProviderWithCustomMethod = {
         if (!currentUser) {
             throw new Error('User not found');
         }
-        const { data: previousData } = await dataProvider.getOne<Sale>(
-            'sales',
-            {
-                id: currentUser.id,
-            }
-        );
+        const { data: previousData } = await dataProvider.getOne('sales', {
+            id: currentUser.id,
+        });
 
         if (!previousData) {
             throw new Error('User not found');
@@ -231,7 +225,7 @@ async function updateCompany(
     companyId: Identifier,
     updateFn: (company: Company) => Partial<Company>
 ) {
-    const { data: company } = await dataProvider.getOne<Company>('companies', {
+    const { data: company } = await dataProvider.getOne('companies', {
         id: companyId,
     });
 
@@ -244,7 +238,7 @@ async function updateCompany(
     });
 }
 
-export const dataProvider = withLifecycleCallbacks(
+export const dataProvider: CrmDataProvider = withLifecycleCallbacks(
     withSupabaseFilterAdapter(dataProviderWithCustomMethod),
     [
         {

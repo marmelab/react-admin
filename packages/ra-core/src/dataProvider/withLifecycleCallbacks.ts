@@ -119,10 +119,10 @@ import {
  *   ]
  * );
  */
-export const withLifecycleCallbacks = (
-    dataProvider: DataProvider,
+export const withLifecycleCallbacks = <T extends DataProvider = DataProvider>(
+    dataProvider: T,
     handlers: ResourceCallbacks[]
-): DataProvider => {
+): T => {
     return {
         ...dataProvider,
 

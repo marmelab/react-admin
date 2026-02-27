@@ -1,6 +1,6 @@
 {
     "name": "ra-i18n-polyglot",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "Polyglot i18n provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -25,7 +25,7 @@
     },
     "dependencies": {
         "node-polyglot": "^2.2.2",
-        "ra-core": "^5.14.2"
+        "ra-core": "^5.14.3"
     },
     "devDependencies": {
         "typescript": "^5.1.3",

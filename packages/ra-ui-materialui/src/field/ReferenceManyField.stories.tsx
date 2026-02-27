@@ -11,11 +11,12 @@ import {
 } from 'ra-core';
 import { Admin, ListGuesser, Resource } from 'react-admin';
 import type { AdminProps } from 'react-admin';
-import { Alert, ThemeProvider, Box, Stack } from '@mui/material';
-import { createTheme } from '@mui/material/styles';
-import fakeDataProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import fakeDataProvider from 'ra-data-fakerest';
+import { onlineManager } from '@tanstack/react-query';
+import { Alert, ThemeProvider, Box, Stack } from '@mui/material';
+import { createTheme } from '@mui/material/styles';
 
 import { TextField } from '../field';
 import { ReferenceManyField } from './ReferenceManyField';
@@ -32,7 +33,6 @@ import { TextInput } from '../input';
 import { Edit } from '../detail';
 import { SimpleForm } from '../form';
 import { ExportButton, SelectAllButton, BulkDeleteButton } from '../button';
-import { onlineManager } from '@tanstack/react-query';
 
 export default { title: 'ra-ui-materialui/fields/ReferenceManyField' };
 
@@ -44,26 +44,57 @@ const authors = [
     { id: 4, name: 'J.K. Rowling' },
 ];
 let books = [
-    { id: 1, title: 'War and Peace', author_id: 1 },
-    { id: 2, title: 'Les Misérables', author_id: 2 },
-    { id: 3, title: 'Anna Karenina', author_id: 1 },
-    { id: 4, title: 'The Count of Monte Cristo', author_id: 3 },
-    { id: 5, title: 'Resurrection', author_id: 1 },
-    { id: 6, title: 'The Three Musketeers', author_id: 3 },
-    { id: 7, title: 'The Idiot', author_id: 1 },
-    { id: 8, title: 'The Last Day of a Condemned', author_id: 1 },
-    { id: 9, title: 'The Queen Margot', author_id: 3 },
-    { id: 10, title: "Harry Potter and the Philosopher's Stone", author_id: 4 },
-    { id: 11, title: 'Harry Potter and the Chamber of Secrets', author_id: 4 },
-    { id: 12, title: 'Harry Potter and the Prisoner of Azkaban', author_id: 4 },
-    { id: 13, title: 'Harry Potter and the Goblet of Fire', author_id: 4 },
+    { id: 1, title: 'War and Peace', author_id: 1, year: 1869 },
+    { id: 2, title: 'Les Misérables', author_id: 2, year: 1862 },
+    { id: 3, title: 'Anna Karenina', author_id: 1, year: 1877 },
+    { id: 4, title: 'The Count of Monte Cristo', author_id: 3, year: 1844 },
+    { id: 5, title: 'Resurrection', author_id: 1, year: 1899 },
+    { id: 6, title: 'The Three Musketeers', author_id: 3, year: 1844 },
+    { id: 7, title: 'The Idiot', author_id: 1, year: 1869 },
+    { id: 8, title: 'The Last Day of a Condemned', author_id: 1, year: 1869 },
+    { id: 9, title: 'The Queen Margot', author_id: 3, year: 1844 },
+    {
+        id: 10,
+        title: "Harry Potter and the Philosopher's Stone",
+        author_id: 4,
+        year: 1997,
+    },
+    {
+        id: 11,
+        title: 'Harry Potter and the Chamber of Secrets',
+        author_id: 4,
+        year: 1998,
+    },
+    {
+        id: 12,
+        title: 'Harry Potter and the Prisoner of Azkaban',
+        author_id: 4,
+        year: 1999,
+    },
+    {
+        id: 13,
+        title: 'Harry Potter and the Goblet of Fire',
+        author_id: 4,
+        year: 2000,
+    },
     {
         id: 14,
         title: 'Harry Potter and the Order of the Phoenix',
         author_id: 4,
+        year: 2003,
     },
-    { id: 15, title: 'Harry Potter and the Half-Blood Prince', author_id: 4 },
-    { id: 16, title: 'Harry Potter and the Deathly Hallows', author_id: 4 },
+    {
+        id: 15,
+        title: 'Harry Potter and the Half-Blood Prince',
+        author_id: 4,
+        year: 2005,
+    },
+    {
+        id: 16,
+        title: 'Harry Potter and the Deathly Hallows',
+        author_id: 4,
+        year: 2007,
+    },
 ];
 
 const fullDataProvider = fakeDataProvider(
@@ -286,7 +317,6 @@ export const WithPaginationAndSelectAllLimit = ({
 const AuthorEdit = () => (
     <Edit>
         <SimpleForm>
-            <TextField source="id" />
             <TextInput source="name" />
             <ReferenceManyField
                 reference="books"
@@ -294,8 +324,10 @@ const AuthorEdit = () => (
                 pagination={<Pagination />}
                 perPage={5}
             >
+                <ExportButton />
                 <DataTable>
                     <DataTable.Col source="title" />
+                    <DataTable.Col source="year" />
                 </DataTable>
             </ReferenceManyField>
         </SimpleForm>

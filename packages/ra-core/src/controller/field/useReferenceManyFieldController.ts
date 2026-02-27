@@ -5,7 +5,11 @@ import isEqual from 'lodash/isEqual.js';
 import lodashDebounce from 'lodash/debounce.js';
 
 import { removeEmpty, useEvent } from '../../util';
-import { useDataProvider, useGetManyReference } from '../../dataProvider';
+import {
+    useDataProvider,
+    useGetManyReference,
+    UseGetManyReferenceHookOptions,
+} from '../../dataProvider';
 import { useNotify } from '../../notification';
 import {
     Exporter,
@@ -359,7 +363,7 @@ export const useReferenceManyFieldController = <
 
 export interface UseReferenceManyFieldControllerParams<
     RecordType extends Record<string, any> = Record<string, any>,
-    ReferenceRecordType extends Record<string, any> = Record<string, any>,
+    ReferenceRecordType extends RaRecord = any,
     ErrorType = Error,
 > {
     debounce?: number;
@@ -375,10 +379,7 @@ export interface UseReferenceManyFieldControllerParams<
     storeKey?: string;
     target: string;
     queryOptions?: Omit<
-        UseQueryOptions<
-            { data: ReferenceRecordType[]; total: number },
-            ErrorType
-        >,
+        UseGetManyReferenceHookOptions<ReferenceRecordType, ErrorType>,
         'queryKey' | 'queryFn'
     >;
 }

@@ -1,6 +1,6 @@
 {
     "name": "ra-i18n-i18next",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "i18next i18n provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -26,13 +26,13 @@
     "dependencies": {
         "i18next": "^23.5.1",
         "lodash": "^4.17.21",
-        "ra-core": "^5.14.2",
+        "ra-core": "^5.14.3",
         "react-i18next": "^14.1.1"
     },
     "devDependencies": {
         "i18next-resources-to-backend": "^1.1.4",
-        "ra-language-english": "^5.14.2",
-        "ra-language-french": "^5.14.2",
+        "ra-language-english": "^5.14.3",
+        "ra-language-french": "^5.14.3",
         "typescript": "^5.1.3",
         "zshy": "^0.5.0"
     },

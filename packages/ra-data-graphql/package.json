@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "A GraphQL data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",

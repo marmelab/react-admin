@@ -1,6 +1,6 @@
 {
     "name": "ra-data-local-storage",
-    "version": "5.14.2",
+    "version": "5.14.3",
     "description": "Local storage data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -37,7 +37,7 @@
     },
     "dependencies": {
         "lodash": "~4.17.5",
-        "ra-data-fakerest": "^5.14.2"
+        "ra-data-fakerest": "^5.14.3"
     },
     "devDependencies": {
         "typescript": "^5.1.3",

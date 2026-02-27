@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { useState, useEffect } from 'react';
+import { styled, useThemeProps } from '@mui/material/styles';
+import { Box, Typography } from '@mui/material';
+import Inbox from '@mui/icons-material/Inbox';
 
 import {
     ListBase,
@@ -10,6 +13,7 @@ import {
     RaRecord,
     usePrevious,
     useLocation,
+    useTranslate,
 } from 'ra-core';
 
 import { ListProps } from './List';
@@ -44,6 +48,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
         debounce,
         disableAuthentication,
         disableSyncWithLocation,
+        empty,
         exporter,
         filter,
         filterDefaultValues,
@@ -66,6 +71,7 @@ export const ListGuesser = <RecordType extends RaRecord = any>(
             debounce={debounce}
             disableAuthentication={disableAuthentication}
             disableSyncWithLocation={disableSyncWithLocation}
+            empty={empty === undefined ? <ListGuesserEmpty /> : empty}
             exporter={exporter}
             filter={filter}
             filterDefaultValues={filterDefaultValues}
@@ -150,3 +156,57 @@ ${inferredChild.getRepresentation()}
 
     return <ListView {...rest}>{child}</ListView>;
 };
+
+const ListGuesserEmpty = (inProps: ListGuesserEmptyProps) => {
+    const props = useThemeProps({
+        props: inProps,
+        name: LIST_GUESSER_EMPTY_PREFIX,
+    });
+    const { className } = props;
+    const translate = useTranslate();
+
+    return (
+        <ListGuesserEmptyRoot className={className}>
+            <Box className={ListGuesserEmptyClasses.message}>
+                <Inbox className={ListGuesserEmptyClasses.icon} />
+                <Typography variant="h4" paragraph>
+                    {translate('ra.guesser.empty.title', {
+                        _: 'No data to display',
+                    })}
+                </Typography>
+                <Typography variant="body1">
+                    {translate('ra.guesser.empty.message', {
+                        _: 'Please check your data provider',
+                    })}
+                </Typography>
+            </Box>
+        </ListGuesserEmptyRoot>
+    );
+};
+
+interface ListGuesserEmptyProps {
+    className?: string;
+}
+
+const LIST_GUESSER_EMPTY_PREFIX = 'RaListGuesserEmpty';
+
+const ListGuesserEmptyClasses = {
+    message: `${LIST_GUESSER_EMPTY_PREFIX}-message`,
+    icon: `${LIST_GUESSER_EMPTY_PREFIX}-icon`,
+};
+
+const ListGuesserEmptyRoot = styled('span', {
+    name: LIST_GUESSER_EMPTY_PREFIX,
+    overridesResolver: (props, styles) => styles.root,
+})(({ theme }) => ({
+    flex: 1,
+    [`& .${ListGuesserEmptyClasses.message}`]: {
+        textAlign: 'center',
+        margin: '0 1em',
+        color: (theme.vars || theme).palette.text.disabled,
+    },
+    [`& .${ListGuesserEmptyClasses.icon}`]: {
+        width: '9em',
+        height: '9em',
+    },
+}));
