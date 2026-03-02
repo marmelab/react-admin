@@ -12,8 +12,7 @@ import {
 } from '@mui/material';
 import CancelIcon from '@mui/icons-material/CancelOutlined';
 import isEqual from 'lodash/isEqual.js';
-import { stringify } from 'query-string';
-import { useListContext, SavedQuery, useNavigate } from 'ra-core';
+import { useListContext, SavedQuery } from 'ra-core';
 
 const arePropsEqual = (
     prevProps: SavedQueryFilterListItemProps,
@@ -29,9 +28,14 @@ export const SavedQueryFilterListItem = memo(
             name: PREFIX,
         });
         const { className, label, sx, value } = props;
-        const { filterValues, sort, perPage, displayedFilters } =
-            useListContext();
-        const navigate = useNavigate();
+        const {
+            filterValues,
+            sort,
+            perPage,
+            displayedFilters,
+            setFilters,
+            setPage,
+        } = useListContext();
 
         const isSelected = isEqual(value, {
             filter: filterValues,
@@ -41,24 +45,13 @@ export const SavedQueryFilterListItem = memo(
         });
 
         const addFilter = (): void => {
-            navigate({
-                search: stringify({
-                    filter: JSON.stringify(value.filter),
-                    sort: value.sort?.field,
-                    order: value.sort?.order,
-                    page: 1,
-                    perPage: value.perPage ?? perPage,
-                    displayedFilters: JSON.stringify(value.displayedFilters),
-                }),
-            });
+            setFilters(value.filter, value.displayedFilters);
+            setPage(1);
         };
 
         const removeFilter = (): void => {
-            navigate({
-                search: stringify({
-                    filter: JSON.stringify({}),
-                }),
-            });
+            setFilters({}, {});
+            setPage(1);
         };
 
         const toggleFilter = (): void =>
