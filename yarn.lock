@@ -6319,11 +6319,11 @@ __metadata:
   linkType: hard
 
 "@types/dompurify@npm:^3.0.2":
-  version: 3.0.2
-  resolution: "@types/dompurify@npm:3.0.2"
+  version: 3.0.5
+  resolution: "@types/dompurify@npm:3.0.5"
   dependencies:
     "@types/trusted-types": "npm:*"
-  checksum: 54cf82078d1eab075c75ccba252f08514963e29b8afd63e940ea33a9eefcbac86b43e169415ff82af11c128f03921e1e0ab4fdfaa65ce56d4cd91f3e72985abe
+  checksum: a34dcc4498ca250815ccf9aecbe82df96ba5db247d0440cf266a876757d47c52519c240db3475e794d7deb0d6b1af23328e02879be368ad0e26b20c0f0865dba
   languageName: node
   linkType: hard
 
@@ -10623,14 +10623,14 @@ __metadata:
   linkType: hard
 
 "dompurify@npm:^3.2.4":
-  version: 3.2.4
-  resolution: "dompurify@npm:3.2.4"
+  version: 3.3.1
+  resolution: "dompurify@npm:3.3.1"
   dependencies:
     "@types/trusted-types": "npm:^2.0.7"
   dependenciesMeta:
     "@types/trusted-types":
       optional: true
-  checksum: 6be56810fb7ad2776155c8fc2967af5056783c030094362c7d0cf1ad13f2129cf922d8eefab528a34bdebfb98e2f44b306a983ab93aefb9d6f24c18a3d027a05
+  checksum: fa0a8c55a436ba0d54389195e3d2337e311f56de709a2fc9efc98dbbc7746fa53bb4b74b6ac043b77a279a8f2ebd8685f0ebaa6e58c9e32e92051d529bc0baf8
   languageName: node
   linkType: hard
 
