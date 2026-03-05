@@ -210,18 +210,6 @@ npm install @raphiniert/ra-data-postgrest
 yarn add @raphiniert/ra-data-postgrest
 ```
 
-Then update `vite.config.ts` to prevent Vite SSR from externalizing the PostgREST adapter:
-
-```tsx
-// in vite.config.ts
-export default defineConfig({
-    // ...
-    ssr: {
-        noExternal: ['@raphiniert/ra-data-postgrest'],
-    },
-});
-```
-
 Finally, update your Admin dataProvider:
 
 ```tsx
