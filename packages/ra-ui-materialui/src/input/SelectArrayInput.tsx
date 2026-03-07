@@ -89,6 +89,14 @@ import { Labeled } from '../Labeled';
  *    { id: 'lifestyle', name: 'myroot.tags.lifestyle' },
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
+ *
+ * You can provide an `emptyText` prop to display a disabled placeholder at the top of the dropdown:
+ * @example
+ * <SelectArrayInput
+ *    source="tags"
+ *    choices={choices}
+ *    emptyText="No tags available"
+ * />
  */
 export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     const props = useThemeProps({
@@ -102,6 +110,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText, // <-- Add emptyText prop
         format,
         helperText,
         label,
@@ -360,6 +369,11 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     value={finalValue}
                     {...outlinedInputProps}
                 >
+                    {emptyText !== undefined && (
+                        <MenuItem value="" disabled>
+                            {emptyText}
+                        </MenuItem>
+                    )}
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
@@ -384,6 +398,11 @@ export type SelectArrayInputProps = ChoicesProps &
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
+        /**
+         * If provided, displays this text as a disabled MenuItem at the top of the dropdown.
+         * Useful for showing a placeholder or empty state.
+         */
+        emptyText?: React.ReactNode;
     };
 
 const sanitizeRestProps = ({

@@ -31,6 +31,31 @@ describe('<SelectArrayInput />', () => {
         ],
     };
 
+    it('should render emptyText as a disabled MenuItem when provided', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            emptyText="No selection available"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        fireEvent.mouseDown(
+            screen.getByLabelText('resources.posts.fields.categories')
+        );
+        // The emptyText should be rendered as a disabled MenuItem
+        const emptyMenuItem = screen.getByText('No selection available');
+        expect(emptyMenuItem).toBeInTheDocument();
+        expect(emptyMenuItem.closest('li')).toHaveAttribute(
+            'aria-disabled',
+            'true'
+        );
+    });
+
     it('should use a mui Select', () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
