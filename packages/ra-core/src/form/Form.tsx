@@ -63,7 +63,7 @@ export function Form<RecordType = any>(props: FormProps<RecordType>) {
     } = props;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
-    const { form, formHandleSubmit } = useAugmentedForm(props);
+    const { form, formHandleSubmit } = useAugmentedForm<RecordType>(props);
     const sourceContext = React.useMemo<SourceContextValue>(
         () => ({
             getSource: (source: string) => source,
@@ -113,7 +113,10 @@ export function Form<RecordType = any>(props: FormProps<RecordType>) {
 }
 
 export type FormProps<RecordType = any> = FormOwnProps<RecordType> &
-    Omit<UseFormProps, 'onSubmit'> & {
+    Omit<
+        UseFormProps<RecordType extends FieldValues ? RecordType : FieldValues>,
+        'onSubmit'
+    > & {
         validate?: ValidateForm;
         noValidate?: boolean;
         WarnWhenUnsavedChangesComponent?: React.ComponentType<{

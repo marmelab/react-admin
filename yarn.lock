@@ -2627,12 +2627,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hookform/resolvers@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "@hookform/resolvers@npm:3.2.0"
+"@hookform/resolvers@npm:^5.2.2":
+  version: 5.2.2
+  resolution: "@hookform/resolvers@npm:5.2.2"
+  dependencies:
+    "@standard-schema/utils": "npm:^0.3.0"
   peerDependencies:
-    react-hook-form: ^7.0.0
-  checksum: 7eb79c480e006f08fcfe803e70b7b67eda03cc5c5bb8ce68a5399a0c6fdc34ee0fcc677fed9bea4a0baaa455ba39b15f86c8d2e3a702acdf762d6667988085b6
+    react-hook-form: ^7.55.0
+  checksum: 0692cd61dcc2a70cbb27b88a37f733c39e97f555c036ba04a81bd42b0467461cfb6bafacb46c16f173672f9c8a216bd7928a2330d4e49c700d130622bf1defaf
   languageName: node
   linkType: hard
 
@@ -5652,6 +5654,13 @@ __metadata:
   dependencies:
     "@sinonjs/commons": "npm:^3.0.0"
   checksum: 2e2fb6cc57f227912814085b7b01fede050cd4746ea8d49a1e44d5a0e56a804663b0340ae2f11af7559ea9bf4d087a11f2f646197a660ea3cb04e19efc04aa63
+  languageName: node
+  linkType: hard
+
+"@standard-schema/utils@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@standard-schema/utils@npm:0.3.0"
+  checksum: 6eb74cd13e52d5fc74054df51e37d947ef53f3ab9e02c085665dcca3c38c60ece8d735cebbdf18fbb13c775fbcb9becb3f53109b0e092a63f0f7389ce0993fd0
   languageName: node
   linkType: hard
 
@@ -20735,7 +20744,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
-    "@hookform/resolvers": "npm:^3.2.0"
+    "@hookform/resolvers": "npm:^5.2.2"
     "@tanstack/react-query": "npm:^5.90.2"
     "@tanstack/react-query-devtools": "npm:^5.90.2"
     "@testing-library/react": "npm:^15.0.7"
@@ -20763,7 +20772,7 @@ __metadata:
     react-router-dom: "npm:^6.28.1"
     typescript: "npm:^5.1.3"
     yup: "npm:^0.32.11"
-    zod: "npm:^3.22.1"
+    zod: "npm:^4.3.6"
     zshy: "npm:^0.5.0"
   peerDependencies:
     "@tanstack/react-query": ^5.83.0
@@ -26394,10 +26403,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.22.1, zod@npm:^3.23.8, zod@npm:^3.24.2, zod@npm:^3.25.76":
+"zod@npm:^3.23.8, zod@npm:^3.24.2, zod@npm:^3.25.76":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
+  languageName: node
+  linkType: hard
+
+"zod@npm:^4.3.6":
+  version: 4.3.6
+  resolution: "zod@npm:4.3.6"
+  checksum: 860d25a81ab41d33aa25f8d0d07b091a04acb426e605f396227a796e9e800c44723ed96d0f53a512b57be3d1520f45bf69c0cb3b378a232a00787a2609625307
   languageName: node
   linkType: hard
 
