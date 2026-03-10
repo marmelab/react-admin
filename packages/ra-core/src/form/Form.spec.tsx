@@ -871,7 +871,9 @@ describe('Form', () => {
         const translate = jest.spyOn(i18nProvider, 'translate');
         render(<ZodResolver i18nProvider={i18nProvider} />);
         fireEvent.click(screen.getByText('Submit'));
-        await screen.findByText('Required');
+        await screen.findByText(
+            'Invalid input: expected string, received undefined'
+        );
         await screen.findByText('This field is required');
         await screen.findByText('This field must be provided');
         await screen.findByText('app.validation.missing');
