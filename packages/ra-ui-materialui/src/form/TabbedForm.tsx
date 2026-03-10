@@ -110,8 +110,8 @@ const sanitizeRestProps = ({
     ...rest
 }: TabbedFormProps) => rest;
 
-export interface TabbedFormProps
-    extends Omit<FormProps, 'render'>,
+export interface TabbedFormProps<RecordType = any>
+    extends Omit<FormProps<RecordType>, 'render'>,
         Omit<
             HtmlHTMLAttributes<HTMLFormElement>,
             'defaultValue' | 'onSubmit' | 'children'

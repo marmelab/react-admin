@@ -155,7 +155,12 @@ export const useAugmentedForm = <RecordType = any>(
 
 export type UseAugmentedFormProps<RecordType = any> =
     UseFormOwnProps<RecordType> &
-        Omit<UseFormProps, 'onSubmit'> & {
+        Omit<
+            UseFormProps<
+                RecordType extends FieldValues ? RecordType : FieldValues
+            >,
+            'onSubmit'
+        > & {
             validate?: ValidateForm;
         };
 

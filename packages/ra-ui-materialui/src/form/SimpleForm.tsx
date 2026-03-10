@@ -76,8 +76,8 @@ export const SimpleForm = (inProps: SimpleFormProps) => {
     );
 };
 
-export interface SimpleFormProps
-    extends Omit<FormProps, 'render'>,
+export interface SimpleFormProps<RecordType = any>
+    extends Omit<FormProps<RecordType>, 'render'>,
         Omit<StackProps, 'onSubmit'> {
     children: ReactNode;
     className?: string;
