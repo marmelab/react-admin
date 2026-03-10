@@ -133,7 +133,7 @@ const Aside = () => (
     </Root>
 );
 
-const SongList = () => (
+const SongList = (
     <List aside={<Aside />}>
         <DataTable rowClick="edit">
             <DataTable.Col source="title" />
@@ -307,3 +307,34 @@ const dataProvider = fakeRestProvider(
     },
     true
 );
+
+export const WithDisableSyncWithLocation = () => {
+    return (
+        <TestMemoryRouter>
+            <Admin dataProvider={dataProvider}>
+                <Resource
+                    name="songs"
+                    list={props => (
+                        <List
+                            {...props}
+                            disableSyncWithLocation
+                            aside={<Aside />}
+                        >
+                            <DataTable rowClick="edit">
+                                <DataTable.Col source="title" />
+                                <DataTable.Col source="artist" />
+                                <DataTable.Col source="writer" />
+                                <DataTable.Col source="producer" />
+                                <DataTable.Col source="recordCompany" />
+                                <DataTable.NumberCol source="rank" />
+                                <DataTable.Col source="released">
+                                    <DateField source="released" />
+                                </DataTable.Col>
+                            </DataTable>
+                        </List>
+                    )}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};

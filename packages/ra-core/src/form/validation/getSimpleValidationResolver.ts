@@ -1,4 +1,4 @@
-import { FieldValues } from 'react-hook-form';
+import { FieldValues, Resolver } from 'react-hook-form';
 
 /**
  * Convert a simple validation function that returns an object matching the form shape with errors
@@ -25,7 +25,7 @@ import { FieldValues } from 'react-hook-form';
 export const getSimpleValidationResolver =
     <TFieldValues extends FieldValues = FieldValues>(
         validate: ValidateForm<TFieldValues>
-    ) =>
+    ): Resolver<TFieldValues> =>
     async (data: TFieldValues) => {
         const errors = await validate(data);
 
