@@ -54,12 +54,12 @@ yarn add react-admin ra-router-tanstack ra-data-json-server
 
 ## Adding React-Admin In A Sub Route
 
-TanStack Start uses file-based routing. React-admin generates dynamic routes for each resource (e.g. `/admin/users`, `/admin/users/:id`). To avoid “Not Found” pages, we create explicit routes for the resource paths and render the same admin component in each route.
+TanStack Start uses file-based routing. React-admin generates dynamic routes for each resource (e.g. `/admin/users`, `/admin/users/:id`). To avoid creating one TanStack route per react-admin page, use a single splat route.
 
-First, create the admin route at `src/routes/admin.tsx`:
+First, create the admin route at `src/routes/admin.$.tsx`:
 
 ```tsx
-// in src/routes/admin.tsx
+// in src/routes/admin.$.tsx
 import { createFileRoute } from '@tanstack/react-router';
 import {
     Admin,
@@ -71,7 +71,7 @@ import jsonServerProvider from 'ra-data-json-server';
 import { tanStackRouterProvider } from 'ra-router-tanstack';
 
 const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
-export const Route = createFileRoute('/admin')({ component: App });
+export const Route = createFileRoute('/admin/$')({ component: App });
 
 function App() {
     return (
@@ -92,7 +92,7 @@ function App() {
 export default App;
 ```
 
-Then create the routes for the resource and its dynamic paths:
+Then keep the root route as a simple link to the admin:
 
 ```tsx
 // in src/routes/index.tsx
@@ -112,22 +112,6 @@ function Home() {
 export const Route = createFileRoute('/')({ component: Home });
 ```
 
-```tsx
-// in src/routes/admin.users.tsx
-import { createFileRoute } from '@tanstack/react-router';
-import App from './admin';
-
-export const Route = createFileRoute('/admin/users')({ component: App });
-```
-
-```tsx
-// in src/routes/admin.users.$id.tsx
-import { createFileRoute } from '@tanstack/react-router';
-import App from './admin';
-
-export const Route = createFileRoute('/admin/users/$id')({ component: App });
-```
-
 
 You can now start the app in `development` mode:
 
@@ -141,7 +125,7 @@ The admin should render at `/admin` on your dev server.
 
 ![TanStack Start admin screen](./img/tanstack-admin.png)
 
-**Tip**: If you add more resources, create matching file-based routes for each resource list and edit path under `/admin` and point them to the same `App` component.
+**Tip**: With the `/admin/$` route, you don't need to create one TanStack Start route file per react-admin page.
 
 ## Removing The TanStack Header
 
@@ -229,7 +213,7 @@ yarn add @raphiniert/ra-data-postgrest
 Finally, update your Admin dataProvider:
 
 ```tsx
-// in src/routes/admin.tsx
+// in src/routes/admin.$.tsx
 import { Admin, Resource, ListGuesser, fetchUtils } from 'react-admin';
 import postgrestRestProvider from '@raphiniert/ra-data-postgrest';
 import { tanStackRouterProvider } from 'ra-router-tanstack';
