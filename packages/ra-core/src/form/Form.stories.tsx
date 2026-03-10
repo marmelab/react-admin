@@ -6,6 +6,8 @@ import {
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import {
@@ -273,14 +275,10 @@ export const InputLevelValidation = ({
 
 const zodSchema = z.object({
     defaultMessage: z.string(), //.min(1),
-    customMessage: z.string({
-        required_error: 'This field is required',
-    }),
-    customMessageTranslationKey: z.string({
-        required_error: 'app.validation.required',
-    }),
+    customMessage: z.string({ error: 'This field is required' }),
+    customMessageTranslationKey: z.string({ error: 'app.validation.required' }),
     missingCustomMessageTranslationKey: z.string({
-        required_error: 'app.validation.missing',
+        error: 'app.validation.missing',
     }),
 });
 
@@ -296,6 +294,67 @@ export const ZodResolver = ({
                 record={{}}
                 onSubmit={data => setResult(data)}
                 resolver={zodResolver(zodSchema)}
+            >
+                <Input source="defaultMessage" />
+                <Input source="customMessage" />
+                <Input source="customMessageTranslationKey" />
+                <Input source="missingCustomMessageTranslationKey" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+type Schema = z.infer<typeof zodSchema>;
+
+export const ZodResolverWithSchema = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Form<Schema>
+                record={{}}
+                onSubmit={data => setResult(data)}
+                resolver={zodResolver(zodSchema)}
+            >
+                <Input source="defaultMessage" />
+                <Input source="customMessage" />
+                <Input source="customMessageTranslationKey" />
+                <Input source="missingCustomMessageTranslationKey" />
+                <button type="submit">Submit</button>
+            </Form>
+            <pre>{JSON.stringify(result, null, 2)}</pre>
+        </CoreAdminContext>
+    );
+};
+
+const yupSchema = yup.object({
+    defaultMessage: yup.string().required(),
+    customMessage: yup.string().required('This field is required'),
+    customMessageTranslationKey: yup
+        .string()
+        .required('app.validation.required'),
+    missingCustomMessageTranslationKey: yup
+        .string()
+        .required('app.validation.missing'),
+});
+
+export const YupResolver = ({
+    i18nProvider = defaultI18nProvider,
+}: {
+    i18nProvider?: I18nProvider;
+}) => {
+    const [result, setResult] = React.useState<any>();
+    return (
+        <CoreAdminContext i18nProvider={i18nProvider}>
+            <Form
+                record={{}}
+                onSubmit={data => setResult(data)}
+                resolver={yupResolver(yupSchema)}
             >
                 <Input source="defaultMessage" />
                 <Input source="customMessage" />

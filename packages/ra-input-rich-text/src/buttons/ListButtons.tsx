@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { MouseEvent, useEffect, useState } from 'react';
 
+import { findParentNode } from '@tiptap/core';
 import { Editor } from '@tiptap/react';
 import {
     ToggleButton,
@@ -30,28 +31,23 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
         event: MouseEvent<HTMLElement>,
         newFormat: string
     ) => {
-        ListValues.forEach(format => {
-            const shouldBeDeactivated =
-                editor && editor.isActive(format) && newFormat !== format;
-            const shouldBeActivated =
-                editor && !editor.isActive(format) && newFormat === format;
-
-            if (shouldBeDeactivated || shouldBeActivated) {
-                ListActions[format](editor);
-            }
-        });
+        if (!editor) {
+            return;
+        }
+        if (newFormat) {
+            ListActions[newFormat](editor);
+            return;
+        }
+        // Unclicking the active button — toggle off the innermost list
+        const innermostList = getInnermostListType(editor);
+        if (innermostList) {
+            ListActions[innermostList](editor);
+        }
     };
 
     useEffect(() => {
         const handleUpdate = () => {
-            setValue(() =>
-                ListValues.reduce((acc, value) => {
-                    if (editor && editor.isActive(value)) {
-                        return value;
-                    }
-                    return acc;
-                }, undefined)
-            );
+            setValue(editor ? getInnermostListType(editor) : undefined);
         };
 
         if (editor) {
@@ -94,6 +90,15 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
 };
 
 const ListValues = ['bulletList', 'orderedList'];
+
+const getInnermostListType = (editor: Editor): string | undefined => {
+    const { selection } = editor.state;
+    const parentList = findParentNode(node =>
+        ListValues.includes(node.type.name)
+    )(selection);
+    return parentList?.node.type.name;
+};
+
 const ListActions = {
     bulletList: (editor: Editor) =>
         editor.chain().focus().toggleBulletList().run(),

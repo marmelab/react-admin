@@ -1,5 +1,16 @@
 # Changelog
 
+## 5.14.4
+
+* Fix SavedQuery when `disableSyncWithLocation` is set ([#11173](https://github.com/marmelab/react-admin/pull/11173)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `RichTextInput` does not allow nesting unordered and ordered lists ([#11179](https://github.com/marmelab/react-admin/pull/11179)) ([frlruehle](https://github.com/frlruehle))
+* Fix compatibility with latest version of `@hookform/resolvers` ([#11186](https://github.com/marmelab/react-admin/pull/11186)) ([slax57](https://github.com/slax57))
+* [Doc] Use splat route for TanStack Start setup ([#11182](https://github.com/marmelab/react-admin/pull/11182)) ([WiXSL](https://github.com/WiXSL))
+* Fix security warnings due to outdated dependencies ([#11183](https://github.com/marmelab/react-admin/pull/11183)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Bump js-yaml from 3.14.1 to 3.14.2 ([#11185](https://github.com/marmelab/react-admin/pull/11185)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.3.1 to 3.3.2 ([#11184](https://github.com/marmelab/react-admin/pull/11184)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify and @types/dompurify ([#11180](https://github.com/marmelab/react-admin/pull/11180)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.14.3
 
 * Add default empty component and i18n messages to `ListGuesser` ([#11165](https://github.com/marmelab/react-admin/pull/11165)) ([WiXSL](https://github.com/WiXSL))
