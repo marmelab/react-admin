@@ -344,6 +344,9 @@ export default defineConfig({
     },
     vite: {
         plugins: [tailwindcss()],
+        ssr: {
+            noExternal: ['zod'],
+        },
     },
     base: '/ra-core/',
     site: 'https://marmelab.com',
