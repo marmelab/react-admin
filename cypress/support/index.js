@@ -3,12 +3,9 @@
  * See https://github.com/cypress-io/cypress/issues/20341
  * See https://github.com/cypress-io/cypress/issues/29277
  */
-Cypress.on('uncaught:exception', err => {
-    if (
-        err.message.includes(
-            'ResizeObserver loop completed with undelivered notifications'
-        )
-    ) {
-        return false;
-    }
+
+import ResizeObserverMock from './ResizeObserverMock';
+
+Cypress.on('window:before:load', win => {
+    win.ResizeObserver = ResizeObserverMock;
 });
