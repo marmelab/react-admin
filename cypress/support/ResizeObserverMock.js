@@ -25,7 +25,7 @@ class ResizeObserverMock {
     }
 
     trigger() {
-        if (this.elements.size == 0) return;
+        if (this.elements.size === 0) return;
 
         const entries = Array.from(this.elements).map(e => ({
             target: e,
