@@ -2,15 +2,15 @@
     "extends": "../tsconfig.json",
     "compilerOptions": {
         "rootDir": ".",
-        "noEmit": true
+        "noEmit": true,
+        "allowJs": true,
+        "types": [
+            "cypress",
+            "node"
+        ]
     },
-    "types": [
-        "cypress",
-        "node"
-    ],
     "include": [
         "**/*.ts",
-        "**/*.js",
-        "cypress.config.js"
+        "**/*.js"
     ]
 }
