@@ -1,8 +1,8 @@
 import * as React from 'react';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent } from 'react';
 
 import { findParentNode } from '@tiptap/core';
-import { Editor } from '@tiptap/react';
+import { Editor, useEditorState } from '@tiptap/react';
 import {
     ToggleButton,
     ToggleButtonGroup,
@@ -25,7 +25,11 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
         _: 'Numbered list',
     });
 
-    const [value, setValue] = useState<string>();
+    const value = useEditorState({
+        editor,
+        selector: ({ editor }) =>
+            editor ? getInnermostListType(editor) : undefined,
+    });
 
     const handleChange = (
         event: MouseEvent<HTMLElement>,
@@ -44,24 +48,6 @@ export const ListButtons = (props: ToggleButtonGroupProps) => {
             ListActions[innermostList](editor);
         }
     };
-
-    useEffect(() => {
-        const handleUpdate = () => {
-            setValue(editor ? getInnermostListType(editor) : undefined);
-        };
-
-        if (editor) {
-            editor.on('update', handleUpdate);
-            editor.on('selectionUpdate', handleUpdate);
-        }
-
-        return () => {
-            if (editor) {
-                editor.off('update', handleUpdate);
-                editor.off('selectionUpdate', handleUpdate);
-            }
-        };
-    }, [editor]);
 
     return (
         <ToggleButtonGroup

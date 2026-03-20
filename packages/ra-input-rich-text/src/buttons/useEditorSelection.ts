@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEditorState } from '@tiptap/react';
 import { useTiptapEditor } from '../useTiptapEditor';
 
 /**
@@ -8,37 +8,14 @@ import { useTiptapEditor } from '../useTiptapEditor';
 export const useEditorSelection = () => {
     const editor = useTiptapEditor();
 
-    const [selection, setSelection] = useState<string | null>(
-        editor
-            ? editor.state.doc.textBetween(
-                  editor.state.selection.from,
-                  editor.state.selection.to
-              )
-            : null
-    );
-
-    useEffect(() => {
-        const handleSelectionChange = () => {
-            setSelection(
-                editor
-                    ? editor.state.doc.textBetween(
-                          editor.state.selection.from,
-                          editor.state.selection.to
-                      )
-                    : null
-            );
-        };
-
-        if (editor) {
-            editor.on('selectionUpdate', handleSelectionChange);
-        }
-
-        return () => {
-            if (editor) {
-                editor.off('selectionUpdate', handleSelectionChange);
-            }
-        };
-    }, [editor]);
-
-    return selection;
+    return useEditorState({
+        editor,
+        selector: ({ editor }) =>
+            editor
+                ? editor.state.doc.textBetween(
+                      editor.state.selection.from,
+                      editor.state.selection.to
+                  )
+                : null,
+    });
 };

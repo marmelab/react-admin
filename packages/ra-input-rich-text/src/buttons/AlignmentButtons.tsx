@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent } from 'react';
 
-import { Editor } from '@tiptap/react';
+import { Editor, useEditorState } from '@tiptap/react';
 import {
     ToggleButton,
     ToggleButtonGroup,
@@ -18,37 +18,22 @@ import { useTiptapEditor } from '../useTiptapEditor';
 export const AlignmentButtons = (props: ToggleButtonGroupProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
-    const [value, setValue] = useState<string>('left');
+
+    const value = useEditorState({
+        editor,
+        selector: ({ editor }) => {
+            if (!editor) return 'left';
+            return (
+                AlignmentValues.find(v => editor.isActive({ textAlign: v })) ??
+                'left'
+            );
+        },
+    });
 
     const leftLabel = translate('ra.tiptap.align_left', { _: 'Align left' });
     const rightLabel = translate('ra.tiptap.align_right', { _: 'Align right' });
     const centerLabel = translate('ra.tiptap.align_center', { _: 'Center' });
     const justifyLabel = translate('ra.tiptap.align_justify', { _: 'Justify' });
-
-    useEffect(() => {
-        const handleUpdate = () => {
-            setValue(currentValue =>
-                AlignmentValues.reduce((acc, value) => {
-                    if (editor && editor.isActive({ textAlign: value })) {
-                        return value;
-                    }
-                    return acc;
-                }, currentValue)
-            );
-        };
-
-        if (editor) {
-            editor.on('update', handleUpdate);
-            editor.on('selectionUpdate', handleUpdate);
-        }
-
-        return () => {
-            if (editor) {
-                editor.off('update', handleUpdate);
-                editor.off('selectionUpdate', handleUpdate);
-            }
-        };
-    }, [editor]);
 
     const handleChange = (
         event: MouseEvent<HTMLElement>,
