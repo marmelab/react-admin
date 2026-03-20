@@ -20560,18 +20560,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prosemirror-state@npm:^1.0.0, prosemirror-state@npm:^1.2.2":
-  version: 1.4.2
-  resolution: "prosemirror-state@npm:1.4.2"
-  dependencies:
-    prosemirror-model: "npm:^1.0.0"
-    prosemirror-transform: "npm:^1.0.0"
-    prosemirror-view: "npm:^1.27.0"
-  checksum: cf1d63a22212c45b8000f4a31b1133853d606479cd982a81060d1e711e7d30ffb32e35edb2e4c492bbf938669d8416abb008542bc50ef7dd4c1a83e676183aba
-  languageName: node
-  linkType: hard
-
-"prosemirror-state@npm:^1.4.3, prosemirror-state@npm:^1.4.4":
+"prosemirror-state@npm:^1.0.0, prosemirror-state@npm:^1.2.2, prosemirror-state@npm:^1.4.3, prosemirror-state@npm:^1.4.4":
   version: 1.4.4
   resolution: "prosemirror-state@npm:1.4.4"
   dependencies:
@@ -20986,12 +20975,10 @@ __metadata:
     "@tiptap/extension-color": "npm:^3.20.4"
     "@tiptap/extension-highlight": "npm:^3.20.4"
     "@tiptap/extension-image": "npm:^3.20.4"
-    "@tiptap/extension-link": "npm:^3.20.4"
     "@tiptap/extension-mention": "npm:^3.20.4"
     "@tiptap/extension-placeholder": "npm:^3.20.4"
     "@tiptap/extension-text-align": "npm:^3.20.4"
     "@tiptap/extension-text-style": "npm:^3.20.4"
-    "@tiptap/extension-underline": "npm:^3.20.4"
     "@tiptap/pm": "npm:^3.20.4"
     "@tiptap/react": "npm:^3.20.4"
     "@tiptap/starter-kit": "npm:^3.20.4"

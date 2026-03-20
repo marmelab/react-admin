@@ -5,10 +5,8 @@ import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
 import Highlight from '@tiptap/extension-highlight';
 import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
 import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
 import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
@@ -189,8 +187,6 @@ export const RichTextInput = (props: RichTextInputProps) => {
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
-        Underline,
-        Link,
         TextAlign.configure({
             types: ['heading', 'paragraph'],
         }),
