@@ -386,7 +386,6 @@ const MentionList = (props: {
 
     const selectItem = index => {
         const item = props.items[index];
-        console.log('selectItem', index, item, props.command);
 
         if (item) {
             props.command({ id: item });
@@ -428,7 +427,6 @@ const MentionList = (props: {
                             selected={index === selectedIndex}
                             key={index}
                             onMouseDown={e => {
-                                console.log('onMouseDown', index);
                                 e.preventDefault();
                                 selectItem(index);
                             }}
@@ -510,12 +508,6 @@ const suggestions = tags => {
                 },
 
                 onKeyDown(props) {
-                    console.log(
-                        'suggestion onKeyDown',
-                        props.event.key,
-                        'ref:',
-                        !!onKeyDownRef.current
-                    );
                     if (props.event.key === 'Escape') {
                         if (floatingEl) {
                             floatingEl.style.display = 'none';
