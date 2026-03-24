@@ -20907,6 +20907,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-input-rich-text@workspace:packages/ra-input-rich-text"
   dependencies:
+    "@floating-ui/dom": "npm:^1.0.0"
     "@mui/icons-material": "npm:^5.16.12"
     "@mui/material": "npm:^5.16.12"
     "@testing-library/react": "npm:^15.0.7"

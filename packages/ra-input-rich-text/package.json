@@ -43,6 +43,7 @@
         "react-dom": "^18.0.0 || ^19.0.0"
     },
     "devDependencies": {
+        "@floating-ui/dom": "^1.0.0",
         "@mui/icons-material": "^5.16.12",
         "@mui/material": "^5.16.12",
         "@testing-library/react": "^15.0.7",
