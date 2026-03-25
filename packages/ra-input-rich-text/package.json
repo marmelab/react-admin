@@ -26,7 +26,6 @@
         "@tiptap/extension-color": "^3.20.4",
         "@tiptap/extension-highlight": "^3.20.4",
         "@tiptap/extension-image": "^3.20.4",
-        "@tiptap/extension-placeholder": "^3.20.4",
         "@tiptap/extension-text-align": "^3.20.4",
         "@tiptap/extension-text-style": "^3.20.4",
         "@tiptap/pm": "^3.20.4",
