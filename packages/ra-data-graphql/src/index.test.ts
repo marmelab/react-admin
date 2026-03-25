@@ -1,5 +1,4 @@
 import { ApolloClient } from '@apollo/client';
-import { ApolloError } from '@apollo/client/v4-migration';
 import { GraphQLError } from 'graphql';
 import gql from 'graphql-tag';
 
