@@ -1,4 +1,5 @@
-import { ApolloClient, ApolloError } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
+import { ApolloError } from '@apollo/client/v4-migration';
 import { GraphQLError } from 'graphql';
 import gql from 'graphql-tag';
 
@@ -10,9 +11,7 @@ describe('GraphQL data provider', () => {
             it('sets ApolloError in body', async () => {
                 const mockClient = {
                     mutate: async () => {
-                        throw new ApolloError({
-                            graphQLErrors: [new GraphQLError('some error')],
-                        });
+                        throw new GraphQLError('some error');
                     },
                 };
                 const mockBuildQueryFactory = () => {
@@ -28,7 +27,7 @@ describe('GraphQL data provider', () => {
                     });
                 };
                 const dataProvider = await buildDataProvider({
-                    client: mockClient as unknown as ApolloClient<unknown>,
+                    client: mockClient as unknown as ApolloClient,
                     introspection: false,
                     buildQuery:
                         mockBuildQueryFactory as unknown as BuildQueryFactory,
@@ -81,7 +80,7 @@ describe('GraphQL data provider', () => {
             };
 
             const dataProvider = buildDataProvider({
-                client: client as unknown as ApolloClient<unknown>,
+                client: client as unknown as ApolloClient,
                 buildQuery: () => () => undefined,
             });
 

@@ -35,7 +35,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@apollo/client@npm:^3.12.4, @apollo/client@npm:^3.3.19, @apollo/client@npm:^3.9.11":
+"@apollo/client@npm:^3.9.11":
   version: 3.12.4
   resolution: "@apollo/client@npm:3.12.4"
   dependencies:
@@ -69,6 +69,37 @@ __metadata:
     subscriptions-transport-ws:
       optional: true
   checksum: 6b30b14d576230cb56b0bb9b328c81f33631640e3d97a1185a20ede7e200dfa79502d695c347920e8c930a36e50870a41f5244ae2167d0123ad56973642528e6
+  languageName: node
+  linkType: hard
+
+"@apollo/client@npm:^4.1.6":
+  version: 4.1.6
+  resolution: "@apollo/client@npm:4.1.6"
+  dependencies:
+    "@graphql-typed-document-node/core": "npm:^3.1.1"
+    "@wry/caches": "npm:^1.0.0"
+    "@wry/equality": "npm:^0.5.6"
+    "@wry/trie": "npm:^0.5.0"
+    graphql-tag: "npm:^2.12.6"
+    optimism: "npm:^0.18.0"
+    tslib: "npm:^2.3.0"
+  peerDependencies:
+    graphql: ^16.0.0
+    graphql-ws: ^5.5.5 || ^6.0.3
+    react: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    react-dom: ^17.0.0 || ^18.0.0 || >=19.0.0-rc
+    rxjs: ^7.3.0
+    subscriptions-transport-ws: ^0.9.0 || ^0.11.0
+  peerDependenciesMeta:
+    graphql-ws:
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+    subscriptions-transport-ws:
+      optional: true
+  checksum: ff152317932cb0ba46423161d388d1a2bc0bbc6c8ec6e2e85e915bb2ec22f461effa6fd2bbc8b754babd75ac8b52843f1e3ddf8e501cbe1d9b857e4df2f2f2df
   languageName: node
   linkType: hard
 
@@ -10852,7 +10883,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "demo@workspace:examples/demo"
   dependencies:
-    "@apollo/client": "npm:^3.12.4"
+    "@apollo/client": "npm:^4.1.6"
     "@mui/icons-material": "npm:^7.0.0"
     "@mui/material": "npm:^7.0.0"
     "@types/jest": "npm:^29.5.2"
@@ -10866,7 +10897,7 @@ __metadata:
     date-fns: "npm:^3.6.0"
     echarts: "npm:^5.6.0"
     fakerest: "npm:^4.2.0"
-    graphql: "npm:^15.6.0"
+    graphql: "npm:^16.13.2"
     graphql-tag: "npm:^2.12.6"
     inflection: "npm:^3.0.0"
     json-graphql-server: "npm:^3.0.1"
@@ -13665,10 +13696,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"graphql@npm:^15.6.0":
-  version: 15.8.0
-  resolution: "graphql@npm:15.8.0"
-  checksum: 30cc09b77170a9d1ed68e4c017ec8c5265f69501c96e4f34f8f6613f39a886c96dd9853eac925f212566ed651736334c8fe24ceae6c44e8d7625c95c3009a801
+"graphql@npm:^16.13.2":
+  version: 16.13.2
+  resolution: "graphql@npm:16.13.2"
+  checksum: 64e822a0a0e4398781e4bc9765b88d370c08261498b517add4b878038ef7be2005b6b394a79a5102b9379d57052f60bc7f23fec8f39808d101984a74772ebd9d
   languageName: node
   linkType: hard
 
@@ -20803,8 +20834,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-data-graphql-simple@workspace:packages/ra-data-graphql-simple"
   dependencies:
-    "@apollo/client": "npm:^3.3.19"
-    graphql: "npm:^15.6.0"
+    "@apollo/client": "npm:^4.1.6"
+    graphql: "npm:^16.13.2"
     graphql-ast-types-browser: "npm:~1.0.2"
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
@@ -20821,8 +20852,8 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-data-graphql@workspace:packages/ra-data-graphql"
   dependencies:
-    "@apollo/client": "npm:^3.3.19"
-    graphql: "npm:^15.6.0"
+    "@apollo/client": "npm:^4.1.6"
+    graphql: "npm:^16.13.2"
     graphql-tag: "npm:^2.12.6"
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
