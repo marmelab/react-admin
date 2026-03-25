@@ -1,23 +1,21 @@
 import {
     ApolloClient,
-    ApolloClientOptions,
-    HttpLink,
     InMemoryCache,
+    HttpLink,
+    type ApolloClientOptions,
 } from '@apollo/client';
 
 export default (options?: Partial<ApolloClientOptions<unknown>>) => {
     if (!options) {
         return new ApolloClient({
             cache: new InMemoryCache().restore({}),
+            link: new HttpLink({}),
         });
     }
 
     const {
         cache = new InMemoryCache().restore({}),
-        uri,
-        credentials,
-        headers,
-        link = uri ? new HttpLink({ uri, credentials, headers }) : undefined,
+        link,
         ...otherOptions
     } = options;
 
