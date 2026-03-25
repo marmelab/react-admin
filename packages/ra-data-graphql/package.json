@@ -35,7 +35,8 @@
         "@apollo/client": "^4.1.6",
         "graphql-tag": "^2.12.6",
         "lodash": "~4.17.5",
-        "pluralize": "~7.0.0"
+        "pluralize": "~7.0.0",
+        "rxjs": "^7.8.2"
     },
     "peerDependencies": {
         "graphql": "^15.6.0 || ^16",

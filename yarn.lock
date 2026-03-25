@@ -10917,6 +10917,7 @@ __metadata:
     react-router-dom: "npm:^7.1.1"
     rollup-plugin-visualizer: "npm:^5.14.0"
     rollup-preserve-directives: "npm:^1.1.3"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.1.3"
     vite: "npm:^7.0.0"
   languageName: unknown
@@ -20840,6 +20841,7 @@ __metadata:
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
     ra-data-graphql: "npm:^5.14.4"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -20857,6 +20859,7 @@ __metadata:
     graphql-tag: "npm:^2.12.6"
     lodash: "npm:~4.17.5"
     pluralize: "npm:~7.0.0"
+    rxjs: "npm:^7.8.2"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
