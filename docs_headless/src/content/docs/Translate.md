@@ -82,6 +82,29 @@ const messages = {
 // Hello, John!
 ```
 
+### React Element Interpolation
+
+Unlike `useTranslate`, `<Translate>` supports React elements as interpolation values. This is useful when you need to include styled or interactive content within a translated message.
+
+```tsx
+const messages = {
+    custom: {
+        welcome: 'Hello, %{name}! Welcome to %{app}.',
+    },
+};
+
+<Translate
+    i18nKey="custom.welcome"
+    options={{
+        name: <strong>John</strong>,
+        app: <a href="https://marmelab.com/react-admin">react-admin</a>,
+    }}
+/>
+// Hello, <strong>John</strong>! Welcome to <a href="...">react-admin</a>.
+```
+
+**Tip:** This feature is only available in the `<Translate>` component, not in the `useTranslate` hook.
+
 One particular option is `smart_count`, which is used for pluralization.
 
 ```tsx
