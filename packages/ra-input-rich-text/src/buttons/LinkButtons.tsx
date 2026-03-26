@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ToggleButton, ToggleButtonProps } from '@mui/material';
 import InsertLink from '@mui/icons-material/InsertLink';
+import { useEditorState } from '@tiptap/react';
 
 import { useTranslate } from 'ra-core';
 import { useTiptapEditor } from '../useTiptapEditor';
@@ -10,6 +11,11 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
     const currentTextSelection = useEditorSelection();
+
+    const isActive = useEditorState({
+        editor,
+        selector: ({ editor }) => (editor ? editor.isActive('link') : false),
+    });
 
     const label = translate('ra.tiptap.link', {
         _: 'Add a link',
@@ -38,7 +44,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             disabled={!editor?.isEditable || !currentTextSelection}
             value="link"
             onClick={handleClick}
-            selected={editor && editor.isActive('link')}
+            selected={isActive}
         >
             <InsertLink fontSize="inherit" />
         </ToggleButton>
