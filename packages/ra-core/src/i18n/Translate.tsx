@@ -1,7 +1,7 @@
 import React, { isValidElement, ReactElement, ReactNode } from 'react';
 import { useTranslate } from './useTranslate';
 
-const SPLIT_MARKER = '#SPLIT#';
+const SPLIT_MARKER = '#@RA_CORE_INTERNAL_SPLIT@#';
 
 export const Translate = ({ i18nKey, options, children }: TranslateProps) => {
     const translate = useTranslate();
