@@ -655,7 +655,7 @@ If you provided a React element for the optionText prop, you must also provide t
                 openText={translate(openText, { _: openText })}
                 id={id}
                 isOptionEqualToValue={isOptionEqualToValue}
-                filterSelectedOptions
+                filterSelectedOptions={false}
                 disabled={disabled || readOnly}
                 renderInput={params => {
                     const mergedTextFieldProps = {
@@ -824,7 +824,9 @@ export interface AutocompleteInputProps<
     Multiple extends boolean | undefined = false,
     DisableClearable extends boolean | undefined = false,
     SupportCreate extends boolean | undefined = false,
-> extends Omit<CommonInputProps, 'source' | 'onChange'>,
+>
+    extends
+        Omit<CommonInputProps, 'source' | 'onChange'>,
         Omit<ChoicesProps, 'disableValue'>,
         UseSuggestionsOptions,
         Omit<SupportCreateSuggestionOptions, 'handleChange' | 'optionText'>,
