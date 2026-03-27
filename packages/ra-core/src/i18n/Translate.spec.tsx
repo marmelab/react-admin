@@ -7,6 +7,7 @@ import {
     NoTranslation,
     NoTranslationWithChildrenAsNode,
     NoTranslationWithChildrenAsString,
+    ReactElementInterpolation,
 } from './Translate.stories';
 
 describe('<Translate />', () => {
@@ -44,5 +45,12 @@ describe('<Translate />', () => {
     it('should render the translation with options', () => {
         const { container } = render(<Options />);
         expect(container.innerHTML).toBe('It cost 6.00 $');
+    });
+
+    it('should render the translation with React element interpolation', () => {
+        const { container } = render(<ReactElementInterpolation />);
+        expect(container.innerHTML).toBe(
+            'Hello <strong>John</strong>, welcome to <em>react-admin</em>!'
+        );
     });
 });

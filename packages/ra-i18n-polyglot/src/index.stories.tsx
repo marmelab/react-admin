@@ -23,7 +23,7 @@ export default { title: 'ra-i18n-polyglot' };
 
 export const Basic = () => {
     const i18nProvider = polyglotI18nProvider(
-        locale => messages[locale],
+        locale => (locale === 'fr' ? messages['fr'] : messages['en']),
         'en',
         [
             { locale: 'en', name: 'English' },
@@ -102,7 +102,7 @@ export const TranslateComponent = () => {
     };
 
     const i18nProvider = polyglotI18nProvider(
-        locale => messages[locale],
+        locale => (locale === 'fr' ? messages['fr'] : messages['en']),
         'en',
         [
             { locale: 'en', name: 'English' },
@@ -127,4 +127,50 @@ export const TranslateComponent = () => {
             />
         </I18nContextProvider>
     );
+};
+
+export const TranslateWithReactElement = ({ locale = 'en' }) => {
+    const messages = {
+        fr: {
+            ...frenchMessages,
+            custom: {
+                welcome: 'Bonjour, %{name}! Bienvenue à %{place}.',
+            },
+        },
+        en: {
+            ...englishMessages,
+            custom: {
+                welcome: 'Hello, %{name}! Welcome to %{place}.',
+            },
+        },
+    };
+    const i18nProvider = polyglotI18nProvider(
+        locale => (locale === 'fr' ? messages['fr'] : messages['en']),
+        locale,
+        [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ]
+    );
+
+    return (
+        <I18nContextProvider value={i18nProvider}>
+            <Translate
+                i18nKey="custom.welcome"
+                options={{
+                    name: <strong>John</strong>,
+                    place: <em>react-admin</em>,
+                }}
+            />
+        </I18nContextProvider>
+    );
+};
+TranslateWithReactElement.args = {
+    locale: 'en',
+};
+TranslateWithReactElement.argTypes = {
+    locale: {
+        control: 'select',
+        options: ['en', 'fr'],
+    },
 };

@@ -9,8 +9,9 @@ import {
 import i18n from 'i18next';
 import resourcesToBackend from 'i18next-resources-to-backend';
 import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Translate, I18nContextProvider } from 'ra-core';
+import { Translate, I18nContextProvider, useI18nProvider } from 'ra-core';
 import { useI18nextProvider, convertRaTranslationsToI18next } from './index';
 
 export default {
@@ -170,6 +171,74 @@ export const WithCustomOptions = () => {
                 />
             </Admin>
         </TestMemoryRouter>
+    );
+};
+
+export const TranslateWithReactElement = () => {
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translation: convertRaTranslationsToI18next({
+                        ...englishMessages,
+                        custom: {
+                            welcome: 'Hello, %{name}! Welcome to %{place}.',
+                        },
+                    }),
+                },
+                fr: {
+                    translation: convertRaTranslationsToI18next({
+                        ...frenchMessages,
+                        custom: {
+                            welcome: 'Bonjour, %{name}! Bienvenue à %{place}.',
+                        },
+                    }),
+                },
+            },
+        },
+        availableLocales: [
+            { locale: 'en', name: 'English' },
+            { locale: 'fr', name: 'Français' },
+        ],
+    });
+
+    if (!i18nProvider) return null;
+
+    return (
+        <I18nContextProvider value={i18nProvider}>
+            <TranslateWithReactElementContent />
+        </I18nContextProvider>
+    );
+};
+
+const TranslateWithReactElementContent = () => {
+    const i18nProvider = useI18nProvider();
+    const [, forceUpdate] = React.useReducer(x => x + 1, 0);
+
+    const handleLocaleChange = async (locale: string) => {
+        await i18nProvider.changeLocale(locale);
+        forceUpdate();
+    };
+
+    return (
+        <div>
+            <div>
+                <button onClick={() => handleLocaleChange('en')}>
+                    English
+                </button>
+                <button onClick={() => handleLocaleChange('fr')}>
+                    Français
+                </button>
+            </div>
+            <br />
+            <Translate
+                i18nKey="custom.welcome"
+                options={{
+                    name: <strong>John</strong>,
+                    place: <em>react-admin</em>,
+                }}
+            />
+        </div>
     );
 };
 
