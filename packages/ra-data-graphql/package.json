@@ -32,17 +32,18 @@
         "build": "zshy --silent"
     },
     "dependencies": {
-        "@apollo/client": "^3.3.19",
+        "@apollo/client": "^4.1.6",
         "graphql-tag": "^2.12.6",
         "lodash": "~4.17.5",
-        "pluralize": "~7.0.0"
+        "pluralize": "~7.0.0",
+        "rxjs": "^7.8.2"
     },
     "peerDependencies": {
         "graphql": "^15.6.0 || ^16",
         "ra-core": "^5.0.0"
     },
     "devDependencies": {
-        "graphql": "^15.6.0",
+        "graphql": "^16.13.2",
         "typescript": "^5.1.3",
         "zshy": "^0.5.0"
     },
