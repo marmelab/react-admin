@@ -36,7 +36,7 @@ import {
 describe('useCreate', () => {
     it('returns a callback that can be used with create arguments', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -60,7 +60,7 @@ describe('useCreate', () => {
 
     it('returns a callback that can be used with no arguments', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -78,6 +78,63 @@ describe('useCreate', () => {
         await waitFor(() => {
             expect(dataProvider.create).toHaveBeenCalledWith('foo', {
                 data: { bar: 'baz' },
+            });
+        });
+    });
+
+    it('uses a custom mutationFn with mutation middlewares', async () => {
+        const dataProvider = testDataProvider({
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
+        });
+        const customMutationFn = jest.fn(async params => ({
+            id: 1,
+            title: params.data?.title,
+            middlewareApplied: params.data?.middlewareApplied,
+        }));
+        let localCreate;
+        let mutationData;
+        const Dummy = () => {
+            const [create, { data }] = useCreate(undefined, undefined, {
+                mutationFn: customMutationFn,
+                getMutateWithMiddlewares: mutate => async (resource, params) =>
+                    mutate(resource, {
+                        ...params,
+                        data: {
+                            ...params.data,
+                            middlewareApplied: true,
+                        },
+                    }),
+            });
+            localCreate = create;
+            mutationData = data;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+
+        localCreate('foo', { data: { title: 'Hello' } });
+
+        await waitFor(() => {
+            expect(customMutationFn).toHaveBeenCalledWith({
+                resource: 'foo',
+                data: {
+                    title: 'Hello',
+                    middlewareApplied: true,
+                },
+            });
+        });
+
+        expect(dataProvider.create).not.toHaveBeenCalled();
+
+        await waitFor(() => {
+            expect(mutationData).toEqual({
+                id: 1,
+                title: 'Hello',
+                middlewareApplied: true,
             });
         });
     });
@@ -122,7 +179,7 @@ describe('useCreate', () => {
 
     it('uses call time params over hook time params', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -146,7 +203,7 @@ describe('useCreate', () => {
 
     it('calls onSettled when provided in hook time options', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const onSettled = jest.fn();
@@ -173,7 +230,7 @@ describe('useCreate', () => {
 
     it('accepts a meta parameter', async () => {
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -203,7 +260,7 @@ describe('useCreate', () => {
         });
 
         const dataProvider = testDataProvider({
-            create: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+            create: jest.fn(() => Promise.resolve({ data: { id: 0 } } as any)),
         });
         let localCreate;
         const Dummy = () => {
@@ -243,7 +300,7 @@ describe('useCreate', () => {
         }
         const dataProvider = testDataProvider({
             create: jest.fn(() =>
-                Promise.resolve({ data: { id: 1, sku: 'abc' } } as any)
+                Promise.resolve({ data: { id: 0, sku: 'abc' } } as any)
             ),
         });
         let localCreate;

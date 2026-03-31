@@ -29,8 +29,9 @@ const MostVisitedPosts = () => (
 
 You can use `<RecordsIterator>` as a child of any component that provides a [`ListContext`](./useListContext.md), such as:
 
+- [`<ArrayFieldBase>`](./ArrayFieldBase.md),
 - [`<ReferenceManyFieldBase>`](./ReferenceManyFieldBase.md),
-- [`<ReferenceArrayFieldBase>`](./ReferenceArrayField.md),
+- [`<ReferenceArrayFieldBase>`](./ReferenceArrayFieldBase.md),
 - [`<ListBase>`](./ListBase.md)
 
 ```jsx

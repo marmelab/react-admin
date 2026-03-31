@@ -6,6 +6,7 @@ Whenever ra-core displays a List, it creates a `ListContext` to store the list d
 
 The `ListContext` is available to descendants of:
 
+- `<ArrayFieldBase>`,
 - `<ListBase>`,
 - `<ReferenceArrayFieldBase>`,
 - `<ReferenceManyFieldBase>`

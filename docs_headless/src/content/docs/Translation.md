@@ -291,3 +291,13 @@ const DateField = ({ source, locale }) => {
 ```
 
 You can force a specific locale by passing the `locale` prop to your custom formatting functions, or use the browser's default locale for automatic localization based on the user's preferences.
+
+## Agent Skill
+
+Ra-core provides a specialized agent skill to help you translate your application. Install it in your repository with the [`skills`](https://skills.sh/) command:
+
+```bash
+npx skills add marmelab/react-admin --skill i18n
+```
+
+This works with OpenCode, Claude Code, Codex, Cursor, and many more. 

@@ -12,6 +12,8 @@ storybook_path: ra-ui-materialui-fields-arrayfield--basic
 
 `<ArrayField>` creates a [`ListContext`](./useListContext.md) with the field value, and renders its children components - usually iterator components like [`<DataTable>`](./DataTable.md) or [`<SingleFieldList>`](./SingleFieldList.md).
 
+`<ArrayField>` is the Material UI export of the headless [`<ArrayFieldBase>`](https://marmelab.com/ra-core/arrayfieldbase/) component from `ra-core`.
+
 ## Usage
 
 `<ArrayField>` is ideal for collections of objects, e.g. `tags` and `backlinks` in the following `post` object:

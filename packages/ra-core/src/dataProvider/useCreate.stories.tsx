@@ -451,3 +451,67 @@ InvalidateList.argTypes = {
         options: ['pessimistic', 'optimistic', 'undoable'],
     },
 };
+
+export const CreateIdZero = ({
+    mutationMode,
+}: {
+    mutationMode: MutationModeType;
+}) => {
+    const dataProvider = fakeRestDataProvider(
+        {
+            posts: [],
+        },
+        process.env.NODE_ENV !== 'test',
+        process.env.NODE_ENV === 'test' ? 10 : 1000
+    );
+
+    return (
+        <TestMemoryRouter initialEntries={['/posts/create']}>
+            <CoreAdmin dataProvider={dataProvider}>
+                <Resource
+                    name="posts"
+                    create={
+                        <CreateBase mutationMode={mutationMode}>
+                            <Form>
+                                {mutationMode !== 'pessimistic' && (
+                                    <TextInput source="id" defaultValue={0} />
+                                )}
+                                <TextInput source="title" />
+                                <button type="submit">Save</button>
+                            </Form>
+                        </CreateBase>
+                    }
+                    list={
+                        <ListBase loading={<p>Loading...</p>}>
+                            <RecordsIterator
+                                render={(record: any) => (
+                                    <div
+                                        style={{
+                                            display: 'flex',
+                                            gap: '8px',
+                                            alignItems: 'center',
+                                        }}
+                                    >
+                                        {record.id}: {record.title}
+                                    </div>
+                                )}
+                            />
+                            <Notification />
+                        </ListBase>
+                    }
+                />
+            </CoreAdmin>
+        </TestMemoryRouter>
+    );
+};
+CreateIdZero.args = {
+    mutationMode: 'undoable',
+};
+CreateIdZero.argTypes = {
+    mutationMode: {
+        control: {
+            type: 'select',
+        },
+        options: ['pessimistic', 'optimistic', 'undoable'],
+    },
+};

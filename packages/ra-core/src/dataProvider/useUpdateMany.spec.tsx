@@ -72,6 +72,59 @@ describe('useUpdateMany', () => {
         });
     });
 
+    it('uses a custom mutationFn with mutation middlewares', async () => {
+        const dataProvider = testDataProvider({
+            updateMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        const customMutationFn = jest.fn(async params => params.ids ?? []);
+        let localUpdateMany;
+        let mutationData;
+        const Dummy = () => {
+            const [updateMany, { data }] = useUpdateMany(undefined, undefined, {
+                mutationFn: customMutationFn,
+                getMutateWithMiddlewares: mutate => async (resource, params) =>
+                    mutate(resource, {
+                        ...params,
+                        data: {
+                            ...params.data,
+                            middlewareApplied: true,
+                        },
+                    }),
+            });
+            localUpdateMany = updateMany;
+            mutationData = data;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+
+        localUpdateMany('foo', {
+            ids: [1, 2],
+            data: { title: 'Hello' },
+        });
+
+        await waitFor(() => {
+            expect(customMutationFn).toHaveBeenCalledWith({
+                resource: 'foo',
+                ids: [1, 2],
+                data: {
+                    title: 'Hello',
+                    middlewareApplied: true,
+                },
+            });
+        });
+
+        expect(dataProvider.updateMany).not.toHaveBeenCalled();
+
+        await waitFor(() => {
+            expect(mutationData).toEqual([1, 2]);
+        });
+    });
+
     it('uses the latest declaration time mutationMode', async () => {
         // This story uses the pessimistic mode by default
         render(<MutationMode />);
