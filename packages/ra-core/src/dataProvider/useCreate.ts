@@ -93,6 +93,7 @@ export const useCreate = <
     const {
         mutationMode = 'pessimistic',
         getMutateWithMiddlewares,
+        mutationFn: customMutationFn,
         onSettled,
         ...mutationOptions
     } = options;
@@ -103,6 +104,26 @@ export const useCreate = <
             params as CreateParams<RecordType>
         )
     );
+    const customMutationFnWithDataProviderResult = async (
+        resource: string | undefined,
+        params: Omit<UseCreateMutateParams<RecordType>, 'resource'>
+    ) => {
+        if (resource == null) {
+            throw new Error('useCreate mutation requires a resource');
+        }
+        if (params.data == null) {
+            throw new Error(
+                'useCreate mutation requires a non-empty data object'
+            );
+        }
+        if (customMutationFn == null) {
+            return dataProviderCreate(resource, params);
+        }
+
+        return {
+            data: await customMutationFn({ resource, ...params }),
+        };
+    };
 
     const [mutate, mutationResult] = useMutationWithMutationMode<
         MutationError,
@@ -114,17 +135,8 @@ export const useCreate = <
             ...mutationOptions,
             mutationKey: [resource, 'create', params],
             mutationMode,
-            mutationFn: ({ resource, ...params }) => {
-                if (resource == null) {
-                    throw new Error('useCreate mutation requires a resource');
-                }
-                if (params.data == null) {
-                    throw new Error(
-                        'useCreate mutation requires a non-empty data object'
-                    );
-                }
-                return dataProviderCreate(resource, params);
-            },
+            mutationFn: ({ resource, ...params }) =>
+                customMutationFnWithDataProviderResult(resource, params),
             updateCache: (
                 { resource, ...params },
                 { mutationMode },
@@ -134,7 +146,7 @@ export const useCreate = <
                     mutationMode === 'pessimistic'
                         ? result?.id
                         : params.data?.id;
-                if (!id) {
+                if (id === undefined || id === null) {
                     throw new Error(
                         'Invalid dataProvider response for create: missing id'
                     );
@@ -179,12 +191,21 @@ export const useCreate = <
 
                 return queryKeys;
             },
-            getMutateWithMiddlewares: mutationFn => {
+            getMutateWithMiddlewares: mutateWithMutationMode => {
                 if (getMutateWithMiddlewares) {
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        dataProviderCreate.bind(dataProvider)
+                        customMutationFn
+                            ? (resource, params) =>
+                                  customMutationFnWithDataProviderResult(
+                                      resource,
+                                      params as Omit<
+                                          UseCreateMutateParams<RecordType>,
+                                          'resource'
+                                      >
+                                  )
+                            : dataProviderCreate.bind(dataProvider)
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useCreate:
@@ -194,7 +215,7 @@ export const useCreate = <
                     };
                 }
 
-                return args => mutationFn(args);
+                return args => mutateWithMutationMode(args);
             },
             onUndo: ({ resource, data, meta }) => {
                 queryClient.removeQueries({
@@ -268,6 +289,9 @@ export type UseCreateOptions<
     >,
     'mutationFn'
 > & {
+    mutationFn?: (
+        params: Partial<UseCreateMutateParams<RecordType>>
+    ) => Promise<ResultRecordType>;
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <

@@ -3,6 +3,7 @@
     "name": "react-admin-lerna",
     "scripts": {
         "build": "lerna run build",
+        "typecheck": "CI=true lerna run build",
         "watch": "lerna run --parallel watch",
         "test-unit": "cross-env LANG=en_US.UTF-8 NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest",
         "test-unit-ci": "cross-env LANG=en_US.UTF-8 NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest --runInBand",

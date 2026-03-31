@@ -1,3 +1,4 @@
+export * from './ArrayFieldBase';
 export * from './ReferenceOneFieldBase';
 export * from './ReferenceFieldBase';
 export * from './ReferenceFieldContext';

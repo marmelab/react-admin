@@ -76,6 +76,51 @@ describe('useDelete', () => {
         });
     });
 
+    it('uses a custom mutationFn when provided in options', async () => {
+        const dataProvider = testDataProvider({
+            delete: jest.fn(() => Promise.resolve({ data: { id: 1 } } as any)),
+        });
+        const customMutationFn = jest.fn(async params => ({
+            id: params.id,
+            source: 'custom',
+        }));
+        let localDeleteOne;
+        let mutationData;
+        const Dummy = () => {
+            const [deleteOne, { data }] = useDelete(undefined, undefined, {
+                mutationFn: customMutationFn,
+            });
+            localDeleteOne = deleteOne;
+            mutationData = data;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+
+        localDeleteOne('foo', { id: 1, previousData: { id: 1, bar: 'bar' } });
+
+        await waitFor(() => {
+            expect(customMutationFn).toHaveBeenCalledWith({
+                resource: 'foo',
+                id: 1,
+                previousData: { id: 1, bar: 'bar' },
+            });
+        });
+
+        expect(dataProvider.delete).not.toHaveBeenCalled();
+
+        await waitFor(() => {
+            expect(mutationData).toEqual({
+                id: 1,
+                source: 'custom',
+            });
+        });
+    });
+
     it('uses the latest declaration time mutationMode', async () => {
         const posts = [
             { id: 1, title: 'Hello' },

@@ -57,6 +57,44 @@ describe('useDeleteMany', () => {
         });
     });
 
+    it('uses a custom mutationFn when provided in options', async () => {
+        const dataProvider = testDataProvider({
+            deleteMany: jest.fn(() => Promise.resolve({ data: [1, 2] } as any)),
+        });
+        const customMutationFn = jest.fn(async params => params.ids);
+        let localDeleteMany;
+        let mutationData;
+        const Dummy = () => {
+            const [deleteMany, { data }] = useDeleteMany(undefined, undefined, {
+                mutationFn: customMutationFn,
+            });
+            localDeleteMany = deleteMany;
+            mutationData = data;
+            return <span />;
+        };
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Dummy />
+            </CoreAdminContext>
+        );
+
+        localDeleteMany('foo', { ids: [1, 2] });
+
+        await waitFor(() => {
+            expect(customMutationFn).toHaveBeenCalledWith({
+                resource: 'foo',
+                ids: [1, 2],
+            });
+        });
+
+        expect(dataProvider.deleteMany).not.toHaveBeenCalled();
+
+        await waitFor(() => {
+            expect(mutationData).toEqual([1, 2]);
+        });
+    });
+
     it('uses the latest declaration time mutationMode', async () => {
         // This story uses the pessimistic mode by default
         render(<MutationMode />);

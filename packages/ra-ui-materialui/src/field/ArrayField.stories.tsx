@@ -8,6 +8,7 @@ import {
     TestMemoryRouter,
     ResourceContextProvider,
     downloadCSV,
+    RecordsIterator,
 } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
@@ -38,6 +39,18 @@ export const Basic = () => (
             <SingleFieldList linkType={false}>
                 <ChipField source="title" />
             </SingleFieldList>
+        </ArrayField>
+    </TestMemoryRouter>
+);
+
+export const WithRecordsIterator = () => (
+    <TestMemoryRouter>
+        <ArrayField record={{ id: 123, books }} source="books">
+            <ul>
+                <RecordsIterator
+                    render={record => <li key={record.id}>{record.title}</li>}
+                />
+            </ul>
         </ArrayField>
     </TestMemoryRouter>
 );

@@ -1,5 +1,28 @@
 # Changelog
 
+## 5.14.5
+
+* Add ArrayFieldBase component ([#11191](https://github.com/marmelab/react-admin/pull/11191)) ([WiXSL](https://github.com/WiXSL))
+* [Fix] Prevent stale nested field values when re-adding items in SimpleFormIterator ([#11201](https://github.com/marmelab/react-admin/pull/11201)) ([WiXSL](https://github.com/WiXSL))
+* Fix `useCreate` fails to update the cache when `id` equals 0 ([#11199](https://github.com/marmelab/react-admin/pull/11199)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix mutation hooks types ([#11024](https://github.com/marmelab/react-admin/pull/11024)) ([djhi](https://github.com/djhi))
+* [Doc] Add ArrayFieldBase headless documentation ([#11192](https://github.com/marmelab/react-admin/pull/11192)) ([WiXSL](https://github.com/WiXSL))
+* [chore] Fix headless docs build ([#11188](https://github.com/marmelab/react-admin/pull/11188)) ([slax57](https://github.com/slax57))
+* Bump path-to-regexp from 0.1.12 to 0.1.13 ([#11210](https://github.com/marmelab/react-admin/pull/11210)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump handlebars from 4.7.7 to 4.7.9 ([#11206](https://github.com/marmelab/react-admin/pull/11206)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 5.15.9 to 5.18.1 ([#11205](https://github.com/marmelab/react-admin/pull/11205)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump picomatch from 2.3.1 to 2.3.2 ([#11203](https://github.com/marmelab/react-admin/pull/11203)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump smol-toml from 1.5.2 to 1.6.1 ([#11202](https://github.com/marmelab/react-admin/pull/11202)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump flatted from 3.3.3 to 3.4.2 ([#11197](https://github.com/marmelab/react-admin/pull/11197)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump h3 from 1.15.8 to 1.15.9 ([#11196](https://github.com/marmelab/react-admin/pull/11196)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump h3 from 1.15.5 to 1.15.8 ([#11194](https://github.com/marmelab/react-admin/pull/11194)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump devalue from 5.6.3 to 5.6.4 ([#11189](https://github.com/marmelab/react-admin/pull/11189)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Fix tar security alerts ([#11215](https://github.com/marmelab/react-admin/pull/11215)) ([WiXSL](https://github.com/WiXSL))
+* Fix markdown-it security alert ([#11214](https://github.com/marmelab/react-admin/pull/11214)) ([WiXSL](https://github.com/WiXSL))
+* Fix minimatch security alerts ([#11213](https://github.com/marmelab/react-admin/pull/11213)) ([WiXSL](https://github.com/WiXSL))
+* Fix ejs dependabot alert ([#11211](https://github.com/marmelab/react-admin/pull/11211)) ([WiXSL](https://github.com/WiXSL))
+* Fix picomatch dependabot alert ([#11212](https://github.com/marmelab/react-admin/pull/11212)) ([WiXSL](https://github.com/WiXSL))
+
 ## 5.14.4
 
 * Fix SavedQuery when `disableSyncWithLocation` is set ([#11173](https://github.com/marmelab/react-admin/pull/11173)) ([ThieryMichel](https://github.com/ThieryMichel))

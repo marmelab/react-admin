@@ -1,4 +1,5 @@
 import { Children, isValidElement, useRef, type ReactNode } from 'react';
+import set from 'lodash/set.js';
 import { FormDataConsumer } from '../../form/FormDataConsumer';
 import type { ArrayInputContextValue } from './ArrayInputContext';
 import { useEvent } from '../../util';
@@ -31,15 +32,18 @@ export const useGetArrayInputNewItemDefaults = (
 
         // ArrayInput used for an array of objects
         // (e.g. authors: [{ firstName: 'John', lastName: 'Doe' }, { firstName: 'Jane', lastName: 'Doe' }])
-        const defaultValue = initialDefaultValue.current;
+        const defaultValue = { ...initialDefaultValue.current };
         Children.forEach(inputs, input => {
             if (
                 isValidElement(input) &&
                 input.type !== FormDataConsumer &&
                 input.props.source
             ) {
-                defaultValue[input.props.source] =
-                    input.props.defaultValue ?? null;
+                set(
+                    defaultValue,
+                    input.props.source,
+                    input.props.defaultValue ?? null
+                );
             }
         });
         return defaultValue;

@@ -104,6 +104,72 @@ describe('useUpdate', () => {
             });
         });
 
+        it('uses a custom mutationFn with mutation middlewares', async () => {
+            const dataProvider = {
+                update: jest.fn(() =>
+                    Promise.resolve({ data: { id: 1 } } as any)
+                ),
+            } as any;
+            const customMutationFn = jest.fn(async params => ({
+                id: params.id,
+                title: params.data?.title,
+                middlewareApplied: params.data?.middlewareApplied,
+            }));
+            let localUpdate;
+            let mutationData;
+            const Dummy = () => {
+                const [update, { data }] = useUpdate(undefined, undefined, {
+                    mutationFn: customMutationFn,
+                    getMutateWithMiddlewares:
+                        mutate => async (resource, params) =>
+                            mutate(resource, {
+                                ...params,
+                                data: {
+                                    ...params.data,
+                                    middlewareApplied: true,
+                                },
+                            }),
+                });
+                localUpdate = update;
+                mutationData = data;
+                return <span />;
+            };
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <Dummy />
+                </CoreAdminContext>
+            );
+
+            localUpdate('foo', {
+                id: 1,
+                data: { title: 'Hello' },
+                previousData: { id: 1, title: 'World' },
+            });
+
+            await waitFor(() => {
+                expect(customMutationFn).toHaveBeenCalledWith({
+                    resource: 'foo',
+                    id: 1,
+                    data: {
+                        title: 'Hello',
+                        middlewareApplied: true,
+                    },
+                    previousData: { id: 1, title: 'World' },
+                });
+            });
+
+            expect(dataProvider.update).not.toHaveBeenCalled();
+
+            await waitFor(() => {
+                expect(mutationData).toEqual({
+                    id: 1,
+                    title: 'Hello',
+                    middlewareApplied: true,
+                });
+            });
+        });
+
         it('uses the latest declaration time mutationMode', async () => {
             // This story uses the pessimistic mode by default
             render(<MutationMode timeout={10} />);

@@ -1,12 +1,7 @@
 import { useCallback } from 'react';
-import { UseMutationOptions } from '@tanstack/react-query';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
-import {
-    HttpError,
-    useCreate,
-    UseCreateMutateParams,
-} from '../../dataProvider';
+import { HttpError, useCreate, UseCreateOptions } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -225,10 +220,10 @@ export interface CreateControllerProps<
     redirect?: RedirectionSideEffect;
     resource?: string;
     mutationMode?: MutationMode;
-    mutationOptions?: UseMutationOptions<
-        ResultRecordType,
+    mutationOptions?: UseCreateOptions<
+        RecordType,
         MutationOptionsError,
-        UseCreateMutateParams<RecordType>
+        ResultRecordType
     > & { meta?: any };
     transform?: TransformData;
 }

@@ -505,6 +505,197 @@ describe('<SimpleFormIterator />', () => {
         expect(screen.queryAllByLabelText('ra.action.remove').length).toBe(1);
     });
 
+    it('should not reuse removed values for nested sources when adding a new item', async () => {
+        render(
+            <Wrapper>
+                <SimpleForm
+                    record={{
+                        id: 1,
+                        venueList: [
+                            {
+                                venue: 'Madison Square Garden, New York',
+                                details: {
+                                    stageManagerId: '101',
+                                    ticketTier: null,
+                                    language: null,
+                                },
+                            },
+                            {
+                                venue: 'Wembley Stadium, London',
+                                details: {
+                                    stageManagerId: '102',
+                                    ticketTier: 'premium',
+                                    language: 'en',
+                                },
+                            },
+                            {
+                                venue: 'Tokyo Dome, Tokyo',
+                                details: {
+                                    stageManagerId: '103',
+                                    ticketTier: 'vip',
+                                    language: 'ja',
+                                },
+                            },
+                        ],
+                    }}
+                >
+                    <ArrayInput source="venueList">
+                        <SimpleFormIterator>
+                            <TextInput source="venue" label="Venue" />
+                            <TextInput
+                                source="details.stageManagerId"
+                                label="Stage Manager ID"
+                            />
+                            <TextInput
+                                source="details.ticketTier"
+                                label="Ticket Tier"
+                            />
+                            <TextInput
+                                source="details.language"
+                                label="Language"
+                            />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        await waitFor(() => {
+            expect(
+                screen
+                    .queryAllByLabelText('Stage Manager ID')
+                    .map(
+                        inputElement => (inputElement as HTMLInputElement).value
+                    )
+            ).toEqual(['101', '102', '103']);
+        });
+
+        const lastItem = screen
+            .queryAllByLabelText('Venue')[2]
+            .closest('li') as HTMLElement;
+        const removeLastButton = getByLabelText(
+            lastItem,
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeLastButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Venue').length).toEqual(2);
+        });
+
+        fireEvent.click(
+            screen
+                .getByLabelText('ra.action.add')
+                .closest('button') as HTMLButtonElement
+        );
+
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Venue').length).toEqual(3);
+        });
+
+        expect(
+            screen
+                .queryAllByLabelText('Stage Manager ID')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['101', '102', '']);
+        expect(
+            screen
+                .queryAllByLabelText('Ticket Tier')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['', 'premium', '']);
+        expect(
+            screen
+                .queryAllByLabelText('Language')
+                .map(inputElement => (inputElement as HTMLInputElement).value)
+        ).toEqual(['', 'en', '']);
+    });
+
+    it('should create nested null defaults for nested sources when adding a new item', async () => {
+        const save = jest.fn();
+
+        render(
+            <Wrapper>
+                <SimpleForm
+                    onSubmit={save}
+                    record={{
+                        id: 1,
+                        venueList: [
+                            {
+                                venue: 'Tokyo Dome, Tokyo',
+                                details: {
+                                    stageManagerId: '103',
+                                    ticketTier: 'vip',
+                                    language: 'ja',
+                                },
+                            },
+                        ],
+                    }}
+                >
+                    <ArrayInput source="venueList">
+                        <SimpleFormIterator>
+                            <TextInput source="venue" label="Venue" />
+                            <TextInput
+                                source="details.stageManagerId"
+                                label="Stage Manager ID"
+                            />
+                            <TextInput
+                                source="details.ticketTier"
+                                label="Ticket Tier"
+                            />
+                            <TextInput
+                                source="details.language"
+                                label="Language"
+                            />
+                        </SimpleFormIterator>
+                    </ArrayInput>
+                </SimpleForm>
+            </Wrapper>
+        );
+
+        const firstItem = screen
+            .queryAllByLabelText('Venue')[0]
+            .closest('li') as HTMLElement;
+        const removeFirstButton = getByLabelText(
+            firstItem,
+            'ra.action.remove'
+        ).closest('button') as HTMLButtonElement;
+
+        fireEvent.click(removeFirstButton);
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Venue').length).toEqual(0);
+        });
+
+        fireEvent.click(
+            screen
+                .getByLabelText('ra.action.add')
+                .closest('button') as HTMLButtonElement
+        );
+
+        await waitFor(() => {
+            expect(screen.queryAllByLabelText('Venue').length).toEqual(1);
+        });
+
+        fireEvent.click(screen.getByText('ra.action.save'));
+
+        await waitFor(() => {
+            expect(save).toHaveBeenCalled();
+        });
+
+        expect(save.mock.calls[0][0]).toEqual({
+            id: 1,
+            venueList: [
+                {
+                    venue: null,
+                    details: {
+                        stageManagerId: null,
+                        ticketTier: null,
+                        language: null,
+                    },
+                },
+            ],
+        });
+    });
+
     it('should remove children row on remove button click', async () => {
         const emails = [{ email: 'foo@bar.com' }, { email: 'bar@foo.com' }];
 
