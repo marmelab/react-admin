@@ -19,6 +19,7 @@ import {
     InsideReferenceArrayInputDefaultValue,
     CreateLabel,
     CreateLabelRendered,
+    EmptyText,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -83,6 +84,40 @@ describe('<SelectArrayInput />', () => {
         expect(screen.queryByText('Programming')).not.toBeNull();
         expect(screen.queryByText('Lifestyle')).not.toBeNull();
         expect(screen.queryByText('Photography')).not.toBeNull();
+    });
+
+    describe('emptyText', () => {
+        it('should display the emptyText when the value is empty', () => {
+            render(<EmptyText />);
+            expect(screen.queryByText('All Roles')).not.toBeNull();
+            expect(screen.queryByText('All Channels')).not.toBeNull();
+        });
+
+        it('should not display the emptyText when a value is selected', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm
+                            onSubmit={jest.fn()}
+                            defaultValues={{
+                                categories: ['programming'],
+                            }}
+                        >
+                            <SelectArrayInput
+                                {...defaultProps}
+                                emptyText="No selection"
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            expect(screen.queryByText('No selection')).toBeNull();
+        });
+
+        it('should accept a React element as emptyText', () => {
+            render(<EmptyText />);
+            expect(screen.queryByText('All Channels')).not.toBeNull();
+        });
     });
 
     it('should use optionValue as value identifier', () => {

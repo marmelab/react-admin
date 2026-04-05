@@ -58,6 +58,30 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const EmptyText = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="roles"
+            choices={[
+                { id: 'admin', name: 'Admin' },
+                { id: 'u001', name: 'Editor' },
+                { id: 'u002', name: 'Moderator' },
+                { id: 'u003', name: 'Reviewer' },
+            ]}
+            emptyText="All Roles"
+        />
+        <SelectArrayInput
+            source="channels"
+            choices={[
+                { id: 'web', name: 'Web' },
+                { id: 'mobile', name: 'Mobile' },
+                { id: 'email', name: 'Email' },
+            ]}
+            emptyText={<em>All Channels</em>}
+        />
+    </Wrapper>
+);
+
 export const StringChoices = () => (
     <Wrapper>
         <SelectArrayInput

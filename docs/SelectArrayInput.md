@@ -67,6 +67,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `create`          | Optional | `Element`                   | -                   | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string` &#124; `ReactNode` | `ra.action. create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `disableValue`    | Optional | `string`                    | 'disabled'          | The custom field name used in `choices` to disable some choices                                                                        |
+| `emptyText`       | Optional | `string` &#124; `ReactNode` | -                   | The text to display when no selection has been made                                                                                     |
 | `InputLabelProps` | Optional | `Object`                    | -                   | Props to pass to the underlying `<InputLabel>` element                                                                                 |
 | `onCreate`        | Optional | `Function`                  | -                   | A function called with the current filter value when users choose to create a new choice.                                              |
 | `options`         | Optional | `Object`                    | -                   | Props to pass to the underlying `<SelectInput>` element                                                                                |
@@ -282,6 +283,22 @@ const choices = [
 ];
 <SelectArrayInput source="roles" choices={choices} disableValue="not_available" />
 ```
+
+## `emptyText`
+
+Use the `emptyText` prop to display a custom text when no selection has been made.
+
+```jsx
+<SelectArrayInput source="roles" choices={choices} emptyText="All Roles" />
+```
+
+The `emptyText` prop accepts either a string or a React Element.
+
+```jsx
+<SelectArrayInput source="roles" choices={choices} emptyText={<em>All Roles</em>} />
+```
+
+When `emptyText` is a string, it is passed through the translation function, so you can use a translation key.
 
 ## `InputLabelProps`
 

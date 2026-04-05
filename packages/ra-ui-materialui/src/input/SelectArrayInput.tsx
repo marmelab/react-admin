@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useCallback, useRef, type ChangeEvent } from 'react';
+import { useCallback, useRef, type ChangeEvent, type ReactNode } from 'react';
 import clsx from 'clsx';
 import {
     Select,
@@ -28,6 +28,7 @@ import {
     useGetRecordRepresentation,
     type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
+    useTranslate,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 
@@ -102,6 +103,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText,
         format,
         helperText,
         label,
@@ -128,6 +130,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         ...rest
     } = props;
 
+    const translate = useTranslate();
     const inputLabel = useRef(null);
 
     const {
@@ -254,6 +257,12 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         [getChoiceValue, getDisableValue, renderMenuItemOption, createItem]
     );
 
+    const renderEmptyText = useCallback(() => {
+        return typeof emptyText === 'string'
+            ? translate(emptyText, { _: emptyText })
+            : emptyText;
+    }, [emptyText, translate]);
+
     if (isPending) {
         return (
             <Labeled
@@ -330,26 +339,40 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     }
                     multiple
                     error={!!fetchError || invalid}
-                    renderValue={(selected: any[]) => (
-                        <div className={SelectArrayInputClasses.chips}>
-                            {(Array.isArray(selected) ? selected : [])
-                                .map(item =>
-                                    (allChoices || []).find(
-                                        // eslint-disable-next-line eqeqeq
-                                        choice => getChoiceValue(choice) == item
+                    renderValue={(selected: any[]) => {
+                        const selectedArray = Array.isArray(selected)
+                            ? selected
+                            : [];
+                        if (
+                            selectedArray.length === 0 &&
+                            emptyText != null
+                        ) {
+                            return renderEmptyText();
+                        }
+                        return (
+                            <div className={SelectArrayInputClasses.chips}>
+                                {selectedArray
+                                    .map(item =>
+                                        (allChoices || []).find(
+                                            // eslint-disable-next-line eqeqeq
+                                            choice =>
+                                                getChoiceValue(choice) == item
+                                        )
                                     )
-                                )
-                                .filter(item => !!item)
-                                .map(item => (
-                                    <Chip
-                                        key={getChoiceValue(item)}
-                                        label={renderMenuItemOption(item)}
-                                        className={SelectArrayInputClasses.chip}
-                                        size="small"
-                                    />
-                                ))}
-                        </div>
-                    )}
+                                    .filter(item => !!item)
+                                    .map(item => (
+                                        <Chip
+                                            key={getChoiceValue(item)}
+                                            label={renderMenuItemOption(item)}
+                                            className={
+                                                SelectArrayInputClasses.chip
+                                            }
+                                            size="small"
+                                        />
+                                    ))}
+                            </div>
+                        );
+                    }}
                     disabled={disabled || readOnly}
                     readOnly={readOnly}
                     data-testid="selectArray"
@@ -380,6 +403,7 @@ export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
     Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        emptyText?: ReactNode;
         options?: SelectProps;
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
