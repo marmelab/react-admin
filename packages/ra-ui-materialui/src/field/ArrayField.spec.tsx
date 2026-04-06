@@ -48,6 +48,22 @@ describe('<ArrayField />', () => {
         );
     });
 
+    it('should accept label prop (FieldProps)', () => {
+        // This test ensures that ArrayField accepts the label prop from FieldProps
+        // Regression test for https://github.com/marmelab/react-admin/issues/11197
+        render(
+            <Wrapper>
+                <ArrayField
+                    source="arr"
+                    label="My Array"
+                    record={{ id: 123, arr: [{ id: 1, foo: 'bar' }] }}
+                >
+                    <DummyIterator />
+                </ArrayField>
+            </Wrapper>
+        );
+    });
+
     it('should not fail when value is null', () => {
         render(
             <Wrapper>
