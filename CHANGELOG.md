@@ -1,5 +1,21 @@
 # Changelog
 
+## 5.14.6
+
+* Fix possible prototype-polluting assignments in local data providers ([#11227](https://github.com/marmelab/react-admin/pull/11227)) ([WiXSL](https://github.com/WiXSL))
+* Fix duplicate IDs in `<FieldToggle>` when multiple column pickers are present ([#11238](https://github.com/marmelab/react-admin/pull/11238)) ([Yashrajsingh2001](https://github.com/Yashrajsingh2001))
+* Fix incomplete string escaping  in `escapePath` ([#11226](https://github.com/marmelab/react-admin/pull/11226)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<FormDataConsumer>` to avoid ReDoS in source detection ([#11224](https://github.com/marmelab/react-admin/pull/11224)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<RichTextField>` tag-stripping feature is polynomial and does not strip unfinished tags ([#11225](https://github.com/marmelab/react-admin/pull/11225)) ([WiXSL](https://github.com/WiXSL))
+* Fix `<ArrayInput>` shows validation error on mount when `mode="onChange"` ([#11195](https://github.com/marmelab/react-admin/pull/11195)) ([WiXSL](https://github.com/WiXSL))
+* Bump follow-redirects from 1.15.11 to 1.16.0 ([#11240](https://github.com/marmelab/react-admin/pull/11240)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump axios from 1.13.6 to 1.15.0 ([#11237](https://github.com/marmelab/react-admin/pull/11237)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 7.3.1 to 7.3.2 ([#11234](https://github.com/marmelab/react-admin/pull/11234)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump defu from 6.1.4 to 6.1.6 ([#11230](https://github.com/marmelab/react-admin/pull/11230)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump lodash from 4.17.23 to 4.18.1 ([#11229](https://github.com/marmelab/react-admin/pull/11229)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump lodash-es from 4.17.23 to 4.18.1 ([#11228](https://github.com/marmelab/react-admin/pull/11228)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* [chore] Restrict test workflow token permissions ([#11223](https://github.com/marmelab/react-admin/pull/11223)) ([WiXSL](https://github.com/WiXSL))
+
 ## 5.14.5
 
 * Add ArrayFieldBase component ([#11191](https://github.com/marmelab/react-admin/pull/11191)) ([WiXSL](https://github.com/WiXSL))
