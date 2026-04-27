@@ -176,7 +176,6 @@ export const Configurable = (inProps: ConfigurableProps) => {
                 disableEnforceFocus
                 disableScrollLock
                 marginThreshold={8}
-                PaperProps={popoverPaperProps}
                 slotProps={{ paper: popoverPaperProps }}
             >
                 <SettingsIcon
