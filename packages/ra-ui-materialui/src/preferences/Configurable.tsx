@@ -122,14 +122,6 @@ export const Configurable = (inProps: ConfigurableProps) => {
         setIsCustomizeButtonVisible(false);
     };
 
-    const popoverPaperProps = {
-        elevation: 1,
-        onMouseEnter: handleShowButton,
-        onMouseLeave: handleHideButton,
-        title: translate(openButtonLabel),
-        onClick: handleOpenEditor,
-    };
-
     return (
         <PreferenceKeyContextProvider value={prefixedPreferenceKey}>
             <Root
@@ -176,7 +168,15 @@ export const Configurable = (inProps: ConfigurableProps) => {
                 disableEnforceFocus
                 disableScrollLock
                 marginThreshold={8}
-                slotProps={{ paper: popoverPaperProps }}
+                slotProps={{
+                    paper: {
+                        elevation: 1,
+                        onMouseEnter: handleShowButton,
+                        onMouseLeave: handleHideButton,
+                        title: translate(openButtonLabel),
+                        onClick: handleOpenEditor,
+                    },
+                }}
             >
                 <SettingsIcon
                     // @ts-ignore
