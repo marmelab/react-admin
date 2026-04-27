@@ -1,4 +1,5 @@
-import { Checkbox } from '@mui/material';
+import { Checkbox, version as muiVersion } from '@mui/material';
+import { gte } from 'semver';
 import {
     useDataTableCallbacksContext,
     useDataTableDataContext,
@@ -54,8 +55,9 @@ export const SelectPageCheckbox = () => {
     return (
         <Checkbox
             inputProps={selectAllInputProps}
-            // @ts-expect-error slotProps do not yet exist in MUI v5
-            slotProps={{ input: selectAllInputProps }}
+            {...(gte(muiVersion as string, '9.0.0')
+                ? { slotProps: { input: selectAllInputProps } }
+                : {})}
             className="select-all"
             color="primary"
             checked={

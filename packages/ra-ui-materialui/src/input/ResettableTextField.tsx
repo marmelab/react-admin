@@ -11,7 +11,9 @@ import {
     IconButton,
     TextField as MuiTextField,
     type TextFieldProps,
+    version as muiVersion,
 } from '@mui/material';
+import { gte } from 'semver';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
 
@@ -174,8 +176,9 @@ export const ResettableTextField = forwardRef(
                 margin={margin}
                 className={className}
                 {...rest}
-                // @ts-expect-error slotProps do not yet exist in MUI v5
-                slotProps={mergedSlotProps}
+                {...(gte(muiVersion as string, '9.0.0')
+                    ? { slotProps: mergedSlotProps }
+                    : {})}
                 inputRef={ref}
             />
         );

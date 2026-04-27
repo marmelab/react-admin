@@ -11,7 +11,9 @@ import {
     Snackbar,
     type SnackbarProps,
     SnackbarOrigin,
+    version as muiVersion,
 } from '@mui/material';
+import { gte } from 'semver';
 import clsx from 'clsx';
 
 import {
@@ -185,8 +187,9 @@ export const Notification = (inProps: NotificationProps) => {
                 anchorOrigin={anchorOrigin}
                 {...rest}
                 {...options}
-                // @ts-expect-error slotProps do not yet exist in MUI v5
-                slotProps={mergedSlotProps}
+                {...(gte(muiVersion as string, '9.0.0')
+                    ? { slotProps: mergedSlotProps }
+                    : {})}
             >
                 {message &&
                 typeof message !== 'string' &&

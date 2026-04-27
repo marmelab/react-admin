@@ -7,6 +7,8 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import { version as muiVersion } from '@mui/material';
+import { gte } from 'semver';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -131,7 +133,9 @@ export const TimeInput = (props: TimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            slotProps={mergedSlotProps}
+            {...(gte(muiVersion as string, '9.0.0')
+                ? { slotProps: mergedSlotProps }
+                : {})}
         />
     );
 };

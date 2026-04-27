@@ -21086,6 +21086,7 @@ __metadata:
     react-router: "npm:^6.28.1"
     react-router-dom: "npm:^6.28.1"
     react-transition-group: "npm:^4.4.5"
+    semver: "npm:^7.7.4"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -22760,7 +22761,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.3":
+"semver@npm:^7.5.3, semver@npm:^7.5.4, semver@npm:^7.6.3, semver@npm:^7.7.4":
   version: 7.7.4
   resolution: "semver@npm:7.7.4"
   bin:

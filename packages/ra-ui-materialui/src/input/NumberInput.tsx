@@ -7,6 +7,8 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import { version as muiVersion } from '@mui/material';
+import { gte } from 'semver';
 
 import { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
@@ -177,7 +179,9 @@ export const NumberInput = (props: NumberInputProps) => {
             margin={margin}
             inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
-            slotProps={mergedSlotProps}
+            {...(gte(muiVersion as string, '9.0.0')
+                ? { slotProps: mergedSlotProps }
+                : {})}
         />
     );
 };
