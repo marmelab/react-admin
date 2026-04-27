@@ -83,6 +83,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
             : data.map(record => record.id)
         : [];
 
+    const selectAllInputProps = {
+        'aria-label': translate('ra.action.select_all', { _: 'Select all' }),
+    };
+
     return (
         <TableHead className={clsx(className, DatagridClasses.thead)}>
             <TableRow
@@ -109,12 +113,9 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            inputProps={{
-                                'aria-label': translate(
-                                    'ra.action.select_all',
-                                    { _: 'Select all' }
-                                ),
-                            }}
+                            inputProps={selectAllInputProps}
+                            // @ts-expect-error slotProps do not yet exist in MUI v5
+                            slotProps={{ input: selectAllInputProps }}
                             className="select-all"
                             color="primary"
                             checked={

@@ -122,6 +122,14 @@ export const Configurable = (inProps: ConfigurableProps) => {
         setIsCustomizeButtonVisible(false);
     };
 
+    const popoverPaperProps = {
+        elevation: 1,
+        onMouseEnter: handleShowButton,
+        onMouseLeave: handleHideButton,
+        title: translate(openButtonLabel),
+        onClick: handleOpenEditor,
+    };
+
     return (
         <PreferenceKeyContextProvider value={prefixedPreferenceKey}>
             <Root
@@ -163,18 +171,14 @@ export const Configurable = (inProps: ConfigurableProps) => {
                     horizontal: 'center',
                 }}
                 onClose={handleHideButton}
-                PaperProps={{
-                    elevation: 1,
-                    onMouseEnter: handleShowButton,
-                    onMouseLeave: handleHideButton,
-                    title: translate(openButtonLabel),
-                    onClick: handleOpenEditor,
-                }}
                 disableAutoFocus
                 disableRestoreFocus
                 disableEnforceFocus
                 disableScrollLock
                 marginThreshold={8}
+                PaperProps={popoverPaperProps}
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                slotProps={{ paper: popoverPaperProps }}
             >
                 <SettingsIcon
                     // @ts-ignore

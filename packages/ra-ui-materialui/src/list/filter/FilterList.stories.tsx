@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Box, Typography, Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlined';
 import BiotechIcon from '@mui/icons-material/Biotech';
 import NewspaperIcon from '@mui/icons-material/Newspaper';
 import LocalOfferIcon from '@mui/icons-material/LocalOffer';

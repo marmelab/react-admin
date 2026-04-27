@@ -77,6 +77,13 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
             },
         },
     },
+    MuiListItemIcon: {
+        styleOverrides: {
+            root: {
+                minWidth: 56,
+            },
+        },
+    },
     MuiTableCell: {
         styleOverrides: {
             root: {

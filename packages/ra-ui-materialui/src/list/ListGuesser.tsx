@@ -169,7 +169,9 @@ const ListGuesserEmpty = (inProps: ListGuesserEmptyProps) => {
         <ListGuesserEmptyRoot className={className}>
             <Box className={ListGuesserEmptyClasses.message}>
                 <Inbox className={ListGuesserEmptyClasses.icon} />
-                <Typography variant="h4" paragraph>
+                <Typography variant="h4" sx={{
+                    marginBottom: "16px"
+                }}>
                     {translate('ra.guesser.empty.title', {
                         _: 'No data to display',
                     })}

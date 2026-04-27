@@ -24,7 +24,7 @@ import { useListContext } from '../controller/list/useListContext';
  * at other places to create your own filter UI.
  *
  * @example
- * import MailIcon from '@mui/icons-material/MailOutline';
+ * import MailIcon from '@mui/icons-material/MailOutlined';
  * import TitleIcon from '@mui/icons-material/Title';
  * import { Card, CardContent } from '@mui/material';
  * import * as React from 'react';

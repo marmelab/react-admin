@@ -1,5 +1,5 @@
 import * as React from 'react';
-import CloseIcon from '@mui/icons-material/RemoveCircleOutline';
+import CloseIcon from '@mui/icons-material/RemoveCircleOutlined';
 import clsx from 'clsx';
 import { useSimpleFormIterator, useSimpleFormIteratorItem } from 'ra-core';
 

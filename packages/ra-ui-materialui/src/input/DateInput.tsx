@@ -188,6 +188,11 @@ export const DateInput = (props: DateInputProps) => {
     const { ref, name } = field;
     const inputRef = useForkRef(ref, localInputRef);
 
+    const mergedSlotProps = {
+        ...rest.slotProps,
+        inputLabel: { ...defaultInputLabelProps, ...rest.slotProps?.inputLabel },
+    };
+
     return (
         <StyledTextField
             id={id}
@@ -226,6 +231,8 @@ export const DateInput = (props: DateInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            slotProps={mergedSlotProps}
         />
     );
 };

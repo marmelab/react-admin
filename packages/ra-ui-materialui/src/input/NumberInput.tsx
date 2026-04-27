@@ -68,7 +68,11 @@ export const NumberInput = (props: NumberInputProps) => {
     });
     const { onBlur: onBlurFromField } = field;
 
-    const inputProps = { ...overrideInputProps, step, min, max };
+    const inputProps = { ...overrideInputProps, step, min, max, readOnly };
+    const mergedSlotProps = {
+        ...rest.slotProps,
+        htmlInput: { ...inputProps, ...rest.slotProps?.htmlInput },
+    };
 
     // This is a controlled input that renders directly the string typed by the user.
     // This string is converted to a number on change, and stored in the form state,
@@ -169,8 +173,10 @@ export const NumberInput = (props: NumberInputProps) => {
                 ) : null
             }
             margin={margin}
-            inputProps={{ ...inputProps, readOnly }}
+            inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            slotProps={mergedSlotProps}
         />
     );
 };

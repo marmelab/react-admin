@@ -148,23 +148,32 @@ export const ResettableTextField = forwardRef(
             }
         };
 
+        const inputProps = {
+            readOnly: readOnly,
+            classes:
+                props.select && variant === 'filled'
+                    ? { adornedEnd: inputAdornedEnd }
+                    : {},
+            endAdornment: getEndAdornment(),
+            ...InputPropsWithoutEndAdornment,
+        };
+
+        const mergedSlotProps = {
+            ...rest.slotProps,
+            input: { ...inputProps, ...rest.slotProps?.input },
+        };
+
         return (
             <StyledTextField
                 value={value}
-                InputProps={{
-                    readOnly: readOnly,
-                    classes:
-                        props.select && variant === 'filled'
-                            ? { adornedEnd: inputAdornedEnd }
-                            : {},
-                    endAdornment: getEndAdornment(),
-                    ...InputPropsWithoutEndAdornment,
-                }}
+                InputProps={inputProps}
                 disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}
                 className={className}
                 {...rest}
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                slotProps={mergedSlotProps}
                 inputRef={ref}
             />
         );

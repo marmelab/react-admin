@@ -133,6 +133,23 @@ export const Notification = (inProps: NotificationProps) => {
         ...options
     } = notificationOptions || {};
 
+    const transitionProps = { onExited: handleExited };
+    const contentProps = {
+        className: clsx(
+            NotificationClasses[typeFromMessage || type],
+            {
+                [NotificationClasses.multiLine]:
+                    multilineFromMessage || multiLine,
+            }
+        ),
+    };
+
+    const mergedSlotProps = {
+        ...rest.slotProps,
+        transition: { ...transitionProps, ...rest.slotProps?.transition },
+        content: { ...contentProps, ...rest.slotProps?.content },
+    };
+
     return (
         <CloseNotificationContext.Provider value={handleRequestClose}>
             <StyledSnackbar
@@ -151,17 +168,9 @@ export const Notification = (inProps: NotificationProps) => {
                         : autoHideDurationFromMessage ?? undefined
                 }
                 disableWindowBlurListener={undoable}
-                TransitionProps={{ onExited: handleExited }}
+                TransitionProps={transitionProps}
+                ContentProps={contentProps}
                 onClose={handleRequestClose}
-                ContentProps={{
-                    className: clsx(
-                        NotificationClasses[typeFromMessage || type],
-                        {
-                            [NotificationClasses.multiLine]:
-                                multilineFromMessage || multiLine,
-                        }
-                    ),
-                }}
                 action={
                     undoable ? (
                         <Button
@@ -177,6 +186,8 @@ export const Notification = (inProps: NotificationProps) => {
                 anchorOrigin={anchorOrigin}
                 {...rest}
                 {...options}
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                slotProps={mergedSlotProps}
             >
                 {message &&
                 typeof message !== 'string' &&

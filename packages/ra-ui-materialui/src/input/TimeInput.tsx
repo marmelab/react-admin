@@ -89,6 +89,11 @@ export const TimeInput = (props: TimeInputProps) => {
 
     const renderHelperText = helperText !== false || invalid;
 
+    const mergedSlotProps = {
+        ...rest.slotProps,
+        inputLabel: { ...defaultInputLabelProps, ...rest.slotProps?.inputLabel },
+    };
+
     return (
         <StyledTextField
             id={id}
@@ -121,6 +126,8 @@ export const TimeInput = (props: TimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            slotProps={mergedSlotProps}
         />
     );
 };
