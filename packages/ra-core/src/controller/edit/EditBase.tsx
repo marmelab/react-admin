@@ -111,7 +111,12 @@ export interface EditBaseProps<
     ErrorType = Error,
 > extends EditControllerProps<RecordType, ErrorType> {
     authLoading?: ReactNode;
-    loading?: ReactNode;
+	
+	/**
+	 * @deprecated use the `saving` boolean returned by useEditController instead.
+	 * For authentication-related loading states, use `authLoading`.
+	 */
+	loading?: ReactNode;
     offline?: ReactNode;
     error?: ReactNode;
     children?: ReactNode;

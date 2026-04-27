@@ -99,8 +99,10 @@ export interface CreateBaseProps<
     children?: ReactNode;
     render?: (props: CreateControllerResult<RecordType>) => ReactNode;
     authLoading?: ReactNode;
-    /**
-     * @deprecated use authLoading instead
-     */
+	
+	/**
+	 * @deprecated use the `saving` boolean returned by useCreateController instead.
+	 * For authentication-related loading states, use `authLoading`.
+	 */
     loading?: ReactNode;
 }
