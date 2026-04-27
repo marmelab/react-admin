@@ -12,9 +12,8 @@ import {
     TableCell,
     TableHead,
     TableRow,
-    version as muiVersion,
+    major as muiMajor,
 } from '@mui/material';
-import { gte } from 'semver';
 import clsx from 'clsx';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
@@ -121,7 +120,7 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                     >
                         <Checkbox
                             inputProps={selectAllInputProps}
-                            {...(gte(muiVersion as string, '9.0.0')
+                            {...(muiMajor >= 6
                                 ? { slotProps: { input: selectAllInputProps } }
                                 : {})}
                             className="select-all"

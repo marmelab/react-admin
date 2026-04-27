@@ -11,9 +11,8 @@ import {
     IconButton,
     TextField as MuiTextField,
     type TextFieldProps,
-    version as muiVersion,
+    major as muiMajor,
 } from '@mui/material';
-import { gte } from 'semver';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
 
@@ -176,9 +175,7 @@ export const ResettableTextField = forwardRef(
                 margin={margin}
                 className={className}
                 {...rest}
-                {...(gte(muiVersion as string, '6.0.0')
-                    ? { slotProps: mergedSlotProps }
-                    : {})}
+                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
                 inputRef={ref}
             />
         );

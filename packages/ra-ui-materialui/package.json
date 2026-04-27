@@ -81,8 +81,7 @@
         "react-dropzone": "^14.2.3",
         "react-error-boundary": "^4.0.13",
         "react-hotkeys-hook": "^5.1.0",
-        "react-transition-group": "^4.4.5",
-        "semver": "^7.7.4"
+        "react-transition-group": "^4.4.5"
     },
     "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
     "exports": {

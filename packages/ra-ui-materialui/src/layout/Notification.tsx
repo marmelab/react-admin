@@ -11,9 +11,8 @@ import {
     Snackbar,
     type SnackbarProps,
     SnackbarOrigin,
-    version as muiVersion,
+    major as muiMajor,
 } from '@mui/material';
-import { gte } from 'semver';
 import clsx from 'clsx';
 
 import {
@@ -187,9 +186,7 @@ export const Notification = (inProps: NotificationProps) => {
                 anchorOrigin={anchorOrigin}
                 {...rest}
                 {...options}
-                {...(gte(muiVersion as string, '6.0.0')
-                    ? { slotProps: mergedSlotProps }
-                    : {})}
+                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
             >
                 {message &&
                 typeof message !== 'string' &&

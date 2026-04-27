@@ -1,5 +1,4 @@
-import { Checkbox, version as muiVersion } from '@mui/material';
-import { gte } from 'semver';
+import { Checkbox, major as muiMajor } from '@mui/material';
 import {
     useDataTableCallbacksContext,
     useDataTableDataContext,
@@ -55,7 +54,7 @@ export const SelectPageCheckbox = () => {
     return (
         <Checkbox
             inputProps={selectAllInputProps}
-            {...(gte(muiVersion as string, '9.0.0')
+            {...(muiMajor >= 6
                 ? { slotProps: { input: selectAllInputProps } }
                 : {})}
             className="select-all"

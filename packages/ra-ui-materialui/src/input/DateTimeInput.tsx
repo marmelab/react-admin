@@ -11,8 +11,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef, version as muiVersion } from '@mui/material';
-import { gte } from 'semver';
+import { useForkRef, major as muiMajor } from '@mui/material';
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
@@ -196,9 +195,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(gte(muiVersion as string, '6.0.0')
-                ? { slotProps: mergedSlotProps }
-                : {})}
+            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
     );
 };

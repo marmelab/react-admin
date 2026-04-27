@@ -11,8 +11,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef, version as muiVersion } from '@mui/material';
-import { gte } from 'semver';
+import { useForkRef, major as muiMajor } from '@mui/material';
 
 /**
  * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
@@ -237,9 +236,7 @@ export const DateInput = (props: DateInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(gte(muiVersion as string, '6.0.0')
-                ? { slotProps: mergedSlotProps }
-                : {})}
+            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
     );
 };
