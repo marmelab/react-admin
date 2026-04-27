@@ -237,7 +237,7 @@ export const DateInput = (props: DateInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(gte(muiVersion as string, '9.0.0')
+            {...(gte(muiVersion as string, '6.0.0')
                 ? { slotProps: mergedSlotProps }
                 : {})}
         />

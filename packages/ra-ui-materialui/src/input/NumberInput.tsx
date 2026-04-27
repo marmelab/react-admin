@@ -179,7 +179,7 @@ export const NumberInput = (props: NumberInputProps) => {
             margin={margin}
             inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
-            {...(gte(muiVersion as string, '9.0.0')
+            {...(gte(muiVersion as string, '6.0.0')
                 ? { slotProps: mergedSlotProps }
                 : {})}
         />
