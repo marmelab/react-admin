@@ -189,9 +189,11 @@ export const DateInput = (props: DateInputProps) => {
     const inputRef = useForkRef(ref, localInputRef);
 
     const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         ...rest.slotProps,
         inputLabel: {
             ...defaultInputLabelProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
             ...rest.slotProps?.inputLabel,
         },
     };
@@ -234,7 +236,6 @@ export const DateInput = (props: DateInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            // @ts-expect-error slotProps do not yet exist in MUI v5
             slotProps={mergedSlotProps}
         />
     );

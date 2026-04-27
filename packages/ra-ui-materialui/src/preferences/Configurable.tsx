@@ -177,7 +177,6 @@ export const Configurable = (inProps: ConfigurableProps) => {
                 disableScrollLock
                 marginThreshold={8}
                 PaperProps={popoverPaperProps}
-                // @ts-expect-error slotProps do not yet exist in MUI v5
                 slotProps={{ paper: popoverPaperProps }}
             >
                 <SettingsIcon

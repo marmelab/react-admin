@@ -90,9 +90,11 @@ export const TimeInput = (props: TimeInputProps) => {
     const renderHelperText = helperText !== false || invalid;
 
     const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         ...rest.slotProps,
         inputLabel: {
             ...defaultInputLabelProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
             ...rest.slotProps?.inputLabel,
         },
     };
@@ -129,7 +131,6 @@ export const TimeInput = (props: TimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            // @ts-expect-error slotProps do not yet exist in MUI v5
             slotProps={mergedSlotProps}
         />
     );

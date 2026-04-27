@@ -70,7 +70,9 @@ export const NumberInput = (props: NumberInputProps) => {
 
     const inputProps = { ...overrideInputProps, step, min, max, readOnly };
     const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         ...rest.slotProps,
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         htmlInput: { ...inputProps, ...rest.slotProps?.htmlInput },
     };
 
@@ -175,7 +177,6 @@ export const NumberInput = (props: NumberInputProps) => {
             margin={margin}
             inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
-            // @ts-expect-error slotProps do not yet exist in MUI v5
             slotProps={mergedSlotProps}
         />
     );

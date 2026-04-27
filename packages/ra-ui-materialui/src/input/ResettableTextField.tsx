@@ -159,7 +159,9 @@ export const ResettableTextField = forwardRef(
         };
 
         const mergedSlotProps = {
+            // @ts-expect-error slotProps do not yet exist in MUI v5
             ...rest.slotProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
             input: { ...inputProps, ...rest.slotProps?.input },
         };
 

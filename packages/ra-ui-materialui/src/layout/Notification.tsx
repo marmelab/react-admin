@@ -141,8 +141,11 @@ export const Notification = (inProps: NotificationProps) => {
     };
 
     const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         ...rest.slotProps,
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         transition: { ...transitionProps, ...rest.slotProps?.transition },
+        // @ts-expect-error slotProps do not yet exist in MUI v5
         content: { ...contentProps, ...rest.slotProps?.content },
     };
 
