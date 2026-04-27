@@ -3,6 +3,7 @@ import { useCallback, useMemo, FC, memo, ReactElement } from 'react';
 import {
     TablePagination,
     TablePaginationBaseProps,
+    TablePaginationProps,
     Toolbar,
     useMediaQuery,
     Theme,
@@ -168,4 +169,5 @@ export interface PaginationProps extends TablePaginationBaseProps {
      * @deprecated The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).
      */
     limit?: ReactElement;
+    slotProps?: TablePaginationProps['slotProps'];
 }

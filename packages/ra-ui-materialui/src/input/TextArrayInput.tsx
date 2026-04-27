@@ -5,6 +5,7 @@ import {
     Autocomplete,
     type AutocompleteProps,
     TextField,
+    major as muiMajor,
 } from '@mui/material';
 import {
     type ComponentsOverrides,
@@ -27,6 +28,15 @@ export type TextArrayInputProps = CommonInputProps &
             'options' | 'renderTags'
         >
     >;
+
+const renderChips = (
+    value: readonly string[],
+    getProps: (args: { index: number }) => any
+) =>
+    value.map((option: string, index: number) => {
+        const { key, ...chipProps } = getProps({ index });
+        return <Chip size="small" label={option} key={key} {...chipProps} />;
+    });
 
 export const TextArrayInput = (inProps: TextArrayInputProps) => {
     const props = useThemeProps({
@@ -74,19 +84,9 @@ export const TextArrayInput = (inProps: TextArrayInputProps) => {
             options={[]}
             id={id}
             className={clsx('ra-input', `ra-input-${source}`, className)}
-            renderTags={(value: readonly string[], getTagProps) =>
-                value.map((option: string, index: number) => {
-                    const { key, ...tagProps } = getTagProps({ index });
-                    return (
-                        <Chip
-                            size="small"
-                            label={option}
-                            key={key}
-                            {...tagProps}
-                        />
-                    );
-                })
-            }
+            {...(muiMajor >= 7
+                ? { renderValue: renderChips }
+                : { renderTags: renderChips })}
             renderInput={params => (
                 <TextField
                     {...params}
