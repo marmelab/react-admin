@@ -135,13 +135,9 @@ export const Notification = (inProps: NotificationProps) => {
 
     const transitionProps = { onExited: handleExited };
     const contentProps = {
-        className: clsx(
-            NotificationClasses[typeFromMessage || type],
-            {
-                [NotificationClasses.multiLine]:
-                    multilineFromMessage || multiLine,
-            }
-        ),
+        className: clsx(NotificationClasses[typeFromMessage || type], {
+            [NotificationClasses.multiLine]: multilineFromMessage || multiLine,
+        }),
     };
 
     const mergedSlotProps = {

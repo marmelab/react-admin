@@ -149,7 +149,10 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
 
     const mergedSlotProps = {
         ...rest.slotProps,
-        inputLabel: { ...defaultInputLabelProps, ...rest.slotProps?.inputLabel },
+        inputLabel: {
+            ...defaultInputLabelProps,
+            ...rest.slotProps?.inputLabel,
+        },
     };
 
     return (
