@@ -237,6 +237,36 @@ describe('<List />', () => {
                 screen.getByText('dummy');
             });
         });
+
+        it('should render the empty component when only a permanent filter is set', async () => {
+            const Dummy = () => {
+                const { isPending } = useListContext();
+                return <div>{isPending ? 'loading' : 'dummy'}</div>;
+            };
+            const CustomEmpty = () => <div>Custom Empty</div>;
+            const dataProvider = {
+                getList: jest.fn(() => Promise.resolve({ data: [], total: 0 })),
+            } as any;
+
+            render(
+                <CoreAdminContext dataProvider={dataProvider}>
+                    <ThemeProvider theme={theme}>
+                        <List
+                            resource="posts"
+                            filter={{ is_published: true }}
+                            empty={<CustomEmpty />}
+                        >
+                            <Dummy />
+                        </List>
+                    </ThemeProvider>
+                </CoreAdminContext>
+            );
+
+            await waitFor(() => {
+                expect(screen.queryByText('dummy')).toBeNull();
+                screen.getByText('Custom Empty');
+            });
+        });
     });
 
     it('should render a filter button/form combo when passed an element in filters', async () => {
