@@ -122,7 +122,7 @@ export const MyEditorOptions = {
 
 The `<RichTextInput>` component has a `toolbar` prop that accepts a `ReactNode`. By default, it uses the `<RichTextInputToolbar>` component.
 
-You can leverage the `toolbar` prop to change the button size:
+You can leverage the `toolbar` prop to change the buttons size:
 
 ```jsx
 import { Edit, SimpleForm, TextInput } from 'react-admin';
