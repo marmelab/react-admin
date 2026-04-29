@@ -635,6 +635,7 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const renderChips = (value, getProps: (args: { index: number }) => any) =>
         value.map((option, index) => {
+            // We have to extract the key because react 19 does not allow to spread the key prop
             const { key, ...chipProps } = getProps({ index });
             // @ts-expect-error slotProps do not yet exist in MUI v5
             const mergedSlotProps = props.slotProps?.chip
