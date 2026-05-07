@@ -14,7 +14,7 @@ import { useTranslate } from 'ra-core';
  * own components look nicer alongside a filter list.
  *
  * @example
- * import MailIcon from '@mui/icons-material/MailOutline';
+ * import MailIcon from '@mui/icons-material/MailOutlined';
  * import TitleIcon from '@mui/icons-material/Title';
  * import { Card, CardContent } from '@mui/material';
  * import * as React from 'react';

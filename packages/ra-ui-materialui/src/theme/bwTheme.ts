@@ -358,6 +358,13 @@ const createBWTheme = (mode: 'light' | 'dark'): ThemeOptions => {
                     variant: 'outlined' as const,
                 },
             },
+            MuiListItemIcon: {
+                styleOverrides: {
+                    root: {
+                        minWidth: 56,
+                    },
+                },
+            },
             MuiDialog: {
                 styleOverrides: {
                     root: {

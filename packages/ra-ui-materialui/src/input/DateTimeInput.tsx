@@ -11,7 +11,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef } from '@mui/material';
+import { useForkRef, major as muiMajor } from '@mui/material';
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
@@ -147,6 +147,16 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
     const { ref, name } = field;
     const inputRef = useForkRef(ref, localInputRef);
 
+    const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        ...rest.slotProps,
+        inputLabel: {
+            ...defaultInputLabelProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            ...rest.slotProps?.inputLabel,
+        },
+    };
+
     return (
         <StyledTextField
             id={id}
@@ -185,6 +195,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
+            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
     );
 };

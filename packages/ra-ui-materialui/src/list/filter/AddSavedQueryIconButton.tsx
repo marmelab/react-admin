@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { IconButton, IconButtonProps } from '@mui/material';
-import AddIcon from '@mui/icons-material/AddCircleOutline';
+import AddIcon from '@mui/icons-material/AddCircleOutlined';
 import { useTranslate } from 'ra-core';
 
 import { AddSavedQueryDialog } from './AddSavedQueryDialog';

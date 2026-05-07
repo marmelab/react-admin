@@ -81,6 +81,13 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => {
                 },
             },
         },
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    minWidth: 56,
+                },
+            },
+        },
         MuiTextField: {
             defaultProps: {
                 variant: 'outlined' as const,

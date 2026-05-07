@@ -1,5 +1,5 @@
 import CategoryIcon from '@mui/icons-material/LocalOffer';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlined';
 import { Card, CardContent, List, ListItem, Typography } from '@mui/material';
 import * as React from 'react';
 

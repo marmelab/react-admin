@@ -11,6 +11,7 @@ import {
     IconButton,
     TextField as MuiTextField,
     type TextFieldProps,
+    major as muiMajor,
 } from '@mui/material';
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
@@ -148,23 +149,33 @@ export const ResettableTextField = forwardRef(
             }
         };
 
+        const inputProps = {
+            readOnly: readOnly,
+            classes:
+                props.select && variant === 'filled'
+                    ? { adornedEnd: inputAdornedEnd }
+                    : {},
+            endAdornment: getEndAdornment(),
+            ...InputPropsWithoutEndAdornment,
+        };
+
+        const mergedSlotProps = {
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            ...rest.slotProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            input: { ...inputProps, ...rest.slotProps?.input },
+        };
+
         return (
             <StyledTextField
                 value={value}
-                InputProps={{
-                    readOnly: readOnly,
-                    classes:
-                        props.select && variant === 'filled'
-                            ? { adornedEnd: inputAdornedEnd }
-                            : {},
-                    endAdornment: getEndAdornment(),
-                    ...InputPropsWithoutEndAdornment,
-                }}
+                InputProps={inputProps}
                 disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}
                 className={className}
                 {...rest}
+                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
                 inputRef={ref}
             />
         );

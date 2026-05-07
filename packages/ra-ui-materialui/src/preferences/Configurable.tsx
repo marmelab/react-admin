@@ -163,18 +163,20 @@ export const Configurable = (inProps: ConfigurableProps) => {
                     horizontal: 'center',
                 }}
                 onClose={handleHideButton}
-                PaperProps={{
-                    elevation: 1,
-                    onMouseEnter: handleShowButton,
-                    onMouseLeave: handleHideButton,
-                    title: translate(openButtonLabel),
-                    onClick: handleOpenEditor,
-                }}
                 disableAutoFocus
                 disableRestoreFocus
                 disableEnforceFocus
                 disableScrollLock
                 marginThreshold={8}
+                slotProps={{
+                    paper: {
+                        elevation: 1,
+                        onMouseEnter: handleShowButton,
+                        onMouseLeave: handleHideButton,
+                        title: translate(openButtonLabel),
+                        onClick: handleOpenEditor,
+                    },
+                }}
             >
                 <SettingsIcon
                     // @ts-ignore

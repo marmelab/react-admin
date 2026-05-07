@@ -42,7 +42,7 @@ const arePropsEqual = (prevProps, nextProps) =>
  *
  * import * as React from 'react';
  * import { Card, CardContent } from '@mui/material';
- * import MailIcon from '@mui/icons-material/MailOutline';
+ * import MailIcon from '@mui/icons-material/MailOutlined';
  * import { FilterList, FilterListItem } from 'react-admin';
  *
  * const FilterSidebar = () => (

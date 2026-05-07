@@ -20,6 +20,7 @@ import {
     TextField,
     type TextFieldProps,
     createFilterOptions,
+    major as muiMajor,
     useForkRef,
 } from '@mui/material';
 import {
@@ -632,6 +633,32 @@ If you provided a React element for the optionText prop, you must also provide t
         return offline;
     }
 
+    const renderChips = (value, getProps: (args: { index: number }) => any) =>
+        value.map((option, index) => {
+            // We have to extract the key because react 19 does not allow to spread the key prop
+            const { key, ...chipProps } = getProps({ index });
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            const mergedSlotProps = props.slotProps?.chip
+                ? // @ts-expect-error slotProps do not yet exist in MUI v5
+                  props.slotProps.chip
+                : props.ChipProps;
+            return (
+                <Chip
+                    label={
+                        isValidElement(optionText)
+                            ? inputText
+                                ? inputText(option)
+                                : ''
+                            : getChoiceText(option)
+                    }
+                    size="small"
+                    key={key}
+                    {...chipProps}
+                    {...mergedSlotProps}
+                />
+            );
+        });
+
     const finalLoadingText =
         typeof loadingText === 'string'
             ? translate(loadingText, {
@@ -720,32 +747,9 @@ If you provided a React element for the optionText prop, you must also provide t
                     );
                 }}
                 multiple={multiple}
-                renderTags={(value, getTagProps) =>
-                    value.map((option, index) => {
-                        // We have to extract the key because react 19 does not allow to spread the key prop
-                        const { key, ...tagProps } = getTagProps({ index });
-                        // @ts-expect-error slotProps do not yet exist in MUI v5
-                        const mergedSlotProps = props.slotProps?.chip
-                            ? // @ts-expect-error slotProps do not yet exist in MUI v5
-                              props.slotProps.chip
-                            : props.ChipProps;
-                        return (
-                            <Chip
-                                label={
-                                    isValidElement(optionText)
-                                        ? inputText
-                                            ? inputText(option)
-                                            : ''
-                                        : getChoiceText(option)
-                                }
-                                size="small"
-                                key={key}
-                                {...tagProps}
-                                {...mergedSlotProps}
-                            />
-                        );
-                    })
-                }
+                {...(muiMajor >= 7
+                    ? { renderValue: renderChips }
+                    : { renderTags: renderChips })}
                 noOptionsText={
                     typeof noOptionsText === 'string'
                         ? translate(noOptionsText, { _: noOptionsText })

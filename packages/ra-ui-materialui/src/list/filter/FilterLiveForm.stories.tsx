@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlined';
 import Person2Icon from '@mui/icons-material/Person2';
 import TitleIcon from '@mui/icons-material/Title';
 import { Box, Card, CardContent, Stack, Typography } from '@mui/material';
