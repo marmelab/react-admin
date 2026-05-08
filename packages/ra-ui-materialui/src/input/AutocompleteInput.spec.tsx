@@ -81,6 +81,58 @@ describe('<AutocompleteInput />', () => {
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
     });
 
+    it('should immediately update input value when re-selecting the same option after partial deletion with filterSelectedOptions={false}', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <AutocompleteInput
+                            {...defaultProps}
+                            choices={[
+                                { id: 1, name: 'foo' },
+                                { id: 2, name: 'bar' },
+                            ]}
+                            filterSelectedOptions={false}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
+
+        // Select 'foo' initially
+        fireEvent.mouseDown(input);
+        await waitFor(() => {
+            expect(screen.queryByText('foo')).not.toBeNull();
+        });
+        fireEvent.click(screen.getByText('foo'));
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
+
+        // Delete last character to get 'fo' using keyboard (avoids controlled-input issues)
+        fireEvent.focus(input);
+        userEvent.type(input, '{end}');
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('fo');
+        });
+
+        // Re-select the same 'foo' option - input should update immediately without blur
+        await waitFor(() => {
+            expect(screen.queryByText('foo')).not.toBeNull();
+        });
+        fireEvent.click(screen.getByText('foo'));
+        // Input should immediately show 'foo' WITHOUT needing a blur event
+        await waitFor(() => {
+            expect(input.value).toEqual('foo');
+        });
+        expect(document.activeElement).toBe(input);
+    });
+
     it('should allow filter to match the selected choice while removing characters in the input', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
