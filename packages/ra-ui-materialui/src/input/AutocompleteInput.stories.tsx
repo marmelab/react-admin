@@ -1493,7 +1493,7 @@ export const OutlinedNoLabel = () => (
 
 // Regression test: with filterSelectedOptions=false, partially deleting the input text
 // and re-selecting the same option should restore the full label immediately (without blur).
-export const ReSelectSameOptionWithFilterSelectedOptionsFalse = () => (
+export const FilterSelectedOptionsFalse = () => (
     <Wrapper>
         <AutocompleteInput
             source="author"

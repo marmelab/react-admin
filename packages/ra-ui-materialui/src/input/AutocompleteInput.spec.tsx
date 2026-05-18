@@ -30,6 +30,7 @@ import {
     CreateLabel,
     CreateItemLabel,
     CreateItemLabelRendered,
+    FilterSelectedOptionsFalse,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -82,53 +83,28 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should immediately update input value when re-selecting the same option after partial deletion with filterSelectedOptions={false}', async () => {
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm>
-                        <AutocompleteInput
-                            {...defaultProps}
-                            choices={[
-                                { id: 1, name: 'foo' },
-                                { id: 2, name: 'bar' },
-                            ]}
-                            filterSelectedOptions={false}
-                        />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
-        );
+        render(<FilterSelectedOptionsFalse />);
 
-        const input = screen.getByLabelText(
-            'resources.users.fields.role'
-        ) as HTMLInputElement;
+        // Wait for the Edit form to load — record has author: 1 (Leo Tolstoy)
+        const input = (await screen.findByDisplayValue(
+            'Leo Tolstoy'
+        )) as HTMLInputElement;
 
-        // Select 'foo' initially
-        fireEvent.mouseDown(input);
-        await waitFor(() => {
-            expect(screen.queryByText('foo')).not.toBeNull();
-        });
-        fireEvent.click(screen.getByText('foo'));
-        await waitFor(() => {
-            expect(input.value).toEqual('foo');
-        });
-
-        // Delete last character to get 'fo' using keyboard (avoids controlled-input issues)
+        // Delete last character to trigger the filter while keeping the option visible
         fireEvent.focus(input);
         userEvent.type(input, '{end}');
         userEvent.type(input, '{backspace}');
         await waitFor(() => {
-            expect(input.value).toEqual('fo');
+            expect(input.value).toEqual('Leo Tolsto');
         });
 
-        // Re-select the same 'foo' option - input should update immediately without blur
+        // Re-select the same option — input should restore immediately without blur
         await waitFor(() => {
-            expect(screen.queryByText('foo')).not.toBeNull();
+            expect(screen.queryByText('Leo Tolstoy')).not.toBeNull();
         });
-        fireEvent.click(screen.getByText('foo'));
-        // Input should immediately show 'foo' WITHOUT needing a blur event
+        fireEvent.click(screen.getByText('Leo Tolstoy'));
         await waitFor(() => {
-            expect(input.value).toEqual('foo');
+            expect(input.value).toEqual('Leo Tolstoy');
         });
         expect(document.activeElement).toBe(input);
     });
