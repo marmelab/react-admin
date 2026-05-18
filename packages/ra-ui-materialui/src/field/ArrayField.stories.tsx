@@ -104,6 +104,34 @@ export const Filter = () => (
     </TestMemoryRouter>
 );
 
+export const Label = () => (
+    <TestMemoryRouter>
+        <SimpleShowLayout record={{ id: 123, books }}>
+            <ArrayField source="books" label="List of Books">
+                <SingleFieldList linkType={false}>
+                    <ChipField source="title" />
+                </SingleFieldList>
+            </ArrayField>
+        </SimpleShowLayout>
+    </TestMemoryRouter>
+);
+
+interface Author {
+    id: number;
+    name: string;
+    books: { id: number; title: string }[];
+}
+
+export const Generic = () => (
+    <TestMemoryRouter>
+        <ArrayField<Author> source="books">
+            <SingleFieldList linkType={false}>
+                <ChipField source="title" />
+            </SingleFieldList>
+        </ArrayField>
+    </TestMemoryRouter>
+);
+
 const SortButton = () => {
     const { setSort } = useListContext();
     return (
