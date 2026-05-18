@@ -1,5 +1,19 @@
 # Changelog
 
+## 5.14.7
+
+* [Doc] Fix typos in the `RichTextInput` docs ([#11250](https://github.com/marmelab/react-admin/pull/11250)) ([fengfeng-zi](https://github.com/fengfeng-zi))
+* [TypeScript] Fix `ArrayField` doesn't accept a label prop ([#11264](https://github.com/marmelab/react-admin/pull/11264)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Add tests to cover `List` empty state with permanent filters ([#11235](https://github.com/marmelab/react-admin/pull/11235)) ([terminalchai](https://github.com/terminalchai))
+* Bump devalue from 5.6.4 to 5.8.1 ([#11260](https://github.com/marmelab/react-admin/pull/11260)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump systeminformation from 5.31.1 to 5.31.6 ([#11258](https://github.com/marmelab/react-admin/pull/11258)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @babel/plugin-transform-modules-systemjs from 7.29.0 to 7.29.4 ([#11256](https://github.com/marmelab/react-admin/pull/11256)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump fast-uri from 3.1.0 to 3.1.2 ([#11255](https://github.com/marmelab/react-admin/pull/11255)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump postcss from 8.5.6 to 8.5.14 ([#11253](https://github.com/marmelab/react-admin/pull/11253)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump axios from 1.15.0 to 1.16.0 ([#11252](https://github.com/marmelab/react-admin/pull/11252)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump ip-address from 10.1.0 to 10.2.0 ([#11251](https://github.com/marmelab/react-admin/pull/11251)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.3.2 to 3.4.0 ([#11245](https://github.com/marmelab/react-admin/pull/11245)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.14.6
 
 * Fix possible prototype-polluting assignments in local data providers ([#11227](https://github.com/marmelab/react-admin/pull/11227)) ([WiXSL](https://github.com/WiXSL))
