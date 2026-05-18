@@ -2,6 +2,7 @@
 
 ## 5.14.7
 
+* Fix `AutocompleteInput` does not open autocomplete options when `shouldRenderSuggestions` returns false ([#11263](https://github.com/marmelab/react-admin/pull/11263)) ([jonathanarnault](https://github.com/jonathanarnault))
 * [Doc] Fix typos in the `RichTextInput` docs ([#11250](https://github.com/marmelab/react-admin/pull/11250)) ([fengfeng-zi](https://github.com/fengfeng-zi))
 * [TypeScript] Fix `ArrayField` doesn't accept a label prop ([#11264](https://github.com/marmelab/react-admin/pull/11264)) ([fzaninotto](https://github.com/fzaninotto))
 * [Chore] Add tests to cover `List` empty state with permanent filters ([#11235](https://github.com/marmelab/react-admin/pull/11235)) ([terminalchai](https://github.com/terminalchai))
