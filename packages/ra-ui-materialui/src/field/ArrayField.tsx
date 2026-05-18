@@ -1,3 +1,4 @@
+import * as React from 'react';
 import { ArrayFieldBase, type ArrayFieldBaseProps } from 'ra-core';
 
 import type { FieldProps } from './types';
@@ -23,7 +24,11 @@ import type { FieldProps } from './types';
  *
  * @see useListContext
  */
-export const ArrayField = ArrayFieldBase;
+export const ArrayField = <
+    RecordType extends Record<string, any> = Record<string, any>,
+>(
+    props: ArrayFieldProps<RecordType>
+) => <ArrayFieldBase<RecordType> {...props} />;
 
 export interface ArrayFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
