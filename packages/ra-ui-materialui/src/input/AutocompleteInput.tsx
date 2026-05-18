@@ -343,7 +343,8 @@ If you provided a React element for the optionText prop, you must also provide t
 
     const [isOpen, setIsOpen] = useState(false);
     const canRenderSuggestions =
-        !shouldRenderSuggestions || shouldRenderSuggestions(filterValue);
+        shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
+        shouldRenderSuggestions(filterValue);
 
     const handleOpen = useEvent((event: React.SyntheticEvent) => {
         setIsOpen(true);
