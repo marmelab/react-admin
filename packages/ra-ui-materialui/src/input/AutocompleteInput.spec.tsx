@@ -708,17 +708,19 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should respect shouldRenderSuggestions over default if passed in', async () => {
+    it('should not open the suggestions popper when shouldRenderSuggestions returns false', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
+                        defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
                             {...defaultProps}
-                            shouldRenderSuggestions={() => false}
+                            shouldRenderSuggestions={(v: string) =>
+                                v.length >= 2
+                            }
                             noOptionsText="No options"
                             choices={[
                                 { id: 1, name: 'bar' },
@@ -730,11 +732,21 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
 
-        const input = screen.getByLabelText('resources.users.fields.role');
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
         fireEvent.focus(input);
+
+        // popper must NOT open while shouldRenderSuggestions returns false
+        expect(screen.queryByRole('listbox')).toBeNull();
+        expect(screen.queryByText('No options')).toBeNull();
+
+        // typing 2+ chars satisfies the predicate -> popper opens
+        fireEvent.change(input, { target: { value: 'fo' } });
         await waitFor(() => {
-            expect(screen.queryByText('foo')).toBeNull();
+            expect(screen.queryByRole('listbox')).not.toBeNull();
         });
+        expect(screen.queryByText('foo')).not.toBeNull();
     });
 
     it('should not fail when value is null and new choices are applied', () => {
