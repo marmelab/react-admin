@@ -53,6 +53,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         resource,
         source = 'id',
         offline = defaultOffline,
+        children,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -66,7 +67,9 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
                 <ErrorIcon color="error" fontSize="small" titleAccess="error" />
             }
             offline={offline}
-        />
+        >
+            {children}
+        </ReferenceManyCountBase>
     );
     return (
         <StyledTypography
@@ -106,7 +109,7 @@ const defaultOffline = <Offline variant="inline" />;
 export interface ReferenceManyCountProps<RecordType extends RaRecord = RaRecord>
     extends Omit<FieldProps<RecordType>, 'source'>,
         Omit<ReferenceManyCountBaseProps, 'record'>,
-        Omit<TypographyProps, 'textAlign'> {
+        Omit<TypographyProps, 'children' | 'textAlign'> {
     link?: boolean;
 }
 
