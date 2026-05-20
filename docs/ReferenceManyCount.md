@@ -66,6 +66,7 @@ export const PostList = () => (
 | ----------- | -------- | ------------------------------------------ | --------------------------------- | ------------------------------------------------------------------------- |
 | `reference` | Required | string                                     | -                                 | Name of the related resource to fetch (e.g. `comments`)                   |
 | `target`    | Required | string                                     | -                                 | Name of the field in the related resource that points to the current one. |
+| `children`  | Optional | `ReactNode`                                | -                                 | The component used to render the count.                                   |
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
 | `offline`   | Optional | `ReactNode`                                |                                   | The component to render when there is no connectivity and the record isn't in the cache
@@ -76,6 +77,18 @@ export const PostList = () => (
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
 
 Additional props are passed to [the underlying Material UI `<Typography>` element](https://mui.com/material-ui/api/typography/).
+
+## `children`
+
+By default, `<ReferenceManyCount>` renders the total as a raw number. You can pass a child component to customize the rendering. `<ReferenceManyCount>` creates a `RecordContext` with a `total` field, so any Field component can read it:
+
+```jsx
+import { NumberField, ReferenceManyCount } from 'react-admin';
+
+<ReferenceManyCount reference="comments" target="post_id" link>
+    <NumberField source="total" locales="en-US" />
+</ReferenceManyCount>
+```
 
 ## `filter`
 

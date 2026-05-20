@@ -4,8 +4,10 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import {
     Basic,
     ErrorState,
+    LinkWithChildren,
     Offline,
     Themed,
+    WithChildren,
     WithFilter,
     Wrapper,
 } from './ReferenceManyCount.stories';
@@ -20,6 +22,19 @@ describe('<ReferenceManyCount />', () => {
         render(<Basic />);
         await screen.findByText('3');
     });
+
+    it('should render children in a record context containing the total', async () => {
+        render(<WithChildren />);
+        await screen.findByText('30,060');
+    });
+
+    it('should wrap children in a link when link is true', async () => {
+        render(<LinkWithChildren />);
+        expect(
+            await screen.findByRole('link', { name: '30,060' })
+        ).toHaveAttribute('href', '/comments?filter={"post_id":1}');
+    });
+
     it('should render an error icon when the request fails', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<ErrorState />);

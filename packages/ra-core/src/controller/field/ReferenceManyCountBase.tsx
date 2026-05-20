@@ -4,6 +4,7 @@ import {
     type UseReferenceManyFieldControllerParams,
 } from './useReferenceManyFieldController';
 import { useTimeout } from '../../util/hooks';
+import { RecordContextProvider } from '../record';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -17,7 +18,14 @@ import { useTimeout } from '../../util/hooks';
  * <ReferenceManyCountBase reference="comments" target="post_id" filter={{ is_published: true }} />
  */
 export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
-    const { loading, error, offline, timeout = 1000, ...rest } = props;
+    const {
+        children,
+        loading,
+        error,
+        offline,
+        timeout = 1000,
+        ...rest
+    } = props;
     const oneSecondHasPassed = useTimeout(timeout);
 
     const {
@@ -37,24 +45,41 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
         isPending && isPaused && offline !== undefined && offline !== false;
     const shouldRenderError =
         !isPending && fetchError && error !== undefined && error !== false;
+    const totalRecord = React.useMemo(() => ({ id: 'count', total }), [total]);
+    const renderChildren =
+        typeof children === 'function' ? children(totalRecord) : children;
 
     return (
         <>
-            {shouldRenderLoading
-                ? oneSecondHasPassed
-                    ? loading
-                    : null
-                : shouldRenderOffline
-                  ? offline
-                  : shouldRenderError
-                    ? error
-                    : total}
+            {shouldRenderLoading ? (
+                oneSecondHasPassed ? (
+                    loading
+                ) : null
+            ) : shouldRenderOffline ? (
+                offline
+            ) : shouldRenderError ? (
+                error
+            ) : children != null ? (
+                <RecordContextProvider value={totalRecord}>
+                    {renderChildren}
+                </RecordContextProvider>
+            ) : (
+                total
+            )}
         </>
     );
 };
 
+export interface ReferenceManyCountRecord {
+    id: string;
+    total: number | undefined;
+}
+
 export interface ReferenceManyCountBaseProps
     extends UseReferenceManyFieldControllerParams {
+    children?:
+        | React.ReactNode
+        | ((record: ReferenceManyCountRecord) => React.ReactNode);
     timeout?: number;
     loading?: React.ReactNode;
     error?: React.ReactNode;
