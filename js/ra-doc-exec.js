@@ -1,15 +1,12 @@
 /* global Prism */
-import { transpileModule } from 'https://esm.sh/typescript@5.7.3';
-import * as prettier from 'https://esm.sh/prettier@3.5.1/standalone';
-import * as babel from 'https://esm.sh/prettier@3.5.1/plugins/babel';
-import { marked } from 'https://esm.sh/marked@15.0.7';
 
 export const showTip = async () => {
     const tipContainer = document.getElementById('tip-container');
     const tipElement = document.getElementById('tip');
     if (!tipElement) return;
 
-    const [tips, features] = await Promise.all([
+    const [{ marked }, tips, features] = await Promise.all([
+        import('https://esm.sh/marked@15.0.7'),
         getContents('./assets/tips.md_ignore'),
         getContents('./assets/features.md_ignore'),
     ]);
@@ -94,7 +91,25 @@ const applyPreferredLanguage = async () => {
     );
 };
 
+let transpilerPromise;
+const loadTranspiler = () => {
+    if (!transpilerPromise) {
+        transpilerPromise = Promise.all([
+            import('https://esm.sh/typescript@5.7.3'),
+            import('https://esm.sh/prettier@3.5.1/standalone'),
+            import('https://esm.sh/prettier@3.5.1/plugins/babel'),
+        ]).then(([ts, prettier, babel]) => ({
+            transpileModule: ts.transpileModule,
+            prettier,
+            babel,
+        }));
+    }
+    return transpilerPromise;
+};
+
 const transpileToJS = async tsCode => {
+    const { transpileModule, prettier, babel } = await loadTranspiler();
+
     const transpilation = transpileModule(
         // Ensure blank lines are preserved
         tsCode.replace(/\n\n/g, '\n/** THIS_IS_A_NEWLINE **/'),
