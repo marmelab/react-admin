@@ -3,6 +3,9 @@
     <head>
         <title>React-admin - {{ page.title }}</title>
         <meta charset="UTF-8" />
+        {% if page.dir contains "doc" %}
+        <meta name="robots" content="noindex" />
+        {% endif %}
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <meta name="description" content="{{ page.description }}" />
