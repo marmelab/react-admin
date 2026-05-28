@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@astrojs/mdx": "^5.0.6",
-        "@astrojs/react": "^4.3.1",
+        "@astrojs/react": "^5.0.6",
         "@astrojs/starlight": "^0.39.2",
         "@astrojs/starlight-tailwind": "^5.0.0",
         "@expressive-code/plugin-collapsible-sections": "^0.41.3",
