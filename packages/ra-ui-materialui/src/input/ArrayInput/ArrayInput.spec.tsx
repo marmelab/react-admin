@@ -26,6 +26,7 @@ import {
     Focus,
     Reset,
     ConditionalArrayInputValidationContent,
+    TriggerValidation,
 } from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
@@ -308,6 +309,18 @@ describe('<ArrayInput />', () => {
         fireEvent.click(screen.getByText('ra.action.save'));
 
         await screen.findByText('ra.validation.required');
+    });
+
+    // Reproduces the WizardForm scenario where validation is triggered when
+    // navigating between steps without the user having interacted with the field.
+    it('should display the error after validation is triggered programmatically without user interaction', async () => {
+        render(<TriggerValidation />);
+
+        expect(screen.queryByText('Required')).toBeNull();
+
+        fireEvent.click(await screen.findByText('Validate'));
+
+        await screen.findByText('Required');
     });
 
     it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {

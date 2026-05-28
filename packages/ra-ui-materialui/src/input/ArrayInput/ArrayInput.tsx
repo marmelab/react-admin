@@ -89,6 +89,7 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     const parentSourceContext = useSourceContext();
     const finalSource = parentSourceContext.getSource(arraySource);
     const { subscribe } = useFormContext();
+    const initialCallbackHandledRef = React.useRef(false);
     const [{ error, hasBeenInteractedWith, isSubmitted }, setArrayInputState] =
         React.useState<{
             error: any;
@@ -108,10 +109,17 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
                 touchedFields: true,
             },
             callback: ({ dirtyFields, errors, isSubmitted, touchedFields }) => {
+                const isInitialCallback = !initialCallbackHandledRef.current;
+                initialCallbackHandledRef.current = true;
                 const error = get(errors ?? {}, finalSource);
+                // An error appearing only after the initial subscription
+                // (i.e. not on mount) indicates validation was explicitly
+                // triggered later — e.g. via trigger() in WizardForm when
+                // navigating between steps without interacting with the field.
                 const hasBeenInteractedWith =
                     get(dirtyFields ?? {}, finalSource, false) !== false ||
-                    get(touchedFields ?? {}, finalSource, false) !== false;
+                    get(touchedFields ?? {}, finalSource, false) !== false ||
+                    (!isInitialCallback && error !== undefined);
 
                 setArrayInputState(previousState =>
                     isEqual(previousState, {

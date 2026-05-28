@@ -871,6 +871,45 @@ export const DisplayErrorOnlyAfterInteractionOrInvalidSubmit = () => (
     </TestMemoryRouter>
 );
 
+const TriggerValidationButton = () => {
+    const { trigger } = useFormContext();
+    return (
+        <Button onClick={() => trigger()} variant="outlined">
+            Validate
+        </Button>
+    );
+};
+
+export const TriggerValidation = () => (
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                create={() => (
+                    <Create>
+                        <SimpleForm>
+                            <Alert severity="info" sx={{ mb: 2 }}>
+                                Reproduces the WizardForm scenario where
+                                validation is triggered programmatically (e.g.
+                                when navigating between steps) without the user
+                                having interacted with the field. Clicking
+                                &quot;Validate&quot; should display the required
+                                error on the ArrayInput.
+                            </Alert>
+                            <ArrayInput source="authors" validate={required()}>
+                                <SimpleFormIterator>
+                                    <TextInput source="name" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                            <TriggerValidationButton />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const CreateGlobalValidationInFormTab = () => {
     return (
         <Create
