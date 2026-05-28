@@ -86,17 +86,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/internal-helpers@npm:0.7.2":
-  version: 0.7.2
-  resolution: "@astrojs/internal-helpers@npm:0.7.2"
-  checksum: c80f7d28f7b241b64f6542df68767b62e33d5637c4b23e8b7edcc9c6e3d5d3169b572e7da4d8eb5536939c34f8be0225923c8be6c52290551d74ca7c1dcbc4cc
-  languageName: node
-  linkType: hard
-
-"@astrojs/internal-helpers@npm:0.7.6":
-  version: 0.7.6
-  resolution: "@astrojs/internal-helpers@npm:0.7.6"
-  checksum: 69d224f3d08f63ce5e159a0753879e75bf8588c84fb49027ac830a16917e63a9435b6415fa99133397ba526b4ea75629c0c0bcdd7df9157ce2b9ac0df4e8d0e9
+"@astrojs/internal-helpers@npm:0.10.0":
+  version: 0.10.0
+  resolution: "@astrojs/internal-helpers@npm:0.10.0"
+  dependencies:
+    "@types/hast": "npm:^3.0.4"
+    "@types/mdast": "npm:^4.0.4"
+    js-yaml: "npm:^4.1.1"
+    picomatch: "npm:^4.0.4"
+    retext-smartypants: "npm:^6.2.0"
+    shiki: "npm:^4.0.2"
+    smol-toml: "npm:^1.6.0"
+    unified: "npm:^11.0.5"
+  checksum: e6729142b607b9aebaf36afeb045c5e137a4dd2a89051a5221c16c8d55379e6986e663c683ec524459dd3f35965027b94cbd02c9034bddc5a6acd0da21dfe5d4
   languageName: node
   linkType: hard
 
@@ -106,35 +108,6 @@ __metadata:
   dependencies:
     picomatch: "npm:^4.0.4"
   checksum: 013453dc19271fe7ccdd239d1962a8d67a9c0763083153fd4f0e33a946c2cace32f8f90052e14aac9b70ac3313e9724c348f82a4d6fc5bc1748bd5175b277fa0
-  languageName: node
-  linkType: hard
-
-"@astrojs/markdown-remark@npm:6.3.6":
-  version: 6.3.6
-  resolution: "@astrojs/markdown-remark@npm:6.3.6"
-  dependencies:
-    "@astrojs/internal-helpers": "npm:0.7.2"
-    "@astrojs/prism": "npm:3.3.0"
-    github-slugger: "npm:^2.0.0"
-    hast-util-from-html: "npm:^2.0.3"
-    hast-util-to-text: "npm:^4.0.2"
-    import-meta-resolve: "npm:^4.1.0"
-    js-yaml: "npm:^4.1.0"
-    mdast-util-definitions: "npm:^6.0.0"
-    rehype-raw: "npm:^7.0.0"
-    rehype-stringify: "npm:^10.0.1"
-    remark-gfm: "npm:^4.0.1"
-    remark-parse: "npm:^11.0.0"
-    remark-rehype: "npm:^11.1.2"
-    remark-smartypants: "npm:^3.0.2"
-    shiki: "npm:^3.2.1"
-    smol-toml: "npm:^1.3.4"
-    unified: "npm:^11.0.5"
-    unist-util-remove-position: "npm:^5.0.0"
-    unist-util-visit: "npm:^5.0.0"
-    unist-util-visit-parents: "npm:^6.0.1"
-    vfile: "npm:^6.0.3"
-  checksum: 9a55458aa15f778e1522abd574b048b084652269963d47e9ace8fa2e1b63d026efc1468d48f2936dae3cee387b56be3eba3abf388f162adb9e9b08ce1d9b1ddd
   languageName: node
   linkType: hard
 
@@ -167,17 +140,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/markdown-remark@npm:^6.3.1":
-  version: 6.3.11
-  resolution: "@astrojs/markdown-remark@npm:6.3.11"
+"@astrojs/markdown-remark@npm:^7.1.1":
+  version: 7.2.0
+  resolution: "@astrojs/markdown-remark@npm:7.2.0"
   dependencies:
-    "@astrojs/internal-helpers": "npm:0.7.6"
-    "@astrojs/prism": "npm:3.3.0"
+    "@astrojs/internal-helpers": "npm:0.10.0"
+    "@astrojs/prism": "npm:4.0.2"
     github-slugger: "npm:^2.0.0"
     hast-util-from-html: "npm:^2.0.3"
     hast-util-to-text: "npm:^4.0.2"
-    import-meta-resolve: "npm:^4.2.0"
-    js-yaml: "npm:^4.1.1"
     mdast-util-definitions: "npm:^6.0.0"
     rehype-raw: "npm:^7.0.0"
     rehype-stringify: "npm:^10.0.1"
@@ -185,46 +156,35 @@ __metadata:
     remark-parse: "npm:^11.0.0"
     remark-rehype: "npm:^11.1.2"
     remark-smartypants: "npm:^3.0.2"
-    shiki: "npm:^3.21.0"
-    smol-toml: "npm:^1.6.0"
     unified: "npm:^11.0.5"
     unist-util-remove-position: "npm:^5.0.0"
-    unist-util-visit: "npm:^5.0.0"
+    unist-util-visit: "npm:^5.1.0"
     unist-util-visit-parents: "npm:^6.0.2"
     vfile: "npm:^6.0.3"
-  checksum: 06723ac7c37b179fea1c0b5af13d41227d05d49048188ceff7e80d2b7b4beb35f88397727d2ddfa465b0746416eec401ad3150f443ecc93883fabf7aa3de75b4
+  checksum: 4332f03768733beff038ebdd68ae1d0207d0b66f1089bf98a42ed5f25614bfe5bfc6b8459acd7d639ebb03a914375b942d8253f80ee6141dcf2b305449a77938
   languageName: node
   linkType: hard
 
-"@astrojs/mdx@npm:^4.2.3, @astrojs/mdx@npm:^4.3.5":
-  version: 4.3.5
-  resolution: "@astrojs/mdx@npm:4.3.5"
+"@astrojs/mdx@npm:^5.0.4, @astrojs/mdx@npm:^5.0.6":
+  version: 5.0.6
+  resolution: "@astrojs/mdx@npm:5.0.6"
   dependencies:
-    "@astrojs/markdown-remark": "npm:6.3.6"
+    "@astrojs/markdown-remark": "npm:7.1.2"
     "@mdx-js/mdx": "npm:^3.1.1"
-    acorn: "npm:^8.15.0"
-    es-module-lexer: "npm:^1.7.0"
+    acorn: "npm:^8.16.0"
+    es-module-lexer: "npm:^2.0.0"
     estree-util-visit: "npm:^2.0.0"
     hast-util-to-html: "npm:^9.0.5"
-    kleur: "npm:^4.1.5"
+    piccolore: "npm:^0.1.3"
     rehype-raw: "npm:^7.0.0"
     remark-gfm: "npm:^4.0.1"
     remark-smartypants: "npm:^3.0.2"
     source-map: "npm:^0.7.6"
-    unist-util-visit: "npm:^5.0.0"
+    unist-util-visit: "npm:^5.1.0"
     vfile: "npm:^6.0.3"
   peerDependencies:
-    astro: ^5.0.0
-  checksum: 33bbdb9f78f21360f622ec29e7e2c5021512c66000f31495f33effd8ee3f8c1eacae2154dfff33589a0fcf784d89ebee6e050347d0ee042ccfdf1eb9345abfb3
-  languageName: node
-  linkType: hard
-
-"@astrojs/prism@npm:3.3.0":
-  version: 3.3.0
-  resolution: "@astrojs/prism@npm:3.3.0"
-  dependencies:
-    prismjs: "npm:^1.30.0"
-  checksum: 8a87f2589f4a3e9ea982e3dd0a3e4ebf565b2e5cf16aa70d979cbddab241a7a24d7be45176fa8c5f69f000cd9ab311ab4677d7a15e2ba0cbd610c80db8b9d7dd
+    astro: ^6.0.0
+  checksum: dcf93d212173713ff2d4eb7efafac9dd6908c14907b73e52602ab097fda3d686e0d44661213c52ce7ca7cadd7828bf453486fee293ead181c3dd26dce2a3b485
   languageName: node
   linkType: hard
 
@@ -253,61 +213,62 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/sitemap@npm:^3.3.0":
-  version: 3.4.1
-  resolution: "@astrojs/sitemap@npm:3.4.1"
+"@astrojs/sitemap@npm:^3.7.2":
+  version: 3.7.3
+  resolution: "@astrojs/sitemap@npm:3.7.3"
   dependencies:
-    sitemap: "npm:^8.0.0"
+    sitemap: "npm:^9.0.0"
     stream-replace-string: "npm:^2.0.0"
-    zod: "npm:^3.24.2"
-  checksum: d36ba848c753f1abcc9cc603d38be8cb355ed86c8481168b8405d822fbc07d2eb6b971fd25f2e8cb98b889e7d1c2bafb736808ab3f6ad25d6b2da46dd5173b7e
+    zod: "npm:^4.3.6"
+  checksum: 99c0240586ea2ab1868903341a302ff4bd909b53c49c1c8be476921593fbee838623207c4fa88522264d79291f074ea536aef614d6b1fb286f29a1a5d244ec21
   languageName: node
   linkType: hard
 
-"@astrojs/starlight-tailwind@npm:^4.0.1":
-  version: 4.0.1
-  resolution: "@astrojs/starlight-tailwind@npm:4.0.1"
+"@astrojs/starlight-tailwind@npm:^5.0.0":
+  version: 5.0.0
+  resolution: "@astrojs/starlight-tailwind@npm:5.0.0"
   peerDependencies:
-    "@astrojs/starlight": ">=0.34.0"
+    "@astrojs/starlight": ">=0.38.0"
     tailwindcss: ^4.0.0
-  checksum: 4f7bf29e9a7e535e29b32d82c1f504b1115a7bf84c0da67a714359b599ca2acb4856c9ef5173b86cf34046cb1ea28b815b7cb27c5e209c51ab82047eaeb8250d
+  checksum: 94bade227e0730ff05c54c5917d0a1d1e5c92694b7a6702dba2de3a6486c0085c728943f9136ed0ed00ac2da35a3fd4a873d764eb48102adc9901cfde85a6f29
   languageName: node
   linkType: hard
 
-"@astrojs/starlight@npm:^0.35.3":
-  version: 0.35.3
-  resolution: "@astrojs/starlight@npm:0.35.3"
+"@astrojs/starlight@npm:^0.39.2":
+  version: 0.39.2
+  resolution: "@astrojs/starlight@npm:0.39.2"
   dependencies:
-    "@astrojs/markdown-remark": "npm:^6.3.1"
-    "@astrojs/mdx": "npm:^4.2.3"
-    "@astrojs/sitemap": "npm:^3.3.0"
+    "@astrojs/markdown-remark": "npm:^7.1.1"
+    "@astrojs/mdx": "npm:^5.0.4"
+    "@astrojs/sitemap": "npm:^3.7.2"
     "@pagefind/default-ui": "npm:^1.3.0"
     "@types/hast": "npm:^3.0.4"
     "@types/js-yaml": "npm:^4.0.9"
     "@types/mdast": "npm:^4.0.4"
-    astro-expressive-code: "npm:^0.41.1"
+    astro-expressive-code: "npm:^0.42.0"
     bcp-47: "npm:^2.1.0"
-    hast-util-from-html: "npm:^2.0.1"
-    hast-util-select: "npm:^6.0.2"
-    hast-util-to-string: "npm:^3.0.0"
-    hastscript: "npm:^9.0.0"
-    i18next: "npm:^23.11.5"
-    js-yaml: "npm:^4.1.0"
+    hast-util-from-html: "npm:^2.0.3"
+    hast-util-select: "npm:^6.0.4"
+    hast-util-to-string: "npm:^3.0.1"
+    hastscript: "npm:^9.0.1"
+    i18next: "npm:^26.0.7"
+    js-yaml: "npm:^4.1.1"
     klona: "npm:^2.0.6"
-    mdast-util-directive: "npm:^3.0.0"
-    mdast-util-to-markdown: "npm:^2.1.0"
+    magic-string: "npm:^0.30.21"
+    mdast-util-directive: "npm:^3.1.0"
+    mdast-util-to-markdown: "npm:^2.1.2"
     mdast-util-to-string: "npm:^4.0.0"
     pagefind: "npm:^1.3.0"
-    rehype: "npm:^13.0.1"
-    rehype-format: "npm:^5.0.0"
-    remark-directive: "npm:^3.0.0"
+    rehype: "npm:^13.0.2"
+    rehype-format: "npm:^5.0.1"
+    remark-directive: "npm:^4.0.0"
     ultrahtml: "npm:^1.6.0"
     unified: "npm:^11.0.5"
-    unist-util-visit: "npm:^5.0.0"
-    vfile: "npm:^6.0.2"
+    unist-util-visit: "npm:^5.1.0"
+    vfile: "npm:^6.0.3"
   peerDependencies:
-    astro: ^5.5.0
-  checksum: 07e49f32fc31a49339dcecdda2a4135ce2c0050acf8f2f457f23843ceb91dd12afe52e7ea8c7114b7d6cf3b9f4b3e604ec12978535eb3e9df86413ed9804e63a
+    astro: ^6.0.0
+  checksum: 83bb1e93b5769c37bc65019d646e17b24850b1a55507ded6ca7f4cf10600e9559cae40a68196feff73b4f928f2ba5c6b8770fed0d46edb2ebb0c367f1fab6168
   languageName: node
   linkType: hard
 
@@ -2545,6 +2506,23 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@expressive-code/core@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "@expressive-code/core@npm:0.42.0"
+  dependencies:
+    "@ctrl/tinycolor": "npm:^4.0.4"
+    hast-util-select: "npm:^6.0.2"
+    hast-util-to-html: "npm:^9.0.1"
+    hast-util-to-text: "npm:^4.0.1"
+    hastscript: "npm:^9.0.0"
+    postcss: "npm:^8.4.38"
+    postcss-nested: "npm:^6.0.1"
+    unist-util-visit: "npm:^5.0.0"
+    unist-util-visit-parents: "npm:^6.0.1"
+  checksum: 9d97848a7d42b5387ea9d338eea64d2200d2ace3659c0ee245a071b24df2305556fbf9921f2527edf70a5b6b573e1d6fc72c931bf1bbb264069a965f60f2e00a
+  languageName: node
+  linkType: hard
+
 "@expressive-code/plugin-collapsible-sections@npm:^0.41.3":
   version: 0.41.3
   resolution: "@expressive-code/plugin-collapsible-sections@npm:0.41.3"
@@ -2554,31 +2532,31 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@expressive-code/plugin-frames@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "@expressive-code/plugin-frames@npm:0.41.3"
+"@expressive-code/plugin-frames@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "@expressive-code/plugin-frames@npm:0.42.0"
   dependencies:
-    "@expressive-code/core": "npm:^0.41.3"
-  checksum: 7d507957f8ba62f84b4c56b25633a6797278f982db36eeb02c5f4bb0bfb81bd607eff5958bb7204f647140fb93676e101f65ddcb0b850c122051f808fbe11ce2
+    "@expressive-code/core": "npm:^0.42.0"
+  checksum: 686947da4f3324bac0e4a0f7491b6080bab2aa5c6607fd3ab41b863e01763d73f7c1e51bd143740197f6b439d9c65d4b7d60c2b0799e24c2c0ba7f1ddba3d90d
   languageName: node
   linkType: hard
 
-"@expressive-code/plugin-shiki@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "@expressive-code/plugin-shiki@npm:0.41.3"
+"@expressive-code/plugin-shiki@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "@expressive-code/plugin-shiki@npm:0.42.0"
   dependencies:
-    "@expressive-code/core": "npm:^0.41.3"
-    shiki: "npm:^3.2.2"
-  checksum: 622f2b24386919d8788810164d87f2927edc75523cf95f472b9a4ec3318a1cd92289d69a4c6455eb31e3e46d37f57ee5c8233832fd1e64116cb3a68b5aa393ba
+    "@expressive-code/core": "npm:^0.42.0"
+    shiki: "npm:^4.0.2"
+  checksum: df0f45b5362ff1ea8908e6e504fd37cbe74271a89990053bc491b55fb16a2296cd485d769c87091d0ddde14f70dd60d897f3e82209cf8b7da2c6ef8e305603e4
   languageName: node
   linkType: hard
 
-"@expressive-code/plugin-text-markers@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "@expressive-code/plugin-text-markers@npm:0.41.3"
+"@expressive-code/plugin-text-markers@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "@expressive-code/plugin-text-markers@npm:0.42.0"
   dependencies:
-    "@expressive-code/core": "npm:^0.41.3"
-  checksum: d90e670fdf4863f1f6063215b21353a0f4b6e33c2f59b6f751683deb6f3b5ec1221a78ef46bce78aa01003a3807d738fc454d62df940c3bfb2cb1b08292bbdd9
+    "@expressive-code/core": "npm:^0.42.0"
+  checksum: e8b7797f9861194002a8871b05c7996624cce82eae5eb14f8476ff7574bdead59187c76ecf360e8aa04955391a196f2ba6e1004db180b3c1f17821484b61b6ed
   languageName: node
   linkType: hard
 
@@ -5309,18 +5287,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/core@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/core@npm:3.23.0"
-  dependencies:
-    "@shikijs/types": "npm:3.23.0"
-    "@shikijs/vscode-textmate": "npm:^10.0.2"
-    "@types/hast": "npm:^3.0.4"
-    hast-util-to-html: "npm:^9.0.5"
-  checksum: c595f1f2ec09cab102d2b3e03a3c64bfaace5fe52760cfbcced961d3e16571aa646c7e6f85b3d2d0242efd2c832ce4d150b5f1b7332982c17cfbe72f32bd0850
-  languageName: node
-  linkType: hard
-
 "@shikijs/core@npm:4.0.2":
   version: 4.0.2
   resolution: "@shikijs/core@npm:4.0.2"
@@ -5331,17 +5297,6 @@ __metadata:
     "@types/hast": "npm:^3.0.4"
     hast-util-to-html: "npm:^9.0.5"
   checksum: 0a8c56d50b2f67334e5e128b89f1e85844f60ae1dfbd4171e6e92242398678f6eaf91cd02f8418ac4abf4d81774e0ec9a83274a2e3f609c410e577520eadb0f5
-  languageName: node
-  linkType: hard
-
-"@shikijs/engine-javascript@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/engine-javascript@npm:3.23.0"
-  dependencies:
-    "@shikijs/types": "npm:3.23.0"
-    "@shikijs/vscode-textmate": "npm:^10.0.2"
-    oniguruma-to-es: "npm:^4.3.4"
-  checksum: 884ebb7f66312c9f43e71fb33a3ac0e52f925fc6932de9f68f1bf171019c011c988a4bc0217212589985b1e1bc49452ed67eacbf3d74200b4a3725f11fd8ad98
   languageName: node
   linkType: hard
 
@@ -5356,16 +5311,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/engine-oniguruma@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/engine-oniguruma@npm:3.23.0"
-  dependencies:
-    "@shikijs/types": "npm:3.23.0"
-    "@shikijs/vscode-textmate": "npm:^10.0.2"
-  checksum: 40dbda7aef55d5946c45b8cfe56f484eadb611f9f7c9eb77ff21f0dfce2bcc775686a61eda9e06401ddd71195945a522293f51d6522fce49244b1a6b9c0f61f7
-  languageName: node
-  linkType: hard
-
 "@shikijs/engine-oniguruma@npm:4.0.2":
   version: 4.0.2
   resolution: "@shikijs/engine-oniguruma@npm:4.0.2"
@@ -5373,15 +5318,6 @@ __metadata:
     "@shikijs/types": "npm:4.0.2"
     "@shikijs/vscode-textmate": "npm:^10.0.2"
   checksum: 2e730f876ff59690dafd348a8a467704cfed1d6b28d96d1533e2bb880fe90dcdc573d9e2e2543399ffdcd02a154958c76f0fad1e870a34ef8ff4774a191f5efa
-  languageName: node
-  linkType: hard
-
-"@shikijs/langs@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/langs@npm:3.23.0"
-  dependencies:
-    "@shikijs/types": "npm:3.23.0"
-  checksum: 513b90cfee0fa167d2063b7fbc2318b303a604f2e1fa156aa8b4659b49792401531a74acf68de622ecfff15738e1947a46cfe92a32fcd6a4ee5e70bcf1d06c66
   languageName: node
   linkType: hard
 
@@ -5405,31 +5341,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@shikijs/themes@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/themes@npm:3.23.0"
-  dependencies:
-    "@shikijs/types": "npm:3.23.0"
-  checksum: 5c99036d4a765765018f9106a354ebe5ccac204c69f00e3cda265828d493f005412659213f6574fa0e187c7d4437b3327bd6dad2e2146b2c472d2bf493d790dd
-  languageName: node
-  linkType: hard
-
 "@shikijs/themes@npm:4.0.2":
   version: 4.0.2
   resolution: "@shikijs/themes@npm:4.0.2"
   dependencies:
     "@shikijs/types": "npm:4.0.2"
   checksum: 93cbbcd6e0224bd614ef447f576043dcdcf635b2775eac1ce90779b182197eade0896dbd9220e85446f0343faef459ec7cb2c7c50f35a5fee00c73d716655d00
-  languageName: node
-  linkType: hard
-
-"@shikijs/types@npm:3.23.0":
-  version: 3.23.0
-  resolution: "@shikijs/types@npm:3.23.0"
-  dependencies:
-    "@shikijs/vscode-textmate": "npm:^10.0.2"
-    "@types/hast": "npm:^3.0.4"
-  checksum: bd0d1593f830a6b4e55c77871ec1b95cc44855d6e0e26282a948a3c58827237826e4110af27eb4d3231361f1e182c4410434a1dc15ec40aea988dc92dc97e9d6
   languageName: node
   linkType: hard
 
@@ -7003,10 +6920,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/node@npm:^17.0.5":
-  version: 17.0.45
-  resolution: "@types/node@npm:17.0.45"
-  checksum: 0db377133d709b33a47892581a21a41cd7958f22723a3cc6c71d55ac018121382de42fbfc7970d5ae3e7819dbe5f40e1c6a5174aedf7e7964e9cb8fa72b580b0
+"@types/node@npm:^24.9.2":
+  version: 24.12.4
+  resolution: "@types/node@npm:24.12.4"
+  dependencies:
+    undici-types: "npm:~7.16.0"
+  checksum: d2c36b78b6050d8677769fa05a32243061675e81ddc2bb43955d91a671af3465506ef2731a24c0c9ab42b6b679bd5c1513de45bbe9ea278c2c07ee63b564b61b
   languageName: node
   linkType: hard
 
@@ -7937,6 +7856,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"acorn@npm:^8.16.0":
+  version: 8.16.0
+  resolution: "acorn@npm:8.16.0"
+  bin:
+    acorn: bin/acorn
+  checksum: c9c52697227661b68d0debaf972222d4f622aa06b185824164e153438afa7b08273432ca43ea792cadb24dada1d46f6f6bb1ef8de9956979288cc1b96bf9914e
+  languageName: node
+  linkType: hard
+
 "add-stream@npm:^1.0.0":
   version: 1.0.0
   resolution: "add-stream@npm:1.0.0"
@@ -8389,20 +8317,20 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro-expressive-code@npm:^0.41.1, astro-expressive-code@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "astro-expressive-code@npm:0.41.3"
+"astro-expressive-code@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "astro-expressive-code@npm:0.42.0"
   dependencies:
-    rehype-expressive-code: "npm:^0.41.3"
+    rehype-expressive-code: "npm:^0.42.0"
   peerDependencies:
-    astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0
-  checksum: b6fc47cc43a84f957787f68391ad84b28c04d46ed4c6699400268be983ef166cbe5289f0aa9978f58d33c8e14f7cc3a90734773daedcb684c0b6013576a57d6e
+    astro: ^4.0.0-beta || ^5.0.0-beta || ^3.3.0 || ^6.0.0-beta
+  checksum: 8e26b3ff336c90deeb4d28a1eae20f6be2a1662e881deac8a849284a74335afc58e065c16d3c62a24c85d7baac90fc601042035c97d52a648e59f93c73dd851d
   languageName: node
   linkType: hard
 
-"astro-rehype-relative-markdown-links@npm:^0.18.1":
-  version: 0.18.1
-  resolution: "astro-rehype-relative-markdown-links@npm:0.18.1"
+"astro-rehype-relative-markdown-links@npm:^0.19.0":
+  version: 0.19.0
+  resolution: "astro-rehype-relative-markdown-links@npm:0.19.0"
   dependencies:
     catch-unknown: "npm:^2.0.0"
     debug: "npm:^4.4.0"
@@ -8413,8 +8341,8 @@ __metadata:
     unist-util-visit: "npm:^5.0.0"
     zod: "npm:^3.23.8"
   peerDependencies:
-    astro: ">=2 <6"
-  checksum: f1819464b8ba0d27dcb7656c7b1115ea750b3e0968bbee0d1eb2a6d7b96217dc98822fbbe20a3b43cc7ffaf6957cf44e99d6332702b7b3bf5204c7319976b399
+    astro: ">=2 <7"
+  checksum: 48090127731d32d004c64c12a9de346d7f1cd853d91548b7a1a81d296e5a7890de469b3ad38510d4739de26500c9f5c170a6b4dac0eddf77d21735b0c619fbf3
   languageName: node
   linkType: hard
 
@@ -11371,7 +11299,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"es-module-lexer@npm:^1.5.0, es-module-lexer@npm:^1.7.0":
+"es-module-lexer@npm:^1.5.0":
   version: 1.7.0
   resolution: "es-module-lexer@npm:1.7.0"
   checksum: 4c935affcbfeba7fb4533e1da10fa8568043df1e3574b869385980de9e2d475ddc36769891936dbb07036edb3c3786a8b78ccf44964cd130dedc1f2c984b6c7b
@@ -12347,15 +12275,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"expressive-code@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "expressive-code@npm:0.41.3"
+"expressive-code@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "expressive-code@npm:0.42.0"
   dependencies:
-    "@expressive-code/core": "npm:^0.41.3"
-    "@expressive-code/plugin-frames": "npm:^0.41.3"
-    "@expressive-code/plugin-shiki": "npm:^0.41.3"
-    "@expressive-code/plugin-text-markers": "npm:^0.41.3"
-  checksum: 8769a293d1f650b9b401316a047a7f8374d437dfeebc790fff75fdcfd91a08420b2237093c9534edfcf7c25331ad1c382b4e441b15223910d765f2adf100c2c0
+    "@expressive-code/core": "npm:^0.42.0"
+    "@expressive-code/plugin-frames": "npm:^0.42.0"
+    "@expressive-code/plugin-shiki": "npm:^0.42.0"
+    "@expressive-code/plugin-text-markers": "npm:^0.42.0"
+  checksum: 0027fc8bee194c95bff1359736cd85d75ebc5c90177d4ad13877c4cb27e234977ade56401e18a5e97a6b6e49e73f55eecad2cdc8cfb822b2b3db66d33d6edd89
   languageName: node
   linkType: hard
 
@@ -13675,7 +13603,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hast-util-from-html@npm:^2.0.0, hast-util-from-html@npm:^2.0.1, hast-util-from-html@npm:^2.0.3":
+"hast-util-from-html@npm:^2.0.0, hast-util-from-html@npm:^2.0.3":
   version: 2.0.3
   resolution: "hast-util-from-html@npm:2.0.3"
   dependencies:
@@ -13788,7 +13716,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hast-util-select@npm:^6.0.2":
+"hast-util-select@npm:^6.0.2, hast-util-select@npm:^6.0.4":
   version: 6.0.4
   resolution: "hast-util-select@npm:6.0.4"
   dependencies:
@@ -13892,7 +13820,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hast-util-to-string@npm:^3.0.0, hast-util-to-string@npm:~3.0.1":
+"hast-util-to-string@npm:^3.0.0, hast-util-to-string@npm:^3.0.1, hast-util-to-string@npm:~3.0.1":
   version: 3.0.1
   resolution: "hast-util-to-string@npm:3.0.1"
   dependencies:
@@ -13922,7 +13850,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"hastscript@npm:^9.0.0":
+"hastscript@npm:^9.0.0, hastscript@npm:^9.0.1":
   version: 9.0.1
   resolution: "hastscript@npm:9.0.1"
   dependencies:
@@ -14213,12 +14141,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^23.11.5, i18next@npm:^23.5.1":
+"i18next@npm:^23.5.1":
   version: 23.16.8
   resolution: "i18next@npm:23.16.8"
   dependencies:
     "@babel/runtime": "npm:^7.23.2"
   checksum: 57d249191e8a39bbbbe190cfa2e2bb651d0198e14444fe80453d3df8d02927de3c147c77724e9ae6c72fa241898cd761e3fdcd55d053db373471f1ac084bf345
+  languageName: node
+  linkType: hard
+
+"i18next@npm:^26.0.7":
+  version: 26.3.0
+  resolution: "i18next@npm:26.3.0"
+  peerDependencies:
+    typescript: ^5 || ^6
+  peerDependenciesMeta:
+    typescript:
+      optional: true
+  checksum: e5dc29171d9a05746b31ad68e179ce2f36459c0a20d2d6733837961fe9492d1b48706804fa12059aa91dbb004655cb54ade817eb9e72371649f26d6dba1ca211
   languageName: node
   linkType: hard
 
@@ -14338,13 +14278,6 @@ __metadata:
   bin:
     import-local-fixture: fixtures/cli.js
   checksum: c67ecea72f775fe8684ca3d057e54bdb2ae28c14bf261d2607c269c18ea0da7b730924c06262eca9aed4b8ab31e31d65bc60b50e7296c85908a56e2f7d41ecd2
-  languageName: node
-  linkType: hard
-
-"import-meta-resolve@npm:^4.1.0, import-meta-resolve@npm:^4.2.0":
-  version: 4.2.0
-  resolution: "import-meta-resolve@npm:4.2.0"
-  checksum: 3ee8aeecb61d19b49d2703987f977e9d1c7d4ba47db615a570eaa02fe414f40dfa63f7b953e842cbe8470d26df6371332bfcf21b2fd92b0112f9fea80dde2c4c
   languageName: node
   linkType: hard
 
@@ -16240,13 +16173,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"kleur@npm:^4.1.5":
-  version: 4.1.5
-  resolution: "kleur@npm:4.1.5"
-  checksum: e9de6cb49657b6fa70ba2d1448fd3d691a5c4370d8f7bbf1c2f64c24d461270f2117e1b0afe8cb3114f13bbd8e51de158c2a224953960331904e636a5e4c0f2a
-  languageName: node
-  linkType: hard
-
 "klona@npm:^2.0.6":
   version: 2.0.6
   resolution: "klona@npm:2.0.6"
@@ -17054,7 +16980,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-directive@npm:^3.0.0":
+"mdast-util-directive@npm:^3.0.0, mdast-util-directive@npm:^3.1.0":
   version: 3.1.0
   resolution: "mdast-util-directive@npm:3.1.0"
   dependencies:
@@ -17268,7 +17194,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mdast-util-to-markdown@npm:^2.0.0, mdast-util-to-markdown@npm:^2.1.0":
+"mdast-util-to-markdown@npm:^2.0.0, mdast-util-to-markdown@npm:^2.1.2":
   version: 2.1.2
   resolution: "mdast-util-to-markdown@npm:2.1.2"
   dependencies:
@@ -17429,9 +17355,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromark-extension-directive@npm:^3.0.0":
-  version: 3.0.2
-  resolution: "micromark-extension-directive@npm:3.0.2"
+"micromark-extension-directive@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "micromark-extension-directive@npm:4.0.0"
   dependencies:
     devlop: "npm:^1.0.0"
     micromark-factory-space: "npm:^2.0.0"
@@ -17440,7 +17366,7 @@ __metadata:
     micromark-util-symbol: "npm:^2.0.0"
     micromark-util-types: "npm:^2.0.0"
     parse-entities: "npm:^4.0.0"
-  checksum: 74137485375f02c1b640c2120dd6b9f6aa1e39ca5cd2463df7974ef1cc80203f5ef90448ce009973355a49ba169ef1441eabe57a36877c7b86373788612773da
+  checksum: b4aef0f44339543466ae186130a4514985837b6b12d0c155bd1162e740f631e58f0883a39d0c723206fa0ff53a9b579965c79116f902236f6f123c3340b5fefb
   languageName: node
   linkType: hard
 
@@ -20271,17 +20197,17 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-core-doc@workspace:docs_headless"
   dependencies:
-    "@astrojs/mdx": "npm:^4.3.5"
+    "@astrojs/mdx": "npm:^5.0.6"
     "@astrojs/react": "npm:^4.3.1"
-    "@astrojs/starlight": "npm:^0.35.3"
-    "@astrojs/starlight-tailwind": "npm:^4.0.1"
+    "@astrojs/starlight": "npm:^0.39.2"
+    "@astrojs/starlight-tailwind": "npm:^5.0.0"
     "@expressive-code/plugin-collapsible-sections": "npm:^0.41.3"
     "@tailwindcss/vite": "npm:^4.1.11"
     "@types/react": "npm:^19.1.8"
     "@types/react-dom": "npm:^19.1.6"
     astro: "npm:^6.1.10"
-    astro-expressive-code: "npm:^0.41.3"
-    astro-rehype-relative-markdown-links: "npm:^0.18.1"
+    astro-expressive-code: "npm:^0.42.0"
+    astro-rehype-relative-markdown-links: "npm:^0.19.0"
     expressive-code-fullscreen: "npm:^1.0.0"
     prettier: "npm:^3.2.5"
     prettier-plugin-astro: "npm:^0.14.1"
@@ -21499,16 +21425,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rehype-expressive-code@npm:^0.41.3":
-  version: 0.41.3
-  resolution: "rehype-expressive-code@npm:0.41.3"
+"rehype-expressive-code@npm:^0.42.0":
+  version: 0.42.0
+  resolution: "rehype-expressive-code@npm:0.42.0"
   dependencies:
-    expressive-code: "npm:^0.41.3"
-  checksum: 6defa749dc27ee26ae507de93cb6e7958364e65c70cfd86d9d60146f72836ffcf48b8669b2413bc53f117700dd42c85ea32c1b09e66852b7150ec7c5638ba062
+    expressive-code: "npm:^0.42.0"
+  checksum: b6b08e0ba7d82129627ac986f64fa995d8f6e17ee9a883e3fb4e36f40ddf52f18bd94806e4d765cf49d91a6eb38b166e2ad3df7a75ae0ae0cf30093d55a02ae6
   languageName: node
   linkType: hard
 
-"rehype-format@npm:^5.0.0":
+"rehype-format@npm:^5.0.1":
   version: 5.0.1
   resolution: "rehype-format@npm:5.0.1"
   dependencies:
@@ -21562,7 +21488,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rehype@npm:^13.0.1, rehype@npm:^13.0.2, rehype@npm:~13.0.2":
+"rehype@npm:^13.0.2, rehype@npm:~13.0.2":
   version: 13.0.2
   resolution: "rehype@npm:13.0.2"
   dependencies:
@@ -21593,15 +21519,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"remark-directive@npm:^3.0.0":
-  version: 3.0.1
-  resolution: "remark-directive@npm:3.0.1"
+"remark-directive@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "remark-directive@npm:4.0.0"
   dependencies:
     "@types/mdast": "npm:^4.0.0"
     mdast-util-directive: "npm:^3.0.0"
-    micromark-extension-directive: "npm:^3.0.0"
+    micromark-extension-directive: "npm:^4.0.0"
     unified: "npm:^11.0.0"
-  checksum: ac0e60bdfd97063e2b4e18a96842567ae2ffea75f2545fcd7e4fe54806fb31629d60cef55b565333bda172eddee36766fe2535ca0b59208394bde676cd98094c
+  checksum: ab1f71ae220913f62833464d483f29de7b4af0dcf1ff626d33cdb5dd81eda1c553a11f779de9fd9b641802586c5f070175824d70f14d53e451a484850705d53a
   languageName: node
   linkType: hard
 
@@ -22194,7 +22120,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sax@npm:^1.2.4, sax@npm:^1.5.0":
+"sax@npm:^1.4.1, sax@npm:^1.5.0":
   version: 1.6.0
   resolution: "sax@npm:1.6.0"
   checksum: e5593f4a91eb25761a688c4d96902e4e95a0dd6017bc65146b6f21236e3d715cf893333b76bc758923c9574c2fb5a7a76c3a81e96ea15432f2624f906c027c1e
@@ -22530,22 +22456,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"shiki@npm:^3.2.1, shiki@npm:^3.2.2, shiki@npm:^3.21.0":
-  version: 3.23.0
-  resolution: "shiki@npm:3.23.0"
-  dependencies:
-    "@shikijs/core": "npm:3.23.0"
-    "@shikijs/engine-javascript": "npm:3.23.0"
-    "@shikijs/engine-oniguruma": "npm:3.23.0"
-    "@shikijs/langs": "npm:3.23.0"
-    "@shikijs/themes": "npm:3.23.0"
-    "@shikijs/types": "npm:3.23.0"
-    "@shikijs/vscode-textmate": "npm:^10.0.2"
-    "@types/hast": "npm:^3.0.4"
-  checksum: b06a3eddac4bd0a838f9bd79bea70b0a01195570cb11d70fd2ff7ab0a42c33a8c4980ee52174173aae0476cc152b4c1a68c081a82d94ee340cb3ef9d772ae4ba
-  languageName: node
-  linkType: hard
-
 "shiki@npm:^4.0.0, shiki@npm:^4.0.2":
   version: 4.0.2
   resolution: "shiki@npm:4.0.2"
@@ -22685,17 +22595,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sitemap@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "sitemap@npm:8.0.0"
+"sitemap@npm:^9.0.0":
+  version: 9.0.1
+  resolution: "sitemap@npm:9.0.1"
   dependencies:
-    "@types/node": "npm:^17.0.5"
+    "@types/node": "npm:^24.9.2"
     "@types/sax": "npm:^1.2.1"
     arg: "npm:^5.0.0"
-    sax: "npm:^1.2.4"
+    sax: "npm:^1.4.1"
   bin:
-    sitemap: dist/cli.js
-  checksum: adaabfb1f27e3c76ba25f9a16dcb02ff17dd2ecbd1b2dbe2608a6770eff37bd71f7d21c10df6824917453bc4da2c2790fd85ee6424d75699bd053e3422d2ef5c
+    sitemap: dist/esm/cli.js
+  checksum: dddd3c9f30fd09655fa2c1bd9bb182ed860717b3ba681fdc1ac66ad25b5f399dafdd8b87d5ba4ee914ea14e7b11841aadc3af61e4a45242a14f28194efe12416
   languageName: node
   linkType: hard
 
@@ -22769,7 +22679,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smol-toml@npm:^1.3.4, smol-toml@npm:^1.6.0":
+"smol-toml@npm:^1.6.0":
   version: 1.6.1
   resolution: "smol-toml@npm:1.6.1"
   checksum: 511a78722f99c7616fdb46af708de3d7e81434b5a3d58061166da73f28bfc6cae4f0cd04683f60515b9c490cd10152fce72287c960b337419c0299cc1f0f2a22
@@ -24224,6 +24134,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"undici-types@npm:~7.16.0":
+  version: 7.16.0
+  resolution: "undici-types@npm:7.16.0"
+  checksum: 3033e2f2b5c9f1504bdc5934646cb54e37ecaca0f9249c983f7b1fc2e87c6d18399ebb05dc7fd5419e02b2e915f734d872a65da2e3eeed1813951c427d33cc9a
+  languageName: node
+  linkType: hard
+
 "unicode-canonical-property-names-ecmascript@npm:^2.0.0":
   version: 2.0.1
   resolution: "unicode-canonical-property-names-ecmascript@npm:2.0.1"
@@ -24808,7 +24725,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"vfile@npm:^6.0.0, vfile@npm:^6.0.2, vfile@npm:^6.0.3":
+"vfile@npm:^6.0.0, vfile@npm:^6.0.3":
   version: 6.0.3
   resolution: "vfile@npm:6.0.3"
   dependencies:
@@ -25882,7 +25799,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zod@npm:^3.23.8, zod@npm:^3.24.2":
+"zod@npm:^3.23.8":
   version: 3.25.76
   resolution: "zod@npm:3.25.76"
   checksum: 5718ec35e3c40b600316c5b4c5e4976f7fee68151bc8f8d90ec18a469be9571f072e1bbaace10f1e85cf8892ea12d90821b200e980ab46916a6166a4260a983c
