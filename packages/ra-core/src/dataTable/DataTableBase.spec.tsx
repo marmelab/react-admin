@@ -15,6 +15,16 @@ describe('<DataTableBase>', () => {
         sort: { field: 'id', order: 'ASC' },
     };
 
+    const DataTable = () => (
+        <DataTableBase
+            empty={<div>Empty</div>}
+            loading={<div>Loading</div>}
+            hasBulkActions={false}
+        >
+            <div>Child Content</div>
+        </DataTableBase>
+    );
+
     it('should render children when data is present', () => {
         render(
             <ResourceContextProvider value="posts">
@@ -27,13 +37,7 @@ describe('<DataTableBase>', () => {
                         } as any
                     }
                 >
-                    <DataTableBase
-                        empty={<div>Empty</div>}
-                        loading={<div>Loading</div>}
-                        hasBulkActions={false}
-                    >
-                        <div>Child Content</div>
-                    </DataTableBase>
+                    <DataTable />
                 </ListContextProvider>
             </ResourceContextProvider>
         );
@@ -49,19 +53,14 @@ describe('<DataTableBase>', () => {
                 <ListContextProvider
                     value={{ ...defaultListContext, data: [], total: 0 } as any}
                 >
-                    <DataTableBase
-                        empty={<div>Empty Component</div>}
-                        loading={<div>Loading</div>}
-                        hasBulkActions={false}
-                    >
-                        <div>Child</div>
-                    </DataTableBase>
+                    <DataTable />
                 </ListContextProvider>
             </ResourceContextProvider>
         );
 
-        expect(screen.queryByText('Empty Component')).not.toBeNull();
-        expect(screen.queryByText('Child')).toBeNull();
+        expect(screen.queryByText('Child Content')).toBeNull();
+        expect(screen.queryByText('Loading')).toBeNull();
+        expect(screen.queryByText('Empty')).not.toBeNull();
     });
 
     it('should render loading component when pending', () => {
@@ -70,47 +69,14 @@ describe('<DataTableBase>', () => {
                 <ListContextProvider
                     value={{ ...defaultListContext, isPending: true } as any}
                 >
-                    <DataTableBase
-                        empty={<div>Empty</div>}
-                        loading={<div>Loading Component</div>}
-                        hasBulkActions={false}
-                    >
-                        <div>Child</div>
-                    </DataTableBase>
+                    <DataTable />
                 </ListContextProvider>
             </ResourceContextProvider>
         );
 
-        expect(screen.queryByText('Loading Component')).not.toBeNull();
-        expect(screen.queryByText('Child')).toBeNull();
-    });
-
-    it('should display the empty component instead of the table header when loaded with no data', () => {
-        render(
-            <ResourceContextProvider value="posts">
-                <ListContextProvider
-                    value={
-                        {
-                            ...defaultListContext,
-                            data: [],
-                            total: 0,
-                            isPending: false,
-                        } as any
-                    }
-                >
-                    <DataTableBase
-                        empty={<div>Empty Component</div>}
-                        loading={<div>Loading</div>}
-                        hasBulkActions={false}
-                    >
-                        <div>Table Header and Body</div>
-                    </DataTableBase>
-                </ListContextProvider>
-            </ResourceContextProvider>
-        );
-
-        expect(screen.queryByText('Empty Component')).not.toBeNull();
-        expect(screen.queryByText('Table Header and Body')).toBeNull();
+        expect(screen.queryByText('Child Content')).toBeNull();
+        expect(screen.queryByText('Loading')).not.toBeNull();
+        expect(screen.queryByText('Empty')).toBeNull();
     });
 
     it('should display the current data when data is refreshing', () => {
@@ -127,19 +93,14 @@ describe('<DataTableBase>', () => {
                         } as any
                     }
                 >
-                    <DataTableBase
-                        empty={<div>Empty</div>}
-                        loading={<div>Loading Component</div>}
-                        hasBulkActions={false}
-                    >
-                        <div>Child Content</div>
-                    </DataTableBase>
+                    <DataTable />
                 </ListContextProvider>
             </ResourceContextProvider>
         );
 
         expect(screen.queryByText('Child Content')).not.toBeNull();
-        expect(screen.queryByText('Loading Component')).toBeNull();
+        expect(screen.queryByText('Loading')).toBeNull();
+        expect(screen.queryByText('Empty')).toBeNull();
     });
 
     it('should provide ResourceContext to the loading component', () => {

@@ -158,7 +158,7 @@ export const DataTableBase = function DataTable<
                          * with zero data rows, the DataTable
                          * displays the empty component.
                          */
-                        empty
+                        empty ?? null
                     ) : (
                         /**
                          * After the initial load, if the data for the list
