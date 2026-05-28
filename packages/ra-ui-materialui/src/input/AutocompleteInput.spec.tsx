@@ -30,6 +30,7 @@ import {
     CreateLabel,
     CreateItemLabel,
     CreateItemLabelRendered,
+    FilterSelectedOptionsFalse,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -79,6 +80,33 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
+    });
+
+    it('should immediately update input value when re-selecting the same option after partial deletion with filterSelectedOptions={false}', async () => {
+        render(<FilterSelectedOptionsFalse />);
+
+        // Wait for the Edit form to load — record has author: 1 (Leo Tolstoy)
+        const input = (await screen.findByDisplayValue(
+            'Leo Tolstoy'
+        )) as HTMLInputElement;
+
+        // Delete last character to trigger the filter while keeping the option visible
+        fireEvent.focus(input);
+        userEvent.type(input, '{end}');
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('Leo Tolsto');
+        });
+
+        // Re-select the same option — input should restore immediately without blur
+        await waitFor(() => {
+            expect(screen.queryByText('Leo Tolstoy')).not.toBeNull();
+        });
+        fireEvent.click(screen.getByText('Leo Tolstoy'));
+        await waitFor(() => {
+            expect(input.value).toEqual('Leo Tolstoy');
+        });
+        expect(document.activeElement).toBe(input);
     });
 
     it('should allow filter to match the selected choice while removing characters in the input', async () => {

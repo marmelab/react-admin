@@ -540,6 +540,21 @@ If you provided a React element for the optionText prop, you must also provide t
             setFilterValue('');
             debouncedSetFilter('');
         }
+        // When filterSelectedOptions=false, a user can delete characters from the input
+        // and re-select the same option — the input should update immediately without blur.
+        // MUI fires reason='reset' (not 'selectOption') for this case.
+        // - event !== null: MUI's useEffect also fires reason='reset' with event=null for
+        //   programmatic value resets, which should not update the filter.
+        // - doesQueryMatchSelection: when a create option is clicked, MUI fires reason='reset'
+        //   with the create label as newInputValue, which should not override the user's text.
+        if (
+            reason === 'reset' &&
+            event !== null &&
+            doesQueryMatchSelection(newInputValue)
+        ) {
+            setFilterValue(newInputValue);
+            debouncedSetFilter('');
+        }
         onInputChange?.(event, newInputValue, reason);
     });
 
