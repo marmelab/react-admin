@@ -85,7 +85,7 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const WithChildren = () => (
+export const WithRender = () => (
     <Wrapper
         dataProvider={{
             getManyReference: () =>
@@ -95,9 +95,17 @@ export const WithChildren = () => (
                 }),
         }}
     >
-        <ReferenceManyCount reference="comments" target="post_id">
-            <NumberField source="total" locales="en-US" />
-        </ReferenceManyCount>
+        <ReferenceManyCount
+            reference="comments"
+            target="post_id"
+            render={({ total }) => (
+                <NumberField
+                    record={{ total }}
+                    source="total"
+                    locales="en-US"
+                />
+            )}
+        />
     </Wrapper>
 );
 
@@ -161,7 +169,7 @@ export const Link = () => (
     </Wrapper>
 );
 
-export const LinkWithChildren = () => (
+export const LinkWithRender = () => (
     <Wrapper
         dataProvider={{
             getManyReference: () =>
@@ -171,9 +179,18 @@ export const LinkWithChildren = () => (
                 }),
         }}
     >
-        <ReferenceManyCount reference="comments" target="post_id" link>
-            <NumberField source="total" locales="en-US" />
-        </ReferenceManyCount>
+        <ReferenceManyCount
+            reference="comments"
+            target="post_id"
+            link
+            render={({ total }) => (
+                <NumberField
+                    record={{ total }}
+                    source="total"
+                    locales="en-US"
+                />
+            )}
+        />
     </Wrapper>
 );
 

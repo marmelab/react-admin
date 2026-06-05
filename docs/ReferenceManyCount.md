@@ -66,10 +66,10 @@ export const PostList = () => (
 | ----------- | -------- | ------------------------------------------ | --------------------------------- | ------------------------------------------------------------------------- |
 | `reference` | Required | string                                     | -                                 | Name of the related resource to fetch (e.g. `comments`)                   |
 | `target`    | Required | string                                     | -                                 | Name of the field in the related resource that points to the current one. |
-| `children`  | Optional | `ReactNode`                                | -                                 | The component used to render the count.                                   |
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
 | `offline`   | Optional | `ReactNode`                                |                                   | The component to render when there is no connectivity and the record isn't in the cache
+| `render`    | Optional | Function                                   | -                                 | Function used to render the count.                                        |
 | `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
@@ -78,16 +78,21 @@ export const PostList = () => (
 
 Additional props are passed to [the underlying Material UI `<Typography>` element](https://mui.com/material-ui/api/typography/).
 
-## `children`
+## `render`
 
-By default, `<ReferenceManyCount>` renders the total as a raw number. You can pass a child component to customize the rendering. `<ReferenceManyCount>` creates a `RecordContext` with a `total` field, so any Field component can read it:
+By default, `<ReferenceManyCount>` renders the total as a raw number. You can pass a `render` function to customize the rendering:
 
 ```jsx
 import { NumberField, ReferenceManyCount } from 'react-admin';
 
-<ReferenceManyCount reference="comments" target="post_id" link>
-    <NumberField source="total" locales="en-US" />
-</ReferenceManyCount>
+<ReferenceManyCount
+    reference="comments"
+    target="post_id"
+    link
+    render={({ total }) => (
+        <NumberField record={{ total }} source="total" locales="en-US" />
+    )}
+/>
 ```
 
 ## `filter`

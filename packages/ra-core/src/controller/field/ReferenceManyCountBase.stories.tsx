@@ -4,7 +4,7 @@ import {
     QueryClient,
     onlineManager,
 } from '@tanstack/react-query';
-import { RecordContextProvider, useRecordContext } from '../record';
+import { RecordContextProvider } from '../record';
 import { DataProviderContext } from '../../dataProvider';
 import { ResourceContextProvider, useIsOffline } from '../../core';
 import { TestMemoryRouter } from '../../routing';
@@ -65,7 +65,7 @@ export const Basic = () => (
     </Wrapper>
 );
 
-export const WithChildren = () => (
+export const WithRender = () => (
     <Wrapper
         dataProvider={{
             getManyReference: () =>
@@ -75,25 +75,11 @@ export const WithChildren = () => (
                 }),
         }}
     >
-        <ReferenceManyCountBase reference="comments" target="post_id">
-            <Count />
-        </ReferenceManyCountBase>
-    </Wrapper>
-);
-
-export const WithRenderFunction = () => (
-    <Wrapper
-        dataProvider={{
-            getManyReference: () =>
-                Promise.resolve({
-                    data: [comments.filter(c => c.post_id === 1)[0]],
-                    total: comments.filter(c => c.post_id === 1).length,
-                }),
-        }}
-    >
-        <ReferenceManyCountBase reference="comments" target="post_id">
-            {({ total }) => <span>{total} comments</span>}
-        </ReferenceManyCountBase>
+        <ReferenceManyCountBase
+            reference="comments"
+            target="post_id"
+            render={({ total }) => <span>{total} comments</span>}
+        />
     </Wrapper>
 );
 
@@ -230,10 +216,4 @@ const RenderChildOnDemand = ({ children }) => {
             {showChild && <div>{children}</div>}
         </>
     );
-};
-
-const Count = () => {
-    const record = useRecordContext();
-
-    return <span>{record?.total} comments</span>;
 };

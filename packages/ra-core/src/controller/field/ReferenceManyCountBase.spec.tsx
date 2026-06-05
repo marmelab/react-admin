@@ -5,8 +5,7 @@ import {
     ErrorState,
     LoadingState,
     Offline,
-    WithChildren,
-    WithRenderFunction,
+    WithRender,
 } from './ReferenceManyCountBase.stories';
 import { onlineManager } from '@tanstack/react-query';
 
@@ -33,13 +32,8 @@ describe('ReferenceManyCountBase', () => {
         await screen.findByText('3');
     });
 
-    it('should render children in a record context containing the total', async () => {
-        render(<WithChildren />);
-        await screen.findByText('3 comments');
-    });
-
-    it('should accept a render function as children', async () => {
-        render(<WithRenderFunction />);
+    it('should accept a render function', async () => {
+        render(<WithRender />);
         await screen.findByText('3 comments');
     });
 

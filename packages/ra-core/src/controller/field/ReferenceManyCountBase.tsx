@@ -4,7 +4,6 @@ import {
     type UseReferenceManyFieldControllerParams,
 } from './useReferenceManyFieldController';
 import { useTimeout } from '../../util/hooks';
-import { RecordContextProvider } from '../record';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -19,7 +18,7 @@ import { RecordContextProvider } from '../record';
  */
 export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
     const {
-        children,
+        render,
         loading,
         error,
         offline,
@@ -45,9 +44,6 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
         isPending && isPaused && offline !== undefined && offline !== false;
     const shouldRenderError =
         !isPending && fetchError && error !== undefined && error !== false;
-    const totalRecord = React.useMemo(() => ({ id: 'count', total }), [total]);
-    const renderChildren =
-        typeof children === 'function' ? children(totalRecord) : children;
 
     return (
         <>
@@ -59,10 +55,8 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
                 offline
             ) : shouldRenderError ? (
                 error
-            ) : children != null ? (
-                <RecordContextProvider value={totalRecord}>
-                    {renderChildren}
-                </RecordContextProvider>
+            ) : render ? (
+                render({ total })
             ) : (
                 total
             )}
@@ -71,15 +65,12 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
 };
 
 export interface ReferenceManyCountRecord {
-    id: string;
     total: number | undefined;
 }
 
 export interface ReferenceManyCountBaseProps
     extends UseReferenceManyFieldControllerParams {
-    children?:
-        | React.ReactNode
-        | ((record: ReferenceManyCountRecord) => React.ReactNode);
+    render?: (record: ReferenceManyCountRecord) => React.ReactNode;
     timeout?: number;
     loading?: React.ReactNode;
     error?: React.ReactNode;
