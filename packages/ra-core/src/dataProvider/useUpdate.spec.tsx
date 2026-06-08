@@ -12,6 +12,7 @@ import { QueryClient, useMutationState } from '@tanstack/react-query';
 import { CoreAdminContext } from '../core';
 import { RaRecord } from '../types';
 import { useUpdate } from './useUpdate';
+import { useGetOne } from './useGetOne';
 import {
     ErrorCase as ErrorCasePessimistic,
     SuccessCase as SuccessCasePessimistic,
@@ -458,6 +459,89 @@ describe('useUpdate', () => {
             await screen.findByText('{"id":1,"title":"Hello"}');
             screen.getByText('Update title').click();
             await screen.findByText('{"id":1,"title":"world"}'); // and not just {"title":"world"}
+        });
+        it('when optimistic, preserves Date values in the cache', async () => {
+            const publishedAt = new Date('2024-02-03T00:00:00.000Z');
+            const nextPublishedAt = new Date('2024-03-04T00:00:00.000Z');
+            const queryClient = new QueryClient();
+            const dataProvider = {
+                getOne: async () => ({
+                    data: {
+                        id: 1,
+                        title: 'Hello',
+                        metadata: {
+                            publishedAt,
+                        },
+                    },
+                }),
+                update: () => new Promise(() => {}),
+            } as any;
+            const Dummy = () => {
+                const { data } = useGetOne('posts', { id: 1 });
+                const [update] = useUpdate();
+                return (
+                    <>
+                        <span>
+                            {data?.metadata?.publishedAt instanceof Date
+                                ? 'date'
+                                : 'not-date'}
+                        </span>
+                        <button
+                            onClick={() =>
+                                update(
+                                    'posts',
+                                    {
+                                        id: 1,
+                                        data: {
+                                            title: 'world',
+                                            metadata: {
+                                                publishedAt: nextPublishedAt,
+                                                ignored: undefined,
+                                            },
+                                        },
+                                    },
+                                    { mutationMode: 'optimistic' }
+                                )
+                            }
+                        >
+                            Update title
+                        </button>
+                    </>
+                );
+            };
+
+            render(
+                <CoreAdminContext
+                    dataProvider={dataProvider}
+                    queryClient={queryClient}
+                >
+                    <Dummy />
+                </CoreAdminContext>
+            );
+
+            await screen.findByText('date');
+            screen.getByText('Update title').click();
+            await screen.findByText('date');
+            expect(
+                queryClient.getQueryData([
+                    'posts',
+                    'getOne',
+                    { id: '1', meta: undefined },
+                ])
+            ).toMatchObject({
+                metadata: {
+                    publishedAt: nextPublishedAt,
+                },
+            });
+            expect(
+                (
+                    queryClient.getQueryData([
+                        'posts',
+                        'getOne',
+                        { id: '1', meta: undefined },
+                    ]) as any
+                ).metadata.publishedAt
+            ).toBeInstanceOf(Date);
         });
         it('when undoable, displays result and success side effects right away and fetched on confirm', async () => {
             render(<SuccessCaseUndoable timeout={10} />);
