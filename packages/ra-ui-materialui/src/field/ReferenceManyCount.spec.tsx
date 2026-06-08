@@ -11,6 +11,14 @@ import {
 } from './ReferenceManyCount.stories';
 import { ReferenceManyCount } from './ReferenceManyCount';
 import { onlineManager } from '@tanstack/react-query';
+import { useRecordContext } from 'ra-core';
+
+const CountField = () => {
+    const record = useRecordContext<{ total?: number }>();
+    return <span>Total: {record?.total}</span>;
+};
+
+const ReferenceManyCountAny = ReferenceManyCount as any;
 
 describe('<ReferenceManyCount />', () => {
     beforeEach(() => {
@@ -51,6 +59,30 @@ describe('<ReferenceManyCount />', () => {
             meta: undefined,
             signal: undefined,
         });
+    });
+
+    it('should render children inside the link wrapper', async () => {
+        render(
+            <Wrapper
+                dataProvider={{
+                    getManyReference: () =>
+                        Promise.resolve({
+                            data: [{ id: 1, post_id: 1 }],
+                            total: 3,
+                        }),
+                }}
+            >
+                <ReferenceManyCountAny
+                    reference="comments"
+                    target="post_id"
+                    link
+                >
+                    <CountField />
+                </ReferenceManyCountAny>
+            </Wrapper>
+        );
+
+        await screen.findByText('Total: 3');
     });
 
     it('should be customized by a theme', async () => {

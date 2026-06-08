@@ -4,6 +4,7 @@ import {
     type UseReferenceManyFieldControllerParams,
 } from './useReferenceManyFieldController';
 import { useTimeout } from '../../util/hooks';
+import { RecordContextProvider } from '../record';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -17,7 +18,14 @@ import { useTimeout } from '../../util/hooks';
  * <ReferenceManyCountBase reference="comments" target="post_id" filter={{ is_published: true }} />
  */
 export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
-    const { loading, error, offline, timeout = 1000, ...rest } = props;
+    const {
+        children,
+        loading,
+        error,
+        offline,
+        timeout = 1000,
+        ...rest
+    } = props;
     const oneSecondHasPassed = useTimeout(timeout);
 
     const {
@@ -38,23 +46,33 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
     const shouldRenderError =
         !isPending && fetchError && error !== undefined && error !== false;
 
-    return (
-        <>
-            {shouldRenderLoading
-                ? oneSecondHasPassed
-                    ? loading
-                    : null
-                : shouldRenderOffline
-                  ? offline
-                  : shouldRenderError
-                    ? error
-                    : total}
-        </>
-    );
+    const content = shouldRenderLoading
+        ? oneSecondHasPassed
+            ? loading
+            : null
+        : shouldRenderOffline
+          ? offline
+            : shouldRenderError
+            ? error
+            : children
+              ? (
+                    <RecordContextProvider
+                        value={{
+                            id: 'count',
+                            total,
+                        } as any}
+                    >
+                        {children}
+                    </RecordContextProvider>
+                )
+              : total;
+
+    return <>{content}</>;
 };
 
 export interface ReferenceManyCountBaseProps
     extends UseReferenceManyFieldControllerParams {
+    children?: React.ReactNode;
     timeout?: number;
     loading?: React.ReactNode;
     error?: React.ReactNode;

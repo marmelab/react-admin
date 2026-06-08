@@ -5,8 +5,18 @@ import {
     ErrorState,
     LoadingState,
     Offline,
+    Wrapper,
 } from './ReferenceManyCountBase.stories';
 import { onlineManager } from '@tanstack/react-query';
+import { useRecordContext } from '../record';
+import { ReferenceManyCountBase } from './ReferenceManyCountBase';
+
+const CountField = () => {
+    const record = useRecordContext<{ total?: number }>();
+    return <span>Total: {record?.total}</span>;
+};
+
+const ReferenceManyCountBaseAny = ReferenceManyCountBase as any;
 
 describe('ReferenceManyCountBase', () => {
     beforeEach(() => {
@@ -29,6 +39,29 @@ describe('ReferenceManyCountBase', () => {
     it('should render the total', async () => {
         render(<Basic />);
         await screen.findByText('3');
+    });
+
+    it('should render children with the total record context', async () => {
+        render(
+            <Wrapper
+                dataProvider={{
+                    getManyReference: () =>
+                        Promise.resolve({
+                            data: [{ id: 1, post_id: 1 }],
+                            total: 3,
+                        }),
+                }}
+            >
+                <ReferenceManyCountBaseAny
+                    reference="comments"
+                    target="post_id"
+                >
+                    <CountField />
+                </ReferenceManyCountBaseAny>
+            </Wrapper>
+        );
+
+        await screen.findByText('Total: 3');
     });
 
     it('should render the offline prop node when offline', async () => {

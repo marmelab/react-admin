@@ -53,6 +53,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
         resource,
         source = 'id',
         offline = defaultOffline,
+        children,
         ...rest
     } = props;
     const record = useRecordContext(props);
@@ -66,6 +67,7 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
                 <ErrorIcon color="error" fontSize="small" titleAccess="error" />
             }
             offline={offline}
+            children={children}
         />
     );
     return (
