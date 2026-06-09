@@ -17,14 +17,7 @@ import { useTimeout } from '../../util/hooks';
  * <ReferenceManyCountBase reference="comments" target="post_id" filter={{ is_published: true }} />
  */
 export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
-    const {
-        render,
-        loading,
-        error,
-        offline,
-        timeout = 1000,
-        ...rest
-    } = props;
+    const { render, loading, error, offline, timeout = 1000, ...rest } = props;
     const oneSecondHasPassed = useTimeout(timeout);
 
     const {
@@ -47,19 +40,17 @@ export const ReferenceManyCountBase = (props: ReferenceManyCountBaseProps) => {
 
     return (
         <>
-            {shouldRenderLoading ? (
-                oneSecondHasPassed ? (
-                    loading
-                ) : null
-            ) : shouldRenderOffline ? (
-                offline
-            ) : shouldRenderError ? (
-                error
-            ) : render ? (
-                render({ total })
-            ) : (
-                total
-            )}
+            {shouldRenderLoading
+                ? oneSecondHasPassed
+                    ? loading
+                    : null
+                : shouldRenderOffline
+                  ? offline
+                  : shouldRenderError
+                    ? error
+                    : render
+                      ? render({ total })
+                      : total}
         </>
     );
 };
