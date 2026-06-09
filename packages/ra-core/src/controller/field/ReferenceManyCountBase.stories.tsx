@@ -65,6 +65,24 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const WithRender = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: comments.filter(c => c.post_id === 1).length,
+                }),
+        }}
+    >
+        <ReferenceManyCountBase
+            reference="comments"
+            target="post_id"
+            render={({ total }) => <span>{total} comments</span>}
+        />
+    </Wrapper>
+);
+
 export const LoadingState = () => (
     <Wrapper dataProvider={{ getManyReference: () => new Promise(() => {}) }}>
         <ReferenceManyCountBase

@@ -69,6 +69,7 @@ export const PostList = () => (
 | `filter`    | Optional | Object                                     | -                                 | Filter to apply to the query.                                             |
 | `link`      | Optional | bool                                       | `false`                           | If true, the count is wrapped in a `<Link>` to the filtered list view.    |
 | `offline`   | Optional | `ReactNode`                                |                                   | The component to render when there is no connectivity and the record isn't in the cache
+| `render`    | Optional | Function                                   | -                                 | Function used to render the count.                                        |
 | `resource`  | Optional | string                                     | -                                 | Resource to count. Default to the current `ResourceContext`               |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`  | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                     | 1000                              | Number of milliseconds to wait before displaying the loading indicator.   |
@@ -76,6 +77,23 @@ export const PostList = () => (
 `<ReferenceManyCount>` also accepts the [common field props](./Fields.md#common-field-props).
 
 Additional props are passed to [the underlying Material UI `<Typography>` element](https://mui.com/material-ui/api/typography/).
+
+## `render`
+
+By default, `<ReferenceManyCount>` renders the total as a raw number. You can pass a `render` function to customize the rendering:
+
+```jsx
+import { NumberField, ReferenceManyCount } from 'react-admin';
+
+<ReferenceManyCount
+    reference="comments"
+    target="post_id"
+    link
+    render={({ total }) => (
+        <NumberField record={{ total }} source="total" locales="en-US" />
+    )}
+/>
+```
 
 ## `filter`
 

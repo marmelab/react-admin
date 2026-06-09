@@ -61,10 +61,25 @@ export const PostList = () => (
 | `reference` | Required | string                                      | -                                | Name of the related resource to fetch (e.g. `comments`)                   |
 | `target`    | Required | string                                      | -                                | Name of the field in the related resource that points to the current one. |
 | `filter`    | Optional | Object                                      | -                                | Filter to apply to the query.                                             |
+| `render`    | Optional | Function                                    | -                                | Function used to render the count.                                        |
 | `resource`  | Optional | string                                      | -                                | Resource to count. Default to the current `ResourceContext`               |
 | `sort`      | Optional | `{ field: string, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }` | The sort option sent to `getManyReference`                                |
 | `timeout`   | Optional | number                                      | 1000                             | Number of milliseconds to wait before displaying the loading indicator.   |
 
+
+## `render`
+
+By default, `<ReferenceManyCountBase>` renders the total as a raw number. You can pass a `render` function to customize the rendering:
+
+```jsx
+import { ReferenceManyCountBase } from 'ra-core';
+
+<ReferenceManyCountBase
+    reference="comments"
+    target="post_id"
+    render={({ total }) => <span>{total} comments</span>}
+/>
+```
 
 ## `filter`
 
