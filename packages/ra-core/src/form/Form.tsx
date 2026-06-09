@@ -115,7 +115,7 @@ export function Form<RecordType = any>(props: FormProps<RecordType>) {
 export type FormProps<RecordType = any> = FormOwnProps<RecordType> &
     Omit<
         UseFormProps<RecordType extends FieldValues ? RecordType : FieldValues>,
-        'onSubmit'
+        'onSubmit' | 'validate'
     > & {
         validate?: ValidateForm;
         noValidate?: boolean;

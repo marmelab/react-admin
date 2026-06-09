@@ -159,7 +159,7 @@ export type UseAugmentedFormProps<RecordType = any> =
             UseFormProps<
                 RecordType extends FieldValues ? RecordType : FieldValues
             >,
-            'onSubmit'
+            'onSubmit' | 'validate'
         > & {
             validate?: ValidateForm;
         };
