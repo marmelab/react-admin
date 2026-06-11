@@ -215,8 +215,13 @@ describe('useReferenceInputController', () => {
         await waitFor(() => {
             expect(children).toHaveBeenCalledWith(
                 expect.objectContaining({
-                    allChoices: [currentUser, { id: 1, login: 'asmith', name: 'Alice Smith' }],
-                    availableChoices: [{ id: 1, login: 'asmith', name: 'Alice Smith' }],
+                    allChoices: [
+                        currentUser,
+                        { id: 1, login: 'asmith', name: 'Alice Smith' },
+                    ],
+                    availableChoices: [
+                        { id: 1, login: 'asmith', name: 'Alice Smith' },
+                    ],
                     selectedChoices: [currentUser],
                     total: 2,
                     isFromReference: true,

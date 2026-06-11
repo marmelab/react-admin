@@ -136,9 +136,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
                 perPage: 1,
             },
             sort: { field: 'id', order: 'DESC' },
-            filter: useOptionValueLookup
-                ? { [optionValue]: currentValue }
-                : {},
+            filter: useOptionValueLookup ? { [optionValue]: currentValue } : {},
             meta,
         },
         {
@@ -183,9 +181,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         isPendingPossibleValues;
 
     const isPaused =
-        (useOptionValueLookup
-            ? isPausedCurrentReference
-            : isPausedReference) || isPausedPossibleValues;
+        (useOptionValueLookup ? isPausedCurrentReference : isPausedReference) ||
+        isPausedPossibleValues;
 
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
@@ -210,7 +207,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             possibleValuesData == null ||
             (possibleValuesData ?? []).find(
                 record =>
-                    get(record, optionValue) === get(referenceRecord, optionValue)
+                    get(record, optionValue) ===
+                    get(referenceRecord, optionValue)
             )
         ) {
             // Here we might have the referenceRecord but no data (because of enableGetChoices for instance)
@@ -218,7 +216,9 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             if (
                 referenceRecord &&
                 finalData.find(
-                    r => get(r, optionValue) === get(referenceRecord, optionValue)
+                    r =>
+                        get(r, optionValue) ===
+                        get(referenceRecord, optionValue)
                 ) == null
             ) {
                 finalData.push(referenceRecord);
@@ -234,7 +234,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
                 finalTotal: total == null ? undefined : total + 1,
             };
         }
-    }, [isPaused, referenceRecord, possibleValuesData, total]);
+    }, [isPaused, optionValue, referenceRecord, possibleValuesData, total]);
 
     const refetch = useCallback(() => {
         refetchGetList();
@@ -325,11 +325,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             isLoadingCurrentReference,
             isLoadingPossibleValues,
             isLoadingReference,
-            isPausedCurrentReference,
-            isPausedPossibleValues,
-            isPausedReference,
+            isPaused,
             isPending,
-            isPendingCurrentReference,
             isPlaceholderDataCurrentReference,
             isPlaceholderDataReference,
             isPlaceholderDataPossibleValues,
@@ -352,7 +349,6 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             source,
             total,
             useOptionValueLookup,
-            optionValue,
         ]
     );
 };
