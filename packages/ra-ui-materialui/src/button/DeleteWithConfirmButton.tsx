@@ -1,4 +1,5 @@
 import React, { Fragment, isValidElement, ReactEventHandler } from 'react';
+import { useFormContext } from 'react-hook-form';
 import ActionDelete from '@mui/icons-material/Delete';
 import {
     ComponentsOverrides,
@@ -59,6 +60,8 @@ export const DeleteWithConfirmButton = React.forwardRef(
         const notify = useNotify();
         const unselect = useUnselect(resource);
         const redirect = useRedirect();
+        // null when the delete button is used outside a form (e.g. in a list)
+        const form = useFormContext();
         const [open, setOpen] = React.useState(false);
         if (!resource) {
             throw new Error(
@@ -95,6 +98,10 @@ export const DeleteWithConfirmButton = React.forwardRef(
                             }
                         );
                         record && unselect([record.id]);
+                        // Clear the form dirty state so warnWhenUnsavedChanges
+                        // doesn't block the redirect: the record is gone, so the
+                        // unsaved changes are moot.
+                        form?.reset(undefined, { keepValues: true });
                         redirect(redirectTo, resource);
                     }
                 },

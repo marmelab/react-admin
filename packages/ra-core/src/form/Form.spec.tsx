@@ -22,6 +22,7 @@ import {
     InNonDataRouter,
     ServerSideValidation,
     MultiRoutesForm,
+    WarnWhenUnsavedChangesWithDelete,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
 
@@ -1008,4 +1009,37 @@ describe('Form', () => {
             ).toEqual(false);
         }
     );
+
+    describe('warnWhenUnsavedChanges with a delete button', () => {
+        it.each(['undoable', 'pessimistic', 'optimistic'] as const)(
+            'should not warn about unsaved changes after deleting a dirty record (%s)',
+            async mutationMode => {
+                // spy on "cancel": if the dialog were shown the navigation
+                // would be cancelled, failing the redirect assertion
+                const confirmSpy = jest
+                    .spyOn(window, 'confirm')
+                    .mockReturnValue(false);
+                render(
+                    <WarnWhenUnsavedChangesWithDelete
+                        mutationMode={mutationMode}
+                    />
+                );
+                // wait for the record to load
+                const input =
+                    await screen.findByDisplayValue<HTMLInputElement>('Hello');
+                // make the form dirty
+                fireEvent.change(input, {
+                    target: { value: 'Hello modified' },
+                });
+                fireEvent.blur(input);
+                // delete the record (the headless DeleteButton has no
+                // confirmation dialog and always uses the controller onSuccess)
+                fireEvent.click(screen.getByText('Delete'));
+                // the app should redirect to the list without warning
+                await screen.findByText('Post list');
+                expect(confirmSpy).not.toHaveBeenCalled();
+                confirmSpy.mockRestore();
+            }
+        );
+    });
 });

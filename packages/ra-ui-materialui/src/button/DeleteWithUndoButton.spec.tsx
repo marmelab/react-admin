@@ -5,6 +5,7 @@ import {
     MutationMode,
     CoreAdminContext,
     testDataProvider,
+    TestMemoryRouter,
     useNotificationContext,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -181,5 +182,63 @@ describe('<DeleteWithUndoButton />', () => {
         render(<Themed />);
         const buttons = await screen.findAllByTestId('themed');
         expect(buttons[0].classList).toContain('MuiButton-outlined');
+    });
+
+    it('should not warn about unsaved changes after deleting a dirty record', async () => {
+        // spy on "cancel": if the unsaved-changes dialog were shown, the
+        // navigation would be cancelled and the redirect assertion would fail
+        const confirmSpy = jest.spyOn(window, 'confirm').mockReturnValue(false);
+        const dataProvider = testDataProvider({
+            getOne: () =>
+                // @ts-ignore
+                Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+            delete: jest.fn().mockResolvedValue({ data: { id: 123 } }),
+        });
+        const EditToolbar = props => (
+            <Toolbar {...props}>
+                <DeleteWithUndoButton />
+            </Toolbar>
+        );
+        // Use the router-agnostic TestMemoryRouter + locationCallback (instead of
+        // react-router's Routes) so the test does not depend on the router adapter.
+        let location;
+        render(
+            <TestMemoryRouter
+                initialEntries={['/posts/123']}
+                locationCallback={l => {
+                    location = l;
+                }}
+            >
+                <ThemeProvider theme={theme}>
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <Edit resource="posts" id={123}>
+                            <SimpleForm
+                                warnWhenUnsavedChanges
+                                toolbar={<EditToolbar />}
+                            >
+                                <TextInput source="title" />
+                            </SimpleForm>
+                        </Edit>
+                    </CoreAdminContext>
+                </ThemeProvider>
+            </TestMemoryRouter>
+        );
+        // wait for the record to load
+        const input =
+            await screen.findByDisplayValue<HTMLInputElement>('lorem');
+        // make the form dirty
+        fireEvent.change(input, { target: { value: 'lorem modified' } });
+        fireEvent.blur(input);
+        // the undoable delete button has no confirmation dialog: clicking it
+        // deletes (optimistically) and redirects right away
+        fireEvent.click(
+            await screen.findByLabelText('resources.posts.action.delete')
+        );
+        // the app should redirect to the list without warning
+        await waitFor(() => {
+            expect(location.pathname).toEqual('/posts');
+        });
+        expect(confirmSpy).not.toHaveBeenCalled();
+        confirmSpy.mockRestore();
     });
 });

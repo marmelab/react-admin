@@ -1,4 +1,5 @@
 import { useCallback, useMemo } from 'react';
+import { useFormContext } from 'react-hook-form';
 
 import { useDelete, UseDeleteOptions } from '../../dataProvider/useDelete';
 import { useUnselect } from '../list/useUnselect';
@@ -75,6 +76,8 @@ export const useDeleteController = <
     const unselect = useUnselect(resource);
     const redirect = useRedirect();
     const translate = useTranslate();
+    // null when the delete button is used outside a form (e.g. in a list)
+    const form = useFormContext();
 
     const [deleteOne, { isPending }] = useDelete<RecordType, ErrorType>(
         resource,
@@ -96,6 +99,11 @@ export const useDeleteController = <
                     }
                 );
                 record && unselect([record.id], true);
+                // Clear the form dirty state so warnWhenUnsavedChanges doesn't
+                // block the redirect: the record is gone, so the unsaved
+                // changes are moot. keepValues avoids a flash of reverted
+                // fields before the redirect commits.
+                form?.reset(undefined, { keepValues: true });
                 redirect(redirectTo, resource);
             },
             onError: (error: any) => {
