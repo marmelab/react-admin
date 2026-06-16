@@ -67,6 +67,7 @@ The form value for the source must be an array of the selected values, e.g.
 | `create`          | Optional | `Element`                   | -                   | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string` &#124; `ReactNode` | `ra.action. create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `disableValue`    | Optional | `string`                    | 'disabled'          | The custom field name used in `choices` to disable some choices                                                                        |
+| `emptyText`       | Optional | `string` &#124; `ReactNode` | -                   | Text to display when no choice is selected                                                                                             |
 | `InputLabelProps` | Optional | `Object`                    | -                   | Props to pass to the underlying `<InputLabel>` element                                                                                 |
 | `onCreate`        | Optional | `Function`                  | -                   | A function called with the current filter value when users choose to create a new choice.                                              |
 | `options`         | Optional | `Object`                    | -                   | Props to pass to the underlying `<SelectInput>` element                                                                                |
@@ -109,6 +110,25 @@ You can also use an array of objects with different properties for the label and
     { _id: 'u002', label: 'Moderator' },
     { _id: 'u003', label: 'Reviewer' },
 ]} optionValue="_id" optionText="label" />
+```
+
+## `emptyText`
+
+You can customize the text displayed when no choice is selected using the `emptyText` prop:
+
+```jsx
+const channelChoices = [
+    {id: "email", name: "Email"},
+    {id: "push", name: "Push Notification"},
+];
+
+<SelectArrayInput source="channels" choices={channelChoices} emptyText="All Channels" />
+```
+
+The `emptyText` prop also accepts React elements:
+
+```jsx
+<SelectArrayInput source="channels" choices={channelChoices} emptyText={<i>All Channels</i>} />
 ```
 
 The choices are translated by default, so you can use translation identifiers as choices:

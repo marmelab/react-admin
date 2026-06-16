@@ -810,4 +810,38 @@ describe('<SelectArrayInput />', () => {
             });
         });
     });
+
+    it('should render the emptyText option correctly', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            emptyText="All Channels"
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        const select = screen.getByDisplayValue('All Channels');
+        expect(select).toBeDefined();
+    });
+
+    it('should render emptyText as React node', () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <SelectArrayInput
+                            {...defaultProps}
+                            emptyText={<i>All Channels</i>}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        const select = screen.getByDisplayValue('All Channels');
+        expect(select).toBeDefined();
+    });
 });

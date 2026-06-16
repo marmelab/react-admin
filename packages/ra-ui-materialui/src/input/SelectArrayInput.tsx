@@ -89,6 +89,14 @@ import { Labeled } from '../Labeled';
  *    { id: 'lifestyle', name: 'myroot.tags.lifestyle' },
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
+ *
+ * You can customize the text displayed when no choice is selected using the `emptyText` prop:
+ * @example
+ * const channelChoices = [
+ *     {id: "email", name: "Email"},
+ *     {id: "push", name: "Push Notification"},
+ * ];
+ * <SelectArrayInput source="channels" choices={channelChoices} emptyText={<i>All Channels</i>} />
  */
 export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     const props = useThemeProps({
@@ -102,6 +110,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText,
         format,
         helperText,
         label,
@@ -330,17 +339,27 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     }
                     multiple
                     error={!!fetchError || invalid}
-                    renderValue={(selected: any[]) => (
-                        <div className={SelectArrayInputClasses.chips}>
-                            {(Array.isArray(selected) ? selected : [])
-                                .map(item =>
-                                    (allChoices || []).find(
-                                        // eslint-disable-next-line eqeqeq
-                                        choice => getChoiceValue(choice) == item
-                                    )
+                    renderValue={(selected: any[]) => {
+                        const selectedItems = (Array.isArray(selected) ? selected : [])
+                            .map(item =>
+                                (allChoices || []).find(
+                                    // eslint-disable-next-line eqeqeq
+                                    choice => getChoiceValue(choice) == item
                                 )
-                                .filter(item => !!item)
-                                .map(item => (
+                            )
+                            .filter(item => !!item);
+                        
+                        if (selectedItems.length === 0 && emptyText) {
+                            return typeof emptyText === 'string'
+                                ? emptyText === ''
+                                    ? ' ' // em space, forces the display of an empty line of normal height
+                                    : emptyText
+                                : emptyText;
+                        }
+                        
+                        return (
+                            <div className={SelectArrayInputClasses.chips}>
+                                {selectedItems.map(item => (
                                     <Chip
                                         key={getChoiceValue(item)}
                                         label={renderMenuItemOption(item)}
@@ -348,8 +367,9 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                                         size="small"
                                     />
                                 ))}
-                        </div>
-                    )}
+                            </div>
+                        );
+                    }}
                     disabled={disabled || readOnly}
                     readOnly={readOnly}
                     data-testid="selectArray"
@@ -384,6 +404,7 @@ export type SelectArrayInputProps = ChoicesProps &
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
+        emptyText?: React.ReactNode;
     };
 
 const sanitizeRestProps = ({
