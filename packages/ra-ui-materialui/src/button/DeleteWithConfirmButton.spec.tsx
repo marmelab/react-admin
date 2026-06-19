@@ -11,6 +11,7 @@ import {
     CoreAdminContext,
     MutationMode,
     testDataProvider,
+    TestMemoryRouter,
     useNotificationContext,
 } from 'ra-core';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -452,5 +453,110 @@ describe('<DeleteWithConfirmButton />', () => {
         render(<Themed />);
         const buttons = await screen.findAllByTestId('themed');
         expect(buttons[0].classList).toContain('MuiButton-outlined');
+    });
+
+    describe('with warnWhenUnsavedChanges and a dirty form', () => {
+        // Use the router-agnostic TestMemoryRouter + locationCallback (instead of
+        // react-router's Routes) so the test does not depend on the router adapter.
+        const renderDirtyEditForm = (
+            mutationMode: MutationMode,
+            locationCallback: (l: any) => void
+        ) => {
+            const dataProvider = testDataProvider({
+                getOne: () =>
+                    // @ts-ignore
+                    Promise.resolve({ data: { id: 123, title: 'lorem' } }),
+                delete: jest.fn().mockResolvedValue({ data: { id: 123 } }),
+            });
+            const EditToolbar = props => (
+                <Toolbar {...props}>
+                    <DeleteWithConfirmButton mutationMode={mutationMode} />
+                </Toolbar>
+            );
+            render(
+                <TestMemoryRouter
+                    initialEntries={['/posts/123']}
+                    locationCallback={locationCallback}
+                >
+                    <ThemeProvider theme={theme}>
+                        <CoreAdminContext dataProvider={dataProvider}>
+                            <Edit resource="posts" id={123}>
+                                <SimpleForm
+                                    warnWhenUnsavedChanges
+                                    toolbar={<EditToolbar />}
+                                >
+                                    <TextInput source="title" />
+                                </SimpleForm>
+                            </Edit>
+                        </CoreAdminContext>
+                    </ThemeProvider>
+                </TestMemoryRouter>
+            );
+            return dataProvider;
+        };
+
+        const makeFormDirty = async () => {
+            const input =
+                await screen.findByDisplayValue<HTMLInputElement>('lorem');
+            fireEvent.change(input, { target: { value: 'lorem modified' } });
+            fireEvent.blur(input);
+        };
+
+        it('should delete the record and redirect without warning when confirming the dialog', async () => {
+            // spy on "cancel": if the unsaved-changes dialog were shown, the
+            // navigation would be cancelled and the redirect assertion would fail
+            const confirmSpy = jest
+                .spyOn(window, 'confirm')
+                .mockReturnValue(false);
+            let location;
+            const dataProvider = renderDirtyEditForm('pessimistic', l => {
+                location = l;
+            });
+            await makeFormDirty();
+            // open the confirmation dialog and confirm
+            fireEvent.click(
+                await screen.findByLabelText('resources.posts.action.delete')
+            );
+            fireEvent.click(screen.getByText('ra.action.confirm'));
+            // the record is deleted and the app redirects to the list
+            await waitFor(() => {
+                expect(location.pathname).toEqual('/posts');
+            });
+            expect(dataProvider.delete).toHaveBeenCalledWith('posts', {
+                id: 123,
+                previousData: { id: 123, title: 'lorem' },
+            });
+            // no spurious unsaved-changes warning
+            expect(confirmSpy).not.toHaveBeenCalled();
+            confirmSpy.mockRestore();
+        });
+
+        it('should not delete the record nor leave the form when cancelling the dialog (optimistic)', async () => {
+            const confirmSpy = jest
+                .spyOn(window, 'confirm')
+                .mockReturnValue(false);
+            let location;
+            const dataProvider = renderDirtyEditForm('optimistic', l => {
+                location = l;
+            });
+            await makeFormDirty();
+            // open the confirmation dialog and cancel
+            fireEvent.click(
+                await screen.findByLabelText('resources.posts.action.delete')
+            );
+            fireEvent.click(screen.getByText('ra.action.cancel'));
+            // the dialog closes
+            await waitFor(() => {
+                expect(screen.queryByText('ra.action.confirm')).toBeNull();
+            });
+            // the deletion never happened (no optimistic removal to roll back)
+            expect(dataProvider.delete).not.toHaveBeenCalled();
+            // the user stays on the dirty form, edits preserved
+            expect(location.pathname).toEqual('/posts/123');
+            expect(screen.getByDisplayValue('lorem modified')).not.toBeNull();
+            // no unsaved-changes warning was triggered either
+            expect(confirmSpy).not.toHaveBeenCalled();
+            confirmSpy.mockRestore();
+        });
     });
 });

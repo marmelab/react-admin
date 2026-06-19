@@ -40,21 +40,24 @@ export const useWarnWhenUnsavedChanges = (
     });
 
     useEffect(() => {
-        if (blocker.state === 'blocked') {
-            // Corner case: the blocker might be triggered by a redirect in the onSuccess side effect,
-            // happening during the same tick the form is reset after a successful save.
-            // In that case, the blocker will block but shouldNotBlock will be true one tick after.
-            // If we are in that case, we can proceed immediately.
-            if (shouldNotBlock) {
-                blocker.proceed();
-                return;
-            }
+        if (blocker.state !== 'blocked') return;
 
-            setShouldNotify(true);
+        // Proceed automatically when the form becomes safe to leave while the
+        // navigation is blocked. This covers two cases where the redirect and
+        // the form reset happen during the same tick (and the reset may only be
+        // reflected one tick after the block):
+        // - a successful save resets the form;
+        // - a successful delete resets the form (the record no longer exists,
+        //   so the unsaved changes are moot).
+        if (shouldNotBlock) {
+            blocker.proceed && blocker.proceed();
+            return;
         }
-        // This effect should only run when the blocker state changes, not when shouldNotBlock changes.
+
+        setShouldNotify(true);
+        // Can't use blocker in the dependency array because it is not stable across rerenders
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [blocker.state]);
+    }, [blocker.state, shouldNotBlock]);
 
     useEffect(() => {
         if (shouldNotify) {

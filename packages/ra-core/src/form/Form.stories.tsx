@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import {
     Route,
     Routes,
@@ -20,7 +21,12 @@ import {
 } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
-import { RecordContextProvider, SaveContextProvider } from '../controller';
+import {
+    EditBase,
+    RecordContextProvider,
+    SaveContextProvider,
+} from '../controller';
+import { DeleteButton } from '../test-ui/DeleteButton';
 import { Form, FormProps } from './Form';
 import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
@@ -414,6 +420,69 @@ export const InNonDataRouter = ({
         </CoreAdminContext>
     </HashRouter>
 );
+
+const PostEditWithDelete = ({
+    mutationMode,
+}: {
+    mutationMode: 'undoable' | 'optimistic' | 'pessimistic';
+}) => (
+    <EditBase resource="posts" id={1} mutationMode={mutationMode}>
+        <Form warnWhenUnsavedChanges>
+            <Input source="title" />
+            <Input source="body" />
+            <DeleteButton
+                label="Delete"
+                mutationMode={mutationMode}
+                redirect="/posts"
+            />
+            <button type="submit">Submit</button>
+        </Form>
+    </EditBase>
+);
+
+/**
+ * Edit a field (making the form dirty), then click Delete. The record is
+ * deleted and the app redirects to the list, but the unsaved-changes blocker
+ * pops a spurious "unsaved changes" confirm dialog even though the record is
+ * already gone.
+ */
+export const WarnWhenUnsavedChangesWithDelete = ({
+    i18nProvider = defaultI18nProvider,
+    mutationMode = 'undoable',
+}: {
+    i18nProvider?: I18nProvider;
+    mutationMode?: 'undoable' | 'optimistic' | 'pessimistic';
+}) => (
+    <TestMemoryRouter initialEntries={['/posts/1']}>
+        <CoreAdminContext
+            dataProvider={fakeRestDataProvider(
+                {
+                    posts: [
+                        { id: 1, title: 'Hello', body: 'world' },
+                        { id: 2, title: 'Foo', body: 'bar' },
+                    ],
+                },
+                process.env.NODE_ENV !== 'test'
+            )}
+            i18nProvider={i18nProvider}
+        >
+            <Routes>
+                <Route
+                    path="/posts/:id"
+                    element={<PostEditWithDelete mutationMode={mutationMode} />}
+                />
+                <Route path="/posts" element={<p>Post list</p>} />
+            </Routes>
+        </CoreAdminContext>
+    </TestMemoryRouter>
+);
+
+WarnWhenUnsavedChangesWithDelete.argTypes = {
+    mutationMode: {
+        options: ['undoable', 'optimistic', 'pessimistic'],
+        control: { type: 'select' },
+    },
+};
 
 const Notifications = () => {
     const { notifications } = useNotificationContext();
