@@ -25,6 +25,8 @@ import {
     Validation,
     Focus,
     Reset,
+    ConditionalArrayInputValidationContent,
+    TriggerValidation,
 } from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
@@ -281,6 +283,44 @@ describe('<ArrayInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByText('test helper text')).not.toBeNull();
+    });
+
+    it('should not display a root-level array error immediately when mounted in onChange mode', async () => {
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="books">
+                    <SimpleForm mode="onChange" onSubmit={jest.fn()}>
+                        <ConditionalArrayInputValidationContent />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        fireEvent.click(screen.getByText('Show array input'));
+
+        await screen.findByLabelText('ra.action.add');
+        expect(screen.queryByText('ra.validation.required')).toBeNull();
+
+        fireEvent.click(await screen.findByLabelText('ra.action.add'));
+        fireEvent.click(await screen.findByLabelText('ra.action.remove'));
+
+        await screen.findByText('ra.validation.required');
+
+        fireEvent.click(screen.getByText('ra.action.save'));
+
+        await screen.findByText('ra.validation.required');
+    });
+
+    // Reproduces the WizardForm scenario where validation is triggered when
+    // navigating between steps without the user having interacted with the field.
+    it('should display the error after validation is triggered programmatically without user interaction', async () => {
+        render(<TriggerValidation />);
+
+        expect(screen.queryByText('Required')).toBeNull();
+
+        fireEvent.click(await screen.findByText('Validate'));
+
+        await screen.findByText('Required');
     });
 
     it('should update the form state to dirty, and allow submit, on updating an array input with default value', async () => {

@@ -45,6 +45,10 @@ describe('stripTags', () => {
             'All our base is belong to us.'
         );
     });
+
+    it('should drop an unfinished opening tag', () => {
+        expect(removeTags('Safe<script alert(1)')).toEqual('Safe');
+    });
 });
 
 describe('<RichTextField />', () => {

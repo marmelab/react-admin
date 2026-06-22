@@ -878,6 +878,39 @@ export const InsideReferenceInputWithDisableChoice = () => (
     </TestMemoryRouter>
 );
 
+const enableGetChoicesMinTwoChars = (filters: any) => filters?.q?.length >= 2;
+const shouldRenderSuggestionsMinTwoChars = (v: string) => v.length >= 2;
+
+export const InsideReferenceInputWithShouldRenderSuggestions = () => (
+    <TestMemoryRouter initialEntries={['/books/1']}>
+        <Admin dataProvider={dataProviderWithAuthors}>
+            <Resource name="authors" />
+            <Resource
+                name="books"
+                edit={() => (
+                    <Edit mutationMode="pessimistic">
+                        <SimpleForm>
+                            <ReferenceInput
+                                reference="authors"
+                                source="author"
+                                enableGetChoices={enableGetChoicesMinTwoChars}
+                            >
+                                <AutocompleteInput
+                                    optionText="name"
+                                    noOptionsText="Type 2+ chars to search"
+                                    shouldRenderSuggestions={
+                                        shouldRenderSuggestionsMinTwoChars
+                                    }
+                                />
+                            </ReferenceInput>
+                        </SimpleForm>
+                    </Edit>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const LanguageChangingAuthorInput = ({ onChange }) => {
     const { setValue } = useFormContext();
     const handleChange = (value, record) => {
@@ -1487,6 +1520,19 @@ export const OutlinedNoLabel = () => (
             choices={defaultChoices}
             label={false}
             variant="outlined"
+        />
+    </Wrapper>
+);
+
+// Regression test: with filterSelectedOptions=false, partially deleting the input text
+// and re-selecting the same option should restore the full label immediately (without blur).
+export const FilterSelectedOptionsFalse = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            filterSelectedOptions={false}
+            helperText="Select an author, partially delete the name, then re-select the same option — the input should restore immediately"
         />
     </Wrapper>
 );

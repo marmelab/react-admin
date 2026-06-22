@@ -1,7 +1,7 @@
 {
     "name": "create-react-admin",
     "description": "A CLI to quickly start a new react-admin project",
-    "version": "5.14.5",
+    "version": "5.14.7",
     "license": "MIT",
     "bin": "lib/cli.js",
     "type": "module",
@@ -26,7 +26,7 @@
         "ink-select-input": "^6.0.0",
         "ink-spinner": "^5.0.0",
         "ink-text-input": "^6.0.0",
-        "lodash": "~4.17.5",
+        "lodash": "~4.18.1",
         "meow": "^9.0.0",
         "react": "^18.3.1",
         "yn": "^5.0.0"

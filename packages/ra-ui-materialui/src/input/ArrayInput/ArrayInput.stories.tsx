@@ -14,7 +14,7 @@ import {
     TestMemoryRouter,
     useSourceContext,
 } from 'ra-core';
-import { Button, InputAdornment, Stack } from '@mui/material';
+import { Alert, Button, InputAdornment, Stack } from '@mui/material';
 
 import { Edit, Create } from '../../detail';
 import { SimpleForm, TabbedForm } from '../../form';
@@ -29,7 +29,10 @@ import { ReferenceField, TextField, TranslatableFields } from '../../field';
 import { Labeled } from '../../Labeled';
 import { useFormContext, useWatch } from 'react-hook-form';
 
-export default { title: 'ra-ui-materialui/input/ArrayInput' };
+export default {
+    title: 'ra-ui-materialui/input/ArrayInput',
+    excludeStories: ['ConditionalArrayInputValidationContent'],
+};
 
 const dataProvider = {
     getOne: () =>
@@ -821,6 +824,88 @@ export const GlobalValidation = () => (
     <TestMemoryRouter initialEntries={['/books/1']}>
         <Admin dataProvider={dataProvider}>
             <Resource name="books" edit={BookEditGlobalValidation} />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+export const ConditionalArrayInputValidationContent = () => {
+    const [showArrayInput, setShowArrayInput] = React.useState(false);
+
+    return (
+        <>
+            <Alert severity="info" sx={{ mb: 2 }}>
+                This story renders a required ArrayInput only after clicking
+                &quot;Show array input&quot;. It should not display a validation
+                error when it first appears. To trigger the array-level
+                validation error, add an item, then remove it. The error should
+                also appear after an invalid submit.
+            </Alert>
+            <Button onClick={() => setShowArrayInput(true)} variant="outlined">
+                Show array input
+            </Button>
+            {showArrayInput ? (
+                <ArrayInput source="authors" fullWidth validate={required()}>
+                    <SimpleFormIterator>
+                        <TextInput source="name" />
+                    </SimpleFormIterator>
+                </ArrayInput>
+            ) : null}
+        </>
+    );
+};
+
+export const DisplayErrorOnlyAfterInteractionOrInvalidSubmit = () => (
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                create={() => (
+                    <Create>
+                        <SimpleForm mode="onChange">
+                            <ConditionalArrayInputValidationContent />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+const TriggerValidationButton = () => {
+    const { trigger } = useFormContext();
+    return (
+        <Button onClick={() => trigger()} variant="outlined">
+            Validate
+        </Button>
+    );
+};
+
+export const TriggerValidation = () => (
+    <TestMemoryRouter initialEntries={['/books/create']}>
+        <Admin dataProvider={dataProvider}>
+            <Resource
+                name="books"
+                create={() => (
+                    <Create>
+                        <SimpleForm>
+                            <Alert severity="info" sx={{ mb: 2 }}>
+                                Reproduces the WizardForm scenario where
+                                validation is triggered programmatically (e.g.
+                                when navigating between steps) without the user
+                                having interacted with the field. Clicking
+                                &quot;Validate&quot; should display the required
+                                error on the ArrayInput.
+                            </Alert>
+                            <ArrayInput source="authors" validate={required()}>
+                                <SimpleFormIterator>
+                                    <TextInput source="name" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                            <TriggerValidationButton />
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
         </Admin>
     </TestMemoryRouter>
 );

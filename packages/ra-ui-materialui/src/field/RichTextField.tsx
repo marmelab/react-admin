@@ -87,8 +87,34 @@ export interface RichTextFieldProps<
     purifyOptions?: PurifyOptions;
 }
 
-export const removeTags = (input: string) =>
-    input ? input.replace(/<[^>]+>/gm, '') : '';
+export const removeTags = (input: string) => {
+    if (!input) {
+        return '';
+    }
+
+    let output = '';
+    let isInsideTag = false;
+
+    for (const character of input) {
+        if (character === '<') {
+            isInsideTag = true;
+            continue;
+        }
+
+        if (character === '>') {
+            if (isInsideTag) {
+                isInsideTag = false;
+                continue;
+            }
+        }
+
+        if (!isInsideTag) {
+            output += character;
+        }
+    }
+
+    return output;
+};
 
 const PREFIX = 'RaRichTextField';
 

@@ -1,6 +1,6 @@
 {
     "name": "ra-data-graphql",
-    "version": "5.14.5",
+    "version": "5.14.7",
     "description": "A GraphQL data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -34,7 +34,7 @@
     "dependencies": {
         "@apollo/client": "^3.3.19",
         "graphql-tag": "^2.12.6",
-        "lodash": "~4.17.5",
+        "lodash": "~4.18.1",
         "pluralize": "~7.0.0"
     },
     "peerDependencies": {

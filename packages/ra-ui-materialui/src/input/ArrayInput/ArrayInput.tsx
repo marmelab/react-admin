@@ -18,6 +18,7 @@ import {
     useThemeProps,
 } from '@mui/material';
 import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
 
 import { LinearProgress } from '../../layout/LinearProgress';
 import { InputHelperText } from '../InputHelperText';
@@ -88,18 +89,59 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
     const parentSourceContext = useSourceContext();
     const finalSource = parentSourceContext.getSource(arraySource);
     const { subscribe } = useFormContext();
-
-    const [error, setError] = React.useState<any>();
+    const initialCallbackHandledRef = React.useRef(false);
+    const [{ error, hasBeenInteractedWith, isSubmitted }, setArrayInputState] =
+        React.useState<{
+            error: any;
+            hasBeenInteractedWith: boolean;
+            isSubmitted: boolean;
+        }>({
+            error: undefined,
+            hasBeenInteractedWith: false,
+            isSubmitted: false,
+        });
     React.useEffect(() => {
         return subscribe({
-            formState: { errors: true },
-            callback: ({ errors }) => {
+            formState: {
+                dirtyFields: true,
+                errors: true,
+                isSubmitted: true,
+                touchedFields: true,
+            },
+            callback: ({ dirtyFields, errors, isSubmitted, touchedFields }) => {
+                const isInitialCallback = !initialCallbackHandledRef.current;
+                initialCallbackHandledRef.current = true;
                 const error = get(errors ?? {}, finalSource);
-                setError(error);
+                // An error appearing only after the initial subscription
+                // (i.e. not on mount) indicates validation was explicitly
+                // triggered later — e.g. via trigger() in WizardForm when
+                // navigating between steps without interacting with the field.
+                const hasBeenInteractedWith =
+                    get(dirtyFields ?? {}, finalSource, false) !== false ||
+                    get(touchedFields ?? {}, finalSource, false) !== false ||
+                    (!isInitialCallback && error !== undefined);
+
+                setArrayInputState(previousState =>
+                    isEqual(previousState, {
+                        error,
+                        hasBeenInteractedWith,
+                        isSubmitted: !!isSubmitted,
+                    })
+                        ? previousState
+                        : {
+                              error,
+                              hasBeenInteractedWith,
+                              isSubmitted: !!isSubmitted,
+                          }
+                );
             },
         });
     }, [finalSource, subscribe]);
-    const renderHelperText = helperText !== false || !!error;
+    const displayedError =
+        hasBeenInteractedWith || isSubmitted ? error : undefined;
+    const displayedErrorMessage = (displayedError?.root?.message ??
+        displayedError?.message) as any;
+    const renderHelperText = helperText !== false || !!displayedError;
 
     if (isPending) {
         // We handle the loading state here instead of using the loading prop
@@ -121,14 +163,14 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
                 ArrayInputClasses.root,
                 className
             )}
-            error={!!error}
+            error={!!displayedError}
             {...sanitizeInputRestProps(rest)}
         >
             <InputLabel
                 component="span"
                 className={ArrayInputClasses.label}
                 shrink
-                error={!!error}
+                error={!!displayedError}
             >
                 <FieldTitle
                     label={label}
@@ -146,12 +188,12 @@ export const ArrayInput = (inProps: ArrayInputProps) => {
                 {children}
             </ArrayInputBase>
             {renderHelperText ? (
-                <FormHelperText error={!!error}>
+                <FormHelperText error={!!displayedError}>
                     <InputHelperText
                         // root property is applicable to built-in validation only,
                         // Resolvers are yet to support useFieldArray root level validation.
                         // Reference: https://react-hook-form.com/docs/usefieldarray
-                        error={error?.root?.message ?? error?.message}
+                        error={displayedErrorMessage}
                         helperText={helperText}
                     />
                 </FormHelperText>

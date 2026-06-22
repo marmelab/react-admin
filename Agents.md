@@ -19,6 +19,8 @@ React-admin is a comprehensive frontend framework for building B2B and admin app
 - No children inspection — violates React patterns (exception: Datagrid)
 - No features achievable in pure React — keep the API surface small
 - No comments when code is self-explanatory
+- No dead code — trust your preconditions. Don't guard against conditions that prior code already prevents
+- DRY — don't duplicate knowledge. Coincidental code similarity is not duplication. Only deduplicate when the same decision or fact is expressed in multiple places. Code that looks alike but could evolve independently should stay separate
 
 ## Codebase Organization
 

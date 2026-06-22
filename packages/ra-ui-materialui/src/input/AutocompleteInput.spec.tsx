@@ -30,6 +30,7 @@ import {
     CreateLabel,
     CreateItemLabel,
     CreateItemLabelRendered,
+    FilterSelectedOptionsFalse,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -79,6 +80,33 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
         expect(screen.queryByDisplayValue('foo')).not.toBeNull();
+    });
+
+    it('should immediately update input value when re-selecting the same option after partial deletion with filterSelectedOptions={false}', async () => {
+        render(<FilterSelectedOptionsFalse />);
+
+        // Wait for the Edit form to load — record has author: 1 (Leo Tolstoy)
+        const input = (await screen.findByDisplayValue(
+            'Leo Tolstoy'
+        )) as HTMLInputElement;
+
+        // Delete last character to trigger the filter while keeping the option visible
+        fireEvent.focus(input);
+        userEvent.type(input, '{end}');
+        userEvent.type(input, '{backspace}');
+        await waitFor(() => {
+            expect(input.value).toEqual('Leo Tolsto');
+        });
+
+        // Re-select the same option — input should restore immediately without blur
+        await waitFor(() => {
+            expect(screen.queryByText('Leo Tolstoy')).not.toBeNull();
+        });
+        fireEvent.click(screen.getByText('Leo Tolstoy'));
+        await waitFor(() => {
+            expect(input.value).toEqual('Leo Tolstoy');
+        });
+        expect(document.activeElement).toBe(input);
     });
 
     it('should allow filter to match the selected choice while removing characters in the input', async () => {
@@ -708,17 +736,19 @@ describe('<AutocompleteInput />', () => {
         });
     });
 
-    it('should respect shouldRenderSuggestions over default if passed in', async () => {
+    it('should not open the suggestions popper when shouldRenderSuggestions returns false', async () => {
         render(
             <AdminContext dataProvider={testDataProvider()}>
                 <ResourceContextProvider value="posts">
                     <SimpleForm
                         onSubmit={jest.fn()}
-                        defaultValues={{ role: 2 }}
+                        defaultValues={{ role: null }}
                     >
                         <AutocompleteInput
                             {...defaultProps}
-                            shouldRenderSuggestions={() => false}
+                            shouldRenderSuggestions={(v: string) =>
+                                v.length >= 2
+                            }
                             noOptionsText="No options"
                             choices={[
                                 { id: 1, name: 'bar' },
@@ -730,11 +760,21 @@ describe('<AutocompleteInput />', () => {
             </AdminContext>
         );
 
-        const input = screen.getByLabelText('resources.users.fields.role');
+        const input = screen.getByLabelText(
+            'resources.users.fields.role'
+        ) as HTMLInputElement;
         fireEvent.focus(input);
+
+        // popper must NOT open while shouldRenderSuggestions returns false
+        expect(screen.queryByRole('listbox')).toBeNull();
+        expect(screen.queryByText('No options')).toBeNull();
+
+        // typing 2+ chars satisfies the predicate -> popper opens
+        fireEvent.change(input, { target: { value: 'fo' } });
         await waitFor(() => {
-            expect(screen.queryByText('foo')).toBeNull();
+            expect(screen.queryByRole('listbox')).not.toBeNull();
         });
+        expect(screen.queryByText('foo')).not.toBeNull();
     });
 
     it('should not fail when value is null and new choices are applied', () => {

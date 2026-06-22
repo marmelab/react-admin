@@ -1,25 +1,12 @@
-import * as React from 'react';
-import {
-    isValidElement,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-    type ReactNode,
-} from 'react';
-import debounce from 'lodash/debounce.js';
-import get from 'lodash/get.js';
-import isEqual from 'lodash/isEqual.js';
-import clsx from 'clsx';
 import {
     Autocomplete,
     type AutocompleteChangeReason,
+    type AutocompleteCloseReason,
     type AutocompleteProps,
     Chip,
+    createFilterOptions,
     TextField,
     type TextFieldProps,
-    createFilterOptions,
     major as muiMajor,
     useForkRef,
 } from '@mui/material';
@@ -28,26 +15,40 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import clsx from 'clsx';
+import debounce from 'lodash/debounce.js';
+import get from 'lodash/get.js';
+import isEqual from 'lodash/isEqual.js';
 import {
     type ChoicesProps,
     FieldTitle,
     type RaRecord,
+    type SupportCreateSuggestionOptions,
     useChoicesContext,
+    useEvent,
+    useGetRecordRepresentation,
     useInput,
     useSuggestions,
     type UseSuggestionsOptions,
+    useSupportCreateSuggestion,
     useTimeout,
     useTranslate,
     warning,
-    useGetRecordRepresentation,
-    useEvent,
-    type SupportCreateSuggestionOptions,
-    useSupportCreateSuggestion,
 } from 'ra-core';
+import * as React from 'react';
+import {
+    isValidElement,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from 'react';
+import { Offline } from '../Offline';
 import type { CommonInputProps } from './CommonInputProps';
 import { InputHelperText } from './InputHelperText';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
-import { Offline } from '../Offline';
 
 const defaultFilterOptions = createFilterOptions();
 
@@ -172,7 +173,9 @@ export const AutocompleteInput = <
         offline = defaultOffline,
         onBlur,
         onChange,
+        onClose: onCloseProp,
         onCreate,
+        onOpen: onOpenProp,
         openText = 'ra.action.open',
         optionText,
         optionValue,
@@ -338,6 +341,23 @@ If you provided a React element for the optionText prop, you must also provide t
     });
 
     const [filterValue, setFilterValue] = useState('');
+
+    const [isOpen, setIsOpen] = useState(false);
+    const canRenderSuggestions =
+        shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
+        shouldRenderSuggestions(filterValue);
+
+    const handleOpen = useEvent((event: React.SyntheticEvent) => {
+        setIsOpen(true);
+        onOpenProp?.(event);
+    });
+
+    const handleClose = useEvent(
+        (event: React.SyntheticEvent, reason: AutocompleteCloseReason) => {
+            setIsOpen(false);
+            onCloseProp?.(event, reason);
+        }
+    );
 
     const handleChange = useEvent((newValue: any) => {
         if (multiple) {
@@ -519,6 +539,21 @@ If you provided a React element for the optionText prop, you must also provide t
         }
         if (reason === 'clear') {
             setFilterValue('');
+            debouncedSetFilter('');
+        }
+        // When filterSelectedOptions=false, a user can delete characters from the input
+        // and re-select the same option — the input should update immediately without blur.
+        // MUI fires reason='reset' (not 'selectOption') for this case.
+        // - event !== null: MUI's useEffect also fires reason='reset' with event=null for
+        //   programmatic value resets, which should not update the filter.
+        // - doesQueryMatchSelection: when a create option is clicked, MUI fires reason='reset'
+        //   with the create label as newInputValue, which should not override the user's text.
+        if (
+            reason === 'reset' &&
+            event !== null &&
+            doesQueryMatchSelection(newInputValue)
+        ) {
+            setFilterValue(newInputValue);
             debouncedSetFilter('');
         }
         onInputChange?.(event, newInputValue, reason);
@@ -759,13 +794,15 @@ If you provided a React element for the optionText prop, you must also provide t
                 clearOnBlur={clearOnBlur}
                 {...sanitizeInputRestProps(rest)}
                 freeSolo={!!create || !!onCreate}
+                open={isOpen && canRenderSuggestions}
+                onOpen={handleOpen}
+                onClose={handleClose}
                 handleHomeEndKeys={!!create || !!onCreate}
                 filterOptions={filterOptions}
                 options={
                     isPaused && isPlaceholderData
                         ? []
-                        : shouldRenderSuggestions == undefined || // eslint-disable-line eqeqeq
-                            shouldRenderSuggestions(filterValue)
+                        : canRenderSuggestions
                           ? suggestions
                           : []
                 }

@@ -10,6 +10,7 @@ import { ComponentsOverrides, styled } from '@mui/material/styles';
 export const FieldToggle = (props: FieldToggleProps) => {
     const { selected, label, onToggle, onMove, source, index } = props;
     const resource = useResourceContext();
+    const switchId = React.useId();
     const dropIndex = React.useRef<number | null>(null);
     const x = React.useRef<number | null>(null);
     const y = React.useRef<number | null>(null);
@@ -110,12 +111,12 @@ export const FieldToggle = (props: FieldToggleProps) => {
             onDragOver={onMove ? handleDragOver : undefined}
             data-index={index}
         >
-            <label htmlFor={`switch_${index}`}>
+            <label htmlFor={switchId}>
                 <Switch
                     checked={selected}
                     onChange={onToggle}
                     name={`${index}`}
-                    id={`switch_${index}`}
+                    id={switchId}
                     size="small"
                     sx={{ mr: 0.5, ml: -0.5 }}
                 />

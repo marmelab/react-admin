@@ -5,7 +5,12 @@ import get from 'lodash/get.js';
 import mergeWith from 'lodash/mergeWith.js';
 import set from 'lodash/set.js';
 import { ReactNode, useEffect } from 'react';
-import { FormProvider, useForm, UseFormProps } from 'react-hook-form';
+import {
+    FieldValues,
+    FormProvider,
+    useForm,
+    UseFormProps,
+} from 'react-hook-form';
 import {
     SourceContextProvider,
     SourceContextValue,
@@ -155,9 +160,12 @@ const HTMLForm = (props: React.HTMLAttributes<HTMLFormElement>) => (
 );
 
 export interface FilterLiveFormProps
-    extends Omit<UseFormProps, 'onSubmit' | 'defaultValues'> {
+    extends Omit<
+        UseFormProps<FieldValues>,
+        'onSubmit' | 'defaultValues' | 'validate'
+    > {
     children: ReactNode;
-    validate?: ValidateForm;
+    validate?: ValidateForm<FieldValues>;
     debounce?: number | false;
     resource?: string;
     formComponent?: React.ComponentType<

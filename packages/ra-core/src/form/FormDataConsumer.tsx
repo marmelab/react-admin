@@ -72,11 +72,11 @@ export const FormDataConsumerView = <
     const finalSource = useWrappedSource(source || '');
 
     // Passes an empty string here as we don't have the children sources and we just want to know if we are in an iterator
-    const matches = ArraySourceRegex.exec(finalSource);
+    const arraySource = getArraySource(finalSource);
 
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
-    if (matches) {
-        const scopedFormData = get(formData, matches[0]);
+    if (arraySource) {
+        const scopedFormData = get(formData, arraySource);
         result = children({ formData, scopedFormData });
     } else {
         result = children({ formData });
@@ -85,7 +85,12 @@ export const FormDataConsumerView = <
     return result === undefined ? null : result;
 };
 
-const ArraySourceRegex = new RegExp(/.+\.\d+$/);
+const getArraySource = (source: string) =>
+    source.lastIndexOf('.') > 0 && ArraySourceRegex.test(source)
+        ? source
+        : undefined;
+
+const ArraySourceRegex = /\.\d+$/;
 
 export interface FormDataConsumerRenderParams<
     TFieldValues extends FieldValues = FieldValues,

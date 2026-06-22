@@ -3,6 +3,9 @@
     <head>
         <title>React-admin - {{ page.title }}</title>
         <meta charset="UTF-8" />
+        {% if page.dir contains "doc" %}
+        <meta name="robots" content="noindex" />
+        {% endif %}
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
         <meta name="description" content="{{ page.description }}" />
@@ -15,6 +18,9 @@
             rel="canonical"
             href="{{ page.name | replace: '.md', '.html' | relative_url }}"
         />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link rel="preconnect" href="https://assets.brevo.com" crossorigin />
+        <link rel="preconnect" href="https://www.youtube-nocookie.com" />
         <link
             rel="stylesheet"
             href="{{ '/css/materialize.min.css' | relative_url }}"
@@ -23,16 +29,35 @@
             rel="stylesheet"
             href="{{ '/css/style-v22.css' | relative_url }}"
         />
-        <link rel="stylesheet" href="{{ '/css/syntax.css' | relative_url }}" />
-        <link rel="stylesheet" href="{{ '/css/prism.css' | relative_url }}" />
-        <link rel="stylesheet" href="{{ '/css/tocbot.css' | relative_url }}" />
         <link
             rel="stylesheet"
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            href="{{ '/css/syntax.css' | relative_url }}"
+            media="print"
+            onload="this.media='all'"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/prism.css' | relative_url }}"
+            media="print"
+            onload="this.media='all'"
+        />
+        <link
+            rel="stylesheet"
+            href="{{ '/css/tocbot.css' | relative_url }}"
+            media="print"
+            onload="this.media='all'"
+        />
+        <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/icon?family=Material+Icons&amp;display=swap"
+            media="print"
+            onload="this.media='all'"
         />
         <link
             rel="stylesheet"
             href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+            media="print"
+            onload="this.media='all'"
         />
         <link
             rel="stylesheet"
@@ -40,15 +65,53 @@
             integrity="sha512-2kqK5bWDwdrluTn6Wkj+jgiwyzvAHLirVp08Kz7kN5I8PWQ0tUtEMxfhyWDCrnws91BJ9PfrUy6ImfA7Qb22TA=="
             crossorigin="anonymous"
             referrerpolicy="no-referrer"
+            media="print"
+            onload="this.media='all'"
         />
         <link
             rel="stylesheet"
             href="{{ '/css/docsearch.css' | relative_url }}"
+            media="print"
+            onload="this.media='all'"
         />
+        <noscript>
+            <link
+                rel="stylesheet"
+                href="{{ '/css/syntax.css' | relative_url }}"
+            />
+            <link
+                rel="stylesheet"
+                href="{{ '/css/prism.css' | relative_url }}"
+            />
+            <link
+                rel="stylesheet"
+                href="{{ '/css/tocbot.css' | relative_url }}"
+            />
+            <link
+                rel="stylesheet"
+                href="https://fonts.googleapis.com/icon?family=Material+Icons&amp;display=swap"
+            />
+            <link
+                rel="stylesheet"
+                href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"
+            />
+            <link
+                rel="stylesheet"
+                href="https://cdnjs.cloudflare.com/ajax/libs/tocbot/4.12.0/tocbot.css"
+            />
+            <link
+                rel="stylesheet"
+                href="{{ '/css/docsearch.css' | relative_url }}"
+            />
+            <link
+                rel="stylesheet"
+                href="{{ '/css/newsletter.css' | relative_url }}"
+            />
+        </noscript>
         <!-- Newsletter form -->
         <style>
             @font-face {
-                font-display: block;
+                font-display: swap;
                 font-family: Roboto;
                 src:
                     url(https://assets.brevo.com/font/Roboto/Latin/normal/normal/7529907e9eaf8ebb5220c5f9850e3811.woff2)
@@ -58,7 +121,7 @@
             }
 
             @font-face {
-                font-display: fallback;
+                font-display: swap;
                 font-family: Roboto;
                 font-weight: 600;
                 src:
@@ -69,7 +132,7 @@
             }
 
             @font-face {
-                font-display: fallback;
+                font-display: swap;
                 font-family: Roboto;
                 font-weight: 700;
                 src:
@@ -100,6 +163,8 @@
         <link
             rel="stylesheet"
             href="{{ '/css/newsletter.css' | relative_url }}"
+            media="print"
+            onload="this.media='all'"
         />
     </head>
 
