@@ -7,7 +7,13 @@ import {
     SortPayload,
     useTranslate,
 } from 'ra-core';
-import { Checkbox, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+    Checkbox,
+    TableCell,
+    TableHead,
+    TableRow,
+    major as muiMajor,
+} from '@mui/material';
 import clsx from 'clsx';
 
 import DatagridHeaderCell from './DatagridHeaderCell';
@@ -83,6 +89,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
             : data.map(record => record.id)
         : [];
 
+    const selectAllInputProps = {
+        'aria-label': translate('ra.action.select_all', { _: 'Select all' }),
+    };
+
     return (
         <TableHead className={clsx(className, DatagridClasses.thead)}>
             <TableRow
@@ -109,12 +119,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            inputProps={{
-                                'aria-label': translate(
-                                    'ra.action.select_all',
-                                    { _: 'Select all' }
-                                ),
-                            }}
+                            inputProps={selectAllInputProps}
+                            {...(muiMajor >= 6
+                                ? { slotProps: { input: selectAllInputProps } }
+                                : {})}
                             className="select-all"
                             color="primary"
                             checked={

@@ -3,6 +3,7 @@ import { useCallback, useMemo, FC, memo, ReactElement } from 'react';
 import {
     TablePagination,
     TablePaginationBaseProps,
+    TablePaginationProps,
     Toolbar,
     useMediaQuery,
     Theme,
@@ -20,6 +21,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         rowsPerPageOptions = DefaultRowsPerPageOptions,
         actions,
         limit = null,
+        slotProps,
         ...rest
     } = props;
     const {
@@ -87,6 +89,20 @@ export const Pagination: FC<PaginationProps> = memo(props => {
         [translate]
     );
 
+    const mergedSlotProps = useMemo(
+        () => ({
+            ...slotProps,
+            actions: {
+                ...slotProps?.actions,
+                nextButton: {
+                    disabled: !hasNextPage,
+                    ...slotProps?.actions?.nextButton,
+                },
+            },
+        }),
+        [slotProps, hasNextPage]
+    );
+
     if (isPending) {
         return <Toolbar variant="dense" />;
     }
@@ -111,6 +127,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
                 rowsPerPageOptions={emptyArray}
                 component="span"
                 labelDisplayedRows={labelDisplayedRows}
+                slotProps={slotProps}
                 {...sanitizeListRestProps(rest)}
             />
         );
@@ -131,9 +148,7 @@ export const Pagination: FC<PaginationProps> = memo(props => {
             onRowsPerPageChange={handlePerPageChange}
             // @ts-ignore
             ActionsComponent={ActionsComponent}
-            nextIconButtonProps={{
-                disabled: !hasNextPage,
-            }}
+            slotProps={mergedSlotProps}
             component="span"
             labelRowsPerPage={translate('ra.navigation.page_rows_per_page')}
             labelDisplayedRows={labelDisplayedRows}
@@ -154,4 +169,5 @@ export interface PaginationProps extends TablePaginationBaseProps {
      * @deprecated The Pagination limit prop is deprecated. Empty state should be handled by the component displaying data (Datagrid, SimpleList).
      */
     limit?: ReactElement;
+    slotProps?: TablePaginationProps['slotProps'];
 }

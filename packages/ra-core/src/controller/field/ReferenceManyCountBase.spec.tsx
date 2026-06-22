@@ -5,6 +5,7 @@ import {
     ErrorState,
     LoadingState,
     Offline,
+    WithRender,
 } from './ReferenceManyCountBase.stories';
 import { onlineManager } from '@tanstack/react-query';
 
@@ -29,6 +30,11 @@ describe('ReferenceManyCountBase', () => {
     it('should render the total', async () => {
         render(<Basic />);
         await screen.findByText('3');
+    });
+
+    it('should accept a render function', async () => {
+        render(<WithRender />);
+        await screen.findByText('3 comments');
     });
 
     it('should render the offline prop node when offline', async () => {

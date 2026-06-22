@@ -59,6 +59,13 @@ const defaultThemeInvariants: ThemeOptions = {
                 },
             },
         },
+        MuiListItemIcon: {
+            styleOverrides: {
+                root: {
+                    minWidth: 56,
+                },
+            },
+        },
         RaSimpleFormIterator: {
             defaultProps: {
                 fullWidth: true,

@@ -1,7 +1,7 @@
 import * as React from 'react';
-import { MouseEvent, useEffect, useState } from 'react';
+import { MouseEvent } from 'react';
 
-import { Editor } from '@tiptap/react';
+import { Editor, useEditorState } from '@tiptap/react';
 import {
     ToggleButton,
     ToggleButtonGroup,
@@ -18,7 +18,12 @@ import { useTiptapEditor } from '../useTiptapEditor';
 export const FormatButtons = (props: ToggleButtonGroupProps) => {
     const editor = useTiptapEditor();
     const translate = useTranslate();
-    const [values, setValues] = useState<string[]>([]);
+
+    const values = useEditorState({
+        editor,
+        selector: ({ editor }) =>
+            editor ? FormatValues.filter(value => editor.isActive(value)) : [],
+    });
 
     const boldLabel = translate('ra.tiptap.bold', {
         _: 'Bold',
@@ -39,31 +44,6 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
     const codeLabel = translate('ra.tiptap.code', {
         _: 'Code',
     });
-
-    useEffect(() => {
-        const handleUpdate = () => {
-            setValues(() =>
-                FormatValues.reduce((acc, value) => {
-                    if (editor && editor.isActive(value)) {
-                        acc.push(value);
-                    }
-                    return acc;
-                }, [])
-            );
-        };
-
-        if (editor) {
-            editor.on('update', handleUpdate);
-            editor.on('selectionUpdate', handleUpdate);
-        }
-
-        return () => {
-            if (editor) {
-                editor.off('update', handleUpdate);
-                editor.off('selectionUpdate', handleUpdate);
-            }
-        };
-    }, [editor]);
 
     const handleChange = (
         event: MouseEvent<HTMLElement>,

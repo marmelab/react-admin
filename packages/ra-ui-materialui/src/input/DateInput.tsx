@@ -11,7 +11,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef } from '@mui/material';
+import { useForkRef, major as muiMajor } from '@mui/material';
 
 /**
  * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
@@ -188,6 +188,16 @@ export const DateInput = (props: DateInputProps) => {
     const { ref, name } = field;
     const inputRef = useForkRef(ref, localInputRef);
 
+    const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        ...rest.slotProps,
+        inputLabel: {
+            ...defaultInputLabelProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            ...rest.slotProps?.inputLabel,
+        },
+    };
+
     return (
         <StyledTextField
             id={id}
@@ -226,6 +236,7 @@ export const DateInput = (props: DateInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
+            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
     );
 };

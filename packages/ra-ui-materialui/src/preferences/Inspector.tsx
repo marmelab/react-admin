@@ -9,7 +9,7 @@ import {
 } from 'ra-core';
 import { Paper, Typography, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/CancelOutlined';
-import DeleteIcon from '@mui/icons-material/DeleteOutline';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 import { useTheme, styled, ComponentsOverrides } from '@mui/material/styles';
 
 import { InspectorRoot } from './InspectorRoot';

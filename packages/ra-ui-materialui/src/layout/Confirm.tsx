@@ -15,7 +15,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import ActionCheck from '@mui/icons-material/CheckCircle';
-import AlertError from '@mui/icons-material/ErrorOutline';
+import AlertError from '@mui/icons-material/ErrorOutlined';
 import clsx from 'clsx';
 import { useTranslate } from 'ra-core';
 

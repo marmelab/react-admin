@@ -6,6 +6,7 @@ import {
     WithCustomOptions,
     WithLazyLoadedLanguages,
     TranslateComponent,
+    TranslateWithReactElement,
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
@@ -76,6 +77,15 @@ describe('i18next i18nProvider', () => {
         await waitFor(() => {
             expect(container.innerHTML).toEqual(
                 'My Translated Key<br>Dashboard<br>Hello, world!<br>2 beers'
+            );
+        });
+    });
+
+    test('should support React elements in <Translate> options', async () => {
+        const { container } = render(<TranslateWithReactElement />);
+        await waitFor(() => {
+            expect(container.innerHTML).toContain(
+                'Hello, <strong>John</strong>! Welcome to <em>react-admin</em>.'
             );
         });
     });

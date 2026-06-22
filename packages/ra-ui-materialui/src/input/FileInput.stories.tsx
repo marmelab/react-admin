@@ -9,7 +9,7 @@ import { FileInput } from './FileInput';
 import { FileField } from '../field';
 import { required } from 'ra-core';
 import { FormInspector } from './common';
-import DeleteIcon from '@mui/icons-material/DeleteOutline';
+import DeleteIcon from '@mui/icons-material/DeleteOutlined';
 
 export default { title: 'ra-ui-materialui/input/FileInput' };
 

@@ -22,7 +22,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
 import { Editor, ReactRenderer } from '@tiptap/react';
-import tippy, { Instance as TippyInstance } from 'tippy.js';
+import { computePosition, flip, shift, offset } from '@floating-ui/dom';
 import {
     DefaultEditorOptions,
     RichTextInput,
@@ -375,13 +375,13 @@ export const CustomOptions = () => (
     </TestMemoryRouter>
 );
 
-const MentionList = React.forwardRef<
-    MentionListRef,
-    {
-        items: string[];
-        command: (props: { id: string }) => void;
-    }
->((props, ref) => {
+const MentionList = (props: {
+    items: string[];
+    command: (props: { id: string }) => void;
+    onKeyDownRef: React.MutableRefObject<
+        ((props: { event: KeyboardEvent }) => boolean) | null
+    >;
+}) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
     const selectItem = index => {
@@ -392,42 +392,30 @@ const MentionList = React.forwardRef<
         }
     };
 
-    const upHandler = () => {
-        setSelectedIndex(
-            (selectedIndex + props.items.length - 1) % props.items.length
-        );
-    };
-
-    const downHandler = () => {
-        setSelectedIndex((selectedIndex + 1) % props.items.length);
-    };
-
-    const enterHandler = () => {
-        selectItem(selectedIndex);
-    };
-
     React.useEffect(() => setSelectedIndex(0), [props.items]);
 
-    React.useImperativeHandle(ref, () => ({
-        onKeyDown: ({ event }) => {
+    React.useEffect(() => {
+        props.onKeyDownRef.current = ({ event }) => {
             if (event.key === 'ArrowUp') {
-                upHandler();
+                setSelectedIndex(
+                    i => (i + props.items.length - 1) % props.items.length
+                );
                 return true;
             }
 
             if (event.key === 'ArrowDown') {
-                downHandler();
+                setSelectedIndex(i => (i + 1) % props.items.length);
                 return true;
             }
 
             if (event.key === 'Enter') {
-                enterHandler();
+                selectItem(selectedIndex);
                 return true;
             }
 
             return false;
-        },
-    }));
+        };
+    });
 
     return (
         <Paper>
@@ -438,7 +426,10 @@ const MentionList = React.forwardRef<
                             dense
                             selected={index === selectedIndex}
                             key={index}
-                            onClick={() => selectItem(index)}
+                            onMouseDown={e => {
+                                e.preventDefault();
+                                selectItem(index);
+                            }}
                         >
                             {item}
                         </ListItemButton>
@@ -451,10 +442,6 @@ const MentionList = React.forwardRef<
             </List>
         </Paper>
     );
-});
-
-type MentionListRef = {
-    onKeyDown: (props: { event: React.KeyboardEvent }) => boolean;
 };
 const suggestions = tags => {
     return {
@@ -467,75 +454,84 @@ const suggestions = tags => {
         },
 
         render: () => {
-            let component: ReactRenderer<MentionListRef>;
-            let popup: TippyInstance[];
+            let component: ReactRenderer;
+            let floatingEl: HTMLElement;
+            const onKeyDownRef: React.MutableRefObject<
+                ((props: { event: KeyboardEvent }) => boolean) | null
+            > = { current: null };
+
+            const updatePosition = (clientRect: () => DOMRect) => {
+                if (!floatingEl) return;
+                const virtualEl = {
+                    getBoundingClientRect: clientRect,
+                };
+                computePosition(virtualEl, floatingEl, {
+                    placement: 'bottom-start',
+                    middleware: [offset(8), flip(), shift()],
+                }).then(({ x, y }) => {
+                    Object.assign(floatingEl.style, {
+                        left: `${x}px`,
+                        top: `${y}px`,
+                    });
+                });
+            };
 
             return {
                 onStart: props => {
                     component = new ReactRenderer(MentionList, {
-                        props,
+                        props: { ...props, onKeyDownRef },
                         editor: props.editor,
                     });
 
-                    if (!props.clientRect) {
-                        return;
-                    }
+                    floatingEl = document.createElement('div');
+                    floatingEl.style.position = 'absolute';
+                    floatingEl.style.zIndex = '1300';
+                    floatingEl.addEventListener('mousedown', e =>
+                        e.preventDefault()
+                    );
+                    floatingEl.appendChild(component.element);
+                    props.editor.view.dom.parentElement.appendChild(floatingEl);
 
-                    popup = tippy('body', {
-                        getReferenceClientRect: props.clientRect,
-                        appendTo: () => document.body,
-                        content: component.element,
-                        showOnCreate: true,
-                        interactive: true,
-                        trigger: 'manual',
-                        placement: 'bottom-start',
-                    });
+                    if (props.clientRect) {
+                        updatePosition(props.clientRect);
+                    }
                 },
 
                 onUpdate(props) {
                     if (component) {
-                        component.updateProps(props);
+                        component.updateProps({ ...props, onKeyDownRef });
                     }
 
-                    if (!props.clientRect) {
-                        return;
-                    }
-
-                    if (popup && popup[0]) {
-                        popup[0].setProps({
-                            getReferenceClientRect: props.clientRect,
-                        });
+                    if (props.clientRect) {
+                        updatePosition(props.clientRect);
                     }
                 },
 
                 onKeyDown(props) {
-                    if (popup && popup[0] && props.event.key === 'Escape') {
-                        popup[0].hide();
-
+                    if (props.event.key === 'Escape') {
+                        if (floatingEl) {
+                            floatingEl.style.display = 'none';
+                        }
                         return true;
                     }
 
-                    if (!component.ref) {
+                    if (!onKeyDownRef.current) {
                         return false;
                     }
 
-                    return component.ref.onKeyDown(props);
+                    return onKeyDownRef.current(props);
                 },
 
                 onExit() {
+                    onKeyDownRef.current = null;
                     queueMicrotask(() => {
-                        if (popup && popup[0] && !popup[0].state.isDestroyed) {
-                            popup[0].destroy();
-                        }
                         if (component) {
                             component.destroy();
                         }
-                        // Remove references to the old popup and component upon destruction/exit.
-                        // (This should prevent redundant calls to `popup.destroy()`, which Tippy
-                        // warns in the console is a sign of a memory leak, as the `suggestion`
-                        // plugin seems to call `onExit` both when a suggestion menu is closed after
-                        // a user chooses an option, *and* when the editor itself is destroyed.)
-                        popup = undefined;
+                        if (floatingEl && floatingEl.parentNode) {
+                            floatingEl.parentNode.removeChild(floatingEl);
+                        }
+                        floatingEl = undefined;
                         component = undefined;
                     });
                 },

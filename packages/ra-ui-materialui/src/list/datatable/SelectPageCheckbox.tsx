@@ -1,4 +1,4 @@
-import { Checkbox } from '@mui/material';
+import { Checkbox, major as muiMajor } from '@mui/material';
 import {
     useDataTableCallbacksContext,
     useDataTableDataContext,
@@ -47,13 +47,16 @@ export const SelectPageCheckbox = () => {
             : data.map(record => record.id)
         : [];
 
+    const selectAllInputProps = {
+        'aria-label': translate('ra.action.select_all', { _: 'Select all' }),
+    };
+
     return (
         <Checkbox
-            inputProps={{
-                'aria-label': translate('ra.action.select_all', {
-                    _: 'Select all',
-                }),
-            }}
+            inputProps={selectAllInputProps}
+            {...(muiMajor >= 6
+                ? { slotProps: { input: selectAllInputProps } }
+                : {})}
             className="select-all"
             color="primary"
             checked={

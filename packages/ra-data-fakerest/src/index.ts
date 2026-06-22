@@ -14,14 +14,31 @@ function log(type, resource, params, response) {
     }
 }
 
-function delayed(response: any, delay?: number) {
+type Delay = number | boolean | { min?: number; max?: number };
+
+function delayed<T>(response: T, delay?: Delay): T | Promise<T> {
+    let min = 0,
+        max = 0;
+    if (typeof delay === 'number') {
+        min = max = delay;
+    } else if (delay === true) {
+        min = 500;
+        max = 1500;
+    } else if (delay) {
+        min = delay.min ?? 0;
+        max = delay.max ?? min;
+    }
+
     // If there is no delay, we return the value right away/
     // This saves a tick in unit tests.
-    return delay
-        ? new Promise(resolve => {
-              setTimeout(() => resolve(response), delay);
-          })
-        : response;
+    if (max === 0) return response;
+
+    const milliseconds =
+        min === max ? min : min + Math.floor(Math.random() * (max - min + 1));
+
+    return new Promise<T>(resolve =>
+        setTimeout(() => resolve(response), milliseconds)
+    );
 }
 
 /**
@@ -43,7 +60,7 @@ function delayed(response: any, delay?: number) {
  *   ],
  * })
  */
-export default (data, loggingEnabled = false, delay?: number): DataProvider => {
+export default (data, loggingEnabled = false, delay?: Delay): DataProvider => {
     const database = new Database({ data });
     if (typeof window !== 'undefined') {
         // give way to update data in the console

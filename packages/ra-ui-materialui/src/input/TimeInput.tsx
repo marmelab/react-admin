@@ -7,6 +7,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
+import { major as muiMajor } from '@mui/material';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
@@ -89,6 +90,16 @@ export const TimeInput = (props: TimeInputProps) => {
 
     const renderHelperText = helperText !== false || invalid;
 
+    const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        ...rest.slotProps,
+        inputLabel: {
+            ...defaultInputLabelProps,
+            // @ts-expect-error slotProps do not yet exist in MUI v5
+            ...rest.slotProps?.inputLabel,
+        },
+    };
+
     return (
         <StyledTextField
             id={id}
@@ -121,6 +132,7 @@ export const TimeInput = (props: TimeInputProps) => {
             }
             InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
+            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
     );
 };

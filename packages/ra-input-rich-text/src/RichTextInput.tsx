@@ -3,12 +3,10 @@ import { ReactNode, useEffect } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
-import Highlight from '@tiptap/extension-highlight';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import TextAlign from '@tiptap/extension-text-align';
-import TextStyle from '@tiptap/extension-text-style';
-import Underline from '@tiptap/extension-underline';
+import { Highlight } from '@tiptap/extension-highlight';
+import { Image } from '@tiptap/extension-image';
+import { TextAlign } from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
 import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
@@ -120,8 +118,9 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
         const { from, to } = editor.state.selection;
 
-        editor.commands.setContent(field.value, false, {
-            preserveWhitespace: true,
+        editor.commands.setContent(field.value, {
+            emitUpdate: false,
+            parseOptions: { preserveWhitespace: true },
         });
         editor.commands.setTextSelection({ from, to });
     }, [editor, field.value]);
@@ -188,13 +187,15 @@ export const RichTextInput = (props: RichTextInputProps) => {
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
-        Underline,
-        Link,
         TextAlign.configure({
             types: ['heading', 'paragraph'],
         }),
         Image.configure({
             inline: true,
+            resize: {
+                enabled: true,
+                alwaysPreserveAspectRatio: true,
+            },
         }),
         TextStyle, // Required by Color
         Color,
@@ -250,6 +251,73 @@ const Root = styled('div', {
                 '&:last-child': {
                     marginBottom: 0,
                 },
+            },
+            '& [data-resize-handle]': {
+                position: 'absolute',
+                background: 'rgba(0, 0, 0, 0.5)',
+                border: '1px solid rgba(255, 255, 255, 0.8)',
+                borderRadius: 2,
+                zIndex: 10,
+                '&:hover': {
+                    background: 'rgba(0, 0, 0, 0.8)',
+                },
+                /* Corner handles */
+                "&[data-resize-handle='top-left'], &[data-resize-handle='top-right'], &[data-resize-handle='bottom-left'], &[data-resize-handle='bottom-right']":
+                    {
+                        width: 8,
+                        height: 8,
+                    },
+                "&[data-resize-handle='top-left']": {
+                    top: -4,
+                    left: -4,
+                    cursor: 'nwse-resize',
+                },
+                "&[data-resize-handle='top-right']": {
+                    top: -4,
+                    right: -4,
+                    cursor: 'nesw-resize',
+                },
+                "&[data-resize-handle='bottom-left']": {
+                    bottom: -4,
+                    left: -4,
+                    cursor: 'nesw-resize',
+                },
+                "&[data-resize-handle='bottom-right']": {
+                    bottom: -4,
+                    right: -4,
+                    cursor: 'nwse-resize',
+                },
+                /* Edge handles */
+                "&[data-resize-handle='top'], &[data-resize-handle='bottom']": {
+                    height: 6,
+                    left: 8,
+                    right: 8,
+                },
+                "&[data-resize-handle='top']": {
+                    top: -3,
+                    cursor: 'ns-resize',
+                },
+                "&[data-resize-handle='bottom']": {
+                    bottom: -3,
+                    cursor: 'ns-resize',
+                },
+                "&[data-resize-handle='left'], &[data-resize-handle='right']": {
+                    width: 6,
+                    top: 8,
+                    bottom: 8,
+                },
+                "&[data-resize-handle='left']": {
+                    left: -3,
+                    cursor: 'ew-resize',
+                },
+                "&[data-resize-handle='right']": {
+                    right: -3,
+                    cursor: 'ew-resize',
+                },
+            },
+            "& [data-resize-state='true'] [data-resize-wrapper]": {
+                outline: '1px solid rgba(0, 0, 0, 0.25)',
+                borderRadius: '0.125rem',
             },
         },
     },

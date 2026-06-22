@@ -51,3 +51,22 @@ export const Options = () => (
         <Translate i18nKey="custom.myKey" options={{ price: '6' }} />
     </TestTranslationProvider>
 );
+
+export const ReactElementInterpolation = () => (
+    <TestTranslationProvider
+        messages={{
+            custom: {
+                myKey: ({ name, place }) =>
+                    `Hello ${name}, welcome to ${place}!`,
+            },
+        }}
+    >
+        <Translate
+            i18nKey="custom.myKey"
+            options={{
+                name: <strong>John</strong>,
+                place: <em>react-admin</em>,
+            }}
+        />
+    </TestTranslationProvider>
+);

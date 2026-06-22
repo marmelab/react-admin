@@ -16,6 +16,7 @@ import { createTheme, ThemeOptions } from '@mui/material';
 
 import { ReferenceManyCount } from './ReferenceManyCount';
 import { defaultLightTheme, ThemeProvider, ThemesContext } from '../theme';
+import { NumberField } from './NumberField';
 
 export default {
     title: 'ra-ui-materialui/fields/ReferenceManyCount',
@@ -84,6 +85,30 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const WithRender = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: 30060,
+                }),
+        }}
+    >
+        <ReferenceManyCount
+            reference="comments"
+            target="post_id"
+            render={({ total }) => (
+                <NumberField
+                    record={{ total }}
+                    source="total"
+                    locales="en-US"
+                />
+            )}
+        />
+    </Wrapper>
+);
+
 export const LoadingState = () => (
     <Wrapper dataProvider={{ getManyReference: () => new Promise(() => {}) }}>
         <ReferenceManyCount reference="comments" target="post_id" />
@@ -141,6 +166,31 @@ export const Link = () => (
         }}
     >
         <ReferenceManyCount reference="comments" target="post_id" link />
+    </Wrapper>
+);
+
+export const LinkWithRender = () => (
+    <Wrapper
+        dataProvider={{
+            getManyReference: () =>
+                Promise.resolve({
+                    data: [comments.filter(c => c.post_id === 1)[0]],
+                    total: 30060,
+                }),
+        }}
+    >
+        <ReferenceManyCount
+            reference="comments"
+            target="post_id"
+            link
+            render={({ total }) => (
+                <NumberField
+                    record={{ total }}
+                    source="total"
+                    locales="en-US"
+                />
+            )}
+        />
     </Wrapper>
 );
 

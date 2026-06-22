@@ -11,6 +11,7 @@ import {
     Snackbar,
     type SnackbarProps,
     SnackbarOrigin,
+    major as muiMajor,
 } from '@mui/material';
 import clsx from 'clsx';
 
@@ -133,6 +134,22 @@ export const Notification = (inProps: NotificationProps) => {
         ...options
     } = notificationOptions || {};
 
+    const transitionProps = { onExited: handleExited };
+    const contentProps = {
+        className: clsx(NotificationClasses[typeFromMessage || type], {
+            [NotificationClasses.multiLine]: multilineFromMessage || multiLine,
+        }),
+    };
+
+    const mergedSlotProps = {
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        ...rest.slotProps,
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        transition: { ...transitionProps, ...rest.slotProps?.transition },
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        content: { ...contentProps, ...rest.slotProps?.content },
+    };
+
     return (
         <CloseNotificationContext.Provider value={handleRequestClose}>
             <StyledSnackbar
@@ -151,17 +168,9 @@ export const Notification = (inProps: NotificationProps) => {
                         : autoHideDurationFromMessage ?? undefined
                 }
                 disableWindowBlurListener={undoable}
-                TransitionProps={{ onExited: handleExited }}
+                TransitionProps={transitionProps}
+                ContentProps={contentProps}
                 onClose={handleRequestClose}
-                ContentProps={{
-                    className: clsx(
-                        NotificationClasses[typeFromMessage || type],
-                        {
-                            [NotificationClasses.multiLine]:
-                                multilineFromMessage || multiLine,
-                        }
-                    ),
-                }}
                 action={
                     undoable ? (
                         <Button
@@ -177,6 +186,7 @@ export const Notification = (inProps: NotificationProps) => {
                 anchorOrigin={anchorOrigin}
                 {...rest}
                 {...options}
+                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
             >
                 {message &&
                 typeof message !== 'string' &&
