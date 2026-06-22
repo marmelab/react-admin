@@ -97,7 +97,9 @@ describe('ra-data-fakerest', () => {
                 // resolution and rounding, so allow a small tolerance on the
                 // lower bound to avoid flakiness on loaded CI machines.
                 const tolerance = 10;
-                expect(duration).toBeGreaterThanOrEqual(Math.max(0, min - tolerance));
+                expect(duration).toBeGreaterThanOrEqual(
+                    Math.max(0, min - tolerance)
+                );
                 if (max > 20) {
                     // Only check max for non-immediate responses to avoid flakiness
                     expect(duration).toBeLessThanOrEqual(max);
