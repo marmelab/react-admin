@@ -34,7 +34,8 @@ type CompatLinkProps = RouterLinkProps & {
  * supported version (`useHref`, `useResolvedPath`, `useNavigate`, `createPath`).
  *
  * Used as the v6 fallback by the default react-router adapter, which prefers
- * react-router's native `Link` when it exists (v7/v8).
+ * react-router's native `Link` when it exists (v7/v8). v6 users can always override
+ * this with the `react-router-dom`'s `<Link>` component.
  */
 export const CompatLink = forwardRef<HTMLAnchorElement, CompatLinkProps>(
     function CompatLink(
