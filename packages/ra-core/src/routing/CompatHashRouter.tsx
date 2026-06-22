@@ -18,12 +18,12 @@ type HashHistory = Navigator & {
 const createKey = () => Math.random().toString(36).substring(2, 10);
 
 /**
- * Minimal hash history for the v6 fallback router. react-router v6 does not
- * export `createHashRouter` (it lived in `react-router-dom`) nor the low-level
- * `createHashHistory`, so we build a hash history on top of the browser History
- * API and feed it to the low-level `<Router>` component (available on every
- * version). It is a faithful port of react-router's own hash
- * history.
+ * Minimal hash history reimplementation react-router v6, where
+ * `createHashRouter` is not exported from the `react-router` package (it
+ * lived only in `react-router-dom`), nor the low-level `createHashHistory`.
+ * Mirrors `createHashHistory` and builds upon the browser History API.
+ * It feeds into the low-level `<Router>` component which is available
+ * on every supported version.
  */
 const createHashHistory = (): HashHistory => {
     const globalHistory = window.history;
@@ -148,9 +148,12 @@ const createHashHistory = (): HashHistory => {
 };
 
 /**
- * Non-data hash router for the v6 fallback. react-router v6 does not export
- * `createHashRouter`/`HashRouter` from the `react-router` package, so this builds
- * a hash router on the low-level `<Router>` component.
+ * Minimal non-data `<HashRouter>` reimplementation for the react-router v6, where `HashRouter`
+ * is not exported from the `react-router` package (it lived only in `react-router-dom`).
+ *
+ * Used as the v6 fallback by the default `InternalRouter`, which prefers react-router's native
+ * `createHashRouter` when it exists (v7/v8). v6 users can always override this by wrapping
+ * the react element tree with `react-router-dom`'s `<HashRouter>` component.
  */
 export const CompatHashRouter = ({
     basename,
