@@ -11,14 +11,7 @@ import * as yup from 'yup';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import {
-    Route,
-    Routes,
-    useNavigate,
-    Link,
-    HashRouter,
-    useLocation,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router';
 
 import { CoreAdminContext } from '../core';
 import {
@@ -32,7 +25,8 @@ import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider, RaRecord } from '../types';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, LinkBase as Link } from '../routing';
+import { CompatHashRouter } from '../routing/CompatHashRouter';
 import { useNotificationContext } from '../notification';
 
 export default {
@@ -409,16 +403,14 @@ export const InNonDataRouter = ({
 }: {
     i18nProvider?: I18nProvider;
 }) => (
-    <HashRouter
-        future={{ v7_relativeSplatPath: false, v7_startTransition: false }}
-    >
+    <CompatHashRouter>
         <CoreAdminContext i18nProvider={i18nProvider}>
             <Routes>
                 <Route path="/" element={<Link to="/form">Go to form</Link>} />
                 <Route path="/form" element={<FormUnderTest />} />
             </Routes>
         </CoreAdminContext>
-    </HashRouter>
+    </CompatHashRouter>
 );
 
 const PostEditWithDelete = ({

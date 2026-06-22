@@ -174,7 +174,7 @@ export interface CoreAdminContextProps {
      * The router provider for custom routing implementations
      *
      * Use this to integrate react-admin with alternative routers like TanStack Router.
-     * Defaults to react-router-dom.
+     * Defaults to react-router.
      *
      * @see https://marmelab.com/react-admin/Admin.html#routerprovider
      * @example

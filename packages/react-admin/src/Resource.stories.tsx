@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Link, useParams } from 'react-router-dom';
+import { Route, useParams } from 'react-router';
 import {
     Admin,
     Resource,
@@ -7,6 +7,7 @@ import {
     List,
     EditGuesser,
     EditButton,
+    LinkBase as Link,
     useRecordContext,
 } from './';
 import fakeRestDataProvider from 'ra-data-fakerest';
