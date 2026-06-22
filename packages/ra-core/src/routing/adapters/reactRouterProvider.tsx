@@ -1,5 +1,6 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, ReactNode } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import * as ReactRouter from 'react-router';
 import {
     useNavigate as useReactRouterNavigate,
     useLocation,
@@ -7,27 +8,35 @@ import {
     useBlocker,
     useMatch,
     useInRouterContext,
-    Link,
     Navigate,
     Route,
     Routes,
     Outlet,
     matchPath,
-    createHashRouter,
     RouterProvider as ReactRouterProvider,
     UNSAFE_DataRouterContext,
     UNSAFE_DataRouterStateContext,
     type FutureConfig,
-} from 'react-router-dom';
+} from 'react-router';
+import { CompatLink } from '../CompatLink';
+import { CompatHashRouter } from '../CompatHashRouter';
 import type {
     RouterProvider,
     RouterWrapperProps,
     RouterNavigateFunction,
+    RouterLinkProps,
 } from '../RouterProvider';
 
 const routerProviderFuture: Partial<
     Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
 > = { v7_startTransition: false, v7_relativeSplatPath: false };
+
+// Allow conditionally check whether `Link` and `createHashRouter` are exported during runtime.
+// Fallback to `CompatLink` and `CompatHashRouter` if they are not available.
+const reactRouter = ReactRouter as unknown as Record<string, unknown>;
+
+const Link = (reactRouter.Link ??
+    CompatLink) as React.ComponentType<RouterLinkProps>;
 
 /**
  * Hook to check if navigation blocking is supported.
@@ -68,26 +77,34 @@ const useNavigate = (): RouterNavigateFunction => {
  * Internal router component that creates a HashRouter.
  * Only used when not already inside a router context.
  */
-const InternalRouter = ({
-    children,
-    basename,
-}: {
-    children: ReactNode;
-    basename?: string;
-}) => {
-    const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
-        basename,
-        future: {
-            v7_fetcherPersist: false,
-            v7_normalizeFormMethod: false,
-            v7_partialHydration: false,
-            v7_relativeSplatPath: false,
-            v7_skipActionErrorRevalidation: false,
-        },
-    });
-    return (
-        <ReactRouterProvider router={router} future={routerProviderFuture} />
-    );
+const InternalRouter = ({ basename, children }: RouterWrapperProps) => {
+    const createHashRouter = reactRouter.createHashRouter as
+        | ((routes: any[], opts?: any) => any)
+        | undefined;
+
+    if (createHashRouter) {
+        const router = createHashRouter(
+            [{ path: '*', element: <>{children}</> }],
+            {
+                basename,
+                future: {
+                    v7_fetcherPersist: false,
+                    v7_normalizeFormMethod: false,
+                    v7_partialHydration: false,
+                    v7_relativeSplatPath: false,
+                    v7_skipActionErrorRevalidation: false,
+                },
+            }
+        );
+        return (
+            <ReactRouterProvider
+                router={router}
+                future={routerProviderFuture}
+            />
+        );
+    }
+
+    return <CompatHashRouter basename={basename}>{children}</CompatHashRouter>;
 };
 
 /**
@@ -105,7 +122,7 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
 };
 
 /**
- * Default router provider using react-router-dom.
+ * Default router provider using react-router.
  * This provider is used by default when no custom routerProvider is provided to <Admin>.
  */
 export const reactRouterProvider: RouterProvider = {
@@ -121,7 +138,7 @@ export const reactRouterProvider: RouterProvider = {
     // Components
     Link,
     Navigate,
-    Route,
+    Route: Route as RouterProvider['Route'],
     Routes,
     Outlet,
 
