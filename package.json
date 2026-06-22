@@ -106,6 +106,8 @@
     "resolutions": {
         "minimist": "^1.2.6",
         "ejs": "^3.1.7",
+        "@types/react": "^18.3.3",
+        "@types/react-dom": "^18.3.0",
         "@storybook/source-loader@npm:8.4.4": "patch:@storybook/source-loader@npm%3A8.4.4#~/.yarn/patches/@storybook-source-loader-npm-8.4.4-55dafc88e2.patch"
     },
     "packageManager": "yarn@4.0.2",
