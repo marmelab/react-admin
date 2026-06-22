@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import { QueryClient } from '@tanstack/react-query';
 import expect from 'expect';
 
