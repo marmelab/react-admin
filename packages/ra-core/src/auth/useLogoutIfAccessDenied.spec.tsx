@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useEffect, useState } from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 
 import useLogoutIfAccessDenied from './useLogoutIfAccessDenied';
 import { AuthContext } from './AuthContext';

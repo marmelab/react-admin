@@ -1,11 +1,6 @@
 import * as React from 'react';
-import {
-    Link,
-    Routes,
-    Route,
-    useLocation,
-    useNavigate,
-} from 'react-router-dom';
+import { Routes, Route, useLocation, useNavigate } from 'react-router';
+import { LinkBase as Link } from './LinkBase';
 
 import { FakeBrowserDecorator } from '../storybook//FakeBrowser';
 import { useRedirect as useRedirectRA } from './useRedirect';

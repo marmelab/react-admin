@@ -1,6 +1,11 @@
 import * as React from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
-import { Resource, testDataProvider, TestMemoryRouter } from 'ra-core';
+import { Routes, Route } from 'react-router';
+import {
+    LinkBase as Link,
+    Resource,
+    testDataProvider,
+    TestMemoryRouter,
+} from 'ra-core';
 import type { AuthProvider } from 'ra-core';
 import {
     Layout,
