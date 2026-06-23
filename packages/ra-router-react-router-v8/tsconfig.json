@@ -5,8 +5,6 @@
         "rootDir": "src",
         "allowJs": false,
         "strictNullChecks": true,
-        "module": "esnext",
-        "moduleResolution": "bundler"
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx"],
     "include": ["src"]
