@@ -1,0 +1,45 @@
+{
+    "name": "ra-router-react-router-v8",
+    "version": "5.14.7",
+    "description": "React Router v8 provider for react-admin",
+    "files": [
+        "*.md",
+        "dist",
+        "src"
+    ],
+    "zshy": {
+        "exports": "./src/index.ts",
+        "cjs": false
+    },
+    "main": "./dist/index.js",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.ts",
+    "type": "module",
+    "sideEffects": false,
+    "repository": "marmelab/react-admin",
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "author": "François Zaninotto",
+    "license": "MIT",
+    "scripts": {
+        "build": "zshy --silent"
+    },
+    "devDependencies": {
+        "ra-core": "^5.14.7",
+        "react-router": "^8.0.0",
+        "typescript": "^5.1.3",
+        "zshy": "^0.5.0"
+    },
+    "peerDependencies": {
+        "ra-core": "^5.0.0",
+        "react": "^19.2.7",
+        "react-dom": "^19.2.7",
+        "react-router": "^8.0.0"
+    },
+    "exports": {
+        ".": {
+            "types": "./dist/index.d.ts",
+            "import": "./dist/index.js"
+        }
+    }
+}
