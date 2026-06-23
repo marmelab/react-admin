@@ -26,7 +26,7 @@ import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider, RaRecord } from '../types';
 import { TestMemoryRouter, LinkBase as Link } from '../routing';
-import { CompatHashRouter } from '../routing/CompatHashRouter';
+import { HashRouter } from 'react-router-dom';
 import { useNotificationContext } from '../notification';
 
 export default {
@@ -403,14 +403,16 @@ export const InNonDataRouter = ({
 }: {
     i18nProvider?: I18nProvider;
 }) => (
-    <CompatHashRouter>
+    <HashRouter
+        future={{ v7_relativeSplatPath: false, v7_startTransition: false }}
+    >
         <CoreAdminContext i18nProvider={i18nProvider}>
             <Routes>
                 <Route path="/" element={<Link to="/form">Go to form</Link>} />
                 <Route path="/form" element={<FormUnderTest />} />
             </Routes>
         </CoreAdminContext>
-    </CompatHashRouter>
+    </HashRouter>
 );
 
 const PostEditWithDelete = ({
