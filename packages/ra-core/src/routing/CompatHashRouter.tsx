@@ -147,6 +147,77 @@ const createHashHistory = (): HashHistory => {
     };
 };
 
+const errorPreStyle: React.CSSProperties = {
+    padding: '0.5rem',
+    backgroundColor: 'rgba(200, 200, 200, 0.5)',
+};
+
+interface RouterErrorBoundaryProps {
+    children: React.ReactNode;
+    location: Location;
+}
+
+interface RouterErrorBoundaryState {
+    error: Error | null;
+    location: Location;
+}
+
+/**
+ * Mirrors react-router's default error boundary, which data routers provide out of the box
+ * through `RouterProvider`. The low-level `<Router>` used by `CompatHashRouter` has no such
+ * boundary, so without this a render error thrown by a descendant would propagate uncaught
+ * instead of being displayed. The error is cleared on navigation (like react-router's data
+ * router), without remounting the children while no error is displayed.
+ */
+class RouterErrorBoundary extends React.Component<
+    RouterErrorBoundaryProps,
+    RouterErrorBoundaryState
+> {
+    state: RouterErrorBoundaryState = {
+        error: null,
+        location: this.props.location,
+    };
+
+    static getDerivedStateFromError(error: Error) {
+        return { error };
+    }
+
+    static getDerivedStateFromProps(
+        props: RouterErrorBoundaryProps,
+        state: RouterErrorBoundaryState
+    ): Partial<RouterErrorBoundaryState> {
+        // Clear a displayed error once the user navigates away from it.
+        if (state.error != null && props.location !== state.location) {
+            return { error: null, location: props.location };
+        }
+        return { location: props.location };
+    }
+
+    componentDidCatch(error: Error, info: React.ErrorInfo) {
+        console.error(
+            'React Router caught the following error during render',
+            error,
+            info
+        );
+    }
+
+    render() {
+        const { error } = this.state;
+        if (error == null) {
+            return this.props.children;
+        }
+        const message = error instanceof Error ? error.message : String(error);
+        const stack = error instanceof Error ? error.stack : null;
+        return (
+            <>
+                <h2>Unexpected Application Error!</h2>
+                <h3 style={{ fontStyle: 'italic' }}>{message}</h3>
+                {stack ? <pre style={errorPreStyle}>{stack}</pre> : null}
+            </>
+        );
+    }
+}
+
 /**
  * Minimal non-data `<HashRouter>` reimplementation for the react-router v6, where `HashRouter`
  * is not exported from the `react-router` package (it lived only in `react-router-dom`).
@@ -177,7 +248,9 @@ export const CompatHashRouter = ({
             navigationType={state.action}
             navigator={history}
         >
-            {children}
+            <RouterErrorBoundary location={state.location}>
+                {children}
+            </RouterErrorBoundary>
         </Router>
     );
 };
