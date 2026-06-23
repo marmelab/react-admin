@@ -41,6 +41,14 @@ export const App = () => (
 By default the provider creates a hash router. When react-admin is rendered inside an
 existing React Router context, it uses that router instead.
 
+## Development
+
+This package ships with Storybook stories (`*.stories.tsx`) covering the adapter's
+behavior. Unit tests are not included yet: React Router v8 requires React 19, while
+react-admin's test suite currently runs on React 18, so the stories cannot be
+exercised by the shared Jest run. Adding a React 19 test lane for this package is a
+follow-up once the project's test environment supports React 19.
+
 ## License
 
 This package is licensed under the MIT License.
