@@ -45,11 +45,11 @@ That's it! React-admin will now use React Router v8 for all routing operations.
 
 ## Standalone Mode
 
-When using `reactRouterV8Provider` without an existing React Router, react-admin creates its own hash router automatically (URLs like `/#/posts`). This is the simplest setup and requires no additional configuration.
+When using `reactRouterV8Provider` without an existing React Router, react-admin creates its own hash router automatically (URLs like `/#/posts`). This is called **standalone mode**. This is the simplest setup and requires no additional configuration.
 
 ## Embedded Mode
 
-When react-admin is rendered inside an existing React Router context, the provider detects it and uses that router instead of creating a new one, so react-admin integrates into a larger React Router v8 application.
+If your application already uses React Router, you can embed react-admin inside it. React-admin detects the existing router context and uses it instead of creating its own.
 
 ## When To Use This Package
 

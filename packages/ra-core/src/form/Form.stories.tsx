@@ -12,6 +12,7 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Route, Routes, useNavigate, useLocation } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
 import {
@@ -26,7 +27,6 @@ import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider, RaRecord } from '../types';
 import { TestMemoryRouter, LinkBase as Link } from '../routing';
-import { HashRouter } from 'react-router-dom';
 import { useNotificationContext } from '../notification';
 
 export default {
