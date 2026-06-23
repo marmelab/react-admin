@@ -9937,6 +9937,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-es@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "cookie-es@npm:3.1.1"
+  checksum: 62cf0c325cc547b52477b351e9b5d068b3ffc74f7d143cdf7af854648dd1015fca3aed1498b355365e24b0746333f0b15688ed3a535abecc5ed0a046ae956a84
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:~1.0.6":
   version: 1.0.7
   resolution: "cookie-signature@npm:1.0.7"
@@ -20660,6 +20667,22 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"ra-router-react-router-v8@workspace:packages/ra-router-react-router-v8":
+  version: 0.0.0-use.local
+  resolution: "ra-router-react-router-v8@workspace:packages/ra-router-react-router-v8"
+  dependencies:
+    ra-core: "npm:^5.14.7"
+    react-router: "npm:^8.0.0"
+    typescript: "npm:^5.1.3"
+    zshy: "npm:^0.5.0"
+  peerDependencies:
+    ra-core: ^5.0.0
+    react: ^19.2.7
+    react-dom: ^19.2.7
+    react-router: ^8.0.0
+  languageName: unknown
+  linkType: soft
+
 "ra-router-tanstack@workspace:packages/ra-router-tanstack":
   version: 0.0.0-use.local
   resolution: "ra-router-tanstack@workspace:packages/ra-router-tanstack"
@@ -21192,6 +21215,21 @@ __metadata:
     react-dom:
       optional: true
   checksum: dfa9b0182edba6fab14ef5ac297b292068e71e05bf7e07c6b45fe073d77002089e8e164542364232a8bbb0c7d3ec47b57b78db3984c4383e12308f2d31ad404a
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "react-router@npm:8.0.1"
+  dependencies:
+    cookie-es: "npm:^3.1.1"
+  peerDependencies:
+    react: ">=19.2.7"
+    react-dom: ">=19.2.7"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 7ffcac5caf209b6988a0e045fd044f5f8e91e7f677475f707becd514f316f6c2d556f90e371c5a41f6033da891a2d97370b1c5d443ba96991ab0f4f71252c8ba
   languageName: node
   linkType: hard
 
