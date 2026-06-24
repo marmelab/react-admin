@@ -121,7 +121,7 @@ export const myRouterProvider: RouterProvider = {
 
 2. **Route/Routes translation**: If your router uses configuration-based routing (like TanStack Router), implement a translation layer that accepts JSX-based `<Route>` elements.
 
-3. **Duck-typing for Route detection**: The Routes component should use duck-typing to detect Route elements, not strict type checking. This allows users to import Route from react-router-dom.
+3. **Duck-typing for Route detection**: The Routes component should use duck-typing to detect Route elements, not strict type checking. This allows users to import Route from react-router.
 
 ```typescript
 // Good: duck-typing
@@ -141,7 +141,7 @@ The abstraction maintains full backward compatibility with react-admin's existin
 
 1. **Default provider**: `reactRouterProvider` is the default, so existing apps work without changes
 2. **Import from react-admin**: Hooks like `useNavigate`, `useLocation`, `useParams` can be imported from `react-admin`
-3. **react-router imports still work**: Users can still import directly from react-router-dom if they prefer
+3. **react-router imports still work**: Users can still import directly from react-router if they prefer
 
 ## Key Files Reference
 
