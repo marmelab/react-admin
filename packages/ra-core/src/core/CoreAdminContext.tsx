@@ -2,12 +2,8 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
-import {
-    AdminRouter,
-    RouterProviderContext,
-    RouterProvider,
-    reactRouterProvider,
-} from '../routing';
+import { reactRouterProvider } from 'ra-router-react-router';
+import { AdminRouter, RouterProviderContext, RouterProvider } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
