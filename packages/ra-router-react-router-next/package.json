@@ -1,7 +1,7 @@
 {
-    "name": "ra-router-react-router-v8",
+    "name": "ra-router-react-router-next",
     "version": "5.14.7",
-    "description": "React Router v8 provider for react-admin",
+    "description": "React Router v8 provider for react-admin (will be republished as ra-router-react-router in react-admin v6)",
     "files": [
         "*.md",
         "dist",

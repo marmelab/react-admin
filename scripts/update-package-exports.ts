@@ -3,11 +3,11 @@ import fs from 'node:fs';
 
 const packagesDir = path.join(__dirname, '..', 'packages');
 const examplesDir = path.join(__dirname, '..', 'examples');
-// ra-router-react-router-v8 is ESM-only (react-router v8 is ESM-only), so it
+// ra-router-react-router-next is ESM-only (react-router v8 is ESM-only), so it
 // must not get the dual import/require exports this script generates.
 const excludePackages = new Set([
     'create-react-admin',
-    'ra-router-react-router-v8',
+    'ra-router-react-router-next',
 ]);
 
 const updatePackages = async () => {

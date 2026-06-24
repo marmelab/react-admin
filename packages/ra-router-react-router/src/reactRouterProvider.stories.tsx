@@ -16,14 +16,14 @@ import {
     Form,
     testUI,
 } from 'ra-core';
-import { reactRouterV8Provider } from './reactRouterV8Provider';
+import { reactRouterProvider } from './reactRouterProvider';
 
 const { useParams, useMatch, useInRouterContext, Route, Navigate } =
-    reactRouterV8Provider;
+    reactRouterProvider;
 const { TextInput } = testUI;
 
 export default {
-    title: 'ra-routing-react-router-v8/React Router v8 Provider',
+    title: 'ra-routing-react-router/React Router Provider',
 };
 
 const dataProvider = fakeDataProvider(
@@ -126,11 +126,11 @@ const PostCreate = () => (
 
 /**
  * BasicStandalone: react-admin runs on its own hash router created by the
- * react-router v8 provider (no surrounding router).
+ * react-router provider (no surrounding router).
  */
 export const BasicStandalone = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -145,7 +145,7 @@ export const BasicStandalone = () => (
 );
 
 /**
- * MultipleResources: several resources sharing the v8 provider.
+ * MultipleResources: several resources sharing the provider.
  */
 const CommentList = () => (
     <ListBase
@@ -160,7 +160,7 @@ const CommentList = () => (
 
 export const MultipleResources = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -174,7 +174,7 @@ export const MultipleResources = () => (
  */
 export const LinkComponent = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -189,7 +189,7 @@ const RedirectToPosts = () => <Navigate to="/posts" />;
 
 export const NavigateComponent = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -212,7 +212,7 @@ const CustomPage = () => {
 
 export const CustomRoutesSupport = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -233,7 +233,7 @@ const ParamsReader = () => {
 
 export const UseParamsTest = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -254,7 +254,7 @@ const MatchReader = () => {
 
 export const UseMatchTest = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -270,7 +270,7 @@ export const UseMatchTest = () => (
  */
 export const UseLocationTest = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -288,7 +288,7 @@ const InRouterContextReader = () => {
 
 export const RouterContextTest = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >
@@ -329,7 +329,7 @@ const BlockerForm = () => {
 
 export const UseBlockerTest = () => (
     <CoreAdmin
-        routerProvider={reactRouterV8Provider}
+        routerProvider={reactRouterProvider}
         dataProvider={dataProvider}
         layout={Layout}
     >

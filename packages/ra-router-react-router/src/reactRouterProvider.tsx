@@ -18,11 +18,29 @@ import {
     type FutureConfig,
 } from 'react-router';
 import { Link, createHashRouter } from 'react-router-dom';
-import type {
-    RouterProvider,
-    RouterWrapperProps,
-    RouterNavigateFunction,
-} from '../RouterProvider';
+
+// This adapter is the default RouterProvider implementation, and ra-core depends
+// on it to expose `reactRouterProvider`. To avoid a circular build dependency
+// (ra-core -> ra-router-react-router -> ra-core), this package deliberately does
+// NOT import ra-core's `RouterProvider` types. Instead it relies on local aliases
+// that mirror ra-core's contract; conformance to the `RouterProvider` interface is
+// enforced where ra-core consumes `reactRouterProvider`.
+type RouterNavigateFunction = (
+    to: string | Partial<Location> | number,
+    options?: { replace?: boolean; state?: any }
+) => void;
+
+interface RouterWrapperProps {
+    basename?: string;
+    children: ReactNode;
+}
+
+type UseParams = <
+    T extends Record<string, string | undefined> = Record<
+        string,
+        string | undefined
+    >,
+>() => T;
 
 const routerProviderFuture: Partial<
     Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
@@ -106,12 +124,15 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
 /**
  * Default router provider using react-router-dom.
  * This provider is used by default when no custom routerProvider is provided to <Admin>.
+ *
+ * It implements ra-core's `RouterProvider` interface (the conformance check happens
+ * in ra-core, which consumes this object as its default provider).
  */
-export const reactRouterProvider: RouterProvider = {
+export const reactRouterProvider = {
     // Hooks
     useNavigate,
     useLocation,
-    useParams: useParams as RouterProvider['useParams'],
+    useParams: useParams as UseParams,
     useBlocker,
     useMatch,
     useInRouterContext,
