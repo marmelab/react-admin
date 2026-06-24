@@ -162,7 +162,7 @@ export const MyLayout = ({ children }) => {
 
 ## Using A Different Router Library
 
-React-admin supports multiple routing libraries through its router abstraction layer. By default, it uses react-router (v6) through the [`ra-router-react-router`](./ReactRouterV8.md) adapter with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) or [React Router v8](./ReactRouterV8.md) as an alternative.
+React-admin supports multiple routing libraries through its router abstraction layer. By default, it uses react-router (v6/v7) through the [`ra-router-react-router`](./ReactRouterV8.md) adapter with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) or [React Router v8](./ReactRouterV8.md) as an alternative.
 
 To use TanStack Router:
 
