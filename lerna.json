@@ -1,6 +1,6 @@
 {
     "packages": ["examples/data-generator", "examples/simple", "packages/*"],
-    "version": "5.15.0",
+    "version": "5.15.1",
     "npmClient": "yarn",
     "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
