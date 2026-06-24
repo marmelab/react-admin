@@ -149,7 +149,7 @@ The abstraction maintains full backward compatibility with react-admin's existin
 |------|---------|
 | `RouterProvider.ts` | The interface contract all adapters must implement |
 | `RouterProviderContext.tsx` | Context and `useRouterProvider` hook |
-| `ra-router-react-router` (package) | Default implementation using react-router v6 (`reactRouterProvider`) |
+| `ra-router-react-router` (package) | Default implementation using react-router v6/v7 (`reactRouterProvider`) |
 | `ra-router-react-router-next` (package) | Opt-in implementation for react-router v8 (`reactRouterNextProvider`) |
 | `ra-router-tanstack` (package) | Alternative implementation using TanStack Router |
 | `AdminRouter.tsx` | High-level component that sets up routing for Admin |
