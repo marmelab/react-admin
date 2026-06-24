@@ -97,10 +97,13 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
  * and dropped the v6/v7 `future` flags (they are now the default behavior), so this
  * adapter is a thin pass-through over the native `react-router` API.
  *
- * react-admin uses its built-in react-router v6/v7 adapter by default. Pass this
- * provider to `<Admin routerProvider={reactRouterV8Provider}>` to run on react-router v8.
+ * react-admin uses its built-in react-router v6 adapter by default. Pass this
+ * provider to `<Admin routerProvider={reactRouterNextProvider}>` to run on react-router v8.
+ * New projects are encouraged to use this provider; it will become the default
+ * (republished as `ra-router-react-router`) in react-admin v6.
  */
-export const reactRouterV8Provider: RouterProvider = {
+// FIXME kept for BC: republish as ra-router-react-router for react-admin v6
+export const reactRouterNextProvider: RouterProvider = {
     // Hooks
     useNavigate,
     useLocation,
