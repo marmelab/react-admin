@@ -34,6 +34,8 @@ RouterProviderContext
     │
     ├── reactRouterProvider (default implementation, in the ra-router-react-router package)
     │
+    ├── reactRouterNextProvider (opt-in implementation for react-router v8, in the ra-router-react-router-next package)
+    │
     └── tanStackRouterProvider (alternative implementation, in the ra-router-tanstack package)
 ```
 
