@@ -1,5 +1,30 @@
 # Changelog
 
+## 5.15.0
+
+* Add support for MUI v9 ([#11248](https://github.com/marmelab/react-admin/pull/11248)) ([smeng9](https://github.com/smeng9))
+* Add render prop support to ReferenceManyCount ([#11266](https://github.com/marmelab/react-admin/pull/11266)) ([Will-thom](https://github.com/Will-thom))
+* Add ability to use elements in Translate interpolation options ([#11204](https://github.com/marmelab/react-admin/pull/11204)) ([fzaninotto](https://github.com/fzaninotto))
+* Update to tiptap v3 ([#11198](https://github.com/marmelab/react-admin/pull/11198)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Add support for random delay in ra-data-fakerest ([#11143](https://github.com/marmelab/react-admin/pull/11143)) ([dreglad](https://github.com/dreglad))
+* Improve lists URL management ([#11022](https://github.com/marmelab/react-admin/pull/11022)) ([djhi](https://github.com/djhi))
+* Fix `<ArrayInput>` display validation error when validation is performed via `useFormContext`'s trigger ([#11265](https://github.com/marmelab/react-admin/pull/11265)) ([jonathanarnault](https://github.com/jonathanarnault))
+* Fix `<DataTableBase>` `loading` and `empty` components miss access to data table context ([#11144](https://github.com/marmelab/react-admin/pull/11144)) ([dreglad](https://github.com/dreglad))
+* [TypeScript] Fix compilation with react-hook-form 7.72.0 ([#11273](https://github.com/marmelab/react-admin/pull/11273)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump picomatch from 2.3.1 to 2.3.2 ([#11288](https://github.com/marmelab/react-admin/pull/11288)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump handlebars from 4.7.7 to 4.7.9 ([#11287](https://github.com/marmelab/react-admin/pull/11287)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.4.10 to 3.4.11 ([#11285](https://github.com/marmelab/react-admin/pull/11285)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 6.3.3 to 6.4.6 ([#11284](https://github.com/marmelab/react-admin/pull/11284)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump vite from 7.3.2 to 7.3.5 ([#11282](https://github.com/marmelab/react-admin/pull/11282)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @babel/core from 7.29.0 to 7.29.7 ([#11281](https://github.com/marmelab/react-admin/pull/11281)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump markdown-it from 14.1.1 to 14.2.0 ([#11280](https://github.com/marmelab/react-admin/pull/11280)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump form-data from 4.0.5 to 4.0.6 ([#11279](https://github.com/marmelab/react-admin/pull/11279)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump react-router from 6.30.3 to 6.30.4 ([#11278](https://github.com/marmelab/react-admin/pull/11278)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.4.0 to 3.4.9 ([#11277](https://github.com/marmelab/react-admin/pull/11277)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump tmp from 0.2.6 to 0.2.7 ([#11275](https://github.com/marmelab/react-admin/pull/11275)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump tmp from 0.2.5 to 0.2.6 ([#11269](https://github.com/marmelab/react-admin/pull/11269)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @tootallnate/once from 2.0.0 to 2.0.1 ([#11267](https://github.com/marmelab/react-admin/pull/11267)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.14.7
 
 * Fix `AutocompleteInput` does not open autocomplete options when `shouldRenderSuggestions` returns false ([#11263](https://github.com/marmelab/react-admin/pull/11263)) ([jonathanarnault](https://github.com/jonathanarnault))
