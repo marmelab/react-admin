@@ -1,6 +1,6 @@
 {
     "name": "ra-input-rich-text",
-    "version": "5.15.1",
+    "version": "5.15.0",
     "description": "<RichTextInput> component for react-admin, useful for editing HTML code in admin GUIs.",
     "author": "Gildas Garcia",
     "repository": "marmelab/react-admin",
@@ -51,7 +51,7 @@
         "data-generator-retail": "^5.15.0",
         "ra-core": "^5.15.0",
         "ra-data-fakerest": "^5.15.0",
-        "ra-ui-materialui": "^5.15.1",
+        "ra-ui-materialui": "^5.15.0",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-hook-form": "^7.72.0",
