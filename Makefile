@@ -48,8 +48,6 @@ build-offline: ## build the offline example
 preview-offline: ## preview the offline example
 	@yarn preview-offline
 
-# ra-router-react-router exposes the default react-router v6/v7 provider and is a
-# dependency of ra-core, so it must be built before ra-core.
 build-ra-router-react-router:
 	@echo "Transpiling ra-router-react-router files...";
 	@cd ./packages/ra-router-react-router && yarn build
