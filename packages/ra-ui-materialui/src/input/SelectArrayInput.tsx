@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useCallback, useRef, type ChangeEvent } from 'react';
+import { useCallback, useRef, type ReactNode, type ChangeEvent } from 'react';
 import clsx from 'clsx';
 import {
     Select,
@@ -28,6 +28,7 @@ import {
     useGetRecordRepresentation,
     type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
+    useTranslate,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 
@@ -89,6 +90,14 @@ import { Labeled } from '../Labeled';
  *    { id: 'lifestyle', name: 'myroot.tags.lifestyle' },
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
+ *
+ * You can also specify a text to display when no value is selected using the `emptyText` prop.
+ * @example
+ * const choices = [
+ *    { id: 'email', name: 'Email' },
+ *    { id: 'push', name: 'Push Notification' },
+ * ];
+ * <SelectArrayInput source="channels" choices={choices} emptyText={<i>All Channels</i>} />
  */
 export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     const props = useThemeProps({
@@ -102,6 +111,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText = '',
         format,
         helperText,
         label,
@@ -129,6 +139,8 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     } = props;
 
     const inputLabel = useRef(null);
+
+    const translate = useTranslate();
 
     const {
         allChoices,
@@ -295,6 +307,15 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
             : {};
     const renderHelperText = !!fetchError || helperText !== false || invalid;
 
+    const renderEmptyValue = useCallback(() => {
+        if (typeof emptyText === 'string' && emptyText === '') {
+            return null;
+        }
+        return typeof emptyText === 'string'
+            ? translate(emptyText, { _: emptyText })
+            : emptyText;
+    }, [emptyText, translate]);
+
     return (
         <>
             <StyledFormControl
@@ -330,26 +351,31 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     }
                     multiple
                     error={!!fetchError || invalid}
-                    renderValue={(selected: any[]) => (
-                        <div className={SelectArrayInputClasses.chips}>
-                            {(Array.isArray(selected) ? selected : [])
-                                .map(item =>
-                                    (allChoices || []).find(
-                                        // eslint-disable-next-line eqeqeq
-                                        choice => getChoiceValue(choice) == item
+                    renderValue={(selected: any[]) => {
+                        if (!selected || selected.length === 0) {
+                            return renderEmptyValue();
+                        }
+                        return (
+                            <div className={SelectArrayInputClasses.chips}>
+                                {(Array.isArray(selected) ? selected : [])
+                                    .map(item =>
+                                        (allChoices || []).find(
+                                            // eslint-disable-next-line eqeqeq
+                                            choice => getChoiceValue(choice) == item
+                                        )
                                     )
-                                )
-                                .filter(item => !!item)
-                                .map(item => (
-                                    <Chip
-                                        key={getChoiceValue(item)}
-                                        label={renderMenuItemOption(item)}
-                                        className={SelectArrayInputClasses.chip}
-                                        size="small"
-                                    />
-                                ))}
-                        </div>
-                    )}
+                                    .filter(item => !!item)
+                                    .map(item => (
+                                        <Chip
+                                            key={getChoiceValue(item)}
+                                            label={renderMenuItemOption(item)}
+                                            className={SelectArrayInputClasses.chip}
+                                            size="small"
+                                        />
+                                    ))}
+                            </div>
+                        );
+                    }}
                     disabled={disabled || readOnly}
                     readOnly={readOnly}
                     data-testid="selectArray"
@@ -383,6 +409,7 @@ export type SelectArrayInputProps = ChoicesProps &
         options?: SelectProps;
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
+        emptyText?: ReactNode;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
 
