@@ -1,0 +1,3550 @@
+/* https://sibforms.com/forms/end-form/build/sib-styles.css */
+@charset "UTF-8"; /*!
+ * Pikaday
+ * Copyright © 2014 David Bushell | BSD & MIT license | https://dbushell.com/
+ */
+.pika-single {
+    z-index: 9999;
+    display: block;
+    position: relative;
+    color: #333;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-bottom-color: #bbb;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/*
+clear child float (pika-lendar), using the famous micro clearfix hack
+http://nicolasgallagher.com/micro-clearfix-hack/
+*/
+.pika-single:before, .pika-single:after {
+    content: " ";
+    display: table;
+}
+
+.pika-single:after {
+    clear: both
+}
+
+.pika-single.is-hidden {
+    display: none;
+}
+
+.pika-single.is-bound {
+    position: absolute;
+    box-shadow: 0 5px 15px -5px rgba(0,0,0,.5);
+}
+
+.pika-lendar {
+    float: left;
+    width: 240px;
+    margin: 8px;
+}
+
+.pika-title {
+    position: relative;
+    text-align: center;
+}
+
+.pika-label {
+    display: inline-block;
+    position: relative;
+    z-index: 9999;
+    overflow: hidden;
+    margin: 0;
+    padding: 5px 3px;
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: bold;
+    background-color: #fff;
+}
+
+.pika-title select {
+    cursor: pointer;
+    position: absolute;
+    z-index: 9998;
+    margin: 0;
+    left: 0;
+    top: 5px;
+    opacity: 0;
+}
+
+.pika-prev, .pika-next {
+    display: block;
+    cursor: pointer;
+    position: relative;
+    outline: none;
+    border: 0;
+    padding: 0;
+    width: 20px;
+    height: 30px;
+    /* hide text using text-indent trick, using width value (it's enough) */
+    text-indent: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    background-color: transparent;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: 75% 75%;
+    opacity: .5;
+}
+
+.pika-prev:hover, .pika-next:hover {
+    opacity: 1;
+}
+
+.pika-prev, .is-rtl .pika-next {
+    float: left;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAUklEQVR42u3VMQoAIBADQf8Pgj+OD9hG2CtONJB2ymQkKe0HbwAP0xucDiQWARITIDEBEnMgMQ8S8+AqBIl6kKgHiXqQqAeJepBo/z38J/U0uAHlaBkBl9I4GwAAAABJRU5ErkJggg==');
+}
+
+.pika-next, .is-rtl .pika-prev {
+    float: right;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAeCAYAAAAsEj5rAAAAU0lEQVR42u3VOwoAMAgE0dwfAnNjU26bYkBCFGwfiL9VVWoO+BJ4Gf3gtsEKKoFBNTCoCAYVwaAiGNQGMUHMkjGbgjk2mIONuXo0nC8XnCf1JXgArVIZAQh5TKYAAAAASUVORK5CYII=');
+}
+
+.pika-prev.is-disabled, .pika-next.is-disabled {
+    cursor: default;
+    opacity: .2;
+}
+
+.pika-select {
+    display: inline-block;
+}
+
+.pika-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border: 0;
+}
+
+.pika-table th, .pika-table td {
+    width: 14.285714285714286%;
+    padding: 0;
+}
+
+.pika-table th {
+    color: #999;
+    font-size: 12px;
+    line-height: 25px;
+    font-weight: bold;
+    text-align: center;
+}
+
+.pika-button {
+    cursor: pointer;
+    display: block;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    border: 0;
+    margin: 0;
+    width: 100%;
+    padding: 5px;
+    color: #666;
+    font-size: 12px;
+    line-height: 15px;
+    text-align: right;
+    background: #f5f5f5;
+    height: initial;
+}
+
+.pika-week {
+    font-size: 11px;
+    color: #999;
+}
+
+.is-today .pika-button {
+    color: #33aaff;
+    font-weight: bold;
+}
+
+.is-selected .pika-button, .has-event .pika-button {
+    color: #fff;
+    font-weight: bold;
+    background: #33aaff;
+    box-shadow: inset 0 1px 3px #178fe5;
+    border-radius: 3px;
+}
+
+.has-event .pika-button {
+    background: #005da9;
+    box-shadow: inset 0 1px 3px #0076c9;
+}
+
+.is-disabled .pika-button, .is-inrange .pika-button {
+    background: #D5E9F7;
+}
+
+.is-startrange .pika-button {
+    color: #fff;
+    background: #6CB31D;
+    box-shadow: none;
+    border-radius: 3px;
+}
+
+.is-endrange .pika-button {
+    color: #fff;
+    background: #33aaff;
+    box-shadow: none;
+    border-radius: 3px;
+}
+
+.is-disabled .pika-button {
+    pointer-events: none;
+    cursor: default;
+    color: #999;
+    opacity: .3;
+}
+
+.is-outside-current-month .pika-button {
+    color: #999;
+    opacity: .3;
+}
+
+.is-selection-disabled {
+    pointer-events: none;
+    cursor: default;
+}
+
+.pika-button:hover, .pika-row.pick-whole-week:hover .pika-button {
+    color: #fff;
+    background: #ff8000;
+    box-shadow: none;
+    border-radius: 3px;
+}
+
+/* styling for abbr */
+.pika-table abbr {
+    border-bottom: none;
+    cursor: help;
+}
+
+.pika-single {
+    color: #3c4858
+}
+
+.pika-button {
+    color: #3c4858;
+    background: #fff
+}
+
+.sib-is-today .pika-button {
+    color: #0092ff
+}
+
+.sib-is-selected .pika-button {
+    color: #fff
+}
+
+.sib-is-today:hover .pika-button {
+    color: #fff
+}
+
+.sib-is-selected .pika-button,.sib-has-event .pika-button {
+    background: #0092ff
+}
+
+.pika-button:hover,.pika-row.sib-pick-whole-week:hover .pika-button {
+    background: #0092ff
+}
+
+.pika-table abbr {
+    cursor: default;
+    color: #8390A4;
+    text-decoration: none
+}
+
+.pika-label {
+    font-size: 0
+}
+
+.pika-title select {
+    position: initial;
+    opacity: 1;
+    z-index: inherit
+}
+
+.sib-sms-tooltip {
+    margin-left: 8px;
+    position: relative
+}
+
+.sib-sms-tooltip__box {
+    display: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #333;
+    position: absolute;
+    bottom: 100%;
+    width: 200px;
+    padding: 5px;
+    right: calc(100% - 60px);
+    font-size: 12px
+}
+
+.sib-sms-tooltip:hover .sib-sms-tooltip__box {
+    display: block
+}
+
+.sib-sms-tooltip__icon {
+    border-radius: 50%;
+    color: #4DA6E0;
+    width: 24px;
+    height: 24px;
+    padding: 3px;
+    font-weight: 700;
+    font-style: normal;
+    font-size: 24px
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-tooltip,.sib-container--small .sib-sms-tooltip {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 100%;
+    height: 18px;
+    width: 18px;
+    margin: 12px 8px;
+    background: #687484;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-tooltip__icon,.sib-container--small .sib-sms-tooltip__icon {
+    color: #fff;
+    font-size: 16px
+}
+
+.sib-sms-input-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative
+}
+
+.sib-sms-field .form__label-row--horizontal {
+    flex-wrap: wrap
+}
+
+/*!
+ * Generated with CSS Flag Sprite generator (https://www.flag-sprites.com/)
+ */
+.sib-flag {
+    display: inline-block;
+    width: 32px;
+    min-width: 2rem;
+    height: 32px;
+    background: url("https://static.brevo.com/images/flags.png") no-repeat
+}
+
+.sib-flag.sib-flag-ad {
+    background-position: -3px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ae {
+    background-position: -36px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-af {
+    background-position: -69px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ag {
+    background-position: -102px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ai {
+    background-position: -135px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-al {
+    background-position: -168px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-am {
+    background-position: -201px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ao {
+    background-position: -234px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-aq {
+    background-position: -267px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ar {
+    background-position: -300px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-as {
+    background-position: -333px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-at {
+    background-position: -366px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-au {
+    background-position: -399px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-aw {
+    background-position: -432px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ax {
+    background-position: -465px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-az {
+    background-position: -498px -0px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ba {
+    background-position: -3px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bb {
+    background-position: -36px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bd {
+    background-position: -69px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-be {
+    background-position: -102px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bf {
+    background-position: -135px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bg {
+    background-position: -168px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bh {
+    background-position: -201px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bi {
+    background-position: -234px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bj {
+    background-position: -267px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bl {
+    background-position: -300px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bm {
+    background-position: -333px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bn {
+    background-position: -366px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bo {
+    background-position: -399px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bq {
+    background-position: -432px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-br {
+    background-position: -465px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bs {
+    background-position: -498px -33px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bt {
+    background-position: -3px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bv {
+    background-position: -36px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bw {
+    background-position: -69px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-by {
+    background-position: -102px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-bz {
+    background-position: -135px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ca {
+    background-position: -168px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cc {
+    background-position: -201px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cd {
+    background-position: -234px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cf {
+    background-position: -267px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cg {
+    background-position: -300px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ch {
+    background-position: -333px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ci {
+    background-position: -366px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ck {
+    background-position: -399px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cl {
+    background-position: -432px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cm {
+    background-position: -465px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cn {
+    background-position: -498px -66px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-co {
+    background-position: -3px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cr {
+    background-position: -36px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cu {
+    background-position: -69px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cv {
+    background-position: -102px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cw {
+    background-position: -135px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cx {
+    background-position: -168px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cy {
+    background-position: -201px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-cz {
+    background-position: -234px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-de {
+    background-position: -267px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-dj {
+    background-position: -300px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-dk {
+    background-position: -333px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-dm {
+    background-position: -366px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-do {
+    background-position: -399px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-dz {
+    background-position: -432px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ec {
+    background-position: -465px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ee {
+    background-position: -498px -99px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-eg {
+    background-position: -3px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-eh {
+    background-position: -36px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-er {
+    background-position: -69px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-es {
+    background-position: -102px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-et {
+    background-position: -135px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fi {
+    background-position: -168px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fj {
+    background-position: -201px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fk {
+    background-position: -234px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fm {
+    background-position: -267px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fo {
+    background-position: -300px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-fr {
+    background-position: -333px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ga {
+    background-position: -366px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gb {
+    background-position: -399px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gd {
+    background-position: -432px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ge {
+    background-position: -465px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gf {
+    background-position: -498px -132px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gg {
+    background-position: -3px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gh {
+    background-position: -36px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gi {
+    background-position: -69px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gl {
+    background-position: -102px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gm {
+    background-position: -135px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gn {
+    background-position: -168px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gp {
+    background-position: -201px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gq {
+    background-position: -234px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gr {
+    background-position: -267px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gs {
+    background-position: -300px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gt {
+    background-position: -333px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gu {
+    background-position: -366px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gw {
+    background-position: -399px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-gy {
+    background-position: -432px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-hk {
+    background-position: -465px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-hm {
+    background-position: -498px -165px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-hn {
+    background-position: -3px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-hr {
+    background-position: -36px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ht {
+    background-position: -69px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-hu {
+    background-position: -102px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-id {
+    background-position: -135px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ie {
+    background-position: -168px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-il {
+    background-position: -201px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-im {
+    background-position: -234px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-in {
+    background-position: -267px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-io {
+    background-position: -300px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-iq {
+    background-position: -333px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ir {
+    background-position: -366px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-is {
+    background-position: -399px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-it {
+    background-position: -432px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-je {
+    background-position: -465px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-jm {
+    background-position: -498px -198px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-jo {
+    background-position: -3px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-jp {
+    background-position: -36px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ke {
+    background-position: -69px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kg {
+    background-position: -102px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kh {
+    background-position: -135px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ki {
+    background-position: -168px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-km {
+    background-position: -201px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kn {
+    background-position: -234px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kp {
+    background-position: -267px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kr {
+    background-position: -300px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kw {
+    background-position: -333px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ky {
+    background-position: -366px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-kz {
+    background-position: -399px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-la {
+    background-position: -432px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lb {
+    background-position: -465px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lc {
+    background-position: -498px -231px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-li {
+    background-position: -3px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lk {
+    background-position: -36px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lr {
+    background-position: -69px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ls {
+    background-position: -102px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lt {
+    background-position: -135px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lu {
+    background-position: -168px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-lv {
+    background-position: -201px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ly {
+    background-position: -234px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ma {
+    background-position: -267px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mc {
+    background-position: -300px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-md {
+    background-position: -333px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-me {
+    background-position: -366px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mf {
+    background-position: -399px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mg {
+    background-position: -432px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mh {
+    background-position: -465px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mk {
+    background-position: -498px -264px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ml {
+    background-position: -3px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mm {
+    background-position: -36px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mn {
+    background-position: -69px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mo {
+    background-position: -102px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mp {
+    background-position: -135px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mq {
+    background-position: -168px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mr {
+    background-position: -201px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ms {
+    background-position: -234px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mt {
+    background-position: -267px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mu {
+    background-position: -300px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mv {
+    background-position: -333px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mw {
+    background-position: -366px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mx {
+    background-position: -399px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-my {
+    background-position: -432px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-mz {
+    background-position: -465px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-na {
+    background-position: -498px -297px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nc {
+    background-position: -3px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ne {
+    background-position: -36px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nf {
+    background-position: -69px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ng {
+    background-position: -102px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ni {
+    background-position: -135px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nl {
+    background-position: -168px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-no {
+    background-position: -201px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-np {
+    background-position: -234px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nr {
+    background-position: -267px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nu {
+    background-position: -300px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-nz {
+    background-position: -333px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-om {
+    background-position: -366px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pa {
+    background-position: -399px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pe {
+    background-position: -432px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pf {
+    background-position: -465px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pg {
+    background-position: -498px -330px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ph {
+    background-position: -3px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pk {
+    background-position: -36px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pl {
+    background-position: -69px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pm {
+    background-position: -102px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pn {
+    background-position: -135px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pr {
+    background-position: -168px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ps {
+    background-position: -201px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pt {
+    background-position: -234px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-pw {
+    background-position: -267px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-py {
+    background-position: -300px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-qa {
+    background-position: -333px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-re {
+    background-position: -366px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ro {
+    background-position: -399px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-rs {
+    background-position: -432px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ru {
+    background-position: -465px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-rw {
+    background-position: -498px -363px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sa {
+    background-position: -3px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sb {
+    background-position: -36px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sc {
+    background-position: -69px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sd {
+    background-position: -102px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-se {
+    background-position: -135px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sg {
+    background-position: -168px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sh {
+    background-position: -201px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-si {
+    background-position: -234px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sj {
+    background-position: -267px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sk {
+    background-position: -300px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sl {
+    background-position: -333px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sm {
+    background-position: -366px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sn {
+    background-position: -399px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-so {
+    background-position: -432px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sr {
+    background-position: -465px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ss {
+    background-position: -498px -396px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-st {
+    background-position: -3px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sv {
+    background-position: -36px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sx {
+    background-position: -69px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sy {
+    background-position: -102px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-sz {
+    background-position: -135px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tc {
+    background-position: -168px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-td {
+    background-position: -201px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tf {
+    background-position: -234px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tg {
+    background-position: -267px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-th {
+    background-position: -300px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tj {
+    background-position: -333px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tk {
+    background-position: -366px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tl {
+    background-position: -399px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tm {
+    background-position: -432px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tn {
+    background-position: -465px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-to {
+    background-position: -498px -429px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tr {
+    background-position: -3px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tt {
+    background-position: -36px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tv {
+    background-position: -69px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tw {
+    background-position: -102px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-tz {
+    background-position: -135px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ua {
+    background-position: -168px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ug {
+    background-position: -201px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-um {
+    background-position: -234px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-us {
+    background-position: -267px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-uy {
+    background-position: -300px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-uz {
+    background-position: -333px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-va {
+    background-position: -366px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-vc {
+    background-position: -399px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ve {
+    background-position: -432px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-vg {
+    background-position: -465px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-vi {
+    background-position: -498px -462px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-vn {
+    background-position: -3px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-vu {
+    background-position: -36px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-wf {
+    background-position: -69px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ws {
+    background-position: -102px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-xk {
+    background-position: -135px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-ye {
+    background-position: -168px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-yt {
+    background-position: -201px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-za {
+    background-position: -234px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-zm {
+    background-position: -267px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-flag.sib-flag-zw {
+    background-position: -300px -495px;
+    width: 30px;
+    height: 30px
+}
+
+.sib-sms-select {
+    display: flex;
+    width: 100%;
+    font-size: 14px;
+    position: relative
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-select,.sib-container--small .sib-sms-select {
+    flex-direction: column
+}
+
+.sib-sms-select__title {
+    display: flex;
+    position: relative;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid #c0ccda;
+    border-radius: 3px;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 14px;
+    height: 3em;
+    padding: 8px 16px 8px 8px;
+    margin-right: 8px;
+    position: relative;
+    text-align: left;
+    width: 100%;
+    max-width: 60px
+}
+
+.sib-sms-select__title::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 5px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000
+}
+
+.sib-sms-select__title>.sib-sms-select__label-text {
+    display: none
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-select__title,.sib-container--small .sib-sms-select__title {
+    max-width: 100%;
+    margin-right: 0;
+    margin-bottom: 0.5rem
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-select__title::after,.sib-container--small .sib-sms-select__title::after {
+    content: '';
+    display: block;
+    position: absolute;
+    right: 8px;
+    width: 0;
+    height: 0;
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #000
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-select__title>.sib-sms-select__label-text,.sib-container--small .sib-sms-select__title>.sib-sms-select__label-text {
+    display: block
+}
+
+.sib-sms-select__list {
+    background: #fff;
+    border: 1px solid #c0ccda;
+    border-radius: 3px;
+    box-sizing: border-box;
+    display: none;
+    height: 0;
+    list-style: none;
+    margin: 8px 0 0 0;
+    opacity: 0;
+    padding: 0;
+    position: absolute;
+    width: 100%;
+    z-index: 999
+}
+
+.sib-sms-select__list.sib-is-open {
+    display: block;
+    height: auto;
+    max-height: 250px;
+    overflow: scroll;
+    opacity: 1
+}
+
+.sib-sms-select__list li {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #c0ccda;
+    cursor: pointer;
+    padding: 8px;
+    font-size: 14px
+}
+
+.sib-sms-select__list li:hover,.sib-sms-select__list li.sib-is-selected {
+    background-color: #8ed8fd
+}
+
+.sib-sms-select__number-input {
+    display: flex;
+    width: 100%;
+    height: 3em;
+    border: 1px solid #c0ccda;
+    border-radius: 3px;
+    background: #fff
+}
+
+.sib-sms-select__calling-code {
+    height: 100%;
+    max-width: 70px;
+    padding: 8px;
+    border-top: 0;
+    border-right: 1px solid #c0ccda;
+    border-bottom: 0;
+    border-left: 0;
+    border-radius: 3px 0 0 3px;
+    line-height: 1.8em;
+    text-align: center;
+    font-size: inherit;
+    color: inherit;
+    outline: none
+}
+
+.sib-container--medium.sib-container--horizontal .sib-sms-select__calling-code,.sib-container--small .sib-sms-select__calling-code {
+    max-width: 50px;
+    padding: 8px 4px
+}
+
+.sib-sms-select__phone-number {
+    width: calc(100% - 70px);
+    height: 100%;
+    padding: 8px;
+    border-radius: 3px;
+    border: 0;
+    outline: 0;
+    font-size: inherit
+}
+
+.sib-sms-select__label-text {
+    margin-left: 8px;
+    margin-left: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+}
+
+@media screen and (max-width: 480px) {
+    .sib-sms-select {
+        display:block
+    }
+
+    .sib-sms-select__title {
+        display: inline-block;
+        max-width: 100%;
+        margin-bottom: 10px
+    }
+
+    .sib-container--small .sib-sms-select__title {
+        display: flex
+    }
+
+    .sib-container--small .sib-sms-select__title .sib-flag {
+        margin-left: 0;
+        bottom: 0
+    }
+
+    .sib-container--small .sib-sms-select__title .sib-sms-select__label-text {
+        margin-left: 0.5rem;
+        padding-bottom: 0
+    }
+
+    .sib-sms-select__title::after {
+        content: '';
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+        border-top: 5px solid #000
+    }
+
+    .sib-sms-select__title__phone-number {
+        padding-right: 45px
+    }
+
+    .sib-sms-select__title>.sib-flag {
+        margin-left: 10px;
+        float: left;
+        position: relative;
+        bottom: 4px
+    }
+
+    .sib-sms-select__title>.sib-sms-select__label-text {
+        display: inline-block;
+        max-width: 70%;
+        margin-left: 18px;
+        padding-bottom: 5px;
+        font-size: 20px;
+        float: left
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sib-sms-tooltip {
+        position:absolute;
+        right: 12px;
+        top: 56%;
+        width: 18px;
+        height: 18px
+    }
+
+    .sib-sms-tooltip__icon {
+        color: #FFF;
+        width: 24px;
+        height: 24px;
+        display: block;
+        background: transparent;
+        text-align: center;
+        font-size: 12px !important;
+        padding: 4px
+    }
+}
+
+@media screen and (max-width: 375px) {
+    .g-recaptcha.sib-visible-recaptcha {
+        transform:scale(0.8);
+        -webkit-transform: scale(0.8);
+        transform-origin: 0 0;
+        -webkit-transform-origin: 0 0
+    }
+}
+
+.sib-form *,.sib-form ::after,.sib-form ::before {
+    box-sizing: border-box
+}
+
+.sib-form {
+    background-attachment: fixed;
+    font-size: 16px;
+    font-family: Roboto, sans-serif;
+    padding: 32px 12px 32px;
+    margin: 0
+}
+
+.sib-form__declaration {
+    display: flex;
+    padding: 0 16px;
+    align-items: center
+}
+
+.sib-form__declaration .declaration-block-icon {
+    display: flex;
+    padding: 0 16px 0 0;
+    margin: 0
+}
+
+.sib-form__declaration .declaration-block-icon [class^="sib-svgIcon"] {
+    width: 65px;
+    height: 65px
+}
+
+.sib-form__declaration p {
+    line-height: 1.5em;
+    margin: 0
+}
+
+.sib-form--blockPosition {
+    position: relative
+}
+
+.sib-form ul,.sib-form ol {
+    padding: 0
+}
+
+#sib-container {
+    background: #fff;
+    margin: 0 auto;
+    padding: 17px;
+    display: inline-block;
+    width: 100%;
+    border-radius: 6px !important;
+}
+
+#sib-form {
+    text-align: left
+}
+
+#sib-form .entry__choice label {
+    display: unset
+}
+
+.sib-menu {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    background-color: #fff;
+    border: 1px solid #d1d1d1;
+    border-radius: 3px;
+    margin-top: 8px
+}
+
+.sib-menu .entry__choice {
+    white-space: nowrap;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 0;
+    text-indent: 0
+}
+
+.sib-menu__item-list {
+    margin: 0;
+    list-style: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: none;
+    margin-top: 8px;
+    max-height: 360px;
+    border: none;
+    padding: 12px 0
+}
+
+.sib-menu__item {
+    line-height: 1.5em;
+    cursor: pointer;
+    padding: 4px 16px;
+    overflow: hidden
+}
+
+.sib-menu__item:hover {
+    background-color: #8ED8FD
+}
+
+.sib-menu__apply {
+    text-align: right;
+    padding: 8px 12px 12px 0
+}
+
+@media screen and (max-width: 375px) {
+    .sib-menu__apply {
+        display:flex;
+        flex-direction: column-reverse;
+        padding: 8px
+    }
+}
+
+.sib-menu__apply button {
+    padding: 8px 16px
+}
+
+.sib-menu__separator {
+    font-size: 20px;
+    vertical-align: sub
+}
+
+.sib-menu__select {
+    padding: 0px 7px
+}
+
+.sib-menu__selectTextAlign {
+    padding: 0px 15px !important
+}
+
+.sib-menu__select button {
+    padding: 8px 5px
+}
+
+.sib-menu .input_replaced {
+    opacity: 0;
+    position: static;
+    width: 0px;
+    margin: 0
+}
+
+.sib-menu .sib-multiselect__label {
+    width: 100%
+}
+
+.sib-menu .sib-multiselect__label-text {
+    text-indent: 0
+}
+
+#sib-other-container .entry__controls--other {
+    margin-left: 1.5em
+}
+
+#sib-other-container .entry__choice--other {
+    width: 100%
+}
+
+#sib-other-container #sib-other-reason {
+    width: 100%;
+    padding: 8px;
+    resize: vertical;
+    border: 1px solid #687484
+}
+
+.checkbox__label {
+    word-wrap: break-word
+}
+
+.checkbox.checkbox_tick_positive::before {
+    left: calc(50% - 1px)
+}
+
+.input_display {
+    line-height: 1.5rem
+}
+
+.entry__choice {
+    width: 100%;
+    margin-bottom: 3px;
+    font-family: Roboto, sans-serif;
+    word-wrap: break-all;
+    word-wrap: break-word
+}
+
+.entry__label {
+    margin-bottom: 10px;
+    width: 100%;
+    font-weight: 500;
+    word-break: break-word;
+    word-wrap: break-word
+}
+
+.entry__label_optin {
+    display: inline
+}
+
+.entry__label>* {
+    float: left
+}
+
+.entry__label::after {
+    content: attr(data-required);
+    font-size: 1em;
+    color: #FF4949;
+    text-decoration: none;
+    word-wrap: break-all;
+    word-wrap: break-word;
+    display: inline
+}
+
+.entry__specification {
+    margin: 10px 0
+}
+
+.entry__controls {
+    margin: 0
+}
+
+.entry__error {
+    display: none;
+    margin-top: 6px;
+    margin-bottom: 6px;
+    background: transparent
+}
+
+.sib-entry_mcq .entry__controls {
+    display: block;
+    background: transparent;
+    border: none;
+    outline: none
+}
+
+.sib-form-block {
+    padding: 0 16px;
+    word-wrap: break-word;
+    outline: none
+}
+
+.sib-form-block p,.sib-form-block ol,.sib-form-block ul {
+    text-align: inherit;
+    margin: 0;
+    line-height: 1.5em
+}
+
+.sib-form-block ol,.sib-form-block ul {
+    list-style-position: inside
+}
+
+.sib-form-block__button {
+    display: inline-block;
+    padding: 8px 18px;
+    border: none;
+    overflow-wrap: break-word;
+    max-width: 100%;
+    cursor: pointer
+}
+
+.sib-form-block__button-disabled {
+    opacity: 0.5
+}
+
+.sib-form-block__button-with-loader {
+    min-height: 40px;
+    line-height: 23px
+}
+
+.sib-image-form-block {
+    padding: 2px
+}
+
+.sib-image-form-block a {
+    display: block;
+    overflow: hidden
+}
+
+.sib-image-form-block img {
+    max-width: 100%
+}
+
+.sib-divider-form-block {
+    border: 0;
+    margin: 0
+}
+
+.form__label-row {
+    display: flex;
+    flex-direction: column;
+    justify-content: stretch
+}
+
+.form__label-row--horizontal {
+    flex-direction: row;
+    align-items: flex-start;
+    margin: 10px 0
+}
+
+.form__label-row--horizontal>*:first-child {
+    margin-right: 20px
+}
+
+.form__label-row--horizontal>* {
+    width: 50%;
+    flex-grow: 1
+}
+
+.input {
+    width: calc(100% - 1rem)
+}
+
+.sib-form .input[type=text] {
+    border: 1px solid rgb(205, 210, 215);
+    border-radius: 6px;
+    padding: 4px 2px;
+}
+.sib-form .input[type=text]:focus:not([readonly]) {
+    outline: 1px solid rgb(0, 127, 255);
+    border: 1px solid rgb(0, 127, 255);
+    border-bottom: 1px solid rgb(0, 127, 255);
+    box-shadow: none;
+}
+
+.input--multiselect {
+    position: relative;
+    padding-right: 32px;
+    line-height: 37px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.input--multiselect::before {
+    content: '';
+    position: absolute;
+    right: 8px;
+    border: 8px solid transparent;
+    border-top-color: #343F4E;
+    top: calc(50% - 4px)
+}
+
+.input--select {
+    position: relative;
+    width: 100%
+}
+
+.input--select::before,.input--select::after {
+    content: '';
+    position: absolute;
+    right: 8px
+}
+
+.input--select::before {
+    top: calc(50% - 12px);
+    border: 5px solid transparent;
+    border-bottom-color: #343F4E
+}
+
+.input--select::after {
+    top: calc(50% + 2px);
+    border: 5px solid transparent;
+    border-top-color: #343F4E
+}
+
+.input--hidden {
+    display: none !important
+}
+
+.input--centerText {
+    display: flex;
+    align-items: center
+}
+
+.input__rtl[type=text]::placeholder {
+    text-align: right !important
+}
+
+.input__textareaRtl::placeholder {
+    text-align: right !important
+}
+
+input::-webkit-input-placeholder {
+    color: #BFCAD8
+}
+
+input::-moz-placeholder {
+    color: #BFCAD8
+}
+
+input:-ms-input-placeholder {
+    color: #BFCAD8
+}
+
+input:-moz-placeholder {
+    color: #BFCAD8
+}
+
+textarea.input {
+    padding: calc(.5rem - 1px)
+}
+
+.sib-form-container a {
+    text-decoration: underline;
+    color: #2BB2FC
+}
+
+.sib-sms-input {
+    width: 100%;
+    display: flex;
+    align-items: center
+}
+
+.sib-sms-input .sib-smscode-select {
+    width: 70px;
+    margin-right: 10px;
+    flex-shrink: 0
+}
+
+.sib-sms-input .entry__controls {
+    width: 100%
+}
+
+.sib-sms-input .sib-menu__item {
+    padding: 4px 2px
+}
+
+.form__entry {
+    position: static;
+    margin-left: 0;
+    padding-left: 0
+}
+
+.sib-panel {
+    position: relative;
+    width: 100%;
+    margin: 24px 0;
+    padding: 10px 25px;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 3px;
+    color: #3C4858;
+    text-align: center;
+    box-shadow: none
+}
+
+.sib-panel--active {
+    display: block
+}
+
+.sib-panel--inactive {
+    display: none
+}
+
+.sib-panel__text {
+    margin: 0;
+    font-weight: 600;
+    text-align: left
+}
+
+.sib-panel__link {
+    padding: 0 5px;
+    color: #3C4858;
+    text-decoration: underline;
+    cursor: pointer
+}
+
+.sib-panel__close-icon {
+    position: absolute;
+    top: 12px;
+    right: 25px;
+    cursor: pointer
+}
+
+.sib-form-message-panel {
+    margin: 0 0 1.25rem 0;
+    width: 100%;
+    padding: 0.4375rem;
+    border: 1px solid;
+    display: none
+}
+
+.sib-form-message-panel--active {
+    display: inline-block
+}
+
+.sib-form-message-panel__text {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0.5rem
+}
+
+.sib-form-message-panel__text .sib-icon {
+    contain: strict;
+    display: inline-block;
+    fill: currentColor
+}
+
+.sib-form-message-panel__text .sib-notification__icon {
+    height: 1.5em;
+    width: 1.5em;
+    flex-shrink: 0;
+    margin-right: calc(1rem - 1px)
+}
+
+.sib-loader {
+    display: inline-block;
+    position: relative;
+    width: 64px;
+    height: 64px
+}
+
+.checkbox_tick_positive:before {
+    left: 49%
+}
+
+@media screen and (max-width: 500px) {
+    #sib-container {
+        padding:32px 9px 32px
+    }
+
+    .form__label-row--horizontal {
+        flex-direction: column
+    }
+
+    .form__label-row--horizontal>* {
+        width: 100%
+    }
+}
+
+.sib-loader div {
+    position: absolute;
+    width: 5px;
+    height: 5px;
+    background: #fff;
+    border-radius: 50%;
+    animation: loader 1.2s linear infinite
+}
+
+.sib-loader div:nth-child(1) {
+    animation-delay: 0s;
+    top: 29px;
+    left: 53px
+}
+
+.sib-loader div:nth-child(2) {
+    animation-delay: -0.1s;
+    top: 18px;
+    left: 50px
+}
+
+.sib-loader div:nth-child(3) {
+    animation-delay: -0.2s;
+    top: 9px;
+    left: 41px
+}
+
+.sib-loader div:nth-child(4) {
+    animation-delay: -0.3s;
+    top: 6px;
+    left: 29px
+}
+
+.sib-loader div:nth-child(5) {
+    animation-delay: -0.4s;
+    top: 9px;
+    left: 18px
+}
+
+.sib-loader div:nth-child(6) {
+    animation-delay: -0.5s;
+    top: 18px;
+    left: 9px
+}
+
+.sib-loader div:nth-child(7) {
+    animation-delay: -0.6s;
+    top: 29px;
+    left: 6px
+}
+
+.sib-loader div:nth-child(8) {
+    animation-delay: -0.7s;
+    top: 41px;
+    left: 9px
+}
+
+.sib-loader div:nth-child(9) {
+    animation-delay: -0.8s;
+    top: 50px;
+    left: 18px
+}
+
+.sib-loader div:nth-child(10) {
+    animation-delay: -0.9s;
+    top: 53px;
+    left: 29px
+}
+
+.sib-loader div:nth-child(11) {
+    animation-delay: -1s;
+    top: 50px;
+    left: 41px
+}
+
+.sib-loader div:nth-child(12) {
+    animation-delay: -1.1s;
+    top: 41px;
+    left: 50px
+}
+
+.entry__choice label p {
+    display: inline
+}
+
+@keyframes loader {
+    0%,20%,80%,100% {
+        transform: scale(1)
+    }
+
+    50% {
+        transform: scale(1.5)
+    }
+}
+
+@media screen and (max-width: 400px) {
+    #sib-container {
+        padding:32px 0px 32px
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .sib-image-form-block img {
+        height:auto !important
+    }
+}
+
+.progress-indicator {
+    background: transparent
+}
+
+.sib-hide-loader-icon {
+    display: none
+}
+
+.sib-form ::-webkit-input-placeholder {
+    color: #c0ccda;
+    opacity: 1
+}
+
+.sib-form ::-moz-placeholder {
+    color: #c0ccda;
+    opacity: 1
+}
+
+.sib-form :-ms-input-placeholder {
+    color: #c0ccda;
+    opacity: 1
+}
+
+.sib-form ::-ms-input-placeholder {
+    color: #c0ccda;
+    opacity: 1
+}
+
+.sib-form ::placeholder {
+    color: #c0ccda;
+    opacity: 1
+}
+
+.sib-form .sib-form_fieldset {
+    display: table-row-group
+}
+
+.sib-form .fieldset__separator {
+    display: table-row
+}
+
+.sib-form .fieldset__separator:after,.sib-form .fieldset__separator:before {
+    background: #c0ccda;
+    background-clip: padding-box;
+    border: solid transparent;
+    border-width: calc(4rem - 1px) 0 4rem;
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    content: "";
+    display: table-cell;
+    height: 1px
+}
+
+.sib-form .form__fieldset {
+    border: 0;
+    display: table-row;
+    padding: 0
+}
+
+.sib-form .form__fieldset:first-child .form__entries,.sib-form .form__fieldset:first-child .form__legend {
+    padding-top: 0
+}
+
+.sib-form .form__entries,.sib-form .form__legend {
+    display: table-cell;
+    margin: 0;
+    padding-top: 4rem;
+    vertical-align: top
+}
+
+.sib-form .form__legend {
+    font-size: 1.14869835rem;
+    line-height: 1.5rem;
+    font-weight: 700;
+    padding-right: 2.5rem
+}
+
+@media (max-width: 45rem) {
+    .sib-form .fieldset__separator,.sib-form .form__entries,.sib-form .form__fieldset,.sib-form .form__legend,.sib-form .sib-form_fieldset {
+        display:block
+    }
+
+    .sib-form .form__legend {
+        padding-bottom: .5rem;
+        padding-right: 0
+    }
+
+    .sib-form .form__entries {
+        padding-top: 0
+    }
+
+    .sib-form .fieldset__separator {
+        border: 0
+    }
+}
+
+.sib-form .form__entry {
+    border: 0;
+    margin: 0;
+    padding: 0;
+    position: relative
+}
+
+.sib-form .form__entry:not(:first-child) {
+    margin-top: 1.5rem
+}
+
+.sib-form .entry__label+.form__entry {
+    margin-top: 0
+}
+
+.sib-form .entry__label {
+    display: table;
+    font-weight: 700;
+    padding: 0;
+    white-space: normal
+}
+
+.sib-form .form__row {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    margin: -.25rem -.75rem
+}
+
+.sib-form .form__row:not(:first-child) {
+    margin-top: 1.25rem
+}
+
+.sib-form .entry__label+.form__row {
+    margin-top: -.25rem
+}
+
+.sib-form .form__row>.form__entry {
+    margin: .25rem .75rem
+}
+
+.sib-form .entry__optional-indicator {
+    color: #687484;
+    font-size: .87055056rem;
+    line-height: 1rem;
+    font-weight: 400
+}
+
+.sib-form .entry__field {
+    -webkit-align-items: center;
+    align-items: center;
+    background: #fff;
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    margin: .25rem 0;
+    max-width: 100%
+}
+
+.sib-form .input,.sib-form .input__affix {
+    background: none;
+    border: 0;
+    font: inherit;
+    margin: 0
+}
+
+.sib-form .input:first-child,.sib-form .input__affix:first-child {
+    padding-left: .5rem
+}
+
+.sib-form .input:last-child,.sib-form .input__affix:last-child {
+    padding-right: .5rem
+}
+
+.sib-form .input,.sib-form .input__button {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    color: inherit;
+    outline: 0
+}
+
+.sib-form .input:not(textarea),.sib-form .input__button {
+    height: calc(2.5rem - 2px)
+}
+
+.sib-form .input__affix {
+    color: #687484;
+    -webkit-flex-shrink: 0;
+    flex-shrink: 0
+}
+
+.sib-form .input__button {
+    cursor: pointer;
+    padding: 0 .5rem
+}
+
+.sib-form .input__button[type=submit] {
+    border-bottom-left-radius: 0;
+    border-left: 1px solid #c0ccda;
+    border-top-left-radius: 0;
+    color: inherit;
+    margin-left: .5rem
+}
+
+.sib-form .input__button .sib-icon {
+    height: 1.5rem;
+    vertical-align: bottom;
+    width: 1.5rem
+}
+
+.sib-form .input {
+    box-shadow: none;
+    min-width: 1px;
+    padding: 0
+}
+
+.sib-form textarea.input {
+    padding: calc(.5rem - 1px)
+}
+
+.sib-form select.input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 286.1 167'%3E%3Cpath d='M24.1 0h238c21.4 0 32.1 25.9 17 41l-119 119c-9.4 9.4-24.6 9.4-33.9 0L7.1 41C-8 25.9 2.7 0 24.1 0z' fill='%233c4858'/%3E%3C/svg%3E");
+    background-position: right .65em top 50%;
+    background-repeat: no-repeat;
+    background-size: .65em auto
+}
+
+.sib-form select.input:first-child,.sib-form select.input:last-child {
+    padding-right: calc(2rem - 1px)
+}
+
+.sib-form .sib-entry_block .entry__field,.sib-form .form__row .entry__field,.sib-form .sib-form_block .entry__field {
+    display: -webkit-flex;
+    display: flex
+}
+
+.sib-form .sib-entry_block .input,.sib-form .form__row .input,.sib-form .sib-form_block .input {
+    -webkit-flex-grow: 1;
+    flex-grow: 1
+}
+
+.sib-form .sib-entry_phrasing,.sib-form .sib-entry_phrasing .entry__label,.sib-form .sib-entry_phrasing .entry__specification {
+    display: inline-block
+}
+
+.sib-form .sib-entry_phrasing .entry__label {
+    font-weight: 400
+}
+
+.sib-form .sib-entry_errored {
+    margin-left: -.5rem;
+    padding-left: .5rem
+}
+
+.sib-form .sib-entry_errored:before {
+    background: #ff4949;
+    bottom: 0;
+    content: "";
+    position: absolute;
+    right: 100%;
+    top: 0;
+    width: .25rem
+}
+
+.sib-form .entry__error,.sib-form .entry__label,.sib-form .entry__specification,.sib-form .form__error {
+    max-width: 40em
+}
+
+.sib-form .entry__error,.sib-form .entry__specification,.sib-form .form__error {
+    display: block
+}
+
+.sib-form .entry__choice+.entry__error,.sib-form .entry__choice+.entry__specification,.sib-form .entry__error+.entry__error,.sib-form .entry__error+.entry__specification,.sib-form .entry__specification+.entry__error,.sib-form .entry__specification+.entry__specification {
+    margin-top: .5rem
+}
+
+.sib-form .entry__error {
+    color: #ff4949;
+    font-size: .87055056rem;
+    line-height: 1rem
+}
+
+.sib-form .entry__specification {
+    color: #687484;
+    margin: 0
+}
+
+.sib-form .entry__choice {
+    padding-left: 1.5em;
+    text-indent: -1.5em
+}
+
+.sib-form .entry__choice .checkbox,.sib-form .entry__choice .radio-button {
+    margin-right: .5em
+}
+
+.sib-form .entry__choice .sib-toggletip {
+    text-indent: 0
+}
+
+.sib-form .entry__choice:not(:first-child) {
+    margin-top: .5rem
+}
+
+.sib-form .entry__choices.menu {
+    margin-top: 2px;
+    max-height: 20rem;
+    overflow: auto;
+    padding: .5rem
+}
+
+.sib-form .checkbox,.sib-form .radio-button {
+    background: #fff;
+    border: 1px solid #687484;
+    cursor: pointer;
+    display: inline-block;
+    height: 1em;
+    vertical-align: -.125em;
+    width: 1em;
+    position: relative
+}
+
+.sib-form .checkbox {
+    border-radius: 3px
+}
+
+.sib-form .radio-button {
+    border-radius: 50%
+}
+
+.sib-form .radio-button:before {
+    border-radius: 50%;
+    bottom: 2px;
+    content: "";
+    left: 2px;
+    position: absolute;
+    right: 2px;
+    top: 2px
+}
+
+.sib-form .checkbox_tick_negative:after,.sib-form .checkbox_tick_negative:before {
+    border: solid #fff;
+    border-width: 0 0 0 2px;
+    bottom: 0;
+    content: "";
+    left: 50%;
+    margin-left: -1px;
+    position: absolute;
+    top: 0
+}
+
+.sib-form .checkbox_tick_negative:after {
+    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg)
+}
+
+.sib-form .checkbox_tick_negative:before,.sib-form .checkbox_tick_positive:before {
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg)
+}
+
+.sib-form .checkbox_tick_positive:before {
+    border-color: #fff;
+    border-style: solid;
+    border-width: 0 2px 2px 0;
+    bottom: 1px;
+    content: "";
+    left: 50%;
+    margin-left: -25%;
+    position: absolute;
+    top: 1px;
+    -webkit-transform-origin: 80% 45%;
+    transform-origin: 80% 45%;
+    width: 50%
+}
+
+.sib-form .input_replaced {
+    opacity: 0;
+    position: absolute;
+    z-index: -1
+}
+
+.sib-form .input_replaced:checked+.checkbox_tick_positive {
+    background: #13ce66;
+    border-color: #13ce66
+}
+
+.sib-form .input_replaced:checked+.checkbox_tick_negative {
+    background: #ff4949;
+    border-color: #ff4949
+}
+
+.sib-form .input_replaced:checked+.radio-button {
+    border-color: #0092ff
+}
+
+.sib-form .input_replaced:checked+.radio-button:before {
+    background: #0092ff
+}
+
+.sib-form .input_replaced:indeterminate+.checkbox {
+    background: #fff;
+    border-color: #687484
+}
+
+.sib-form .input_replaced:indeterminate+.checkbox:before {
+    background: #687484;
+    border: 0;
+    content: "";
+    height: 2px;
+    left: 2px;
+    margin: -1px 0 0;
+    position: absolute;
+    right: 2px;
+    -webkit-transform: none;
+    transform: none;
+    top: 50%;
+    width: auto
+}
+
+.sib-form .input_replaced:indeterminate+.checkbox:after {
+    content: normal
+}
+
+.sib-form .input_replaced:active+.checkbox,.sib-form .input_replaced:active+.radio-button,.sib-form .input_replaced:focus+.checkbox,.sib-form .input_replaced:focus+.radio-button {
+    box-shadow: 0 0 0 2px #c9e1f4
+}
+
+.sib-form .choice__form {
+    border: 0;
+    margin: 0;
+    padding: 0
+}
+
+.sib-form .choice__form[disabled] {
+    display: none
+}
+
+.sib-form .entry__choice+.choice__form {
+    border-left: 2px solid #c0ccda;
+    margin-left: calc(.5em - 1px);
+    padding: 0.5rem calc(.5rem + .5em - 1px)
+}
+
+.sib-form ::-ms-reveal {
+    display: none
+}
+
+.sib-form ::-webkit-inner-spin-button,.sib-form ::-webkit-search-decoration {
+    display: none
+}
+
+.sib-form [type=search] {
+    -webkit-appearance: textfield;
+    -moz-appearance: textfield;
+    appearance: textfield
+}
+
+.sib-form .input[readonly] {
+    background-color: #f9fafc
+}
+
+.sib-form .input[type=text]+.input__password-toggler {
+    color: #0092ff
+}
+
+.sib-form .sib-ap-nostyle-input-icon {
+    display: none
+}
+
+.sib-form .sib-ap-nostyle-dropdown-menu {
+    -moz-box-sizing: content-box;
+    box-sizing: content-box;
+    background: #fff;
+    border: 1px solid #c0ccda;
+    border-radius: 3px;
+    list-style: none;
+    margin: 0;
+    max-width: 100vw;
+    min-width: 100%;
+    padding: calc(.5rem - 1px) 0
+}
+
+.sib-form .sib-ap-nostyle-dropdown-menu.sib-collapsible__content {
+    position: absolute;
+    top: 100%;
+    z-index: 1
+}
+
+.sib-form .sib-ap-nostyle-dropdown-menu.sib-collapsible__content:not(.sib-collapsible__content_toggled) {
+    display: none
+}
+
+.sib-form .sib-ap-nostyle-dropdown-menu em {
+    font-style: normal;
+    font-weight: 700
+}
+
+.sib-form .sib-ap-nostyle-input {
+    padding-right: .5rem
+}
+
+.sib-form .sib-ap-nostyle-suggestion {
+    cursor: default;
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.sib-form .sib-ap-nostyle-cursor,.sib-form .sib-ap-nostyle-suggestion:focus,.sib-form .sib-ap-nostyle-suggestion:hover {
+    background: #eff2f7
+}
+
+.sib-form .sib-ap-footer {
+    display: none
+}
+
+.sib-form .menu {
+    background: #fff;
+    border: 1px solid #c0ccda;
+    border-radius: 3px;
+    list-style: none;
+    margin: 0;
+    max-width: 100vw;
+    min-width: 100%;
+    padding: calc(.5rem - 1px) 0
+}
+
+.sib-form .menu.sib-collapsible__content {
+    position: absolute;
+    top: 100%;
+    z-index: 1
+}
+
+.sib-form .menu.sib-collapsible__content:not(.sib-collapsible__content_toggled) {
+    display: none
+}
+
+.sib-form .menu__content,.sib-form .menu__heading {
+    padding: 0;
+    margin: 1rem
+}
+
+.sib-form .menu__content:first-child,.sib-form .menu__heading:first-child {
+    margin-top: .5rem
+}
+
+.sib-form .menu__content:last-child,.sib-form .menu__heading:last-child {
+    margin-bottom: .5rem
+}
+
+.sib-form .menu__heading {
+    font-size: 1.31950791rem;
+    line-height: 1.5rem;
+    font-weight: 400
+}
+
+.sib-form .menu__content {
+    list-style: none
+}
+
+.sib-form .menu__icon {
+    color: #8492a6;
+    height: 1em;
+    vertical-align: -.125em;
+    width: 1em;
+    margin-right: .5rem
+}
+
+.sib-form .menu__control {
+    color: inherit;
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    padding: .5rem 1rem;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.sib-form .menu__control:focus,.sib-form .menu__control:hover {
+    background: #eff2f7
+}
+
+.sib-form .menu__divider {
+    border: 0;
+    border-top: 1px solid #c0ccda;
+    margin: .5rem 0
+}
+
+.sib-form .clickable_button,.sib-form .clickable_link {
+    font: inherit;
+    margin: 0
+}
+
+.sib-form .clickable_button.sib-collapsible__trigger:before,.sib-form .clickable_link.sib-collapsible__trigger:before {
+    border-left: .25rem solid transparent;
+    border-right: .25rem solid transparent;
+    border-bottom: 0;
+    border-top: .25rem solid;
+    content: "";
+    float: right;
+    margin: .625rem 0 0 .25em
+}
+
+.sib-form .clickable_button.sib-collapsible__trigger_toggled:before,.sib-form .clickable_link.sib-collapsible__trigger_toggled:before {
+    border-bottom: .25rem solid;
+    border-top: 0
+}
+
+.sib-form .clickable_button:not([disabled]),.sib-form .clickable_link:not([disabled]) {
+    cursor: pointer
+}
+
+.sib-form .clickable_button {
+    background: #0092ff;
+    border: 1px solid #0092ff;
+    border-radius: 3px;
+    color: #fff;
+    display: inline-block;
+    outline: 0;
+    padding: calc(.5rem - 1px) calc(1rem - 1px);
+    text-decoration: none
+}
+
+.sib-form .clickable_button.sib-collapsible__trigger {
+    overflow: hidden;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap
+}
+
+.sib-form .clickable_button[disabled] {
+    opacity: .5
+}
+
+.sib-form .clickable_button:focus {
+    box-shadow: 0 0 0 2px #c9e1f4
+}
+
+.sib-form .clickable_button:focus:not([disabled]),.sib-form .clickable_button:hover:not([disabled]) {
+    background: #007cd9;
+    border-color: #007cd9
+}
+
+.sib-form .clickable_ghost {
+    background: none;
+    border-color: #c0ccda;
+    color: #3c4858
+}
+
+.sib-form .clickable_ghost:focus:not([disabled]),.sib-form .clickable_ghost:hover:not([disabled]) {
+    background: none;
+    border-color: #8492a6
+}
+
+.sib-form .clickable_dropdown {
+    display: inline-block;
+    position: relative
+}
+
+.sib-form .clickable_dropdown .menu {
+    margin-top: 2px
+}
+
+.sib-form .clickable_dropdown .menu_left {
+    left: 0
+}
+
+.sib-form .clickable_dropdown .menu_right {
+    right: 0
+}
+
+.sib-form .clickable_block {
+    width: 100%
+}
+
+.sib-form .clickable_cta {
+    border-radius: 9999em
+}
+
+.sib-form .clickable_link {
+    background: none;
+    border: 0;
+    color: #0092ff;
+    display: inline;
+    padding: 0;
+    text-decoration: none
+}
+
+.sib-form .clickable_link:focus,.sib-form .clickable_link:hover {
+    color: #007cd9;
+    text-decoration: underline
+}
+
+.sib-form .clickable_link:focus {
+    outline: 0
+}
+
+.sib-form .clickable_sneaky,.sib-form .clickable_sneaky:focus,.sib-form .clickable_sneaky:hover {
+    color: inherit
+}
+
+.sib-form .clickable_plan {
+    color: #0092ff
+}
+
+.sib-form .clickable_plan:focus,.sib-form .clickable_plan:hover {
+    color: #007cd9
+}
+
+.sib-form .clickable_destructive {
+    background: #ff4949;
+    border-color: #ff4949
+}
+
+.sib-form .clickable_destructive:focus:not([disabled]),.sib-form .clickable_destructive:hover:not([disabled]) {
+    background: #d93e3e;
+    border-color: #d93e3e
+}
+
+.sib-form .clickable__group {
+    display: -webkit-inline-flex;
+    display: inline-flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap
+}
+
+.sib-form .clickable__group .clickable_button:focus,.sib-form .clickable__group .clickable_button:hover {
+    position: relative
+}
+
+.sib-form .clickable__group .clickable_button:not(:first-child),.sib-form .clickable__group .clickable_dropdown:not(:first-child) .clickable_button {
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+    margin-left: -1px
+}
+
+.sib-form .clickable__group>.clickable_button:not(:last-child),.sib-form .clickable__group>.clickable_dropdown:not(:last-child) .clickable_button {
+    border-bottom-right-radius: 0;
+    border-top-right-radius: 0
+}
+
+.sib-form .clickable__group>.clickable_dropdown:not(:last-child) .clickable_link,.sib-form .clickable__group>.clickable_link:not(:last-child) {
+    margin-right: 1.5em;
+    position: relative
+}
+
+.sib-form .clickable__group>.clickable_dropdown:not(:last-child) .clickable_link:after,.sib-form .clickable__group>.clickable_link:not(:last-child):after {
+    background: #c0ccda;
+    border-radius: 50%;
+    content: "";
+    cursor: auto;
+    display: inline-block;
+    height: .25rem;
+    pointer-events: none;
+    position: absolute;
+    right: -.9em;
+    top: .7em;
+    width: .25rem
+}
+
+.sib-form .clickable__icon {
+    height: 1.5rem;
+    vertical-align: bottom;
+    width: 1.5rem
+}
+
+.sib-form .clickable__icon:not(.sib-icon_standalone) {
+    margin-right: calc(.7002rem - 1px)
+}
+
+.sib-form .progress-indicator {
+    -webkit-align-items: center;
+    align-items: center;
+    background: rgba(255,255,255,0.9);
+    display: -webkit-flex;
+    display: flex;
+    height: 100%;
+    -webkit-justify-content: center;
+    justify-content: center;
+    width: 100%
+}
+
+.sib-form .progress-indicator .progress-indicator__icon {
+    fill: #0092ff;
+    height: 2rem;
+    width: 2rem
+}
+
+.sib-form .progress-indicator_small .progress-indicator__icon {
+    height: 1rem;
+    width: 1rem
+}
+
+.sib-form .progress-indicator__icon {
+    -webkit-animation: indicator-spin 1.3s cubic-bezier(0.46, 0.35, 0.39, 0.85) infinite;
+    animation: indicator-spin 1.3s cubic-bezier(0.46, 0.35, 0.39, 0.85) infinite
+}
+
+@-webkit-keyframes indicator-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn)
+    }
+}
+
+@keyframes indicator-spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+        transform: rotate(0deg)
+    }
+
+    to {
+        -webkit-transform: rotate(1turn);
+        transform: rotate(1turn)
+    }
+}
