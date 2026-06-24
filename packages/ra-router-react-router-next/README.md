@@ -2,11 +2,11 @@
 
 [React Router v8](https://reactrouter.com) adapter for [react-admin](https://github.com/marmelab/react-admin).
 
-react-admin ships with a React Router v6 adapter by default
+react-admin ships with a React Router v6/v7 adapter by default
 ([`ra-router-react-router`](../ra-router-react-router)). Use this package to run
 react-admin on React Router v8.
 
-New projects are encouraged to use this adapter. The React Router v6 default is
+New projects are encouraged to use this adapter. The React Router v6/v7 default is
 kept for backward compatibility, and **`ra-router-react-router-next` will become
 `ra-router-react-router` in react-admin v6.**
 

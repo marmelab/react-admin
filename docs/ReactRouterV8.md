@@ -5,9 +5,9 @@ title: "React Router v8 Integration"
 
 # React Router v8 Integration
 
-By default, react-admin is powered by [React Router](https://reactrouter.com/) v6 through the `ra-router-react-router` adapter, which is installed automatically. React Router v8 merged the former `react-router-dom` package into `react-router` and requires **React 19**, so support for it ships as a separate, opt-in adapter package: `ra-router-react-router-next`.
+By default, react-admin is powered by [React Router](https://reactrouter.com/) v6/v7 through the `ra-router-react-router` adapter, which is installed automatically. React Router v8 merged the former `react-router-dom` package into `react-router` and requires **React 19**, so support for it ships as a separate, opt-in adapter package: `ra-router-react-router-next`.
 
-**New projects are encouraged to run on React Router v8 using `ra-router-react-router-next`.** The React Router v6 adapter remains the default for backward compatibility, and **`ra-router-react-router-next` will become the default `ra-router-react-router` in react-admin v6.**
+**New projects are encouraged to run on React Router v8 using `ra-router-react-router-next`.** The React Router v6/v7 adapter remains the default for backward compatibility, and **`ra-router-react-router-next` will become the default `ra-router-react-router` in react-admin v6.**
 
 Use this package when your application runs on React Router v8.
 
@@ -55,5 +55,5 @@ If your application already uses React Router, you can embed react-admin inside 
 
 ## When To Use This Package
 
-- Use the **default** `ra-router-react-router` adapter (installed automatically, no extra setup) if your app runs on React Router v6.
+- Use the **default** `ra-router-react-router` adapter (installed automatically, no extra setup) if your app runs on React Router v6 or v7.
 - Use **`ra-router-react-router-next`** if your app runs on React Router v8 (and therefore React 19). This is the recommended choice for new projects, and it will become the default in react-admin v6.
