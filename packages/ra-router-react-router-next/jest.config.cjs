@@ -33,7 +33,6 @@ const reactDom19Dir = path.dirname(
 );
 
 module.exports = {
-    displayName: 'react-router-v8',
     rootDir: repoRoot,
     roots: [__dirname],
     globalSetup: '<rootDir>/test-global-setup.js',
