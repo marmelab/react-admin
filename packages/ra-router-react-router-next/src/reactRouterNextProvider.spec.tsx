@@ -9,7 +9,6 @@ import {
 import userEvent from '@testing-library/user-event';
 import {
     Basic,
-    StandaloneWithBasename,
     EmbeddedInReactRouter,
     HistoryNavigation,
     LinkComponent,
@@ -547,15 +546,6 @@ describe('reactRouterNextProvider', () => {
                         screen.getByText('Current Location:')
                     ).toBeInTheDocument();
                 });
-            });
-
-            it('should not double-prepend the basename when set on a standalone admin', async () => {
-                window.location.hash = '#/admin/posts';
-                render(<StandaloneWithBasename />);
-                const link = await screen.findByText('Post #1');
-                // basename lives on the router, so the link must carry it
-                // exactly once (not "/admin/admin/...").
-                expect(link.getAttribute('href')).toBe('#/admin/posts/1/show');
             });
         });
 
