@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, ReactNode } from 'react';
+import { useContext, useEffect, useRef, forwardRef, ReactNode } from 'react';
 import {
     useNavigate as useReactRouterNavigate,
     useLocation,
@@ -7,8 +7,8 @@ import {
     useBlocker,
     useMatch,
     useInRouterContext,
-    Link,
-    Navigate,
+    Link as ReactRouterLink,
+    Navigate as ReactRouterNavigate,
     Route,
     Routes,
     Outlet,
@@ -18,11 +18,29 @@ import {
     UNSAFE_DataRouterContext,
     UNSAFE_DataRouterStateContext,
 } from 'react-router';
+import { useBasename } from 'ra-core';
 import type {
     RouterProvider,
     RouterWrapperProps,
     RouterNavigateFunction,
+    RouterLinkProps,
+    RouterNavigateProps,
 } from 'ra-core';
+
+/**
+ * Prepend the react-admin basename to an absolute path.
+ *
+ * In standalone mode react-admin keeps the basename on the router (and
+ * `useBasename()` returns ''), so this is a no-op. In embedded mode the host
+ * router owns no basename and `useBasename()` returns it, so links and
+ * navigation must prepend it themselves. The guard avoids double-prepending
+ * paths that already include the basename (e.g. those built by `useCreatePath`).
+ */
+const prependBasename = (path: string, basename: string): string => {
+    if (!basename || !path.startsWith('/')) return path;
+    if (path === basename || path.startsWith(`${basename}/`)) return path;
+    return `${basename}${path}`;
+};
 
 /**
  * Hook to check if navigation blocking is supported.
@@ -45,9 +63,12 @@ const useCanBlock = (): boolean => {
  */
 const useNavigate = (): RouterNavigateFunction => {
     const navigate = useReactRouterNavigate();
+    const basename = useBasename();
     const navigateRef = useRef<RouterNavigateFunction>(
         navigate as RouterNavigateFunction
     );
+    const basenameRef = useRef(basename);
+    basenameRef.current = basename;
 
     useEffect(() => {
         navigateRef.current = navigate as RouterNavigateFunction;
@@ -55,8 +76,54 @@ const useNavigate = (): RouterNavigateFunction => {
 
     // Return a stable function that always calls the latest navigate
     return React.useCallback((...args: Parameters<RouterNavigateFunction>) => {
-        return navigateRef.current(...args);
+        const [to, ...rest] = args;
+        const bn = basenameRef.current;
+        if (typeof to === 'string') {
+            return navigateRef.current(prependBasename(to, bn), ...rest);
+        }
+        if (to && typeof to === 'object' && 'pathname' in to && to.pathname) {
+            return navigateRef.current(
+                { ...to, pathname: prependBasename(to.pathname, bn) },
+                ...rest
+            );
+        }
+        return navigateRef.current(to, ...rest);
     }, []) as RouterNavigateFunction;
+};
+
+/**
+ * Wrapper around react-router's Link that prepends the react-admin basename
+ * to absolute paths (see prependBasename). This makes links work both in
+ * standalone mode (no-op) and embedded mode (basename owned by react-admin).
+ */
+const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
+    ({ to, ...rest }, ref) => {
+        const basename = useBasename();
+        const resolvedTo =
+            typeof to === 'string'
+                ? prependBasename(to, basename)
+                : to && typeof to === 'object' && to.pathname
+                  ? { ...to, pathname: prependBasename(to.pathname, basename) }
+                  : to;
+        return <ReactRouterLink ref={ref} to={resolvedTo} {...rest} />;
+    }
+);
+Link.displayName = 'Link';
+
+/**
+ * Wrapper around react-router's Navigate that prepends the react-admin
+ * basename to absolute paths, mirroring the Link behavior for declarative
+ * redirects.
+ */
+const Navigate = ({ to, ...rest }: RouterNavigateProps) => {
+    const basename = useBasename();
+    const resolvedTo =
+        typeof to === 'string'
+            ? prependBasename(to, basename)
+            : to && typeof to === 'object' && to.pathname
+              ? { ...to, pathname: prependBasename(to.pathname, basename) }
+              : to;
+    return <ReactRouterNavigate to={resolvedTo} {...rest} />;
 };
 
 /**
