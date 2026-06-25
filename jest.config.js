@@ -14,29 +14,38 @@ const moduleNameMapper = packages.reduce((mapper, dirName) => {
 }, {});
 
 module.exports = {
-    globalSetup: './test-global-setup.js',
-    setupFilesAfterEnv: ['./test-setup.js'],
-    testEnvironment: 'jsdom',
-    testPathIgnorePatterns: [
-        '/node_modules/',
-        '/lib/',
-        '/esm/',
-        '/examples/simple/',
-        '/packages/create-react-admin/templates',
-    ],
-    transformIgnorePatterns: [
-        '[/\\\\]node_modules[/\\\\](?!(@hookform|react-hotkeys-hook|@faker-js/faker)/).+\\.(js|jsx|mjs|ts|tsx)$',
-    ],
-    transform: {
-        // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
-        '^.+\\.[tj]sx?$': [
-            'ts-jest',
-            {
-                isolatedModules: true,
-                useESM: true,
+    projects: [
+        {
+            globalSetup: './test-global-setup.js',
+            setupFilesAfterEnv: ['./test-setup.js'],
+            testEnvironment: 'jsdom',
+            testPathIgnorePatterns: [
+                '/node_modules/',
+                '/lib/',
+                '/esm/',
+                '/examples/simple/',
+                '/packages/create-react-admin/templates',
+                '/packages/ra-router-react-router-next/',
+            ],
+            transformIgnorePatterns: [
+                '[/\\\\]node_modules[/\\\\](?!(@hookform|react-hotkeys-hook|@faker-js/faker)/).+\\.(js|jsx|mjs|ts|tsx)$',
+            ],
+            transform: {
+                // '^.+\\.[tj]sx?$' to process js/ts with `ts-jest`
+                '^.+\\.[tj]sx?$': [
+                    'ts-jest',
+                    {
+                        isolatedModules: true,
+                        useESM: true,
+                    },
+                ],
             },
-        ],
-    },
-    moduleNameMapper,
+            moduleNameMapper,
+        },
+        // ra-router-react-router-next supplies its own (ESM, React 19) project
+        // config. Running its tests requires `NODE_OPTIONS=--experimental-vm-modules`
+        // (set in the test scripts).
+        './packages/ra-router-react-router-next/jest.config.cjs',
+    ],
     testTimeout: 60000,
 };

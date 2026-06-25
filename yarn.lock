@@ -20672,6 +20672,8 @@ __metadata:
   resolution: "ra-router-react-router-next@workspace:packages/ra-router-react-router-next"
   dependencies:
     ra-core: "npm:^5.14.7"
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
     react-router: "npm:^8.0.0"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -21027,6 +21029,17 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-dom@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react-dom@npm:19.2.7"
+  dependencies:
+    scheduler: "npm:^0.27.0"
+  peerDependencies:
+    react: ^19.2.7
+  checksum: 970ff600f6e80d47d39e2f226f12f226173b3cba3382efc97c5f0cd663de9af38c7a4c11c213fb936094faeac83060d660247accaa96b752180d5b951b9cfecb
+  languageName: node
+  linkType: hard
+
 "react-dropzone@npm:^14.2.3":
   version: 14.2.3
   resolution: "react-dropzone@npm:14.2.3"
@@ -21285,6 +21298,13 @@ __metadata:
   version: 19.0.0
   resolution: "react@npm:19.0.0"
   checksum: 9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react@npm:19.2.7"
+  checksum: 0bd0e2f1bbd4ba97561c6597bf8a5fec05e6476fe61e165c1065598d16668efc6715205599c94d3ddd49d36cb0f21cbf1b9bcc18ee840b805ce222c3e8d558ac
   languageName: node
   linkType: hard
 
@@ -22358,6 +22378,13 @@ __metadata:
   version: 0.25.0
   resolution: "scheduler@npm:0.25.0"
   checksum: a4bb1da406b613ce72c1299db43759526058fdcc413999c3c3e0db8956df7633acf395cb20eb2303b6a65d658d66b6585d344460abaee8080b4aa931f10eaafe
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "scheduler@npm:0.27.0"
+  checksum: 4f03048cb05a3c8fddc45813052251eca00688f413a3cee236d984a161da28db28ba71bd11e7a3dd02f7af84ab28d39fb311431d3b3772fed557945beb00c452
   languageName: node
   linkType: hard
 
