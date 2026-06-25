@@ -9,6 +9,7 @@ import {
 import userEvent from '@testing-library/user-event';
 import {
     Basic,
+    StandaloneWithBasename,
     EmbeddedInReactRouter,
     HistoryNavigation,
     LinkComponent,
@@ -547,6 +548,15 @@ describe('reactRouterNextProvider', () => {
                     ).toBeInTheDocument();
                 });
             });
+
+            it('should not double-prepend the basename when set on a standalone admin', async () => {
+                window.location.hash = '#/admin/posts';
+                render(<StandaloneWithBasename />);
+                const link = await screen.findByText('Post #1');
+                // basename lives on the router, so the link must carry it
+                // exactly once (not "/admin/admin/...").
+                expect(link.getAttribute('href')).toBe('#/admin/posts/1/show');
+            });
         });
 
         describe('embedded mode', () => {
@@ -644,16 +654,29 @@ describe('reactRouterNextProvider', () => {
             });
         });
 
-        // NOTE: tanstack's "should navigate within nested routes" test is
-        // intentionally omitted. It navigates deep inside the embedded admin
-        // (basename "/admin"). The react-router-next adapter relies on
-        // react-router's native, router-level basename, which only exists in
-        // standalone mode; in embedded mode react-admin renders descendant
-        // routes inside the host router (which has no "/admin" basename), so
-        // react-admin's internal links resolve outside the basename. Putting
-        // the basename on the host router is not an option either — it also
-        // serves the "/" home route. Supporting this would require porting
-        // tanstack's manual basename handling (custom Link/navigate/Routes).
+        it('should navigate within nested routes', async () => {
+            const user = userEvent.setup();
+            render(<EmbeddedInReactRouter />);
+            await waitFor(() => {
+                expect(screen.getByText('Admin')).toBeInTheDocument();
+            });
+
+            await user.click(screen.getByText('Admin'));
+
+            await screen.findByText('Posts');
+            await screen.findByText('Post #1');
+
+            await user.click(screen.getByText('Post #1'));
+
+            await waitFor(
+                () => {
+                    expect(
+                        screen.getByText('Post Details')
+                    ).toBeInTheDocument();
+                },
+                { timeout: 3000 }
+            );
+        });
     });
 
     describe('Link', () => {
