@@ -140,6 +140,91 @@ describe('useReferenceInputController', () => {
         });
     });
 
+    it('should fetch current value using getList when optionValue is not id', async () => {
+        const children = jest.fn().mockReturnValue(<p>child</p>);
+        const optionValue = 'login';
+        const currentUser = { id: 2, login: 'jdoe', name: 'Jane Doe' };
+        const dataProvider = testDataProvider({
+            getList: jest
+                .fn()
+                .mockResolvedValueOnce({
+                    data: [{ id: 1, login: 'asmith', name: 'Alice Smith' }],
+                    total: 1,
+                })
+                .mockResolvedValueOnce({
+                    data: [currentUser],
+                    total: 1,
+                }),
+            getMany: jest.fn(),
+        });
+
+        render(
+            <CoreAdminContext dataProvider={dataProvider}>
+                <Form defaultValues={{ owner: 'jdoe' }}>
+                    <ReferenceInputController
+                        reference="users"
+                        resource="comments"
+                        source="owner"
+                        optionValue={optionValue}
+                    >
+                        {children}
+                    </ReferenceInputController>
+                </Form>
+            </CoreAdminContext>
+        );
+
+        await waitFor(() => {
+            expect(dataProvider.getList).toHaveBeenCalledTimes(2);
+            expect(dataProvider.getMany).not.toHaveBeenCalled();
+        });
+
+        expect(dataProvider.getList).toHaveBeenNthCalledWith(
+            1,
+            'users',
+            expect.objectContaining({
+                filter: {},
+                meta: undefined,
+                pagination: {
+                    page: 1,
+                    perPage: 25,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'ASC',
+                },
+                signal: undefined,
+            })
+        );
+        expect(dataProvider.getList).toHaveBeenNthCalledWith(
+            2,
+            'users',
+            expect.objectContaining({
+                filter: { login: 'jdoe' },
+                pagination: {
+                    page: 1,
+                    perPage: 1,
+                },
+                sort: {
+                    field: 'id',
+                    order: 'DESC',
+                },
+                signal: undefined,
+            })
+        );
+
+        await waitFor(() => {
+            expect(children).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    allChoices: [currentUser, { id: 1, login: 'asmith', name: 'Alice Smith' }],
+                    availableChoices: [{ id: 1, login: 'asmith', name: 'Alice Smith' }],
+                    selectedChoices: [currentUser],
+                    total: 2,
+                    isFromReference: true,
+                })
+            );
+        });
+    });
+
     it('should not fetch current value using getMany if it is empty', async () => {
         const children = jest.fn().mockReturnValue(<p>child</p>);
         render(
