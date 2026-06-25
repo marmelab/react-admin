@@ -19,12 +19,10 @@ import {
 } from 'react-router';
 import { Link, createHashRouter } from 'react-router-dom';
 
-// This adapter is the default RouterProvider implementation, and ra-core depends
-// on it to expose `reactRouterProvider`. To avoid a circular build dependency
-// (ra-core -> ra-router-react-router -> ra-core), this package deliberately does
-// NOT import ra-core's `RouterProvider` types. Instead it relies on local aliases
-// that mirror ra-core's contract; conformance to the `RouterProvider` interface is
-// enforced where ra-core consumes `reactRouterProvider`.
+// These types are used in the RouterProvider interface definition in ra-core.
+// To avoid a circular build dependency (ra-core -> ra-router-react-router -> ra-core),
+// this package redeclares necessary types. These types should exactly mirror the
+// types in ra-core's RouterProvider interface.
 type RouterNavigateFunction = (
     to: string | Partial<Location> | number,
     options?: { replace?: boolean; state?: any }
@@ -124,9 +122,6 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
 /**
  * Default router provider using react-router-dom.
  * This provider is used by default when no custom routerProvider is provided to <Admin>.
- *
- * It implements ra-core's `RouterProvider` interface (the conformance check happens
- * in ra-core, which consumes this object as its default provider).
  */
 export const reactRouterProvider = {
     // Hooks
