@@ -110,8 +110,10 @@ const useNavigate = (): RouterNavigateFunction => {
         const basename = basenameRef.current;
 
         // Helper to prepend basename to absolute paths
+        // Only prepend if path doesn't already start with basename
         const resolvePath = (path: string) => {
             if (!basename || !path.startsWith('/')) return path;
+            // Don't prepend if path already includes basename
             if (path.startsWith(basename + '/') || path === basename) {
                 return path;
             }
