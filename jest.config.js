@@ -42,9 +42,8 @@ module.exports = {
             },
             moduleNameMapper,
         },
-        // ra-router-react-router-next supplies its own (ESM, React 19) project
-        // config. Running its tests requires `NODE_OPTIONS=--experimental-vm-modules`
-        // (set in the test scripts).
+        // ra-router-react-router-next can't be compiled into cjs.
+        // Running its tests requires `NODE_OPTIONS=--experimental-vm-modules`.
         './packages/ra-router-react-router-next/jest.config.cjs',
     ],
     testTimeout: 60000,

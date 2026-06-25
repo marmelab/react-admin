@@ -10,7 +10,7 @@ import {
     CustomRoutesSupport,
     UseParamsTest,
     UseMatchTest,
-    UseBlockerTest,
+    UseWarnWhenUnsavedChangesTest,
     NavigateComponent,
     UseLocationTest,
     RouterContextTest,
@@ -539,123 +539,77 @@ describe('reactRouterNextProvider', () => {
         });
     });
 
-    describe('useBlocker', () => {
-        it('should show unblocked state initially', async () => {
-            render(<UseBlockerTest />);
-            await waitFor(() => {
+    describe('useWarnWhenUnsavedChanges', () => {
+        it('should confirm before navigating away from a dirty form', async () => {
+            const originalConfirm = window.confirm;
+            let confirmCalled = false;
+            // Decline the confirmation so navigation stays blocked.
+            window.confirm = () => {
+                confirmCalled = true;
+                return false;
+            };
+            try {
+                const user = userEvent.setup();
+                render(<UseWarnWhenUnsavedChangesTest />);
+                const [title] = await screen.findAllByRole('textbox');
+                await user.type(title, 'A new title');
+                await user.click(screen.getByText('Go to Comments'));
+                await waitFor(() => {
+                    expect(confirmCalled).toBe(true);
+                });
+                // confirm returned false => navigation blocked, still on the form
                 expect(
                     screen.getByText('Form with Unsaved Changes Warning')
                 ).toBeInTheDocument();
-            });
-
-            expect(screen.getByTestId('blocker-state').textContent).toBe(
-                'unblocked'
-            );
-            expect(screen.getByTestId('dirty-status').textContent).toBe(
-                'No changes'
-            );
-        });
-
-        it('should mark form as dirty when input changes', async () => {
-            const user = userEvent.setup();
-            render(<UseBlockerTest />);
-            await waitFor(() => {
-                expect(screen.getByTestId('form-input')).toBeInTheDocument();
-            });
-
-            await user.type(screen.getByTestId('form-input'), 'test');
-
-            expect(screen.getByTestId('dirty-status').textContent).toBe(
-                'Unsaved changes'
-            );
-        });
-
-        it('should block navigation when form is dirty', async () => {
-            const user = userEvent.setup();
-            render(<UseBlockerTest />);
-            await waitFor(() => {
-                expect(screen.getByTestId('form-input')).toBeInTheDocument();
-            });
-
-            await user.type(screen.getByTestId('form-input'), 'test');
-
-            await user.click(screen.getByText('Go to Comments'));
-
-            await waitFor(() => {
                 expect(
-                    screen.getByTestId('blocker-dialog')
+                    screen.getByDisplayValue('A new title')
                 ).toBeInTheDocument();
-            });
-
-            expect(screen.getByTestId('blocker-state').textContent).toBe(
-                'blocked'
-            );
+            } finally {
+                window.confirm = originalConfirm;
+            }
         });
 
-        it('should allow navigation when clicking proceed', async () => {
-            const user = userEvent.setup();
-            render(<UseBlockerTest />);
-            await waitFor(() => {
-                expect(screen.getByTestId('form-input')).toBeInTheDocument();
-            });
-
-            await user.type(screen.getByTestId('form-input'), 'test');
-            await user.click(screen.getByText('Go to Comments'));
-
-            await waitFor(() => {
-                expect(
-                    screen.getByTestId('blocker-dialog')
-                ).toBeInTheDocument();
-            });
-
-            await user.click(screen.getByTestId('blocker-proceed'));
-
-            await waitFor(() => {
-                expect(screen.getByText('Comments')).toBeInTheDocument();
-            });
+        it('should navigate away from a dirty form once confirmed', async () => {
+            const originalConfirm = window.confirm;
+            // Accept the confirmation so navigation proceeds.
+            window.confirm = () => true;
+            try {
+                const user = userEvent.setup();
+                render(<UseWarnWhenUnsavedChangesTest />);
+                const [title] = await screen.findAllByRole('textbox');
+                await user.type(title, 'A new title');
+                await user.click(screen.getByText('Go to Comments'));
+                await waitFor(() => {
+                    expect(
+                        screen.getByText('You navigated away from the form.')
+                    ).toBeInTheDocument();
+                });
+            } finally {
+                window.confirm = originalConfirm;
+            }
         });
 
-        it('should cancel navigation when clicking cancel', async () => {
-            const user = userEvent.setup();
-            render(<UseBlockerTest />);
-            await waitFor(() => {
-                expect(screen.getByTestId('form-input')).toBeInTheDocument();
-            });
-
-            await user.type(screen.getByTestId('form-input'), 'test');
-            await user.click(screen.getByText('Go to Comments'));
-
-            await waitFor(() => {
-                expect(
-                    screen.getByTestId('blocker-dialog')
-                ).toBeInTheDocument();
-            });
-
-            await user.click(screen.getByTestId('blocker-cancel'));
-
-            await waitFor(() => {
-                expect(
-                    screen.queryByTestId('blocker-dialog')
-                ).not.toBeInTheDocument();
-            });
-
-            expect(
-                screen.getByText('Form with Unsaved Changes Warning')
-            ).toBeInTheDocument();
-        });
-
-        it('should not block navigation when form is not dirty', async () => {
-            const user = userEvent.setup();
-            render(<UseBlockerTest />);
-            await waitFor(() => {
-                expect(screen.getByTestId('form-input')).toBeInTheDocument();
-            });
-
-            await user.click(screen.getByText('Go to Comments'));
-
-            await waitFor(() => {
-                expect(screen.getByText('Comments')).toBeInTheDocument();
-            });
+        it('should not confirm when the form is not dirty', async () => {
+            const originalConfirm = window.confirm;
+            let confirmCalled = false;
+            window.confirm = () => {
+                confirmCalled = true;
+                return true;
+            };
+            try {
+                const user = userEvent.setup();
+                render(<UseWarnWhenUnsavedChangesTest />);
+                await screen.findByText('Form with Unsaved Changes Warning');
+                await user.click(screen.getByText('Go to Comments'));
+                await waitFor(() => {
+                    expect(
+                        screen.getByText('You navigated away from the form.')
+                    ).toBeInTheDocument();
+                });
+                expect(confirmCalled).toBe(false);
+            } finally {
+                window.confirm = originalConfirm;
+            }
         });
     });
 
@@ -741,7 +695,9 @@ describe('reactRouterNextProvider', () => {
             expect(
                 screen.getByText(/"pathname": "\/navigate-search-only"/)
             ).toBeInTheDocument();
-            expect(screen.getByText(/redirected/)).toBeInTheDocument();
+            expect(
+                screen.getByText(/"search": "\?redirected=true"/)
+            ).toBeInTheDocument();
         });
     });
 

@@ -11,7 +11,6 @@ import {
     useNavigate,
     useLocation,
     LinkBase,
-    useBlocker,
     ListBase,
     ShowBase,
     EditBase,
@@ -37,7 +36,7 @@ const { TextInput, SimpleList, SimpleShowLayout, SimpleForm, CreateButton } =
     testUI;
 
 export default {
-    title: 'ra-routing-react-router-next/React Router Provider',
+    title: 'ra-routing-react-router-next/React Router v8 Provider',
 };
 
 const dataProvider = fakeDataProvider(
@@ -56,11 +55,6 @@ const dataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const Field = ({ source }: { source: string }) => {
-    const record = useRecordContext();
-    return <span data-testid={source}>{record?.[source]}</span>;
-};
-
 const PostList = () => (
     <ListBase resource="posts">
         <div style={{ padding: 20 }}>
@@ -78,16 +72,20 @@ const PostList = () => (
 );
 
 const PostShow = () => (
-    <ShowBase resource="posts">
-        <div style={{ padding: 20 }}>
-            <h2>Post Details</h2>
-            <SimpleShowLayout>
-                <Field source="title" />
-                <Field source="body" />
-            </SimpleShowLayout>
-            <LinkBase to="/posts">Back to list</LinkBase>
-        </div>
-    </ShowBase>
+    <ShowBase
+        resource="posts"
+        render={({ record }) => (
+            <div style={{ padding: 20 }}>
+                <h2>Post Details</h2>
+                <SimpleShowLayout>
+                    <span>ID: {record?.id}</span>
+                    <span>Title: {record?.title}</span>
+                    <span>Body: {record?.body}</span>
+                </SimpleShowLayout>
+                <LinkBase to="/posts">Back to list</LinkBase>
+            </div>
+        )}
+    />
 );
 
 const PostEdit = () => (
@@ -118,7 +116,6 @@ const LocationDisplay = () => {
     const location = useLocation();
     return (
         <div
-            data-testid="location-display"
             style={{
                 padding: 10,
                 background: '#f0f0f0',
@@ -128,6 +125,7 @@ const LocationDisplay = () => {
         >
             <strong>Current Location:</strong>
             <pre>{JSON.stringify(location, null, 2)}</pre>
+            <div>window.location.hash: {window.location.hash}</div>
         </div>
     );
 };
@@ -135,7 +133,7 @@ const LocationDisplay = () => {
 const LayoutWithLocationDisplay = ({
     children,
 }: {
-    children?: React.ReactNode;
+    children: React.ReactNode;
 }) => (
     <div>
         {children}
@@ -652,117 +650,24 @@ export const UseMatchTest = () => {
 /**
  * Blocks navigation when there are unsaved changes.
  */
-export const UseBlockerTest = () => {
-    const FormWithBlocker = () => {
-        const [isDirty, setIsDirty] = React.useState(false);
-        const [inputValue, setInputValue] = React.useState('');
-
-        const blocker = useBlocker(
-            ({ currentLocation, nextLocation }) =>
-                isDirty && currentLocation.pathname !== nextLocation.pathname
-        );
-
-        return (
-            <div style={{ padding: 20 }}>
-                <h2>Form with Unsaved Changes Warning</h2>
-                <div style={{ marginBottom: 20 }}>
-                    <label>
-                        Edit this field:{' '}
-                        <input
-                            type="text"
-                            value={inputValue}
-                            onChange={e => {
-                                setInputValue(e.target.value);
-                                setIsDirty(true);
-                            }}
-                            data-testid="form-input"
-                        />
-                    </label>
-                </div>
-                <div style={{ marginBottom: 20 }}>
-                    <span
-                        data-testid="dirty-status"
-                        style={{
-                            padding: '4px 8px',
-                            background: isDirty ? '#ffcdd2' : '#c8e6c9',
-                            borderRadius: 4,
-                        }}
-                    >
-                        {isDirty ? 'Unsaved changes' : 'No changes'}
-                    </span>
-                </div>
-                <div style={{ marginBottom: 20 }}>
-                    <button onClick={() => setIsDirty(false)}>
-                        Mark as Saved
-                    </button>
-                </div>
-                <div>
-                    <LinkBase to="/comments">Go to Comments</LinkBase>
-                </div>
-                {blocker.state === 'blocked' && (
-                    <div
-                        data-testid="blocker-dialog"
-                        style={{
-                            position: 'fixed',
-                            top: 0,
-                            left: 0,
-                            right: 0,
-                            bottom: 0,
-                            background: 'rgba(0,0,0,0.5)',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                        }}
-                    >
-                        <div
-                            style={{
-                                background: 'white',
-                                padding: 20,
-                                borderRadius: 8,
-                            }}
-                        >
-                            <h3>Unsaved Changes</h3>
-                            <p>
-                                You have unsaved changes. Are you sure you want
-                                to leave?
-                            </p>
-                            <button
-                                onClick={() => blocker.proceed?.()}
-                                data-testid="blocker-proceed"
-                            >
-                                Leave
-                            </button>
-                            <button
-                                onClick={() => blocker.reset?.()}
-                                data-testid="blocker-cancel"
-                                style={{ marginLeft: 10 }}
-                            >
-                                Stay
-                            </button>
-                        </div>
-                    </div>
-                )}
-                <div
-                    style={{
-                        marginTop: 20,
-                        padding: 10,
-                        background: '#f5f5f5',
-                        fontFamily: 'monospace',
-                    }}
-                >
-                    <strong>Blocker State:</strong>{' '}
-                    <span data-testid="blocker-state">{blocker.state}</span>
-                </div>
-            </div>
-        );
-    };
+export const UseWarnWhenUnsavedChangesTest = () => {
+    const FormWithWarnWhenUnsavedChanges = () => (
+        <div style={{ padding: 20 }}>
+            <h2>Form with Unsaved Changes Warning</h2>
+            <SimpleForm warnWhenUnsavedChanges>
+                <TextInput source="title" />
+                <TextInput source="body" />
+            </SimpleForm>
+            <LinkBase to="/comments">Go to Comments</LinkBase>
+        </div>
+    );
 
     return (
         <CoreAdmin
             routerProvider={reactRouterNextProvider}
             dataProvider={dataProvider}
         >
-            <Resource name="posts" list={<FormWithBlocker />} />
+            <Resource name="posts" list={<FormWithWarnWhenUnsavedChanges />} />
             <Resource
                 name="comments"
                 list={
