@@ -226,7 +226,7 @@ const EmbeddedAdmin = () => (
 );
 
 // Splat route to handle /admin, /admin/posts, /admin/posts/1/show, etc.
-const embeddedAdminRoute = { path: '/admin/*', element: <EmbeddedAdmin /> };
+const embeddedAdminRoute = { path: 'admin/*', element: <EmbeddedAdmin /> };
 
 const embeddedRouteTree = [
     {
