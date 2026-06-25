@@ -73,17 +73,6 @@ const BasenameContext = createContext<string>('');
 const useProviderBasename = (): string => useContext(BasenameContext);
 
 /**
- * Prepend the basename to an absolute path, guarded against double-prepending
- * paths that already include it (e.g. those built by react-admin's
- * `useCreatePath`).
- */
-const prependBasename = (path: string, basename: string): string => {
-    if (!basename || !path.startsWith('/')) return path;
-    if (path === basename || path.startsWith(`${basename}/`)) return path;
-    return `${basename}${path}`;
-};
-
-/**
  * Hook to check if navigation blocking is supported.
  * In react-router, blocking requires a data router.
  */
@@ -118,13 +107,23 @@ const useNavigate = (): RouterNavigateFunction => {
     // Return a stable function that always calls the latest navigate
     return React.useCallback((...args: Parameters<RouterNavigateFunction>) => {
         const [to, ...rest] = args;
-        const bn = basenameRef.current;
+        const basename = basenameRef.current;
+
+        // Helper to prepend basename to absolute paths
+        const resolvePath = (path: string) => {
+            if (!basename || !path.startsWith('/')) return path;
+            if (path.startsWith(basename + '/') || path === basename) {
+                return path;
+            }
+            return `${basename}${path}`;
+        };
+
         if (typeof to === 'string') {
-            return navigateRef.current(prependBasename(to, bn), ...rest);
+            return navigateRef.current(resolvePath(to), ...rest);
         }
         if (to && typeof to === 'object' && 'pathname' in to && to.pathname) {
             return navigateRef.current(
-                { ...to, pathname: prependBasename(to.pathname, bn) },
+                { ...to, pathname: resolvePath(to.pathname) },
                 ...rest
             );
         }
@@ -134,16 +133,26 @@ const useNavigate = (): RouterNavigateFunction => {
 
 /**
  * Wrapper around react-router-dom's Link that prepends the react-admin
- * basename to absolute paths (see prependBasename and BasenameContext).
+ * basename to absolute paths (see BasenameContext).
  */
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     ({ to, ...rest }, ref) => {
         const basename = useProviderBasename();
+
+        // Helper to prepend basename to absolute paths
+        const resolvePath = (path: string) => {
+            if (!basename || !path.startsWith('/')) return path;
+            if (path.startsWith(basename + '/') || path === basename) {
+                return path;
+            }
+            return `${basename}${path}`;
+        };
+
         const resolvedTo =
             typeof to === 'string'
-                ? prependBasename(to, basename)
+                ? resolvePath(to)
                 : to && typeof to === 'object' && to.pathname
-                  ? { ...to, pathname: prependBasename(to.pathname, basename) }
+                  ? { ...to, pathname: resolvePath(to.pathname) }
                   : to;
         return <ReactRouterDomLink ref={ref} to={resolvedTo} {...rest} />;
     }
@@ -156,11 +165,21 @@ Link.displayName = 'Link';
  */
 const Navigate = ({ to, ...rest }: NavigateProps) => {
     const basename = useProviderBasename();
+
+    // Helper to prepend basename to absolute paths
+    const resolvePath = (path: string) => {
+        if (!basename || !path.startsWith('/')) return path;
+        if (path.startsWith(basename + '/') || path === basename) {
+            return path;
+        }
+        return `${basename}${path}`;
+    };
+
     const resolvedTo =
         typeof to === 'string'
-            ? prependBasename(to, basename)
+            ? resolvePath(to)
             : to && typeof to === 'object' && to.pathname
-              ? { ...to, pathname: prependBasename(to.pathname, basename) }
+              ? { ...to, pathname: resolvePath(to.pathname) }
               : to;
     return <ReactRouterNavigate to={resolvedTo} {...rest} />;
 };
