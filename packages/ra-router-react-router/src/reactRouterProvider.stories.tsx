@@ -161,6 +161,22 @@ export const Basic = () => (
 );
 
 /**
+ * Standalone mode with a basename: react-admin owns the router and the
+ * basename is passed to its hash router. Used to verify links are not
+ * double-prefixed (the basename lives on the router, not in BasenameContext).
+ */
+export const StandaloneWithBasename = () => (
+    <CoreAdmin
+        routerProvider={reactRouterProvider}
+        dataProvider={dataProvider}
+        basename="/admin"
+        layout={LayoutWithLocationDisplay}
+    >
+        <Resource name="posts" list={PostList} show={PostShow} />
+    </CoreAdmin>
+);
+
+/**
  * EmbeddedInReactRouter: Admin inside an existing React Router app
  * Tests that react-admin detects existing router and uses it.
  */
