@@ -206,8 +206,8 @@ describe('reactRouterNextProvider', () => {
                 });
             });
 
-            it('should not fully decode URL-encoded params (only the path separator)', () => {
-                // react-router decodes %2F to "/" but leaves the rest encoded.
+            it('should decode only path separator in URL-encoded params', () => {
+                // UTF-8 characters: 衣類/衣類 encoded
                 expect(
                     matchPath(
                         '/comments/:id',
