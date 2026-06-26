@@ -126,30 +126,49 @@ const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
 );
 Link.displayName = 'Link';
 
-/**
- * Wrapper around react-router's Navigate that prepends the react-admin
- * basename to absolute paths, mirroring the Link behavior for declarative
- * redirects.
- */
-const Navigate = ({ to, ...rest }: RouterNavigateProps) => {
+const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
     const basename = useBasename();
+    const currentLocation = useLocation();
 
-    // Helper to prepend basename to absolute paths
-    const resolvePath = (path: string) => {
-        if (!basename || !path.startsWith('/')) return path;
-        if (path.startsWith(basename + '/') || path === basename) {
-            return path;
+    // Handle both string and object forms of `to`
+    let resolvedPath: string;
+
+    if (typeof to === 'string') {
+        resolvedPath = to;
+    } else {
+        // If no pathname provided, use current pathname to stay on current page
+        resolvedPath = to.pathname ?? currentLocation.pathname;
+
+        // Append search and hash directly to the path to preserve the raw
+        // query string format
+        if (to.search) {
+            resolvedPath += to.search.startsWith('?')
+                ? to.search
+                : `?${to.search}`;
         }
-        return `${basename}${path}`;
-    };
+        if (to.hash) {
+            resolvedPath += to.hash.startsWith('#') ? to.hash : `#${to.hash}`;
+        }
+    }
 
-    const resolvedTo =
-        typeof to === 'string'
-            ? resolvePath(to)
-            : to && typeof to === 'object' && to.pathname
-              ? { ...to, pathname: resolvePath(to.pathname) }
-              : to;
-    return <ReactRouterNavigate to={resolvedTo} {...rest} />;
+    // Prepend basename to the path (like react-router does)
+    // Only prepend if path doesn't already start with basename
+    if (basename && resolvedPath.startsWith('/')) {
+        if (
+            !resolvedPath.startsWith(basename + '/') &&
+            resolvedPath !== basename
+        ) {
+            resolvedPath = `${basename}${resolvedPath}`;
+        }
+    }
+
+    return (
+        <ReactRouterNavigate
+            to={resolvedPath}
+            replace={replace}
+            state={state}
+        />
+    );
 };
 
 /**
