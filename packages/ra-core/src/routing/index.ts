@@ -14,7 +14,6 @@ export * from './TestMemoryRouter';
 export * from './useSplatPathBase';
 export * from './RouterProvider';
 export * from './RouterProviderContext';
-export * from './adapters/reactRouterProvider';
 export * from './useLocation';
 export * from './useNavigate';
 export * from './useParams';

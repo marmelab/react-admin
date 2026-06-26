@@ -9937,6 +9937,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"cookie-es@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "cookie-es@npm:3.1.1"
+  checksum: 62cf0c325cc547b52477b351e9b5d068b3ffc74f7d143cdf7af854648dd1015fca3aed1498b355365e24b0746333f0b15688ed3a535abecc5ed0a046ae956a84
+  languageName: node
+  linkType: hard
+
 "cookie-signature@npm:~1.0.6":
   version: 1.0.7
   resolution: "cookie-signature@npm:1.0.7"
@@ -20388,6 +20395,7 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:^4.17.21"
     query-string: "npm:^7.1.3"
+    ra-router-react-router: "npm:^5.14.7"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
@@ -20404,8 +20412,6 @@ __metadata:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: ^7.72.0
-    react-router: ^6.28.1 || ^7.1.1
-    react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -20616,7 +20622,6 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -20624,6 +20629,7 @@ __metadata:
     "@mui/material": ^5.16.12 || ^6.0.0 || ^7.0.0 || ^9.0.0
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
+    react-router: ^6.28.1 || ^7.1.1 || ^8.0.0
   languageName: unknown
   linkType: soft
 
@@ -20659,6 +20665,39 @@ __metadata:
     typescript-eslint: "npm:^8.28.0"
     vite: "npm:^6.2.6"
     vite-plugin-pwa: "npm:^1.2.0"
+  languageName: unknown
+  linkType: soft
+
+"ra-router-react-router-next@workspace:packages/ra-router-react-router-next":
+  version: 0.0.0-use.local
+  resolution: "ra-router-react-router-next@workspace:packages/ra-router-react-router-next"
+  dependencies:
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
+    react-router: "npm:^8.0.0"
+    typescript: "npm:^5.1.3"
+    zshy: "npm:^0.5.0"
+  peerDependencies:
+    ra-core: ^5.0.0
+    react: ^19.2.7
+    react-dom: ^19.2.7
+    react-router: ^8.0.0
+  languageName: unknown
+  linkType: soft
+
+"ra-router-react-router@npm:^5.14.7, ra-router-react-router@workspace:packages/ra-router-react-router":
+  version: 0.0.0-use.local
+  resolution: "ra-router-react-router@workspace:packages/ra-router-react-router"
+  dependencies:
+    react-router: "npm:^6.28.1"
+    react-router-dom: "npm:^6.28.1"
+    typescript: "npm:^5.1.3"
+    zshy: "npm:^0.5.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+    react-router: ^6.28.1 || ^7.1.1
+    react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -20720,7 +20759,6 @@ __metadata:
     react-hotkeys-hook: "npm:^5.1.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.28.1"
-    react-router-dom: "npm:^6.28.1"
     react-transition-group: "npm:^4.4.5"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -20736,8 +20774,6 @@ __metadata:
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: "*"
     react-is: ^18.0.0 || ^19.0.0
-    react-router: ^6.28.1 || ^7.1.1
-    react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -20919,10 +20955,10 @@ __metadata:
     ra-data-fakerest: "npm:^5.14.7"
     ra-i18n-polyglot: "npm:^5.14.7"
     ra-language-english: "npm:^5.14.7"
+    ra-router-react-router: "npm:^5.14.7"
     ra-ui-materialui: "npm:^5.14.7"
     react-hook-form: "npm:^7.72.0"
     react-router: "npm:^6.28.1"
-    react-router-dom: "npm:^6.28.1"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -20989,6 +21025,17 @@ __metadata:
   peerDependencies:
     react: ^19.0.0
   checksum: a36ce7ab507b237ae2759c984cdaad4af4096d8199fb65b3815c16825e5cfeb7293da790a3fc2184b52bfba7ba3ff31c058c01947aff6fd1a3701632aabaa6a9
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react-dom@npm:19.2.7"
+  dependencies:
+    scheduler: "npm:^0.27.0"
+  peerDependencies:
+    react: ^19.2.7
+  checksum: 970ff600f6e80d47d39e2f226f12f226173b3cba3382efc97c5f0cd663de9af38c7a4c11c213fb936094faeac83060d660247accaa96b752180d5b951b9cfecb
   languageName: node
   linkType: hard
 
@@ -21146,7 +21193,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.22.0, react-router-dom@npm:^6.28.1":
+"react-router-dom@npm:^6.28.1":
   version: 6.30.4
   resolution: "react-router-dom@npm:6.30.4"
   dependencies:
@@ -21198,6 +21245,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router@npm:^8.0.0":
+  version: 8.0.1
+  resolution: "react-router@npm:8.0.1"
+  dependencies:
+    cookie-es: "npm:^3.1.1"
+  peerDependencies:
+    react: ">=19.2.7"
+    react-dom: ">=19.2.7"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 7ffcac5caf209b6988a0e045fd044f5f8e91e7f677475f707becd514f316f6c2d556f90e371c5a41f6033da891a2d97370b1c5d443ba96991ab0f4f71252c8ba
+  languageName: node
+  linkType: hard
+
 "react-simple-animate@npm:^3.3.12, react-simple-animate@npm:^3.5.3":
   version: 3.5.3
   resolution: "react-simple-animate@npm:3.5.3"
@@ -21235,6 +21297,13 @@ __metadata:
   version: 19.0.0
   resolution: "react@npm:19.0.0"
   checksum: 9cad8f103e8e3a16d15cb18a0d8115d8bd9f9e1ce3420310aea381eb42aa0a4f812cf047bb5441349257a05fba8a291515691e3cb51267279b2d2c3253f38471
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.2.7":
+  version: 19.2.7
+  resolution: "react@npm:19.2.7"
+  checksum: 0bd0e2f1bbd4ba97561c6597bf8a5fec05e6476fe61e165c1065598d16668efc6715205599c94d3ddd49d36cb0f21cbf1b9bcc18ee840b805ce222c3e8d558ac
   languageName: node
   linkType: hard
 
@@ -22308,6 +22377,13 @@ __metadata:
   version: 0.25.0
   resolution: "scheduler@npm:0.25.0"
   checksum: a4bb1da406b613ce72c1299db43759526058fdcc413999c3c3e0db8956df7633acf395cb20eb2303b6a65d658d66b6585d344460abaee8080b4aa931f10eaafe
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.27.0":
+  version: 0.27.0
+  resolution: "scheduler@npm:0.27.0"
+  checksum: 4f03048cb05a3c8fddc45813052251eca00688f413a3cee236d984a161da28db28ba71bd11e7a3dd02f7af84ab28d39fb311431d3b3772fed557945beb00c452
   languageName: node
   linkType: hard
 

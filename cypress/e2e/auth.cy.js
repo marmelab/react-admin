@@ -8,7 +8,7 @@ describe('Authentication', () => {
     it('should go to login page after logout', () => {
         ListPage.navigate();
         ListPage.logout();
-        cy.url().then(url => expect(url).to.contain('/#/login'));
+        cy.url().should('contain', '/#/login');
     });
 
     it('should redirect to login page when not logged in', () => {
@@ -28,7 +28,7 @@ describe('Authentication', () => {
         ListPage.logout();
         LoginPage.login('login', 'password');
         ListPage.navigate();
-        cy.url().then(url => expect(url).to.contain('/#/posts'));
+        cy.url().should('contain', '/#/posts');
     });
 
     it('should redirect to initial url keeping query string', () => {
@@ -42,7 +42,7 @@ describe('Authentication', () => {
         ListPage.setAsNonLogged();
         cy.reload();
         LoginPage.login('login', 'password');
-        cy.url().then(urlAfterLogin => {
+        cy.url().should(urlAfterLogin => {
             expect(urlAfterLogin).to.contain(urlBeforeLogout);
         });
         ListPage.commentableFilter().should('exist');
