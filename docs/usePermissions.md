@@ -35,7 +35,7 @@ export default MyPage;
 
 // in src/customRoutes.js
 import * as React from "react";
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import MyPage from './MyPage';
 
 export default [

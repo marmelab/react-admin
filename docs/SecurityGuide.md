@@ -80,7 +80,7 @@ For custom routes, anonymous users have access by default. To require authentica
 
 ```tsx
 import { Admin, Resource, CustomRoutes, Authenticated } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 import { MyCustomPage } from './MyCustomPage';
 
 const App = () => (

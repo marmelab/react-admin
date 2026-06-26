@@ -80,7 +80,7 @@ The `Route` element depends on the routing library you use:
 
 ```jsx
 // for react-router
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 // for tanstack-router
 import { tanStackRouterProvider } from 'ra-router-tanstack';
 const { Route } = tanStackRouterProvider;
@@ -188,7 +188,8 @@ By default, react-admin uses react-router with a HashRouter. This means that the
 But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. React-admin will detect that it's already inside a router, and skip its own router.
 
 ```tsx
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { Admin, Resource } from 'react-admin';
 import { dataProvider } from './dataProvider';
 
@@ -215,7 +216,8 @@ However, if you serve your admin from a sub path AND use another Router (like [`
 
 ```tsx
 import { Admin, Resource } from 'react-admin';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { dataProvider } from './dataProvider';
 
 const App = () => {
@@ -247,7 +249,8 @@ If you want to use react-admin as a sub path of a larger React application, chec
 You can include a react-admin app inside another app, using a react-router `<Route>`:
 
 ```tsx
-import { RouterProvider, Routes, Route, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, Routes, Route } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { StoreFront } from './StoreFront';
 import { StoreAdmin } from './StoreAdmin';
 
