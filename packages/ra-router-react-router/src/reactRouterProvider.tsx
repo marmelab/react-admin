@@ -52,25 +52,16 @@ type UseParams = <
     >,
 >() => T;
 
+// This context is used when the app is mounted on a sub path, e.g. '/admin'.
+// To avoid a circular build dependency (ra-core -> ra-router-react-router -> ra-core),
+// this package redeclares necessary contexts. This context should exactly mirror the
+// context in ra-core's BasenameContext.
+const BasenameContext = createContext<string>('');
+const useBasename = (): string => useContext(BasenameContext);
+
 const routerProviderFuture: Partial<
     Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
 > = { v7_startTransition: false, v7_relativeSplatPath: false };
-
-/**
- * Provider-local basename context.
- *
- * react-admin exposes the basename through ra-core's `useBasename`, but this
- * package cannot import ra-core (it would create a circular build dependency:
- * ra-core -> ra-router-react-router -> ra-core). Instead, RouterWrapper — which
- * receives the basename from react-admin's AdminRouter — publishes it here, and
- * Link/Navigate/useNavigate read it to prepend the basename to absolute paths.
- *
- * It mirrors AdminRouter's own logic: empty in standalone mode (the basename
- * lives on the hash router) and the real basename in embedded mode (the host
- * router owns no basename, so links must carry it themselves).
- */
-const BasenameContext = createContext<string>('');
-const useProviderBasename = (): string => useContext(BasenameContext);
 
 /**
  * Hook to check if navigation blocking is supported.
@@ -93,7 +84,7 @@ const useCanBlock = (): boolean => {
  */
 const useNavigate = (): RouterNavigateFunction => {
     const navigate = useReactRouterNavigate();
-    const basename = useProviderBasename();
+    const basename = useBasename();
     const navigateRef = useRef<RouterNavigateFunction>(
         navigate as RouterNavigateFunction
     );
@@ -145,7 +136,7 @@ const useNavigate = (): RouterNavigateFunction => {
 
 const Link = forwardRef<HTMLAnchorElement, LinkProps>(
     ({ to, ...rest }, ref) => {
-        const basename = useProviderBasename();
+        const basename = useBasename();
 
         // Helper to prepend basename to absolute paths
         const resolvePath = (path: string) => {
@@ -172,7 +163,7 @@ const Link = forwardRef<HTMLAnchorElement, LinkProps>(
 Link.displayName = 'Link';
 
 const Navigate = ({ to, ...rest }: NavigateProps) => {
-    const basename = useProviderBasename();
+    const basename = useBasename();
     const currentLocation = useLocation();
 
     // Handle both string and object forms of `to`
@@ -244,8 +235,6 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
     const isInRouter = useInRouterContext();
 
     if (isInRouter) {
-        // Embedded mode: the host router owns no basename, so publish it for
-        // Link/Navigate/useNavigate to prepend.
         return (
             <BasenameContext.Provider value={basename ?? ''}>
                 {children}
@@ -253,10 +242,8 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
         );
     }
 
-    // Standalone mode: the hash router carries the basename natively, so the
-    // provider-local basename stays empty to avoid double-prepending.
     return (
-        <BasenameContext.Provider value="">
+        <BasenameContext.Provider value={basename ?? ''}>
             <InternalRouter basename={basename}>{children}</InternalRouter>
         </BasenameContext.Provider>
     );
