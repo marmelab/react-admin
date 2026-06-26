@@ -994,7 +994,7 @@ describe('reactRouterProvider', () => {
     });
 
     describe('useWarnWhenUnsavedChanges', () => {
-        it('should confirm before navigating away from a dirty form', async () => {
+        it('should block navigation when form is dirty', async () => {
             const originalConfirm = window.confirm;
             let confirmCalled = false;
             // Decline the confirmation so navigation stays blocked.
@@ -1023,7 +1023,7 @@ describe('reactRouterProvider', () => {
             }
         });
 
-        it('should navigate away from a dirty form once confirmed', async () => {
+        it('should allow navigation when clicking proceed', async () => {
             const originalConfirm = window.confirm;
             // Accept the confirmation so navigation proceeds.
             window.confirm = () => true;
@@ -1043,7 +1043,7 @@ describe('reactRouterProvider', () => {
             }
         });
 
-        it('should not confirm when the form is not dirty', async () => {
+        it('should not block navigation when form is not dirty', async () => {
             const originalConfirm = window.confirm;
             let confirmCalled = false;
             window.confirm = () => {
