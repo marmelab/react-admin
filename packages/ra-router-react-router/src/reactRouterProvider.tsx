@@ -97,40 +97,45 @@ const useNavigate = (): RouterNavigateFunction => {
     const navigateRef = useRef<RouterNavigateFunction>(
         navigate as RouterNavigateFunction
     );
-    const basenameRef = useRef(basename);
-    basenameRef.current = basename;
 
     useEffect(() => {
         navigateRef.current = navigate as RouterNavigateFunction;
     }, [navigate]);
 
     // Return a stable function that always calls the latest navigate
-    return React.useCallback((...args: Parameters<RouterNavigateFunction>) => {
-        const [to, ...rest] = args;
-        const basename = basenameRef.current;
+    return React.useCallback(
+        (...args: Parameters<RouterNavigateFunction>) => {
+            const [to, ...rest] = args;
 
-        // Helper to prepend basename to absolute paths
-        // Only prepend if path doesn't already start with basename
-        const resolvePath = (path: string) => {
-            if (!basename || !path.startsWith('/')) return path;
-            // Don't prepend if path already includes basename
-            if (path.startsWith(basename + '/') || path === basename) {
-                return path;
+            // Helper to prepend basename to absolute paths
+            // Only prepend if path doesn't already start with basename
+            const resolvePath = (path: string) => {
+                if (!basename || !path.startsWith('/')) return path;
+                // Don't prepend if path already includes basename
+                if (path.startsWith(basename + '/') || path === basename) {
+                    return path;
+                }
+                return `${basename}${path}`;
+            };
+
+            if (typeof to === 'string') {
+                return navigateRef.current(resolvePath(to), ...rest);
             }
-            return `${basename}${path}`;
-        };
-
-        if (typeof to === 'string') {
-            return navigateRef.current(resolvePath(to), ...rest);
-        }
-        if (to && typeof to === 'object' && 'pathname' in to && to.pathname) {
-            return navigateRef.current(
-                { ...to, pathname: resolvePath(to.pathname) },
-                ...rest
-            );
-        }
-        return navigateRef.current(to, ...rest);
-    }, []) as RouterNavigateFunction;
+            if (
+                to &&
+                typeof to === 'object' &&
+                'pathname' in to &&
+                to.pathname
+            ) {
+                return navigateRef.current(
+                    { ...to, pathname: resolvePath(to.pathname) },
+                    ...rest
+                );
+            }
+            return navigateRef.current(to, ...rest);
+        },
+        [basename]
+    ) as RouterNavigateFunction;
 };
 
 /**
