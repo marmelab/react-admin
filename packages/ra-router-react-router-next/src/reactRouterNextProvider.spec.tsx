@@ -45,13 +45,6 @@ describe('reactRouterNextProvider', () => {
     });
 
     describe('matchPath', () => {
-        // matchPath here is react-router's own implementation, so its results
-        // differ from the hand-rolled tanstack matcher in a few documented ways
-        // (splat values are not prefixed with "/", params are not fully decoded,
-        // empty and collapsed-slash paths do not match, trailing slashes are
-        // preserved in `pathname`). The assertions below capture react-router's
-        // actual behavior and use `toMatchObject` because react-router also
-        // returns a `pattern` field.
         describe('catch-all patterns', () => {
             it('should match "*" against any path', () => {
                 expect(matchPath('*', '/anything')).toMatchObject({
@@ -1243,7 +1236,7 @@ describe('reactRouterNextProvider', () => {
     });
 
     describe('useCanBlock', () => {
-        it('should return true for a data router', async () => {
+        it('should return true for React Router', async () => {
             render(<RouterContextTest />);
             await waitFor(() => {
                 expect(
