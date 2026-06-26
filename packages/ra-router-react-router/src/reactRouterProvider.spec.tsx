@@ -997,7 +997,6 @@ describe('reactRouterProvider', () => {
         it('should block navigation when form is dirty', async () => {
             const originalConfirm = window.confirm;
             let confirmCalled = false;
-            // Decline the confirmation so navigation stays blocked.
             window.confirm = () => {
                 confirmCalled = true;
                 return false;
@@ -1008,16 +1007,10 @@ describe('reactRouterProvider', () => {
                 const [title] = await screen.findAllByRole('textbox');
                 await user.type(title, 'A new title');
                 fireEvent.click(screen.getByText('Go to Comments'));
+                // Leaving a dirty form triggers the confirmation prompt.
                 await waitFor(() => {
                     expect(confirmCalled).toBe(true);
                 });
-                // confirm returned false => navigation blocked, still on the form
-                expect(
-                    screen.getByText('Form with Unsaved Changes Warning')
-                ).toBeInTheDocument();
-                expect(
-                    screen.getByDisplayValue('A new title')
-                ).toBeInTheDocument();
             } finally {
                 window.confirm = originalConfirm;
             }
@@ -1038,6 +1031,30 @@ describe('reactRouterProvider', () => {
                         screen.getByText('You navigated away from the form.')
                     ).toBeInTheDocument();
                 });
+            } finally {
+                window.confirm = originalConfirm;
+            }
+        });
+
+        it('should cancel navigation when clicking cancel', async () => {
+            const originalConfirm = window.confirm;
+            // Decline the confirmation so navigation is cancelled.
+            window.confirm = () => false;
+            try {
+                const user = userEvent.setup();
+                render(<UseWarnWhenUnsavedChangesTest />);
+                const [title] = await screen.findAllByRole('textbox');
+                await user.type(title, 'A new title');
+                fireEvent.click(screen.getByText('Go to Comments'));
+                // confirm returned false => navigation cancelled, still on the form
+                await waitFor(() => {
+                    expect(
+                        screen.getByText('Form with Unsaved Changes Warning')
+                    ).toBeInTheDocument();
+                });
+                expect(
+                    screen.getByDisplayValue('A new title')
+                ).toBeInTheDocument();
             } finally {
                 window.confirm = originalConfirm;
             }
