@@ -24,6 +24,9 @@
     "scripts": {
         "build": "zshy --silent"
     },
+    "dependencies": {
+        "react-router": "^8.0.0"
+    },
     "devDependencies": {
         "ra-core": "^5.14.7",
         "react": "^19.2.7",
