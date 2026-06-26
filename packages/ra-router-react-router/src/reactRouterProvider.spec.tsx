@@ -266,7 +266,7 @@ describe('reactRouterProvider', () => {
                 });
             });
 
-            it('should decode the path separator in splat values', () => {
+            it('should decode only path separator in URL-encoded splat values', () => {
                 expect(
                     matchPath('/files/*', '/files/path%2Fto%2Ffile%20name.txt')
                 ).toMatchObject({
