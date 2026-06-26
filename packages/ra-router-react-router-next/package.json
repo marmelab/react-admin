@@ -35,6 +35,7 @@
         "zshy": "^0.5.0"
     },
     "peerDependencies": {
+        "ra-core": "^5.0.0",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
         "react-router": "^8.0.0"
