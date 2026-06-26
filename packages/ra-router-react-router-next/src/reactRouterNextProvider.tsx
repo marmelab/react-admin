@@ -98,11 +98,6 @@ const useNavigate = (): RouterNavigateFunction => {
     ) as RouterNavigateFunction;
 };
 
-/**
- * Wrapper around react-router's Link that prepends the react-admin basename
- * to absolute paths. This makes links work both in standalone mode (no-op)
- * and embedded mode (basename owned by react-admin).
- */
 const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
     ({ to, ...rest }, ref) => {
         const basename = useBasename();
@@ -116,12 +111,16 @@ const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
             return `${basename}${path}`;
         };
 
-        const resolvedTo =
-            typeof to === 'string'
-                ? resolvePath(to)
-                : to && typeof to === 'object' && to.pathname
-                  ? { ...to, pathname: resolvePath(to.pathname) }
-                  : to;
+        // Handle object `to` (e.g., { pathname: '/path', search: '?foo=bar' })
+        let resolvedTo: typeof to;
+        if (typeof to === 'object' && to !== null) {
+            // If no pathname provided, keep it as-is to stay on current page
+            resolvedTo = to.pathname
+                ? { ...to, pathname: resolvePath(to.pathname) }
+                : to;
+        } else {
+            resolvedTo = resolvePath(to as string);
+        }
         return <ReactRouterLink ref={ref} to={resolvedTo} {...rest} />;
     }
 );
