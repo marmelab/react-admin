@@ -62,6 +62,11 @@ const useNavigate = (): RouterNavigateFunction => {
         (...args: Parameters<RouterNavigateFunction>) => {
             const [to, ...rest] = args;
 
+            // Handle numeric navigation (go back/forward)
+            if (typeof to === 'number') {
+                return navigateRef.current(to, ...rest);
+            }
+
             // Helper to prepend basename to absolute paths
             // Only prepend if path doesn't already start with basename
             const resolvePath = (path: string) => {
@@ -73,21 +78,21 @@ const useNavigate = (): RouterNavigateFunction => {
                 return `${basename}${path}`;
             };
 
-            if (typeof to === 'string') {
-                return navigateRef.current(resolvePath(to), ...rest);
-            }
-            if (
-                to &&
-                typeof to === 'object' &&
-                'pathname' in to &&
-                to.pathname
-            ) {
+            // Handle object navigation { pathname?, search?, hash?, state? }
+            // This covers both { pathname: '/foo' } and { search: '?bar=1' }
+            if (typeof to === 'object' && to !== null) {
+                // If no pathname provided, keep current pathname
                 return navigateRef.current(
-                    { ...to, pathname: resolvePath(to.pathname) },
+                    to.pathname
+                        ? { ...to, pathname: resolvePath(to.pathname) }
+                        : to,
                     ...rest
                 );
             }
-            return navigateRef.current(to, ...rest);
+
+            // Handle string path
+            const resolvedPath = resolvePath(to as string);
+            return navigateRef.current(resolvedPath, ...rest);
         },
         [basename]
     ) as RouterNavigateFunction;
