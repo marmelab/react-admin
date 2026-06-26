@@ -651,6 +651,8 @@ describe('reactRouterProvider', () => {
             fireEvent.click(screen.getByText('Admin'));
 
             await screen.findByText('Posts');
+
+            // Wait for data to load before clicking
             await screen.findByText('Post #1');
 
             fireEvent.click(screen.getByText('Post #1'));
