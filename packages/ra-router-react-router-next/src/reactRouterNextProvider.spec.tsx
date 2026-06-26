@@ -1007,7 +1007,6 @@ describe('reactRouterNextProvider', () => {
                 const [title] = await screen.findAllByRole('textbox');
                 await user.type(title, 'A new title');
                 fireEvent.click(screen.getByText('Go to Comments'));
-                // Leaving a dirty form triggers the confirmation prompt.
                 await waitFor(() => {
                     expect(confirmCalled).toBe(true);
                 });
@@ -1018,7 +1017,6 @@ describe('reactRouterNextProvider', () => {
 
         it('should allow navigation when clicking proceed', async () => {
             const originalConfirm = window.confirm;
-            // Accept the confirmation so navigation proceeds.
             window.confirm = () => true;
             try {
                 const user = userEvent.setup();
@@ -1038,7 +1036,6 @@ describe('reactRouterNextProvider', () => {
 
         it('should cancel navigation when clicking cancel', async () => {
             const originalConfirm = window.confirm;
-            // Decline the confirmation so navigation is cancelled.
             window.confirm = () => false;
             try {
                 const user = userEvent.setup();
@@ -1046,7 +1043,6 @@ describe('reactRouterNextProvider', () => {
                 const [title] = await screen.findAllByRole('textbox');
                 await user.type(title, 'A new title');
                 fireEvent.click(screen.getByText('Go to Comments'));
-                // confirm returned false => navigation cancelled, still on the form
                 await waitFor(() => {
                     expect(
                         screen.getByText('Form with Unsaved Changes Warning')
