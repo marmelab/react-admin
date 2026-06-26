@@ -18,7 +18,7 @@ yarn add @react-admin/ra-core-ee
 
 ```tsx
 import { CoreAdmin, CustomRoutes, WithRecord } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsListBase, ShowDeletedBase, type DeletedRecordType } from '@react-admin/ra-core-ee';
 
 export const App = () => (

@@ -118,7 +118,7 @@ Let's say that this custom page is added to the app under the `/preferences` URL
 ```jsx
 // in src/App.jsx
 import { Admin, Resource, CustomRoutes, } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { MyLayout } from './MyLayout';
 import { UserPreferences } from './UserPreferences';

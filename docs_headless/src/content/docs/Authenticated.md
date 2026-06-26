@@ -10,7 +10,7 @@ Use it as an alternative to the [`useAuthenticated()`](./useAuthenticated.md) ho
 
 ```jsx
 import { CoreAdmin, CustomRoutes, Authenticated } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const App = () => (
     <CoreAdmin authProvider={authProvider}>
