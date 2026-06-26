@@ -579,12 +579,13 @@ describe('reactRouterProvider', () => {
             });
 
             it('should navigate back to parent app', async () => {
+                const user = userEvent.setup();
                 render(<EmbeddedInReactRouter />);
                 await waitFor(() => {
                     expect(screen.getByText('Admin')).toBeInTheDocument();
                 });
 
-                fireEvent.click(screen.getByText('Admin'));
+                await user.click(screen.getByText('Admin'));
 
                 await waitFor(
                     () => {
