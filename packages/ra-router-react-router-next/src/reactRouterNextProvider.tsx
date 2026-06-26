@@ -126,7 +126,7 @@ const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
 );
 Link.displayName = 'Link';
 
-const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
+const Navigate = ({ to, ...rest }: RouterNavigateProps) => {
     const basename = useBasename();
     const currentLocation = useLocation();
 
@@ -151,7 +151,7 @@ const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
         }
     }
 
-    // Prepend basename to the path (like react-router does)
+    // Prepend basename to the path
     // Only prepend if path doesn't already start with basename
     if (basename && resolvedPath.startsWith('/')) {
         if (
@@ -162,13 +162,7 @@ const Navigate = ({ to, replace, state }: RouterNavigateProps) => {
         }
     }
 
-    return (
-        <ReactRouterNavigate
-            to={resolvedPath}
-            replace={replace}
-            state={state}
-        />
-    );
+    return <ReactRouterNavigate to={resolvedPath} {...rest} />;
 };
 
 /**
