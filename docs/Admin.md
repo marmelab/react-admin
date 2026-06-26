@@ -396,7 +396,8 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding react-admin inside a single-page app with its own routing.
 
 ```tsx
-import { BrowserRouter, Routes, Route } from 'react-router';
+import { Routes, Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import { StoreFront } from './StoreFront';
 import { StoreAdmin } from './StoreAdmin';
 
