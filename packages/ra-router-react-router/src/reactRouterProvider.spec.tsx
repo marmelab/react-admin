@@ -579,13 +579,12 @@ describe('reactRouterProvider', () => {
             });
 
             it('should navigate back to parent app', async () => {
-                const user = userEvent.setup();
                 render(<EmbeddedInReactRouter />);
                 await waitFor(() => {
                     expect(screen.getByText('Admin')).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Admin'));
+                fireEvent.click(screen.getByText('Admin'));
 
                 await waitFor(
                     () => {
@@ -612,13 +611,12 @@ describe('reactRouterProvider', () => {
 
     describe('useNavigate', () => {
         it('should navigate to a path programmatically', async () => {
-            const user = userEvent.setup();
             render(<Basic />);
             await waitFor(() => {
                 expect(screen.getByText('Create')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Create'));
+            fireEvent.click(screen.getByText('Create'));
 
             await waitFor(() => {
                 expect(screen.getByText('Create Post')).toBeInTheDocument();
@@ -626,18 +624,17 @@ describe('reactRouterProvider', () => {
         });
 
         it('should navigate back in history with navigate(-1)', async () => {
-            const user = userEvent.setup();
             render(<HistoryNavigation />);
 
             await screen.findByText('Post #1');
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(() => {
                 expect(screen.getByText('Post Details')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('← Back'));
+            fireEvent.click(screen.getByText('← Back'));
 
             await waitFor(() => {
                 expect(screen.getByText('Posts')).toBeInTheDocument();
@@ -645,18 +642,17 @@ describe('reactRouterProvider', () => {
         });
 
         it('should navigate within nested routes', async () => {
-            const user = userEvent.setup();
             render(<EmbeddedInReactRouter />);
             await waitFor(() => {
                 expect(screen.getByText('Admin')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Admin'));
+            fireEvent.click(screen.getByText('Admin'));
 
             await screen.findByText('Posts');
             await screen.findByText('Post #1');
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -679,13 +675,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should navigate when clicked', async () => {
-            const user = userEvent.setup();
             render(<Basic />);
             await waitFor(() => {
                 expect(screen.getByText('Post #1')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -716,7 +711,6 @@ describe('reactRouterProvider', () => {
         });
 
         it('should support location object with pathname and search', async () => {
-            const user = userEvent.setup();
             render(<LinkComponent />);
             await waitFor(() => {
                 expect(
@@ -724,7 +718,7 @@ describe('reactRouterProvider', () => {
                 ).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Go to Post #4 (with search)'));
+            fireEvent.click(screen.getByText('Go to Post #4 (with search)'));
 
             await waitFor(() => {
                 expect(screen.getByText('Post Details')).toBeInTheDocument();
@@ -736,7 +730,6 @@ describe('reactRouterProvider', () => {
         });
 
         it('should support location object with only search (no pathname)', async () => {
-            const user = userEvent.setup();
             render(<LinkComponent />);
             await waitFor(() => {
                 expect(
@@ -744,7 +737,7 @@ describe('reactRouterProvider', () => {
                 ).toBeInTheDocument();
             });
 
-            await user.click(
+            fireEvent.click(
                 screen.getByText('Go to same page with search param')
             );
 
@@ -771,13 +764,12 @@ describe('reactRouterProvider', () => {
             });
 
             it('should match show routes', async () => {
-                const user = userEvent.setup();
                 render(<Basic />);
                 await waitFor(() => {
                     expect(screen.getByText('Post #1')).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Post #1'));
+                fireEvent.click(screen.getByText('Post #1'));
 
                 await waitFor(
                     () => {
@@ -790,19 +782,18 @@ describe('reactRouterProvider', () => {
             });
 
             it('should navigate between resources', async () => {
-                const user = userEvent.setup();
                 render(<MultipleResources />);
                 await waitFor(() => {
                     expect(screen.getByText('Posts')).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Go to Comments'));
+                fireEvent.click(screen.getByText('Go to Comments'));
 
                 await waitFor(() => {
                     expect(screen.getByText('Comments')).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Go to Posts'));
+                fireEvent.click(screen.getByText('Go to Posts'));
 
                 await waitFor(() => {
                     expect(screen.getByText('Posts')).toBeInTheDocument();
@@ -812,7 +803,6 @@ describe('reactRouterProvider', () => {
 
         describe('custom routes', () => {
             it('should render custom routes with layout', async () => {
-                const user = userEvent.setup();
                 render(<CustomRoutesSupport />);
                 await waitFor(() => {
                     expect(
@@ -820,7 +810,7 @@ describe('reactRouterProvider', () => {
                     ).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Go to Custom Page'));
+                fireEvent.click(screen.getByText('Go to Custom Page'));
 
                 await waitFor(() => {
                     expect(screen.getByText('Custom Page')).toBeInTheDocument();
@@ -833,7 +823,6 @@ describe('reactRouterProvider', () => {
             });
 
             it('should render custom routes without layout', async () => {
-                const user = userEvent.setup();
                 render(<CustomRoutesSupport />);
                 await waitFor(() => {
                     expect(
@@ -841,7 +830,7 @@ describe('reactRouterProvider', () => {
                     ).toBeInTheDocument();
                 });
 
-                await user.click(
+                fireEvent.click(
                     screen.getByText('Go to Custom Page (No Layout)')
                 );
 
@@ -858,7 +847,6 @@ describe('reactRouterProvider', () => {
             });
 
             it('should navigate from custom route back to resource', async () => {
-                const user = userEvent.setup();
                 render(<CustomRoutesSupport />);
                 await waitFor(() => {
                     expect(
@@ -866,13 +854,13 @@ describe('reactRouterProvider', () => {
                     ).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Go to Custom Page'));
+                fireEvent.click(screen.getByText('Go to Custom Page'));
 
                 await waitFor(() => {
                     expect(screen.getByText('Custom Page')).toBeInTheDocument();
                 });
 
-                await user.click(screen.getByText('Go to Posts'));
+                fireEvent.click(screen.getByText('Go to Posts'));
 
                 await waitFor(() => {
                     expect(screen.getByText('Posts')).toBeInTheDocument();
@@ -893,13 +881,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should return id param on show page', async () => {
-            const user = userEvent.setup();
             render(<UseParamsTest />);
             await waitFor(() => {
                 expect(screen.getByText('Post #1')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -916,13 +903,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should return different id param for different records', async () => {
-            const user = userEvent.setup();
             render(<UseParamsTest />);
             await waitFor(() => {
                 expect(screen.getByText('Post #2')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Post #2'));
+            fireEvent.click(screen.getByText('Post #2'));
 
             await waitFor(
                 () => {
@@ -966,13 +952,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should not match exact route on nested path', async () => {
-            const user = userEvent.setup();
             render(<UseMatchTest />);
             await waitFor(() => {
                 expect(screen.getByText('Post #1')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -992,13 +977,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should update match when navigating to different resource', async () => {
-            const user = userEvent.setup();
             render(<UseMatchTest />);
             await waitFor(() => {
                 expect(screen.getByText('Posts List')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Comments'));
+            fireEvent.click(screen.getByText('Comments'));
 
             await waitFor(() => {
                 expect(screen.getByText('Comments List')).toBeInTheDocument();
@@ -1027,7 +1011,7 @@ describe('reactRouterProvider', () => {
                 render(<UseWarnWhenUnsavedChangesTest />);
                 const [title] = await screen.findAllByRole('textbox');
                 await user.type(title, 'A new title');
-                await user.click(screen.getByText('Go to Comments'));
+                fireEvent.click(screen.getByText('Go to Comments'));
                 await waitFor(() => {
                     expect(confirmCalled).toBe(true);
                 });
@@ -1052,7 +1036,7 @@ describe('reactRouterProvider', () => {
                 render(<UseWarnWhenUnsavedChangesTest />);
                 const [title] = await screen.findAllByRole('textbox');
                 await user.type(title, 'A new title');
-                await user.click(screen.getByText('Go to Comments'));
+                fireEvent.click(screen.getByText('Go to Comments'));
                 await waitFor(() => {
                     expect(
                         screen.getByText('You navigated away from the form.')
@@ -1071,10 +1055,9 @@ describe('reactRouterProvider', () => {
                 return true;
             };
             try {
-                const user = userEvent.setup();
                 render(<UseWarnWhenUnsavedChangesTest />);
                 await screen.findByText('Form with Unsaved Changes Warning');
-                await user.click(screen.getByText('Go to Comments'));
+                fireEvent.click(screen.getByText('Go to Comments'));
                 await waitFor(() => {
                     expect(
                         screen.getByText('You navigated away from the form.')
@@ -1089,13 +1072,12 @@ describe('reactRouterProvider', () => {
 
     describe('Navigate', () => {
         it('should redirect to target route', async () => {
-            const user = userEvent.setup();
             render(<NavigateComponent />);
             await waitFor(() => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
 
-            await user.click(
+            fireEvent.click(
                 screen.getByText('Go to Redirect Page (auto-redirects here)')
             );
 
@@ -1106,13 +1088,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should preserve search params on redirect', async () => {
-            const user = userEvent.setup();
             render(<NavigateComponent />);
             await waitFor(() => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Go to redirect with params'));
+            fireEvent.click(screen.getByText('Go to redirect with params'));
 
             // Should immediately redirect back to posts with search params
             await waitFor(() => {
@@ -1128,13 +1109,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should redirect conditionally when state changes', async () => {
-            const user = userEvent.setup();
             render(<NavigateComponent />);
             await waitFor(() => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Go to Conditional Redirect'));
+            fireEvent.click(screen.getByText('Go to Conditional Redirect'));
 
             await waitFor(() => {
                 expect(
@@ -1142,7 +1122,7 @@ describe('reactRouterProvider', () => {
                 ).toBeInTheDocument();
             });
 
-            await user.click(screen.getByTestId('trigger-redirect'));
+            fireEvent.click(screen.getByTestId('trigger-redirect'));
 
             await waitFor(() => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
@@ -1150,7 +1130,6 @@ describe('reactRouterProvider', () => {
         });
 
         it('should support location object with only search (no pathname)', async () => {
-            const user = userEvent.setup();
             render(<NavigateComponent />);
             await waitFor(() => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
@@ -1159,7 +1138,7 @@ describe('reactRouterProvider', () => {
             // Navigate to the Navigate search-only test page
             // This page uses <Navigate to={{ search: '?redirected=true' }} replace />
             // which should stay on the same pathname but add search params
-            await user.click(
+            fireEvent.click(
                 screen.getByText('Go to Navigate search-only test')
             );
 
@@ -1206,13 +1185,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should update pathname on navigation', async () => {
-            const user = userEvent.setup();
             render(<UseLocationTest />);
             await waitFor(() => {
                 expect(screen.getByText('Go to Post Show')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Go to Post Show'));
+            fireEvent.click(screen.getByText('Go to Post Show'));
 
             await waitFor(() => {
                 expect(screen.getByText('Post Show')).toBeInTheDocument();
@@ -1224,7 +1202,6 @@ describe('reactRouterProvider', () => {
         });
 
         it('should include state when navigated with state', async () => {
-            const user = userEvent.setup();
             render(<UseLocationTest />);
             await waitFor(() => {
                 expect(
@@ -1232,7 +1209,7 @@ describe('reactRouterProvider', () => {
                 ).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Go to Post Show (with state)'));
+            fireEvent.click(screen.getByText('Go to Post Show (with state)'));
 
             await waitFor(() => {
                 expect(screen.getByText('Post Show')).toBeInTheDocument();
@@ -1279,11 +1256,10 @@ describe('reactRouterProvider', () => {
 
     describe('Nested Routes with Outlet', () => {
         it('should render the default tab content', async () => {
-            const user = userEvent.setup();
             render(<NestedRoutesWithOutlet />);
             await screen.findByText('Post #1');
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
             await screen.findByText('Tabbed Layout (like TabbedShowLayout)');
 
             // Should render the first tab (content) by default
@@ -1296,15 +1272,14 @@ describe('reactRouterProvider', () => {
         });
 
         it('should navigate between tabs using Outlet', async () => {
-            const user = userEvent.setup();
             render(<NestedRoutesWithOutlet />);
             await screen.findByText('Post #1');
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
             await screen.findByTestId('content-tab');
 
             // Click on the second tab (Metadata)
-            await user.click(screen.getByText('Metadata Tab'));
+            fireEvent.click(screen.getByText('Metadata Tab'));
             await screen.findByTestId('metadata-tab');
 
             expect(
@@ -1314,13 +1289,12 @@ describe('reactRouterProvider', () => {
         });
 
         it('should navigate back to first tab', async () => {
-            const user = userEvent.setup();
             render(<NestedRoutesWithOutlet />);
             await waitFor(() => {
                 expect(screen.getByText('Post #1')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -1332,14 +1306,14 @@ describe('reactRouterProvider', () => {
             );
 
             // Go to second tab
-            await user.click(screen.getByText('Metadata Tab'));
+            fireEvent.click(screen.getByText('Metadata Tab'));
 
             await waitFor(() => {
                 expect(screen.getByTestId('metadata-tab')).toBeInTheDocument();
             });
 
             // Go back to first tab
-            await user.click(screen.getByText('Content Tab'));
+            fireEvent.click(screen.getByText('Content Tab'));
 
             await waitFor(() => {
                 expect(screen.getByTestId('content-tab')).toBeInTheDocument();
@@ -1353,11 +1327,10 @@ describe('reactRouterProvider', () => {
 
     describe('Nested Resources (Route children of Resource)', () => {
         it('should navigate to child routes defined inside Resource', async () => {
-            const user = userEvent.setup();
             render(<NestedResources />);
             await screen.findByText('Post #1');
 
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             await waitFor(
                 () => {
@@ -1372,7 +1345,6 @@ describe('reactRouterProvider', () => {
 
     describe('Query Parameters', () => {
         it('should update URL with query parameters when sorting', async () => {
-            const user = userEvent.setup();
             render(<QueryParameters />);
             await screen.findByText('Posts with Query Parameters');
 
@@ -1382,7 +1354,7 @@ describe('reactRouterProvider', () => {
             );
 
             // Click sort by title
-            await user.click(screen.getByTestId('sort-title'));
+            fireEvent.click(screen.getByTestId('sort-title'));
 
             await waitFor(() => {
                 expect(
@@ -1396,12 +1368,11 @@ describe('reactRouterProvider', () => {
         });
 
         it('should update URL with query parameters when changing page', async () => {
-            const user = userEvent.setup();
             render(<QueryParameters />);
             await screen.findByText('Posts with Query Parameters');
 
             // Click page 2
-            await user.click(screen.getByTestId('page-2'));
+            fireEvent.click(screen.getByTestId('page-2'));
 
             await waitFor(() => {
                 expect(
@@ -1415,12 +1386,11 @@ describe('reactRouterProvider', () => {
         });
 
         it('should preserve query parameters across multiple updates', async () => {
-            const user = userEvent.setup();
             render(<QueryParameters />);
             await screen.findByText('Posts with Query Parameters');
 
             // Set sort
-            await user.click(screen.getByTestId('sort-title'));
+            fireEvent.click(screen.getByTestId('sort-title'));
 
             await waitFor(() => {
                 expect(
@@ -1429,7 +1399,7 @@ describe('reactRouterProvider', () => {
             });
 
             // Set page
-            await user.click(screen.getByTestId('page-3'));
+            fireEvent.click(screen.getByTestId('page-3'));
 
             await waitFor(() => {
                 const search =
@@ -1454,7 +1424,6 @@ describe('reactRouterProvider', () => {
 
         it('should navigate between child routes within pathless layout', async () => {
             window.location.hash = '#/posts';
-            const user = userEvent.setup();
 
             render(<PathlessLayoutRoutes />);
 
@@ -1463,7 +1432,7 @@ describe('reactRouterProvider', () => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Comments'));
+            fireEvent.click(screen.getByText('Comments'));
 
             await waitFor(() => {
                 expect(screen.getByText('Layout Wrapper')).toBeInTheDocument();
@@ -1473,7 +1442,6 @@ describe('reactRouterProvider', () => {
 
         it('should match the most specific layout route within pathless layout routes', async () => {
             window.location.hash = '#/posts';
-            const user = userEvent.setup();
 
             render(<PathlessLayoutRoutesPriority />);
 
@@ -1481,13 +1449,13 @@ describe('reactRouterProvider', () => {
                 expect(screen.getByTestId('posts-page')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('User'));
+            fireEvent.click(screen.getByText('User'));
 
             await waitFor(() => {
                 expect(screen.getByTestId('users-page')).toBeInTheDocument();
             });
 
-            await user.click(screen.getByText('Block a user'));
+            fireEvent.click(screen.getByText('Block a user'));
 
             await waitFor(() => {
                 expect(
@@ -1499,7 +1467,6 @@ describe('reactRouterProvider', () => {
 
     it('should match the empty path route as most specific within pathless layout routes', async () => {
         window.location.hash = '#/posts';
-        const user = userEvent.setup();
 
         render(<PathlessLayoutRoutesWithEmptyRoute />);
 
@@ -1507,7 +1474,7 @@ describe('reactRouterProvider', () => {
             expect(screen.getByTestId('posts-page')).toBeInTheDocument();
         });
 
-        await user.click(screen.getByText('Home (path="")'));
+        fireEvent.click(screen.getByText('Home (path="")'));
 
         await waitFor(() => {
             expect(screen.getByTestId('home-page')).toBeInTheDocument();
@@ -1516,7 +1483,6 @@ describe('reactRouterProvider', () => {
 
     it('should match the index route as most specific within pathless layout routes', async () => {
         window.location.hash = '#/posts';
-        const user = userEvent.setup();
 
         render(<PathlessLayoutRoutesWithIndexRoute />);
 
@@ -1524,7 +1490,7 @@ describe('reactRouterProvider', () => {
             expect(screen.getByTestId('posts-page')).toBeInTheDocument();
         });
 
-        await user.click(screen.getByText('Home (index)'));
+        fireEvent.click(screen.getByText('Home (index)'));
 
         await waitFor(() => {
             expect(screen.getByTestId('home-page')).toBeInTheDocument();
@@ -1533,20 +1499,19 @@ describe('reactRouterProvider', () => {
 
     describe('Resource Children (Route as children of Resource)', () => {
         it('should navigate to child routes without matching parent edit route', async () => {
-            const user = userEvent.setup();
             render(<NestedResourcesPrecedence />);
 
             // Wait for posts list to load
             await screen.findByText('Post #1');
 
             // Click on a post to go to edit page
-            await user.click(screen.getByText('Post #1'));
+            fireEvent.click(screen.getByText('Post #1'));
 
             // Wait for edit page
             await screen.findByText('Post Details');
 
             // Click to view comments (child route)
-            await user.click(screen.getByText('View Comments'));
+            fireEvent.click(screen.getByText('View Comments'));
 
             // Should navigate to comments page, not stay on edit
             await waitFor(() => {
