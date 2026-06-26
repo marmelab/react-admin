@@ -35,7 +35,7 @@ In most apps, you need to pass more props to `<CoreAdmin>`. Here is a more compl
 ```tsx
 // in src/App.js
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider, authProvider, i18nProvider } from './providers';
 import { Layout } from './layout';
@@ -76,7 +76,7 @@ To make the main app component more concise, a good practice is to move the reso
 ```tsx
 // in src/App.js
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider, authProvider, i18nProvider } from './providers';
 import { Layout } from './layout';
@@ -373,7 +373,7 @@ The Auth Provider also lets you configure redirections after login/logout, anony
 Use this prop to make all routes and links in your Admin relative to a "base" portion of the URL pathname that they all share. This is required when using the [`BrowserRouter`](https://reactrouter.com/en/main/router-components/browser-router) to serve the application under a sub-path of your domain (for example https://marmelab.com/ra-enterprise-demo), or when embedding ra-core inside a single-page app with its own routing.
 
 ```tsx
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route } from 'react-router';
 import { StoreFront } from './StoreFront';
 import { StoreAdmin } from './StoreAdmin';
 
@@ -1079,7 +1079,7 @@ In addition to [`<Resource> elements`](./Resource.md) for CRUD pages, you can us
 ```tsx
 // in src/App.js
 import * as React from "react";
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
 import posts from './posts';
 import comments from './comments';
@@ -1111,7 +1111,8 @@ By default, ra-core uses react-router with a [HashRouter](https://reactrouter.co
 But you may want to use another routing strategy, e.g. to allow server-side rendering of individual pages. React-router offers various Router components to implement such routing strategies. If you want to use a different router, simply put your app in a create router function. Ra-core will detect that it's already inside a router, and skip its own router.
 
 ```tsx
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { CoreAdmin, Resource } from 'ra-core';
 import { dataProvider } from './dataProvider';
 
@@ -1138,7 +1139,8 @@ However, if you serve your admin from a sub path AND use another Router (like [`
 
 ```tsx
 import { CoreAdmin, Resource } from 'ra-core';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { dataProvider } from './dataProvider';
 
 const App = () => {
@@ -1170,7 +1172,8 @@ If you want to use ra-core as a sub path of a larger React application, check th
 You can include a ra-core app inside another app, using a react-router `<Route>`:
 
 ```tsx
-import { RouterProvider, Routes, Route, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, Routes, Route } from 'react-router';
+import { createBrowserRouter } from 'react-router-dom';
 import { StoreFront } from './StoreFront';
 import { StoreAdmin } from './StoreAdmin';
 
