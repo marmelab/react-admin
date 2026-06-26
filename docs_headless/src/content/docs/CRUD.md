@@ -117,7 +117,7 @@ This is the equivalent of the following react-router configuration:
 
 ```jsx
 import { ResourceContextProvider } from 'ra-core';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 
 <ResourceContextProvider value="posts">
     <Routes>
