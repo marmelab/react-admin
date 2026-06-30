@@ -8,6 +8,7 @@ import {
     TextInput,
 } from 'ra-ui-materialui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useFormContext } from 'react-hook-form';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
 import { testDataProvider } from '../../dataProvider';
@@ -280,5 +281,70 @@ describe('useFormGroup', () => {
                 isValidating: false,
             });
         });
+    });
+
+    // https://github.com/marmelab/react-admin/issues/11290
+    it('should not re-render when a field validating state changes', async () => {
+        // useFormGroup must not subscribe to react-hook-form's validatingFields.
+        // Subscribing re-renders every form group on each per-field validation
+        // toggle, which makes large TabbedForms exceed React's maximum update
+        // depth on submit.
+        const asyncValidate = () => Promise.resolve(undefined);
+
+        let renderCount = 0;
+        const GroupRenderCounter = React.memo(() => {
+            useFormGroup('group');
+            renderCount++;
+            return null;
+        });
+        GroupRenderCounter.displayName = 'GroupRenderCounter';
+
+        // Re-validates the field without changing its value/dirty/touched state,
+        // so the only form state that changes is validatingFields.
+        const RevalidateButton = () => {
+            const { trigger } = useFormContext();
+            return (
+                <button type="button" onClick={() => trigger('title')}>
+                    revalidate
+                </button>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm mode="onChange" toolbar={false}>
+                        <FormGroupContextProvider name="group">
+                            <TextInput
+                                source="title"
+                                validate={asyncValidate}
+                            />
+                        </FormGroupContextProvider>
+                        <GroupRenderCounter />
+                        <RevalidateButton />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        await waitFor(() => expect(renderCount).toBeGreaterThan(0));
+        await new Promise(resolve => setTimeout(resolve, 50));
+        const rendersBeforeRevalidation = renderCount;
+
+        // Re-validate the field many times. Each re-validation toggles
+        // validatingFields. When the group subscribes to validatingFields (the
+        // bug), every toggle re-renders the group, so the count grows with each
+        // re-validation; without that subscription it stays flat.
+        const REVALIDATIONS = 10;
+        for (let i = 0; i < REVALIDATIONS; i++) {
+            fireEvent.click(screen.getByText('revalidate'));
+            await new Promise(resolve => setTimeout(resolve, 10));
+        }
+        await new Promise(resolve => setTimeout(resolve, 50));
+
+        // The group must not re-render on each per-field validation toggle.
+        expect(renderCount - rendersBeforeRevalidation).toBeLessThan(
+            REVALIDATIONS
+        );
     });
 });

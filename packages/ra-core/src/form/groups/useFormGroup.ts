@@ -66,16 +66,14 @@ type FormGroupState = {
  * @returns {FormGroupState} The form group state
  */
 export const useFormGroup = (name: string): FormGroupState => {
-    const { dirtyFields, touchedFields, validatingFields, errors } =
-        useFormState();
+    const { dirtyFields, touchedFields, errors } = useFormState();
 
-    // dirtyFields, touchedFields, validatingFields and errors are objects with keys being the field names
+    // dirtyFields, touchedFields and errors are objects with keys being the field names
     // Ex: { title: true }
     // However, they are not correctly serialized when using JSON.stringify
     // To avoid our effects to not be triggered when they should, we extract the keys and use that as a dependency
     const dirtyFieldsNames = Object.keys(dirtyFields);
     const touchedFieldsNames = Object.keys(touchedFields);
-    const validatingFieldsNames = Object.keys(validatingFields);
     const errorsNames = Object.keys(errors);
 
     const formGroups = useFormGroups();
@@ -97,8 +95,13 @@ export const useFormGroup = (name: string): FormGroupState => {
                     error: get(errors, field, undefined),
                     isDirty: get(dirtyFields, field, false) !== false,
                     isValid: get(errors, field, undefined) == null,
-                    isValidating:
-                        get(validatingFields, field, undefined) == null,
+                    // We intentionally do not derive isValidating from
+                    // react-hook-form's validatingFields. Subscribing to it
+                    // re-renders every form group on each per-field validation
+                    // toggle, which on a large TabbedForm exceeds React's
+                    // maximum update depth on submit. The group-level
+                    // isValidating value is not consumed anywhere.
+                    isValidating: false,
                     isTouched: get(touchedFields, field, false) !== false,
                 };
             })
@@ -123,8 +126,6 @@ export const useFormGroup = (name: string): FormGroupState => {
         JSON.stringify(errorsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(touchedFieldsNames),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        JSON.stringify(validatingFieldsNames),
         updateGroupState,
         name,
         formGroups,
