@@ -10737,7 +10737,7 @@ __metadata:
     clsx: "npm:^2.1.1"
     data-generator-retail: "npm:^5.0.0"
     date-fns: "npm:^3.6.0"
-    echarts: "npm:^5.6.0"
+    echarts: "npm:^6.1.0"
     fakerest: "npm:^4.2.0"
     graphql: "npm:^15.6.0"
     graphql-tag: "npm:^2.12.6"
@@ -11117,13 +11117,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"echarts@npm:^5.6.0":
-  version: 5.6.0
-  resolution: "echarts@npm:5.6.0"
+"echarts@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "echarts@npm:6.1.0"
   dependencies:
     tslib: "npm:2.3.0"
-    zrender: "npm:5.6.1"
-  checksum: 6d6a2ee88534d1ff0433e935c542237b9896de1c94959f47ebc7e0e9da26f59bf11c91ed6fc135b62ad2786c779ee12bc536fa481e60532dad5b6a2f5167e9ea
+    zrender: "npm:6.1.0"
+  checksum: a0911a9d75969ff946d0bce998e95e1924cdec7f5ca6be13ded376e2a47067c70b264ee8d04ba84345aa7895363e202f54c87d2bae114859bd154d565babc09c
   languageName: node
   linkType: hard
 
@@ -20379,7 +20379,7 @@ __metadata:
     "@types/node-polyglot": "npm:^0.4.31"
     "@types/react": "npm:^18.3.3"
     date-fns: "npm:^3.6.0"
-    echarts: "npm:^5.6.0"
+    echarts: "npm:^6.1.0"
     eventemitter3: "npm:^5.0.1"
     expect: "npm:^27.4.6"
     ignore-styles: "npm:~5.0.1"
@@ -26021,12 +26021,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"zrender@npm:5.6.1":
-  version: 5.6.1
-  resolution: "zrender@npm:5.6.1"
+"zrender@npm:6.1.0":
+  version: 6.1.0
+  resolution: "zrender@npm:6.1.0"
   dependencies:
     tslib: "npm:2.3.0"
-  checksum: dc1cc570054640cbd8fbb7b92e6252f225319522bfe3e8dc8bf02cc02d414e00a4c8d0a6f89bfc9d96e5e9511fdca94dd3d06bf53690df2b2f12b0fc560ac307
+  checksum: bfdb5e2ccd70893a9e2c7f33959749a6a1abc8912c2b1af301a05593d677a2f6f6087cdc4f0bf73883b99eea2f2d11d1922c71c3bf0bd4e9e5b362fd32129bce
   languageName: node
   linkType: hard
 
