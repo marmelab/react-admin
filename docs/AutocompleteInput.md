@@ -67,6 +67,7 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`                                        | `''`                                       | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                                           | `''`                                       | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`                            | `q => ({ q })`                             | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
+| `getOptionDisabled`        | Optional | `Function`                                      | -                                          | A function used to disable individual choices. Signature: `(choice) => boolean`                                                                                                                                      |
 | `isPending`                | Optional | `boolean`                                       | `false`                                    | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`                                      | `-`                                        | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`                                      | `-`                                        | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
@@ -351,6 +352,35 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
 
 <ReferenceInput label="Author" source="author_id" reference="authors">
     <AutocompleteInput filterToQuery={filterToQuery} />
+</ReferenceInput>
+```
+
+## `getOptionDisabled`
+
+To prevent users from selecting some choices while still displaying them in the suggestion list, pass a `getOptionDisabled` function.
+
+This function receives the choice record and must return a boolean.
+
+```jsx
+<AutocompleteInput
+    source="sender_id"
+    choices={[
+        { id: 1, name: 'John Doe', email: 'john@example.com' },
+        { id: 2, name: 'Jane Doe' },
+    ]}
+    helperText="Only contacts with an email address can be selected"
+    getOptionDisabled={choice => !choice.email}
+/>
+```
+
+You can also use `getOptionDisabled` inside a [`<ReferenceInput>`](./ReferenceInput.md):
+
+```jsx
+<ReferenceInput source="sender_id" reference="staff">
+    <AutocompleteInput
+        helperText="Only staff members with an email address can be selected"
+        getOptionDisabled={record => !record.email}
+    />
 </ReferenceInput>
 ```
 
