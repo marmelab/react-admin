@@ -160,7 +160,7 @@ describe('useInfiniteListController', () => {
             });
         });
 
-        it('should reset page when enabled is set to false', async () => {
+        it('should not crash when the query is disabled and data is undefined', async () => {
             const children = jest.fn().mockReturnValue(<span>children</span>);
             const dataProvider = testDataProvider({
                 getList: () => Promise.resolve({ data: [], total: 0 }),
@@ -176,18 +176,81 @@ describe('useInfiniteListController', () => {
                 </CoreAdminContext>
             );
 
-            act(() => {
-                // @ts-ignore
-                children.mock.calls.at(-1)[0].setPage(3);
-            });
-
             await waitFor(() => {
-                expect(children).toHaveBeenCalledWith(
+                const lastCall = children.mock.calls.at(-1)?.[0];
+                expect(lastCall.isPending).toBe(true);
+                expect(lastCall.data).toBeUndefined();
+            });
+        });
+
+        it('should not reset a persisted page while the query is disabled during the auth check', async () => {
+            let resolveAuthCheck: () => void;
+            const authProvider: AuthProvider = {
+                checkAuth: jest.fn(
+                    () =>
+                        new Promise(resolve => {
+                            resolveAuthCheck = resolve;
+                        })
+                ),
+                login: () => Promise.resolve(),
+                logout: () => Promise.resolve(),
+                checkError: () => Promise.resolve(),
+                getPermissions: () => Promise.resolve(),
+            };
+            const getList = jest.fn(() =>
+                Promise.resolve({
+                    data: [{ id: 1, title: 'A post' }],
+                    total: 100,
+                })
+            );
+            const dataProvider = testDataProvider({ getList });
+            // params persisted with page 3, e.g. from a previous visit or reload
+            const store = memoryStore({
+                'posts.listParams': {
+                    page: 3,
+                    perPage: 10,
+                    sort: 'id',
+                    order: 'ASC',
+                    filter: {},
+                    displayedFilters: {},
+                },
+            });
+            const props = { ...defaultProps, children: jest.fn() };
+            render(
+                <CoreAdminContext
+                    authProvider={authProvider}
+                    dataProvider={dataProvider}
+                    store={store}
+                >
+                    <InfiniteListController {...props} resource="posts" />
+                </CoreAdminContext>
+            );
+
+            // the list query stays disabled while checkAuth is pending
+            await waitFor(() => {
+                expect(authProvider.checkAuth).toHaveBeenCalled();
+            });
+            expect(getList).not.toHaveBeenCalled();
+
+            resolveAuthCheck!();
+
+            // once enabled, the data provider is queried for the persisted
+            // page 3, not page 1
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledWith(
+                    'posts',
                     expect.objectContaining({
-                        page: 1,
+                        pagination: { page: 3, perPage: 10 },
                     })
                 );
             });
+            expect(getList).not.toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({
+                    pagination: { page: 1, perPage: 10 },
+                })
+            );
+            expect(store.getItem('posts.listParams').page).toBe(3);
         });
     });
 
