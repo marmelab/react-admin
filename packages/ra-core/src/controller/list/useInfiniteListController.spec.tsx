@@ -222,7 +222,12 @@ describe('useInfiniteListController', () => {
                     dataProvider={dataProvider}
                     store={store}
                 >
-                    <InfiniteListController {...props} resource="posts" />
+                    <InfiniteListController
+                        {...props}
+                        resource="posts"
+                        disableSyncWithLocation
+                        storeKey="posts.listParams"
+                    />
                 </CoreAdminContext>
             );
 

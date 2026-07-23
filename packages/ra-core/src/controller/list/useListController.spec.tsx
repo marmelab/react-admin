@@ -143,7 +143,12 @@ describe('useListController', () => {
                     dataProvider={dataProvider}
                     store={store}
                 >
-                    <ListController {...props} resource="posts" />
+                    <ListController
+                        {...props}
+                        resource="posts"
+                        disableSyncWithLocation
+                        storeKey="posts.listParams"
+                    />
                 </CoreAdminContext>
             );
 
