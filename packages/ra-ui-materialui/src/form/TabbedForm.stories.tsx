@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     RaRecord,
+    required,
     ResourceContextProvider,
     testDataProvider,
     TestMemoryRouter,
@@ -181,6 +182,28 @@ export const EncodedPaths = () => (
             <TabbedForm.Tab label="details">
                 <TextInput multiline source="bio" />
             </TabbedForm.Tab>
+        </TabbedForm>
+    </Wrapper>
+);
+
+// https://github.com/marmelab/react-admin/issues/11290
+// Submitting this form (with the fields empty) used to throw
+// "Maximum update depth exceeded" because each per-tab FormGroup re-rendered
+// on every per-field validation toggle. Click SAVE to check it no longer does.
+export const ManyRequiredInputs = () => (
+    <Wrapper record={{ id: 1 }}>
+        <TabbedForm>
+            {Array.from({ length: 6 }, (_, tab) => (
+                <TabbedForm.Tab key={tab} label={`tab ${tab + 1}`}>
+                    {Array.from({ length: 8 }, (_, field) => (
+                        <TextInput
+                            key={`field_${tab}_${field}`}
+                            source={`field_${tab}_${field}`}
+                            validate={required()}
+                        />
+                    ))}
+                </TabbedForm.Tab>
+            ))}
         </TabbedForm>
     </Wrapper>
 );
