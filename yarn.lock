@@ -20420,7 +20420,7 @@ __metadata:
     react-error-boundary: "npm:^4.0.13"
     react-hook-form: "npm:^7.72.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
-    react-router: "npm:^6.28.1"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.28.1"
     typescript: "npm:^5.1.3"
     yup: "npm:^0.32.11"
@@ -20642,7 +20642,7 @@ __metadata:
     react-admin: "npm:^5.15.1"
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
-    react-router: "npm:^6.22.0"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.22.0"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -20746,7 +20746,7 @@ __metadata:
     react-hook-form: "npm:^7.72.0"
     react-hotkeys-hook: "npm:^5.1.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
-    react-router: "npm:^6.28.1"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.28.1"
     react-transition-group: "npm:^4.4.5"
     typescript: "npm:^5.1.3"
@@ -20850,7 +20850,7 @@ __metadata:
     react-cropper: "npm:^2.3.3"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.3"
-    react-router: "npm:^6.28.1"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.28.1"
     rollup-plugin-visualizer: "npm:^5.14.0"
     rollup-preserve-directives: "npm:^1.1.3"
@@ -20948,7 +20948,7 @@ __metadata:
     ra-language-english: "npm:^5.15.0"
     ra-ui-materialui: "npm:^5.15.1"
     react-hook-form: "npm:^7.72.0"
-    react-router: "npm:^6.28.1"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.28.1"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -21198,7 +21198,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:6.30.4, react-router@npm:^6.22.0, react-router@npm:^6.28.1":
+"react-router@npm:6.30.4":
   version: 6.30.4
   resolution: "react-router@npm:6.30.4"
   dependencies:
@@ -21209,7 +21209,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.17.0, react-router@npm:^7.1.1":
+"react-router@npm:7.17.0":
   version: 7.17.0
   resolution: "react-router@npm:7.17.0"
   dependencies:
@@ -21222,6 +21222,38 @@ __metadata:
     react-dom:
       optional: true
   checksum: dfa9b0182edba6fab14ef5ac297b292068e71e05bf7e07c6b45fe073d77002089e8e164542364232a8bbb0c7d3ec47b57b78db3984c4383e12308f2d31ad404a
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^7.1.1":
+  version: 7.18.1
+  resolution: "react-router@npm:7.18.1"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 1a559de58d656bad5565f2232e4f4fab7e9f5282dfaf95bc24f195a06e7e85b281077fe5c21ed3ff527e3d90d930447e0d0bb0f0713950d2a56ad0f0377a7d09
+  languageName: node
+  linkType: hard
+
+"react-router@npm:^7.18.0":
+  version: 7.18.0
+  resolution: "react-router@npm:7.18.0"
+  dependencies:
+    cookie: "npm:^1.0.1"
+    set-cookie-parser: "npm:^2.6.0"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
+  peerDependenciesMeta:
+    react-dom:
+      optional: true
+  checksum: 7ab6c6dc7efdc14092486d63f55b04f9e3ef269fdec8c695a513f69e55d02a9beab8f637a13396952815d85accf16e7db2d65d9cbb68def13c349be82ceb5aee
   languageName: node
   linkType: hard
 
@@ -22780,7 +22812,7 @@ __metadata:
     react-admin: "npm:^5.15.1"
     react-dom: "npm:^18.3.1"
     react-hook-form: "npm:^7.72.0"
-    react-router: "npm:^6.28.1"
+    react-router: "npm:^7.18.0"
     react-router-dom: "npm:^6.28.1"
     react-simple-animate: "npm:^3.5.3"
     typescript: "npm:^5.1.3"
