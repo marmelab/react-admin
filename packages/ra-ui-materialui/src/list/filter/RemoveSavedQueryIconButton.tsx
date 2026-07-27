@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { useState } from 'react';
 import { IconButton, IconButtonProps } from '@mui/material';
-import RemoveIcon from '@mui/icons-material/RemoveCircleOutlined';
+import RemoveIcon from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import { useTranslate } from 'ra-core';
 
 import { RemoveSavedQueryDialog } from './RemoveSavedQueryDialog';

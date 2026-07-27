@@ -1,5 +1,5 @@
 import * as React from 'react';
-import AddIcon from '@mui/icons-material/AddCircleOutlined';
+import AddIcon from '@mui/icons-material/AddCircleOutlineOutlined';
 import clsx from 'clsx';
 import { useSimpleFormIterator } from 'ra-core';
 import { IconButtonWithTooltip, ButtonProps } from '../../button';
