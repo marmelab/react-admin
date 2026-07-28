@@ -26,7 +26,7 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "rehype-code-group": "^0.2.4",
-        "sharp": "^0.34.2",
+        "sharp": "^0.35.0",
         "starlight-package-managers": "^0.11.0",
         "tailwindcss": "^4.1.11"
     },
