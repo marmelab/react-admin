@@ -7,7 +7,7 @@ import {
     useThemeProps,
 } from '@mui/material';
 import BookmarkIcon from '@mui/icons-material/BookmarkBorder';
-import HelpIcon from '@mui/icons-material/HelpOutlined';
+import HelpIcon from '@mui/icons-material/HelpOutlineOutlined';
 import {
     useListContext,
     useTranslate,
