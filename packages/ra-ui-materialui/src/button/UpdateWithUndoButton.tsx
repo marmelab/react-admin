@@ -106,7 +106,7 @@ const sanitizeRestProps = ({
 
 export interface UpdateWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > extends ButtonProps,
         Omit<
             UseUpdateControllerParams<RecordType, MutationOptionsError>,

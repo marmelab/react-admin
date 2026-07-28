@@ -164,7 +164,7 @@ export const useDeleteController = <
 
 export interface UseDeleteControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > {
     mutationMode?: MutationMode;
     mutationOptions?: UseDeleteOptions<RecordType, MutationOptionsError>;

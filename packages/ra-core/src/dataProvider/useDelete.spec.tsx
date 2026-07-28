@@ -854,3 +854,16 @@ describe('useDelete', () => {
         });
     });
 });
+
+/**
+ * Type-level check: the error type defaults to Error, so callbacks don't
+ * require a cast. See https://github.com/marmelab/react-admin/issues/11262
+ */
+const _useDeleteErrorTypeCheck = () => {
+    const [deleteOne] = useDelete<{ id: number }>();
+    deleteOne('posts', { id: 1 }, { onError: error => error.message });
+    useDelete<{ id: number }>('posts', undefined, {
+        onError: error => error.message,
+        onSettled: (_data, error) => error?.message,
+    });
+};

@@ -162,7 +162,7 @@ const sanitizeRestProps = ({
 
 export interface BulkDeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > extends ButtonProps,
         UseBulkDeleteControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;

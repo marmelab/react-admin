@@ -113,7 +113,7 @@ export const useBulkUpdateController = <
 
 export interface UseBulkUpdateControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > {
     /* @deprecated use mutationOptions instead */
     onSuccess?: () => void;

@@ -328,7 +328,7 @@ const createPost = async () => {
 
 ## TypeScript
 
-The `useCreate` hook accepts a generic parameter for the record type and another for the error type:
+The `useCreate` hook accepts a generic parameter for the record type and another for the error type (which defaults to `Error`):
 
 ```tsx
 type Product = {
