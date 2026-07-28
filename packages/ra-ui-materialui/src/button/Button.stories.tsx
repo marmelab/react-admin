@@ -8,6 +8,10 @@ import englishMessages from 'ra-language-english';
 import { I18nContextProvider, I18nProvider } from 'ra-core';
 import { Button } from './Button';
 import { defaultTheme } from '../theme/defaultTheme';
+import {
+    DeviceTestWrapper,
+    type DeviceTestWrapperProps,
+} from '../layout/DeviceTestWrapper';
 
 export default { title: 'ra-ui-materialui/button/Button' };
 
@@ -83,6 +87,33 @@ export const WithIcon = () => (
         </UIWrapper>
     </ThemeProvider>
 );
+
+export const Breakpoint = ({
+    width,
+}: {
+    width?: DeviceTestWrapperProps['width'];
+}) => {
+    const MaybeDeviceTestWrapper = width ? DeviceTestWrapper : React.Fragment;
+    const wrapperProps = (width ? { width } : {}) as DeviceTestWrapperProps;
+
+    return (
+        <ThemeProvider theme={createTheme(defaultTheme)}>
+            <MaybeDeviceTestWrapper {...wrapperProps}>
+                <UIWrapper>
+                    <Button label="Shrinks below lg" breakpoint="lg">
+                        <AddIcon />
+                    </Button>
+                    <Button label="Shrinks below sm (default)">
+                        <AddIcon />
+                    </Button>
+                    <Button label="Never shrinks" breakpoint={false}>
+                        <AddIcon />
+                    </Button>
+                </UIWrapper>
+            </MaybeDeviceTestWrapper>
+        </ThemeProvider>
+    );
+};
 
 export const WithThemeProps = () => (
     <ThemeProvider

@@ -5,6 +5,7 @@ import expect from 'expect';
 import {
     Basic,
     AccessControl,
+    Breakpoint,
     Label,
     WithTooltip,
 } from './CreateButton.stories';
@@ -59,5 +60,10 @@ describe('<CreateButton />', () => {
         const button = await screen.findByLabelText('Create book');
         await user.hover(button);
         await screen.findByText('Create book');
+    });
+
+    it('should not turn into a Floating Action Button on mobile when breakpoint is false', async () => {
+        render(<Breakpoint width="sm" />);
+        await screen.findByText('Create');
     });
 });

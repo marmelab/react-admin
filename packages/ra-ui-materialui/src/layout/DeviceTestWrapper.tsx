@@ -5,7 +5,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 function createMatchMedia(width) {
     return query => ({
         matches: mediaQuery.match(query, {
-            width,
+            width: `${width}px`,
         }),
         addListener: () => {},
         removeListener: () => {},
