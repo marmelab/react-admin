@@ -67,7 +67,7 @@ const BulkDeletePostsButton = () => {
 
 ## TypeScript
 
-The `useDeleteMany` hook accepts a generic parameter for the record type and another for the error type:
+The `useDeleteMany` hook accepts a generic parameter for the record type and another for the error type (which defaults to `Error`):
 
 ```tsx
 useDeleteMany<Product, Error>(undefined, undefined, {

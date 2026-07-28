@@ -148,7 +148,7 @@ export const useUpdateController = <
 
 export interface UseUpdateControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > {
     mutationMode?: MutationMode;
     mutationOptions?: UseUpdateOptions<RecordType, MutationOptionsError>;

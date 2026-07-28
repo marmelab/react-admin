@@ -80,7 +80,7 @@ import {
  */
 export const useCreate = <
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationError = unknown,
+    MutationError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 >(
     resource?: string,
@@ -279,7 +279,7 @@ export interface UseCreateMutateParams<
 
 export type UseCreateOptions<
     RecordType extends Omit<RaRecord, 'id'> = any,
-    MutationError = unknown,
+    MutationError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = Omit<
     UseMutationOptions<
@@ -307,7 +307,7 @@ export type UseCreateOptions<
 export type CreateMutationFunction<
     RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
-    MutationError = unknown,
+    MutationError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = (
     resource?: string,
@@ -323,7 +323,7 @@ export type CreateMutationFunction<
 export type UseCreateResult<
     RecordType extends Omit<RaRecord, 'id'> = any,
     TReturnPromise extends boolean = boolean,
-    MutationError = unknown,
+    MutationError = Error,
     ResultRecordType extends RaRecord = RecordType & { id: Identifier },
 > = [
     CreateMutationFunction<

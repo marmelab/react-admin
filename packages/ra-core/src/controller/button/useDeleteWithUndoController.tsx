@@ -68,7 +68,7 @@ const useDeleteWithUndoController = <
 
 export interface UseDeleteWithUndoControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > extends Omit<
         UseDeleteControllerParams<RecordType, MutationOptionsError>,
         'mutationMode'

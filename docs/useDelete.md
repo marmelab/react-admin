@@ -68,7 +68,7 @@ const DeleteButton = () => {
 
 ## TypeScript
 
-The `useDelete` hook accepts a generic parameter for the record type and another for the error type:
+The `useDelete` hook accepts a generic parameter for the record type and another for the error type (which defaults to `Error`):
 
 ```tsx
 useDelete<Product, Error>(undefined, undefined, {

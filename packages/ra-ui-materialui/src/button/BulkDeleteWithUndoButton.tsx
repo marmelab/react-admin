@@ -64,7 +64,7 @@ const sanitizeRestProps = ({
 
 export interface BulkDeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = unknown,
+    MutationOptionsError = Error,
 > extends ButtonProps,
         Omit<
             UseBulkDeleteControllerParams<RecordType, MutationOptionsError>,
