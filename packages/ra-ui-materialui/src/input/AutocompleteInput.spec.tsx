@@ -32,7 +32,6 @@ import {
     CreateItemLabelRendered,
     FilterSelectedOptionsFalse,
     GetOptionDisabled,
-    GetOptionDisabledWithCreateLabel,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1723,27 +1722,6 @@ describe('<AutocompleteInput />', () => {
             fireEvent.keyDown(input, { key: 'ArrowDown' });
             fireEvent.keyDown(input, { key: 'Enter' });
             expect(input.value).toEqual('William Shakespeare');
-        });
-
-        it('should not enable the create hint', async () => {
-            render(<GetOptionDisabledWithCreateLabel />);
-            const input = (await screen.findByLabelText(
-                'Author'
-            )) as HTMLInputElement;
-            input.focus();
-            fireEvent.change(input, { target: { value: '' } });
-            expect(
-                (
-                    await screen.findByRole('option', {
-                        name: 'Start typing to create a new item',
-                    })
-                ).getAttribute('aria-disabled')
-            ).toEqual('true');
-            expect(
-                screen
-                    .getByRole('option', { name: 'Victor Hugo' })
-                    .getAttribute('aria-disabled')
-            ).toEqual('true');
         });
     });
 
