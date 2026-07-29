@@ -316,6 +316,15 @@ If you provided a React element for the optionText prop, you must also provide t
 
     useEffect(() => {
         warning(
+            multiple &&
+                (props.emptyText !== undefined ||
+                    props.emptyValue !== undefined),
+            `emptyText and emptyValue are not supported when multiple is true (e.g. in <AutocompleteArrayInput>): the empty value of a multi-valued input is an empty array, so it needs no empty choice. These props are ignored.`
+        );
+    }, [multiple, props.emptyText, props.emptyValue]);
+
+    useEffect(() => {
+        warning(
             /* eslint-disable eqeqeq */
             shouldRenderSuggestions != undefined && noOptionsText == undefined,
             `When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText prop and set it to a text explaining users why no options are displayed. It supports translation keys.`
