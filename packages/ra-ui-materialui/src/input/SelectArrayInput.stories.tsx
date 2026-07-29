@@ -291,6 +291,62 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
+export const Placeholder = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="channels"
+            choices={[
+                { id: 'email', name: 'Email' },
+                { id: 'push', name: 'Push Notification' },
+                { id: 'sms', name: 'SMS' },
+            ]}
+            placeholder="All Channels"
+            sx={{ width: 300 }}
+        />
+        <FormInspector name="channels" />
+    </Wrapper>
+);
+
+export const PlaceholderElement = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="channels"
+            choices={[
+                { id: 'email', name: 'Email' },
+                { id: 'push', name: 'Push Notification' },
+                { id: 'sms', name: 'SMS' },
+            ]}
+            placeholder={<i>All Channels</i>}
+            sx={{ width: 300 }}
+        />
+    </Wrapper>
+);
+
+export const PlaceholderTranslated = () => (
+    <AdminContext
+        i18nProvider={polyglotI18nProvider(() => ({
+            ...englishMessages,
+            myapp: { channels: { placeholder: 'All Channels' } },
+        }))}
+        defaultTheme="light"
+    >
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <SelectArrayInput
+                    source="channels"
+                    choices={[
+                        { id: 'email', name: 'Email' },
+                        { id: 'push', name: 'Push Notification' },
+                        { id: 'sms', name: 'SMS' },
+                    ]}
+                    placeholder="myapp.channels.placeholder"
+                    sx={{ width: 300 }}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
 export const InsideArrayInput = () => (
     <Wrapper>
         <ArrayInput
