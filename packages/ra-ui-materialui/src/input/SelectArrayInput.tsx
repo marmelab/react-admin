@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useCallback, useRef, type ChangeEvent } from 'react';
+import { useCallback, useRef, type ChangeEvent, type ReactNode } from 'react';
 import clsx from 'clsx';
 import {
     Select,
@@ -28,6 +28,7 @@ import {
     useGetRecordRepresentation,
     type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
+    useTranslate,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 
@@ -89,6 +90,14 @@ import { Labeled } from '../Labeled';
  *    { id: 'lifestyle', name: 'myroot.tags.lifestyle' },
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
+ *
+ * Use the `placeholder` prop to render a custom text when no choice is selected:
+ * @example
+ * const channelChoices = [
+ *    { id: 'email', name: 'Email' },
+ *    { id: 'push', name: 'Push Notification' },
+ * ];
+ * <SelectArrayInput source="channels" choices={channelChoices} placeholder={<i>All Channels</i>} />
  */
 export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     const props = useThemeProps({
@@ -117,6 +126,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         optionText,
         optionValue = 'id',
         parse,
+        placeholder,
         resource: resourceProp,
         size = 'small',
         source: sourceProp,
@@ -129,6 +139,8 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     } = props;
 
     const inputLabel = useRef(null);
+    const translate = useTranslate();
+    const hasPlaceholder = placeholder != null && placeholder !== '';
 
     const {
         allChoices,
@@ -308,6 +320,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     ref={inputLabel}
                     id={`${id}-outlined-label`}
                     htmlFor={id}
+                    shrink={hasPlaceholder ? true : undefined}
                     {...InputLabelProps}
                 >
                     <FieldTitle
@@ -330,17 +343,30 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     }
                     multiple
                     error={!!fetchError || invalid}
-                    renderValue={(selected: any[]) => (
-                        <div className={SelectArrayInputClasses.chips}>
-                            {(Array.isArray(selected) ? selected : [])
-                                .map(item =>
-                                    (allChoices || []).find(
-                                        // eslint-disable-next-line eqeqeq
-                                        choice => getChoiceValue(choice) == item
-                                    )
+                    displayEmpty={hasPlaceholder ? true : undefined}
+                    renderValue={(selected: any[]) => {
+                        const selectedChoices = (
+                            Array.isArray(selected) ? selected : []
+                        )
+                            .map(item =>
+                                (allChoices || []).find(
+                                    // eslint-disable-next-line eqeqeq
+                                    choice => getChoiceValue(choice) == item
                                 )
-                                .filter(item => !!item)
-                                .map(item => (
+                            )
+                            .filter(item => !!item);
+                        return selectedChoices.length === 0 &&
+                            hasPlaceholder ? (
+                            <span
+                                className={SelectArrayInputClasses.placeholder}
+                            >
+                                {typeof placeholder === 'string'
+                                    ? translate(placeholder, { _: placeholder })
+                                    : placeholder}
+                            </span>
+                        ) : (
+                            <div className={SelectArrayInputClasses.chips}>
+                                {selectedChoices.map(item => (
                                     <Chip
                                         key={getChoiceValue(item)}
                                         label={renderMenuItemOption(item)}
@@ -348,8 +374,9 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                                         size="small"
                                     />
                                 ))}
-                        </div>
-                    )}
+                            </div>
+                        );
+                    }}
                     disabled={disabled || readOnly}
                     readOnly={readOnly}
                     data-testid="selectArray"
@@ -379,9 +406,13 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
 export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
-    Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+    Omit<
+        FormControlProps,
+        'defaultValue' | 'onBlur' | 'onChange' | 'placeholder'
+    > & {
         options?: SelectProps;
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
+        placeholder?: ReactNode;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
@@ -429,6 +460,7 @@ const PREFIX = 'RaSelectArrayInput';
 export const SelectArrayInputClasses = {
     chips: `${PREFIX}-chips`,
     chip: `${PREFIX}-chip`,
+    placeholder: `${PREFIX}-placeholder`,
 };
 
 const StyledFormControl = styled(FormControl, {
@@ -448,13 +480,17 @@ const StyledFormControl = styled(FormControl, {
         marginTop: theme.spacing(0.5),
         marginRight: theme.spacing(0.5),
     },
+
+    [`& .${SelectArrayInputClasses.placeholder}`]: {
+        color: (theme.vars || theme).palette.text.secondary,
+    },
 }));
 
 const defaultOptions = {};
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaSelectArrayInput: 'root' | 'chips' | 'chip';
+        RaSelectArrayInput: 'root' | 'chips' | 'chip' | 'placeholder';
     }
 
     interface ComponentsPropsList {

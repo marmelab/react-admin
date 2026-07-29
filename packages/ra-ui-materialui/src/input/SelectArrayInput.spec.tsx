@@ -19,6 +19,9 @@ import {
     InsideReferenceArrayInputDefaultValue,
     CreateLabel,
     CreateLabelRendered,
+    Placeholder,
+    PlaceholderElement,
+    PlaceholderTranslated,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -785,6 +788,34 @@ describe('<SelectArrayInput />', () => {
         await screen.findByText('Foo');
         fireEvent.click(screen.getByLabelText('Add'));
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
+    });
+
+    describe('placeholder', () => {
+        it('should render the placeholder when no choice is selected', async () => {
+            render(<Placeholder />);
+            await screen.findByText('All Channels');
+        });
+
+        it('should render the selected choices instead of the placeholder', async () => {
+            render(<Placeholder />);
+            await screen.findByText('All Channels');
+            fireEvent.mouseDown(screen.getByLabelText('Channels'));
+            fireEvent.click(screen.getByText('Email'));
+            await waitFor(() => {
+                expect(screen.queryByText('All Channels')).toBeNull();
+            });
+            expect(screen.getByDisplayValue('email')).not.toBeNull();
+        });
+
+        it('should accept a React element as placeholder', async () => {
+            render(<PlaceholderElement />);
+            await screen.findByText('All Channels');
+        });
+
+        it('should translate the placeholder', async () => {
+            render(<PlaceholderTranslated />);
+            await screen.findByText('All Channels');
+        });
     });
 
     describe('inside ReferenceArrayInput', () => {
