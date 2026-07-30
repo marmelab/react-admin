@@ -91,13 +91,13 @@ import { Labeled } from '../Labeled';
  *    { id: 'photography', name: 'myroot.tags.photography' },
  * ];
  *
- * Use the `placeholder` prop to render a custom text when no choice is selected:
+ * Use the `emptyText` prop to render a custom text when no choice is selected:
  * @example
  * const channelChoices = [
  *    { id: 'email', name: 'Email' },
  *    { id: 'push', name: 'Push Notification' },
  * ];
- * <SelectArrayInput source="channels" choices={channelChoices} placeholder={<i>All Channels</i>} />
+ * <SelectArrayInput source="channels" choices={channelChoices} emptyText={<i>No channel</i>} />
  */
 export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     const props = useThemeProps({
@@ -111,6 +111,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         createLabel,
         createValue,
         disableValue = 'disabled',
+        emptyText,
         format,
         helperText,
         label,
@@ -126,7 +127,6 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         optionText,
         optionValue = 'id',
         parse,
-        placeholder,
         resource: resourceProp,
         size = 'small',
         source: sourceProp,
@@ -140,7 +140,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
 
     const inputLabel = useRef(null);
     const translate = useTranslate();
-    const hasPlaceholder = placeholder != null && placeholder !== '';
+    const hasEmptyText = emptyText != null && emptyText !== '';
 
     const {
         allChoices,
@@ -320,7 +320,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     ref={inputLabel}
                     id={`${id}-outlined-label`}
                     htmlFor={id}
-                    shrink={hasPlaceholder ? true : undefined}
+                    shrink={hasEmptyText ? true : undefined}
                     {...InputLabelProps}
                 >
                     <FieldTitle
@@ -343,7 +343,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     }
                     multiple
                     error={!!fetchError || invalid}
-                    displayEmpty={hasPlaceholder ? true : undefined}
+                    displayEmpty={hasEmptyText ? true : undefined}
                     renderValue={(selected: any[]) => {
                         const selectedChoices = (
                             Array.isArray(selected) ? selected : []
@@ -355,14 +355,11 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                                 )
                             )
                             .filter(item => !!item);
-                        return selectedChoices.length === 0 &&
-                            hasPlaceholder ? (
-                            <span
-                                className={SelectArrayInputClasses.placeholder}
-                            >
-                                {typeof placeholder === 'string'
-                                    ? translate(placeholder, { _: placeholder })
-                                    : placeholder}
+                        return selectedChoices.length === 0 && hasEmptyText ? (
+                            <span className={SelectArrayInputClasses.emptyText}>
+                                {typeof emptyText === 'string'
+                                    ? translate(emptyText, { _: emptyText })
+                                    : emptyText}
                             </span>
                         ) : (
                             <div className={SelectArrayInputClasses.chips}>
@@ -406,13 +403,10 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
 export type SelectArrayInputProps = ChoicesProps &
     Omit<SupportCreateSuggestionOptions, 'handleChange'> &
     Omit<CommonInputProps, 'source'> &
-    Omit<
-        FormControlProps,
-        'defaultValue' | 'onBlur' | 'onChange' | 'placeholder'
-    > & {
+    Omit<FormControlProps, 'defaultValue' | 'onBlur' | 'onChange'> & {
+        emptyText?: ReactNode;
         options?: SelectProps;
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
-        placeholder?: ReactNode;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
     };
@@ -460,7 +454,7 @@ const PREFIX = 'RaSelectArrayInput';
 export const SelectArrayInputClasses = {
     chips: `${PREFIX}-chips`,
     chip: `${PREFIX}-chip`,
-    placeholder: `${PREFIX}-placeholder`,
+    emptyText: `${PREFIX}-emptyText`,
 };
 
 const StyledFormControl = styled(FormControl, {
@@ -481,7 +475,7 @@ const StyledFormControl = styled(FormControl, {
         marginRight: theme.spacing(0.5),
     },
 
-    [`& .${SelectArrayInputClasses.placeholder}`]: {
+    [`& .${SelectArrayInputClasses.emptyText}`]: {
         color: (theme.vars || theme).palette.text.secondary,
     },
 }));
@@ -490,7 +484,7 @@ const defaultOptions = {};
 
 declare module '@mui/material/styles' {
     interface ComponentNameToClassKey {
-        RaSelectArrayInput: 'root' | 'chips' | 'chip' | 'placeholder';
+        RaSelectArrayInput: 'root' | 'chips' | 'chip' | 'emptyText';
     }
 
     interface ComponentsPropsList {

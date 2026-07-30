@@ -299,34 +299,34 @@ const channelChoices = [
     { id: 'sms', name: 'SMS' },
 ];
 
-export const Placeholder = () => (
+export const EmptyText = () => (
     <Wrapper>
         <SelectArrayInput
             source="channels"
             choices={channelChoices}
-            placeholder="No channel"
+            emptyText="No channel"
             sx={{ width: 300 }}
         />
         <FormInspector name="channels" />
     </Wrapper>
 );
 
-export const PlaceholderElement = () => (
+export const EmptyTextElement = () => (
     <Wrapper>
         <SelectArrayInput
             source="channels"
             choices={channelChoices}
-            placeholder={<i>No channel</i>}
+            emptyText={<i>No channel</i>}
             sx={{ width: 300 }}
         />
     </Wrapper>
 );
 
-export const PlaceholderTranslated = () => (
+export const EmptyTextTranslated = () => (
     <AdminContext
         i18nProvider={polyglotI18nProvider(() => ({
             ...englishMessages,
-            myapp: { channels: { placeholder: 'No channel' } },
+            myapp: { channels: { none: 'No channel' } },
         }))}
         defaultTheme="light"
     >
@@ -335,7 +335,7 @@ export const PlaceholderTranslated = () => (
                 <SelectArrayInput
                     source="channels"
                     choices={channelChoices}
-                    placeholder="myapp.channels.placeholder"
+                    emptyText="myapp.channels.none"
                     sx={{ width: 300 }}
                 />
             </SimpleForm>
@@ -343,7 +343,7 @@ export const PlaceholderTranslated = () => (
     </AdminContext>
 );
 
-export const PlaceholderInFilter = () => {
+export const EmptyTextInFilter = () => {
     const fakeData = {
         posts: [
             { id: 1, title: 'Sunset over the bay', channels: ['email'] },
@@ -369,7 +369,7 @@ export const PlaceholderInFilter = () => {
                                         key="channels"
                                         source="channels"
                                         choices={channelChoices}
-                                        placeholder="All channels"
+                                        emptyText="All channels"
                                     />,
                                 ]}
                             >

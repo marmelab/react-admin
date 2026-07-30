@@ -67,12 +67,12 @@ The form value for the source must be an array of the selected values, e.g.
 | `create`          | Optional | `Element`                   | -                   | A React Element to render when users want to create a new choice                                                                       |
 | `createLabel`     | Optional | `string` &#124; `ReactNode` | `ra.action. create` | The label for the menu item allowing users to create a new choice. Used when the filter is empty                                       |
 | `disableValue`    | Optional | `string`                    | 'disabled'          | The custom field name used in `choices` to disable some choices                                                                        |
+| `emptyText`       | Optional | `string` &#124; `ReactNode` | -                   | The text to display when no choice is selected                                                                                         |
 | `InputLabelProps` | Optional | `Object`                    | -                   | Props to pass to the underlying `<InputLabel>` element                                                                                 |
 | `onCreate`        | Optional | `Function`                  | -                   | A function called with the current filter value when users choose to create a new choice.                                              |
 | `options`         | Optional | `Object`                    | -                   | Props to pass to the underlying `<SelectInput>` element                                                                                |
 | `optionText`      | Optional | `string` &#124; `Function`  | `name`              | Field name of record to display in the suggestion item or function which accepts the current record as argument (`record => {string}`) |
 | `optionValue`     | Optional | `string`                    | `id`                | Field name of record containing the value to use as input value                                                                        |
-| `placeholder`     | Optional | `string` &#124; `ReactNode` | -                   | The text to display when no choice is selected                                                                                         |
 | `translateChoice` | Optional | `boolean`                   | `true`              | Whether the choices should be translated                                                                                               |
 
 `<SelectArrayInput>` also accepts the [common input props](./Inputs.md#common-input-props).
@@ -284,6 +284,45 @@ const choices = [
 <SelectArrayInput source="roles" choices={choices} disableValue="not_available" />
 ```
 
+## `emptyText`
+
+When no choice is selected, `<SelectArrayInput>` renders an empty input. Use the `emptyText` prop to render a text instead:
+
+```jsx
+const channelChoices = [
+    { id: 'email', name: 'Email' },
+    { id: 'push', name: 'Push Notification' },
+    { id: 'sms', name: 'SMS' },
+];
+<SelectArrayInput source="channels" choices={channelChoices} emptyText="No channel" />
+```
+
+As soon as the user selects a choice, the empty text gives way to the chips of the selected choices.
+
+The prop is especially useful in filters, where selecting no choice means "don't filter on that field". The empty text is then the place to say so:
+
+```jsx
+const postFilters = [
+    <SelectArrayInput source="channels" choices={channelChoices} emptyText="All channels" alwaysOn />,
+];
+```
+
+The `emptyText` prop accepts either a string or a React element:
+
+```jsx
+<SelectArrayInput source="channels" choices={channelChoices} emptyText={<i>No channel</i>} />
+```
+
+Strings are translated, so you can use a translation key:
+
+```jsx
+<SelectArrayInput source="channels" choices={channelChoices} emptyText="myapp.channels.none" />
+```
+
+**Note**: Setting an `emptyText` keeps the input label above the input (i.e. in its shrunk state) even when no choice is selected, so that the label and the empty text don't overlap.
+
+**Tip**: Unlike [`<SelectInput emptyText>`](./SelectInput.md#emptytext), which adds an empty *option* to the dropdown to let users unselect their choice, `<SelectArrayInput emptyText>` only renders inside the input. A multi-selection needs no empty option, as users can unselect a choice by clicking it again.
+
 ## `InputLabelProps`
 
 Use the `options` attribute if you want to override Material UI's `<InputLabel>` attributes:
@@ -409,54 +448,15 @@ const choices = [
 
 **Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<SelectArrayInput>` inside a `<ReferenceArrayInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
 
-## `placeholder`
-
-When no choice is selected, `<SelectArrayInput>` renders an empty input. Use the `placeholder` prop to render a text instead:
-
-```jsx
-const channelChoices = [
-    { id: 'email', name: 'Email' },
-    { id: 'push', name: 'Push Notification' },
-    { id: 'sms', name: 'SMS' },
-];
-<SelectArrayInput source="channels" choices={channelChoices} placeholder="No channel" />
-```
-
-As soon as the user selects a choice, the placeholder gives way to the chips of the selected choices.
-
-The prop is especially useful in filters, where selecting no choice means "don't filter on that field". The placeholder is then the place to say so:
-
-```jsx
-const postFilters = [
-    <SelectArrayInput source="channels" choices={channelChoices} placeholder="All channels" alwaysOn />,
-];
-```
-
-The `placeholder` prop accepts either a string or a React element:
-
-```jsx
-<SelectArrayInput source="channels" choices={channelChoices} placeholder={<i>No channel</i>} />
-```
-
-String placeholders are translated, so you can use a translation key:
-
-```jsx
-<SelectArrayInput source="channels" choices={channelChoices} placeholder="myapp.channels.none" />
-```
-
-**Note**: Setting a `placeholder` keeps the input label above the input (i.e. in its shrunk state) even when no choice is selected, so that the label and the placeholder don't overlap.
-
-**Tip**: `placeholder` renders *inside the input*. It is not the equivalent of [`<SelectInput emptyText>`](./SelectInput.md#emptytext), which adds an empty *option* to the dropdown to let users unselect their choice - a multi-selection needs no such option, as users can unselect a choice by clicking it again.
-
 ## `sx`: CSS API
 
 The `<SelectArrayInput>` component accepts the usual `className` prop. You can also override many styles of the inner components thanks to the `sx` property (see [the `sx` documentation](./SX.md) for syntax and examples). This property accepts the following subclasses:
 
-| Rule name                           | Description                                                                        |
-|-------------------------------------|------------------------------------------------------------------------------------|
-| `& .RaSelectArrayInput-chip`        | Applied to each Material UI's `Chip` component used as selected item               |
-| `& .RaSelectArrayInput-chips`       | Applied to the container of Material UI's `Chip` components used as selected items |
-| `& .RaSelectArrayInput-placeholder` | Applied to the `placeholder` element, rendered when no choice is selected          |
+| Rule name                          | Description                                                                        |
+|------------------------------------|------------------------------------------------------------------------------------|
+| `& .RaSelectArrayInput-chip`       | Applied to each Material UI's `Chip` component used as selected item               |
+| `& .RaSelectArrayInput-chips`      | Applied to the container of Material UI's `Chip` components used as selected items |
+| `& .RaSelectArrayInput-emptyText`  | Applied to the `emptyText` element, rendered when no choice is selected            |
 
 To override the style of all instances of `<SelectArrayInput>` using the [application-wide style overrides](./AppTheme.md#theming-individual-components), use the `RaSelectArrayInput` key.
 
