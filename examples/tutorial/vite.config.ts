@@ -38,22 +38,16 @@ export default defineConfig(async () => {
         plugins: [react()],
         resolve: {
             preserveSymlinks: true,
+            // this example pins its own react and MUI versions while the monorepo
+            // root uses others, and preserveSymlinks makes the packages/*/src sources
+            // resolve them from the root. Without dedupe we end up with two instances.
+            dedupe: [
+                'react',
+                'react-dom',
+                '@mui/material',
+                '@mui/icons-material',
+            ],
             alias: [
-                // The 2 next aliases are needed to avoid having multiple MUI instances
-                {
-                    find: '@mui/material',
-                    replacement: path.resolve(
-                        __dirname,
-                        'node_modules/@mui/material'
-                    ),
-                },
-                {
-                    find: '@mui/icons-material',
-                    replacement: path.resolve(
-                        __dirname,
-                        'node_modules/@mui/icons-material'
-                    ),
-                },
                 ...Object.keys(aliases).map(packageName => ({
                     find: packageName,
                     replacement: aliases[packageName],
