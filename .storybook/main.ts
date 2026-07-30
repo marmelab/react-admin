@@ -32,6 +32,15 @@ const config: StorybookConfig = {
     core: {
         disableTelemetry: true,
     },
+    features: {
+        // no story uses play() nor action(), so both panels are dead weight.
+        // The onboarding widgets go with them: leaving them on while the test
+        // addon is off makes the manager log UniversalStore timeouts.
+        interactions: false,
+        actions: false,
+        sidebarOnboardingChecklist: false,
+        menuOnboardingChecklist: false,
+    },
     viteFinal: async viteConfig => {
         const alias = viteConfig.resolve?.alias;
         const builderAliases = Array.isArray(alias)
