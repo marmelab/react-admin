@@ -21,6 +21,7 @@ import {
     CreateLabelRendered,
     Placeholder,
     PlaceholderElement,
+    PlaceholderInFilter,
     PlaceholderTranslated,
 } from './SelectArrayInput.stories';
 
@@ -793,28 +794,33 @@ describe('<SelectArrayInput />', () => {
     describe('placeholder', () => {
         it('should render the placeholder when no choice is selected', async () => {
             render(<Placeholder />);
-            await screen.findByText('All Channels');
+            await screen.findByText('No channel');
         });
 
         it('should render the selected choices instead of the placeholder', async () => {
             render(<Placeholder />);
-            await screen.findByText('All Channels');
+            await screen.findByText('No channel');
             fireEvent.mouseDown(screen.getByLabelText('Channels'));
             fireEvent.click(screen.getByText('Email'));
             await waitFor(() => {
-                expect(screen.queryByText('All Channels')).toBeNull();
+                expect(screen.queryByText('No channel')).toBeNull();
             });
             expect(screen.getByDisplayValue('email')).not.toBeNull();
         });
 
         it('should accept a React element as placeholder', async () => {
             render(<PlaceholderElement />);
-            await screen.findByText('All Channels');
+            await screen.findByText('No channel');
         });
 
         it('should translate the placeholder', async () => {
             render(<PlaceholderTranslated />);
-            await screen.findByText('All Channels');
+            await screen.findByText('No channel');
+        });
+
+        it('should render the placeholder in a filter', async () => {
+            render(<PlaceholderInFilter />);
+            await screen.findByText('All channels');
         });
     });
 

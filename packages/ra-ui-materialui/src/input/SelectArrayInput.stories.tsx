@@ -8,7 +8,7 @@ import {
     DialogTitle,
     IconButton,
     Stack,
-    TextField,
+    TextField as MuiTextField,
     Typography,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -25,7 +25,9 @@ import {
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
+import { TextField } from '../field';
 import { SimpleForm } from '../form';
+import { Datagrid, List } from '../list';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormInspector } from './common';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -291,16 +293,18 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
+const channelChoices = [
+    { id: 'email', name: 'Email' },
+    { id: 'push', name: 'Push Notification' },
+    { id: 'sms', name: 'SMS' },
+];
+
 export const Placeholder = () => (
     <Wrapper>
         <SelectArrayInput
             source="channels"
-            choices={[
-                { id: 'email', name: 'Email' },
-                { id: 'push', name: 'Push Notification' },
-                { id: 'sms', name: 'SMS' },
-            ]}
-            placeholder="All Channels"
+            choices={channelChoices}
+            placeholder="No channel"
             sx={{ width: 300 }}
         />
         <FormInspector name="channels" />
@@ -311,12 +315,8 @@ export const PlaceholderElement = () => (
     <Wrapper>
         <SelectArrayInput
             source="channels"
-            choices={[
-                { id: 'email', name: 'Email' },
-                { id: 'push', name: 'Push Notification' },
-                { id: 'sms', name: 'SMS' },
-            ]}
-            placeholder={<i>All Channels</i>}
+            choices={channelChoices}
+            placeholder={<i>No channel</i>}
             sx={{ width: 300 }}
         />
     </Wrapper>
@@ -326,7 +326,7 @@ export const PlaceholderTranslated = () => (
     <AdminContext
         i18nProvider={polyglotI18nProvider(() => ({
             ...englishMessages,
-            myapp: { channels: { placeholder: 'All Channels' } },
+            myapp: { channels: { placeholder: 'No channel' } },
         }))}
         defaultTheme="light"
     >
@@ -334,11 +334,7 @@ export const PlaceholderTranslated = () => (
             <SimpleForm>
                 <SelectArrayInput
                     source="channels"
-                    choices={[
-                        { id: 'email', name: 'Email' },
-                        { id: 'push', name: 'Push Notification' },
-                        { id: 'sms', name: 'SMS' },
-                    ]}
+                    choices={channelChoices}
                     placeholder="myapp.channels.placeholder"
                     sx={{ width: 300 }}
                 />
@@ -346,6 +342,48 @@ export const PlaceholderTranslated = () => (
         </Create>
     </AdminContext>
 );
+
+export const PlaceholderInFilter = () => {
+    const fakeData = {
+        posts: [
+            { id: 1, title: 'Sunset over the bay', channels: ['email'] },
+            { id: 2, title: 'Ten tips for winter', channels: ['push', 'sms'] },
+            { id: 3, title: 'A tale of two cities', channels: [] },
+        ],
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <AdminContext
+                dataProvider={fakeRestProvider(fakeData, false)}
+                i18nProvider={i18nProvider}
+                defaultTheme="light"
+            >
+                <AdminUI>
+                    <Resource
+                        name="posts"
+                        list={() => (
+                            <List
+                                filters={[
+                                    <SelectArrayInput
+                                        alwaysOn
+                                        key="channels"
+                                        source="channels"
+                                        choices={channelChoices}
+                                        placeholder="All channels"
+                                    />,
+                                ]}
+                            >
+                                <Datagrid>
+                                    <TextField source="title" />
+                                </Datagrid>
+                            </List>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const InsideArrayInput = () => (
     <Wrapper>
@@ -393,7 +431,7 @@ const CreateRole = () => {
         <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
-                    <TextField
+                    <MuiTextField
                         label="Role name"
                         value={value}
                         onChange={event => setValue(event.target.value)}

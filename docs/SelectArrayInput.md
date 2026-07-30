@@ -419,26 +419,34 @@ const channelChoices = [
     { id: 'push', name: 'Push Notification' },
     { id: 'sms', name: 'SMS' },
 ];
-<SelectArrayInput source="channels" choices={channelChoices} placeholder="All Channels" />
+<SelectArrayInput source="channels" choices={channelChoices} placeholder="No channel" />
 ```
 
-This is especially useful in filters, to tell users what happens when they don't select any choice.
-
 As soon as the user selects a choice, the placeholder gives way to the chips of the selected choices.
+
+The prop is especially useful in filters, where selecting no choice means "don't filter on that field". The placeholder is then the place to say so:
+
+```jsx
+const postFilters = [
+    <SelectArrayInput source="channels" choices={channelChoices} placeholder="All channels" alwaysOn />,
+];
+```
 
 The `placeholder` prop accepts either a string or a React element:
 
 ```jsx
-<SelectArrayInput source="channels" choices={channelChoices} placeholder={<i>All Channels</i>} />
+<SelectArrayInput source="channels" choices={channelChoices} placeholder={<i>No channel</i>} />
 ```
 
 String placeholders are translated, so you can use a translation key:
 
 ```jsx
-<SelectArrayInput source="channels" choices={channelChoices} placeholder="myapp.channels.all" />
+<SelectArrayInput source="channels" choices={channelChoices} placeholder="myapp.channels.none" />
 ```
 
 **Note**: Setting a `placeholder` keeps the input label above the input (i.e. in its shrunk state) even when no choice is selected, so that the label and the placeholder don't overlap.
+
+**Tip**: `placeholder` renders *inside the input*. It is not the equivalent of [`<SelectInput emptyText>`](./SelectInput.md#emptytext), which adds an empty *option* to the dropdown to let users unselect their choice - a multi-selection needs no such option, as users can unselect a choice by clicking it again.
 
 ## `sx`: CSS API
 
