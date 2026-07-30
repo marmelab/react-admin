@@ -22444,9 +22444,9 @@ __metadata:
   linkType: hard
 
 "seroval@npm:^1.4.1":
-  version: 1.4.2
-  resolution: "seroval@npm:1.4.2"
-  checksum: aac544dcdaffebe562ed0793bab684a456503a4a74039df9d8297b0c0e28663924f0401a47282a91ad2f4e5b83db2e07a42da1834b8b537c008e3529c0db38ba
+  version: 1.5.6
+  resolution: "seroval@npm:1.5.6"
+  checksum: 47e4fb25305bf05fdf300cac6b0d4aaaaf1e12f15c819195afcdf512d88901a3f1f7754ac5a2de740cc0bb04e912c653fbf0129fb3e4c81ce12809e6aa5815e3
   languageName: node
   linkType: hard
 
