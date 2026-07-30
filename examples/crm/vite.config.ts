@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
-import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => {
@@ -43,13 +42,13 @@ export default defineConfig(async () => {
             open: true,
         },
         base: './',
-        esbuild: {
-            keepNames: true,
-        },
         build: {
             sourcemap: true,
-            rollupOptions: {
-                plugins: [preserveDirectives()],
+            rolldownOptions: {
+                output: {
+                    // keep function and class names readable in the profiler
+                    keepNames: true,
+                },
             },
         },
         resolve: {
@@ -62,6 +61,13 @@ export default defineConfig(async () => {
                 //     find: 'scheduler/tracing',
                 //     replacement: 'scheduler/tracing-profiling',
                 // },
+                // @mui/icons-material v5 has no exports map, so its deep imports
+                // resolve to CJS files whose default export is no longer the icon
+                // under the Vite 8 CJS interop. Point them at the ESM build.
+                {
+                    find: /^@mui\/icons-material\/(.*)/,
+                    replacement: '@mui/icons-material/esm/$1',
+                },
                 // we need to manually follow the symlinks for local packages to allow deep HMR
                 ...Object.keys(aliases).map(packageName => ({
                     find: packageName,

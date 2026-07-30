@@ -78,6 +78,10 @@ export default defineConfig(({ mode }) => ({
   },
   base: "./",
   resolve: {
+    // this example pins react 19 while the monorepo root uses react 18, so the
+    // packages/*/src sources aliased below resolve react from the root. Without
+    // dedupe we end up with two react instances.
+    dedupe: ["react", "react-dom"],
     alias: [
       {
         find: /^@mui\/icons-material\/(.*)/,

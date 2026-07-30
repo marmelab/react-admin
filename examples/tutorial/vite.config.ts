@@ -38,6 +38,10 @@ export default defineConfig(async () => {
         plugins: [react()],
         resolve: {
             preserveSymlinks: true,
+            // this example pins react 19 while the monorepo root uses react 18, and
+            // preserveSymlinks makes the packages/*/src sources resolve react from the
+            // root. Without dedupe we end up with two react instances.
+            dedupe: ['react', 'react-dom'],
             alias: [
                 // The 2 next aliases are needed to avoid having multiple MUI instances
                 {
@@ -48,10 +52,12 @@ export default defineConfig(async () => {
                     ),
                 },
                 {
+                    // the ESM build, because the CJS root files no longer expose the
+                    // icon as their default export under the Vite 8 CJS interop
                     find: '@mui/icons-material',
                     replacement: path.resolve(
                         __dirname,
-                        'node_modules/@mui/icons-material'
+                        'node_modules/@mui/icons-material/esm'
                     ),
                 },
                 ...Object.keys(aliases).map(packageName => ({
