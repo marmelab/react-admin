@@ -536,4 +536,104 @@ describe('useGetManyAggregate', () => {
             expect(abort).toHaveBeenCalled();
         });
     });
+    it('should resolve all the aggregated calls in a single React commit', async () => {
+        // Each aggregated call belongs to a distinct useQuery, so resolving them one
+        // by one makes React commit each of them separately. A child updating its
+        // state during the commit phase (like an avatar reporting its image loading
+        // status from a layout effect) then turns those commits into nested updates
+        // instead of batched ones, and React throws "Maximum update depth exceeded"
+        // past 50 of them.
+        // See https://github.com/marmelab/react-admin/issues/11324
+        const CONSUMERS = 30;
+        let commits = 0;
+        const commitsWithNewData: number[] = [];
+
+        // updates its state during the commit phase, like Base UI's Avatar.Image
+        const CommitPhaseChild = () => {
+            const [status, setStatus] = React.useState('idle');
+            React.useLayoutEffect(() => {
+                setStatus('loaded');
+            }, []);
+            return <span>{status}</span>;
+        };
+
+        const Consumer = ({ id }: { id: number }) => {
+            const { data } = useGetManyAggregate('posts', { ids: [id] });
+            const hadData = React.useRef(false);
+            React.useLayoutEffect(() => {
+                if (data && !hadData.current) {
+                    hadData.current = true;
+                    commitsWithNewData.push(commits);
+                }
+            });
+            return data ? <CommitPhaseChild /> : <span>pending</span>;
+        };
+
+        const dataProviderWithManyRecords = testDataProvider({
+            getMany: jest.fn((_resource, { ids }) =>
+                Promise.resolve({
+                    data: ids.map(id => ({ id, title: `post ${id}` })),
+                })
+            ) as any,
+        });
+        render(
+            <CoreAdminContext dataProvider={dataProviderWithManyRecords}>
+                <React.Profiler id="consumers" onRender={() => commits++}>
+                    {Array.from({ length: CONSUMERS }, (_, index) => (
+                        <Consumer key={index} id={index + 1} />
+                    ))}
+                </React.Profiler>
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(commitsWithNewData).toHaveLength(CONSUMERS);
+        });
+        expect(dataProviderWithManyRecords.getMany).toHaveBeenCalledTimes(1);
+        expect(new Set(commitsWithNewData).size).toBe(1);
+    });
+    it('should not repopulate the cache of a query canceled while the request is in flight', async () => {
+        let resolveGetMany: (value: any) => void = () => undefined;
+        const dataProvider = testDataProvider({
+            getMany: jest.fn(
+                () =>
+                    new Promise(resolve => {
+                        resolveGetMany = resolve;
+                    })
+            ) as any,
+        });
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                dataProvider={dataProvider}
+                queryClient={queryClient}
+            >
+                <UseGetManyAggregate resource="posts" ids={[1]} />
+                <UseGetManyAggregate resource="posts" ids={[2]} />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(dataProvider.getMany).toHaveBeenCalledTimes(1);
+        });
+        // cancel one of the two pending calls, not the aggregated request
+        await queryClient.cancelQueries({
+            queryKey: ['posts', 'getMany', { ids: ['1'] }],
+            exact: true,
+        });
+        resolveGetMany({
+            data: [
+                { id: 1, title: 'foo' },
+                { id: 2, title: 'bar' },
+            ],
+        });
+        // the call that was not canceled still gets its data
+        await waitFor(() => {
+            expect(
+                queryClient.getQueryData(['posts', 'getMany', { ids: ['2'] }])
+            ).toEqual([{ id: 2, title: 'bar' }]);
+        });
+        // the canceled one is left alone
+        expect(
+            queryClient.getQueryData(['posts', 'getMany', { ids: ['1'] }])
+        ).toBeUndefined();
+    });
 });
