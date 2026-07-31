@@ -82,7 +82,7 @@ import { useEvent } from '../util';
  */
 export const useDelete = <
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
 >(
     resource?: string,
     params: Partial<DeleteParams<RecordType>> = {},
@@ -286,7 +286,7 @@ export interface UseDeleteMutateParams<RecordType extends RaRecord = any> {
 
 export type UseDeleteOptions<
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
 > = Omit<
     UseMutationOptions<
         RecordType,
@@ -304,7 +304,7 @@ export type UseDeleteOptions<
 
 export type UseDeleteResult<
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
     TReturnPromise extends boolean = boolean,
 > = [
     (

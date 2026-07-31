@@ -77,7 +77,7 @@ import { useEvent } from '../util';
  */
 export const useUpdateMany = <
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
 >(
     resource?: string,
     params: Partial<UpdateManyParams<Partial<RecordType>>> = {},
@@ -303,7 +303,7 @@ export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
 
 export type UseUpdateManyOptions<
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
 > = Omit<
     UseMutationOptions<
         Array<RecordType['id']>,
@@ -330,7 +330,7 @@ export type UseUpdateManyOptions<
 export type UseUpdateManyResult<
     RecordType extends RaRecord = any,
     TReturnPromise extends boolean = boolean,
-    MutationError = Error,
+    MutationError = unknown,
 > = [
     (
         resource?: string,

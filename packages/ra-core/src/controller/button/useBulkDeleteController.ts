@@ -102,7 +102,7 @@ export const useBulkDeleteController = <
 
 export interface UseBulkDeleteControllerParams<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > {
     mutationMode?: MutationMode;
     mutationOptions?: UseDeleteManyOptions<RecordType, MutationOptionsError>;

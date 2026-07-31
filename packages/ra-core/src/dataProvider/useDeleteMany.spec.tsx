@@ -465,16 +465,3 @@ describe('useDeleteMany', () => {
         });
     });
 });
-
-/**
- * Type-level check: the error type defaults to Error, so callbacks don't
- * require a cast. See https://github.com/marmelab/react-admin/issues/11262
- */
-const _useDeleteManyErrorTypeCheck = () => {
-    const [deleteMany] = useDeleteMany<{ id: number }>();
-    deleteMany('posts', { ids: [1] }, { onError: error => error.message });
-    useDeleteMany<{ id: number }>('posts', undefined, {
-        onError: error => error.message,
-        onSettled: (_data, error) => error?.message,
-    });
-};

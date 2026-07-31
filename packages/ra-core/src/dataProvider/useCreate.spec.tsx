@@ -728,20 +728,3 @@ describe('useCreate', () => {
         await screen.findByText('3: New Post');
     });
 });
-
-/**
- * Type-level check: the error type defaults to Error, so callbacks don't
- * require a cast. See https://github.com/marmelab/react-admin/issues/11262
- */
-const _useCreateErrorTypeCheck = () => {
-    const [create] = useCreate<{ title: string }>();
-    create(
-        'posts',
-        { data: { title: 'Hello' } },
-        { onError: error => error.message }
-    );
-    useCreate<{ title: string }>('posts', undefined, {
-        onError: error => error.message,
-        onSettled: (_data, error) => error?.message,
-    });
-};

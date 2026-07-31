@@ -156,7 +156,7 @@ const sanitizeRestProps = ({
 
 export interface BulkUpdateWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > extends Omit<ButtonProps, 'onError'>,
         UseBulkUpdateControllerParams<RecordType, MutationOptionsError> {
     confirmContent?: React.ReactNode;
