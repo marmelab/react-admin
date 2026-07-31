@@ -104,7 +104,6 @@
         }
     },
     "resolutions": {
-        "ra-data-graphql/@apollo/client": "4.1.6",
         "minimist": "^1.2.6",
         "ejs": "^3.1.7",
         "@types/react": "^18.3.3",
