@@ -16,7 +16,6 @@ import {
 } from 'ra-core';
 import {
     ApolloClient,
-    ApolloClientOptions,
     ApolloError,
     ApolloQueryResult,
     MutationOptions,
@@ -26,7 +25,9 @@ import {
     ServerError,
 } from '@apollo/client';
 
-import buildApolloClient from './buildApolloClient';
+import buildApolloClient, {
+    BuildApolloClientOptions,
+} from './buildApolloClient';
 import {
     QUERY_TYPES as INNER_QUERY_TYPES,
     MUTATION_TYPES as INNER_MUTATION_TYPES,
@@ -39,6 +40,7 @@ import {
 } from './introspection';
 
 export * from './introspection';
+export type { BuildApolloClientOptions } from './buildApolloClient';
 export const QUERY_TYPES = INNER_QUERY_TYPES;
 export const MUTATION_TYPES = INNER_MUTATION_TYPES;
 export const ALL_TYPES = INNER_ALL_TYPES;
@@ -120,7 +122,7 @@ export type GetWatchQueryOptions = (
 
 export type Options = {
     client?: ApolloClient<unknown>;
-    clientOptions?: Partial<ApolloClientOptions<unknown>>;
+    clientOptions?: BuildApolloClientOptions;
     introspection?: false | Partial<IntrospectionOptions>;
     override?: {
         [key: string]: (params: any) => BuildQueryResult;
