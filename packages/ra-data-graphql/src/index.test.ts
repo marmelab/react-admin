@@ -1,4 +1,8 @@
-import { ApolloClient, ApolloError } from '@apollo/client';
+import {
+    ApolloClient,
+    CombinedGraphQLErrors,
+    ServerError,
+} from '@apollo/client';
 import { GraphQLError } from 'graphql';
 import gql from 'graphql-tag';
 
@@ -7,12 +11,10 @@ import buildDataProvider, { BuildQueryFactory } from './index';
 describe('GraphQL data provider', () => {
     describe('mutate', () => {
         describe('with error', () => {
-            it('sets ApolloError in body', async () => {
+            const buildDataProviderThrowing = (error: unknown) => {
                 const mockClient = {
                     mutate: async () => {
-                        throw new ApolloError({
-                            graphQLErrors: [new GraphQLError('some error')],
-                        });
+                        throw error;
                     },
                 };
                 const mockBuildQueryFactory = () => {
@@ -27,22 +29,52 @@ describe('GraphQL data provider', () => {
                         parseResponse: () => ({}),
                     });
                 };
-                const dataProvider = await buildDataProvider({
-                    client: mockClient as unknown as ApolloClient<unknown>,
+                return buildDataProvider({
+                    client: mockClient as unknown as ApolloClient,
                     introspection: false,
                     buildQuery:
                         mockBuildQueryFactory as unknown as BuildQueryFactory,
                 });
+            };
+
+            const update = dataProvider =>
+                dataProvider.update('myResource', {
+                    id: 1,
+                    previousData: { id: 1 },
+                    data: {},
+                });
+
+            it('sets the GraphQL errors in body', async () => {
+                const dataProvider = buildDataProviderThrowing(
+                    new CombinedGraphQLErrors({
+                        errors: [new GraphQLError('some error')],
+                    })
+                );
                 try {
-                    await dataProvider.update('myResource', {
-                        id: 1,
-                        previousData: { id: 1 },
-                        data: {},
-                    });
+                    await update(dataProvider);
                 } catch (error) {
-                    expect(error.body).not.toBeNull();
-                    expect(error.body.graphQLErrors).toBeDefined();
+                    expect(error.status).toBe(200);
                     expect(error.body.graphQLErrors).toHaveLength(1);
+                    expect(error.body.graphQLErrors[0].message).toBe(
+                        'some error'
+                    );
+                    return;
+                }
+                fail('expected data provider to throw an error');
+            });
+
+            it('sets the status code of a server error', async () => {
+                const dataProvider = buildDataProviderThrowing(
+                    new ServerError('Service Unavailable', {
+                        response: new Response('', { status: 503 }),
+                        bodyText: '',
+                    })
+                );
+                try {
+                    await update(dataProvider);
+                } catch (error) {
+                    expect(error.status).toBe(503);
+                    expect(error.message).toBe('Service Unavailable');
                     return;
                 }
                 fail('expected data provider to throw an error');
@@ -81,7 +113,7 @@ describe('GraphQL data provider', () => {
             };
 
             const dataProvider = buildDataProvider({
-                client: client as unknown as ApolloClient<unknown>,
+                client: client as unknown as ApolloClient,
                 buildQuery: () => () => undefined,
             });
 

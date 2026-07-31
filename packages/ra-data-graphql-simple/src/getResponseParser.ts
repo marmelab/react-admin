@@ -7,7 +7,7 @@ import {
 } from 'ra-core';
 import { IntrospectionResult, IntrospectedResource } from 'ra-data-graphql';
 import { IntrospectionField } from 'graphql';
-import { ApolloQueryResult } from '@apollo/client';
+import { ApolloClient } from '@apollo/client';
 
 export default (_introspectionResults: IntrospectionResult) =>
     (
@@ -15,7 +15,7 @@ export default (_introspectionResults: IntrospectionResult) =>
         _resource: IntrospectedResource,
         _queryType: IntrospectionField
     ) =>
-    (response: ApolloQueryResult<any>) => {
+    (response: ApolloClient.QueryResult<any>) => {
         const data = response.data;
 
         if (

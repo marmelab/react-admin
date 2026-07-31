@@ -15,7 +15,7 @@ import { ALL_TYPES } from './constants';
  * @param {Object} options The introspection options
  */
 export const introspectSchema = async (
-    client: ApolloClient<unknown>,
+    client: ApolloClient,
     options: IntrospectionOptions
 ) => {
     const schema = options.schema ? options.schema : await fetchSchema(client);
@@ -50,9 +50,7 @@ export type IntrospectionResult = {
     schema: IntrospectionSchema;
 };
 
-const fetchSchema = (
-    client: ApolloClient<unknown>
-): Promise<IntrospectionSchema> =>
+const fetchSchema = (client: ApolloClient): Promise<IntrospectionSchema> =>
     client
         .query<IntrospectionQuery>({
             fetchPolicy: 'network-only',
@@ -60,7 +58,14 @@ const fetchSchema = (
                 ${getIntrospectionQuery()}
             `,
         })
-        .then(({ data: { __schema } }) => __schema);
+        .then(({ data }) => {
+            if (!data) {
+                throw new Error(
+                    'The GraphQL schema introspection returned no data'
+                );
+            }
+            return data.__schema;
+        });
 
 const getQueriesFromSchema = (
     schema: IntrospectionSchema

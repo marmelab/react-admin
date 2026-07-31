@@ -1,5 +1,4 @@
 import {
-    IntrospectionListTypeRef,
     IntrospectionType,
     IntrospectionTypeRef,
     TypeKind,
@@ -7,17 +6,19 @@ import {
 } from 'graphql';
 import * as gqlTypes from 'graphql-ast-types-browser';
 
+const isWrappingTypeRef = (
+    type: IntrospectionType | IntrospectionTypeRef
+): type is Extract<IntrospectionTypeRef, { ofType: unknown }> =>
+    type.kind === TypeKind.LIST || type.kind === TypeKind.NON_NULL;
+
 export const getGqlType = (
-    type: IntrospectionType | IntrospectionListTypeRef | IntrospectionTypeRef
+    type: IntrospectionType | IntrospectionTypeRef
 ): TypeNode => {
-    switch (type.kind) {
-        case TypeKind.LIST:
-            return gqlTypes.listType(getGqlType(type.ofType));
-
-        case TypeKind.NON_NULL:
-            return gqlTypes.nonNullType(getGqlType(type.ofType));
-
-        default:
-            return gqlTypes.namedType(gqlTypes.name(type.name));
+    if (isWrappingTypeRef(type)) {
+        return type.kind === TypeKind.LIST
+            ? gqlTypes.listType(getGqlType(type.ofType))
+            : gqlTypes.nonNullType(getGqlType(type.ofType));
     }
+
+    return gqlTypes.namedType(gqlTypes.name(type.name));
 };
