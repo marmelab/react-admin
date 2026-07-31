@@ -58,7 +58,14 @@ const fetchSchema = (client: ApolloClient): Promise<IntrospectionSchema> =>
                 ${getIntrospectionQuery()}
             `,
         })
-        .then(({ data: { __schema } }) => __schema);
+        .then(({ data }) => {
+            if (!data) {
+                throw new Error(
+                    'The GraphQL schema introspection returned no data'
+                );
+            }
+            return data.__schema;
+        });
 
 const getQueriesFromSchema = (
     schema: IntrospectionSchema
