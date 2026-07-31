@@ -22,7 +22,7 @@
         "run-crm": "cd examples/crm && yarn dev",
         "build-crm": "cd examples/crm && yarn build",
         "storybook": "storybook dev -p 9010",
-        "build-storybook": "storybook build -c .storybook -o storybook-static --quiet",
+        "build-storybook": "storybook build -c .storybook -o dist --quiet",
         "update-changelog": "tsx scripts/update-changelog.ts",
         "update-milestones": "tsx scripts/update-milestones.ts",
         "create-github-release": "tsx scripts/create-github-release.ts",
