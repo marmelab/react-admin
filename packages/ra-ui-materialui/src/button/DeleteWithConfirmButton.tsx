@@ -225,7 +225,7 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > extends ButtonProps,
         UseDeleteControllerParams<RecordType, MutationOptionsError> {
     confirmTitle?: React.ReactNode;

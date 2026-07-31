@@ -788,20 +788,3 @@ describe('useUpdateMany', () => {
 afterEach(() => {
     jest.restoreAllMocks();
 });
-
-/**
- * Type-level check: the error type defaults to Error, so callbacks don't
- * require a cast. See https://github.com/marmelab/react-admin/issues/11262
- */
-const _useUpdateManyErrorTypeCheck = () => {
-    const [updateMany] = useUpdateMany<{ id: number; title: string }>();
-    updateMany(
-        'posts',
-        { ids: [1], data: { title: 'Hello' } },
-        { onError: error => error.message }
-    );
-    useUpdateMany<{ id: number; title: string }>('posts', undefined, {
-        onError: error => error.message,
-        onSettled: (_data, error) => error?.message,
-    });
-};

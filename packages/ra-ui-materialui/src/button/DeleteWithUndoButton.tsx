@@ -117,7 +117,7 @@ const defaultIcon = <ActionDelete />;
 
 export interface DeleteWithUndoButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > extends ButtonProps,
         UseDeleteControllerParams<RecordType, MutationOptionsError> {
     icon?: ReactNode;

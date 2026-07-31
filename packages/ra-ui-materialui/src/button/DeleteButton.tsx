@@ -102,7 +102,7 @@ export const DeleteButton = React.forwardRef(function DeleteButton<
 
 export type DeleteButtonProps<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > = SaveContextValue &
     (
         | ({ mutationMode?: 'undoable' } & DeleteWithUndoButtonProps<

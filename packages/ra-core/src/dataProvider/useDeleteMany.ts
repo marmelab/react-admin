@@ -82,7 +82,7 @@ import {
  */
 export const useDeleteMany = <
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
 >(
     resource?: string,
     params: Partial<DeleteManyParams<RecordType>> = {},
@@ -309,7 +309,7 @@ export interface UseDeleteManyMutateParams<RecordType extends RaRecord = any> {
 
 export type UseDeleteManyOptions<
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
     TReturnPromise extends boolean = boolean,
 > = Omit<
     UseMutationOptions<
@@ -328,7 +328,7 @@ export type UseDeleteManyOptions<
 
 export type UseDeleteManyResult<
     RecordType extends RaRecord = any,
-    MutationError = Error,
+    MutationError = unknown,
     TReturnPromise extends boolean = boolean,
 > = [
     (

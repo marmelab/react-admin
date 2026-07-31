@@ -68,7 +68,7 @@ const BulkResetViewsButton = () => {
 
 ## TypeScript
 
-The `useUpdateMany` hook accepts a generic parameter for the record type and another for the error type (which defaults to `Error`):
+The `useUpdateMany` hook accepts a generic parameter for the record type and another for the error type:
 
 ```tsx
 useUpdateMany<Product, Error>(undefined, undefined, {

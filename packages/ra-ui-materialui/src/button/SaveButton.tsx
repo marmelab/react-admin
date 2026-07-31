@@ -173,7 +173,7 @@ const defaultIcon = <ContentSave />;
 
 interface Props<
     RecordType extends RaRecord = any,
-    MutationOptionsError = Error,
+    MutationOptionsError = unknown,
 > {
     className?: string;
     disabled?: boolean;
