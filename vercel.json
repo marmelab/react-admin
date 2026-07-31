@@ -1,5 +1,6 @@
 {
     "$schema": "https://openapi.vercel.sh/vercel.json",
+    "outputDirectory": "storybook-static",
     "git": {
         "deploymentEnabled": {
             "gh-pages": false
