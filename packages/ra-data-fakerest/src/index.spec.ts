@@ -65,44 +65,54 @@ describe('ra-data-fakerest', () => {
     });
 
     describe('delay', () => {
+        // Measuring the actual response time is unreliable on loaded CI
+        // machines, so we check the duration passed to setTimeout instead.
+        beforeEach(() => {
+            jest.useFakeTimers();
+        });
+        afterEach(() => {
+            jest.restoreAllMocks();
+            jest.useRealTimers();
+        });
+
         it.each([
-            { label: 'undefined', delay: undefined, min: 0, max: 20 },
-            { label: 'false', delay: false, min: 0, max: 20 },
-            { label: 'number', delay: 100, min: 100, max: 150 },
-            { label: 'true', delay: true, min: 500, max: 1550 },
+            { label: 'undefined', delay: undefined, min: 0, max: 0 },
+            { label: 'false', delay: false, min: 0, max: 0 },
+            { label: 'number', delay: 100, min: 100, max: 100 },
+            { label: 'true', delay: true, min: 500, max: 1500 },
             {
                 label: 'object',
                 delay: { min: 100, max: 200 },
                 min: 100,
-                max: 250,
+                max: 200,
             },
-            { label: 'min 0', delay: { min: 0, max: 100 }, min: 0, max: 150 },
-            { label: 'min only', delay: { min: 100 }, min: 100, max: 150 },
-            { label: 'max only', delay: { max: 100 }, min: 0, max: 150 },
-            { label: 'empty object', delay: {}, min: 0, max: 20 },
+            { label: 'min 0', delay: { min: 0, max: 100 }, min: 0, max: 100 },
+            { label: 'min only', delay: { min: 100 }, min: 100, max: 100 },
+            { label: 'max only', delay: { max: 100 }, min: 0, max: 100 },
+            { label: 'empty object', delay: {}, min: 0, max: 0 },
         ])(
             'should delay the response correctly when delay is $label',
             async ({ delay, min, max }) => {
+                const setTimeoutSpy = jest.spyOn(global, 'setTimeout');
                 const dataProvider = fakerestDataProvider(
                     { posts: [{ id: 0, title: 'Hello, world!' }] },
                     false,
                     delay
                 );
-                const start = Date.now();
-                await dataProvider.getOne('posts', { id: 0 });
-                const end = Date.now();
-                const duration = end - start;
 
-                // Timers can fire a few milliseconds early due to clock
-                // resolution and rounding, so allow a small tolerance on the
-                // lower bound to avoid flakiness on loaded CI machines.
-                const tolerance = 10;
-                expect(duration).toBeGreaterThanOrEqual(
-                    Math.max(0, min - tolerance)
-                );
-                if (max > 20) {
-                    // Only check max for non-immediate responses to avoid flakiness
-                    expect(duration).toBeLessThanOrEqual(max);
+                const promise = dataProvider.getOne('posts', { id: 0 });
+                jest.runAllTimers();
+                const { data } = await promise;
+
+                expect(data).toEqual({ id: 0, title: 'Hello, world!' });
+                if (max === 0) {
+                    // No delay: the response is returned right away
+                    expect(setTimeoutSpy).not.toHaveBeenCalled();
+                } else {
+                    expect(setTimeoutSpy).toHaveBeenCalledTimes(1);
+                    const scheduledDelay = setTimeoutSpy.mock.calls[0][1];
+                    expect(scheduledDelay).toBeGreaterThanOrEqual(min);
+                    expect(scheduledDelay).toBeLessThanOrEqual(max);
                 }
             }
         );
