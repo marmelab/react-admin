@@ -261,6 +261,39 @@ describe('<AutocompleteInput />', () => {
             expect(screen.queryByText('Default')).toBeNull();
             await screen.findByText('No options');
         });
+
+        it('should not display the emptyText when multiple is true', async () => {
+            const mock = jest
+                .spyOn(console, 'warn')
+                .mockImplementation(() => {});
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                emptyText="Default"
+                                {...defaultProps}
+                                choices={[{ id: 2, name: 'foo' }]}
+                                multiple
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            fireEvent.click(
+                await screen.findByLabelText('resources.users.fields.role')
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option').length).toEqual(1);
+            });
+            expect(screen.queryByText('Default')).toBeNull();
+            expect(mock).toHaveBeenCalledWith(
+                expect.stringContaining(
+                    'emptyText and emptyValue are not supported when multiple is true'
+                )
+            );
+            mock.mockRestore();
+        });
     });
 
     describe('optionValue', () => {
