@@ -102,6 +102,36 @@ describe('DataTable', () => {
                 );
             });
         });
+        it('should set aria-sort on the currently sorted column header', async () => {
+            render(<Basic />);
+            const headers = await screen.findAllByRole('columnheader');
+            // Basic sorts by id ascending by default
+            expect(headers[1].getAttribute('aria-sort')).toEqual('ascending');
+            // a column that is not the sort column has no aria-sort
+            expect(headers[2].getAttribute('aria-sort')).toBeNull();
+        });
+        it('should update aria-sort when the sort order changes', async () => {
+            render(<Basic />);
+            const headers = await screen.findAllByRole('columnheader');
+            // clicking the active ascending column switches it to descending
+            fireEvent.click(headers[1].firstChild as HTMLElement);
+            await waitFor(() => {
+                expect(headers[1].getAttribute('aria-sort')).toEqual(
+                    'descending'
+                );
+            });
+        });
+        it('should move aria-sort to the newly sorted column', async () => {
+            render(<Basic />);
+            const headers = await screen.findAllByRole('columnheader');
+            fireEvent.click(headers[2].firstChild as HTMLElement);
+            await waitFor(() => {
+                expect(headers[2].getAttribute('aria-sort')).toEqual(
+                    'ascending'
+                );
+            });
+            expect(headers[1].getAttribute('aria-sort')).toBeNull();
+        });
     });
     describe('Columns', () => {
         it('should render children as column headers', async () => {

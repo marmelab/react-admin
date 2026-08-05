@@ -93,6 +93,13 @@ export const DataTableHeadCell = React.memo(
                         `column-${source}`
                     )}
                     variant="head"
+                    sortDirection={
+                        sort && sort.field === source
+                            ? sort.order === 'ASC'
+                                ? 'asc'
+                                : 'desc'
+                            : false
+                    }
                     {...rest}
                 >
                     {handleSort && sort && !disableSort && source ? (
