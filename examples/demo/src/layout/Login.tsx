@@ -6,7 +6,7 @@ const Login = () => (
     <RaLogin sx={{ background: 'none' }}>
         <Typography
             sx={{
-                color: 'text.disabled',
+                color: 'text.secondary',
                 textAlign: 'center',
             }}
         >
