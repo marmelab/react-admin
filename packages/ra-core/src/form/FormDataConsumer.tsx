@@ -77,7 +77,8 @@ export const FormDataConsumerView = <
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (arraySource) {
         const scopedFormData = get(formData, arraySource);
-        result = children({ formData, scopedFormData });
+        const index = Number(arraySource.match(/\d+$/)?.[0]);
+        result = children({ formData, scopedFormData, index });
     } else {
         result = children({ formData });
     }
@@ -98,6 +99,7 @@ export interface FormDataConsumerRenderParams<
 > {
     formData: TFieldValues;
     scopedFormData?: TScopedFieldValues;
+    index?: number;
 }
 
 export type FormDataConsumerRender<

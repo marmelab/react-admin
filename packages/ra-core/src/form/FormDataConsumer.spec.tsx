@@ -140,4 +140,37 @@ describe('FormDataConsumerView', () => {
             });
         });
     });
+
+    it('calls its children with the index when inside an ArrayInput', async () => {
+        let globalIndex;
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator>
+                                <FormDataConsumer>
+                                    {({ index }) => {
+                                        globalIndex = index;
+                                        return null;
+                                    }}
+                                </FormDataConsumer>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        expect(globalIndex).toEqual(undefined);
+
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+
+        expect(globalIndex).toEqual(0);
+
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+
+        expect(globalIndex).toEqual(1);
+    });
 });
