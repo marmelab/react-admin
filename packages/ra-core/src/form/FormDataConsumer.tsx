@@ -77,7 +77,8 @@ export const FormDataConsumerView = <
     // If we have an index, we are in an iterator like component (such as the SimpleFormIterator)
     if (arraySource) {
         const scopedFormData = get(formData, arraySource);
-        const index = Number(arraySource.match(/\d+$/)?.[0]);
+        const matches = [...arraySource.matchAll(/\d+/g)];
+        const index = Number(matches[matches.length - 1]?.[0]);
         result = children({ formData, scopedFormData, index });
     } else {
         result = children({ formData });
