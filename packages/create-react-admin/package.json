@@ -13,6 +13,7 @@
     },
     "scripts": {
         "build": "tsc6",
+        "typecheck": "tsc --noEmit",
         "test": "prettier --check . && xo && ava"
     },
     "files": [

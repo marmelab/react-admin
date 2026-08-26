@@ -22,7 +22,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@faker-js/faker": "^10.0.0",

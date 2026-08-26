@@ -21,7 +21,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@tanstack/react-query": "^5.90.2",

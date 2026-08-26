@@ -19,7 +19,8 @@
     "type": "module",
     "sideEffects": false,
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "@tiptap/core": "^3.20.4",

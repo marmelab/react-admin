@@ -36,7 +36,8 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "localforage": "^1.7.1",

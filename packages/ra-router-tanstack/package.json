@@ -19,7 +19,8 @@
     "author": "François Zaninotto",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@tanstack/history": "^1.0.0",
