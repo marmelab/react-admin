@@ -36,8 +36,9 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "globals": "^16.0.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.1.6",
-    "typescript-eslint": "^8.28.0",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.68.0",
+    "typescript-native": "npm:typescript@^7.0.2",
     "vite": "^6.2.6",
     "vite-plugin-pwa": "^1.2.0"
   },

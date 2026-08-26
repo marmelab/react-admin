@@ -27,6 +27,8 @@ jobs:
       run: yarn
     - name: Lint
       run: make lint        
+    - name: Typecheck
+      run: make typecheck
     - name: Build
       run: make build
     - name: Zip packages build artifact

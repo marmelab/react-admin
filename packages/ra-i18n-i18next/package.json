@@ -33,7 +33,8 @@
         "i18next-resources-to-backend": "^1.1.4",
         "ra-language-english": "^5.14.7",
         "ra-language-french": "^5.14.7",
-        "typescript": "^5.1.3",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-native": "npm:typescript@^7.0.2",
         "zshy": "^0.5.0"
     },
     "peerDependencies": {

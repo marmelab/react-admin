@@ -43,7 +43,8 @@
     },
     "devDependencies": {
         "graphql": "^15.6.0",
-        "typescript": "^5.1.3",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-native": "npm:typescript@^7.0.2",
         "zshy": "^0.5.0"
     },
     "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",

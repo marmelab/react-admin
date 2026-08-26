@@ -86,3 +86,20 @@ make lint               # ESLint checks
 make typecheck          # TypeScript type checking
 make prettier           # Prettier formatting
 ```
+
+Two TypeScript compilers are installed side by side, because TypeScript 7 ships no
+programmatic API before 7.1:
+
+- `tsc` is TypeScript 7 (native Go compiler) — used by `make typecheck` and by the examples
+- `tsc6` is TypeScript 6 — the `typescript` package is aliased to
+  `@typescript/typescript6`, whose JS API is what `zshy`, `ts-jest`,
+  `typescript-eslint`, Storybook and Astro consume
+
+TypeScript 7 only ever type-checks: every artifact is still emitted by TypeScript 6,
+through `zshy` for the packages and through `tsc6` for `create-react-admin`.
+
+Always go through yarn (`yarn tsc`), never through `node_modules/.bin/tsc` — the
+hoisted symlink resolves to TypeScript 6, since the compatibility package depends on
+the real TypeScript 6 distribution.
+
+When TypeScript 7.1 ships the API, drop the alias and upgrade those tools.

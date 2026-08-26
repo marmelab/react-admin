@@ -34,6 +34,9 @@ module.exports = {
             {
                 isolatedModules: true,
                 useESM: true,
+                // The root tsconfig targets esnext modules for TypeScript 7;
+                // Jest runs CommonJS, so pin the emit format here.
+                tsconfig: { module: 'commonjs' },
             },
         ],
     },

@@ -3,7 +3,7 @@
     "name": "react-admin-lerna",
     "scripts": {
         "build": "lerna run build",
-        "typecheck": "CI=true lerna run build",
+        "typecheck": "lerna run typecheck",
         "watch": "lerna run --parallel watch",
         "test-unit": "cross-env LANG=en_US.UTF-8 NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest",
         "test-unit-ci": "cross-env LANG=en_US.UTF-8 NODE_ENV=test cross-env BABEL_ENV=cjs NODE_ICU_DATA=./node_modules/full-icu jest --runInBand",
@@ -53,6 +53,7 @@
         "@types/eslint-plugin-jsx-a11y": "^6",
         "@types/gh-pages": "^6",
         "@types/jest": "^29.5.2",
+        "@types/node": "^20.10.7",
         "@types/react": "^18.3.3",
         "cross-env": "^5.2.0",
         "date-fns": "^3.6.0",
@@ -86,10 +87,11 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "storybook": "^8.6.11",
-        "ts-jest": "^29.1.0",
+        "ts-jest": "^29.4.12",
         "tsx": "^4.19.3",
-        "typescript": "^5.8.3",
-        "typescript-eslint": "^8.28.0",
+        "typescript": "npm:@typescript/typescript6@^6.0.2",
+        "typescript-eslint": "^8.68.0",
+        "typescript-native": "npm:typescript@^7.0.2",
         "whatwg-fetch": "^3.0.0"
     },
     "workspaces": [
