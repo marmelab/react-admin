@@ -46,7 +46,7 @@ react-admin/
 
 ## Package Dependencies
 
-- **Core**: React 18.3+, TypeScript 5.8+, lodash 4.17+, inflection 3.0+
+- **Core**: React 18.3+, TypeScript 6.0+, lodash 4.17+, inflection 3.0+
 - **Routing**: React Router 6.28+
 - **Data**: TanStack Query 5.90+ (React Query)
 - **Forms**: React Hook Form 7.53+
@@ -87,19 +87,12 @@ make typecheck          # TypeScript type checking
 make prettier           # Prettier formatting
 ```
 
-Two TypeScript compilers are installed side by side, because TypeScript 7 ships no
-programmatic API before 7.1:
+The repo runs TypeScript 6. TypeScript 7 — the native Go compiler — is not usable
+here yet: it ships no programmatic API before 7.1, and `zshy`, `ts-jest` and
+`typescript-eslint` all drive the compiler through that API.
 
-- `tsc` is TypeScript 7 (native Go compiler) — used by `make typecheck` and by the examples
-- `tsc6` is TypeScript 6 — the `typescript` package is aliased to
-  `@typescript/typescript6`, whose JS API is what `zshy`, `ts-jest`,
-  `typescript-eslint`, Storybook and Astro consume
-
-TypeScript 7 only ever type-checks: every artifact is still emitted by TypeScript 6,
-through `zshy` for the packages and through `tsc6` for `create-react-admin`.
-
-Always go through yarn (`yarn tsc`), never through `node_modules/.bin/tsc` — the
-hoisted symlink resolves to TypeScript 6, since the compatibility package depends on
-the real TypeScript 6 distribution.
-
-When TypeScript 7.1 ships the API, drop the alias and upgrade those tools.
+The tsconfigs are already set up for the eventual move: `moduleResolution` is
+`bundler` (TypeScript 7 removes `node10`), and `rootDir`, `types` and `strict` are
+explicit (TypeScript 6 changed all three defaults). The one thing left to undo on
+that day is `ignoreDeprecations: "6.0"`, which silences the `node10` that zshy
+forces for its CommonJS output.

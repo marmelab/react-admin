@@ -60,7 +60,6 @@
         // "emitDecoratorMetadata": true,         /* Enables experimental support for emitting type metadata for decorators. */
         "skipLibCheck": true,
         "ignoreDeprecations": "6.0" /* zshy forces moduleResolution node10 for its CommonJS output, which TypeScript 6 deprecates. */,
-        "ignoreDeprecations": "6.0" /* zshy forces moduleResolution node10 for its CommonJS output, which TypeScript 6 deprecates. */,
         "erasableSyntaxOnly": true,
     },
     // "references": [

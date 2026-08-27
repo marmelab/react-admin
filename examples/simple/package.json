@@ -34,8 +34,7 @@
         "@vitejs/plugin-react": "^4.3.4",
         "little-state-machine": "^4.8.1",
         "react-simple-animate": "^3.5.3",
-        "typescript": "npm:@typescript/typescript6@^6.0.2",
-        "typescript-native": "npm:typescript@^7.0.2",
+        "typescript": "^6.0.3",
         "vite": "^7.0.0"
     }
 }
