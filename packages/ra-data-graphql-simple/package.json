@@ -1,67 +1,67 @@
 {
-  "name": "ra-data-graphql-simple",
-  "version": "5.14.7",
-  "description": "A GraphQL simple data provider for react-admin",
-  "zshy": "./src/index.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
-  "type": "module",
-  "sideEffects": false,
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/marmelab/react-admin.git"
-  },
-  "bugs": {
-    "url": "https://github.com/marmelab/react-admin/issues"
-  },
-  "homepage": "https://github.com/marmelab/react-admin#readme",
-  "authors": [
-    "Gildas Garcia"
-  ],
-  "keywords": [
-    "reactjs",
-    "react",
-    "react-admin",
-    "admin-on-rest",
-    "rest",
-    "graphql"
-  ],
-  "license": "MIT",
-  "scripts": {
-    "build": "zshy --silent",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@apollo/client": "^3.3.19",
-    "graphql-ast-types-browser": "~1.0.2",
-    "lodash": "~4.18.1",
-    "pluralize": "~7.0.0",
-    "ra-data-graphql": "^5.14.7"
-  },
-  "peerDependencies": {
-    "graphql": "^15.6.0",
-    "ra-core": "^5.0.0"
-  },
-  "devDependencies": {
-    "graphql": "^15.6.0",
-    "typescript": "^6.0.3",
-    "zshy": "^0.5.0"
-  },
-  "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+    "name": "ra-data-graphql-simple",
+    "version": "5.14.7",
+    "description": "A GraphQL simple data provider for react-admin",
+    "zshy": "./src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "type": "module",
+    "sideEffects": false,
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/marmelab/react-admin.git"
+    },
+    "bugs": {
+        "url": "https://github.com/marmelab/react-admin/issues"
+    },
+    "homepage": "https://github.com/marmelab/react-admin#readme",
+    "authors": [
+        "Gildas Garcia"
+    ],
+    "keywords": [
+        "reactjs",
+        "react",
+        "react-admin",
+        "admin-on-rest",
+        "rest",
+        "graphql"
+    ],
+    "license": "MIT",
+    "scripts": {
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@apollo/client": "^3.3.19",
+        "graphql-ast-types-browser": "~1.0.2",
+        "lodash": "~4.18.1",
+        "pluralize": "~7.0.0",
+        "ra-data-graphql": "^5.14.7"
+    },
+    "peerDependencies": {
+        "graphql": "^15.6.0",
+        "ra-core": "^5.0.0"
+    },
+    "devDependencies": {
+        "graphql": "^15.6.0",
+        "typescript": "^6.0.3",
+        "zshy": "^0.5.0"
+    },
+    "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
     }
-  }
 }

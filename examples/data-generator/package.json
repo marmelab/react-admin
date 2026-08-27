@@ -1,44 +1,44 @@
 {
-  "name": "data-generator-retail",
-  "version": "5.14.7",
-  "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
-  "bugs": "https://github.com/marmelab/react-admin/issues",
-  "license": "MIT",
-  "zshy": "./src/index.ts",
-  "main": "./dist/index.cjs",
-  "module": "./dist/index.js",
-  "types": "./dist/index.d.cts",
-  "type": "module",
-  "scripts": {
-    "build": "zshy --silent",
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "@faker-js/faker": "^10.0.0",
-    "date-fns": "^3.6.0"
-  },
-  "devDependencies": {
-    "ra-core": "^5.14.7",
-    "typescript": "^6.0.3",
-    "zshy": "^0.5.0"
-  },
-  "peerDependencies": {
-    "ra-core": "^5.0.0"
-  },
-  "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
-  "files": [
-    "dist"
-  ],
-  "exports": {
-    ".": {
-      "import": {
-        "types": "./dist/index.d.ts",
-        "default": "./dist/index.js"
-      },
-      "require": {
-        "types": "./dist/index.d.cts",
-        "default": "./dist/index.cjs"
-      }
+    "name": "data-generator-retail",
+    "version": "5.14.7",
+    "homepage": "https://github.com/marmelab/react-admin/tree/master/examples/data-generator",
+    "bugs": "https://github.com/marmelab/react-admin/issues",
+    "license": "MIT",
+    "zshy": "./src/index.ts",
+    "main": "./dist/index.cjs",
+    "module": "./dist/index.js",
+    "types": "./dist/index.d.cts",
+    "type": "module",
+    "scripts": {
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
+    },
+    "dependencies": {
+        "@faker-js/faker": "^10.0.0",
+        "date-fns": "^3.6.0"
+    },
+    "devDependencies": {
+        "ra-core": "^5.14.7",
+        "typescript": "^6.0.3",
+        "zshy": "^0.5.0"
+    },
+    "peerDependencies": {
+        "ra-core": "^5.0.0"
+    },
+    "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
+    "files": [
+        "dist"
+    ],
+    "exports": {
+        ".": {
+            "import": {
+                "types": "./dist/index.d.ts",
+                "default": "./dist/index.js"
+            },
+            "require": {
+                "types": "./dist/index.d.cts",
+                "default": "./dist/index.cjs"
+            }
+        }
     }
-  }
 }
