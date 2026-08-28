@@ -24,7 +24,7 @@
         // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
         /* Strict Type-Checking Options */
-        "strict": false /* TypeScript 7 defaults this to true. Kept off to preserve the current type surface; packages opt into strictNullChecks individually. */,
+        "strict": false /* TypeScript 6 defaults this to true. Kept off to preserve the current type surface; packages opt into strictNullChecks individually. */,
         "noImplicitAny": false /* Raise error on expressions and declarations with an implied 'any' type. */,
         // "strictNullChecks": true,              /* Enable strict null checks. */
         // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
@@ -44,7 +44,7 @@
         // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
         // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */
         // "typeRoots": [],                       /* List of folders to include type definitions from. */
-        "types": ["node"] /* TypeScript 7 defaults this to []; sources use process.env and Buffer. */,
+        "types": ["node"] /* TypeScript 6 defaults this to []; sources use process.env and Buffer. */,
         "allowSyntheticDefaultImports": true /* Allow default imports from modules with no default export. This does not affect code emit, just typechecking. */,
         "esModuleInterop": true /* Enables emit interoperability between CommonJS and ES Modules via creation of namespace objects for all imports. Implies 'allowSyntheticDefaultImports'. */,
         // "preserveSymlinks": true,              /* Do not resolve the real path of symlinks. */

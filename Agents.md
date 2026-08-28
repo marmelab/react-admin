@@ -86,13 +86,3 @@ make lint               # ESLint checks
 make typecheck          # TypeScript type checking
 make prettier           # Prettier formatting
 ```
-
-The repo runs TypeScript 6. TypeScript 7 — the native Go compiler — is not usable
-here yet: it ships no programmatic API before 7.1, and `zshy`, `ts-jest` and
-`typescript-eslint` all drive the compiler through that API.
-
-The tsconfigs are already set up for the eventual move: `moduleResolution` is
-`bundler` (TypeScript 7 removes `node10`), and `rootDir`, `types` and `strict` are
-explicit (TypeScript 6 changed all three defaults). The one thing left to undo on
-that day is `ignoreDeprecations: "6.0"`, which silences the `node10` that zshy
-forces for its CommonJS output.
