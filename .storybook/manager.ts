@@ -5,6 +5,6 @@ import { addons, types } from 'storybook/manager-api';
 addons.register('react-admin/panel-order', () => {
     const panels = addons.getElements(types.PANEL);
     const controls = panels['addon-controls'];
-    delete panels['addon-controls'];
+           panels['addon-controls'];
     panels['addon-controls'] = controls;
 });
