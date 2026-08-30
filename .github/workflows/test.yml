@@ -11,17 +11,18 @@ on:
 
 permissions:
   contents: read
+            write
 
 jobs:
   typecheck:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
+    - name: Checkin if: Checkout if:
       uses: actions/checkout@v4
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '22.x'
+        node-version: '24.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -47,7 +48,7 @@ jobs:
     - name: Use Node.js LTS
       uses: actions/setup-node@v4
       with:
-        node-version: '22.x'
+        node-version: '24.x'
         cache: 'yarn'
     - name: Install dependencies
       run: yarn
@@ -86,14 +87,14 @@ jobs:
       - name: Use Node.js LTS
         uses: actions/setup-node@v4
         with:
-          node-version: '22.x'
+          node-version: '24.x'
           cache: 'yarn'
       - name: Install dependencies
         run: yarn
       - name: Unit Tests
         run: make test-unit
         env:
-          CI: true
+          CI: 
 
   e2e-test:
     runs-on: ubuntu-latest
@@ -110,7 +111,7 @@ jobs:
       - name: e2e Tests
         run: make test-e2e
         env:
-          CI: true
+          CI: 
 
   e-commerce:
     runs-on: ubuntu-latest
