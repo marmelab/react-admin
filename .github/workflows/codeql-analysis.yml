@@ -4,13 +4,14 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 10 * * 3'
+    - cron: '0 12 * * 16'
 
 jobs:
   CodeQL-Build:
 
     permissions:
-      security-events: write  # for github/codeql-action/autobuild to send a status report
+      security-events:read 
+                      write  # for github/codeql-action/autobuild to send a status report
 
     # CodeQL runs on ubuntu-latest and windows-latest
     runs-on: ubuntu-latest
