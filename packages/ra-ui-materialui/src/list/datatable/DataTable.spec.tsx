@@ -1,6 +1,11 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import * as React from 'react';
 import {
+    ResourceContextProvider,
+    TestMemoryRouter,
+    type AuthProvider,
+} from 'ra-core';
+import {
     Basic,
     Columns,
     Empty,
@@ -12,6 +17,8 @@ import {
     StandaloneDynamic,
     StandaloneStatic,
 } from './DataTable.stories';
+import { DataTable } from './DataTable';
+import { AdminContext } from '../../AdminContext';
 
 describe('DataTable', () => {
     it('should render one row per record in the list', async () => {
@@ -218,6 +225,39 @@ describe('DataTable', () => {
         });
     });
     describe('bulkActionButtons', () => {
+        it('should not check delete permissions when bulk actions are disabled', () => {
+            const authProvider: AuthProvider = {
+                canAccess: jest.fn().mockResolvedValue(true),
+                checkAuth: jest.fn().mockResolvedValue(undefined),
+                checkError: jest.fn().mockResolvedValue(undefined),
+                getPermissions: jest.fn().mockResolvedValue(undefined),
+                login: jest.fn().mockResolvedValue(undefined),
+                logout: jest.fn().mockResolvedValue(undefined),
+            };
+
+            render(
+                <TestMemoryRouter>
+                    <AdminContext authProvider={authProvider}>
+                        <ResourceContextProvider value="books">
+                            <DataTable
+                                bulkActionButtons={false}
+                                data={[{ id: 1 }]}
+                                isPending={false}
+                                onSelect={jest.fn()}
+                                onToggleItem={jest.fn()}
+                                selectedIds={[]}
+                                total={1}
+                            >
+                                <DataTable.Col source="id" />
+                            </DataTable>
+                        </ResourceContextProvider>
+                    </AdminContext>
+                </TestMemoryRouter>
+            );
+
+            expect(authProvider.canAccess).not.toHaveBeenCalled();
+        });
+
         it('should reveal bulk delete button by default on row selection', async () => {
             render(<Basic />);
             const checkboxes = await screen.findAllByRole('checkbox');
