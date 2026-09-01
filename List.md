@@ -238,7 +238,7 @@ The `aside` prop is also the preferred way to add a [Filter Sidebar](./Filtering
 // in src/PostFilterSidebar.js
 import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlineOutlined';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 
 export const PostFilterSidebar = () => (

@@ -27,7 +27,7 @@ For instance, here is a filter sidebar for a post list, allowing users to filter
 ```jsx
 import { SavedQueriesList, FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlineOutlined';
 import CategoryIcon from '@mui/icons-material/LocalOffer';
 
 export const PostFilterSidebar = () => (
@@ -288,7 +288,7 @@ If you want to add a simple text input to the sidebar, you can use the [`<Filter
 ```jsx
 import { FilterLiveSearch, FilterList, FilterListItem } from 'react-admin';
 import { Card, CardContent } from '@mui/material';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlineOutlined';
 
 export const PostFilterSidebar = () => (
     <Card sx={{ order: -1, mr: 2, mt: 6, width: 250, height: 'fit-content' }}>
