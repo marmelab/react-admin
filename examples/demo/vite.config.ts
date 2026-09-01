@@ -3,7 +3,6 @@ import path from 'path';
 import fs from 'fs';
 import react from '@vitejs/plugin-react';
 import { visualizer } from 'rollup-plugin-visualizer';
-import preserveDirectives from 'rollup-preserve-directives';
 
 // https://vitejs.dev/config/
 export default defineConfig(async ({ mode }) => {
@@ -57,17 +56,21 @@ export default defineConfig(async ({ mode }) => {
             open: true,
         },
         base: './',
-        esbuild: {
-            keepNames: true,
-        },
         build: {
             sourcemap: true,
-            rollupOptions: {
-                plugins: [preserveDirectives()],
+            rolldownOptions: {
+                output: {
+                    // keep function and class names readable in the profiler
+                    keepNames: true,
+                },
             },
         },
         resolve: {
             preserveSymlinks: true,
+            // this example pins react 19 while the monorepo root uses react 18, and
+            // preserveSymlinks makes the packages/*/src sources resolve react from the
+            // root. Without dedupe we end up with two react instances.
+            dedupe: ['react', 'react-dom'],
             alias: [
                 // FIXME: doesn't work with react 19
                 // allow profiling in production

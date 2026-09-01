@@ -176,6 +176,25 @@ export const Required = () => (
     </Wrapper>
 );
 
+const choicesWithEmail = [
+    { id: 1, name: 'Leo Tolstoy', email: 'leo.tolstoy@example.com' },
+    { id: 2, name: 'Victor Hugo' },
+    { id: 3, name: 'William Shakespeare', email: 'w.shakespeare@example.com' },
+    { id: 4, name: 'Charles Baudelaire', email: 'c.baudelaire@example.com' },
+    { id: 5, name: 'Marcel Proust' },
+];
+
+export const GetOptionDisabled = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={choicesWithEmail}
+            helperText="Only authors with an email address can be notified"
+            getOptionDisabled={choice => !choice.email}
+        />
+    </Wrapper>
+);
+
 export const IsPending = () => (
     <Wrapper>
         <AutocompleteInput source="author" isPending />

@@ -31,6 +31,7 @@ import {
     CreateItemLabel,
     CreateItemLabelRendered,
     FilterSelectedOptionsFalse,
+    GetOptionDisabled,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -1693,6 +1694,35 @@ describe('<AutocompleteInput />', () => {
         expect(onBlur).toHaveBeenCalledWith(
             expect.objectContaining({ type: 'blur' })
         );
+    });
+
+    describe('getOptionDisabled', () => {
+        it('should disable the choices for which it returns true', async () => {
+            render(<GetOptionDisabled />);
+            (await screen.findByLabelText('Author')).focus();
+            expect(
+                (
+                    await screen.findByRole('option', { name: 'Victor Hugo' })
+                ).getAttribute('aria-disabled')
+            ).toEqual('true');
+            expect(
+                screen
+                    .getByRole('option', { name: 'William Shakespeare' })
+                    .getAttribute('aria-disabled')
+            ).toEqual('false');
+        });
+
+        it('should skip the disabled choices when navigating with the keyboard', async () => {
+            render(<GetOptionDisabled />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            input.focus();
+            await screen.findByRole('option', { name: 'Victor Hugo' });
+            fireEvent.keyDown(input, { key: 'ArrowDown' });
+            fireEvent.keyDown(input, { key: 'Enter' });
+            expect(input.value).toEqual('William Shakespeare');
+        });
     });
 
     describe('Inside <ReferenceInput>', () => {

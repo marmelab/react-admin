@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef } from 'react';
 import {
+    notifyManager,
     QueryClient,
+    QueryKey,
     useQueryClient,
     useQuery,
     UseQueryOptions,
@@ -123,6 +125,7 @@ export const useGetManyAggregate = <
                     resource,
                     ids,
                     meta,
+                    queryKey: queryParams.queryKey,
                     resolve,
                     reject,
                     dataProvider,
@@ -228,12 +231,57 @@ interface GetManyCallArgs {
     resource: string;
     ids: Identifier[];
     meta?: any;
+    queryKey: QueryKey;
     resolve: (data: any[]) => void;
     reject: (error?: any) => void;
     dataProvider: DataProvider;
     queryClient: QueryClient;
     signal?: AbortSignal;
 }
+
+/**
+ * Resolve all the pending calls with the data they requested, in a single React update.
+ *
+ * Each pending call belongs to a distinct useQuery. Resolving a promise only makes
+ * its query transition two microtasks later, long after any synchronous
+ * notifyManager transaction has closed, so resolving the calls one by one makes
+ * react-query flush one observer notification per call, and React commits each of
+ * them separately. Any child updating its state during the commit phase (e.g. an
+ * avatar reporting its image loading status from a layout effect) then turns those
+ * commits into nested updates instead of batched ones, and React throws
+ * "Maximum update depth exceeded" past 50 of them.
+ *
+ * Writing the data of every pending call inside a single notifyManager transaction
+ * makes react-query flush all the observer notifications at once, so all the
+ * consumers get their data in one commit. The calls are then resolved to let their
+ * query leave the fetching state.
+ */
+const resolveCallsWithData = (
+    calls: GetManyCallArgs[],
+    queryClient: QueryClient,
+    getDataForCall: (call: GetManyCallArgs) => any[]
+) => {
+    const resolutions = calls.map(call => ({
+        call,
+        data: getDataForCall(call),
+    }));
+    notifyManager.batch(() => {
+        resolutions.forEach(({ call, data }) => {
+            const query = queryClient
+                .getQueryCache()
+                .find({ queryKey: call.queryKey, exact: true });
+            // don't resurrect a query that was canceled or removed in the meantime
+            if (query?.state.fetchStatus !== 'fetching') return;
+            queryClient.setQueryData(call.queryKey, data);
+        });
+    });
+    resolutions.forEach(({ call, data }) => call.resolve(data));
+};
+
+const filterDataForCall = (data: any[]) => (call: GetManyCallArgs) =>
+    data.filter(record =>
+        call.ids.map(id => String(id)).includes(String(record.id))
+    );
 
 /**
  * Group and execute all calls to the dataProvider.getMany() method for the current tick
@@ -293,9 +341,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
 
         if (aggregatedIds.length === 0) {
             // no need to call the data provider if all the ids are null
-            callsForResource.forEach(({ resolve }) => {
-                resolve([]);
-            });
+            resolveCallsWithData(callsForResource, queryClient, () => []);
             return;
         }
 
@@ -317,15 +363,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                 .then(
                     data => {
                         // We must then resolve all the pending calls with the data they requested
-                        callsForResource.forEach(({ ids, resolve }) => {
-                            resolve(
-                                data.filter(record =>
-                                    ids
-                                        .map(id => String(id))
-                                        .includes(String(record.id))
-                                )
-                            );
-                        });
+                        resolveCallsWithData(
+                            callsForResource,
+                            queryClient,
+                            filterDataForCall(data)
+                        );
                     },
                     error => {
                         // All pending calls must also receive the error
@@ -364,15 +406,11 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
                         .then(({ data }) => data),
             })
             .then(data => {
-                callsForResource.forEach(({ ids, resolve }) => {
-                    resolve(
-                        data.filter(record =>
-                            ids
-                                .map(id => String(id))
-                                .includes(String(record.id))
-                        )
-                    );
-                });
+                resolveCallsWithData(
+                    callsForResource,
+                    queryClient,
+                    filterDataForCall(data)
+                );
             })
             .catch(error =>
                 callsForResource.forEach(({ reject }) => reject(error))

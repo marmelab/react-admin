@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { major as muiMajor } from '@mui/material';
 
 import {
     ConsecutiveNotifications,
@@ -8,6 +9,29 @@ import {
 } from './Notification.stories';
 
 describe('<Notification />', () => {
+    (muiMajor >= 6 ? it : it.skip)(
+        'should confirm an undoable mutation only once when its notification exits with MUI 6+',
+        async () => {
+            const deleteOne = jest
+                .fn()
+                .mockImplementation((_resource, { id }) =>
+                    Promise.resolve({ data: { id } })
+                );
+            const dataProvider = { delete: deleteOne } as any;
+            const { container } = render(
+                <ConsecutiveUndoable dataProvider={dataProvider} />
+            );
+
+            (await screen.findByText('Delete post 1')).click();
+            await screen.findByText('Post 1 deleted');
+            fireEvent.click(container);
+
+            await waitFor(() => expect(deleteOne).toHaveBeenCalled());
+            expect(deleteOne).toHaveBeenCalledTimes(1);
+            expect(deleteOne).toHaveBeenCalledWith('posts', { id: 1 });
+        }
+    );
+
     it('should confirm the first undoable notification when a second one starts', async () => {
         const deleteOne = jest
             .fn()

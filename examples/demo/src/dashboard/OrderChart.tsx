@@ -142,7 +142,6 @@ const OrderChart = (props: { orders?: Order[] }) => {
                     right: '1%',
                     bottom: '0%',
                     top: '2%',
-                    containLabel: true,
                 },
                 series: [
                     {

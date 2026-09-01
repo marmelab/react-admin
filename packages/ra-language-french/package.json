@@ -1,6 +1,6 @@
 {
     "name": "ra-language-french",
-    "version": "5.14.7",
+    "version": "5.15.2",
     "description": "French messages for react-admin, the frontend framework for building admin applications on top of REST/GraphQL services",
     "repository": {
         "type": "git",
@@ -21,7 +21,7 @@
         "typecheck": "tsc --noEmit"
     },
     "dependencies": {
-        "ra-core": "^5.14.7"
+        "ra-core": "^5.15.2"
     },
     "devDependencies": {
         "typescript": "^6.0.3",

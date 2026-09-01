@@ -67,6 +67,7 @@ The form value for the source must be the selected value, e.g.
 | `emptyText`                | Optional | `string`                                        | `''`                                       | The text to use for the empty element                                                                                                                                                                               |
 | `emptyValue`               | Optional | `any`                                           | `''`                                       | The value to use for the empty element                                                                                                                                                                              |
 | `filterToQuery`            | Optional | `string` => `Object`                            | `q => ({ q })`                             | How to transform the searchText into a parameter for the data provider                                                                                                                                              |
+| `getOptionDisabled`        | Optional | `Function`                                      | `-`                                        | A function returning a `boolean` indicating whether a choice can be selected. `(choice) => boolean`                                                                                                                 |
 | `isPending`                | Optional | `boolean`                                       | `false`                                    | If `true`, the component will display a loading indicator.                                                                                                                                                          |
 | `inputText`                | Optional | `Function`                                      | `-`                                        | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                                                                             |
 | `matchSuggestion`          | Optional | `Function`                                      | `-`                                        | Required if `optionText` is a React element. Function returning a boolean indicating whether a choice matches the filter. `(filter, choice) => boolean`                                                             |
@@ -353,6 +354,25 @@ const filterToQuery = searchText => ({ name_ilike: `%${searchText}%` });
     <AutocompleteInput filterToQuery={filterToQuery} />
 </ReferenceInput>
 ```
+
+## `getOptionDisabled`
+
+By default, users can select any of the choices. Use the `getOptionDisabled` prop to prevent the selection of some of them, e.g. because they don't meet a business requirement. It takes a choice and returns a boolean.
+
+```jsx
+<ReferenceInput source="sender_id" reference="staff">
+    <AutocompleteInput
+        helperText="Only staff members with an email address can send messages"
+        getOptionDisabled={choice => !choice.email}
+    />
+</ReferenceInput>
+```
+
+Disabled choices still appear in the suggestion list, but grayed out and not selectable. This is often more helpful than hiding them, as it lets users know that the choice exists. Use [the `helperText` prop](./Inputs.md#helpertext) to explain why these choices can't be selected.
+
+**Tip**: To remove these choices from the suggestion list instead of disabling them, filter them out of [the `choices` prop](#choices), or, inside a `<ReferenceInput>`, use [its `filter` prop](./ReferenceInput.md#filter).
+
+**Tip**: `getOptionDisabled` doesn't replace the internal logic disabling [the `createLabel` hint](#createlabel): a choice is disabled when either your function or react-admin's own rule returns `true`.
 
 ## `isPending`
 
