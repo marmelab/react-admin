@@ -40,6 +40,8 @@ export const ResettableTextField = forwardRef(
             variant,
             margin,
             className,
+            'aria-required': ariaRequired,
+            inputProps: htmlInputPropsFromConsumer,
             ...rest
         } = props;
 
@@ -159,11 +161,36 @@ export const ResettableTextField = forwardRef(
             ...InputPropsWithoutEndAdornment,
         };
 
+        // Props forwarded to the native <input> element. We translate the
+        // `aria-required` prop here (rather than forwarding the native
+        // `required` attribute) because react-admin relies on JS validation,
+        // not the browser's native validation. This marks inputs with a
+        // `required()` validator as required for assistive technologies
+        // without triggering native browser validation. See issue #9585.
+        const htmlInputProps = {
+            ...htmlInputPropsFromConsumer,
+            ...(ariaRequired ? { 'aria-required': true } : {}),
+        };
+        const hasHtmlInputProps = Object.keys(htmlInputProps).length > 0;
+
+        // @ts-expect-error slotProps do not yet exist in MUI v5
+        const htmlInputSlot = rest.slotProps?.htmlInput;
+        // slotProps.htmlInput may be an object or, in MUI v6+, a callback
+        // receiving the owner state. Preserve the caller's form when merging.
+        const mergedHtmlInputSlot =
+            typeof htmlInputSlot === 'function'
+                ? ownerState => ({
+                      ...htmlInputProps,
+                      ...htmlInputSlot(ownerState),
+                  })
+                : { ...htmlInputProps, ...htmlInputSlot };
+
         const mergedSlotProps = {
             // @ts-expect-error slotProps do not yet exist in MUI v5
             ...rest.slotProps,
             // @ts-expect-error slotProps do not yet exist in MUI v5
             input: { ...inputProps, ...rest.slotProps?.input },
+            ...(hasHtmlInputProps ? { htmlInput: mergedHtmlInputSlot } : {}),
         };
 
         return (
@@ -175,7 +202,11 @@ export const ResettableTextField = forwardRef(
                 margin={margin}
                 className={className}
                 {...rest}
-                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+                {...(muiMajor >= 6
+                    ? { slotProps: mergedSlotProps }
+                    : hasHtmlInputProps
+                      ? { inputProps: htmlInputProps }
+                      : {})}
                 inputRef={ref}
             />
         );
