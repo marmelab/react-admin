@@ -1,5 +1,30 @@
 # Changelog
 
+## 5.15.2
+
+* Fix many `<ReferenceField>` components throwing "Maximum update depth exceeded" error ([#11329](https://github.com/marmelab/react-admin/pull/11329)) ([pysnooLab](https://github.com/pysnooLab))
+* Fix some MUI Icons changed appearance ([#11321](https://github.com/marmelab/react-admin/pull/11321)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `useListController` resets the persisted page while the list query is disabled during the auth check ([#11310](https://github.com/marmelab/react-admin/pull/11310)) ([fzaninotto](https://github.com/fzaninotto))
+* [Doc] Document `<AutocompleteInput getOptionDisabled>` prop ([#11323](https://github.com/marmelab/react-admin/pull/11323)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [TypeScript] Add missing `ra.validation.unique` to `TranslationMessages` ([#11337](https://github.com/marmelab/react-admin/pull/11337)) ([bicstone](https://github.com/bicstone))
+* [Demo] Upgrade Echarts to v6 ([#11330](https://github.com/marmelab/react-admin/pull/11330)) ([fzaninotto](https://github.com/fzaninotto))
+* [Chore] Upgrade examples to Vite v8 and stories to Storybook v10 ([#11328](https://github.com/marmelab/react-admin/pull/11328)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump dompurify from 3.4.12 to 3.4.13 ([#11338](https://github.com/marmelab/react-admin/pull/11338)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump fast-uri from 3.1.4 to 3.1.5 ([#11335](https://github.com/marmelab/react-admin/pull/11335)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump nx from 22.5.4 to 22.7.8 ([#11332](https://github.com/marmelab/react-admin/pull/11332)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump seroval from 1.4.2 to 1.5.6 ([#11320](https://github.com/marmelab/react-admin/pull/11320)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump postcss from 8.5.14 to 8.5.23 ([#11319](https://github.com/marmelab/react-admin/pull/11319)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump body-parser from 1.20.5 to 1.20.6 ([#11316](https://github.com/marmelab/react-admin/pull/11316)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump linkify-it from 5.0.1 to 5.0.2 ([#11317](https://github.com/marmelab/react-admin/pull/11317)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump sharp from 0.34.3 to 0.35.0 ([#11315](https://github.com/marmelab/react-admin/pull/11315)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump fast-uri from 3.1.2 to 3.1.4 ([#11314](https://github.com/marmelab/react-admin/pull/11314)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.4.11 to 3.4.12 ([#11312](https://github.com/marmelab/react-admin/pull/11312)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump svgo from 4.0.1 to 4.0.2 ([#11311](https://github.com/marmelab/react-admin/pull/11311)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 6.4.8 to 7.1.1 ([#11307](https://github.com/marmelab/react-admin/pull/11307)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump brace-expansion from 1.1.11 to 1.1.16 ([#11306](https://github.com/marmelab/react-admin/pull/11306)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump axios from 1.16.0 to 1.18.1 ([#11305](https://github.com/marmelab/react-admin/pull/11305)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @sigstore/core from 3.1.0 to 3.2.1 ([#11294](https://github.com/marmelab/react-admin/pull/11294)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.15.1
 
 * Fix AutocompleteInput with single selection in MUI7 ([#11293](https://github.com/marmelab/react-admin/pull/11293)) ([fzaninotto](https://github.com/fzaninotto))
