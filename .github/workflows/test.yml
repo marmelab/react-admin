@@ -29,6 +29,8 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
+    - name: Typecheck
+      run: make typecheck
     - name: Zip packages build artifact
       run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
     - name: Upload packages build artifact

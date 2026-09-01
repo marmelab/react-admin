@@ -33,7 +33,8 @@
     },
     "homepage": "https://github.com/marmelab/react-admin#readme",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "dependencies": {
         "fakerest": "^4.0.1"
@@ -42,7 +43,7 @@
         "@types/jest": "^29.5.2",
         "expect": "^27.4.6",
         "ra-core": "^5.15.2",
-        "typescript": "^5.1.3",
+        "typescript": "^6.0.3",
         "zshy": "^0.5.0"
     },
     "peerDependencies": {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
-import purify from 'dompurify';
+import purify, { type Config } from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';
@@ -74,7 +74,7 @@ export const RichTextField = genericMemo(RichTextFieldImpl);
 // We only support the case when sanitize() returns a string
 // hence we need to force the RETURN_DOM_FRAGMENT and RETURN_DOM
 // options to false
-export type PurifyOptions = purify.Config & {
+export type PurifyOptions = Config & {
     RETURN_DOM_FRAGMENT?: false | undefined;
     RETURN_DOM?: false | undefined;
 };

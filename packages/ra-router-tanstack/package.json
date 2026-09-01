@@ -19,13 +19,14 @@
     "author": "François Zaninotto",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent",
+        "typecheck": "tsc --noEmit"
     },
     "devDependencies": {
         "@tanstack/history": "^1.0.0",
         "@tanstack/react-router": "^1.143.11",
         "ra-core": "^5.15.2",
-        "typescript": "^5.1.3",
+        "typescript": "^6.0.3",
         "zshy": "^0.5.0"
     },
     "peerDependencies": {

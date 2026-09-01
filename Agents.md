@@ -46,7 +46,7 @@ react-admin/
 
 ## Package Dependencies
 
-- **Core**: React 18.3+, TypeScript 5.8+, lodash 4.17+, inflection 3.0+
+- **Core**: React 18.3+, TypeScript 6.0+, lodash 4.17+, inflection 3.0+
 - **Routing**: React Router 6.28+
 - **Data**: TanStack Query 5.90+ (React Query)
 - **Forms**: React Hook Form 7.53+
