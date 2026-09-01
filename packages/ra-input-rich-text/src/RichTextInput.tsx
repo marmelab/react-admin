@@ -114,7 +114,12 @@ export const RichTextInput = (props: RichTextInputProps) => {
     const { error, invalid, isTouched } = fieldState;
 
     useEffect(() => {
-        if (!editor) return;
+        // Tiptap v3's Editor.destroy() sets commandManager to null, and the
+        // `commands` getter dereferences it. When the editor is recreated (e.g.
+        // readOnly/disabled/editorOptions/id change), this passive effect can run
+        // against the just-destroyed instance, throwing "Cannot read properties of
+        // null (reading 'commands')". Bail out on destroyed editors as well.
+        if (!editor || editor.isDestroyed) return;
 
         const { from, to } = editor.state.selection;
 
