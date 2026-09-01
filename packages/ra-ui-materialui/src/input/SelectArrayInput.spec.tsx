@@ -19,6 +19,10 @@ import {
     InsideReferenceArrayInputDefaultValue,
     CreateLabel,
     CreateLabelRendered,
+    EmptyText,
+    EmptyTextElement,
+    EmptyTextInFilter,
+    EmptyTextTranslated,
 } from './SelectArrayInput.stories';
 
 describe('<SelectArrayInput />', () => {
@@ -785,6 +789,39 @@ describe('<SelectArrayInput />', () => {
         await screen.findByText('Foo');
         fireEvent.click(screen.getByLabelText('Add'));
         expect(await screen.findAllByText('Foo')).toHaveLength(2);
+    });
+
+    describe('emptyText', () => {
+        it('should render the empty text when no choice is selected', async () => {
+            render(<EmptyText />);
+            await screen.findByText('No channel');
+        });
+
+        it('should render the selected choices instead of the empty text', async () => {
+            render(<EmptyText />);
+            await screen.findByText('No channel');
+            fireEvent.mouseDown(screen.getByLabelText('Channels'));
+            fireEvent.click(screen.getByText('Email'));
+            await waitFor(() => {
+                expect(screen.queryByText('No channel')).toBeNull();
+            });
+            expect(screen.getByDisplayValue('email')).not.toBeNull();
+        });
+
+        it('should accept a React element as empty text', async () => {
+            render(<EmptyTextElement />);
+            await screen.findByText('No channel');
+        });
+
+        it('should translate the empty text', async () => {
+            render(<EmptyTextTranslated />);
+            await screen.findByText('No channel');
+        });
+
+        it('should render the empty text in a filter', async () => {
+            render(<EmptyTextInFilter />);
+            await screen.findByText('All channels');
+        });
     });
 
     describe('inside ReferenceArrayInput', () => {
