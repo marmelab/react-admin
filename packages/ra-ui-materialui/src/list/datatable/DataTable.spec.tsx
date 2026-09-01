@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { QueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import {
     ResourceContextProvider,
@@ -225,6 +226,38 @@ describe('DataTable', () => {
         });
     });
     describe('bulkActionButtons', () => {
+        it('should not enable delete permission queries without an auth provider', async () => {
+            const queryClient = new QueryClient();
+
+            render(
+                <TestMemoryRouter>
+                    <AdminContext queryClient={queryClient}>
+                        <ResourceContextProvider value="books">
+                            <DataTable
+                                bulkActionsToolbar={<></>}
+                                data={[{ id: 1 }]}
+                                isPending={false}
+                                onSelect={jest.fn()}
+                                onToggleItem={jest.fn()}
+                                selectedIds={[]}
+                                total={1}
+                            >
+                                <DataTable.Col source="id" />
+                            </DataTable>
+                        </ResourceContextProvider>
+                    </AdminContext>
+                </TestMemoryRouter>
+            );
+
+            await waitFor(() => {
+                const [query] = queryClient.getQueryCache().findAll({
+                    queryKey: ['auth', 'canAccess'],
+                });
+                expect(query.state.fetchStatus).toBe('idle');
+                expect(query.state.data).toBeUndefined();
+            });
+        });
+
         it('should not check delete permissions when bulk actions are disabled', () => {
             const authProvider: AuthProvider = {
                 canAccess: jest.fn().mockResolvedValue(true),

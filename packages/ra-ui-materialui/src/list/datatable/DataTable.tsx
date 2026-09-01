@@ -139,7 +139,7 @@ export const DataTable = React.forwardRef(function DataTable<
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
         action: 'delete',
-        enabled: props.bulkActionButtons !== false,
+        ...(props.bulkActionButtons === false ? { enabled: false } : {}),
     });
 
     const {
