@@ -64,7 +64,6 @@ The form value for the source must be an array of the selected values, e.g.
 | `createLabel`              | Optional | `string` &#124; `ReactNode`                     | -                        | The label used as hint to let users know they can create a new choice. Displayed when the filter is empty.                                       |
 | `createItemLabel`          | Optional | `string` &#124; `(filter: string) => ReactNode` | `ra.action .create_item` | The label for the menu item allowing users to create a new choice. Used when the filter is not empty.                                                    |
 | `debounce`                 | Optional | `number`                                        | `250`                    | The delay to wait before calling the setFilter function injected when used in a ReferenceArray Input.                                                         |
-| `emptyValue`               | Optional | `any`                                           | `''`                     | The value to use for the empty element                                                                                                                  |
 | `filterToQuery`            | Optional | `string` => `Object`                            | `q => ({ q })`           | How to transform the searchText into a parameter for the data provider                                                                                  |
 | `getOptionDisabled`        | Optional | `Function`                                      | `-`                      | A function returning a `boolean` indicating whether a choice can be selected. `(choice) => boolean`                                                     |
 | `inputText`                | Optional | `Function`                                      | `-`                      | Required if `optionText` is a custom Component, this function must return the text displayed for the current selection.                                 |
@@ -298,18 +297,6 @@ This delay can be customized by setting the `debounce` prop.
     <AutocompleteArrayInput debounce={500} />
 </ReferenceArrayInput>
 ```
-
-## `emptyValue`
-
-If the input isn't required (using `validate={required()}`), users can select an empty choice. The default value for that empty choice is the empty string (`''`), or `null` if the input is inside a [`<ReferenceArrayInput>`](./ReferenceArrayInput.md).
-
-You can override this value with the `emptyValue` prop.
-
-```jsx
-<AutocompleteArrayInput source="roles" choices={choices} emptyValue={0} />
-```
-
-**Tip**: While you can set `emptyValue` to a non-string value (e.g. `0`), you cannot use `null` or `undefined`, as it would turn the `<AutocompleteArrayInput>` into an [uncontrolled component](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components). If you need the empty choice to be stored as `null` or `undefined`, use [the `parse` prop](./Inputs.md#parse) to convert the default empty value (`''`) to `null` or `undefined`, or use [the `sanitizeEmptyValues` prop](./SimpleForm.md#sanitizeemptyvalues) on the Form component. 
 
 ## `filterToQuery`
 
