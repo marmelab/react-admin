@@ -314,7 +314,7 @@ const OrderEdit = () => (
 );
 ```
 
-**Tip**: When used inside an `<ArrayInput>`, `<FormDataConsumer>` provides two additional properties to its child function: `scopedFormData` (an object containing the current values of the *currently rendered item*) and `index` (the zero-based index of the item inside the array). This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
+**Tip**: When used inside an `ArrayInput`, `<FormDataConsumer>` provides two additional properties to its child function: `scopedFormData` and `index`. `scopedFormData` is an object containing the current values of the *currently rendered item*. `index` is the index of the current item in the array. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```tsx
 import { FormDataConsumer } from 'react-admin';
@@ -329,7 +329,7 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
-                            index, // The index of this item of the ArrayInput
+                            index, // The index of the current item in the ArrayInput
                             ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
@@ -349,6 +349,8 @@ const PostEdit = () => (
 ```
 
 **Tip:** TypeScript users will notice that `scopedFormData` and `index` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
+
+**Tip:** The `index` parameter is useful when you need to know the position of the current item in the array, e.g. to display a row number or to apply conditional logic based on the item's position.
 
 ## Hiding Inputs Based On Other Inputs
 
