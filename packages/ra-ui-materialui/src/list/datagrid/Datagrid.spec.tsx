@@ -12,6 +12,7 @@ import {
     ListContextProvider,
     useRecordContext,
     ResourceContextProvider,
+    AuthProvider,
 } from 'ra-core';
 import { ThemeProvider, createTheme } from '@mui/material';
 
@@ -28,9 +29,12 @@ const TitleField = () => {
     return <span>{record?.title}</span>;
 };
 
-const Wrapper = ({ children, listContext }) => (
+const Wrapper = ({ children, listContext, authProvider = undefined }) => (
     <ThemeProvider theme={createTheme()}>
-        <CoreAdminContext dataProvider={testDataProvider()}>
+        <CoreAdminContext
+            dataProvider={testDataProvider()}
+            authProvider={authProvider}
+        >
             <ResourceContextProvider value={listContext.resource}>
                 <ListContextProvider value={listContext}>
                     {children}
@@ -135,6 +139,27 @@ describe('<Datagrid />', () => {
         render(<SelectAllButton onlyDisplay="disabled" />);
         fireEvent.click(await screen.findByLabelText('ra.action.select_all'));
         expect(screen.queryByText('Select All')).toBeNull();
+    });
+
+    it('should not check delete permissions when bulk actions are disabled', () => {
+        const authProvider: AuthProvider = {
+            canAccess: jest.fn().mockResolvedValue(true),
+            checkAuth: jest.fn().mockResolvedValue(undefined),
+            checkError: jest.fn().mockResolvedValue(undefined),
+            getPermissions: jest.fn().mockResolvedValue(undefined),
+            login: jest.fn().mockResolvedValue(undefined),
+            logout: jest.fn().mockResolvedValue(undefined),
+        };
+
+        render(
+            <Wrapper listContext={contextValue} authProvider={authProvider}>
+                <Datagrid bulkActionButtons={false}>
+                    <TitleField />
+                </Datagrid>
+            </Wrapper>
+        );
+
+        expect(authProvider.canAccess).not.toHaveBeenCalled();
     });
 
     describe('row selection', () => {

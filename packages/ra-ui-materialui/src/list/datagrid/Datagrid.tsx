@@ -131,6 +131,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
         action: 'delete',
+        ...(props.bulkActionButtons === false ? { enabled: false } : {}),
     });
     const {
         optimized = false,
