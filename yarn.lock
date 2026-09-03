@@ -6730,11 +6730,11 @@ __metadata:
   linkType: hard
 
 "@tiptap/core@npm:^3.20.4":
-  version: 3.20.4
-  resolution: "@tiptap/core@npm:3.20.4"
+  version: 3.31.1
+  resolution: "@tiptap/core@npm:3.31.1"
   peerDependencies:
-    "@tiptap/pm": ^3.20.4
-  checksum: e36a2b8ea572c426ab371a93274a780cbbff3d3de43d8f4e8622f81aa964fceed9fc89f8eb88367ac941cb24d623ad6ee5b4876e986cd66a07cddefe9adfc212
+    "@tiptap/pm": 3.31.1
+  checksum: c4a25b861e96e38eb93eaf1b57b236de4cc736e23f8a3b79aed1a0aab1fa03a4348904ab02861fe0140ce405ff5d43ecacbb62db4dbcc547d22e2a3f88e54751
   languageName: node
   linkType: hard
 
