@@ -94,7 +94,12 @@
     },
     "resolutions": {
         "minimist": "^1.2.6",
-        "ejs": "^3.1.7",
+        "ejs": "^3.1.10",
+        "lerna/js-yaml": "^4.3.2",
+        "@lerna/create/js-yaml": "^4.3.2",
+        "tar": "^7.5.22",
+        "qs": "^6.16.0",
+        "uuid": "^11.1.1",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0"
     },
