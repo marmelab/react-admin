@@ -6,6 +6,7 @@ import {
     useResourceContext,
     useTranslate,
     useUpdate,
+    useEvent,
     Form,
     RecordContextProvider,
     type UseUpdateOptions,
@@ -101,6 +102,8 @@ export const InPlaceEditor = <
     }
 
     const submitButtonRef = useRef<HTMLButtonElement>(null);
+    const pendingBlurRef = useRef(false);
+    const focusDocumentRef = useRef<Document | null>(null);
 
     const [state, dispatch] = useReducer<
         (
@@ -195,10 +198,7 @@ export const InPlaceEditor = <
         }
     };
 
-    const handleBlur = (event: React.FocusEvent) => {
-        if (event.relatedTarget) {
-            return;
-        }
+    const handleBlurAway = useEvent(() => {
         if (cancelOnBlur) {
             dispatch({ type: 'cancel' });
             return;
@@ -206,8 +206,47 @@ export const InPlaceEditor = <
         if (state.state === 'editing') {
             // trigger the parent form submit
             // to save the changes
-            (submitButtonRef.current as HTMLButtonElement).click();
+            submitButtonRef.current?.click();
         }
+    });
+    const handleDocumentFocusIn = useEvent(() => {
+        focusDocumentRef.current = null;
+        if (!pendingBlurRef.current) {
+            return;
+        }
+        pendingBlurRef.current = false;
+        handleBlurAway();
+    });
+    React.useEffect(
+        () => () => {
+            focusDocumentRef.current?.removeEventListener(
+                'focusin',
+                handleDocumentFocusIn
+            );
+        },
+        [handleDocumentFocusIn]
+    );
+    const handleBlur = (event: React.FocusEvent) => {
+        if (!event.relatedTarget) {
+            handleBlurAway();
+            return;
+        }
+        pendingBlurRef.current = true;
+        // React focus events from portals bubble through their component tree
+        // before reaching document, so handleFocus can cancel internal moves.
+        // External moves are handled here before the destination's click event.
+        const ownerDocument = event.currentTarget.ownerDocument;
+        focusDocumentRef.current?.removeEventListener(
+            'focusin',
+            handleDocumentFocusIn
+        );
+        focusDocumentRef.current = ownerDocument;
+        ownerDocument.addEventListener('focusin', handleDocumentFocusIn, {
+            once: true,
+        });
+    };
+    const handleFocus = () => {
+        pendingBlurRef.current = false;
     };
 
     const renderContent = () => {
@@ -227,6 +266,7 @@ export const InPlaceEditor = <
                         <Box
                             onKeyDown={handleKeyDown}
                             onBlur={handleBlur}
+                            onFocus={handleFocus}
                             className={InPlaceEditorClasses.editing}
                         >
                             {editor}
