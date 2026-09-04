@@ -116,7 +116,7 @@ For instance, the following code creates an `authors` resource, and adds an `/au
 ```jsx
 // in src/App.jsx
 import { Admin, Resource } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { AuthorList } from './AuthorList';
 import { BookList } from './BookList';
@@ -329,7 +329,7 @@ React-admin doesn't support nested resources, but you can use [the `children` pr
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>

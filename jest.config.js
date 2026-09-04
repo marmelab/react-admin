@@ -23,6 +23,12 @@ module.exports = {
         '/esm/',
         '/examples/simple/',
         '/packages/create-react-admin/templates',
+        // ra-router-react-router-next is ESM-only and React 19; it runs as a
+        // separate jest invocation (its own jest.config.cjs) from the test
+        // scripts, under `NODE_OPTIONS=--experimental-vm-modules`. Enabling that
+        // flag process-wide here would force the rest of the suite into ESM mode
+        // and break the CommonJS deps it transforms (e.g. react-hotkeys-hook).
+        '/packages/ra-router-react-router-next/',
     ],
     transformIgnorePatterns: [
         '[/\\\\]node_modules[/\\\\](?!(@hookform|react-hotkeys-hook|@faker-js/faker)/).+\\.(js|jsx|mjs|ts|tsx)$',

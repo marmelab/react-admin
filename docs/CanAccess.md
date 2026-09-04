@@ -63,7 +63,7 @@ Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to 
 
 ```tsx
 import { Admin, CustomRoutes, Authenticated, CanAccess, AccessDenied, Layout } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { LogsPage } from './LogsPage';
 import { MyMenu } from './MyMenu';

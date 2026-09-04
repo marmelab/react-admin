@@ -258,7 +258,7 @@ Use the [`<CustomRoutes>`](./CustomRoutes.md) component to add custom routes to 
 ```tsx
 import { CoreAdmin, CustomRoutes, Authenticated, CanAccess } from 'ra-core';
 import { AccessDenied } from './AccessDenied';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { LogsPage } from './LogsPage';
 
 const App = () => (

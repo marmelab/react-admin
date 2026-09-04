@@ -11,14 +11,8 @@ import * as yup from 'yup';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import {
-    Route,
-    Routes,
-    useNavigate,
-    Link,
-    HashRouter,
-    useLocation,
-} from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 
 import { CoreAdminContext } from '../core';
 import {
@@ -32,7 +26,7 @@ import { useInput } from './useInput';
 import { required, ValidationError } from './validation';
 import { mergeTranslations } from '../i18n';
 import { I18nProvider, RaRecord } from '../types';
-import { TestMemoryRouter } from '../routing';
+import { TestMemoryRouter, LinkBase as Link } from '../routing';
 import { useNotificationContext } from '../notification';
 
 export default {

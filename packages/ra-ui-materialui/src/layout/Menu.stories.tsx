@@ -25,7 +25,7 @@ import Inventory from '@mui/icons-material/Inventory';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import QrCode from '@mui/icons-material/QrCode';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { Layout, Menu, MenuItemLinkClasses, Title } from '.';
 

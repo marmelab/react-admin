@@ -19,7 +19,7 @@ import {
 } from 'ra-ui-materialui';
 import { useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import Mention from '@tiptap/extension-mention';
 import { Editor, ReactRenderer } from '@tiptap/react';
 import { computePosition, flip, shift, offset } from '@floating-ui/dom';

@@ -37,11 +37,10 @@ import { useCreatePath } from '../routing';
  *
  * @example <caption>Custom PrevNextButton</caption>
  *
- * import { UsePrevNextControllerProps, useTranslate } from 'ra-core';
+ * import { UsePrevNextControllerProps, useTranslate, LinkBase as Link } from 'ra-core';
  * import NavigateBefore from '@mui/icons-material/NavigateBefore';
  * import NavigateNext from '@mui/icons-material/NavigateNext';
  * import ErrorIcon from '@mui/icons-material/Error';
- * import { Link } from 'react-router-dom';
  * import { CircularProgress, IconButton } from '@mui/material';
  *
  * const MyPrevNextButtons = props => {
@@ -78,7 +77,7 @@ import { useCreatePath } from '../routing';
  *             <li>
  *                 <IconButton
  *                     component={hasPrev ? Link : undefined}
- *                     to={navigateToPrev}
+ *                     to={prevPath}
  *                     aria-label={translate('ra.navigation.previous')}
  *                     disabled={!hasPrev}
  *                 >
@@ -93,7 +92,7 @@ import { useCreatePath } from '../routing';
  *             <li>
  *                 <IconButton
  *                     component={hasNext ? Link : undefined}
- *                     to={navigateToNext}
+ *                     to={nextPath}
  *                     aria-label={translate('ra.navigation.next')}
  *                     disabled={!hasNext}
  *                 >

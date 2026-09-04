@@ -19,7 +19,7 @@ However, you need to define the route to reach this component manually using [`<
 ```tsx
 // in src/App.js
 import { Admin, CustomRoutes } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
 
 export const App = () => (
@@ -116,7 +116,7 @@ However, you **must** use [`<ShowDeleted>`](./ShowDeleted.md) component instead 
 {% raw %}
 ```tsx
 import { Admin, CustomRoutes, SimpleShowLayout, TextField } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsList, ShowDeleted } from '@react-admin/ra-soft-delete';
 
 const ShowDeletedBook = () => (
@@ -394,7 +394,7 @@ In the example below, the deleted records lists store their list parameters sepa
 {% raw %}
 ```tsx
 import { Admin, CustomRoutes } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsList } from '@react-admin/ra-soft-delete';
 
 const Admin = () => {

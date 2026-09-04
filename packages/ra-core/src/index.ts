@@ -14,3 +14,5 @@ export * from './store';
 export * from './types';
 export * from './util';
 export * as testUI from './test-ui';
+
+export * from 'ra-router-react-router';
