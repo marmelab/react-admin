@@ -619,6 +619,13 @@ If you provided a React element for the optionText prop, you must also provide t
         (event: any, newValue: any, reason: AutocompleteChangeReason) => {
             // This prevents auto-submitting a form inside a dialog passed to the `create` prop
             event.preventDefault();
+            if (
+                reason === 'blur' &&
+                typeof newValue === 'string' &&
+                doesQueryMatchSelection(newValue)
+            ) {
+                return;
+            }
             if (reason === 'createOption') {
                 // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
                 handleChangeWithCreateSupport(
@@ -634,7 +641,12 @@ If you provided a React element for the optionText prop, you must also provide t
                 newValue != null ? newValue : emptyValue
             );
         },
-        [emptyValue, getCreateItem, handleChangeWithCreateSupport]
+        [
+            doesQueryMatchSelection,
+            emptyValue,
+            getCreateItem,
+            handleChangeWithCreateSupport,
+        ]
     );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
