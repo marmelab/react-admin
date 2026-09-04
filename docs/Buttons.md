@@ -564,13 +564,14 @@ Base component for most react-admin buttons. Responsive (displays only the icon 
 
 | Prop         | Required | Type                           | Default | Description                              |
 | ------------ | -------- | ------------------------------ | ------- | ---------------------------------------- |
-| `alignIcon`  | Optional | `'left' | 'right`              | `'left'` | Icon position relative to the label     |
+| `alignIcon`  | Optional | `'left' \| 'right`              | `'left'` | Icon position relative to the label     |
+| `breakpoint` | Optional | `Breakpoint \| false`           | `'sm'`   | Breakpoint below which the button shrinks to an icon |
 | `children`   | Optional | `ReactNode`                    | -        | icon to use                             |
 | `className`  | Optional | `string`                       | -        | Class name to customize the look and feel of the button element itself          |
-| `color`      | Optional | `'default' | 'inherit'| 'primary' | 'secondary'` | `'primary'` | Label and icon color |
+| `color`      | Optional | `'default' \| 'inherit' \| 'primary' \| 'secondary'` | `'primary'` | Label and icon color |
 | `disabled`   | Optional | `boolean`                      | `false`   | If `true`, the button will be disabled |
 | `label`      | Optional | `ReactNode`                    | `false`   | The button label |
-| `size`       | Optional | `'large' | 'medium' | 'small'` | `'small'` | Button size                            |
+| `size`       | Optional | `'large' \| 'medium' \| 'small'` | `'small'` | Button size                            |
 
 Other props are passed down to [the underlying Material UI `<Button>`](https://mui.com/material-ui/api/button/).
 
@@ -580,6 +581,42 @@ The icon position relative to the label. Defaults to `left`.
 
 ```tsx
 <Button label="Ban user" onClick={handleClick} alignIcon="right" />
+```
+
+### `breakpoint`
+
+By default, `<Button>` shrinks to an icon button with a tooltip on screens smaller than the `sm` breakpoint. Use the `breakpoint` prop to change the breakpoint at which this happens, or set it to `false` to always render the full button with its label:
+
+```tsx
+// always render the label, even on mobile
+<Button label="Ban user" onClick={handleClick} breakpoint={false}>
+    <BanIcon />
+</Button>
+
+// shrink to an icon on screens smaller than the `lg` breakpoint
+<Button label="Ban user" onClick={handleClick} breakpoint="lg">
+    <BanIcon />
+</Button>
+```
+
+**Tip**: As all react-admin buttons (`<EditButton>`, `<SaveButton>`, `<DeleteButton>`, etc.) are based on `<Button>` (with the special case of [`<CreateButton>`](#createbutton)), you can disable the mobile behavior for the entire application by setting the default prop in the theme:
+
+```tsx
+const theme = {
+    ...defaultTheme,
+    components: {
+        RaButton: {
+            defaultProps: {
+                breakpoint: false,
+            },
+        },
+        RaCreateButton: {
+            defaultProps: {
+                breakpoint: false,
+            },
+        },
+    },
+};
 ```
 
 ### `children`
