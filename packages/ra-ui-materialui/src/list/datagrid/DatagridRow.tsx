@@ -165,6 +165,26 @@ const DatagridRow: React.ForwardRefExoticComponent<
             getPathForRecord,
         ]
     );
+    const isRowClickable = Boolean(rowClick ?? hasDetailView);
+
+    const handleKeyDown = useCallback(
+        (event: React.KeyboardEvent<HTMLTableRowElement>) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                handleClick(event as any);
+            }
+        },
+        [handleClick]
+    );
+
+    // Accessible name for screen readers: without this, the row is announced
+    // as a bare "button"/"link" with no indication of what it does.
+    const rowAccessibleLabel = isRowClickable
+        ? translate('ra.action.open', {
+              _: `Open ${resource} #${record.id}`,
+              recordRepresentation: `${resource} #${record.id}`,
+          })
+        : undefined;
 
     return (
         <>
@@ -173,12 +193,15 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 className={clsx(className, {
                     [DatagridClasses.expandable]: expandable,
                     [DatagridClasses.selectable]: selectable,
-                    [DatagridClasses.clickableRow]: rowClick ?? hasDetailView,
+                    [DatagridClasses.clickableRow]: isRowClickable,
                 })}
-                key={id}
-                style={style}
+                key={record.id}
                 hover={hover}
                 onClick={handleClick}
+                onKeyDown={isRowClickable ? handleKeyDown : undefined}
+                role={isRowClickable ? 'button' : undefined}
+                tabIndex={isRowClickable ? 0 : undefined}
+                aria-label={rowAccessibleLabel}
                 {...rest}
             >
                 {expand && (
