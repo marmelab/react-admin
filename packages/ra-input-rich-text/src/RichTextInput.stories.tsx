@@ -17,7 +17,7 @@ import {
     Toolbar as RAToolbar,
     SaveButton,
 } from 'ra-ui-materialui';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import fakeRestDataProvider from 'ra-data-fakerest';
 import { Routes, Route } from 'react-router-dom';
 import Mention from '@tiptap/extension-mention';
@@ -111,6 +111,65 @@ export const ReadOnly = (props: Partial<SimpleFormProps>) => (
         </ResourceContextProvider>
     </AdminContext>
 );
+
+const postsToSwitch = [
+    { body: '<p>This post is a draft, you can edit it.</p>', readOnly: false },
+    { body: '<p>This post is published, it is read-only.</p>', readOnly: true },
+];
+
+const SwitchPostButton = ({
+    postIndex,
+    onSwitch,
+}: {
+    postIndex: number;
+    onSwitch: (index: number) => void;
+}) => {
+    const { setValue } = useFormContext();
+    return (
+        <Button
+            onClick={() => {
+                const nextIndex = (postIndex + 1) % postsToSwitch.length;
+                setValue('body', postsToSwitch[nextIndex].body);
+                onSwitch(nextIndex);
+            }}
+        >
+            Switch post
+        </Button>
+    );
+};
+
+/**
+ * Changing the value and the readOnly prop at the same time recreates the editor
+ * while the content sync effect still references the previous (destroyed) one.
+ * Clicking on "Switch post" used to throw
+ * "Cannot read properties of null (reading 'commands')".
+ */
+export const EditorRecreation = (props: Partial<SimpleFormProps>) => {
+    const [postIndex, setPostIndex] = React.useState(0);
+    return (
+        <AdminContext i18nProvider={i18nProvider}>
+            <ResourceContextProvider value="posts">
+                <Card>
+                    <SimpleForm
+                        defaultValues={{ body: postsToSwitch[0].body }}
+                        onSubmit={() => {}}
+                        {...props}
+                    >
+                        <SwitchPostButton
+                            postIndex={postIndex}
+                            onSwitch={setPostIndex}
+                        />
+                        <RichTextInput
+                            source="body"
+                            readOnly={postsToSwitch[postIndex].readOnly}
+                        />
+                        <FormInspector />
+                    </SimpleForm>
+                </Card>
+            </ResourceContextProvider>
+        </AdminContext>
+    );
+};
 
 export const Small = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
