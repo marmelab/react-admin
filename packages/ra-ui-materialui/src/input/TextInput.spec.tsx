@@ -123,6 +123,67 @@ describe('<TextInput />', () => {
         });
     });
 
+    describe('aria-required', () => {
+        it('should mark the input as required with aria-required (not the native required attribute) when a required() validator is set', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <TextInput
+                                {...defaultProps}
+                                validate={required()}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.title *'
+            );
+            expect(input).toBeRequired();
+            expect(input).toHaveAttribute('aria-required', 'true');
+            // react-admin uses JS validation, so the native required attribute
+            // must not be set (it would trigger native browser validation).
+            expect(input).not.toHaveAttribute('required');
+        });
+
+        it('should not mark the input as required when no required validator is set', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <TextInput {...defaultProps} />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText('resources.posts.fields.title');
+            expect(input).not.toBeRequired();
+            expect(input).not.toHaveAttribute('aria-required');
+        });
+
+        it('should preserve caller-provided inputProps while adding aria-required', () => {
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn}>
+                            <TextInput
+                                {...defaultProps}
+                                validate={required()}
+                                inputProps={{ 'data-custom': 'kept' }}
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            const input = screen.getByLabelText(
+                'resources.posts.fields.title *'
+            );
+            expect(input).toHaveAttribute('aria-required', 'true');
+            expect(input).toHaveAttribute('data-custom', 'kept');
+        });
+    });
+
     it('should keep null values', async () => {
         const onSuccess = jest.fn();
         render(<ValueNull onSuccess={onSuccess} />);
