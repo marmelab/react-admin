@@ -60,7 +60,7 @@ The app will save the current form values after 3 seconds of inactivity.
 - You must set the `<Form resetOptions>` prop to `{ keepDirtyValues: true }`. If you forget that prop, any change entered by the end user after the autosave but before its acknowledgement by the server will be lost.
 - In an `<EditBase>` page, you must set [`mutationMode`](https://marmelab.com/ra-core/editbase/#mutationmode) to `pessimistic` or `optimistic` (`<AutoSaveBase>` doesn't work with the default `mutationMode="undoable"`).
 - You can't use `<Form warnWhenUnsavedChanges>` with this component. `<AutoSaveBase>` implements its own similar mechanism, and it's enabled by default. You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
-- It requires that you use a Data Router. This is the default for react-admin apps, but if you're using a custom router, you may need to adjust your configuration. Check the react-router documentation about [Using a Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [Using a Data Router with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
+- It requires a router that supports navigation blocking. This is the case with the default router provided by react-admin. If you set up your own react-router router, it must be a [Data Router](https://reactrouter.com/6.22.3/routers/picking-a-router). Other `routerProvider` implementations expose their support through `useCanBlock()`.
 
 ## Props
 
