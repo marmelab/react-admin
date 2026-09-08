@@ -1,14 +1,24 @@
 import {
     ApolloClient,
-    ApolloClientOptions,
-    HttpLink,
     InMemoryCache,
+    HttpLink,
+    type ApolloClientOptions,
 } from '@apollo/client';
 
-export default (options?: Partial<ApolloClientOptions<unknown>>) => {
+/**
+ * Apollo Client 4 moved `uri`, `credentials` and `headers` out of the client
+ * options: they are HttpLink options now. We keep accepting them here and
+ * forward them to the HttpLink we build, so that
+ * `buildGraphQLProvider({ clientOptions: { uri } })` keeps working.
+ */
+export type BuildApolloClientOptions = Partial<ApolloClientOptions> &
+    Pick<HttpLink.Options, 'uri' | 'credentials' | 'headers'>;
+
+export default (options?: BuildApolloClientOptions) => {
     if (!options) {
         return new ApolloClient({
             cache: new InMemoryCache().restore({}),
+            link: new HttpLink({}),
         });
     }
 
@@ -17,7 +27,7 @@ export default (options?: Partial<ApolloClientOptions<unknown>>) => {
         uri,
         credentials,
         headers,
-        link = uri ? new HttpLink({ uri, credentials, headers }) : undefined,
+        link = new HttpLink({ uri, credentials, headers }),
         ...otherOptions
     } = options;
 
