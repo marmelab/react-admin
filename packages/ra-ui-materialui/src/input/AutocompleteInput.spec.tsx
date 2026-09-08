@@ -26,6 +26,7 @@ import {
     InsideReferenceInputOnChange,
     WithInputProps,
     OnCreate,
+    OnCreateWithAutoSelect,
     OnCreateSlow,
     CreateLabel,
     CreateItemLabel,
@@ -1213,7 +1214,7 @@ describe('<AutocompleteInput />', () => {
 
     describe('onCreate', () => {
         it('should keep a clicked choice on blur when autoSelect is enabled', async () => {
-            render(<OnCreate autoSelect autoHighlight />);
+            render(<OnCreateWithAutoSelect />);
             const input = (await screen.findByLabelText(
                 'Author'
             )) as HTMLInputElement;
