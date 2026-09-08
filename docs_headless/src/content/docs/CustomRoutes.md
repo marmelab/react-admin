@@ -41,7 +41,7 @@ The `Route` element depends on the routing library you use (e.g. `react-router` 
 
 ```jsx
 // for react-router
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 // for tanstack-router
 import { tanStackRouterProvider } from 'ra-router-tanstack';
 const { Route } = tanStackRouterProvider;
@@ -56,7 +56,7 @@ Now, when a user browses to `/settings` or `/profile`, the components you define
 ```jsx
 // in src/App.js
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Settings } from './Settings';
@@ -87,7 +87,7 @@ Here is an example of application configuration mixing custom routes with and wi
 ```jsx
 // in src/App.js
 import { CoreAdmin, CustomRoutes } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Register } from './Register';
@@ -116,7 +116,7 @@ By default, custom routes can be accessed even by anomymous users. If you want t
 ```jsx
 // in src/App.js
 import { CoreAdmin, CustomRoutes, Authenticated } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Settings } from './Settings';
@@ -155,7 +155,7 @@ To do so, add the `<Route>` elements as [children of the `<Resource>` element](.
 
 ```jsx
 import { CoreAdmin, Resource } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import posts from './posts';
@@ -184,7 +184,7 @@ This is usually useful for nested resources, such as books on authors:
 ```jsx
 // in src/App.js
 import { CoreAdmin, Resource } from 'ra-core';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 import { AuthorList } from './AuthorList';
 import { AuthorEdit } from './AuthorEdit';
 

@@ -2,12 +2,8 @@ import * as React from 'react';
 import { useMemo } from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
-import {
-    AdminRouter,
-    RouterProviderContext,
-    RouterProvider,
-    reactRouterProvider,
-} from '../routing';
+import { reactRouterProvider } from 'ra-router-react-router';
+import { AdminRouter, RouterProviderContext, RouterProvider } from '../routing';
 import { AuthContext, convertLegacyAuthProvider } from '../auth';
 import {
     DataProviderContext,
@@ -174,7 +170,7 @@ export interface CoreAdminContextProps {
      * The router provider for custom routing implementations
      *
      * Use this to integrate react-admin with alternative routers like TanStack Router.
-     * Defaults to react-router-dom.
+     * Defaults to react-router.
      *
      * @see https://marmelab.com/react-admin/Admin.html#routerprovider
      * @example

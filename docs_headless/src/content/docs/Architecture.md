@@ -20,7 +20,7 @@ For example, the following ra-core application:
 
 ```jsx
 import { CoreAdmin, Resource, CustomRoutes } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 export const App = () => (
     <CoreAdmin dataProvider={dataProvider}>

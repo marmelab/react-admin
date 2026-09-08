@@ -21,7 +21,7 @@ For example, the following react-admin application:
 
 ```jsx
 import { Admin, Resource, CustomRoutes } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>

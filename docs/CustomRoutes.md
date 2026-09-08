@@ -43,7 +43,7 @@ The `Route` element depends on the routing library you use (e.g. `react-router` 
 
 ```jsx
 // for react-router
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 // for tanstack-router
 import { tanStackRouterProvider } from 'ra-router-tanstack';
 const { Route } = tanStackRouterProvider;
@@ -62,7 +62,7 @@ Now, when a user browses to `/settings` or `/profile`, the components you define
 ```jsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Settings } from './Settings';
@@ -95,7 +95,7 @@ Here is an example of application configuration mixing custom routes with and wi
 ```jsx
 // in src/App.js
 import { Admin, CustomRoutes } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Register } from './Register';
@@ -124,7 +124,7 @@ By default, custom routes can be accessed even by anomymous users. If you want t
 ```jsx
 // in src/App.js
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { Settings } from './Settings';
@@ -207,7 +207,7 @@ Finally, pass the custom `<Layout>` component to `<Admin>`:
 ```jsx
 // in src/App.js
 import { Admin, Resource, CustomRoutes } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import { MyLayout } from './MyLayout';
@@ -276,7 +276,7 @@ To do so, add the `<Route>` elements as [children of the `<Resource>` element](.
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 import { dataProvider } from './dataProvider';
 import posts from './posts';
@@ -307,7 +307,7 @@ This is usually useful for nested resources, such as books on authors:
 ```jsx
 // in src/App.jsx
 import { Admin, Resource, ListGuesser, EditGuesser } from 'react-admin';
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 const App = () => (
     <Admin dataProvider={dataProvider}>
