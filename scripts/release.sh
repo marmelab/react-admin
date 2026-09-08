@@ -166,9 +166,13 @@ retry_step "Process version changes" "
 "
 
 # Step 6: Handle minor version updates
+# We use perl rather than sed for in-place edits: BSD sed (macOS) requires an
+# argument for -i and doesn't expand \n in the replacement, while perl behaves
+# the same on macOS and Linux. Versions are passed through the environment to
+# keep the perl program single-quoted across the eval done by retry_step.
 if [ "$npm_previous_package_minor_version" != "$npm_current_package_minor_version" ]; then
     retry_step "Update OldVersions.md" "
-        sed -i \"s/^- \[v\$npm_previous_package_minor_version\].*/- [v\$npm_current_package_minor_version](https:\/\/github.com\/marmelab\/react-admin\/blob\/master\/docs\/Admin.md)\n- [v\$npm_previous_package_minor_version](https:\/\/github\.com\/marmelab\/react\-admin\/blob\/v\$npm_previous_package_version\/docs\/Admin.md\)/\" docs/OldVersions.md
+        PREV_MINOR=\"\$npm_previous_package_minor_version\" CUR_MINOR=\"\$npm_current_package_minor_version\" PREV_VERSION=\"\$npm_previous_package_version\" perl -pi -e 's|^- \[v\$ENV{PREV_MINOR}\].*|- [v\$ENV{CUR_MINOR}](https://github.com/marmelab/react-admin/blob/master/docs/Admin.md)\n- [v\$ENV{PREV_MINOR}](https://github.com/marmelab/react-admin/blob/v\$ENV{PREV_VERSION}/docs/Admin.md)|' docs/OldVersions.md
     "
 
     manual_step "Review OldVersions.md" "Please review the docs/OldVersions.md file and update it if needed."
@@ -237,15 +241,16 @@ retry_step "Update milestones" "yarn run update-milestones \${npm_current_packag
 retry_step "Create GitHub release" "yarn run create-github-release \${npm_current_package_version}"
 
 # Step 13: Update documentation
+# perl rather than sed for the same portability reason as in step 6
 if [ -d $RA_DOC_PATH ]; then
     retry_step "Update documentation" "
         cd \$RA_DOC_PATH &&
         git pull &&
         cd - &&
         RA_DOC_PATH=\"\$RA_DOC_PATH\" VERSION=\"\$npm_current_package_minor_version\" ./scripts/copy-ra-oss-docs.sh &&
-        sed -i \"/^\(- latest\).*/s//\1 (\$npm_current_package_version)/\" \$RA_DOC_PATH/_data/versions.yml &&
+        CUR_VERSION=\"\$npm_current_package_version\" perl -pi -e 's/^(- latest).*/\$1 (\$ENV{CUR_VERSION})/' \$RA_DOC_PATH/_data/versions.yml &&
         if [ \"\$npm_previous_package_minor_version\" != \"\$npm_current_package_minor_version\" ]; then
-            sed -i \"/^\(- latest.*\)/s//\1 \n- \\\"\$npm_previous_package_minor_version\\\"/\" \$RA_DOC_PATH/_data/versions.yml
+            PREV_MINOR=\"\$npm_previous_package_minor_version\" perl -pi -e 's/^(- latest.*)/\$1\n- \"\$ENV{PREV_MINOR}\"/' \$RA_DOC_PATH/_data/versions.yml
         fi &&
         if [ -z \"\$RELEASE_DRY_RUN\" ]; then
             cd \$RA_DOC_PATH &&
