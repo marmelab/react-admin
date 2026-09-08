@@ -1,6 +1,6 @@
 {
     "name": "ra-router-react-router",
-    "version": "5.15.2",
+    "version": "5.15.3",
     "description": "React Router v6/v7 provider for react-admin (the default router adapter)",
     "files": [
         "*.md",
