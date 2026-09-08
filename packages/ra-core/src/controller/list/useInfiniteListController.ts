@@ -162,6 +162,10 @@ export const useInfiniteListController = <
 
     // change page if there is no data
     useEffect(() => {
+        // While the query is disabled (e.g. during the auth check) or loading
+        // for the first time, data is null but that doesn't mean the page is
+        // empty, so don't reset it.
+        if (isPending) return;
         if (
             query.page <= 0 ||
             (!isFetching &&
@@ -181,7 +185,15 @@ export const useInfiniteListController = <
             // It occurs when deleting the last element of the last page
             queryModifiers.setPage(totalPages);
         }
-    }, [isFetching, query.page, query.perPage, data, queryModifiers, total]);
+    }, [
+        isPending,
+        isFetching,
+        query.page,
+        query.perPage,
+        data,
+        queryModifiers,
+        total,
+    ]);
 
     const currentSort = useMemo(
         () => ({

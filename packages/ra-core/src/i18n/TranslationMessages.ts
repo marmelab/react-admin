@@ -182,6 +182,7 @@ export interface TranslationMessages extends StringMap {
             email: string;
             oneOf: string;
             regex: string;
+            unique: string;
         };
         saved_queries: {
             label: string;

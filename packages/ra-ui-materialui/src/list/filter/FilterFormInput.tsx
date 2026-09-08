@@ -5,7 +5,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import { IconButton } from '@mui/material';
-import ActionHide from '@mui/icons-material/RemoveCircleOutlined';
+import ActionHide from '@mui/icons-material/RemoveCircleOutlineOutlined';
 import clsx from 'clsx';
 import { useResourceContext, useTranslate } from 'ra-core';
 

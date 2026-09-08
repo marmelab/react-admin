@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Card, CardContent } from '@mui/material';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import MonetizationOnIcon from '@mui/icons-material/MonetizationOnOutlined';
-import MailIcon from '@mui/icons-material/MailOutline';
+import MailIcon from '@mui/icons-material/MailOutlineOutlined';
 import LocalOfferIcon from '@mui/icons-material/LocalOfferOutlined';
 import {
     FilterList,

@@ -1,4 +1,4 @@
-import { useLocation, useMatchPath } from 'ra-core';
+import { useLocation, useMatchPath } from '../routing';
 
 /**
  * This hook infers the tabbed form root path from the current location.

@@ -1,6 +1,4 @@
 import * as React from 'react';
-import * as echarts from 'echarts';
-import { useEffect, useRef } from 'react';
 import fakerestDataProvider from 'ra-data-fakerest';
 
 import { ListBase } from './ListBase';
@@ -167,53 +165,116 @@ export const Basic = () => (
     </CoreAdminContext>
 );
 
-const LineChart = ({ data }) => {
-    const chartRef = useRef(null);
-    useEffect(() => {
-        if (!data) return;
-        const chartInstance = echarts.init(chartRef.current);
+const SERIES = [
+    { name: 'Apples', field: 'apples', color: '#2a78d6' },
+    { name: 'Blueberries', field: 'blueberries', color: '#eb6834' },
+    { name: 'Carrots', field: 'carrots', color: '#1baf7a' },
+] as const;
 
-        const option = {
-            tooltip: {
-                trigger: 'axis',
-            },
-            legend: {
-                data: ['Apples', 'Blueberries', 'Carrots'],
-            },
-            xAxis: {
-                type: 'category',
-                data: data.map(fruit => fruit.date),
-            },
-            yAxis: {
-                type: 'value',
-            },
-            series: [
-                {
-                    name: 'Apples',
-                    type: 'line',
-                    data: data.map(fruit => fruit.apples),
-                },
-                {
-                    name: 'Blueberries',
-                    type: 'line',
-                    data: data.map(fruit => fruit.blueberries),
-                },
-                {
-                    name: 'Carrots',
-                    type: 'line',
-                    data: data.map(fruit => fruit.carrots),
-                },
-            ],
-        };
+const MONTHS = [
+    'Jan',
+    'Feb',
+    'Mar',
+    'Apr',
+    'May',
+    'Jun',
+    'Jul',
+    'Aug',
+    'Sep',
+    'Oct',
+    'Nov',
+    'Dec',
+];
 
-        chartInstance.setOption(option);
+const WIDTH = 700;
+const HEIGHT = 300;
+const MARGIN = { top: 16, right: 96, bottom: 28, left: 32 };
 
-        return () => {
-            chartInstance.dispose();
-        };
-    }, [data]);
+const LineChart = ({ data }: { data?: Fruit[] }) => {
+    if (!data || data.length < 2) return null;
 
-    return <div ref={chartRef} style={{ height: 300, width: 700 }} />;
+    const innerWidth = WIDTH - MARGIN.left - MARGIN.right;
+    const innerHeight = HEIGHT - MARGIN.top - MARGIN.bottom;
+    const maxValue = Math.max(
+        ...data.flatMap(fruit => SERIES.map(series => fruit[series.field]))
+    );
+    const yMax = Math.ceil(maxValue / 5) * 5;
+    const yTicks = Array.from({ length: yMax / 5 + 1 }, (_, i) => i * 5);
+    const x = (index: number) =>
+        MARGIN.left + (index * innerWidth) / (data.length - 1);
+    const y = (value: number) => MARGIN.top + innerHeight * (1 - value / yMax);
+
+    return (
+        <svg
+            width={WIDTH}
+            height={HEIGHT}
+            role="img"
+            aria-label="Fruit prices over time"
+            style={{ fontFamily: 'system-ui, sans-serif' }}
+        >
+            {yTicks.map(tick => (
+                <g key={tick}>
+                    <line
+                        x1={MARGIN.left}
+                        x2={WIDTH - MARGIN.right}
+                        y1={y(tick)}
+                        y2={y(tick)}
+                        stroke={tick === 0 ? '#c3c2b7' : '#e1e0d9'}
+                    />
+                    <text
+                        x={MARGIN.left - 8}
+                        y={y(tick)}
+                        textAnchor="end"
+                        dominantBaseline="middle"
+                        fontSize={11}
+                        fill="#898781"
+                    >
+                        {tick}
+                    </text>
+                </g>
+            ))}
+            {data.map((fruit, index) =>
+                fruit.date.endsWith('-01') ? (
+                    <text
+                        key={fruit.date}
+                        x={x(index)}
+                        y={HEIGHT - 8}
+                        textAnchor="middle"
+                        fontSize={11}
+                        fill="#898781"
+                    >
+                        {MONTHS[parseInt(fruit.date.slice(5, 7), 10) - 1]}
+                    </text>
+                ) : null
+            )}
+            {SERIES.map(series => (
+                <g key={series.name}>
+                    <path
+                        d={data
+                            .map(
+                                (fruit, index) =>
+                                    `${index === 0 ? 'M' : 'L'}${x(index)},${y(fruit[series.field])}`
+                            )
+                            .join(' ')}
+                        fill="none"
+                        stroke={series.color}
+                        strokeWidth={2}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                    />
+                    <text
+                        x={x(data.length - 1) + 8}
+                        y={y(data[data.length - 1][series.field])}
+                        dominantBaseline="middle"
+                        fontSize={12}
+                        fill="#52514e"
+                    >
+                        {series.name}
+                    </text>
+                </g>
+            ))}
+        </svg>
+    );
 };
 
 export const Chart = () => (

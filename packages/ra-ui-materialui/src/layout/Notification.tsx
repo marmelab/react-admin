@@ -168,8 +168,12 @@ export const Notification = (inProps: NotificationProps) => {
                         : autoHideDurationFromMessage ?? undefined
                 }
                 disableWindowBlurListener={undoable}
-                TransitionProps={transitionProps}
-                ContentProps={contentProps}
+                {...(muiMajor < 6
+                    ? {
+                          TransitionProps: transitionProps,
+                          ContentProps: contentProps,
+                      }
+                    : {})}
                 onClose={handleRequestClose}
                 action={
                     undoable ? (

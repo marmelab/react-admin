@@ -783,7 +783,12 @@ If you provided a React element for the optionText prop, you must also provide t
                 }}
                 multiple={multiple}
                 {...(muiMajor >= 7
-                    ? { renderValue: renderChips }
+                    ? // In MUI v7, renderValue replaces renderTags, but it is also
+                      // called in single-selection mode with a non-array value.
+                      // renderChips expects an array, so only use it when multiple.
+                      multiple
+                        ? { renderValue: renderChips }
+                        : {}
                     : { renderTags: renderChips })}
                 noOptionsText={
                     typeof noOptionsText === 'string'
