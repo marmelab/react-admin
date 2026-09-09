@@ -26,6 +26,7 @@ import {
     InsideReferenceInputOnChange,
     WithInputProps,
     OnCreate,
+    OnCreateWithAutoSelect,
     OnCreateSlow,
     CreateLabel,
     CreateItemLabel,
@@ -1212,6 +1213,18 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
+        it('should keep a clicked choice on blur when autoSelect is enabled', async () => {
+            render(<OnCreateWithAutoSelect />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+
+            fireEvent.focus(input);
+            fireEvent.click(await screen.findByText('Victor Hugo'));
+            fireEvent.blur(input);
+
+            expect(input.value).toEqual('Victor Hugo');
+        });
         it("shouldn't include an option with the create label when the input is empty", async () => {
             render(<OnCreate />);
             const input = (await screen.findByLabelText(
