@@ -499,7 +499,7 @@ export const FullNameField = (props) => {
 
 **Tip**: Always check the `record` is defined before inspecting its properties, as react-admin may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
-You can now use this field like any other react-admin field. Pass the `label` explicitly so the parent layout can read it from the field's props. A default parameter inside `FullNameField` would not be visible to the parent layout, and React 19 no longer supports `defaultProps` for function components:
+You can now use this field like any other react-admin field. Pass the `label` explicitly so the parent layout can read it from the field's props:
 
 ```jsx
 import { List, Datagrid } from 'react-admin';
