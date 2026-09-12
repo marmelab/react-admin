@@ -130,26 +130,31 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         );
     }
 
+    const defaultParams: ListParams = {
+        filter: filterDefaultValues,
+        order: initialSort.order,
+        sort: initialSort.field,
+        page: 1,
+        perPage: 10,
+        displayedFilters: {},
+    };
+    // As we can't conditionally call a hook, if the storeKey is false,
+    // we'll ignore the storedParams variable later on and use the
+    // props-derived defaults instead.
     const [storedParams] = useStore<ListParams>(
         storeKey || `${resource}.listParams`,
-        {
-            filter: filterDefaultValues,
-            order: initialSort.order,
-            sort: initialSort.field,
-            page: 1,
-            perPage: 10,
-            displayedFilters: {},
-        }
+        defaultParams
     );
+    const listParams = storeKey === false ? defaultParams : storedParams;
 
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
     const pagination = { page: 1, perPage: limit };
     const sort = {
-        field: storedParams.sort,
-        order: storedParams.order,
+        field: listParams.sort,
+        order: listParams.order,
     };
-    const filter = { ...storedParams.filter, ...permanentFilter };
+    const filter = { ...listParams.filter, ...permanentFilter };
     const { meta, ...otherQueryOptions } = queryOptions;
     const params = { pagination, sort, filter, meta };
 
@@ -163,8 +168,8 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         {
             ...params,
             pagination: {
-                page: storedParams.page,
-                perPage: storedParams.perPage,
+                page: listParams.page,
+                perPage: listParams.perPage,
             },
         },
     ]);
@@ -172,11 +177,11 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         r => r.id === record?.id
     );
     const isRecordIndexFirstInNonFirstPage =
-        recordIndexInQueryData === 0 && storedParams.page > 1;
+        recordIndexInQueryData === 0 && listParams.page > 1;
     const isRecordIndexLastInNonLastPage =
         queryData?.data && queryData?.total
             ? recordIndexInQueryData === queryData?.data?.length - 1 &&
-              storedParams.page < queryData?.total / storedParams.perPage
+              listParams.page < queryData?.total / listParams.perPage
             : undefined;
     const canUseCacheData =
         record &&
@@ -249,8 +254,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
                 ? undefined
                 : index +
                   (canUseCacheData
-                      ? (storedParams.perPage ?? 0) *
-                        ((storedParams.page ?? 1) - 1)
+                      ? (listParams.perPage ?? 0) * ((listParams.page ?? 1) - 1)
                       : 0),
         total: canUseCacheData ? queryData?.total : data?.total,
         error,

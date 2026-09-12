@@ -301,7 +301,9 @@ export const MyAdmin = () => (
 `<PrevNextButtons>` can get the current list parameters (sort and filters) from the store.
 This prop is useful if you specified a custom `storeKey` for a `<List>` and you want `<PrevNextButtons>` to use the same stored parameters.
 
-See [`storeKey` in `<List>`](./List.md#storekey) for more information. 
+If you don't want `<PrevNextButtons>` to read the parameters stored by the `<List>` (for instance, to let users browse a thread of messages from a `<Show>` view regardless of how they last filtered the messages list), pass `false`: the pager will then rely only on its own `sort`, `filter` and `filterDefaultValues` props.
+
+See [`storeKey` in `<List>`](./List.md#storekey) for more information.
 
 ```tsx
 export const MyAdmin = () => (
