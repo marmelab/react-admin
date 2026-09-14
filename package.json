@@ -65,7 +65,7 @@
         "jest-environment-jsdom": "^29.5.0",
         "jest-resolve": "^29.5.0",
         "jest-watch-typeahead": "2.2.2",
-        "lerna": "^9.0.5",
+        "lerna": "^10.0.1",
         "lint-staged": "^13.0.3",
         "lodash": "^4.17.21",
         "lolex": "~2.3.2",
