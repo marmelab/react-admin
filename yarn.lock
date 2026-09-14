@@ -20339,6 +20339,7 @@ __metadata:
     astro: "npm:7.2.8"
     astro-expressive-code: "npm:^0.42.0"
     astro-rehype-relative-markdown-links: "npm:^0.19.0"
+    cookie: "npm:^2.0.1"
     expressive-code-fullscreen: "npm:^1.0.0"
     prettier: "npm:^3.2.5"
     prettier-plugin-astro: "npm:^0.14.1"
