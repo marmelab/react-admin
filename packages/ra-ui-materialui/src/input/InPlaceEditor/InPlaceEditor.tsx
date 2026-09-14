@@ -197,16 +197,27 @@ export const InPlaceEditor = <
 
     const handleBlur = (event: React.FocusEvent) => {
         if (event.relatedTarget) {
-            return;
+            // Focus moved to an element inside the editor — ignore
+            if (event.currentTarget.contains(event.relatedTarget as Node)) {
+                return;
+            }
+            // Focus moved to a MUI portal (e.g. Select dropdown) — ignore
+            if (
+                (event.relatedTarget as HTMLElement).closest?.(
+                    '.MuiPopover-root, .MuiModal-root, .MuiMenu-root'
+                )
+            ) {
+                return;
+            }
         }
+
         if (cancelOnBlur) {
             dispatch({ type: 'cancel' });
             return;
         }
+
         if (state.state === 'editing') {
-            // trigger the parent form submit
-            // to save the changes
-            (submitButtonRef.current as HTMLButtonElement).click();
+            (submitButtonRef.current as HTMLButtonElement)?.click();
         }
     };
 
