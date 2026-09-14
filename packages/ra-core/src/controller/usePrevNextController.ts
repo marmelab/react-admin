@@ -130,17 +130,19 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         );
     }
 
-    const [storedParams] = useStore<ListParams>(
+    const defaultParams = {
+        filter: filterDefaultValues,
+        order: initialSort.order,
+        sort: initialSort.field,
+        page: 1,
+        perPage: 10,
+        displayedFilters: {},
+    };
+    const [storeParams] = useStore<ListParams>(
         storeKey || `${resource}.listParams`,
-        {
-            filter: filterDefaultValues,
-            order: initialSort.order,
-            sort: initialSort.field,
-            page: 1,
-            perPage: 10,
-            displayedFilters: {},
-        }
+        defaultParams
     );
+    const storedParams = storeKey === false ? defaultParams : storeParams;
 
     const dataProvider = useDataProvider();
     const queryClient = useQueryClient();
