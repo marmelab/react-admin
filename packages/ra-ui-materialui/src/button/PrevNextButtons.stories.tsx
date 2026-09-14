@@ -156,6 +156,66 @@ export const WithStoreKey = () => (
     </TestMemoryRouter>
 );
 
+export const WithoutStoreKey = ({ customDataProvider = dataProvider }: any) => (
+    <TestMemoryRouter>
+        <AdminContext
+            dataProvider={customDataProvider}
+            i18nProvider={i18nProvider}
+        >
+            <AdminUI>
+                <Resource
+                    name="customers"
+                    list={
+                        <ListGuesser
+                            filters={[
+                                <TextInput
+                                    label="Search"
+                                    source="q"
+                                    alwaysOn
+                                    key="q"
+                                />,
+                            ]}
+                        />
+                    }
+                    edit={
+                        <CustomerEdit
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButtons
+                                        storeKey={false}
+                                        sort={{
+                                            field: 'first_name',
+                                            order: 'DESC',
+                                        }}
+                                    />
+                                    <ShowButton />
+                                </MyTopToolbar>
+                            }
+                        />
+                    }
+                    show={
+                        <CustomerShow
+                            actions={
+                                <MyTopToolbar>
+                                    <PrevNextButtons
+                                        linkType="show"
+                                        storeKey={false}
+                                        sort={{
+                                            field: 'first_name',
+                                            order: 'DESC',
+                                        }}
+                                    />
+                                    <EditButton />
+                                </MyTopToolbar>
+                            }
+                        />
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
 export const WithFilter = () => (
     <TestMemoryRouter>
         <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>

@@ -9,6 +9,7 @@ import {
     WithFilter,
     WithLimit,
     WithQueryFilter,
+    WithoutStoreKey,
 } from './PrevNextButtons.stories';
 
 describe('<PrevNextButtons />', () => {
@@ -106,6 +107,43 @@ describe('<PrevNextButtons />', () => {
             fireEvent.click(item);
             await screen.findByRole('navigation');
             expect(screen.getByText('5 / 50')).toBeDefined();
+        });
+    });
+
+    describe('storeKey', () => {
+        it('should ignore the stored list params when storeKey is false', async () => {
+            const data = {
+                customers: Array.from(Array(900).keys()).map(id => {
+                    const first_name = `first_name_${id}`;
+                    const last_name = `last_name_${id}`;
+                    const email = `first_name_${id}.last_name_${id}@example.com`;
+
+                    return {
+                        id,
+                        first_name,
+                        last_name,
+                        email,
+                        city: `city_${Math.floor(id / 50)}`,
+                    };
+                }),
+            };
+            const dataProvider = fakeRestDataProvider(data);
+            const spy = jest.spyOn(dataProvider, 'getList');
+            render(<WithoutStoreKey customDataProvider={dataProvider} />);
+            const input = await screen.findByLabelText('Search');
+            fireEvent.change(input, { target: { value: 'city_0' } });
+            await screen.findByText('1-10 of 50');
+            const item = await screen.findByText('first_name_9');
+            fireEvent.click(item);
+            await screen.findByRole('navigation');
+            await screen.findByText('11 / 900');
+            expect(spy).toHaveBeenCalledWith('customers', {
+                pagination: { page: 1, perPage: 1000 },
+                sort: { field: 'first_name', order: 'DESC' },
+                filter: {},
+                meta: undefined,
+                signal: undefined,
+            });
         });
     });
 
