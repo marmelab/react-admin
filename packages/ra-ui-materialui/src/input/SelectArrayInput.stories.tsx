@@ -8,7 +8,7 @@ import {
     DialogTitle,
     IconButton,
     Stack,
-    TextField,
+    TextField as MuiTextField,
     Typography,
 } from '@mui/material';
 import fakeRestProvider from 'ra-data-fakerest';
@@ -25,7 +25,9 @@ import {
 import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
+import { TextField } from '../field';
 import { SimpleForm } from '../form';
+import { Datagrid, List } from '../list';
 import { ArrayInput, SimpleFormIterator } from './ArrayInput';
 import { FormInspector } from './common';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
@@ -291,6 +293,98 @@ export const DefaultValue = () => (
     </Wrapper>
 );
 
+const channelChoices = [
+    { id: 'email', name: 'Email' },
+    { id: 'push', name: 'Push Notification' },
+    { id: 'sms', name: 'SMS' },
+];
+
+export const EmptyText = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="channels"
+            choices={channelChoices}
+            emptyText="No channel"
+            sx={{ width: 300 }}
+        />
+        <FormInspector name="channels" />
+    </Wrapper>
+);
+
+export const EmptyTextElement = () => (
+    <Wrapper>
+        <SelectArrayInput
+            source="channels"
+            choices={channelChoices}
+            emptyText={<i>No channel</i>}
+            sx={{ width: 300 }}
+        />
+    </Wrapper>
+);
+
+export const EmptyTextTranslated = () => (
+    <AdminContext
+        i18nProvider={polyglotI18nProvider(() => ({
+            ...englishMessages,
+            myapp: { channels: { none: 'No channel' } },
+        }))}
+        defaultTheme="light"
+    >
+        <Create resource="posts" sx={{ width: 600 }}>
+            <SimpleForm>
+                <SelectArrayInput
+                    source="channels"
+                    choices={channelChoices}
+                    emptyText="myapp.channels.none"
+                    sx={{ width: 300 }}
+                />
+            </SimpleForm>
+        </Create>
+    </AdminContext>
+);
+
+export const EmptyTextInFilter = () => {
+    const fakeData = {
+        posts: [
+            { id: 1, title: 'Sunset over the bay', channels: ['email'] },
+            { id: 2, title: 'Ten tips for winter', channels: ['push', 'sms'] },
+            { id: 3, title: 'A tale of two cities', channels: [] },
+        ],
+    };
+    return (
+        <TestMemoryRouter initialEntries={['/posts']}>
+            <AdminContext
+                dataProvider={fakeRestProvider(fakeData, false)}
+                i18nProvider={i18nProvider}
+                defaultTheme="light"
+            >
+                <AdminUI>
+                    <Resource
+                        name="posts"
+                        list={() => (
+                            <List
+                                filters={[
+                                    <SelectArrayInput
+                                        alwaysOn
+                                        key="channels"
+                                        source="channels"
+                                        choices={channelChoices}
+                                        emptyText="All channels"
+                                    />,
+                                ]}
+                            >
+                                <Datagrid>
+                                    <TextField source="title" />
+                                </Datagrid>
+                            </List>
+                        )}
+                    />
+                </AdminUI>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
+
 export const InsideArrayInput = () => (
     <Wrapper>
         <ArrayInput
@@ -337,7 +431,7 @@ const CreateRole = () => {
         <Dialog open onClose={onCancel}>
             <form onSubmit={handleSubmit}>
                 <DialogContent>
-                    <TextField
+                    <MuiTextField
                         label="Role name"
                         value={value}
                         onChange={event => setValue(event.target.value)}
