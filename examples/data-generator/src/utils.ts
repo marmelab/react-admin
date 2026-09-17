@@ -2,7 +2,7 @@ import { faker } from '@faker-js/faker';
 
 export const weightedArrayElement = <T>(values: T[], weights): T =>
     faker.helpers.arrayElement(
-        values.reduce(
+        values.reduce<T[]>(
             (acc, value, index) =>
                 acc.concat(new Array(weights[index]).fill(value)),
             []

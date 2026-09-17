@@ -40,12 +40,15 @@ export const UpdateButton = React.forwardRef(function UpdateButton(
     });
 
     return mutationMode === 'undoable' ? (
-        <UpdateWithUndoButton ref={ref} {...rest} />
+        <UpdateWithUndoButton
+            ref={ref}
+            {...(rest as UpdateWithUndoButtonProps)}
+        />
     ) : (
         <UpdateWithConfirmButton
             ref={ref}
             mutationMode={mutationMode}
-            {...rest}
+            {...(rest as UpdateWithConfirmButtonProps)}
         />
     );
 });

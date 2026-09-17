@@ -172,13 +172,15 @@ export const useCreateController = <
                     );
                 } catch (error) {
                     if (
-                        (error instanceof HttpError ||
-                            (typeof error === 'object' &&
-                                error !== null &&
-                                error.hasOwnProperty('body'))) &&
-                        error.body?.errors != null
+                        error instanceof HttpError ||
+                        (typeof error === 'object' &&
+                            error !== null &&
+                            error.hasOwnProperty('body'))
                     ) {
-                        return error.body.errors;
+                        const { body } = error as { body?: { errors?: any } };
+                        if (body?.errors != null) {
+                            return body.errors;
+                        }
                     }
                 }
             }),

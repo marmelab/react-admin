@@ -107,7 +107,7 @@ export const useSelectAll = (
                 return results.data;
             } catch (error) {
                 if (onError) {
-                    onError(error);
+                    onError(error as Error);
                 } else {
                     notify('ra.notification.http_error', { type: 'warning' });
                 }

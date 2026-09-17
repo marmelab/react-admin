@@ -209,7 +209,7 @@ export type RichTextInputProps = CommonInputProps &
         readOnly?: boolean;
         editorOptions?: Partial<EditorOptions>;
         toolbar?: ReactNode;
-        sx?: (typeof Root)['defaultProps']['sx'];
+        sx?: NonNullable<(typeof Root)['defaultProps']>['sx'];
     };
 
 const PREFIX = 'RaRichTextInput';
@@ -336,12 +336,12 @@ const RichTextInputContent = ({
     toolbar,
 }: RichTextInputContentProps) => (
     <>
-        <TiptapEditorProvider value={editor}>
+        <TiptapEditorProvider value={editor ?? null}>
             {toolbar}
             <EditorContent
                 aria-labelledby={`${id}-label`}
                 className={classes.editorContent}
-                editor={editor}
+                editor={editor ?? null}
             />
         </TiptapEditorProvider>
         <FormHelperText

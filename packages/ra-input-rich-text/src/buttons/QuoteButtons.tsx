@@ -25,8 +25,8 @@ export const QuoteButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             title={label}
             {...props}
             disabled={!editor?.isEditable}
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            selected={isActive}
+            onClick={() => editor?.chain().focus().toggleBlockquote().run()}
+            selected={isActive ?? false}
             value="quote"
         >
             <FormatQuote fontSize="inherit" />

@@ -2,7 +2,7 @@
     "compilerOptions": {
         /* Basic Options */
         "target": "ES2020" /* Specify ECMAScript target version: 'ES3' (default), 'ES5', 'ES2015', 'ES2016', 'ES2017','ES2018' or 'ESNEXT'. */,
-        "module": "esnext" /* Specify module code generation. zshy overrides this per output format (commonjs for .cjs, esnext for .js). */,
+        "module": "commonjs" /* Specify module code generation: 'none', 'commonjs', 'amd', 'system', 'umd', 'es2015', or 'ESNext'. */,
         "lib": [
             "ES2020",
             "dom",
@@ -15,7 +15,7 @@
         "sourceMap": true /* Generates corresponding '.map' file. */,
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         // "outDir": "./lib",                        /* Redirect output structure to the directory. */
-        "rootDir": "./" /* TypeScript 6 no longer infers this; each package overrides it with "src". */,
+        "rootDir": "./" /* TypeScript 6 requires this to be explicit; each package overrides it with "src". */,
         // "composite": true,                     /* Enable project compilation */
         // "removeComments": true,                /* Do not emit comments to output. */
         // "noEmit": true,                        /* Do not emit outputs. */
@@ -24,7 +24,7 @@
         // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
 
         /* Strict Type-Checking Options */
-        "strict": false /* TypeScript 6 defaults this to true. Kept off to preserve the current type surface; packages opt into strictNullChecks individually. */,
+        "strict": true /* Enable all strict type-checking options. */,
         "noImplicitAny": false /* Raise error on expressions and declarations with an implied 'any' type. */,
         // "strictNullChecks": true,              /* Enable strict null checks. */
         // "strictFunctionTypes": true,           /* Enable strict checking of function types. */
@@ -39,7 +39,7 @@
         "noFallthroughCasesInSwitch": true /* Report errors for fallthrough cases in switch statement. */,
 
         /* Module Resolution Options */
-        "moduleResolution": "bundler" /* 'node' was removed in TypeScript 7. zshy overrides this per output format (node10 for .cjs, bundler for .js). */,
+        "moduleResolution": "node" /* Specify module resolution strategy: 'node' (Node.js) or 'classic' (TypeScript pre-1.6). */,
         // "baseUrl": "./",                       /* Base directory to resolve non-absolute module names. */
         // "paths": {},                           /* A series of entries which re-map imports to lookup locations relative to the 'baseUrl'. */
         // "rootDirs": [],                        /* List of root folders whose combined content represents the structure of the project at runtime. */

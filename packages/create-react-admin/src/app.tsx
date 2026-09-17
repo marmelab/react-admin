@@ -126,16 +126,16 @@ export default function App(props: Props) {
     const sanitizedName = sanitizeName(props.name);
     const initialState = {
         ...InitialProjectConfiguration,
-        dataProvider: props.dataProvider,
-        authProvider: props.authProvider,
+        dataProvider: props.dataProvider ?? '',
+        authProvider: props.authProvider ?? '',
         resources: props.resources?.includes('skip')
             ? []
             : props.dataProvider === 'ra-data-fakerest' &&
                 (props.resources == null || props.resources.length === 0)
               ? ['posts', 'comments']
               : props.resources,
-        installer: props.install,
-        name: sanitizedName,
+        installer: props.install ?? '',
+        name: sanitizedName ?? '',
     };
 
     const initialStep = getNextStep(initialState);

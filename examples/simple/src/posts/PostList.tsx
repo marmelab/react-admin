@@ -17,6 +17,7 @@ import {
     EditButton,
     ExportButton,
     FilterButton,
+    type Identifier,
     List,
     InfiniteList,
     ReferenceArrayField,
@@ -56,14 +57,16 @@ const postFilter = [
     />,
 ];
 
-const exporter = posts => {
+const exporter = (posts: any[]) => {
     const data = posts.map(post => ({
         ...post,
         backlinks: lodashGet(post, 'backlinks', []).map(
-            backlink => backlink.url
+            (backlink: { url: string }) => backlink.url
         ),
     }));
-    return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
+    return jsonExport(data, (err: any, csv: string) =>
+        downloadCSV(csv, 'posts')
+    );
 };
 
 const postListMobileActions = (
@@ -108,7 +111,7 @@ const postListActions = (
     </TopToolbar>
 );
 
-const rowClick = (_id, _resource, record) => {
+const rowClick = (_id: Identifier, _resource: string, record: any) => {
     if (record.commentable) {
         return 'edit';
     }

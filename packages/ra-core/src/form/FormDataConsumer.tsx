@@ -127,7 +127,8 @@ interface ConnectedProps<TFieldValues extends FieldValues = FieldValues> {
     [key: string]: any;
 }
 
-interface Props<TFieldValues extends FieldValues> extends ConnectedProps {
+interface Props<TFieldValues extends FieldValues>
+    extends ConnectedProps<TFieldValues> {
     formData: TFieldValues;
 
     /**

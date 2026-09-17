@@ -25,7 +25,7 @@ const MyMenu = () => (
     </Menu>
 );
 
-export default ({ children }) => (
+export default ({ children }: { children?: React.ReactNode }) => (
     <>
         <Layout appBar={MyAppBar} menu={MyMenu}>
             {children}

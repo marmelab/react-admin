@@ -1,7 +1,8 @@
 import * as React from 'react';
 import Typography, { TypographyProps } from '@mui/material/Typography';
 import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
-import purify, { type Config } from 'dompurify';
+import purify from 'dompurify';
+import type { Config } from 'dompurify';
 
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { FieldProps } from './types';

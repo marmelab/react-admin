@@ -1,6 +1,7 @@
 import {
     IntrospectionField,
     IntrospectionInputObjectType,
+    IntrospectionInputValue,
     IntrospectionNamedTypeRef,
     IntrospectionNonNullTypeRef,
     IntrospectionType,
@@ -145,7 +146,7 @@ const prepareParams = (
 
     Object.keys(params).forEach(key => {
         const param = params[key];
-        let arg = null;
+        let arg: IntrospectionInputValue | undefined;
 
         if (!param) {
             result[key] = param;
@@ -197,7 +198,10 @@ const prepareParams = (
             return;
         }
 
-        result[key] = castType(param, arg.type);
+        result[key] = castType(
+            param,
+            arg.type as IntrospectionType | IntrospectionNonNullTypeRef
+        );
     });
 
     return result;
@@ -268,9 +272,12 @@ const buildGetListVariables =
                         };
                     }
 
-                    const resourceField = resource.type.fields.find(
+                    const resourceField = resource.type.fields?.find(
                         f => f.name === parts[0]
                     );
+                    if (!resourceField) {
+                        return acc;
+                    }
                     const type = getFinalType(
                         resourceField.type
                     ) as IntrospectionType;

@@ -46,7 +46,7 @@ const UserCreateToolbar = () => {
     );
 };
 
-const isValidName = async value =>
+const isValidName = async (value: string) =>
     new Promise<string | undefined>(resolve =>
         setTimeout(() =>
             resolve(value === 'Admin' ? "Can't be Admin" : undefined)
