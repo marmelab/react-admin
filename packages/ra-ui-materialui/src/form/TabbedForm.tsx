@@ -6,11 +6,16 @@ import {
     ReactNode,
     HtmlHTMLAttributes,
 } from 'react';
-import { Form, FormProps, MutationMode, RaRecord } from 'ra-core';
+import {
+    Form,
+    FormProps,
+    MutationMode,
+    RaRecord,
+    useFormRootPath,
+} from 'ra-core';
 import get from 'lodash/get.js';
 
 import { TabbedFormView, TabbedFormViewProps } from './TabbedFormView';
-import { useFormRootPath } from './useFormRootPath';
 import { FormTab } from './FormTab';
 
 /**

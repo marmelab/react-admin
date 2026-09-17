@@ -10,5 +10,8 @@
         "@testing-library/react": "^16.0.0",
         "jsdom": "^24.1.1",
         "vitest": "^4.1.10"
+    },
+    "overrides": {
+        "vitest": "^4.1.10"
     }
 }

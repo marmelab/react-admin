@@ -1,5 +1,17 @@
 # Changelog
 
+## 5.15.3
+
+* Fix `<DataTable>` calls `useCanAccess` even when bulk delete is disabled ([#11352](https://github.com/marmelab/react-admin/pull/11352)) ([lprnmns](https://github.com/lprnmns))
+* Fix `<Notification>` causes undoable notifications to be commited twice in MUI v6 ([#11345](https://github.com/marmelab/react-admin/pull/11345)) ([dawNotPoi](https://github.com/dawNotPoi))
+* Fix `<RichTextInput>` crash when the editor is recreated ([#11309](https://github.com/marmelab/react-admin/pull/11309)) ([quentin-decre](https://github.com/quentin-decre))
+* [Doc] Add DuckDB to the data providers list ([#11353](https://github.com/marmelab/react-admin/pull/11353)) ([mshd](https://github.com/mshd))
+* Bump browserslist from 4.28.1 to 4.28.8 ([#11359](https://github.com/marmelab/react-admin/pull/11359)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @tiptap/core from 3.20.4 to 3.30.4 ([#11358](https://github.com/marmelab/react-admin/pull/11358)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump fast-uri from 3.1.5 to 3.1.7 ([#11357](https://github.com/marmelab/react-admin/pull/11357)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump @faker-js/faker from 10.0.0 to 10.5.0 ([#11356](https://github.com/marmelab/react-admin/pull/11356)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump ip-address from 10.2.0 to 10.4.0 ([#11333](https://github.com/marmelab/react-admin/pull/11333)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.15.2
 
 * Fix many `<ReferenceField>` components throwing "Maximum update depth exceeded" error ([#11329](https://github.com/marmelab/react-admin/pull/11329)) ([pysnooLab](https://github.com/pysnooLab))
