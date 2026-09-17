@@ -28,7 +28,7 @@ const getUserFilters = (canSeeRole: boolean) => {
     return filters;
 };
 
-const UserBulkActionButtons = props => (
+const UserBulkActionButtons = (props: any) => (
     <BulkDeleteWithConfirmButton {...props} />
 );
 

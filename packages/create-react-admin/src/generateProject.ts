@@ -46,7 +46,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.dataProvider === 'ra-data-fakerest') {
         if (
             ['posts', 'comments'].every(resource =>
-                state.resources.includes(resource)
+                (state.resources ?? []).includes(resource)
             )
         ) {
             generateAppTestFile(projectDirectory, state);
@@ -92,7 +92,7 @@ const generatePackageJson = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
-    let yarnVersion: string;
+    let yarnVersion: string | undefined;
     const basePackageJson = getTemplatePackageJson('common');
     const dataProviderPackageJson = getTemplatePackageJson(state.dataProvider);
     const authProviderPackageJson = getTemplatePackageJson(state.authProvider);
@@ -333,10 +333,13 @@ const generateDataForFakeRest = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
-    const data = state.resources.reduce((acc, resource) => {
-        acc[resource] = [];
-        return acc;
-    }, {});
+    const data = (state.resources ?? []).reduce<Record<string, unknown[]>>(
+        (acc, resource) => {
+            acc[resource] = [];
+            return acc;
+        },
+        {}
+    );
     fs.writeFileSync(
         path.join(projectDirectory, 'src', 'data.json'),
         JSON.stringify(data, null, 2)

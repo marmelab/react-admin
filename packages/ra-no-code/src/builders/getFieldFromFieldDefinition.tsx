@@ -62,16 +62,19 @@ export const getFieldFromFieldDefinition = (
             const reference = resources[definition.props.reference];
 
             if (reference) {
-                const field = reference.fields.find(
+                const field = reference.fields?.find(
                     field =>
-                        field.props.source === definition.options.referenceField
+                        field.props.source ===
+                        definition.options?.referenceField
                 );
                 return (
                     <ReferenceField
                         key={definition.props.source}
                         {...definition.props}
                     >
-                        {getFieldFromFieldDefinition(field, resources)}
+                        {field
+                            ? getFieldFromFieldDefinition(field, resources)
+                            : null}
                     </ReferenceField>
                 );
             }

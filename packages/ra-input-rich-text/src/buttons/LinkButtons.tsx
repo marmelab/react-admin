@@ -22,7 +22,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
     });
 
     const handleClick = () => {
-        if (!editor.can().setLink({ href: '' })) {
+        if (!editor?.can().setLink({ href: '' })) {
             return;
         }
 
@@ -32,7 +32,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             .chain()
             .focus()
             .extendMarkRange('link')
-            .setLink({ href: url })
+            .setLink({ href: url as string })
             .run();
     };
 
@@ -44,7 +44,7 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
             disabled={!editor?.isEditable || !currentTextSelection}
             value="link"
             onClick={handleClick}
-            selected={isActive}
+            selected={isActive ?? false}
         >
             <InsertLink fontSize="inherit" />
         </ToggleButton>

@@ -127,11 +127,11 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     } = useReference<RecordType>({
         id: currentValue,
         reference,
-        // @ts-ignore the types of the queryOptions for the getMAny and getList are not compatible
         options: {
             enabled: currentValue != null && currentValue !== '',
             meta,
-            ...otherQueryOptions,
+            // the queryOptions for getMany and getList are not compatible
+            ...(otherQueryOptions as UseQueryOptions<RecordType[]>),
         },
     });
 

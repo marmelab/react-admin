@@ -211,7 +211,11 @@ export const useInfiniteListController = <
     });
 
     const unwrappedData = useMemo(
-        () => data?.pages?.reduce((acc, page) => [...acc, ...page.data], []),
+        () =>
+            data?.pages?.reduce<RecordType[]>(
+                (acc, page) => [...acc, ...page.data],
+                []
+            ),
         [data]
     );
 

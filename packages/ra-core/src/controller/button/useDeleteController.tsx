@@ -138,10 +138,12 @@ export const useDeleteController = <
                 previousData: record,
                 meta: mutationMeta,
             },
+            // UseDeleteOptions types the deleted record as RecordType, while
+            // call-time options type it as RecordType | undefined
             {
                 mutationMode,
                 ...otherMutationOptions,
-            }
+            } as Parameters<typeof deleteOne>[2]
         );
     }, [
         deleteOne,

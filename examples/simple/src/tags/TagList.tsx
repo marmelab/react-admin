@@ -6,6 +6,8 @@ import {
     useListContext,
     EditButton,
     Title,
+    type Identifier,
+    type RaRecord,
 } from 'react-admin';
 import {
     Box,
@@ -33,10 +35,12 @@ const TagList = () => (
     </ListBase>
 );
 
+type TagNode = RaRecord & { parent_id?: Identifier; name: { en: string } };
+
 const Tree = () => {
     const { data, defaultTitle } = useListContext();
-    const [openChildren, setOpenChildren] = useState<string[]>([]);
-    const toggleNode = node =>
+    const [openChildren, setOpenChildren] = useState<Identifier[]>([]);
+    const toggleNode = (node: TagNode) =>
         setOpenChildren(state => {
             if (state.includes(node.id)) {
                 return [
@@ -49,7 +53,7 @@ const Tree = () => {
     const roots = data
         ? data.filter(node => typeof node.parent_id === 'undefined')
         : [];
-    const getChildNodes = root =>
+    const getChildNodes = (root: TagNode) =>
         data ? data.filter(node => node.parent_id === root.id) : [];
 
     return (
@@ -69,7 +73,19 @@ const Tree = () => {
     );
 };
 
-const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
+const SubTree = ({
+    level,
+    root,
+    getChildNodes,
+    openChildren,
+    toggleNode,
+}: {
+    level: number;
+    root: TagNode;
+    getChildNodes: (root: TagNode) => TagNode[];
+    openChildren: Identifier[];
+    toggleNode: (node: TagNode) => void;
+}) => {
     const childNodes = getChildNodes(root);
     const hasChildren = childNodes.length > 0;
     const open = openChildren.includes(root.id);
@@ -91,7 +107,7 @@ const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
             </ListItem>
             <Collapse in={open} timeout="auto" unmountOnExit>
                 <List component="div" disablePadding>
-                    {childNodes.map(node => (
+                    {childNodes.map((node: TagNode) => (
                         <SubTree
                             key={node.id}
                             root={node}

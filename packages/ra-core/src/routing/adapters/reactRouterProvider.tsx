@@ -121,7 +121,7 @@ export const reactRouterProvider: RouterProvider = {
     // Components
     Link,
     Navigate,
-    Route,
+    Route: Route as RouterProvider['Route'],
     Routes,
     Outlet,
 

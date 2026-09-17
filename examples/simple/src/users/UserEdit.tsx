@@ -24,7 +24,7 @@ import Aside from './Aside';
  *
  * Save with undo, but delete with confirm
  */
-const UserEditToolbar = props => {
+const UserEditToolbar = (props: any) => {
     return (
         <Toolbar
             sx={{ display: 'flex', justifyContent: 'space-between' }}
@@ -54,7 +54,7 @@ const UserEditForm = () => {
     }
     if (!save) return null;
 
-    const newSave = values =>
+    const newSave = (values: any) =>
         new Promise(resolve => {
             if (values.name === 'test') {
                 return resolve({

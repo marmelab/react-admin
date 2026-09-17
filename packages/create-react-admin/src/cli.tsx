@@ -14,7 +14,7 @@ const dataProviderShortcuts = {
 };
 
 const getDataProviderName = (dataProvider: string | undefined) => {
-    if (dataProviderShortcuts[dataProvider]) {
+    if (dataProvider && dataProviderShortcuts[dataProvider]) {
         return dataProviderShortcuts[dataProvider];
     }
     return dataProvider;
@@ -31,7 +31,7 @@ const authProviderShortcuts = {
 };
 
 const getAuthProviderName = (authProvider: string | undefined) => {
-    if (authProviderShortcuts[authProvider]) {
+    if (authProvider && authProviderShortcuts[authProvider]) {
         return authProviderShortcuts[authProvider];
     }
     return authProvider;
@@ -54,21 +54,21 @@ const getAuthProvider = (flags: typeof cli.flags) => {
     return 'none';
 };
 
-const getDefaultInstaller = (userAgent: string) => {
+const getDefaultInstaller = (userAgent: string | undefined) => {
     if (!userAgent) return 'npm';
     const pkgSpec = userAgent.split(' ')[0];
     const pkgSpecArr = pkgSpec.split('/');
     return pkgSpecArr[0];
 };
 
-const getInstall = (flags: typeof cli.flags, userAgent: string) => {
+const getInstall = (flags: typeof cli.flags, userAgent: string | undefined) => {
     if (flags.install) return flags.install;
     if (flags.interactive) return undefined;
     return getDefaultInstaller(userAgent);
 };
 
 const getResources = (flags: typeof cli.flags) => {
-    if (flags.resource.length > 0) return flags.resource;
+    if (flags.resource && flags.resource.length > 0) return flags.resource;
     if (flags.interactive) return undefined;
     return ['skip'];
 };

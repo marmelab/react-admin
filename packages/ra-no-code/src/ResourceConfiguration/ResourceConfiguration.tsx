@@ -30,7 +30,9 @@ import { FieldConfigurationTab } from './FieldConfigurationTab';
 
 export const ResourceConfigurationPage = () => {
     const { resource } = useParams<'resource'>();
-    const [resourceConfiguration, actions] = useResourceConfiguration(resource);
+    const [resourceConfiguration, actions] = useResourceConfiguration(
+        resource!
+    );
     const [activeField, setActiveField] = useState<FieldConfiguration>();
 
     const save = (values: ResourceConfiguration) => {
@@ -41,7 +43,7 @@ export const ResourceConfigurationPage = () => {
     };
 
     const handleTabChange = (event, newValue) => {
-        const newField = resourceConfiguration.fields.find(
+        const newField = resourceConfiguration.fields?.find(
             f => f.props.source === newValue
         );
         setActiveField(newField);
@@ -60,7 +62,10 @@ export const ResourceConfigurationPage = () => {
     return (
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
-                <Form onSubmit={save} defaultValues={resourceConfiguration}>
+                <Form
+                    onSubmit={values => save(values as ResourceConfiguration)}
+                    defaultValues={resourceConfiguration}
+                >
                     <StyledCard>
                         <CardHeader
                             avatar={
@@ -102,7 +107,7 @@ export const ResourceConfigurationPage = () => {
                                 onChange={handleTabChange}
                                 className={classes.fieldList}
                             >
-                                {resourceConfiguration.fields.map(field => (
+                                {resourceConfiguration.fields?.map(field => (
                                     <FieldConfigurationTab
                                         key={`${field.props.source}_tab`}
                                         field={field}
@@ -111,7 +116,7 @@ export const ResourceConfigurationPage = () => {
                                     />
                                 ))}
                             </Tabs>
-                            {resourceConfiguration.fields.map(
+                            {resourceConfiguration.fields?.map(
                                 (field, index) => (
                                     <div
                                         key={`${field.props.source}_panel`}
