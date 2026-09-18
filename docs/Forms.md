@@ -314,7 +314,7 @@ const OrderEdit = () => (
 );
 ```
 
-**Tip**: When used inside an `ArrayInput`, `<FormDataConsumer>` provides one additional property to its child function called `scopedFormData`. It's an object containing the current values of the *currently rendered item*. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
+**Tip**: When used inside an `ArrayInput`, `<FormDataConsumer>` provides two additional properties to its child function: `scopedFormData` and `index`. `scopedFormData` is an object containing the current values of the *currently rendered item*. `index` is the index of the current item in the array. This allows you to create dependencies between inputs inside a `<SimpleFormIterator>`, as in the following example:
 
 ```tsx
 import { FormDataConsumer } from 'react-admin';
@@ -329,6 +329,7 @@ const PostEdit = () => (
                         {({
                             formData, // The whole form data
                             scopedFormData, // The data for this item of the ArrayInput
+                            index, // The index of the current item in the ArrayInput
                             ...rest
                         }) =>
                             scopedFormData && scopedFormData.name ? (
@@ -347,7 +348,9 @@ const PostEdit = () => (
 );
 ```
 
-**Tip:** TypeScript users will notice that `scopedFormData` is typed as an optional parameter. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, this parameter will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that this parameter will be defined.
+**Tip:** TypeScript users will notice that `scopedFormData` and `index` are typed as optional parameters. This is because the `<FormDataConsumer>` component can be used outside of an `<ArrayInput>` and in that case, these parameters will be `undefined`. If you are inside an `<ArrayInput>`, you can safely assume that these parameters will be defined.
+
+**Tip:** The `index` parameter is useful when you need to know the position of the current item in the array, e.g. to display a row number or to apply conditional logic based on the item's position.
 
 ## Hiding Inputs Based On Other Inputs
 
