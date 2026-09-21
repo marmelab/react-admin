@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useReducer } from 'react';
+import { useMemo, useSyncExternalStore } from 'react';
 import get from 'lodash/get.js';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
@@ -27,6 +27,8 @@ const EMPTY_FORM_GROUP_STATE: FormGroupState = {
     isValid: true,
     isValidating: true,
 };
+
+const EMPTY_GROUP_FIELDS: string[] = [];
 
 /**
  * Retrieve a specific form group data such as its validation status (valid/invalid) or
@@ -86,27 +88,25 @@ export const useFormGroup = (name: string): FormGroupState => {
 
     const formGroups = useFormGroups();
 
-    // The group state is derived from the form state and the group fields, so it
-    // must be computed during render. Computing it in an effect schedules an
-    // additional commit for each form state update; chains of such commit-phase
-    // updates make React 19 throw "Maximum update depth exceeded" on forms with
-    // many fields. See https://github.com/marmelab/react-admin/issues/11368
-    const [groupFieldsVersion, recomputeGroupState] = useReducer(c => c + 1, 0);
-    useEffect(() => {
-        if (!formGroups) return;
-        const unsubscribe = formGroups.subscribe(name, recomputeGroupState);
-        // Inputs register themselves in effects too, so they may already be
-        // registered (or not) when this effect runs. Recompute once after
-        // subscribing to cover the case where they registered first.
-        recomputeGroupState();
-        return unsubscribe;
+    const { subscribe, getSnapshot } = useMemo(() => {
+        return {
+            subscribe: (onStoreChange: () => void) =>
+                formGroups?.subscribe(name, onStoreChange) ?? (() => undefined),
+            getSnapshot: () => {
+                if (!formGroups) {
+                    return null;
+                }
+                const fields = formGroups.getGroupFields(name);
+                return fields.length ? fields : EMPTY_GROUP_FIELDS;
+            },
+        };
     }, [formGroups, name]);
+    const fields = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
     return useMemo(() => {
-        if (!formGroups) {
+        if (!fields) {
             return EMPTY_FORM_GROUP_STATE;
         }
-        const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
             .map<FieldState>(field => {
                 return {
@@ -124,9 +124,7 @@ export const useFormGroup = (name: string): FormGroupState => {
         return getFormGroupState(fieldStates);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
-        name,
-        formGroups,
-        groupFieldsVersion,
+        fields,
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(dirtyFieldsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
