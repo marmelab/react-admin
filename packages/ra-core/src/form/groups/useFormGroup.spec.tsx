@@ -8,6 +8,7 @@ import {
     TextInput,
 } from 'ra-ui-materialui';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { useWatch } from 'react-hook-form';
 import expect from 'expect';
 import { FormGroupContextProvider } from './FormGroupContextProvider';
 import { testDataProvider } from '../../dataProvider';
@@ -219,6 +220,108 @@ describe('useFormGroup', () => {
                 isValid: true,
                 isValidating: false,
             });
+        });
+    });
+
+    it('should update the group state in the same render as the form state it derives from', async () => {
+        // Regression test for https://github.com/marmelab/react-admin/issues/11368
+        // Computing the group state in an effect schedules an additional commit
+        // for each form state update. Under React 19, chains of such commit-phase
+        // updates make React throw "Maximum update depth exceeded" on forms with
+        // many fields, so the group state must be derived during render.
+        const observations: Array<{ value: string; isDirty: boolean }> = [];
+        const GroupStateProbe = () => {
+            const { isDirty } = useFormGroup('simplegroup');
+            const value = useWatch({ name: 'url' });
+            React.useLayoutEffect(() => {
+                observations.push({ value, isDirty });
+            });
+            return null;
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm mode="onChange">
+                        <FormGroupContextProvider name="simplegroup">
+                            <GroupStateProbe />
+                            <TextInput source="url" />
+                        </FormGroupContextProvider>
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(observations.length).toBeGreaterThan(0);
+        });
+
+        const input = screen.getByLabelText('resources.posts.fields.url');
+        fireEvent.change(input, {
+            target: { value: 'test' },
+        });
+
+        await waitFor(() => {
+            expect(
+                observations.some(
+                    ({ value, isDirty }) => value === 'test' && isDirty
+                )
+            ).toBe(true);
+        });
+
+        // the group state must never lag behind the form state it derives from
+        expect(
+            observations.filter(
+                ({ value, isDirty }) => value === 'test' && !isDirty
+            )
+        ).toEqual([]);
+    });
+
+    it('should recompute the group state when a field is added to or removed from the group', async () => {
+        let state;
+        const GroupState = () => {
+            state = useFormGroup('simplegroup');
+            return null;
+        };
+        const ToggleInput = () => {
+            const [showInput, setShowInput] = React.useState(true);
+            return (
+                <>
+                    <button onClick={() => setShowInput(show => !show)}>
+                        Toggle input
+                    </button>
+                    {showInput && <TextInput source="url" />}
+                </>
+            );
+        };
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <FormGroupContextProvider name="simplegroup">
+                            <GroupState />
+                            <ToggleInput />
+                        </FormGroupContextProvider>
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            expect(state).toEqual({
+                errors: {},
+                isDirty: false,
+                isTouched: false,
+                isValid: true,
+                isValidating: false,
+            });
+        });
+
+        fireEvent.click(screen.getByText('Toggle input'));
+
+        await waitFor(() => {
+            expect(state.errors).toBeUndefined();
         });
     });
 

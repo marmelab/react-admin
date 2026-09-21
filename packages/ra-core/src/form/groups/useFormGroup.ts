@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import get from 'lodash/get.js';
-import isEqual from 'lodash/isEqual.js';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
-import { useEvent } from '../../util';
 
 type FieldState = {
     name: string;
@@ -20,6 +18,14 @@ type FormGroupState = {
     isTouched: boolean;
     isValid: boolean;
     isValidating: boolean;
+};
+
+const EMPTY_FORM_GROUP_STATE: FormGroupState = {
+    errors: undefined,
+    isDirty: false,
+    isTouched: false,
+    isValid: true,
+    isValidating: true,
 };
 
 /**
@@ -72,23 +78,34 @@ export const useFormGroup = (name: string): FormGroupState => {
     // dirtyFields, touchedFields, validatingFields and errors are objects with keys being the field names
     // Ex: { title: true }
     // However, they are not correctly serialized when using JSON.stringify
-    // To avoid our effects to not be triggered when they should, we extract the keys and use that as a dependency
+    // To avoid missing updates, we extract the keys and use them as a dependency
     const dirtyFieldsNames = Object.keys(dirtyFields);
     const touchedFieldsNames = Object.keys(touchedFields);
     const validatingFieldsNames = Object.keys(validatingFields);
     const errorsNames = Object.keys(errors);
 
     const formGroups = useFormGroups();
-    const [state, setState] = useState<FormGroupState>({
-        errors: undefined,
-        isDirty: false,
-        isTouched: false,
-        isValid: true,
-        isValidating: true,
-    });
 
-    const updateGroupState = useEvent(() => {
+    // The group state is derived from the form state and the group fields, so it
+    // must be computed during render. Computing it in an effect schedules an
+    // additional commit for each form state update; chains of such commit-phase
+    // updates make React 19 throw "Maximum update depth exceeded" on forms with
+    // many fields. See https://github.com/marmelab/react-admin/issues/11368
+    const [groupFieldsVersion, recomputeGroupState] = useReducer(c => c + 1, 0);
+    useEffect(() => {
         if (!formGroups) return;
+        const unsubscribe = formGroups.subscribe(name, recomputeGroupState);
+        // Inputs register themselves in effects too, so they may already be
+        // registered (or not) when this effect runs. Recompute once after
+        // subscribing to cover the case where they registered first.
+        recomputeGroupState();
+        return unsubscribe;
+    }, [formGroups, name]);
+
+    return useMemo(() => {
+        if (!formGroups) {
+            return EMPTY_FORM_GROUP_STATE;
+        }
         const fields = formGroups.getGroupFields(name);
         const fieldStates = fields
             .map<FieldState>(field => {
@@ -104,19 +121,12 @@ export const useFormGroup = (name: string): FormGroupState => {
             })
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
 
-        const newState = getFormGroupState(fieldStates);
-        setState(oldState => {
-            if (!isEqual(oldState, newState)) {
-                return newState;
-            }
-
-            return oldState;
-        });
-    });
-
-    useEffect(() => {
-        updateGroupState();
+        return getFormGroupState(fieldStates);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
+        name,
+        formGroups,
+        groupFieldsVersion,
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(dirtyFieldsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,22 +135,7 @@ export const useFormGroup = (name: string): FormGroupState => {
         JSON.stringify(touchedFieldsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(validatingFieldsNames),
-        updateGroupState,
-        name,
-        formGroups,
     ]);
-
-    useEffect(() => {
-        if (!formGroups) return;
-        // Whenever the group content changes (input are added or removed)
-        // we must update its state
-        const unsubscribe = formGroups.subscribe(name, () => {
-            updateGroupState();
-        });
-        return unsubscribe;
-    }, [formGroups, name, updateGroupState]);
-
-    return state;
 };
 
 /**
