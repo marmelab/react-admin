@@ -1,9 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import get from 'lodash/get.js';
-import isEqual from 'lodash/isEqual.js';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
-import { useEvent } from '../../util';
 
 type FieldState = {
     name: string;
@@ -21,6 +19,16 @@ type FormGroupState = {
     isValid: boolean;
     isValidating: boolean;
 };
+
+const EMPTY_FORM_GROUP_STATE: FormGroupState = {
+    errors: undefined,
+    isDirty: false,
+    isTouched: false,
+    isValid: true,
+    isValidating: true,
+};
+
+const EMPTY_GROUP_FIELDS: string[] = [];
 
 /**
  * Retrieve a specific form group data such as its validation status (valid/invalid) or
@@ -72,24 +80,32 @@ export const useFormGroup = (name: string): FormGroupState => {
     // dirtyFields, touchedFields, validatingFields and errors are objects with keys being the field names
     // Ex: { title: true }
     // However, they are not correctly serialized when using JSON.stringify
-    // To avoid our effects to not be triggered when they should, we extract the keys and use that as a dependency
+    // To avoid missing updates, we extract the keys and use them as a dependency
     const dirtyFieldsNames = Object.keys(dirtyFields);
     const touchedFieldsNames = Object.keys(touchedFields);
     const validatingFieldsNames = Object.keys(validatingFields);
     const errorsNames = Object.keys(errors);
 
     const formGroups = useFormGroups();
-    const [state, setState] = useState<FormGroupState>({
-        errors: undefined,
-        isDirty: false,
-        isTouched: false,
-        isValid: true,
-        isValidating: true,
-    });
 
-    const updateGroupState = useEvent(() => {
-        if (!formGroups) return;
+    const subscribe = useCallback(
+        (onStoreChange: () => void) =>
+            formGroups?.subscribe(name, onStoreChange) ?? (() => undefined),
+        [formGroups, name]
+    );
+    const getSnapshot = useCallback(() => {
+        if (!formGroups) {
+            return null;
+        }
         const fields = formGroups.getGroupFields(name);
+        return fields.length ? fields : EMPTY_GROUP_FIELDS;
+    }, [formGroups, name]);
+    const fields = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
+
+    return useMemo(() => {
+        if (!fields) {
+            return EMPTY_FORM_GROUP_STATE;
+        }
         const fieldStates = fields
             .map<FieldState>(field => {
                 return {
@@ -104,19 +120,10 @@ export const useFormGroup = (name: string): FormGroupState => {
             })
             .filter(fieldState => fieldState != undefined); // eslint-disable-line
 
-        const newState = getFormGroupState(fieldStates);
-        setState(oldState => {
-            if (!isEqual(oldState, newState)) {
-                return newState;
-            }
-
-            return oldState;
-        });
-    });
-
-    useEffect(() => {
-        updateGroupState();
+        return getFormGroupState(fieldStates);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
+        fields,
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(dirtyFieldsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,22 +132,7 @@ export const useFormGroup = (name: string): FormGroupState => {
         JSON.stringify(touchedFieldsNames),
         // eslint-disable-next-line react-hooks/exhaustive-deps
         JSON.stringify(validatingFieldsNames),
-        updateGroupState,
-        name,
-        formGroups,
     ]);
-
-    useEffect(() => {
-        if (!formGroups) return;
-        // Whenever the group content changes (input are added or removed)
-        // we must update its state
-        const unsubscribe = formGroups.subscribe(name, () => {
-            updateGroupState();
-        });
-        return unsubscribe;
-    }, [formGroups, name, updateGroupState]);
-
-    return state;
 };
 
 /**
