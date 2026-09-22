@@ -276,7 +276,7 @@ const buildGetListVariables =
                         f => f.name === parts[0]
                     );
                     if (!resourceField) {
-                        return acc;
+                        return { ...acc, [key]: params.filter[key] };
                     }
                     const type = getFinalType(
                         resourceField.type
