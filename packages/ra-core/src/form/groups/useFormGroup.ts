@@ -1,4 +1,4 @@
-import { useMemo, useSyncExternalStore } from 'react';
+import { useCallback, useMemo, useSyncExternalStore } from 'react';
 import get from 'lodash/get.js';
 import { useFormState } from 'react-hook-form';
 import { useFormGroups } from './useFormGroups';
@@ -88,18 +88,17 @@ export const useFormGroup = (name: string): FormGroupState => {
 
     const formGroups = useFormGroups();
 
-    const { subscribe, getSnapshot } = useMemo(() => {
-        return {
-            subscribe: (onStoreChange: () => void) =>
-                formGroups?.subscribe(name, onStoreChange) ?? (() => undefined),
-            getSnapshot: () => {
-                if (!formGroups) {
-                    return null;
-                }
-                const fields = formGroups.getGroupFields(name);
-                return fields.length ? fields : EMPTY_GROUP_FIELDS;
-            },
-        };
+    const subscribe = useCallback(
+        (onStoreChange: () => void) =>
+            formGroups?.subscribe(name, onStoreChange) ?? (() => undefined),
+        [formGroups, name]
+    );
+    const getSnapshot = useCallback(() => {
+        if (!formGroups) {
+            return null;
+        }
+        const fields = formGroups.getGroupFields(name);
+        return fields.length ? fields : EMPTY_GROUP_FIELDS;
     }, [formGroups, name]);
     const fields = useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
 
