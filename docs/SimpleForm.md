@@ -876,7 +876,7 @@ const authProvider = {
 
 const ProductEdit = () => (
     <Edit>
-        <SimpleForm>
+        <SimpleForm showReadOnly>
             <TextInput source="reference" />
             <TextInput source="width" />
             <TextInput source="height" />
@@ -890,3 +890,28 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
+
+Read-only inputs are still included in the data submitted by the form. If you don't want to send these fields to the `dataProvider`, use the `showDisabled` prop instead. Inputs for which users have only `read` access will be displayed but disabled, and omitted from the submitted data:
+
+```tsx
+import { Edit, TextInput } from 'react-admin';
+import { SimpleForm } from '@react-admin/ra-rbac';
+
+const ProductEdit = () => (
+    <Edit>
+        <SimpleForm showDisabled>
+            <TextInput source="reference" />
+            <TextInput source="width" />
+            <TextInput source="height" />
+            {/* disabled and not submitted */}
+            <TextInput source="description" />
+            {/* not displayed */}
+            <TextInput source="image" />
+            <TextInput source="thumbnail" />
+            {/* no delete button */}
+        </SimpleForm>
+    </Edit>
+);
+```
+
+**Tip:** If both `showReadOnly` and `showDisabled` are set, `showDisabled` takes precedence.
