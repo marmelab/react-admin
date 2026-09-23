@@ -1077,35 +1077,3 @@ const ProductEdit = () => (
     </Edit>
 );
 ```
-
-Read-only inputs are still included in the data submitted by the form. If you don't want to send these fields to the `dataProvider`, use the `showDisabled` prop instead. Inputs for which users have only `read` access will be displayed but disabled, and omitted from the submitted data:
-
-```tsx
-import { Edit, TextInput } from 'react-admin';
-import { TabbedForm } from '@react-admin/ra-rbac';
-
-const ProductEdit = () => (
-    <Edit>
-        <TabbedForm showDisabled>
-            <TabbedForm.Tab label="Description" name="description">
-                <TextInput source="reference" />
-                <TextInput source="width" />
-                <TextInput source="height" />
-                {/* Input Description is disabled and not submitted */}
-                <TextInput source="description" />
-            </TabbedForm.Tab>
-            {/* Tab Stock is not displayed */}
-            <TabbedForm.Tab label="Stock" name="stock">
-                <TextInput source="stock" />
-            </TabbedForm.Tab>
-            <TabbedForm.Tab label="Images" name="images">
-                {/* Input Image is not displayed */}
-                <TextInput source="image" />
-                <TextInput source="thumbnail" />
-            </TabbedForm.Tab>
-        </TabbedForm>
-    </Edit>
-);
-```
-
-**Tip:** If both `showReadOnly` and `showDisabled` are set, `showDisabled` takes precedence.
