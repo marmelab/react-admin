@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useWatch } from 'react-hook-form';
 import { keepPreviousData, type UseQueryOptions } from '@tanstack/react-query';
+import get from 'lodash/get.js';
 
 import { useGetList } from '../../dataProvider';
 import { useReference } from '../useReference';
@@ -58,6 +59,7 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         filter,
         page: initialPage = 1,
         perPage: initialPerPage = 25,
+        optionValue = 'id',
         sort: initialSort,
         queryOptions = {},
         reference,
@@ -77,6 +79,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
     // selection logic
     const finalSource = useWrappedSource(source);
     const currentValue = useWatch({ name: finalSource });
+    const currentValueEnabled = currentValue != null && currentValue !== '';
+    const useOptionValueLookup = optionValue !== 'id';
 
     const isGetMatchingEnabled = enableGetChoices
         ? enableGetChoices(params.filterValues)
@@ -116,7 +120,38 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     // fetch current value
     const {
-        referenceRecord: currentReferenceRecord,
+        data: currentReferenceRecords,
+        refetch: refetchCurrentReference,
+        error: errorCurrentReference,
+        isLoading: isLoadingCurrentReference,
+        isFetching: isFetchingCurrentReference,
+        isPaused: isPausedCurrentReference,
+        isPending: isPendingCurrentReference,
+        isPlaceholderData: isPlaceholderDataCurrentReference,
+    } = useGetList<RecordType>(
+        reference,
+        {
+            pagination: {
+                page: 1,
+                perPage: 1,
+            },
+            sort: { field: 'id', order: 'DESC' },
+            filter: useOptionValueLookup
+                ? { [optionValue]: currentValue }
+                : {},
+            meta,
+        },
+        {
+            enabled: useOptionValueLookup && currentValueEnabled,
+            placeholderData: keepPreviousData,
+            ...(otherQueryOptions as UseQueryOptions<
+                GetListResult<RecordType>
+            >),
+        }
+    );
+
+    const {
+        referenceRecord: currentReferenceRecordById,
         refetch: refetchReference,
         error: errorReference,
         isLoading: isLoadingReference,
@@ -129,18 +164,28 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         reference,
         // @ts-ignore the types of the queryOptions for the getMAny and getList are not compatible
         options: {
-            enabled: currentValue != null && currentValue !== '',
+            enabled: !useOptionValueLookup && currentValueEnabled,
             meta,
             ...otherQueryOptions,
         },
     });
 
+    const currentReferenceRecord = useOptionValueLookup
+        ? currentReferenceRecords?.[0]
+        : currentReferenceRecordById;
+
     const isPending =
         // The reference query isn't enabled when there is no value yet but as it has no data, react-query will flag it as pending
-        (currentValue != null && currentValue !== '' && isPendingReference) ||
+        (currentValueEnabled &&
+            (useOptionValueLookup
+                ? isPendingCurrentReference
+                : isPendingReference)) ||
         isPendingPossibleValues;
 
-    const isPaused = isPausedReference || isPausedPossibleValues;
+    const isPaused =
+        (useOptionValueLookup
+            ? isPausedCurrentReference
+            : isPausedReference) || isPausedPossibleValues;
 
     // We need to delay the update of the referenceRecord and the finalData
     // to the next React state update, because otherwise it can raise a warning
@@ -164,14 +209,17 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             referenceRecord == null ||
             possibleValuesData == null ||
             (possibleValuesData ?? []).find(
-                record => record.id === referenceRecord.id
+                record =>
+                    get(record, optionValue) === get(referenceRecord, optionValue)
             )
         ) {
             // Here we might have the referenceRecord but no data (because of enableGetChoices for instance)
             const finalData = possibleValuesData ?? [];
             if (
                 referenceRecord &&
-                finalData.find(r => r.id === referenceRecord.id) == null
+                finalData.find(
+                    r => get(r, optionValue) === get(referenceRecord, optionValue)
+                ) == null
             ) {
                 finalData.push(referenceRecord);
             }
@@ -190,8 +238,17 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
 
     const refetch = useCallback(() => {
         refetchGetList();
-        refetchReference();
-    }, [refetchGetList, refetchReference]);
+        if (useOptionValueLookup) {
+            refetchCurrentReference();
+        } else {
+            refetchReference();
+        }
+    }, [
+        refetchCurrentReference,
+        refetchGetList,
+        refetchReference,
+        useOptionValueLookup,
+    ]);
 
     const currentSort = useMemo(
         () => ({
@@ -211,16 +268,27 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
                 // TODO v6: same as above
                 selectedChoices: referenceRecord ? [referenceRecord] : [],
                 displayedFilters: params.displayedFilters,
-                error: errorReference || errorPossibleValues,
+                error:
+                    (useOptionValueLookup
+                        ? errorCurrentReference
+                        : errorReference) || errorPossibleValues,
                 filter: params.filter,
                 filterValues: params.filterValues,
                 hideFilter: paramsModifiers.hideFilter,
-                isFetching: isFetchingReference || isFetchingPossibleValues,
-                isLoading: isLoadingReference || isLoadingPossibleValues,
-                isPaused: isPausedReference || isPausedPossibleValues,
+                isFetching:
+                    (useOptionValueLookup
+                        ? isFetchingCurrentReference
+                        : isFetchingReference) || isFetchingPossibleValues,
+                isLoading:
+                    (useOptionValueLookup
+                        ? isLoadingCurrentReference
+                        : isLoadingReference) || isLoadingPossibleValues,
+                isPaused,
                 isPending,
                 isPlaceholderData:
-                    isPlaceholderDataReference ||
+                    (useOptionValueLookup
+                        ? isPlaceholderDataCurrentReference
+                        : isPlaceholderDataReference) ||
                     isPlaceholderDataPossibleValues,
                 page: params.page,
                 perPage: params.perPage,
@@ -246,17 +314,23 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             }) as ChoicesContextValue<RecordType>,
         [
             currentSort,
+            errorCurrentReference,
             errorPossibleValues,
             errorReference,
             finalData,
             finalTotal,
+            isFetchingCurrentReference,
             isFetchingPossibleValues,
             isFetchingReference,
+            isLoadingCurrentReference,
             isLoadingPossibleValues,
             isLoadingReference,
+            isPausedCurrentReference,
             isPausedPossibleValues,
             isPausedReference,
             isPending,
+            isPendingCurrentReference,
+            isPlaceholderDataCurrentReference,
             isPlaceholderDataReference,
             isPlaceholderDataPossibleValues,
             pageInfo,
@@ -277,6 +351,8 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
             refetch,
             source,
             total,
+            useOptionValueLookup,
+            optionValue,
         ]
     );
 };
@@ -296,6 +372,7 @@ export interface UseReferenceInputControllerParams<
     > & { meta?: any };
     page?: number;
     perPage?: number;
+    optionValue?: string;
     record?: RaRecord;
     reference: string;
     resource?: string;
