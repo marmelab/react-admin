@@ -87,16 +87,16 @@ A *permission* is an object that represents a subset of the application. It is d
 Here are a few examples of permissions:
 
 - `{ action: "*", resource: "*" }`: allow everything
-- `{ action: "read", resource: "*" }`: allow read actions on all resources
-- `{ action: "read", resource: ["companies", "people"] }`: allow read actions on a subset of resources
-- `{ action: ["read", "create", "edit", "export"], resource: "companies" }`: allow all actions except delete on companies
+- `{ action: ["list", "show"], resource: "*" }`: allow access to the list and show pages of all resources
+- `{ action: "read", resource: ["companies.*", "people.*"] }`: allow to view all the fields of a subset of resources
+- `{ action: ["list", "show", "create", "edit", "export"], resource: "companies" }`: allow all page-level actions except delete on companies
 - `{ action: ["write"], resource: "game.score", record: { "id": "123" } }`: allow write action on the score of the game with id 123
 
 **Tip**: When the `record` field is omitted, the permission is valid for all records.
 
 ### Action
 
-An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "read", "create", "edit", "delete", or "export".
+An _action_ is a string, usually a verb, that represents an operation. Examples of actions include "list", "show", "create", "edit", "delete", "read", "write", or "export".
 
 React-admin already does page-level access control with actions like "list", "show", "edit", "create", and "delete". RBAC checks additional actions in its components:
 
@@ -109,10 +109,21 @@ React-admin already does page-level access control with actions like "list", "sh
 | `delete` | Allow to delete data             | [`<DeleteButton>`](./Buttons.md#deletebutton), [`<BulkDeleteButton>`](./Buttons.md#bulkdeletebutton), [`<DataTable>`](./DataTable.md#access-control), [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control) |
 | `export` | Allow to export data             | [`<ExportButton>`](./Buttons.md#exportbutton), [`<List>`](./List.md#access-control)                                                                                                                                                                                                                    |
 | `clone`  | Allow to clone a record          | [`<CloneButton>`](./Buttons.md#clonebutton), [`<Edit>`](./Edit.md)                                                                                                                                                                                                                                     |
-| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control)                                                                                                                               |
+| `read`   | Allow to view a field (or a tab) | [`<Datagrid>`](./Datagrid.md#access-control), [`<SimpleShowLayout>`](./SimpleShowLayout.md#access-control), [`<TabbedShowLayout>`](./TabbedShowLayout.md#access-control), [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control)                           |
 | `write`  | Allow to edit a field (or a tab) | [`<SimpleForm>`](./SimpleForm.md#access-control), [`<TabbedForm>`](./TabbedForm.md#access-control), [`<WizardForm>`](./WizardForm.md#enableaccesscontrol), [`<LongForm>`](./LongForm.md#enableaccesscontrol), [`<AccordionForm>`](./AccordionForm.md#enableaccesscontrol)                              |
 
 **Tip:** Be sure not to confuse "show" and "read", or "edit" and "write", as they are not the same. The first operate at the page level, the second at the field level. A good mnemonic is to realize "show" and "edit" are named the same as the react-admin page they allow to control: the Show and Edit pages.
+
+In practice, giving access to a resource usually requires both a page-level permission and a field-level permission:
+
+```jsx
+const readerRole = [
+    // can access the list and show pages of products
+    { action: ['list', 'show'], resource: 'products' },
+    // can see all the fields of products
+    { action: 'read', resource: 'products.*' },
+];
+```
 
 You can also add your own actions, and use them in your own components using [`useCanAccess`](./useCanAccess.md) or [`<CanAccess>`](./CanAccess.md).
 
@@ -134,29 +145,31 @@ const adminRole = [
 
 // the reader role can only read content, not create, edit or delete it
 const readerRole = [
-    { action: "read", resource: "*" }
+    { action: ["list", "show", "read"], resource: "*" }
 ];
 
 // fine-grained permissions on a per resource basis
 const salesRole = [
-    { action: ["read", "create", "edit", "export"], resource: "companies" },
-    { action: ["read", "create", "edit"], resource: "people" },
-    { action: ["read", "create", "edit", "export"], resource: "deals" },
-    { action: ["read", "create"], resource: "comments" },,
-    { action: ["read", "create"], resource: "tasks" },
-    { action: ["write"], resource: "tasks.completed" },
+    { action: ["list", "show", "create", "edit", "export"], resource: "companies" },
+    { action: ["read", "write"], resource: "companies.*" },
+    { action: ["list", "show", "create", "edit"], resource: "people" },
+    { action: ["read", "write"], resource: "people.*" },
+    { action: ["list", "show", "create"], resource: "tasks" },
+    { action: ["read", "write"], resource: "tasks.*" },
 ];
 
 // permissions can be restricted to a specific list of records, and are additive
 const corrector123Role = [
     // can only grade the assignments assigned to him
-    { action: ["read", "export", "edit", "grade"], resource: "assignments", record: { "supervisor_id": "123" } },
-    // can see the general stats page
-    { action: "read", resource: "stats" },
+    { action: ["list", "show", "export", "edit", "grade"], resource: "assignments", record: { "supervisor_id": "123" } },
+    { action: "read", resource: "assignments.*" },
+    { action: "write", resource: "assignments.grade" },
     // can see the profile of every corrector
-    { action: ["read"], resource: "correctors" },
+    { action: ["list", "show"], resource: "correctors" },
+    { action: "read", resource: "correctors.*" },
     // can edit his own profile
-    { action: ["write"], resource: "correctors", record: { "id": "123" } },
+    { action: "edit", resource: "correctors", record: { "id": "123" } },
+    { action: "write", resource: "correctors.*", record: { "id": "123" } },
 ];
 ```
 
