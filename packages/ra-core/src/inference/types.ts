@@ -1,8 +1,8 @@
 import { ComponentType } from 'react';
 
 export interface InferredType {
-    type?: ComponentType;
-    component?: ComponentType;
+    type?: ComponentType<any>;
+    component?: ComponentType<any>;
     representation?: (props: any, children: any) => string;
 }
 

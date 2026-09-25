@@ -60,7 +60,7 @@ const OptionRenderer = (props: any) => {
     );
 };
 
-const inputText = record =>
+const inputText = (record: any) =>
     record.id === '@@ra-create'
         ? record.name
         : `${record.title} - ${record.id}`;
@@ -108,7 +108,7 @@ const CreatePost = () => {
     );
 };
 
-const CommentEdit = props => {
+const CommentEdit = (props: any) => {
     const controllerProps = useEditController(props);
     const { resource, record, save } = controllerProps;
 

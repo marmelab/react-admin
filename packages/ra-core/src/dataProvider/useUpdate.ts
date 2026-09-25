@@ -262,7 +262,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        customMutationFn
+                        (customMutationFn
                             ? (resource, params) =>
                                   customMutationFnWithDataProviderResult(
                                       resource,
@@ -271,13 +271,18 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                                           'resource'
                                       >
                                   )
-                            : dataProviderUpdate.bind(dataProvider)
+                            : dataProviderUpdate.bind(
+                                  dataProvider
+                              )) as DataProvider['update']
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useUpdate:
                         // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
                         const { resource, ...params } = args;
-                        return mutateWithMiddlewares(resource, params);
+                        return mutateWithMiddlewares(
+                            resource as string,
+                            params as UpdateParams<RecordType>
+                        ) as Promise<UpdateResult<RecordType>>;
                     };
                 }
 

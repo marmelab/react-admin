@@ -8,7 +8,7 @@ export const DataTableCallbacksContext = createContext<{
     isRowExpandable?: (record: any) => boolean;
     isRowSelectable?: (record: any) => boolean;
     onSelect?: ((ids: Identifier[]) => void) | undefined;
-    rowClick?: string | RowClickFunctionBase | false;
+    rowClick?: string | RowClickFunctionBase<any> | false;
 }>({});
 
 export const useDataTableCallbacksContext = () =>

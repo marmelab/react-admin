@@ -8,6 +8,9 @@ import { useTranslate } from 'react-admin';
 const PostQuickCreateCancelButton = ({
     onClick,
     label = 'ra.action.cancel',
+}: {
+    onClick: React.MouseEventHandler<HTMLButtonElement>;
+    label?: string;
 }) => {
     const translate = useTranslate();
 

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 import lodashDebounce from 'lodash/debounce.js';
@@ -79,10 +79,7 @@ export const useReferenceManyFieldController = <
         page: initialPage,
         perPage: initialPerPage,
         sort: initialSort = { field: 'id', order: 'DESC' },
-        queryOptions = {} as UseQueryOptions<
-            { data: ReferenceRecordType[]; total: number },
-            ErrorType
-        >,
+        queryOptions = {},
     } = props;
     const notify = useNotify();
     const record = useRecordContext(props);
@@ -280,7 +277,7 @@ export const useReferenceManyFieldController = <
                 return results.data;
             } catch (error) {
                 if (onError) {
-                    onError(error);
+                    onError(error as Error);
                 }
                 notify('ra.notification.http_error', { type: 'warning' });
             }

@@ -1,4 +1,5 @@
 import { createContext, useContext } from 'react';
+import type { RaRecord } from '../../types';
 import type { UseReferenceFieldControllerResult } from './useReferenceFieldController';
 
 export const ReferenceFieldContext =
@@ -6,12 +7,18 @@ export const ReferenceFieldContext =
 
 export const ReferenceFieldContextProvider = ReferenceFieldContext.Provider;
 
-export const useReferenceFieldContext = () => {
+export const useReferenceFieldContext = <
+    ReferenceRecordType extends RaRecord = RaRecord,
+    ErrorType = Error,
+>() => {
     const context = useContext(ReferenceFieldContext);
     if (!context) {
         throw new Error(
             'useReferenceFieldContext must be used inside a ReferenceFieldContextProvider'
         );
     }
-    return context;
+    return context as UseReferenceFieldControllerResult<
+        ReferenceRecordType,
+        ErrorType
+    >;
 };

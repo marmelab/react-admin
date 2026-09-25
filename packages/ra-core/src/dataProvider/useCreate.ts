@@ -196,7 +196,7 @@ export const useCreate = <
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        customMutationFn
+                        (customMutationFn
                             ? (resource, params) =>
                                   customMutationFnWithDataProviderResult(
                                       resource,
@@ -205,13 +205,18 @@ export const useCreate = <
                                           'resource'
                                       >
                                   )
-                            : dataProviderCreate.bind(dataProvider)
+                            : dataProviderCreate.bind(
+                                  dataProvider
+                              )) as DataProvider['create']
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useCreate:
                         // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
                         const { resource, ...params } = args;
-                        return mutateWithMiddlewares(resource, params);
+                        return mutateWithMiddlewares(
+                            resource as string,
+                            params as CreateParams<RecordType>
+                        ) as Promise<CreateResult<ResultRecordType>>;
                     };
                 }
 

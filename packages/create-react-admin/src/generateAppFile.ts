@@ -7,11 +7,12 @@ export const generateAppFile = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
+    const resources = state.resources ?? [];
     fs.writeFileSync(
         path.join(projectDirectory, 'src', 'App.tsx'),
         `
 ${
-    state.resources.length > 0
+    resources.length > 0
         ? `import { Admin, Resource, ListGuesser, EditGuesser, ShowGuesser } from 'react-admin';`
         : `import { Admin } from 'react-admin';`
 }
@@ -34,7 +35,7 @@ export const App = () => (
                 : ''
         }
     >
-        ${state.resources
+        ${resources
             .map(
                 resource =>
                     `<Resource name="${resource}" list={ListGuesser} edit={EditGuesser} show={ShowGuesser} />`

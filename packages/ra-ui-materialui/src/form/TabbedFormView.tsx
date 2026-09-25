@@ -88,10 +88,11 @@ export const TabbedFormView = (inProps: TabbedFormViewProps) => {
                 on tabs not in focus. The tabs receive a `hidden` property, which they'll
                 use to hide the tab using CSS if it's not the one in focus.
                 See https://github.com/marmelab/react-admin/issues/1866 */}
-                {Children.map(children, (tab: ReactElement, index) => {
-                    if (!tab) {
+                {Children.map(children, (child, index) => {
+                    if (!isValidElement(child)) {
                         return null;
                     }
+                    const tab = child as ReactElement<any>;
                     const tabPath = getTabbedFormTabFullPath(tab, index);
                     const hidden = syncWithLocation
                         ? !matchPath(

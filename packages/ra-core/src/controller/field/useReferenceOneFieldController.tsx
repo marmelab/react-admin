@@ -1,8 +1,10 @@
 import get from 'lodash/get.js';
-import { UseQueryOptions } from '@tanstack/react-query';
 
 import { useRecordContext } from '../record';
-import { useGetManyReference } from '../../dataProvider';
+import {
+    useGetManyReference,
+    type UseGetManyReferenceHookOptions,
+} from '../../dataProvider';
 import { useNotify } from '../../notification';
 import { RaRecord, SortPayload } from '../../types';
 import { UseReferenceResult } from '../useReference';
@@ -16,13 +18,7 @@ export interface UseReferenceOneFieldControllerParams<
     target: string;
     filter?: any;
     queryOptions?: Omit<
-        UseQueryOptions<
-            {
-                data: ReferenceRecordType[];
-                total: number;
-            },
-            ErrorType
-        >,
+        UseGetManyReferenceHookOptions<ReferenceRecordType, ErrorType>,
         'queryFn' | 'queryKey'
     > & { meta?: any };
     record?: RecordType;

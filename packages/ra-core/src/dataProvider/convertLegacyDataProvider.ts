@@ -48,7 +48,10 @@ const convertLegacyDataProvider = (
             };
         },
         apply(_, __, args) {
-            return legacyDataProvider.apply(legacyDataProvider, args);
+            return legacyDataProvider.apply(
+                legacyDataProvider,
+                args as Parameters<LegacyDataProvider>
+            );
         },
     });
 

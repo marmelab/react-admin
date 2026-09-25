@@ -13,5 +13,5 @@ export const TiptapEditorProvider = ({
 
 export type TiptapEditorProviderProps = {
     children: React.ReactNode;
-    value: Editor;
+    value: Editor | null;
 };
