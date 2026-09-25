@@ -495,13 +495,11 @@ export const FullNameField = (props) => {
     const record = useRecordContext(props);
     return record ? <span>{record.firstName} {record.lastName}</span> : null;
 }
-
-FullNameField.defaultProps = { label: 'Name' };
 ```
 
 **Tip**: Always check the `record` is defined before inspecting its properties, as react-admin may display the Show view *before* fetching the record from the data provider. So the first time it renders the show view for a resource, the `record` is `undefined`.
 
-You can now use this field like any other react-admin field:
+You can now use this field like any other react-admin field. Pass the `label` explicitly so the parent layout can read it from the field's props:
 
 ```jsx
 import { List, Datagrid } from 'react-admin';
@@ -510,7 +508,7 @@ import { FullNameField } from './FullNameField';
 export const UserList = () => (
     <List>
         <Datagrid>
-            <FullNameField source="lastName" />
+            <FullNameField source="lastName" label="Name" />
         </Datagrid>
     </List>
 );
