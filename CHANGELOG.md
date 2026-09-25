@@ -1,5 +1,22 @@
 # Changelog
 
+## 5.15.4
+
+* Fix Maximum update depth exceeded in `<TabbedForm>` under React 19 ([#11379](https://github.com/marmelab/react-admin/pull/11379)) ([Sophran-fbj](https://github.com/Sophran-fbj))
+* Fix `<PrevNextButtons storeKey={false}>` being ignored ([#11371](https://github.com/marmelab/react-admin/pull/11371)) ([Sophran-fbj](https://github.com/Sophran-fbj))
+* [Docs] Fix custom field uses `defaultProps` for labels ([#11367](https://github.com/marmelab/react-admin/pull/11367)) ([jabrailkhalil](https://github.com/jabrailkhalil))
+* Fix `<AutocompleteInput>` clearing mouse selections on blur ([#11364](https://github.com/marmelab/react-admin/pull/11364)) ([lprnmns](https://github.com/lprnmns))
+* [Doc] Update Form RBAC to mention `showDisabled` and `showReadOnly` ([#11381](https://github.com/marmelab/react-admin/pull/11381)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update RA Core EE documentation ([#11365](https://github.com/marmelab/react-admin/pull/11365)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Chore] Bump dev dependencies ([#11361](https://github.com/marmelab/react-admin/pull/11361)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* build(deps): bump devalue from 5.8.1 to 5.9.2 ([#11376](https://github.com/marmelab/react-admin/pull/11376)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump json-graphql-server from 3.1.2 to 3.3.2 ([#11375](https://github.com/marmelab/react-admin/pull/11375)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump react-router-dom from 6.30.4 to 6.30.6 ([#11374](https://github.com/marmelab/react-admin/pull/11374)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump sharp from 0.35.3 to 0.35.4 ([#11373](https://github.com/marmelab/react-admin/pull/11373)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 7.1.6 to 7.2.8 ([#11369](https://github.com/marmelab/react-admin/pull/11369)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump react-router from 7.1.1 to 7.18.3 in demo ([#11363](https://github.com/marmelab/react-admin/pull/11363)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Bump @nivo/bar from 0.88 to 0.99 in demo ([#11362](https://github.com/marmelab/react-admin/pull/11362)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.15.3
 
 * Fix `<DataTable>` calls `useCanAccess` even when bulk delete is disabled ([#11352](https://github.com/marmelab/react-admin/pull/11352)) ([lprnmns](https://github.com/lprnmns))
