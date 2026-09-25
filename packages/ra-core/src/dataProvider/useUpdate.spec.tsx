@@ -171,8 +171,20 @@ describe('useUpdate', () => {
         });
 
         it('uses the latest declaration time mutationMode', async () => {
+            let resolveUpdate: (() => void) | undefined;
+            const post = { id: 1, title: 'Hello', author: 'John Doe' };
+            const dataProvider = {
+                getOne: () => Promise.resolve({ data: post }),
+                update: (_, params) =>
+                    new Promise(resolve => {
+                        resolveUpdate = () => {
+                            post.title = params.data.title;
+                            resolve({ data: post });
+                        };
+                    }),
+            } as any;
             // This story uses the pessimistic mode by default
-            render(<MutationMode timeout={10} />);
+            render(<MutationMode dataProvider={dataProvider} />);
             fireEvent.click(
                 screen.getByText('Change mutation mode to optimistic')
             );
@@ -183,6 +195,7 @@ describe('useUpdate', () => {
                 expect(screen.queryByText('Hello World')).not.toBeNull();
                 expect(screen.queryByText('mutating')).not.toBeNull();
             });
+            resolveUpdate?.();
             await waitFor(() => {
                 expect(screen.queryByText('success')).not.toBeNull();
                 expect(screen.queryByText('Hello World')).not.toBeNull();
