@@ -15,7 +15,7 @@ import { AdminContext } from '../AdminContext';
 import { AdminUI } from '../AdminUI';
 import { Create, Edit } from '../detail';
 import { SimpleForm } from '../form';
-import { DatagridInput, TextInput } from '../input';
+import { TextInput } from '../input';
 import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -246,54 +246,6 @@ export const ErrorCheckboxGroupInput = () => (
                 source="tag_ids"
             >
                 <CheckboxGroupInput optionText="name" />
-            </ReferenceArrayInput>
-        </Form>
-    </AdminContext>
-);
-
-export const WithDatagridInput = () => (
-    <AdminContext
-        dataProvider={dataProvider}
-        i18nProvider={i18nProvider}
-        defaultTheme="light"
-    >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
-            <ReferenceArrayInput
-                reference="tags"
-                resource="posts"
-                source="tag_ids"
-            >
-                <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
-                    <TextField source="name" />
-                </DatagridInput>
-            </ReferenceArrayInput>
-        </Form>
-    </AdminContext>
-);
-
-export const ErrorDatagridInput = () => (
-    <AdminContext
-        dataProvider={
-            {
-                getList: () => Promise.reject(new Error('fetch error')),
-                getMany: () =>
-                    Promise.resolve({
-                        data: [{ id: 5, name: 'test1' }],
-                    }),
-            } as unknown as DataProvider
-        }
-        i18nProvider={i18nProvider}
-        defaultTheme="light"
-    >
-        <Form onSubmit={() => {}} defaultValues={{ tag_ids: [1, 3] }}>
-            <ReferenceArrayInput
-                reference="tags"
-                resource="posts"
-                source="tag_ids"
-            >
-                <DatagridInput rowClick="toggleSelection" sx={{ mt: 6 }}>
-                    <TextField source="name" />
-                </DatagridInput>
             </ReferenceArrayInput>
         </Form>
     </AdminContext>
