@@ -25,8 +25,7 @@ describe('<PrevNextButtons />', () => {
         render(<Basic />);
         const tr = await screen.findByText('first_name_3');
         fireEvent.click(tr);
-        await screen.findByRole('navigation');
-        expect(screen.getByText('4 / 900')).toBeDefined();
+        await screen.findByText('4 / 900');
     });
 
     it('should render previous button as disabled if there is no previous record', async () => {
@@ -105,8 +104,7 @@ describe('<PrevNextButtons />', () => {
             render(<WithFilter />);
             const item = await screen.findByText('first_name_5');
             fireEvent.click(item);
-            await screen.findByRole('navigation');
-            expect(screen.getByText('5 / 50')).toBeDefined();
+            await screen.findByText('5 / 50');
         });
     });
 
