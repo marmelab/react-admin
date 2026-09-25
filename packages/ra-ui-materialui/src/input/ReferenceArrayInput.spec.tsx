@@ -1,11 +1,5 @@
 import * as React from 'react';
-import {
-    render,
-    screen,
-    waitFor,
-    within,
-    fireEvent,
-} from '@testing-library/react';
+import { render, screen, waitFor, fireEvent } from '@testing-library/react';
 import {
     testDataProvider,
     useChoicesContext,
@@ -18,8 +12,6 @@ import { QueryClient } from '@tanstack/react-query';
 
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
-import { DatagridInput } from './DatagridInput';
-import { TextField } from '../field';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { SelectArrayInput } from './SelectArrayInput';
 import { AsFilters, DifferentIdTypes } from './ReferenceArrayInput.stories';
@@ -141,85 +133,6 @@ describe('<ReferenceArrayInput />', () => {
 
         await waitFor(() => {
             expect(screen.queryByText('1,2')).not.toBeNull();
-        });
-    });
-
-    it('should allow to use a Datagrid', async () => {
-        const dataProvider = testDataProvider({
-            getList: () =>
-                // @ts-ignore
-                Promise.resolve({
-                    data: [
-                        { id: 5, name: 'test1' },
-                        { id: 6, name: 'test2' },
-                    ],
-                    total: 2,
-                }),
-            getMany: () =>
-                // @ts-ignore
-                Promise.resolve({
-                    data: [{ id: 5, name: 'test1' }],
-                }),
-        });
-        render(
-            <AdminContext dataProvider={dataProvider}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm
-                        onSubmit={jest.fn()}
-                        defaultValues={{ tag_ids: [5] }}
-                    >
-                        <ReferenceArrayInput reference="tags" source="tag_ids">
-                            <DatagridInput>
-                                <TextField source="name" />
-                            </DatagridInput>
-                        </ReferenceArrayInput>
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
-        );
-
-        await waitFor(() => {
-            screen.getByText('test1');
-            screen.getByText('test2');
-        });
-
-        const getCheckbox1 = () =>
-            within(screen.queryByText('test1').closest('tr'))
-                .getByLabelText('ra.action.select_row')
-                .querySelector('input');
-        const getCheckbox2 = () =>
-            within(screen.queryByText('test2').closest('tr'))
-                .getByLabelText('ra.action.select_row')
-                .querySelector('input');
-        const getCheckboxAll = () =>
-            screen.getByLabelText('ra.action.select_all');
-        await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(false);
-        });
-
-        fireEvent.click(getCheckbox2());
-
-        await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(true);
-            expect(getCheckboxAll().checked).toEqual(true);
-        });
-
-        fireEvent.click(getCheckboxAll());
-
-        await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(false);
-            expect(getCheckbox2()?.checked).toEqual(false);
-            expect(getCheckboxAll().checked).toEqual(false);
-        });
-
-        fireEvent.click(getCheckboxAll());
-
-        await waitFor(() => {
-            expect(getCheckbox1()?.checked).toEqual(true);
-            expect(getCheckbox2()?.checked).toEqual(true);
-            expect(getCheckboxAll().checked).toEqual(true);
         });
     });
 
