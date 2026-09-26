@@ -76,6 +76,7 @@ The form value for the source must be the selected value, e.g.
 | `onCreate`                 | Optional | `Function`                                      | `-`                                        | A function called with the current filter value when users choose to create a new choice.                                                                                                                           |
 | `optionText`               | Optional | `function` &#124; `ReactNode` | `undefined` &#124; `record Representation` | Field name of record to display in the suggestion item or function using the choice object as argument                                                                                                              |
 | `optionValue`              | Optional | `string`                                        | `id`                                       | Field name of record containing the value to use as input value                                                                                                                                                     |
+| `renderInput`              | Optional | `Function`                                      | `-`                                        | A function rendering the input element. Overrides the default `<TextField>` rendering.                                                                                                                              |
 | `setFilter`                | Optional | `Function`                                      | `null`                                     | A callback to inform the `searchText` has changed and new `choices` can be retrieved based on this `searchText`. Signature `searchText => void`. This function is automatically set up when using `ReferenceInput`. |
 | `shouldRender Suggestions` | Optional | `Function`                                      | `() => true`                               | A function that returns a `boolean` to determine whether or not suggestions are rendered.                                                                                                                           |
 | `suggestionLimit`          | Optional | `number`                                        | `null`                                     | Limits the numbers of suggestions that are shown in the dropdown list                                                                                                                                               |
@@ -649,6 +650,24 @@ const choices = [
 ```
 
 **Note:** `optionValue` is only supported when the choices are provided directly via the `choices` prop. If you use `<AutocompleteInput>` inside a `<ReferenceInput>`, the `optionValue` is always set to `id`, as the choices are records fetched from the related resource, and [records should always have an `id` field](./FAQ.md#can-i-have-custom-identifiersprimary-keys-for-my-resources).
+
+## `renderInput`
+
+By default, `<AutocompleteInput>` renders a Material UI `<TextField>` with the input label, helper text and validation errors. If you need full control over the input rendering (e.g. to display a custom component for the selected option), pass a `renderInput` function. It receives the [MUI Autocomplete `renderInput` params](https://mui.com/material-ui/api/autocomplete/#autocomplete-prop-renderInput), which you must spread on your input component:
+
+```jsx
+import { TextField } from '@mui/material';
+
+<AutocompleteInput
+    source="author_id"
+    choices={choices}
+    renderInput={params => (
+        <TextField {...params} label="Author" variant="outlined" />
+    )}
+/>
+```
+
+**Note:** When you use `renderInput`, react-admin no longer renders the label, helper text, and validation errors for you. It's up to your custom input to display them.
 
 ## `shouldRenderSuggestions`
 

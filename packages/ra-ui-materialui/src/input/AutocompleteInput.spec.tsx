@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { TextField } from '@mui/material';
+import { useFormContext } from 'react-hook-form';
 import {
     FormDataConsumer,
     ResourceContextProvider,
@@ -32,6 +34,7 @@ import {
     CreateItemLabelRendered,
     FilterSelectedOptionsFalse,
     GetOptionDisabled,
+    RenderInput,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -708,6 +711,51 @@ describe('<AutocompleteInput />', () => {
                 ) as HTMLInputElement;
                 expect(inputElement.value).toBe('Female');
             });
+        });
+    });
+
+    it('should allow to override the input rendering with renderInput', async () => {
+        render(<RenderInput />);
+        const input = (await screen.findByLabelText(
+            'Custom author input'
+        )) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('Leo Tolstoy');
+        });
+        screen.getByText('Rendered with a custom renderInput');
+        fireEvent.focus(input);
+        await screen.findByText('Victor Hugo');
+    });
+
+    it('should keep the form field ref when using renderInput', async () => {
+        const FocusButton = () => {
+            const { setFocus } = useFormContext();
+            return (
+                <button type="button" onClick={() => setFocus('author')}>
+                    Focus author
+                </button>
+            );
+        };
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm onSubmit={jest.fn()}>
+                        <AutocompleteInput
+                            source="author"
+                            choices={[{ id: 1, name: 'Leo Tolstoy' }]}
+                            renderInput={params => (
+                                <TextField {...params} label="Author" />
+                            )}
+                        />
+                        <FocusButton />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+        const input = await screen.findByLabelText('Author');
+        fireEvent.click(screen.getByText('Focus author'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(input);
         });
     });
 

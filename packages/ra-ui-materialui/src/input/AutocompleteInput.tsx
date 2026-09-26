@@ -8,6 +8,7 @@ import {
     TextField,
     type TextFieldProps,
     major as muiMajor,
+    setRef,
     useForkRef,
 } from '@mui/material';
 import {
@@ -194,6 +195,7 @@ export const AutocompleteInput = <
         disabled,
         readOnly,
         getOptionDisabled: getOptionDisabledProp,
+        renderInput,
         ...rest
     } = props;
 
@@ -720,6 +722,22 @@ If you provided a React element for the optionText prop, you must also provide t
                 filterSelectedOptions
                 disabled={disabled || readOnly}
                 renderInput={params => {
+                    if (renderInput) {
+                        return renderInput({
+                            ...params,
+                            inputProps: {
+                                ...params.inputProps,
+                                // Keep the form field ref so that react-hook-form can focus the input on validation errors
+                                ref: (node: HTMLInputElement | null) => {
+                                    setRef(
+                                        (params.inputProps as any).ref,
+                                        node
+                                    );
+                                    setRef(handleInputRef, node);
+                                },
+                            },
+                        });
+                    }
                     const mergedTextFieldProps = {
                         readOnly,
                         ...params.InputProps,
@@ -901,6 +919,12 @@ export interface AutocompleteInputProps<
     // Source is optional as AutocompleteInput can be used inside a ReferenceInput that already defines the source
     source?: string;
     TextFieldProps?: TextFieldProps;
+    renderInput?: AutocompleteProps<
+        OptionType,
+        Multiple,
+        DisableClearable,
+        SupportCreate
+    >['renderInput'];
 }
 
 /**

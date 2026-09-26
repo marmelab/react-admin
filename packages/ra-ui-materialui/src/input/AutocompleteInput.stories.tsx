@@ -1532,6 +1532,23 @@ export const WithInputProps = () => (
     </Wrapper>
 );
 
+export const RenderInput = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    label="Custom author input"
+                    helperText="Rendered with a custom renderInput"
+                    variant="outlined"
+                />
+            )}
+        />
+    </Wrapper>
+);
+
 export const OutlinedNoLabel = () => (
     <Wrapper onSuccess={console.log}>
         <AutocompleteInput
