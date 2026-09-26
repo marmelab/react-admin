@@ -26,6 +26,7 @@ import {
     NoRecordRepresentation,
     Themed,
     WithCustomTitleAndContent,
+    WithComponent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
 import { Label } from './DeleteButton.stories';
@@ -406,6 +407,18 @@ describe('<DeleteWithConfirmButton />', () => {
         );
         await screen.findByText('Delete me?');
         await screen.findByText('Please confirm the deletion');
+    });
+
+    it('should allow to render the button with a custom component', async () => {
+        render(<WithComponent />);
+        const button = within(
+            (await screen.findByText('War and Peace')).closest(
+                'tr'
+            ) as HTMLElement
+        ).getByText('Delete');
+        expect(button.closest('a')).not.toBeNull();
+        fireEvent.click(button);
+        await screen.findByText('Delete the book "War and Peace"?');
     });
 
     it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {

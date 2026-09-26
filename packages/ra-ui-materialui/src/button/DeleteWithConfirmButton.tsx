@@ -26,10 +26,30 @@ import { humanize, singularize } from 'inflection';
 import { Confirm } from '../layout';
 import { Button, ButtonProps } from './Button';
 
+type DeleteWithConfirmButtonComponent = <
+    RecordType extends RaRecord = any,
+    MutationOptionsError = unknown,
+    RootComponent extends React.ElementType = 'button',
+>(
+    props: DeleteWithConfirmButtonProps<
+        RecordType,
+        MutationOptionsError,
+        RootComponent
+    > &
+        React.RefAttributes<HTMLButtonElement | HTMLAnchorElement>
+) => React.ReactElement | null;
+
 export const DeleteWithConfirmButton = React.forwardRef(
-    function DeleteWithConfirmButton<RecordType extends RaRecord = any>(
-        inProps: DeleteWithConfirmButtonProps<RecordType>,
-        ref: React.ForwardedRef<HTMLButtonElement>
+    function DeleteWithConfirmButton<
+        RecordType extends RaRecord = any,
+        RootComponent extends React.ElementType = 'button',
+    >(
+        inProps: DeleteWithConfirmButtonProps<
+            RecordType,
+            unknown,
+            RootComponent
+        >,
+        ref: React.ForwardedRef<HTMLButtonElement | HTMLAnchorElement>
     ) {
         const props = useThemeProps({
             props: inProps,
@@ -219,28 +239,29 @@ export const DeleteWithConfirmButton = React.forwardRef(
             </Fragment>
         );
     }
-);
+) as DeleteWithConfirmButtonComponent;
 
 const defaultIcon = <ActionDelete />;
 
-export interface DeleteWithConfirmButtonProps<
+export type DeleteWithConfirmButtonProps<
     RecordType extends RaRecord = any,
     MutationOptionsError = unknown,
-> extends ButtonProps,
-        UseDeleteControllerParams<RecordType, MutationOptionsError> {
-    confirmTitle?: React.ReactNode;
-    confirmContent?: React.ReactNode;
-    icon?: React.ReactNode;
-    confirmColor?: 'primary' | 'warning';
-    onClick?: ReactEventHandler<any>;
-    // May be injected by Toolbar - sanitized in Button
-    /**
-     * @deprecated use `titleTranslateOptions` and `contentTranslateOptions` instead
-     */
-    translateOptions?: object;
-    titleTranslateOptions?: object;
-    contentTranslateOptions?: object;
-}
+    RootComponent extends React.ElementType = 'button',
+> = ButtonProps<RootComponent> &
+    UseDeleteControllerParams<RecordType, MutationOptionsError> & {
+        confirmTitle?: React.ReactNode;
+        confirmContent?: React.ReactNode;
+        icon?: React.ReactNode;
+        confirmColor?: 'primary' | 'warning';
+        onClick?: ReactEventHandler<any>;
+        // May be injected by Toolbar - sanitized in Button
+        /**
+         * @deprecated use `titleTranslateOptions` and `contentTranslateOptions` instead
+         */
+        translateOptions?: object;
+        titleTranslateOptions?: object;
+        contentTranslateOptions?: object;
+    };
 
 const PREFIX = 'RaDeleteWithConfirmButton';
 
