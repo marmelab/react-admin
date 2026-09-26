@@ -71,6 +71,7 @@ export const TextInput = (props: TextInputProps) => {
         <StyledResettableTextField
             id={id}
             {...field}
+            aria-required={isRequired || undefined}
             className={clsx('ra-input', `ra-input-${source}`, className)}
             label={
                 label !== '' && label !== false ? (
