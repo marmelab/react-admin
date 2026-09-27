@@ -1,8 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
-import { useTranslate, useRecordContext } from 'react-admin';
-import { stringify } from 'query-string';
+import { fetchUtils, useTranslate, useRecordContext } from 'react-admin';
 
 import products from '../products';
 import { Category } from '../types';
@@ -18,7 +17,7 @@ const LinkToRelatedProducts = () => {
             component={Link}
             to={{
                 pathname: '/products',
-                search: stringify({
+                search: fetchUtils.queryParameters({
                     filter: JSON.stringify({ category_id: record.id }),
                 }),
             }}
