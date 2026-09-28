@@ -9,6 +9,7 @@ import {
     type CheckboxProps,
     FormControlLabel,
     type FormControlLabelProps,
+    major as muiMajor,
 } from '@mui/material';
 import { type ChoicesProps, useChoices } from 'ra-core';
 
@@ -52,7 +53,8 @@ export const CheckboxGroupInputItem = (
             key={getChoiceValue(choice)}
             onChange={onChange}
             className={className}
-            inputRef={inputRef}
+            // Checkbox slotProps were only added in MUI v6.4, and MUI v9 removed inputRef
+            {...(muiMajor < 7 ? { inputRef } : {})}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
@@ -67,6 +69,19 @@ export const CheckboxGroupInputItem = (
                     value={String(getChoiceValue(choice))}
                     disabled={disabled}
                     {...options}
+                    {...(muiMajor >= 7
+                        ? {
+                              slotProps: {
+                                  // @ts-expect-error slotProps do not yet exist in MUI v5
+                                  ...options?.slotProps,
+                                  input: {
+                                      // @ts-expect-error slotProps do not yet exist in MUI v5
+                                      ...options?.slotProps?.input,
+                                      ref: inputRef,
+                                  },
+                              },
+                          }
+                        : {})}
                 />
             }
             label={choiceName}
