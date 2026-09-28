@@ -234,7 +234,9 @@ export const DateInput = (props: DateInputProps) => {
                     />
                 ) : null
             }
-            InputLabelProps={defaultInputLabelProps}
+            {...(muiMajor < 6
+                ? { InputLabelProps: defaultInputLabelProps }
+                : {})}
             {...sanitizeInputRestProps(rest)}
             {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />

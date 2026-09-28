@@ -169,7 +169,7 @@ export const ResettableTextField = forwardRef(
         return (
             <StyledTextField
                 value={value}
-                InputProps={inputProps}
+                {...(muiMajor < 6 ? { InputProps: inputProps } : {})}
                 disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}

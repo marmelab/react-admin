@@ -119,7 +119,10 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            inputProps={selectAllInputProps}
+                            // Checkbox slotProps were only added in MUI v6.4
+                            {...(muiMajor < 7
+                                ? { inputProps: selectAllInputProps }
+                                : {})}
                             {...(muiMajor >= 6
                                 ? { slotProps: { input: selectAllInputProps } }
                                 : {})}

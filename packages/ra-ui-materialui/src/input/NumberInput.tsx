@@ -176,7 +176,7 @@ export const NumberInput = (props: NumberInputProps) => {
                 ) : null
             }
             margin={margin}
-            inputProps={inputProps}
+            {...(muiMajor < 6 ? { inputProps } : {})}
             {...sanitizeInputRestProps(rest)}
             {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
         />
