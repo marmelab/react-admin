@@ -120,7 +120,7 @@ For instance, the following code creates an `authors` resource, and adds an `/au
 ```jsx
 // in src/App.jsx
 import { CoreAdmin, Resource } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { AuthorList } from './AuthorList';
 import { BookList } from './BookList';
@@ -344,7 +344,7 @@ Ra-core doesn't support nested resources, but you can use [the `children` prop](
 
 ```jsx
 import { CoreAdmin, Resource } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 export const App = () => (
     <CoreAdmin dataProvider={dataProvider}>

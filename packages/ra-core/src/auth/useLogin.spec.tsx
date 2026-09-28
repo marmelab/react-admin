@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router';
 import expect from 'expect';
 
 import { CoreAdminContext } from '../core/CoreAdminContext';

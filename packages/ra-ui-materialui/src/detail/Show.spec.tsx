@@ -12,7 +12,7 @@ import {
 
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 
 import { AdminContext } from '../AdminContext';
