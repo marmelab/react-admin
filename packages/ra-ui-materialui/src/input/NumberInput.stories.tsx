@@ -329,7 +329,9 @@ export const ShouldUnregister = () => (
 const SetFocusButton = ({ source }) => {
     const { setFocus } = useFormContext();
     return (
-        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
+        <button type="button" onClick={() => setFocus(source)}>
+            Set focus on {source}
+        </button>
     );
 };
 
