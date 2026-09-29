@@ -34,7 +34,7 @@ import {
 import fakeRestProvider from 'ra-data-fakerest';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { useFormContext } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 
 import { useState } from 'react';
 import { Create, Edit } from '../detail';
@@ -1529,6 +1529,85 @@ export const WithInputProps = () => (
                 },
             }}
         />
+    </Wrapper>
+);
+
+export const RenderInput = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    label="Custom author input"
+                    helperText="Rendered with a custom renderInput"
+                    variant="outlined"
+                />
+            )}
+        />
+    </Wrapper>
+);
+
+const FocusAuthorButton = () => {
+    const { setFocus } = useFormContext();
+    return <Button onClick={() => setFocus('author')}>Focus author</Button>;
+};
+
+// Regression test: a custom renderInput must keep the form field ref,
+// so react-hook-form can focus the input (e.g. on validation errors).
+export const RenderInputFieldRef = () => (
+    <Wrapper>
+        <AutocompleteInput
+            source="author"
+            choices={defaultChoices}
+            renderInput={params => <TextField {...params} label="Author" />}
+        />
+        <FocusAuthorButton />
+    </Wrapper>
+);
+
+// MUI's groupBy requires options sorted by group
+const groupedChoices = [
+    { id: 2, name: 'Victor Hugo', nationality: 'French' },
+    { id: 4, name: 'Charles Baudelaire', nationality: 'French' },
+    { id: 5, name: 'Marcel Proust', nationality: 'French' },
+    { id: 3, name: 'William Shakespeare', nationality: 'English' },
+    { id: 1, name: 'Leo Tolstoy', nationality: 'Russian' },
+];
+
+const AuthorInputWithGroups = () => {
+    const authorId = useWatch({ name: 'author' });
+    const selected = groupedChoices.find(choice => choice.id === authorId);
+    return (
+        <AutocompleteInput
+            source="author"
+            choices={groupedChoices}
+            groupBy={option => option.nationality}
+            renderInput={params => (
+                <TextField
+                    {...params}
+                    label="Author"
+                    InputProps={{
+                        ...params.InputProps,
+                        startAdornment: selected ? (
+                            <Chip
+                                size="small"
+                                label={selected.nationality}
+                                sx={{ mr: 1 }}
+                            />
+                        ) : null,
+                    }}
+                />
+            )}
+        />
+    );
+};
+
+// Grouped options, with the selected option rendered as a custom component (#10430)
+export const RenderInputWithGroups = () => (
+    <Wrapper>
+        <AuthorInputWithGroups />
     </Wrapper>
 );
 
