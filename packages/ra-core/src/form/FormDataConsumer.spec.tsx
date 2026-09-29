@@ -140,4 +140,78 @@ describe('FormDataConsumerView', () => {
             });
         });
     });
+
+    it('calls its children with the index when inside an ArrayInput', async () => {
+        let globalIndex;
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator>
+                                <FormDataConsumer>
+                                    {({ index }) => {
+                                        globalIndex = index;
+                                        return null;
+                                    }}
+                                </FormDataConsumer>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        expect(globalIndex).toEqual(undefined);
+
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+
+        expect(globalIndex).toEqual(0);
+
+        fireEvent.click(screen.getByLabelText('ra.action.add'));
+
+        expect(globalIndex).toEqual(1);
+    });
+
+    it('calls its children with the correct index when inside nested ArrayInputs', async () => {
+        let innerIndex: number | undefined;
+
+        render(
+            <AdminContext dataProvider={testDataProvider()}>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm
+                        defaultValues={{
+                            authors: [
+                                {
+                                    books: [{ title: 'Book 1' }],
+                                },
+                            ],
+                        }}
+                    >
+                        <ArrayInput source="authors">
+                            <SimpleFormIterator>
+                                <ArrayInput source="books">
+                                    <SimpleFormIterator>
+                                        <FormDataConsumer>
+                                            {({ index }) => {
+                                                innerIndex = index;
+                                                return null;
+                                            }}
+                                        </FormDataConsumer>
+                                    </SimpleFormIterator>
+                                </ArrayInput>
+                            </SimpleFormIterator>
+                        </ArrayInput>
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        await waitFor(() => {
+            // The inner array's first item should have index 0,
+            // not the outer array's index (also 0 in this case)
+            expect(innerIndex).toEqual(0);
+        });
+    });
 });
