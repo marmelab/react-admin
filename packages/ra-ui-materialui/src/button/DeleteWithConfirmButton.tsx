@@ -156,6 +156,7 @@ export const DeleteWithConfirmButton = React.forwardRef(
         });
 
         const handleDialogOpen: ReactEventHandler<any> = event => {
+            event.preventDefault();
             event.stopPropagation();
             setOpen(true);
         };
