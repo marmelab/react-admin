@@ -79,6 +79,12 @@ describe('queryString', () => {
             expect(stringifyQueryString(undefined)).toEqual('');
             expect(stringifyQueryString({})).toEqual('');
         });
+
+        it('should accept query-string options', () => {
+            expect(
+                stringifyQueryString({ a: [1, 2] }, { arrayFormat: 'bracket' })
+            ).toEqual('a[]=1&a[]=2');
+        });
     });
 
     describe('parseQueryString', () => {
