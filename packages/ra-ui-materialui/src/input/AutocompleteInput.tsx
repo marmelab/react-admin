@@ -8,7 +8,6 @@ import {
     TextField,
     type TextFieldProps,
     major as muiMajor,
-    setRef,
     useForkRef,
 } from '@mui/material';
 import {
@@ -729,11 +728,11 @@ If you provided a React element for the optionText prop, you must also provide t
                                 ...params.inputProps,
                                 // Keep the form field ref so that react-hook-form can focus the input on validation errors
                                 ref: (node: HTMLInputElement | null) => {
-                                    setRef(
+                                    assignRef(
                                         (params.inputProps as any).ref,
                                         node
                                     );
-                                    setRef(handleInputRef, node);
+                                    assignRef(handleInputRef, node);
                                 },
                             },
                         });
@@ -1025,6 +1024,15 @@ const areSelectedItemsEqual = (
     return (
         get(selectedChoice, optionValue) === get(newSelectedChoice, optionValue)
     );
+};
+
+// Assigns a DOM node to a callback ref or a ref object.
+const assignRef = <T,>(ref: React.Ref<T> | undefined, value: T | null) => {
+    if (typeof ref === 'function') {
+        ref(value);
+    } else if (ref) {
+        (ref as { current: T | null }).current = value;
+    }
 };
 
 const DefaultFilterToQuery = searchText => ({ q: searchText });

@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { TextField } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 import {
     FormDataConsumer,
     ResourceContextProvider,
@@ -35,6 +33,8 @@ import {
     FilterSelectedOptionsFalse,
     GetOptionDisabled,
     RenderInput,
+    RenderInputFieldRef,
+    RenderInputWithGroups,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -728,35 +728,28 @@ describe('<AutocompleteInput />', () => {
     });
 
     it('should keep the form field ref when using renderInput', async () => {
-        const FocusButton = () => {
-            const { setFocus } = useFormContext();
-            return (
-                <button type="button" onClick={() => setFocus('author')}>
-                    Focus author
-                </button>
-            );
-        };
-        render(
-            <AdminContext dataProvider={testDataProvider()}>
-                <ResourceContextProvider value="posts">
-                    <SimpleForm onSubmit={jest.fn()}>
-                        <AutocompleteInput
-                            source="author"
-                            choices={[{ id: 1, name: 'Leo Tolstoy' }]}
-                            renderInput={params => (
-                                <TextField {...params} label="Author" />
-                            )}
-                        />
-                        <FocusButton />
-                    </SimpleForm>
-                </ResourceContextProvider>
-            </AdminContext>
-        );
+        render(<RenderInputFieldRef />);
         const input = await screen.findByLabelText('Author');
         fireEvent.click(screen.getByText('Focus author'));
         await waitFor(() => {
             expect(document.activeElement).toBe(input);
         });
+    });
+
+    it('should allow to render grouped options with a custom renderInput', async () => {
+        render(<RenderInputWithGroups />);
+        const input = (await screen.findByLabelText(
+            'Author'
+        )) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('Leo Tolstoy');
+        });
+        // the selected option is rendered as a custom component
+        screen.getByText('Russian');
+        fireEvent.focus(input);
+        // group headers are shown in the suggestions list
+        await screen.findByText('French');
+        screen.getByText('English');
     });
 
     it('should show the suggestions on focus', async () => {
