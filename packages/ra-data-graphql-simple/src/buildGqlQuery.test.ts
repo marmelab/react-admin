@@ -995,8 +995,7 @@ describe('buildGqlQuery', () => {
   data: deleteCommands(ids: $ids) {
     ids
   }
-}
-`
+}`
         );
     });
 
@@ -1018,8 +1017,7 @@ describe('buildGqlQuery', () => {
   data: updateCommands(ids: $ids, data: $data) {
     ids
   }
-}
-`
+}`
         );
     });
 });

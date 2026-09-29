@@ -16,17 +16,19 @@ import {
 } from 'ra-core';
 import {
     ApolloClient,
-    ApolloClientOptions,
-    ApolloError,
-    ApolloQueryResult,
+    CombinedGraphQLErrors,
+    CombinedProtocolErrors,
     MutationOptions,
     WatchQueryOptions,
     QueryOptions,
     OperationVariables,
     ServerError,
+    ServerParseError,
 } from '@apollo/client';
 
-import buildApolloClient from './buildApolloClient';
+import buildApolloClient, {
+    BuildApolloClientOptions,
+} from './buildApolloClient';
 import {
     QUERY_TYPES as INNER_QUERY_TYPES,
     MUTATION_TYPES as INNER_MUTATION_TYPES,
@@ -39,6 +41,7 @@ import {
 } from './introspection';
 
 export * from './introspection';
+export type { BuildApolloClientOptions } from './buildApolloClient';
 export const QUERY_TYPES = INNER_QUERY_TYPES;
 export const MUTATION_TYPES = INNER_MUTATION_TYPES;
 export const ALL_TYPES = INNER_ALL_TYPES;
@@ -90,7 +93,7 @@ const getOptions = (
 };
 
 export type BuildQueryResult = QueryOptions<OperationVariables, any> & {
-    parseResponse: (response: ApolloQueryResult<any>) => any;
+    parseResponse: (response: ApolloClient.QueryResult<any>) => any;
 };
 
 export type BuildQuery = (
@@ -119,8 +122,8 @@ export type GetWatchQueryOptions = (
 ) => Partial<WatchQueryOptions<OperationVariables, any>>;
 
 export type Options = {
-    client?: ApolloClient<unknown>;
-    clientOptions?: Partial<ApolloClientOptions<unknown>>;
+    client?: ApolloClient;
+    clientOptions?: BuildApolloClientOptions;
     introspection?: false | Partial<IntrospectionOptions>;
     override?: {
         [key: string]: (params: any) => BuildQueryResult;
@@ -254,15 +257,26 @@ const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
     return raDataProvider;
 };
 
-const handleError = (error: ApolloError) => {
-    if (error?.networkError as ServerError) {
-        throw new HttpError(
-            (error?.networkError as ServerError)?.message,
-            (error?.networkError as ServerError)?.statusCode
-        );
+const handleError = (error: unknown) => {
+    // Apollo Client 4 replaced the single ApolloError, which carried a
+    // `networkError` and a `graphQLErrors` field, with one class per error kind.
+    if (ServerError.is(error) || ServerParseError.is(error)) {
+        throw new HttpError(error.message, error.statusCode);
     }
 
-    throw new HttpError(error.message, 200, error);
+    // `body.graphQLErrors` is kept for backwards compatibility: that is where
+    // the ApolloError of Apollo Client 3 used to expose them.
+    if (CombinedGraphQLErrors.is(error) || CombinedProtocolErrors.is(error)) {
+        throw new HttpError(error.message, 200, {
+            graphQLErrors: error.errors,
+        });
+    }
+
+    throw new HttpError(
+        error instanceof Error ? error.message : String(error),
+        200,
+        error
+    );
 };
 
 const getQueryOperation = query => {
@@ -276,7 +290,7 @@ const getQueryOperation = query => {
 export type GetIntrospection = () => Promise<IntrospectionResult>;
 export type GraphqlDataProvider = DataProvider & {
     getIntrospection: GetIntrospection;
-    client: ApolloClient<unknown>;
+    client: ApolloClient;
 };
 
 export default buildGraphQLProvider;

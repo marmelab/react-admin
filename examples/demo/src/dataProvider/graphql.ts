@@ -1,4 +1,3 @@
-import { ApolloQueryResult } from '@apollo/client';
 import buildApolloClient, {
     buildQuery as buildQueryFactory,
 } from 'ra-data-graphql-simple';
@@ -44,7 +43,7 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
                     }
                 }`,
                 variables: { id: params.id },
-                parseResponse: ({ data }: ApolloQueryResult<any>) => {
+                parseResponse: ({ data }) => {
                     if (data[`remove${resource}`]) {
                         return { data: { id: params.id } };
                     }
@@ -98,7 +97,7 @@ const customBuildQuery: BuildQueryFactory = introspectionResults => {
                     }
                 `,
                 variables: params.data,
-                parseResponse: ({ data }: ApolloQueryResult<any>) => {
+                parseResponse: ({ data }) => {
                     if (data.createCustomer) {
                         return { data: { id: data.createCustomer.id } };
                     }
