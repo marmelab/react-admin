@@ -1,6 +1,6 @@
 import * as React from 'react';
 import ContentAdd from '@mui/icons-material/Add';
-import { Fab, useMediaQuery, type Theme } from '@mui/material';
+import { Fab, useMediaQuery, type Breakpoint, type Theme } from '@mui/material';
 import {
     type ComponentsOverrides,
     styled,
@@ -43,6 +43,7 @@ const CreateButton = React.forwardRef(function CreateButton(
         name: PREFIX,
     });
     const {
+        breakpoint = 'md',
         className,
         icon = defaultIcon,
         label: labelProp,
@@ -76,9 +77,10 @@ const CreateButton = React.forwardRef(function CreateButton(
         },
         userText: labelProp,
     });
-    const isSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('md')
+    const isBelowBreakpoint = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down(breakpoint || 'xs')
     );
+    const shrink = breakpoint !== false && isBelowBreakpoint;
     const state = merge(
         {},
         scrollStates.get(String(scrollToTop)),
@@ -90,7 +92,7 @@ const CreateButton = React.forwardRef(function CreateButton(
     if (!canAccess || isPending) {
         return null;
     }
-    return isSmall ? (
+    return shrink ? (
         <StyledFab
             component={LinkBase}
             ref={ref}
@@ -113,6 +115,7 @@ const CreateButton = React.forwardRef(function CreateButton(
             to={createPath({ resource, type: 'create' })}
             state={state}
             className={clsx(CreateButtonClasses.root, className)}
+            breakpoint={breakpoint}
             // avoid double translation
             label={<>{label}</>}
             // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
@@ -135,6 +138,7 @@ const scrollStates = new Map([
 const defaultIcon = <ContentAdd />;
 
 interface Props {
+    breakpoint?: Breakpoint | false;
     resource?: string;
     icon?: React.ReactNode;
     scrollToTop?: boolean;
