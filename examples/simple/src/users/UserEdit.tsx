@@ -12,6 +12,7 @@ import {
     TabbedForm,
     TextInput,
     Toolbar,
+    type ToolbarProps,
     TopToolbar,
     useCanAccess,
     useSaveContext,
@@ -24,7 +25,7 @@ import Aside from './Aside';
  *
  * Save with undo, but delete with confirm
  */
-const UserEditToolbar = (props: any) => {
+const UserEditToolbar = (props: ToolbarProps) => {
     return (
         <Toolbar
             sx={{ display: 'flex', justifyContent: 'space-between' }}

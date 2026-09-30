@@ -69,7 +69,11 @@ export const useDeleteController = <
         mutationOptions = {},
         successMessage,
     } = props;
-    const { meta: mutationMeta, ...otherMutationOptions } = mutationOptions;
+    const {
+        meta: mutationMeta,
+        onSuccess,
+        ...otherMutationOptions
+    } = mutationOptions;
     const record = useRecordContext(props);
     const resource = useResourceContext(props);
     const notify = useNotify();
@@ -138,17 +142,19 @@ export const useDeleteController = <
                 previousData: record,
                 meta: mutationMeta,
             },
-            // UseDeleteOptions types the deleted record as RecordType, while
-            // call-time options type it as RecordType | undefined
             {
                 mutationMode,
                 ...otherMutationOptions,
-            } as Parameters<typeof deleteOne>[2]
+                onSuccess: onSuccess
+                    ? (data, ...rest) => onSuccess(data ?? record, ...rest)
+                    : undefined,
+            }
         );
     }, [
         deleteOne,
         mutationMeta,
         mutationMode,
+        onSuccess,
         otherMutationOptions,
         record,
         resource,

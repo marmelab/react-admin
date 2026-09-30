@@ -24,7 +24,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         state
     );
 
-    if (state.dataProvider !== 'none') {
+    if (state.dataProvider && state.dataProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
             projectDirectory,
@@ -32,7 +32,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         );
     }
 
-    if (state.authProvider !== 'none') {
+    if (state.authProvider && state.authProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
             projectDirectory,
@@ -74,7 +74,10 @@ const getHelpMessages = (state: ProjectConfiguration) => {
     return [dataProviderHelpMessages, authProviderHelpMessages];
 };
 
-const getTemplateHelpMessages = (template: string) => {
+const getTemplateHelpMessages = (template?: string) => {
+    if (!template || template === 'none') {
+        return '';
+    }
     const helpMessagesPath = path.join(
         __dirname,
         '../templates',
@@ -159,8 +162,8 @@ const generateEnvFile = (
     }
 };
 
-const hasTemplateAppFile = (template: string) => {
-    if (template === 'none' || template === '') {
+const hasTemplateAppFile = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const filePath = path.join(
@@ -172,8 +175,8 @@ const hasTemplateAppFile = (template: string) => {
     return fs.existsSync(filePath);
 };
 
-const getTemplateEnv = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplateEnv = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const envPath = path.join(__dirname, '../templates', template, '.env');
@@ -184,8 +187,8 @@ const getTemplateEnv = (template: string) => {
     return undefined;
 };
 
-const getTemplatePackageJson = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplatePackageJson = (template?: string) => {
+    if (!template || template === 'none') {
         return {};
     }
     const packageJsonPath = path.join(
@@ -263,8 +266,8 @@ const generateReadme = (
     }
 };
 
-const getTemplateReadme = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplateReadme = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const readmePath = path.join(

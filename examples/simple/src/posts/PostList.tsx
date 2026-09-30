@@ -2,7 +2,6 @@ import * as React from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Chip, useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-import lodashGet from 'lodash/get.js';
 import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
@@ -33,6 +32,7 @@ import {
 } from 'react-admin';
 
 import ResetViewsButton from './ResetViewsButton';
+import type { Post } from '../types';
 
 export const PostIcon = BookIcon;
 
@@ -57,12 +57,10 @@ const postFilter = [
     />,
 ];
 
-const exporter = (posts: any[]) => {
+const exporter = (posts: Post[]) => {
     const data = posts.map(post => ({
         ...post,
-        backlinks: lodashGet(post, 'backlinks', []).map(
-            (backlink: { url: string }) => backlink.url
-        ),
+        backlinks: (post.backlinks ?? []).map(backlink => backlink.url),
     }));
     return jsonExport(data, (err: any, csv: string) =>
         downloadCSV(csv, 'posts')
