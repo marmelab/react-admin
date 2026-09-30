@@ -24,7 +24,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         state
     );
 
-    if (state.dataProvider !== 'none') {
+    if (state.dataProvider && state.dataProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.dataProvider),
             projectDirectory,
@@ -32,7 +32,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
         );
     }
 
-    if (state.authProvider !== 'none') {
+    if (state.authProvider && state.authProvider !== 'none') {
         copyDirectoryFiles(
             path.join(__dirname, '../templates', state.authProvider),
             projectDirectory,
@@ -46,7 +46,7 @@ export const generateProject = async (state: ProjectConfiguration) => {
     if (state.dataProvider === 'ra-data-fakerest') {
         if (
             ['posts', 'comments'].every(resource =>
-                state.resources.includes(resource)
+                (state.resources ?? []).includes(resource)
             )
         ) {
             generateAppTestFile(projectDirectory, state);
@@ -74,7 +74,10 @@ const getHelpMessages = (state: ProjectConfiguration) => {
     return [dataProviderHelpMessages, authProviderHelpMessages];
 };
 
-const getTemplateHelpMessages = (template: string) => {
+const getTemplateHelpMessages = (template?: string) => {
+    if (!template || template === 'none') {
+        return '';
+    }
     const helpMessagesPath = path.join(
         __dirname,
         '../templates',
@@ -92,7 +95,7 @@ const generatePackageJson = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
-    let yarnVersion: string;
+    let yarnVersion: string | undefined;
     const basePackageJson = getTemplatePackageJson('common');
     const dataProviderPackageJson = getTemplatePackageJson(state.dataProvider);
     const authProviderPackageJson = getTemplatePackageJson(state.authProvider);
@@ -159,8 +162,8 @@ const generateEnvFile = (
     }
 };
 
-const hasTemplateAppFile = (template: string) => {
-    if (template === 'none' || template === '') {
+const hasTemplateAppFile = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const filePath = path.join(
@@ -172,8 +175,8 @@ const hasTemplateAppFile = (template: string) => {
     return fs.existsSync(filePath);
 };
 
-const getTemplateEnv = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplateEnv = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const envPath = path.join(__dirname, '../templates', template, '.env');
@@ -184,8 +187,8 @@ const getTemplateEnv = (template: string) => {
     return undefined;
 };
 
-const getTemplatePackageJson = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplatePackageJson = (template?: string) => {
+    if (!template || template === 'none') {
         return {};
     }
     const packageJsonPath = path.join(
@@ -263,8 +266,8 @@ const generateReadme = (
     }
 };
 
-const getTemplateReadme = (template: string) => {
-    if (template === 'none' || template === '') {
+const getTemplateReadme = (template?: string) => {
+    if (!template || template === 'none') {
         return undefined;
     }
     const readmePath = path.join(
@@ -333,10 +336,13 @@ const generateDataForFakeRest = (
     projectDirectory: string,
     state: ProjectConfiguration
 ) => {
-    const data = state.resources.reduce((acc, resource) => {
-        acc[resource] = [];
-        return acc;
-    }, {});
+    const data = (state.resources ?? []).reduce<Record<string, unknown[]>>(
+        (acc, resource) => {
+            acc[resource] = [];
+            return acc;
+        },
+        {}
+    );
     fs.writeFileSync(
         path.join(projectDirectory, 'src', 'data.json'),
         JSON.stringify(data, null, 2)

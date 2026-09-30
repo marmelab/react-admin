@@ -46,9 +46,12 @@ export const NotFound = (inProps: NotFoundProps) => {
 };
 
 export interface NotFoundProps
-    extends React.DetailedHTMLProps<
-            React.HTMLAttributes<HTMLDivElement>,
-            HTMLDivElement
+    extends Omit<
+            React.DetailedHTMLProps<
+                React.HTMLAttributes<HTMLDivElement>,
+                HTMLDivElement
+            >,
+            'title'
         >,
         MUIStyledCommonProps<Theme> {}
 

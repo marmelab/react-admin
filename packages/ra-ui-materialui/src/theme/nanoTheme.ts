@@ -382,7 +382,7 @@ const createNanoTheme = (palette: PaletteOptions) => {
         },
     };
     const theme = createTheme(themeOptions);
-    theme.components = componentsOverrides(theme);
+    theme.components = componentsOverrides(theme) as Theme['components'];
     return theme;
 };
 

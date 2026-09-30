@@ -2,11 +2,20 @@ import { createContext, useContext } from 'react';
 import { Application } from './ApplicationsDashboard';
 
 export type ApplicationContextValue = {
-    application: Application;
+    application?: Application;
     onExit: () => void;
 };
 
-export const ApplicationContext =
-    createContext<ApplicationContextValue>(undefined);
+export const ApplicationContext = createContext<
+    ApplicationContextValue | undefined
+>(undefined);
 
-export const useApplication = () => useContext(ApplicationContext);
+export const useApplication = () => {
+    const context = useContext(ApplicationContext);
+    if (!context) {
+        throw new Error(
+            'useApplication must be used inside an ApplicationContext.Provider'
+        );
+    }
+    return context;
+};

@@ -352,5 +352,5 @@ const removePrefetchedData = (data, prefetchParam?: string[]) => {
 const cleanupData = <T>(data: T): T => JSON.parse(JSON.stringify(data));
 
 class UndefinedResourceError extends Error {
-    code: number;
+    code!: number;
 }

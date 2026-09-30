@@ -1,5 +1,10 @@
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider, withLifecycleCallbacks, HttpError } from 'react-admin';
+import {
+    DataProvider,
+    GetListParams,
+    withLifecycleCallbacks,
+    HttpError,
+} from 'react-admin';
 import get from 'lodash/get.js';
 import addUploadFeature from './addUploadFeature';
 import { queryClient } from './queryClient';
@@ -29,18 +34,17 @@ const dataProvider = withLifecycleCallbacks(defaultDataProvider, [
 
 const addTagsSearchSupport = (dataProvider: DataProvider) => ({
     ...dataProvider,
-    getList: (resource, params) => {
+    getList: (resource: string, params: GetListParams) => {
         if (resource === 'comments') {
+            const { page = 1, perPage = 25 } = params.pagination ?? {};
             // partial pagination
             return dataProvider
                 .getList(resource, params)
                 .then(({ data, total, meta }) => ({
                     data,
                     pageInfo: {
-                        hasNextPage:
-                            params.pagination.perPage * params.pagination.page <
-                            (total || 0),
-                        hasPreviousPage: params.pagination.page > 1,
+                        hasNextPage: perPage * page < (total || 0),
+                        hasPreviousPage: page > 1,
                     },
                     meta,
                 }));
@@ -57,7 +61,7 @@ const addTagsSearchSupport = (dataProvider: DataProvider) => ({
 
                 return dataProvider.getList(resource, {
                     ...params,
-                    filter: item => {
+                    filter: (item: any) => {
                         const matchPublished =
                             item.published == params.filter.published; // eslint-disable-line eqeqeq
 
@@ -83,7 +87,7 @@ const uploadCapableDataProvider = addUploadFeature(
 );
 
 const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
-    get: (target, name) => (resource, params) => {
+    get: (target, name) => (resource: string, params: any) => {
         if (typeof name === 'symbol' || name === 'then') {
             return;
         }
@@ -110,7 +114,10 @@ const sometimesFailsDataProvider = new Proxy(uploadCapableDataProvider, {
                 })
             );
         }
-        return uploadCapableDataProvider[name](resource, params);
+        return (uploadCapableDataProvider as Record<string, any>)[name](
+            resource,
+            params
+        );
     },
 });
 

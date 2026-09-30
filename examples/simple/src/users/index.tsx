@@ -3,6 +3,7 @@ import UserCreate from './UserCreate';
 import UserEdit from './UserEdit';
 import UserList from './UserList';
 import UserShow from './UserShow';
+import type { User } from '../types';
 
 export default {
     list: UserList,
@@ -10,5 +11,5 @@ export default {
     edit: UserEdit,
     show: UserShow,
     icon: PeopleIcon,
-    recordRepresentation: record => `${record.name} (${record.role})`,
+    recordRepresentation: (record: User) => `${record.name} (${record.role})`,
 };

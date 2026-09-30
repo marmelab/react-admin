@@ -47,10 +47,10 @@ export const LevelSelect = (props: LevelSelectProps) => {
         setAnchorElement(null);
         const selectedItem = options[index];
         if (selectedItem.value === 'paragraph') {
-            editor.chain().focus().setParagraph().run();
+            editor?.chain().focus().setParagraph().run();
         } else if (selectedItem.value === 'heading') {
             editor
-                .chain()
+                ?.chain()
                 .focus()
                 .setHeading({ level: selectedItem.level })
                 .run();
@@ -94,9 +94,13 @@ export const LevelSelect = (props: LevelSelectProps) => {
                         onClick={handleClickListItem}
                     >
                         <ListItemText
-                            primary={translate(selectedOption.label, {
-                                _: selectedOption.defaultLabel,
-                            })}
+                            primary={translate(
+                                (selectedOption ?? options[0]).label,
+                                {
+                                    _: (selectedOption ?? options[0])
+                                        .defaultLabel,
+                                }
+                            )}
                         />
                         <ArrowDropDownIcon />
                     </ListItemButton>

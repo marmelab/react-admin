@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
     LinkToType,
@@ -7,6 +6,7 @@ import {
     SortPayload,
     RaRecord,
     ReferenceOneFieldBase,
+    UseGetManyReferenceHookOptions,
     UseReferenceResult,
 } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
@@ -110,11 +110,8 @@ export interface ReferenceOneFieldProps<
     empty?: ReactNode;
     offline?: ReactNode;
     queryOptions?: Omit<
-        UseQueryOptions<{
-            data: ReferenceRecordType[];
-            total: number;
-        }>,
-        'queryKey'
+        UseGetManyReferenceHookOptions<ReferenceRecordType>,
+        'queryKey' | 'queryFn'
     > & { meta?: any };
 }
 

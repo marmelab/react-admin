@@ -323,14 +323,14 @@ export const Toolbar = (props: Partial<SimpleFormProps>) => (
 );
 
 export const EditorReference = (props: Partial<SimpleFormProps>) => {
-    const editorRef = React.useRef<Editor>(null);
+    const editorRef = React.useRef<Editor | null>(null);
 
     const EditorToolbar = () => (
         <RAToolbar>
             <SaveButton />
             <Button
                 onClick={() => {
-                    editorRef.current.commands.setContent(
+                    editorRef.current?.commands.setContent(
                         '<h3>Here is my template</h3>'
                     );
                 }}
@@ -387,14 +387,14 @@ const MyRichTextInput = (props: RichTextInputProps) => {
     const record = useRecordContext();
     const tags = useGetManyReference('tags', {
         target: 'post_id',
-        id: record.id,
+        id: record?.id,
     });
 
     const editorOptions = React.useMemo(() => {
         return {
             ...DefaultEditorOptions,
             extensions: [
-                ...DefaultEditorOptions.extensions,
+                ...(DefaultEditorOptions.extensions ?? []),
                 Mention.configure({
                     HTMLAttributes: {
                         class: 'mention',
@@ -513,22 +513,23 @@ const suggestions = tags => {
         },
 
         render: () => {
-            let component: ReactRenderer;
-            let floatingEl: HTMLElement;
+            let component: ReactRenderer | undefined;
+            let floatingEl: HTMLElement | undefined;
             const onKeyDownRef: React.MutableRefObject<
                 ((props: { event: KeyboardEvent }) => boolean) | null
             > = { current: null };
 
             const updatePosition = (clientRect: () => DOMRect) => {
-                if (!floatingEl) return;
+                const el = floatingEl;
+                if (!el) return;
                 const virtualEl = {
                     getBoundingClientRect: clientRect,
                 };
-                computePosition(virtualEl, floatingEl, {
+                computePosition(virtualEl, el, {
                     placement: 'bottom-start',
                     middleware: [offset(8), flip(), shift()],
                 }).then(({ x, y }) => {
-                    Object.assign(floatingEl.style, {
+                    Object.assign(el.style, {
                         left: `${x}px`,
                         top: `${y}px`,
                     });

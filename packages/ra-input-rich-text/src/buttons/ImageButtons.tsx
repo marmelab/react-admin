@@ -16,7 +16,7 @@ export const ImageButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         );
 
         if (url) {
-            editor.chain().focus().setImage({ src: url }).run();
+            editor?.chain().focus().setImage({ src: url }).run();
         }
     }, [editor, translate]);
 

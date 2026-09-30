@@ -51,12 +51,12 @@ const DataTableHeadCell = (props: {
 
 const DataTableCell = (props: {
     children?: React.ReactNode;
-    render?: (record: RaRecord | undefined) => React.ReactNode;
+    render?: (record: RaRecord) => React.ReactNode;
     field?: React.ElementType;
     source?: string;
 }) => {
     const record = useRecordContext();
-    if (props.render) {
+    if (props.render && record) {
         return <td>{props.render(record)}</td>;
     }
     if (props.children) {

@@ -2,7 +2,6 @@ import * as React from 'react';
 import BookIcon from '@mui/icons-material/Book';
 import { Chip, useMediaQuery } from '@mui/material';
 import { Theme } from '@mui/material/styles';
-import lodashGet from 'lodash/get.js';
 import jsonExport from 'jsonexport/dist';
 import {
     BooleanField,
@@ -17,6 +16,7 @@ import {
     EditButton,
     ExportButton,
     FilterButton,
+    type Identifier,
     List,
     InfiniteList,
     ReferenceArrayField,
@@ -32,6 +32,7 @@ import {
 } from 'react-admin';
 
 import ResetViewsButton from './ResetViewsButton';
+import type { Post } from '../types';
 
 export const PostIcon = BookIcon;
 
@@ -56,14 +57,14 @@ const postFilter = [
     />,
 ];
 
-const exporter = posts => {
+const exporter = (posts: Post[]) => {
     const data = posts.map(post => ({
         ...post,
-        backlinks: lodashGet(post, 'backlinks', []).map(
-            backlink => backlink.url
-        ),
+        backlinks: (post.backlinks ?? []).map(backlink => backlink.url),
     }));
-    return jsonExport(data, (err, csv) => downloadCSV(csv, 'posts'));
+    return jsonExport(data, (err: any, csv: string) =>
+        downloadCSV(csv, 'posts')
+    );
 };
 
 const postListMobileActions = (
@@ -108,7 +109,7 @@ const postListActions = (
     </TopToolbar>
 );
 
-const rowClick = (_id, _resource, record) => {
+const rowClick = (_id: Identifier, _resource: string, record: any) => {
     if (record.commentable) {
         return 'edit';
     }

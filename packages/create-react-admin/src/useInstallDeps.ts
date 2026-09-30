@@ -10,8 +10,8 @@ export const useInstallDeps = () => {
         const command = execa(`${state.installer}`, ['install'], {
             cwd: `./${state.name}`,
         });
-        command.stdout.pipe(stdout);
-        command.stderr.pipe(stderr);
+        command.stdout?.pipe(stdout);
+        command.stderr?.pipe(stderr);
 
         await command;
     };

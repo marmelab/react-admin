@@ -331,7 +331,7 @@ const callGetManyQueries = batch((calls: GetManyCallArgs[]) => {
          * @example from [[1, 2], [2, null, 3], [4, null]] to [1, 2, 3, 4]
          */
         const aggregatedIds = callsForResource
-            .reduce((acc, { ids }) => union(acc, ids), []) // concat + unique
+            .reduce<Identifier[]>((acc, { ids }) => union(acc, ids), []) // concat + unique
             .filter(v => v != null && v !== ''); // remove null values
 
         const uniqueMeta = callsForResource.reduce(

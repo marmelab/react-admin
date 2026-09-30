@@ -150,7 +150,7 @@ const deleteResourceData = async (
         ids: data.map(({ id }) => id),
     });
 
-    if (total > numberOfRecordsToDelete) {
+    if (total != null && total > numberOfRecordsToDelete) {
         return deleteResourceData(
             resource,
             dataProvider,

@@ -46,12 +46,14 @@ export const ConfigurationInputsFromFieldDefinition = ({
                                 <SelectInput
                                     source={`${sourcePrefix}.options.referenceField`}
                                     label="Displayed field"
-                                    choices={resource.fields.map(field => ({
-                                        id: field.props.source,
-                                        name:
-                                            field.props.label ||
-                                            field.props.source,
-                                    }))}
+                                    choices={(resource.fields ?? []).map(
+                                        field => ({
+                                            id: field.props.source,
+                                            name:
+                                                field.props.label ||
+                                                field.props.source,
+                                        })
+                                    )}
                                 />
                             );
                         }}

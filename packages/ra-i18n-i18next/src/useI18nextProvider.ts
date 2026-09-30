@@ -64,8 +64,8 @@ export const useI18nextProvider = ({
     options?: InitOptions;
     availableLocales?: Locale[];
 } = {}) => {
-    const [i18nProvider, setI18nProvider] = useState<I18nProvider>(null);
-    const initializationPromise = useRef<Promise<I18nProvider>>(null);
+    const [i18nProvider, setI18nProvider] = useState<I18nProvider | null>(null);
+    const initializationPromise = useRef<Promise<I18nProvider> | null>(null);
 
     useEffect(() => {
         if (initializationPromise.current) {

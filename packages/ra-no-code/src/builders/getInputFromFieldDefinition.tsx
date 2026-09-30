@@ -77,11 +77,13 @@ export const getInputFromFieldDefinition = (
             }
             return (
                 <>
-                    {getInputFromFieldDefinition(
-                        definition.children,
-                        resources,
-                        undefined
-                    )}
+                    {definition.children
+                        ? getInputFromFieldDefinition(
+                              definition.children,
+                              resources,
+                              undefined
+                          )
+                        : null}
                 </>
             );
         case 'reference':

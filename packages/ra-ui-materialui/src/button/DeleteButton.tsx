@@ -88,14 +88,17 @@ export const DeleteButton = React.forwardRef(function DeleteButton<
           : 'undoable';
 
     return finalMutationMode === 'undoable' ? (
-        <DeleteWithUndoButton ref={ref} record={record} {...rest} />
+        <DeleteWithUndoButton
+            ref={ref}
+            record={record}
+            {...(rest as DeleteWithUndoButtonProps)}
+        />
     ) : (
         <DeleteWithConfirmButton
-            // @ts-ignore I looked for the error for one hour without finding it
             mutationMode={finalMutationMode}
             ref={ref}
             record={record}
-            {...rest}
+            {...(rest as DeleteWithConfirmButtonProps)}
         />
     );
 });
