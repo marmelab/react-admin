@@ -23,6 +23,24 @@ describe('InPlaceEditor', () => {
         fireEvent.blur(input);
         await screen.findByText('Jane Doe');
     });
+
+    it('should save when focus moves to an element outside the editor', async () => {
+        const { container } = render(<Basic delay={0} />);
+
+        const value = await screen.findByText('John Doe');
+        value.click();
+
+        const input = await screen.findByDisplayValue('John Doe');
+        fireEvent.change(input, { target: { value: 'Jane Doe' } });
+
+        const outsideButton = document.createElement('button');
+        outsideButton.textContent = 'Next';
+        container.appendChild(outsideButton);
+
+        fireEvent.blur(input, { relatedTarget: outsideButton });
+
+        await screen.findByText('Jane Doe');
+    });
     it('should revert to the previous version on error', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<Basic delay={0} updateFails />);
