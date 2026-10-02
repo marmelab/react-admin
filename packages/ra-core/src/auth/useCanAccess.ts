@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import {
+    notifyManager,
+    QueryClient,
+    QueryKey,
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
     QueryObserverRefetchErrorResult,
     QueryObserverSuccessResult,
     useQuery,
+    useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
@@ -54,6 +58,7 @@ export const useCanAccess = <
     params: UseCanAccessOptions<RecordType, ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
+    const queryClient = useQueryClient();
     const resource = useResourceContext(params);
 
     if (!resource) {
@@ -71,16 +76,22 @@ export const useCanAccess = <
             'canAccess',
             { ...restParams, recordId: record?.id, resource },
         ],
-        queryFn: async ({ signal }) => {
+        queryFn: async ({ queryKey, signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;
             }
-            return authProvider.canAccess({
+            const canAccess = await authProvider.canAccess({
                 ...params,
                 record,
                 resource,
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
+            return resolveWithSettledChecks(
+                queryClient,
+                queryKey,
+                signal,
+                canAccess
+            );
         },
         enabled: authProviderHasCanAccess,
         ...params,
@@ -99,6 +110,71 @@ export const useCanAccess = <
         ? result
         : (emptyQueryObserverResult as unknown as UseCanAccessResult<ErrorType>);
 };
+
+interface SettledCheck {
+    queryClient: QueryClient;
+    queryKey: QueryKey;
+    signal: AbortSignal;
+    canAccess: boolean;
+    resolve: (canAccess: boolean) => void;
+}
+
+let settledChecks: SettledCheck[] = [];
+
+/**
+ * Resolve the access checks that settle together in a single React update.
+ *
+ * Each useCanAccess with a record (e.g. the link of every row of a Datagrid) owns a
+ * distinct query. Resolving them one by one makes react-query flush one observer
+ * notification per query, each in its own task, and React commits each of them
+ * separately. React 19 counts those commits as nested updates while an update from
+ * an earlier commit is still pending, and throws "Maximum update depth exceeded"
+ * past 50 of them.
+ *
+ * Writing the result of every settled check inside a single notifyManager
+ * transaction makes react-query flush all the observer notifications at once, so
+ * all the consumers get their result in one commit, as resolveCallsWithData does in
+ * useGetManyAggregate. The checks are then resolved to let their query leave the
+ * fetching state.
+ *
+ * The batch is flushed in a microtask, so it adds no task: react-query already
+ * delivers the notifications on its own setTimeout(0), and the checks of one
+ * authProvider settle in the same round of microtasks.
+ *
+ * A check is written only while its own fetch is still running. react-query aborts
+ * the signal of a fetch that is canceled or removed, and a refetch of the same query
+ * runs with a new signal, so a stale result never lands in a newer fetch.
+ */
+const resolveWithSettledChecks = (
+    queryClient: QueryClient,
+    queryKey: QueryKey,
+    signal: AbortSignal,
+    canAccess: boolean
+) =>
+    new Promise<boolean>(resolve => {
+        settledChecks.push({
+            queryClient,
+            queryKey,
+            signal,
+            canAccess,
+            resolve,
+        });
+        if (settledChecks.length > 1) return;
+        queueMicrotask(() => {
+            const checks = settledChecks;
+            settledChecks = [];
+            notifyManager.batch(() => {
+                checks.forEach(check => {
+                    if (check.signal.aborted) return;
+                    check.queryClient.setQueryData(
+                        check.queryKey,
+                        check.canAccess
+                    );
+                });
+            });
+            checks.forEach(check => check.resolve(check.canAccess));
+        });
+    });
 
 const emptyQueryObserverResult = {
     canAccess: true,
