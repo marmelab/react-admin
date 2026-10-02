@@ -1,10 +1,14 @@
 import { useMemo } from 'react';
 import {
+    notifyManager,
+    QueryClient,
+    QueryKey,
     QueryObserverLoadingErrorResult,
     QueryObserverLoadingResult,
     QueryObserverRefetchErrorResult,
     QueryObserverSuccessResult,
     useQuery,
+    useQueryClient,
     UseQueryOptions,
 } from '@tanstack/react-query';
 import useAuthProvider from './useAuthProvider';
@@ -54,6 +58,7 @@ export const useCanAccess = <
     params: UseCanAccessOptions<RecordType, ErrorType>
 ): UseCanAccessResult<ErrorType> => {
     const authProvider = useAuthProvider();
+    const queryClient = useQueryClient();
     const resource = useResourceContext(params);
 
     if (!resource) {
@@ -71,16 +76,17 @@ export const useCanAccess = <
             'canAccess',
             { ...restParams, recordId: record?.id, resource },
         ],
-        queryFn: async ({ signal }) => {
+        queryFn: async ({ queryKey, signal }) => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;
             }
-            return authProvider.canAccess({
+            const canAccess = await authProvider.canAccess({
                 ...params,
                 record,
                 resource,
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
+            return resolveWithSettledChecks(queryClient, queryKey, canAccess);
         },
         enabled: authProviderHasCanAccess,
         ...params,
@@ -99,6 +105,59 @@ export const useCanAccess = <
         ? result
         : (emptyQueryObserverResult as unknown as UseCanAccessResult<ErrorType>);
 };
+
+interface SettledCheck {
+    queryClient: QueryClient;
+    queryKey: QueryKey;
+    canAccess: boolean;
+    resolve: (canAccess: boolean) => void;
+}
+
+let settledChecks: SettledCheck[] = [];
+
+/**
+ * Resolve the access checks that settle in the same tick in a single React update.
+ *
+ * Each useCanAccess with a record (e.g. the link of every row of a Datagrid) owns a
+ * distinct query. Resolving them one by one makes react-query flush one observer
+ * notification per query, each in its own task, and React commits each of them
+ * separately. React 19 counts those commits as nested updates while an update from
+ * an earlier commit is still pending, and throws "Maximum update depth exceeded"
+ * past 50 of them.
+ *
+ * Writing the result of every settled check inside a single notifyManager
+ * transaction makes react-query flush all the observer notifications at once, so
+ * all the consumers get their result in one commit, as resolveCallsWithData does in
+ * useGetManyAggregate. The checks are then resolved to let their query leave the
+ * fetching state.
+ */
+const resolveWithSettledChecks = (
+    queryClient: QueryClient,
+    queryKey: QueryKey,
+    canAccess: boolean
+) =>
+    new Promise<boolean>(resolve => {
+        settledChecks.push({ queryClient, queryKey, canAccess, resolve });
+        if (settledChecks.length > 1) return;
+        setTimeout(() => {
+            const checks = settledChecks;
+            settledChecks = [];
+            notifyManager.batch(() => {
+                checks.forEach(check => {
+                    const query = check.queryClient
+                        .getQueryCache()
+                        .find({ queryKey: check.queryKey, exact: true });
+                    // don't resurrect a query that was canceled or removed in the meantime
+                    if (query?.state.fetchStatus !== 'fetching') return;
+                    check.queryClient.setQueryData(
+                        check.queryKey,
+                        check.canAccess
+                    );
+                });
+            });
+            checks.forEach(check => check.resolve(check.canAccess));
+        }, 0);
+    });
 
 const emptyQueryObserverResult = {
     canAccess: true,
