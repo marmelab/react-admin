@@ -86,7 +86,12 @@ export const useCanAccess = <
                 resource,
                 signal: authProvider.supportAbortSignal ? signal : undefined,
             });
-            return resolveWithSettledChecks(queryClient, queryKey, canAccess);
+            return resolveWithSettledChecks(
+                queryClient,
+                queryKey,
+                signal,
+                canAccess
+            );
         },
         enabled: authProviderHasCanAccess,
         ...params,
@@ -109,6 +114,7 @@ export const useCanAccess = <
 interface SettledCheck {
     queryClient: QueryClient;
     queryKey: QueryKey;
+    signal: AbortSignal;
     canAccess: boolean;
     resolve: (canAccess: boolean) => void;
 }
@@ -130,25 +136,32 @@ let settledChecks: SettledCheck[] = [];
  * all the consumers get their result in one commit, as resolveCallsWithData does in
  * useGetManyAggregate. The checks are then resolved to let their query leave the
  * fetching state.
+ *
+ * A check is written only while its own fetch is still running. react-query aborts
+ * the signal of a fetch that is canceled or removed, and a refetch of the same query
+ * runs with a new signal, so a stale result never lands in a newer fetch.
  */
 const resolveWithSettledChecks = (
     queryClient: QueryClient,
     queryKey: QueryKey,
+    signal: AbortSignal,
     canAccess: boolean
 ) =>
     new Promise<boolean>(resolve => {
-        settledChecks.push({ queryClient, queryKey, canAccess, resolve });
+        settledChecks.push({
+            queryClient,
+            queryKey,
+            signal,
+            canAccess,
+            resolve,
+        });
         if (settledChecks.length > 1) return;
         setTimeout(() => {
             const checks = settledChecks;
             settledChecks = [];
             notifyManager.batch(() => {
                 checks.forEach(check => {
-                    const query = check.queryClient
-                        .getQueryCache()
-                        .find({ queryKey: check.queryKey, exact: true });
-                    // don't resurrect a query that was canceled or removed in the meantime
-                    if (query?.state.fetchStatus !== 'fetching') return;
+                    if (check.signal.aborted) return;
                     check.queryClient.setQueryData(
                         check.queryKey,
                         check.canAccess

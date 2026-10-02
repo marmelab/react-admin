@@ -216,4 +216,56 @@ describe('useCanAccess', () => {
         // the canceled one is left alone
         expect(queryClient.getQueryData(queryKeyFor(1))).toBeUndefined();
     });
+
+    it('should not write the result of a canceled check into a refetch of the same query', async () => {
+        const resolvers: ((canAccess: boolean) => void)[] = [];
+        const authProvider = {
+            checkError: () => Promise.resolve(),
+            canAccess: jest.fn(
+                () =>
+                    new Promise<boolean>(resolve => {
+                        resolvers.push(resolve);
+                    })
+            ),
+        } as any;
+        const Consumer = () => {
+            useCanAccess({
+                resource: 'posts',
+                action: 'show',
+                record: { id: 1 },
+            });
+            return null;
+        };
+        const queryClient = new QueryClient();
+        render(
+            <CoreAdminContext
+                authProvider={authProvider}
+                queryClient={queryClient}
+            >
+                <Consumer />
+            </CoreAdminContext>
+        );
+        await waitFor(() => {
+            expect(authProvider.canAccess).toHaveBeenCalledTimes(1);
+        });
+        const queryKey = [
+            'auth',
+            'canAccess',
+            { action: 'show', recordId: 1, resource: 'posts' },
+        ];
+        await queryClient.cancelQueries({ queryKey, exact: true });
+        void queryClient.refetchQueries({ queryKey, exact: true });
+        await waitFor(() => {
+            expect(authProvider.canAccess).toHaveBeenCalledTimes(2);
+        });
+        // the canceled call settles while the refetch is still running
+        resolvers[0](false);
+        await new Promise(resolve => setTimeout(resolve, 10));
+        expect(queryClient.getQueryData(queryKey)).toBeUndefined();
+        // the refetch gets its own result
+        resolvers[1](true);
+        await waitFor(() => {
+            expect(queryClient.getQueryData(queryKey)).toBe(true);
+        });
+    });
 });
