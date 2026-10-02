@@ -26,6 +26,7 @@ import {
     NoRecordRepresentation,
     Themed,
     WithCustomTitleAndContent,
+    WithComponent,
     WithDefaultTranslation,
 } from './DeleteWithConfirmButton.stories';
 import { Label } from './DeleteButton.stories';
@@ -406,6 +407,38 @@ describe('<DeleteWithConfirmButton />', () => {
         );
         await screen.findByText('Delete me?');
         await screen.findByText('Please confirm the deletion');
+    });
+
+    it('should allow to render the button with a custom component', async () => {
+        render(<WithComponent />);
+        const button = within(
+            (await screen.findByText('War and Peace')).closest(
+                'tr'
+            ) as HTMLElement
+        ).getByText('Delete');
+        expect(button.closest('a')).not.toBeNull();
+        fireEvent.click(button);
+        await screen.findByText('Delete the book "War and Peace"?');
+    });
+
+    it('should not follow the link of a custom component when opening the confirmation dialog', async () => {
+        render(
+            <CoreAdminContext dataProvider={testDataProvider()}>
+                <ThemeProvider theme={theme}>
+                    <DeleteWithConfirmButton
+                        component="a"
+                        href="/somewhere"
+                        record={{ id: 123, title: 'lorem' }}
+                        resource="posts"
+                    />
+                </ThemeProvider>
+            </CoreAdminContext>
+        );
+        const link = screen.getByLabelText('resources.posts.action.delete');
+        expect(link.getAttribute('href')).toEqual('/somewhere');
+        const isNotPrevented = fireEvent.click(link);
+        expect(isNotPrevented).toBe(false);
+        await screen.findByText('resources.posts.message.delete_title');
     });
 
     it('should use the record representation in the confirmation title and content with a resource specific translation', async () => {

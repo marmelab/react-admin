@@ -52,9 +52,10 @@ import {
  *     return <Edit actions={<EditActions />} {...props} />;
  * };
  */
-export const DeleteButton = React.forwardRef(function DeleteButton<
-    RecordType extends RaRecord = any,
->(
+export const DeleteButton: React.ForwardRefExoticComponent<
+    React.PropsWithoutRef<DeleteButtonProps> &
+        React.RefAttributes<HTMLButtonElement>
+> = React.forwardRef(function DeleteButton<RecordType extends RaRecord = any>(
     inProps: DeleteButtonProps<RecordType>,
     ref: React.ForwardedRef<HTMLButtonElement>
 ) {

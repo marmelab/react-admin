@@ -210,6 +210,23 @@ export const Basic = () => (
     </TestMemoryRouter>
 );
 
+export const WithComponent = () => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <AdminContext dataProvider={dataProvider} i18nProvider={i18nProvider}>
+            <AdminUI>
+                <Resource
+                    name="books"
+                    list={
+                        <BookList>
+                            <DeleteWithConfirmButton component="a" />
+                        </BookList>
+                    }
+                />
+            </AdminUI>
+        </AdminContext>
+    </TestMemoryRouter>
+);
+
 export const WithDefaultTranslation = () => (
     <TestMemoryRouter initialEntries={['/books']}>
         <AdminContext
