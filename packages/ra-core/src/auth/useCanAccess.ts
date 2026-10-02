@@ -122,7 +122,7 @@ interface SettledCheck {
 let settledChecks: SettledCheck[] = [];
 
 /**
- * Resolve the access checks that settle in the same tick in a single React update.
+ * Resolve the access checks that settle together in a single React update.
  *
  * Each useCanAccess with a record (e.g. the link of every row of a Datagrid) owns a
  * distinct query. Resolving them one by one makes react-query flush one observer
@@ -136,6 +136,10 @@ let settledChecks: SettledCheck[] = [];
  * all the consumers get their result in one commit, as resolveCallsWithData does in
  * useGetManyAggregate. The checks are then resolved to let their query leave the
  * fetching state.
+ *
+ * The batch is flushed in a microtask, so it adds no task: react-query already
+ * delivers the notifications on its own setTimeout(0), and the checks of one
+ * authProvider settle in the same round of microtasks.
  *
  * A check is written only while its own fetch is still running. react-query aborts
  * the signal of a fetch that is canceled or removed, and a refetch of the same query
@@ -156,7 +160,7 @@ const resolveWithSettledChecks = (
             resolve,
         });
         if (settledChecks.length > 1) return;
-        setTimeout(() => {
+        queueMicrotask(() => {
             const checks = settledChecks;
             settledChecks = [];
             notifyManager.batch(() => {
@@ -169,7 +173,7 @@ const resolveWithSettledChecks = (
                 });
             });
             checks.forEach(check => check.resolve(check.canAccess));
-        }, 0);
+        });
     });
 
 const emptyQueryObserverResult = {

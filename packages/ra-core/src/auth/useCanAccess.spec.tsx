@@ -254,7 +254,8 @@ describe('useCanAccess', () => {
             { action: 'show', recordId: 1, resource: 'posts' },
         ];
         await queryClient.cancelQueries({ queryKey, exact: true });
-        void queryClient.refetchQueries({ queryKey, exact: true });
+        // awaited once its call is resolved below
+        const refetch = queryClient.refetchQueries({ queryKey, exact: true });
         await waitFor(() => {
             expect(authProvider.canAccess).toHaveBeenCalledTimes(2);
         });
@@ -264,8 +265,7 @@ describe('useCanAccess', () => {
         expect(queryClient.getQueryData(queryKey)).toBeUndefined();
         // the refetch gets its own result
         resolvers[1](true);
-        await waitFor(() => {
-            expect(queryClient.getQueryData(queryKey)).toBe(true);
-        });
+        await refetch;
+        expect(queryClient.getQueryData(queryKey)).toBe(true);
     });
 });
