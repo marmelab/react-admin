@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { useCallback } from 'react';
 import clsx from 'clsx';
+import { major as muiMajor } from '@mui/material';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormGroup, { FormGroupProps } from '@mui/material/FormGroup';
@@ -79,7 +80,8 @@ export const BooleanInput = (props: BooleanInputProps) => {
             sx={sx}
         >
             <FormControlLabel
-                inputRef={field.ref}
+                // Switch slotProps were only added in MUI v6.4, and MUI v9 removed inputRef
+                {...(muiMajor < 7 ? { inputRef: field.ref } : {})}
                 control={
                     <Switch
                         id={id}
@@ -89,6 +91,19 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         checked={Boolean(field.value)}
                         {...sanitizeInputRestProps(rest)}
                         {...options}
+                        {...(muiMajor >= 7
+                            ? {
+                                  slotProps: {
+                                      // @ts-expect-error slotProps do not yet exist in MUI v5
+                                      ...options?.slotProps,
+                                      input: {
+                                          // @ts-expect-error slotProps do not yet exist in MUI v5
+                                          ...options?.slotProps?.input,
+                                          ref: field.ref,
+                                      },
+                                  },
+                              }
+                            : {})}
                         disabled={disabled || readOnly}
                         readOnly={readOnly}
                     />

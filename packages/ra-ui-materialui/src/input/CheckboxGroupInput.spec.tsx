@@ -12,7 +12,10 @@ import {
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { CheckboxGroupInput } from './CheckboxGroupInput';
-import { InsideReferenceArrayInput } from './CheckboxGroupInput.stories';
+import {
+    InsideReferenceArrayInput,
+    SetFocus,
+} from './CheckboxGroupInput.stories';
 
 describe('<CheckboxGroupInput />', () => {
     const defaultProps = {
@@ -486,5 +489,13 @@ describe('<CheckboxGroupInput />', () => {
             'React'
         ) as HTMLInputElement;
         expect(disabledInput.disabled).toBe(true);
+    });
+
+    it('should forward the form ref to the first checkbox', async () => {
+        render(<SetFocus />);
+        fireEvent.click(await screen.findByText('Set focus on roles'));
+        await waitFor(() => {
+            expect(screen.getByLabelText('Admin')).toBe(document.activeElement);
+        });
     });
 });

@@ -786,7 +786,10 @@ If you provided a React element for the optionText prop, you must also provide t
                             })}
                             {...params}
                             {...TextFieldProps}
-                            InputProps={mergedTextFieldProps}
+                            // MUI v9 removed InputProps
+                            {...(muiMajor < 9
+                                ? { InputProps: mergedTextFieldProps }
+                                : {})}
                             {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
