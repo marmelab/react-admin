@@ -30,6 +30,37 @@ describe('<SelectArrayInput />', () => {
             { id: 'photography', name: 'Photography' },
         ],
     };
+    it('should render emptyText as an empty option', async () => {
+        const onChange = jest.fn();
+
+        render(
+            <AdminContext>
+                <ResourceContextProvider value="posts">
+                    <SimpleForm>
+                        <SelectArrayInput
+                            source="tags"
+                            choices={[
+                                { id: 1, name: 'Tag 1' },
+                                { id: 2, name: 'Tag 2' },
+                            ]}
+                            emptyText="All Tags"
+                            defaultValue={[1]}
+                            onChange={onChange}
+                        />
+                    </SimpleForm>
+                </ResourceContextProvider>
+            </AdminContext>
+        );
+
+        fireEvent.mouseDown(screen.getByRole('combobox'));
+        expect(screen.getByText('All Tags')).toBeInTheDocument();
+
+        fireEvent.click(screen.getByText('All Tags'));
+
+        await waitFor(() => {
+            expect(onChange).toHaveBeenCalledWith([]);
+        });
+    });
 
     it('should use a mui Select', () => {
         render(
