@@ -24,7 +24,6 @@
         "build": "zshy --silent"
     },
     "dependencies": {
-        "query-string": "^7.1.3",
         "ra-core": "^5.15.4"
     },
     "devDependencies": {

@@ -1,5 +1,4 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import { parse, stringify } from 'query-string';
 import lodashDebounce from 'lodash/debounce.js';
 import isEqual from 'lodash/isEqual.js';
 import { useStore } from '../../store';
@@ -16,6 +15,7 @@ import queryReducer, {
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import { useIsMounted } from '../../util/hooks';
+import { parseQueryString, stringifyQueryString } from '../../util/queryString';
 
 export interface ListParams {
     sort: string;
@@ -171,7 +171,7 @@ export const useListParams = ({
         }
         navigate(
             {
-                search: `?${stringify({
+                search: `?${stringifyQueryString({
                     ...query,
                     filter: JSON.stringify(query.filter),
                     displayedFilters: JSON.stringify(query.displayedFilters),
@@ -218,7 +218,7 @@ export const useListParams = ({
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
                             {
-                                search: `?${stringify({
+                                search: `?${stringifyQueryString({
                                     ...tempParams.current,
                                     filter: JSON.stringify(
                                         tempParams.current.filter
@@ -345,7 +345,7 @@ const parseObject = (query, field) => {
 };
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = parse(search);
+    const query = parseQueryString(search);
     parseObject(query, 'filter');
     parseObject(query, 'displayedFilters');
     return query;
