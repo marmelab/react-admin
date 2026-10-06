@@ -227,7 +227,11 @@ export const DateInput = (props: DateInputProps) => {
                 ) : null
             }
             {...sanitizeInputRestProps(rest)}
-            {...getShrinkLabelProps(InputLabelProps, rest.slotProps)}
+            {...getShrinkLabelProps(
+                InputLabelProps,
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                rest.slotProps
+            )}
         />
     );
 };

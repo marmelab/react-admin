@@ -736,6 +736,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         InputProps: paramsInputProps,
                         inputProps: paramsHtmlInputProps,
                         InputLabelProps: paramsInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
                         slotProps: paramsSlotProps,
                         ...textFieldParams
                     } = params;
@@ -743,6 +744,7 @@ If you provided a React element for the optionText prop, you must also provide t
                         InputProps: userInputProps,
                         inputProps: userHtmlInputProps,
                         InputLabelProps: userInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
                         slotProps: userSlotProps,
                         ...textFieldProps
                     } = TextFieldProps ?? {};
