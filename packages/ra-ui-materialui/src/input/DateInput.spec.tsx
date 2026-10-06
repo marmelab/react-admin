@@ -325,4 +325,15 @@ describe('<DateInput />', () => {
         render(<Themed />);
         await screen.findByTestId('themed');
     });
+
+    it('should merge the InputLabelProps with its own label props', async () => {
+        render(
+            <Basic
+                dateInputProps={{
+                    InputLabelProps: { title: 'Publication date' },
+                }}
+            />
+        );
+        await screen.findByTitle('Publication date');
+    });
 });

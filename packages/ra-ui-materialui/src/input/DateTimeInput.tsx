@@ -11,7 +11,8 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef, major as muiMajor } from '@mui/material';
+import { getShrinkLabelProps } from './getShrinkLabelProps';
+import { useForkRef } from '@mui/material';
 
 /**
  * Input component for entering a date and a time with timezone, using the browser locale
@@ -33,6 +34,7 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
         variant,
         disabled,
         readOnly,
+        InputLabelProps,
         ...rest
     } = useThemeProps({
         props: props,
@@ -147,16 +149,6 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
     const { ref, name } = field;
     const inputRef = useForkRef(ref, localInputRef);
 
-    const mergedSlotProps = {
-        // @ts-expect-error slotProps do not yet exist in MUI v5
-        ...rest.slotProps,
-        inputLabel: {
-            ...defaultInputLabelProps,
-            // @ts-expect-error slotProps do not yet exist in MUI v5
-            ...rest.slotProps?.inputLabel,
-        },
-    };
-
     return (
         <StyledTextField
             id={id}
@@ -193,9 +185,8 @@ export const DateTimeInput = (props: DateTimeInputProps) => {
                     />
                 ) : null
             }
-            InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+            {...getShrinkLabelProps(InputLabelProps, rest.slotProps)}
         />
     );
 };
@@ -226,7 +217,6 @@ const convertDateToString = (value: Date) => {
 
 // yyyy-MM-ddThh:mm
 const dateTimeRegex = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/;
-const defaultInputLabelProps = { shrink: true };
 
 /**
  * Converts a date from the dataProvider, with timezone, to a date string

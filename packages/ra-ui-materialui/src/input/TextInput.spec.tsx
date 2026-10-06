@@ -5,7 +5,7 @@ import { required, ResourceContextProvider, testDataProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { TextInput } from './TextInput';
-import { ValueNull, Parse, Themed } from './TextInput.stories';
+import { ValueNull, Parse, Resettable, Themed } from './TextInput.stories';
 
 describe('<TextInput />', () => {
     const defaultProps = {
@@ -252,5 +252,13 @@ describe('<TextInput />', () => {
     it('should be customized by a theme', async () => {
         render(<Themed />);
         await screen.findByTestId('themed');
+    });
+
+    it('should allow to clear the value when resettable', async () => {
+        render(<Resettable />);
+        const input = (await screen.findByRole('textbox')) as HTMLInputElement;
+        fireEvent.change(input, { target: { value: 'Hello' } });
+        fireEvent.click(screen.getByRole('button', { name: /clear/i }));
+        expect(input.value).toBe('');
     });
 });
