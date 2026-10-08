@@ -159,6 +159,17 @@ export const DataTableRow = React.memo(
                 getPathForRecord,
             ]
         );
+        const isRowClickable = Boolean(rowClick ?? hasDetailView);
+
+        const handleKeyDown = useCallback(
+            (event: React.KeyboardEvent<HTMLTableRowElement>) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    handleClick(event as any);
+                }
+            },
+            [handleClick]
+        );
 
         return (
             <>
@@ -167,12 +178,14 @@ export const DataTableRow = React.memo(
                     className={clsx(className, {
                         [DataTableClasses.expandable]: expandable,
                         [DataTableClasses.selectable]: selectable,
-                        [DataTableClasses.clickableRow]:
-                            rowClick ?? hasDetailView,
+                        [DataTableClasses.clickableRow]: isRowClickable,
                     })}
                     key={record.id}
                     hover={hover}
                     onClick={handleClick}
+                    onKeyDown={isRowClickable ? handleKeyDown : undefined}
+                    role={isRowClickable ? 'button' : undefined}
+                    tabIndex={isRowClickable ? 0 : undefined}
                     {...rest}
                 >
                     {expand && (
