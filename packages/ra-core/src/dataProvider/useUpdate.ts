@@ -19,6 +19,7 @@ import type {
 } from '../types';
 import { useMutationWithMutationMode } from './useMutationWithMutationMode';
 import { useEvent } from '../util';
+import removeUndefined from '../util/removeUndefined';
 
 /**
  * Get a callback to call the dataProvider.update() method, the result and the loading state.
@@ -149,14 +150,9 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 const now = Date.now();
                 const updatedAt =
                     mutationMode === 'undoable' ? now + 5 * 1000 : now;
-                // Stringify and parse the data to remove undefined values.
-                // If we don't do this, an update with { id: undefined } as payload
-                // would remove the id from the record, which no real data provider does.
-                const clonedData = JSON.parse(
-                    JSON.stringify(
-                        mutationMode === 'pessimistic' ? result : params?.data
-                    )
-                );
+                const clonedData = removeUndefined(
+                    mutationMode === 'pessimistic' ? result : params?.data
+                ) as Partial<RecordType>;
 
                 const updateColl = (old: RecordType[]) => {
                     if (!old) return old;
@@ -240,7 +236,7 @@ export const useUpdate = <RecordType extends RaRecord = any, ErrorType = Error>(
                 const optimisticResult = {
                     ...previousRecord,
                     ...clonedData,
-                };
+                } as RecordType;
                 return optimisticResult;
             },
             getQueryKeys: ({ resource, ...params }) => {
