@@ -5,7 +5,7 @@ import { ResourceContextProvider, testDataProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
-import { Themed } from './BooleanInput.stories';
+import { SetFocus, Themed } from './BooleanInput.stories';
 
 describe('<BooleanInput />', () => {
     const defaultProps = {
@@ -190,5 +190,15 @@ describe('<BooleanInput />', () => {
     it('should be customized by a theme', async () => {
         render(<Themed />);
         await screen.findByTestId('themed');
+    });
+
+    it('should be focusable with setFocus', async () => {
+        render(<SetFocus />);
+        fireEvent.click(await screen.findByText('Set focus on published'));
+        await waitFor(() => {
+            expect(
+                screen.getByLabelText('resources.posts.fields.published')
+            ).toBe(document.activeElement);
+        });
     });
 });

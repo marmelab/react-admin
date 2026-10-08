@@ -15,6 +15,7 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { useSwitchBaseInputRefProps } from './useSwitchBaseInputRefProps';
 
 export const BooleanInput = (props: BooleanInputProps) => {
     const {
@@ -72,6 +73,11 @@ export const BooleanInput = (props: BooleanInputProps) => {
 
     const renderHelperText = helperText !== false || invalid;
 
+    const switchProps = useSwitchBaseInputRefProps(field.ref, {
+        ...sanitizeInputRestProps(rest),
+        ...options,
+    });
+
     return (
         <StyledFormGroup
             className={clsx('ra-input', `ra-input-${source}`, className)}
@@ -79,7 +85,6 @@ export const BooleanInput = (props: BooleanInputProps) => {
             sx={sx}
         >
             <FormControlLabel
-                inputRef={field.ref}
                 control={
                     <Switch
                         id={id}
@@ -87,8 +92,7 @@ export const BooleanInput = (props: BooleanInputProps) => {
                         onChange={handleChange}
                         onFocus={onFocus}
                         checked={Boolean(field.value)}
-                        {...sanitizeInputRestProps(rest)}
-                        {...options}
+                        {...switchProps}
                         disabled={disabled || readOnly}
                         readOnly={readOnly}
                     />

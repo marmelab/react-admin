@@ -176,9 +176,10 @@ export const NumberInput = (props: NumberInputProps) => {
                 ) : null
             }
             margin={margin}
-            inputProps={inputProps}
             {...sanitizeInputRestProps(rest)}
-            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+            {...(muiMajor >= 6
+                ? { slotProps: mergedSlotProps }
+                : { inputProps })}
         />
     );
 };

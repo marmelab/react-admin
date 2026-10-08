@@ -119,10 +119,9 @@ export const DatagridHeader = (props: DatagridHeaderProps) => {
                         className={DatagridClasses.headerCell}
                     >
                         <Checkbox
-                            inputProps={selectAllInputProps}
-                            {...(muiMajor >= 6
+                            {...(muiMajor >= 7
                                 ? { slotProps: { input: selectAllInputProps } }
-                                : {})}
+                                : { inputProps: selectAllInputProps })}
                             className="select-all"
                             color="primary"
                             checked={

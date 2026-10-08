@@ -732,26 +732,57 @@ If you provided a React element for the optionText prop, you must also provide t
                 filterSelectedOptions
                 disabled={disabled || readOnly}
                 renderInput={params => {
-                    const mergedTextFieldProps = {
+                    const {
+                        InputProps: paramsInputProps,
+                        inputProps: paramsHtmlInputProps,
+                        InputLabelProps: paramsInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
+                        slotProps: paramsSlotProps,
+                        ...textFieldParams
+                    } = params;
+                    const {
+                        InputProps: userInputProps,
+                        inputProps: userHtmlInputProps,
+                        InputLabelProps: userInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
+                        slotProps: userSlotProps,
+                        ...textFieldProps
+                    } = TextFieldProps ?? {};
+                    const input = {
                         readOnly,
-                        ...params.InputProps,
-                        ...TextFieldProps?.InputProps,
+                        ...paramsInputProps,
+                        ...paramsSlotProps?.input,
+                        ...userInputProps,
+                        ...userSlotProps?.input,
                     };
-                    // @ts-expect-error slotProps do not yet exist in MUI v5
-                    const mergedSlotProps = TextFieldProps?.slotProps
-                        ? {
-                              slotProps: {
-                                  // @ts-expect-error slotProps do not yet exist in MUI v5
-                                  ...TextFieldProps?.slotProps,
-                                  input: {
-                                      readOnly,
-                                      ...params.InputProps,
-                                      // @ts-expect-error slotProps do not yet exist in MUI v5
-                                      ...TextFieldProps?.slotProps?.input,
+                    const htmlInput = {
+                        ...paramsHtmlInputProps,
+                        ...paramsSlotProps?.htmlInput,
+                        ...userHtmlInputProps,
+                        ...userSlotProps?.htmlInput,
+                    };
+                    const inputLabel = {
+                        ...paramsInputLabelProps,
+                        ...paramsSlotProps?.inputLabel,
+                        ...userInputLabelProps,
+                        ...userSlotProps?.inputLabel,
+                    };
+                    const mergedSlotProps =
+                        muiMajor >= 6
+                            ? {
+                                  slotProps: {
+                                      ...paramsSlotProps,
+                                      ...userSlotProps,
+                                      input,
+                                      htmlInput,
+                                      inputLabel,
                                   },
-                              },
-                          }
-                        : undefined;
+                              }
+                            : {
+                                  InputProps: input,
+                                  inputProps: htmlInput,
+                                  InputLabelProps: inputLabel,
+                              };
                     return (
                         <TextField
                             name={field.name}
@@ -784,9 +815,8 @@ If you provided a React element for the optionText prop, you must also provide t
                                 [AutocompleteInputClasses.emptyLabel]:
                                     label === false || label === '',
                             })}
-                            {...params}
-                            {...TextFieldProps}
-                            InputProps={mergedTextFieldProps}
+                            {...textFieldParams}
+                            {...textFieldProps}
                             {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
