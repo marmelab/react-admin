@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { useCallback, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce.js';
+import type { DebouncedFunc } from 'lodash';
 import { useEvent } from './useEvent';
 
 // allow the hook to work in SSR
@@ -19,10 +20,17 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
     delay: number
 ) => {
     // Create a ref that stores the debounced callback
-    const debouncedCallbackRef = useRef<(...args: Args) => Return | undefined>(
-        () => {
-            throw new Error('Cannot call an event handler while rendering.');
-        }
+    const debouncedCallbackRef = useRef<DebouncedFunc<
+        (...args: Args) => Return
+    >>(
+        Object.assign(
+            () => {
+                throw new Error(
+                    'Cannot call an event handler while rendering.'
+                );
+            },
+            { cancel: () => {}, flush: () => undefined }
+        ) as unknown as DebouncedFunc<(...args: Args) => Return>
     );
 
     // Keep a stable ref to the callback (in case it's an inline function for instance)
@@ -30,13 +38,22 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
 
     // Whenever callback or delay changes, we need to update the debounced callback
     useLayoutEffect(() => {
-        debouncedCallbackRef.current = debounce(stableCallback, delay);
+        const debounced = debounce(stableCallback, delay);
+        debouncedCallbackRef.current = debounced;
+        return () => debounced.cancel();
     }, [stableCallback, delay]);
 
     // The function returned by useCallback will invoke the debounced callback
     // Its dependencies array is empty, so it never changes across re-renders
-    return useCallback(
-        (...args: Args) => debouncedCallbackRef.current(...args),
+    return useMemo(
+        () =>
+            Object.assign(
+                (...args: Args) => debouncedCallbackRef.current(...args),
+                {
+                    cancel: () => debouncedCallbackRef.current.cancel(),
+                    flush: () => debouncedCallbackRef.current.flush(),
+                }
+            ),
         []
     );
 };
