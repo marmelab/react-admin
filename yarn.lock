@@ -22541,17 +22541,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"smol-toml@npm:1.9.0":
+"smol-toml@npm:1.9.0, smol-toml@npm:^1.6.0":
   version: 1.9.0
   resolution: "smol-toml@npm:1.9.0"
   checksum: 9a15a7560e15d050961f12cffab502f8b42af9d9e4713218181d10d3bda5e0265c4c81a92d6877e7d4e73145fc44d7fbc7cce997d9317b855fea974fc3bbc238
-  languageName: node
-  linkType: hard
-
-"smol-toml@npm:^1.6.0":
-  version: 1.7.0
-  resolution: "smol-toml@npm:1.7.0"
-  checksum: 8eef246b9b96f278a181f6dd2a90c754304cb4cf92ccdfe1d2f714fb980fb3f539ba00283609e8fd2fbcf7c0d48a4ae76b36bc0de556ed286b2c865827a778e8
   languageName: node
   linkType: hard
 
