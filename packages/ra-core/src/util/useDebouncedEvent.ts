@@ -1,8 +1,11 @@
 import * as React from 'react';
 import { useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce.js';
-import type { DebouncedFunc } from 'lodash';
 import { useEvent } from './useEvent';
+
+type Debounced<Args extends unknown[], Return> = ReturnType<
+    typeof debounce<(...args: Args) => Return>
+>;
 
 // allow the hook to work in SSR
 const useLayoutEffect =
@@ -20,9 +23,7 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
     delay: number
 ) => {
     // Create a ref that stores the debounced callback
-    const debouncedCallbackRef = useRef<DebouncedFunc<
-        (...args: Args) => Return
-    >>(
+    const debouncedCallbackRef = useRef<Debounced<Args, Return>>(
         Object.assign(
             () => {
                 throw new Error(
@@ -30,7 +31,7 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
                 );
             },
             { cancel: () => {}, flush: () => undefined }
-        ) as unknown as DebouncedFunc<(...args: Args) => Return>
+        ) as unknown as Debounced<Args, Return>
     );
 
     // Keep a stable ref to the callback (in case it's an inline function for instance)

@@ -5,9 +5,7 @@ import { useDebouncedEvent } from './useDebouncedEvent';
 const Comp = ({ cb, cancelOnClick = false }: any) => {
     const update = useDebouncedEvent(cb, 300);
     return (
-        <button
-            onClick={() => (cancelOnClick ? update.cancel() : update('x'))}
-        >
+        <button onClick={() => (cancelOnClick ? update.cancel() : update('x'))}>
             go
         </button>
     );
