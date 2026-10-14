@@ -41,7 +41,9 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
     useLayoutEffect(() => {
         const debounced = debounce(stableCallback, delay);
         debouncedCallbackRef.current = debounced;
-        return () => debounced.cancel();
+        return () => {
+            debounced.flush();
+        };
     }, [stableCallback, delay]);
 
     // The function returned by useCallback will invoke the debounced callback
