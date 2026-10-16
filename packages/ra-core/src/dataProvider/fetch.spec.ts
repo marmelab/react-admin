@@ -131,4 +131,37 @@ describe('createHeadersFromOptions', () => {
             'not undefined'
         );
     });
+
+    it('should accept headers as a plain object or as an array of pairs', () => {
+        const headersFromObject = createHeadersFromOptions({
+            headers: { 'X-Custom-Header': 'foo' },
+            method: 'POST',
+            body: JSON.stringify(null),
+        });
+        expect(headersFromObject.get('X-Custom-Header')).toStrictEqual('foo');
+        expect(headersFromObject.get('Content-Type')).toStrictEqual(
+            'application/json'
+        );
+
+        const headersFromPairs = createHeadersFromOptions({
+            headers: [['X-Custom-Header', 'bar']],
+            user: { authenticated: true, token: 'Bearer token' },
+        });
+        expect(headersFromPairs.get('X-Custom-Header')).toStrictEqual('bar');
+        expect(headersFromPairs.get('Authorization')).toStrictEqual(
+            'Bearer token'
+        );
+    });
+
+    it('should not modify the headers passed in the options', () => {
+        const headers = new Headers({ Accept: 'application/json' });
+        createHeadersFromOptions({
+            headers,
+            method: 'POST',
+            body: JSON.stringify(null),
+            user: { authenticated: true, token: 'Bearer token' },
+        });
+        expect(headers.get('Content-Type')).toBeNull();
+        expect(headers.get('Authorization')).toBeNull();
+    });
 });
