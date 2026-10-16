@@ -1,5 +1,5 @@
 import HttpError from './HttpError';
-import { stringify } from 'query-string';
+import { stringifyQueryString } from '../util/queryString';
 
 export interface Options extends RequestInit {
     user?: {
@@ -79,7 +79,7 @@ export const fetchJson = (url, options: Options = {}) => {
         });
 };
 
-export const queryParameters = stringify;
+export const queryParameters = stringifyQueryString;
 
 const isValidObject = value => {
     if (!value) {
