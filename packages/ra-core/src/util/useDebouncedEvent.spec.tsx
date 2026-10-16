@@ -2,20 +2,20 @@ import * as React from 'react';
 import { render, screen, act, fireEvent } from '@testing-library/react';
 import { useDebouncedEvent } from './useDebouncedEvent';
 
-const DebouncedButton = ({
+const DebouncedButtons = ({
     cb,
-    cancelOnClick = false,
     delay = 300,
 }: {
     cb: (value: string) => void;
-    cancelOnClick?: boolean;
     delay?: number;
 }) => {
     const update = useDebouncedEvent(cb, delay);
     return (
-        <button onClick={() => (cancelOnClick ? update.cancel() : update('x'))}>
-            go
-        </button>
+        <>
+            <button onClick={() => update('x')}>update</button>
+            <button onClick={() => update.cancel()}>cancel</button>
+            <button onClick={() => update.flush()}>flush</button>
+        </>
     );
 };
 
@@ -25,24 +25,34 @@ describe('useDebouncedEvent', () => {
 
     it('calls the callback after the delay', () => {
         const cb = jest.fn();
-        render(<DebouncedButton cb={cb} />);
-        fireEvent.click(screen.getByText('go'));
+        render(<DebouncedButtons cb={cb} />);
+        fireEvent.click(screen.getByText('update'));
+        expect(cb).not.toHaveBeenCalled();
         act(() => jest.advanceTimersByTime(300));
         expect(cb).toHaveBeenCalledWith('x');
     });
     it('cancels a pending call with cancel()', () => {
         const cb = jest.fn();
-        const { rerender } = render(<DebouncedButton cb={cb} />);
-        fireEvent.click(screen.getByText('go'));
-        rerender(<DebouncedButton cb={cb} cancelOnClick />);
-        fireEvent.click(screen.getByText('go'));
+        render(<DebouncedButtons cb={cb} />);
+        fireEvent.click(screen.getByText('update'));
+        fireEvent.click(screen.getByText('cancel'));
         act(() => jest.advanceTimersByTime(300));
         expect(cb).not.toHaveBeenCalled();
     });
+    it('runs a pending call immediately with flush()', () => {
+        const cb = jest.fn();
+        render(<DebouncedButtons cb={cb} />);
+        fireEvent.click(screen.getByText('update'));
+        fireEvent.click(screen.getByText('flush'));
+        expect(cb).toHaveBeenCalledTimes(1);
+        expect(cb).toHaveBeenCalledWith('x');
+        act(() => jest.advanceTimersByTime(300));
+        expect(cb).toHaveBeenCalledTimes(1);
+    });
     it('flushes a pending call on unmount', () => {
         const cb = jest.fn();
-        const { unmount } = render(<DebouncedButton cb={cb} />);
-        fireEvent.click(screen.getByText('go'));
+        const { unmount } = render(<DebouncedButtons cb={cb} />);
+        fireEvent.click(screen.getByText('update'));
         unmount();
         expect(cb).toHaveBeenCalledTimes(1);
         expect(cb).toHaveBeenCalledWith('x');
@@ -51,9 +61,9 @@ describe('useDebouncedEvent', () => {
     });
     it('flushes a pending call when the delay changes', () => {
         const cb = jest.fn();
-        const { rerender } = render(<DebouncedButton cb={cb} />);
-        fireEvent.click(screen.getByText('go'));
-        rerender(<DebouncedButton cb={cb} delay={500} />);
+        const { rerender } = render(<DebouncedButtons cb={cb} />);
+        fireEvent.click(screen.getByText('update'));
+        rerender(<DebouncedButtons cb={cb} delay={500} />);
         expect(cb).toHaveBeenCalledTimes(1);
         expect(cb).toHaveBeenCalledWith('x');
         act(() => jest.advanceTimersByTime(500));
