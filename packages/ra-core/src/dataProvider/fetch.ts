@@ -9,10 +9,11 @@ export interface Options extends RequestInit {
 }
 
 export const createHeadersFromOptions = (options: Options): Headers => {
-    const requestHeaders = (options.headers ||
-        new Headers({
+    const requestHeaders = new Headers(
+        options.headers || {
             Accept: 'application/json',
-        })) as Headers;
+        }
+    );
     const hasBody = options && options.body;
     const isContentTypeSet = requestHeaders.has('Content-Type');
     const isGetMethod = !options?.method || options?.method === 'GET';
