@@ -3,9 +3,11 @@ import { useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce.js';
 import { useEvent } from './useEvent';
 
-type Debounced<Args extends unknown[], Return> = ReturnType<
-    typeof debounce<(...args: Args) => Return>
->;
+export interface DebouncedEvent<Args extends unknown[], Return> {
+    (...args: Args): Return | undefined;
+    cancel: () => void;
+    flush: () => Return | undefined;
+}
 
 // allow the hook to work in SSR
 const useLayoutEffect =
@@ -21,9 +23,9 @@ const useLayoutEffect =
 export const useDebouncedEvent = <Args extends unknown[], Return>(
     callback: (...args: Args) => Return,
     delay: number
-) => {
+): DebouncedEvent<Args, Return> => {
     // Create a ref that stores the debounced callback
-    const debouncedCallbackRef = useRef<Debounced<Args, Return>>(
+    const debouncedCallbackRef = useRef<DebouncedEvent<Args, Return>>(
         Object.assign(
             () => {
                 throw new Error(
@@ -31,7 +33,7 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
                 );
             },
             { cancel: () => {}, flush: () => undefined }
-        ) as unknown as Debounced<Args, Return>
+        )
     );
 
     // Keep a stable ref to the callback (in case it's an inline function for instance)
@@ -46,7 +48,7 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
         };
     }, [stableCallback, delay]);
 
-    // The function returned by useCallback will invoke the debounced callback
+    // The function returned by useMemo will invoke the debounced callback
     // Its dependencies array is empty, so it never changes across re-renders
     return useMemo(
         () =>
