@@ -131,4 +131,53 @@ describe('createHeadersFromOptions', () => {
             'not undefined'
         );
     });
+
+    it('should accept headers as a Headers object', () => {
+        const headers = new Headers();
+        headers.append('X-Custom-Header', 'foo');
+        const headersFromObject = createHeadersFromOptions({
+            headers,
+            method: 'POST',
+            body: JSON.stringify(null),
+        });
+        expect(headersFromObject.get('X-Custom-Header')).toStrictEqual('foo');
+        expect(headersFromObject.get('Content-Type')).toStrictEqual(
+            'application/json'
+        );
+    });
+
+    it('should accept headers as a plain object', () => {
+        const headersFromObject = createHeadersFromOptions({
+            headers: { 'X-Custom-Header': 'foo' },
+            method: 'POST',
+            body: JSON.stringify(null),
+        });
+        expect(headersFromObject.get('X-Custom-Header')).toStrictEqual('foo');
+        expect(headersFromObject.get('Content-Type')).toStrictEqual(
+            'application/json'
+        );
+    });
+
+    it('should accept headers as an array of pairs', () => {
+        const headersFromPairs = createHeadersFromOptions({
+            headers: [['X-Custom-Header', 'bar']],
+            user: { authenticated: true, token: 'Bearer token' },
+        });
+        expect(headersFromPairs.get('X-Custom-Header')).toStrictEqual('bar');
+        expect(headersFromPairs.get('Authorization')).toStrictEqual(
+            'Bearer token'
+        );
+    });
+
+    it('should not modify the headers passed in the options', () => {
+        const headers = new Headers({ Accept: 'application/json' });
+        createHeadersFromOptions({
+            headers,
+            method: 'POST',
+            body: JSON.stringify(null),
+            user: { authenticated: true, token: 'Bearer token' },
+        });
+        expect(headers.get('Content-Type')).toBeNull();
+        expect(headers.get('Authorization')).toBeNull();
+    });
 });
