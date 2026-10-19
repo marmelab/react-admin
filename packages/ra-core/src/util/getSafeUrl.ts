@@ -23,10 +23,11 @@ export const getSafeUrl = (url: string): string | undefined => {
  *
  * @see getSafeUrl
  */
-export const isSafeUrl = (url: string): boolean => {
-    try {
-        return new URL(url, window.location.href).protocol !== 'javascript:';
-    } catch {
-        return false;
-    }
-};
+export const isSafeUrl = (url: string): boolean =>
+    !isJavaScriptProtocol.test(url);
+
+// A javascript: URL can contain leading C0 control characters or spaces,
+// and tabs or newlines anywhere (https://url.spec.whatwg.org/#url-parsing)
+const isJavaScriptProtocol =
+    // eslint-disable-next-line no-control-regex
+    /^[\u0000-\u001F ]*j[\r\n\t]*a[\r\n\t]*v[\r\n\t]*a[\r\n\t]*s[\r\n\t]*c[\r\n\t]*r[\r\n\t]*i[\r\n\t]*p[\r\n\t]*t[\r\n\t]*:/i;
