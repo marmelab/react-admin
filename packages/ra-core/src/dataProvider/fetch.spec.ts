@@ -132,7 +132,21 @@ describe('createHeadersFromOptions', () => {
         );
     });
 
-    it('should accept headers as a plain object or as an array of pairs', () => {
+    it('should accept headers as a Headers object', () => {
+        const headers = new Headers();
+        headers.append('X-Custom-Header', 'foo');
+        const headersFromObject = createHeadersFromOptions({
+            headers,
+            method: 'POST',
+            body: JSON.stringify(null),
+        });
+        expect(headersFromObject.get('X-Custom-Header')).toStrictEqual('foo');
+        expect(headersFromObject.get('Content-Type')).toStrictEqual(
+            'application/json'
+        );
+    });
+
+    it('should accept headers as a plain object', () => {
         const headersFromObject = createHeadersFromOptions({
             headers: { 'X-Custom-Header': 'foo' },
             method: 'POST',
@@ -142,7 +156,9 @@ describe('createHeadersFromOptions', () => {
         expect(headersFromObject.get('Content-Type')).toStrictEqual(
             'application/json'
         );
+    });
 
+    it('should accept headers as an array of pairs', () => {
         const headersFromPairs = createHeadersFromOptions({
             headers: [['X-Custom-Header', 'bar']],
             user: { authenticated: true, token: 'Bearer token' },
