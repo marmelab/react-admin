@@ -468,7 +468,7 @@ The source shows how to implement the following features:
 
 A framework built on top of react-admin for building developer portals.
 
-[![Broadcom API Hub](https://marmelab.com/static/bcb26e245e6e50e8f13631a156727d2e/46097/API_Hub.png)](https://github.com/CAAPIM/APIHub)
+[![Broadcom API Hub](./img/developer-portal.png)](https://github.com/CAAPIM/APIHub)
 
 * Source code: [https://github.com/CAAPIM/APIHub](https://github.com/CAAPIM/APIHub)
 
