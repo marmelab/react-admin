@@ -173,6 +173,53 @@ describe('<FileField />', () => {
         expect(secondLink.title).toEqual('Bye world!');
     });
 
+    it('should not render a clickable link for javascript: URLs', () => {
+        const consoleError = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+        const { getByTitle } = render(
+            <FileField
+                {...defaultProps}
+                record={{ id: 123, url: 'javascript:alert(1)' }}
+                title="Click me"
+            />
+        );
+        expect(getByTitle('Click me').getAttribute('href')).toBeNull();
+        expect(consoleError).toHaveBeenCalledWith(
+            'Blocked unsafe URL: "javascript:alert(1)"'
+        );
+        consoleError.mockRestore();
+    });
+
+    it('should not render clickable links for javascript: URLs in a list', () => {
+        const consoleError = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+        const { getByTitle } = render(
+            <FileField
+                {...defaultProps}
+                record={{
+                    id: 123,
+                    files: [
+                        { url: 'http://foo.com/bar.jpg', title: 'Safe' },
+                        { url: 'javascript:alert(1)', title: 'Unsafe' },
+                    ],
+                }}
+                source="files"
+                src="url"
+                title="title"
+            />
+        );
+        expect(getByTitle('Safe').getAttribute('href')).toEqual(
+            'http://foo.com/bar.jpg'
+        );
+        expect(getByTitle('Unsafe').getAttribute('href')).toBeNull();
+        expect(consoleError).toHaveBeenCalledWith(
+            'Blocked unsafe URL: "javascript:alert(1)"'
+        );
+        consoleError.mockRestore();
+    });
+
     it('should use custom className', () => {
         const { container } = render(
             <FileField

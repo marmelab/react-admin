@@ -11,6 +11,7 @@ import Typography from '@mui/material/Typography';
 import {
     type ExtractRecordPaths,
     type HintedString,
+    getSafeUrl,
     useFieldValue,
     useTranslate,
 } from 'ra-core';
@@ -88,7 +89,7 @@ export const FileField = <
                     return (
                         <li key={index}>
                             <Link
-                                href={srcValue}
+                                href={getSafeUrl(srcValue)}
                                 title={fileTitleValue}
                                 target={target}
                                 download={download}
@@ -109,7 +110,7 @@ export const FileField = <
     return (
         <Root className={className} {...sanitizeFieldRestProps(rest)}>
             <Link
-                href={sourceValue?.toString()}
+                href={getSafeUrl(sourceValue.toString())}
                 title={titleValue}
                 target={target}
                 download={download}
