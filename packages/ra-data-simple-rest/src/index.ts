@@ -1,4 +1,3 @@
-import { stringify } from 'query-string';
 import { fetchUtils, DataProvider } from 'ra-core';
 
 /**
@@ -58,7 +57,7 @@ export default (
         if (params.meta && params.meta.embed) {
             query.embed = JSON.stringify(params.meta.embed);
         }
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const options =
             countHeader === 'Content-Range'
                 ? {
@@ -94,7 +93,10 @@ export default (
         let query: string = '';
         if (params.meta && params.meta.embed) {
             query =
-                '?' + stringify({ embed: JSON.stringify(params.meta.embed) });
+                '?' +
+                fetchUtils.queryParameters({
+                    embed: JSON.stringify(params.meta.embed),
+                });
         }
         const { json } = await httpClient(
             `${apiUrl}/${resource}/${encodeURIComponent(params.id)}${query}`,
@@ -110,7 +112,7 @@ export default (
         if (params.meta && params.meta.embed) {
             query.embed = JSON.stringify(params.meta.embed);
         }
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         return httpClient(url, { signal: params?.signal }).then(({ json }) => ({
             data: json,
         }));
@@ -139,7 +141,7 @@ export default (
         if (params.meta && params.meta.embed) {
             query.embed = JSON.stringify(params.meta.embed);
         }
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const options =
             countHeader === 'Content-Range'
                 ? {
