@@ -9,8 +9,6 @@ import {
     ExportButton,
     ReferenceInput,
     FilterButton,
-    useDefaultTitle,
-    useListContext,
     DataTable,
 } from 'react-admin';
 
@@ -34,17 +32,6 @@ const ListActions = () => (
     </TopToolbar>
 );
 
-const InvoicesTitle = () => {
-    const title = useDefaultTitle();
-    const { defaultTitle } = useListContext();
-    return (
-        <>
-            <title>{`${title} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const Column = DataTable.Col<Invoice>;
 const ColumnNumber = DataTable.NumberCol<Invoice>;
 
@@ -54,7 +41,6 @@ const InvoiceList = () => (
         perPage={25}
         sort={{ field: 'date', order: 'DESC' }}
         actions={<ListActions />}
-        title={<InvoicesTitle />}
         queryOptions={{ meta: { embed: 'customer' } }}
     >
         <DataTable

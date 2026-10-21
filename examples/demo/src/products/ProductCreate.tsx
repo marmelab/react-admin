@@ -1,12 +1,5 @@
 import * as React from 'react';
-import {
-    Create,
-    TabbedForm,
-    TextInput,
-    required,
-    useCreateContext,
-    useDefaultTitle,
-} from 'react-admin';
+import { Create, TabbedForm, TextInput, required } from 'react-admin';
 import { ProductEditDetails } from './ProductEditDetails';
 const RichTextInput = React.lazy(() =>
     import('ra-input-rich-text').then(module => ({
@@ -14,20 +7,8 @@ const RichTextInput = React.lazy(() =>
     }))
 );
 
-const ProductTitle = () => {
-    const appTitle = useDefaultTitle();
-    const { defaultTitle } = useCreateContext();
-
-    return (
-        <>
-            <title>{`${appTitle} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const ProductCreate = () => (
-    <Create title={<ProductTitle />}>
+    <Create>
         <TabbedForm defaultValues={{ sales: 0 }}>
             <TabbedForm.Tab
                 label="resources.products.tabs.image"

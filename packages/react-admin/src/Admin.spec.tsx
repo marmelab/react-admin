@@ -1,7 +1,13 @@
 import * as React from 'react';
 import { render, screen } from '@testing-library/react';
 
-import { Basic, InsideRouter, SubPath, DefaultError } from './Admin.stories';
+import {
+    Basic,
+    InsideRouter,
+    SubPath,
+    DefaultError,
+    DocumentTitle,
+} from './Admin.stories';
 
 describe('<Admin>', () => {
     beforeEach(() => {
@@ -37,5 +43,12 @@ describe('<Admin>', () => {
             render(<DefaultError />);
             await screen.findByText('Something went wrong');
         });
+    });
+
+    it('keeps the index.html title on React 18', async () => {
+        document.title = 'Static';
+        render(<DocumentTitle />);
+        await screen.findByText('War and Peace');
+        expect(document.title).toBe('Static');
     });
 });

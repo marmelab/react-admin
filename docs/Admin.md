@@ -1138,6 +1138,8 @@ const App = () => (
 );
 ```
 
+With React 19, setting the `title` also gives each page its own browser tab title, built from the [page title](./Title.md) and the app title (e.g. "Posts - My Custom Admin"). With React 18, the browser tab keeps the `<title>` of your `index.html`.
+
 If you need to display this application title somewhere in your app, use the `useDefaultTitle` hook:
 
 ```tsx

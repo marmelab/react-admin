@@ -122,6 +122,13 @@ const dataProvider = fakeRestDataProvider({
     ],
 });
 
+export const DocumentTitle = ({ title = 'Book Store' }: { title?: string }) => (
+    <Admin title={title} dataProvider={dataProvider}>
+        <Resource name="books" list={ListGuesser} />
+        <Resource name="authors" list={ListGuesser} />
+    </Admin>
+);
+
 export const AccessControl = () => <AccessControlAdmin />;
 export const AccessControlInSubPath = () => (
     <TestMemoryRouter>

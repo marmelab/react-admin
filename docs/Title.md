@@ -38,6 +38,8 @@ const PostList = () => (
 );
 ```
 
+With React 19, if you set [the `<Admin title>`](./Admin.md#title), `<Title>` also sets the browser tab title to `{page title} - {app title}` (e.g. "All posts - My Admin"). When the `title` is a React element, the browser tab title is left untouched, so you can render your own `<title>` inside it. Without an `<Admin title>`, the browser tab title is left untouched. With React 18, the browser tab keeps the `<title>` of your `index.html`.
+
 ## Props
 
 | Prop                | Required | Type                  | Default  | Description                                                                 |

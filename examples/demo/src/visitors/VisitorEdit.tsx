@@ -7,8 +7,6 @@ import {
     PasswordInput,
     SimpleForm,
     useTranslate,
-    useDefaultTitle,
-    useEditContext,
 } from 'react-admin';
 import { Grid, Box, Typography } from '@mui/material';
 
@@ -20,7 +18,16 @@ import { validateForm } from './VisitorCreate';
 const VisitorEdit = () => {
     const translate = useTranslate();
     return (
-        <Edit title={<VisitorTitle />} aside={<Aside />}>
+        <Edit
+            title={
+                <FullNameField
+                    source="last_name"
+                    size="32"
+                    sx={{ margin: '5px 0' }}
+                />
+            }
+            aside={<Aside />}
+        >
             <SimpleForm validate={validateForm}>
                 <div>
                     <Grid
@@ -186,21 +193,6 @@ const VisitorEdit = () => {
                 </div>
             </SimpleForm>
         </Edit>
-    );
-};
-
-const VisitorTitle = () => {
-    const appTitle = useDefaultTitle();
-    const { defaultTitle } = useEditContext();
-    return (
-        <>
-            <title>{`${appTitle} - ${defaultTitle}`}</title>
-            <FullNameField
-                source="last_name"
-                size="32"
-                sx={{ margin: '5px 0' }}
-            />
-        </>
     );
 };
 
