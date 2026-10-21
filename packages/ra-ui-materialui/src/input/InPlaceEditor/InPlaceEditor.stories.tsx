@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
-import { createTheme, ThemeProvider, Typography } from '@mui/material';
+import { Button, createTheme, ThemeProvider, Typography } from '@mui/material';
 
 import {
     ResourceContextProvider,
@@ -174,6 +174,18 @@ export const CancelOnBlur = () => (
         <InPlaceEditor source="name" cancelOnBlur />
     </Wrapper>
 );
+
+export const FocusOutside = ({ cancelOnBlur }: { cancelOnBlur?: boolean }) => (
+    <Wrapper>
+        <InPlaceEditor source="name" cancelOnBlur={cancelOnBlur} />
+        <Button variant="outlined" size="small">
+            Next
+        </Button>
+    </Wrapper>
+);
+
+FocusOutside.args = { cancelOnBlur: false };
+FocusOutside.argTypes = { cancelOnBlur: { control: { type: 'boolean' } } };
 
 export const MutationMode = () => (
     <Wrapper>
