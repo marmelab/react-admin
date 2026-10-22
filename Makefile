@@ -179,10 +179,19 @@ test-e2e: ## launch end-to-end tests (ex. BROWSER=firefox make test-e2e)
 		cd examples/simple && BABEL_ENV=cjs yarn build; \
 	fi
 
-	@NODE_ENV=test cd cypress && yarn test
+	@# In the dev container, VS Code terminals set BROWSER to its URL opener and DISPLAY to a forwarded X11 where Electron can't render
+	@NODE_ENV=test cd cypress && $(if $(DEVCONTAINER),env -u DISPLAY BROWSER=electron) yarn test
 
 
-test-e2e-local: ## launch end-to-end tests for development
+test-e2e-debug: ## run one spec and keep the browser open for the chrome-devtools MCP on port 59210 (ex. make test-e2e-debug spec=e2e/show.cy.js)
+	@echo 'Ensure you started the simple example first (make run-simple)'
+	@cd cypress && $(if $(DEVCONTAINER),env -u DISPLAY) ELECTRON_EXTRA_LAUNCH_ARGS=--remote-debugging-port=59210 yarn cypress run --browser electron --headed --no-exit --spec $(spec)
+
+test-e2e-local: ## launch end-to-end tests for development (outside the dev container)
+	@if [ -n "$(DEVCONTAINER)" ]; then \
+		echo 'make test-e2e-local cannot display the cypress window from the dev container. Run it in a terminal outside the container.'; \
+		exit 1; \
+	fi
 	@echo 'Starting e2e tests environment. Ensure you started the simple example first (make run-simple)'
 	@cd cypress && yarn start
 

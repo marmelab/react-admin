@@ -195,6 +195,15 @@ For all Pull requests, you must follow the coding style of the existing files (b
 
 Clone this repository and run `make install` to grab the dependencies, then `make build` to compile the sources from TypeScript to JS.
 
+Alternatively, open the repository in VS Code and choose "Reopen in Container". The [dev container](./.devcontainer) installs the dependencies and runs Claude Code behind an outbound firewall.
+
+Optionally, install the [agent-skills](https://github.com/addyosmani/agent-skills) and [ponytail](https://github.com/DietrichGebert/ponytail) Claude Code plugins from a terminal inside the container:
+
+```sh
+claude plugin marketplace add addyosmani/agent-skills && claude plugin install agent-skills@addy-agent-skills
+claude plugin marketplace add DietrichGebert/ponytail && claude plugin install ponytail@ponytail
+```
+
 ### Testing Your Changes In The Example Apps
 
 When developing, most of the time we use the **simple example** to do visual check. It's the same application that we use in Stackblitz to reproduce errors (see https://stackblitz.com/github/marmelab/react-admin/tree/master/examples/simple). The source is located under `examples/simple/`. Call `make run` to launch that example on port 8080 (http://localhost:8080). This command includes a `watch` on the react-admin source, so any of the changes you make to the react-admin packages triggers a live update of the simple example in your browser. 
@@ -251,6 +260,8 @@ yarn jest
 Besides, tests related to the modified files are run automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
 
 When working on the end-to-end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
+
+`make test-e2e-local` doesn't work inside the [dev container](./.devcontainer), because the cypress window can't be displayed from there. Run it in a terminal outside the container instead. The simple example can keep running in the container, its port is forwarded. `make test-e2e` works in both.
 
 ### Coding Standards
 

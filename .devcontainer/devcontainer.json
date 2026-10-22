@@ -1,0 +1,68 @@
+{
+    "name": "react-admin",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "TZ": "${localEnv:TZ:Europe/Paris}",
+            "CLAUDE_CODE_VERSION": "latest",
+            "ZSH_IN_DOCKER_VERSION": "1.2.0"
+        }
+    },
+    "runArgs": ["--cap-add=NET_ADMIN", "--cap-add=NET_RAW"],
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "anthropic.claude-code",
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "eamodio.gitlens"
+            ],
+            "settings": {
+                "editor.formatOnSave": true,
+                "editor.defaultFormatter": "esbenp.prettier-vscode",
+                "editor.codeActionsOnSave": {
+                    "source.fixAll.eslint": "explicit"
+                },
+                "terminal.integrated.defaultProfile.linux": "zsh",
+                "terminal.integrated.profiles.linux": {
+                    "bash": {
+                        "path": "bash",
+                        "icon": "terminal-bash"
+                    },
+                    "zsh": {
+                        "path": "zsh"
+                    }
+                }
+            }
+        }
+    },
+    "forwardPorts": [8080, 8000, 9010, 4321],
+    "remoteUser": "node",
+    "mounts": [
+        "source=react-admin-bashhistory-${devcontainerId},target=/commandhistory,type=volume",
+        "source=react-admin-claude-config-${devcontainerId},target=/home/node/.claude,type=volume",
+        // Not per container: the cache is keyed by Cypress version, so all checkouts can share it
+        "source=react-admin-cypress-cache,target=/home/node/.cache/Cypress,type=volume"
+    ],
+    "containerEnv": {
+        // Vite binds to localhost, which Node resolves to ::1 here; VS Code port forwarding connects to 127.0.0.1
+        "NODE_OPTIONS": "--max-old-space-size=4096 --dns-result-order=ipv4first",
+        "CLAUDE_CONFIG_DIR": "/home/node/.claude",
+        "POWERLEVEL9K_DISABLE_GITSTATUS": "true"
+    },
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind,consistency=delegated",
+    "workspaceFolder": "/workspace",
+    "postCreateCommand": {
+        // yarn skips Cypress's postinstall when node_modules already exists on the bind mount, so a fresh cache volume would stay empty
+        "deps": "make install && yarn workspace e2e cypress install",
+        // No TTY on stdin/stdout, otherwise claude waits forever on the interactive "Managed settings require approval" prompt.
+        // The Claude config volume survives rebuilds, so only add the servers when they're missing.
+        // Sequential in one entry: postCreateCommand entries run in parallel and would race on the Claude config file.
+        // chrome-devtools attaches to the browser started by `make test-e2e-debug`.
+        "mcp": "bash -o pipefail -c '{ claude mcp get context7 >/dev/null 2>&1 || claude mcp add --scope user --transport http context7 https://mcp.context7.com/mcp; claude mcp get chrome-devtools >/dev/null 2>&1 || claude mcp add --scope user chrome-devtools -- npx -y chrome-devtools-mcp@1.11.0 --browserUrl http://127.0.0.1:59210 --no-usage-statistics --no-performance-crux; } </dev/null 2>&1 | cat'"
+    },
+    // VS Code downloads the extensions above only once it connects, i.e. after this command returns,
+    // so their CDN hosts must be allowlisted in init-firewall.sh. Don't wait for them here: it deadlocks.
+    "postStartCommand": "sudo /usr/local/bin/init-firewall.sh",
+    "waitFor": "postStartCommand"
+}
