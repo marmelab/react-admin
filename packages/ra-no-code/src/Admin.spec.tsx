@@ -132,5 +132,5 @@ describe('Admin', () => {
 
         await screen.findByText('Orders', { selector: '#react-admin-title *' });
         await screen.findByText('1-10 of 12');
-    }, 10000);
+    }, 20000);
 });

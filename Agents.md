@@ -60,6 +60,8 @@ All changes must include tests.
 - Stories: every component needs `*.stories.tsx` covering all props. Use FakeRest for mock data. Make data realistic — stories are used for screenshots and visual testing
 - Unit/integration tests: `*.spec.tsx` files should reuse the component's stories as test cases. Assert on user-visible output (text, interactions), not implementation details or HTML attributes
 - E2E (Cypress): kept minimal, targeting `examples/simple/`. Only for critical user paths
+  - Run one spec headless: start `make run-simple` in the background, then `cd cypress && DISPLAY= yarn cypress run --browser electron --spec e2e/<name>.cy.js`. Failure screenshots land in `cypress/screenshots/`
+  - Debug a spec live: `make test-e2e-debug spec=e2e/<name>.cy.js` (also needs `make run-simple`) keeps the browser open after the run; inspect it with the `chrome-devtools` MCP tools (`take_snapshot` shows the command log and the app, `evaluate_script`, `list_console_messages`). Specs aren't watched: rerun the target after editing
 
 ## Documentation
 
