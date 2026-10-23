@@ -9,7 +9,7 @@ import {
 import { TextField } from '@mui/material';
 
 import { Configurable } from '../preferences';
-import { PageTitle } from './PageTitle';
+import { DocumentTitle, PageTitle } from './PageTitle';
 
 export const PageTitleEditor = () => {
     const field = usePreferenceInput('', '');
@@ -58,16 +58,20 @@ const PageTitleConfigurableInner = ({ title, defaultTitle, ...props }) => {
     const translate = useTranslate();
     const record = useRecordContext();
 
-    return typeof titleFromPreferences === 'string' ? (
-        <span className={props.className} {...props}>
-            {translate(titleFromPreferences, {
-                ...record,
-                _: titleFromPreferences,
-            })}
-        </span>
-    ) : (
-        <>
+    if (typeof titleFromPreferences !== 'string') {
+        return (
             <PageTitle title={title} defaultTitle={defaultTitle} {...props} />
-        </>
+        );
+    }
+
+    const pageTitle = translate(titleFromPreferences, {
+        ...record,
+        _: titleFromPreferences,
+    });
+    return (
+        <span className={props.className} {...props}>
+            {pageTitle}
+            <DocumentTitle title={pageTitle} />
+        </span>
     );
 };

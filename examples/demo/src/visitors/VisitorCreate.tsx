@@ -7,8 +7,6 @@ import {
     useTranslate,
     PasswordInput,
     email,
-    useDefaultTitle,
-    useCreateContext,
 } from 'react-admin';
 import { Box, Typography } from '@mui/material';
 
@@ -37,19 +35,8 @@ export const validateForm = (
     return errors;
 };
 
-const VisitorTitle = () => {
-    const appTitle = useDefaultTitle();
-    const { defaultTitle } = useCreateContext();
-    return (
-        <>
-            <title>{`${appTitle} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const VisitorCreate = () => (
-    <Create title={<VisitorTitle />}>
+    <Create>
         <SimpleForm
             sx={{ maxWidth: 500 }}
             // Here for the GQL provider

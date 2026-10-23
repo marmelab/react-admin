@@ -17,7 +17,6 @@ import {
     Title,
     TopToolbar,
     useTranslate,
-    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 
@@ -61,15 +60,8 @@ const ProductList = () => {
 };
 
 const ProductTitle = () => {
-    const appTitle = useDefaultTitle();
     const { defaultTitle } = useListContext();
-
-    return (
-        <>
-            <title>{`${appTitle} - ${defaultTitle}`}</title>
-            <Title defaultTitle={defaultTitle} />
-        </>
-    );
+    return <Title defaultTitle={defaultTitle} />;
 };
 
 const QuickFilter = ({ label }: InputProps) => {

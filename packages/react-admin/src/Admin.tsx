@@ -120,7 +120,7 @@ export const Admin = (props: AdminProps) => {
         routerProvider,
         store = defaultStore,
         theme,
-        title = 'React Admin',
+        title,
     } = props;
 
     if (loginPage === true && process.env.NODE_ENV !== 'production') {

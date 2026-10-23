@@ -103,7 +103,7 @@ export const CoreAdmin = (props: CoreAdminProps) => {
         requireAuth,
         routerProvider,
         store,
-        title = 'React Admin',
+        title,
     } = props;
     return (
         <CoreAdminContext

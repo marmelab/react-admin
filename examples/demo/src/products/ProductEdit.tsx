@@ -10,8 +10,6 @@ import {
     required,
     TabbedForm,
     TextInput,
-    useDefaultTitle,
-    useEditContext,
 } from 'react-admin';
 import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import AspectRatioIcon from '@mui/icons-material/AspectRatio';
@@ -31,21 +29,10 @@ const RichTextInput = React.lazy(() =>
     }))
 );
 
-const ProductTitle = () => {
-    const appTitle = useDefaultTitle();
-    const { defaultTitle } = useEditContext();
-    return (
-        <>
-            <title>{`${appTitle} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const Column = DataTable.Col<Review>;
 
 const ProductEdit = () => (
-    <Edit title={<ProductTitle />}>
+    <Edit>
         <TabbedForm>
             <TabbedForm.Tab
                 label="resources.products.tabs.image"

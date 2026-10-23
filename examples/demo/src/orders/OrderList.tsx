@@ -17,7 +17,6 @@ import {
     SearchInput,
     ColumnsButton,
     TopToolbar,
-    useDefaultTitle,
     useListContext,
 } from 'react-admin';
 import { useMediaQuery, Divider, Tabs, Tab, Theme } from '@mui/material';
@@ -47,17 +46,6 @@ const ListActions = () => {
     );
 };
 
-const OrdersTitle = () => {
-    const title = useDefaultTitle();
-    const { defaultTitle } = useListContext();
-    return (
-        <>
-            <title>{`${title} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const OrderList = () => (
     <List
         filterDefaultValues={{ status: 'ordered' }}
@@ -65,7 +53,6 @@ const OrderList = () => (
         perPage={25}
         filters={orderFilters}
         actions={<ListActions />}
-        title={<OrdersTitle />}
         queryOptions={{ meta: { embed: 'customer' } }}
     >
         <TabbedDatagrid />

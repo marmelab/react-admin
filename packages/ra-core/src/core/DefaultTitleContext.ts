@@ -1,7 +1,10 @@
 import { createContext, useContext } from 'react';
 import type { TitleComponent } from '../types';
 
-export const DefaultTitleContext = createContext<TitleComponent>('React Admin');
+// undefined when <Admin title> isn't set
+export const DefaultTitleContext = createContext<TitleComponent | undefined>(
+    undefined
+);
 
 export const DefaultTitleContextProvider = DefaultTitleContext.Provider;
 
@@ -16,4 +19,7 @@ export const DefaultTitleContextProvider = DefaultTitleContext.Provider;
  *    return <span>{defaultTitle}</span>;
  * }
  */
-export const useDefaultTitle = () => useContext(DefaultTitleContext);
+export const useDefaultTitle = (): TitleComponent => {
+    const title = useContext(DefaultTitleContext);
+    return title === undefined ? 'React Admin' : title;
+};

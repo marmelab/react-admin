@@ -11,8 +11,6 @@ import {
     SearchInput,
     ColumnsButton,
     TopToolbar,
-    useDefaultTitle,
-    useListContext,
 } from 'react-admin';
 import { useMediaQuery, Theme } from '@mui/material';
 
@@ -39,17 +37,6 @@ const VisitorListActions = () => (
     </TopToolbar>
 );
 
-const VisitorTitle = () => {
-    const title = useDefaultTitle();
-    const { defaultTitle } = useListContext();
-    return (
-        <>
-            <title>{`${title} - ${defaultTitle}`}</title>
-            <span>{defaultTitle}</span>
-        </>
-    );
-};
-
 const Column = DataTable.Col<Customer>;
 const ColumnNumber = DataTable.NumberCol<Customer>;
 
@@ -65,7 +52,6 @@ const VisitorList = () => {
             perPage={25}
             aside={<VisitorListAside />}
             actions={<VisitorListActions />}
-            title={<VisitorTitle />}
         >
             {isXsmall ? (
                 <MobileGrid />

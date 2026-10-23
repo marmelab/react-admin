@@ -332,7 +332,7 @@ export const CoreAdminUI = (props: CoreAdminUIProps) => {
         loginPage: LoginPage = false,
         ready = Ready,
         requireAuth = false,
-        title = 'React Admin',
+        title,
         authenticationError = Noop,
         accessDenied = Noop,
     } = props;

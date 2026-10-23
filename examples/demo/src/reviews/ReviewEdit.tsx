@@ -26,7 +26,7 @@ interface ReviewEditProps {
 const ReviewTitle = () => {
     const appTitle = useDefaultTitle();
     const { defaultTitle } = useEditContext();
-    return <title>{`${appTitle} - ${defaultTitle}`}</title>;
+    return <title>{`${defaultTitle} - ${appTitle}`}</title>;
 };
 
 const ReviewEdit = ({ id, onCancel }: ReviewEditProps) => {
