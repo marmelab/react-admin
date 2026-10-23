@@ -19,11 +19,11 @@ export const Show = () => (
 export const ShowForm = () => {
     const resource = useResourceContext();
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource);
+    const [resourceConfiguration] = useResourceConfiguration(resource!);
 
     return (
         <SimpleShowLayout>
-            {resourceConfiguration.fields
+            {(resourceConfiguration.fields ?? [])
                 .filter(definition => definition.views.includes('show'))
                 .map(definition =>
                     getFieldFromFieldDefinition(definition, resources)

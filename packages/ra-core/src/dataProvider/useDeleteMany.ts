@@ -279,7 +279,7 @@ export const useDeleteMany = <
             callTimeResource: string | undefined = resource,
             callTimeParams: Partial<DeleteManyParams<RecordType>> = {},
             callTimeOptions: MutateOptions<
-                Array<RecordType['id']>,
+                Array<RecordType['id']> | undefined,
                 MutationError,
                 Partial<UseDeleteManyMutateParams<RecordType>>,
                 unknown

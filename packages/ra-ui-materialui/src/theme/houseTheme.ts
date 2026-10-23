@@ -223,7 +223,7 @@ const createHouseTheme = (palette: PaletteOptions) => {
         typography: { fontFamily: `'Open Sans', sans-serif` },
     };
     const theme = createTheme(themeOptions);
-    theme.components = componentsOverrides(theme);
+    theme.components = componentsOverrides(theme) as Theme['components'];
     return theme;
 };
 

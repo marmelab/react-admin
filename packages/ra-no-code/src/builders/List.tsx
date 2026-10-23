@@ -21,11 +21,11 @@ export const List = () => (
 export const Datagrid = (props: Omit<DatagridProps, 'children'>) => {
     const resource = useResourceContext(props);
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource);
+    const [resourceConfiguration] = useResourceConfiguration(resource!);
 
     return (
         <RaDatagrid rowClick="edit" {...props}>
-            {resourceConfiguration.fields
+            {(resourceConfiguration.fields ?? [])
                 .filter(definition => definition.views.includes('list'))
                 .map(definition =>
                     getFieldFromFieldDefinition(definition, resources)

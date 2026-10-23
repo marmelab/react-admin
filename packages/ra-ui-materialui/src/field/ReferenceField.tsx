@@ -155,7 +155,8 @@ export const ReferenceFieldView = <
             props: props,
             name: PREFIX,
         });
-    const referenceFieldContext = useReferenceFieldContext();
+    const referenceFieldContext =
+        useReferenceFieldContext<ReferenceRecordType>();
     const { error, link, isLoading, referenceRecord } = referenceFieldContext;
 
     const getRecordRepresentation = useGetRecordRepresentation(reference);
@@ -220,7 +221,7 @@ export interface ReferenceFieldViewProps<
         Omit<ReferenceFieldProps<RecordType, ReferenceRecordType>, 'link'> {
     children?: ReactNode;
     render?: (
-        context: UseReferenceFieldControllerResult<RaRecord>
+        context: UseReferenceFieldControllerResult<ReferenceRecordType>
     ) => ReactNode;
     reference: string;
     resource?: string;

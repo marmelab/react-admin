@@ -65,7 +65,7 @@ const fetchSchema = (
 const getQueriesFromSchema = (
     schema: IntrospectionSchema
 ): IntrospectionField[] =>
-    schema.types.reduce((acc, type) => {
+    schema.types.reduce<IntrospectionField[]>((acc, type) => {
         if (
             type.name !== schema.queryType?.name &&
             type.name !== schema.mutationType?.name &&

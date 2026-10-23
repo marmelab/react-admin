@@ -54,6 +54,29 @@ describe('buildVariables', () => {
             });
         });
 
+        it('keeps nested filters that do not match a resource field', () => {
+            const params = {
+                filter: { 'author.name': 'John' },
+                pagination: { page: 1, perPage: 10 },
+                sort: { field: 'sortField', order: 'DESC' },
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post', fields: [] } },
+                    GET_LIST,
+                    params,
+                    {}
+                )
+            ).toEqual({
+                filter: { 'author.name': 'John' },
+                page: 0,
+                perPage: 10,
+                sortField: 'sortField',
+                sortOrder: 'DESC',
+            });
+        });
+
         it('should return correct meta', () => {
             const params = {
                 filter: { views: 100 },

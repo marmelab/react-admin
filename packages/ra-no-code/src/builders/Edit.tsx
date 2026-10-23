@@ -20,11 +20,11 @@ export const Edit = () => (
 export const EditForm = (props: Omit<SimpleFormProps, 'children'>) => {
     const resource = useResourceContext(props);
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource);
+    const [resourceConfiguration] = useResourceConfiguration(resource!);
 
     return (
         <SimpleForm {...props}>
-            {resourceConfiguration.fields
+            {(resourceConfiguration.fields ?? [])
                 .filter(definition => definition.views.includes('edit'))
                 .map(definition =>
                     getInputFromFieldDefinition(definition, resources)

@@ -7,6 +7,7 @@ import {
     useThemeProps,
 } from '@mui/material/styles';
 import { Button, CardContent, CircularProgress } from '@mui/material';
+import type { FieldValues } from 'react-hook-form';
 import { Form, required, useTranslate, useLogin, useNotify } from 'ra-core';
 import { PasswordInput, TextInput } from '../input';
 
@@ -21,9 +22,9 @@ export const LoginForm = (inProps: LoginFormProps) => {
     const translate = useTranslate();
     const notify = useNotify();
 
-    const submit = (values: FormData) => {
+    const submit = (values: FieldValues) => {
         setLoading(true);
-        login(values, redirectTo)
+        login(values as FormData, redirectTo)
             .then(() => {
                 setLoading(false);
             })

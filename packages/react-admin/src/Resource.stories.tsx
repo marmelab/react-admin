@@ -121,7 +121,7 @@ const BooksButton = () => {
     return (
         <Button
             component={Link}
-            to={`/authors/${record.id}/books`}
+            to={`/authors/${record?.id}/books`}
             color="primary"
         >
             Books

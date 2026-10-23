@@ -197,7 +197,7 @@ export default (introspectionResults: IntrospectionResult) =>
     };
 
 export const buildFields =
-    (introspectionResults: IntrospectionResult, paths = []) =>
+    (introspectionResults: IntrospectionResult, paths: string[] = []) =>
     (fields: readonly IntrospectionField[], sparseFields?: SparseField[]) => {
         const { resourceFields, linkedSparseFields } = sparseFields
             ? processSparseFields(fields, sparseFields)
@@ -320,16 +320,9 @@ export const buildArgs = (
     );
     const args = query.args
         .filter(a => validVariables.includes(a.name))
-        .reduce(
-            (acc, arg) => [
-                ...acc,
-                gqlTypes.argument(
-                    gqlTypes.name(arg.name),
-                    gqlTypes.variable(gqlTypes.name(arg.name))
-                ),
-            ],
-            []
-        );
+        .reduce<
+            ArgumentNode[]
+        >((acc, arg) => [...acc, gqlTypes.argument(gqlTypes.name(arg.name), gqlTypes.variable(gqlTypes.name(arg.name)))], []);
 
     return args;
 };
@@ -348,7 +341,7 @@ export const buildApolloArgs = (
 
     const args = query.args
         .filter(a => validVariables.includes(a.name))
-        .reduce((acc, arg) => {
+        .reduce<VariableDefinitionNode[]>((acc, arg) => {
             return [
                 ...acc,
                 gqlTypes.variableDefinition(

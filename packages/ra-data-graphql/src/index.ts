@@ -218,6 +218,7 @@ const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
             client
                 // @ts-ignore
                 .mutate(apolloQuery)
+                // @ts-ignore mutate() resolves a FetchResult, not an ApolloQueryResult
                 .then(parseResponse)
                 .catch(handleError)
         );

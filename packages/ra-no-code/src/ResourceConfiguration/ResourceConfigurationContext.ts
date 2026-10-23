@@ -52,8 +52,6 @@ export type FieldConfiguration =
 
 export type FieldView = 'list' | 'create' | 'edit' | 'show';
 
-export type ResourceConfigurationMap =
-    | {
-          [key: string]: ResourceConfiguration;
-      }
-    | undefined;
+export type ResourceConfigurationMap = {
+    [key: string]: ResourceConfiguration;
+};

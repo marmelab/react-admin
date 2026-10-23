@@ -55,10 +55,10 @@ export const useCanAccessCallback = <
     const { mutateAsync } = useMutation<
         UseCanAccessCallbackResult,
         ErrorType,
-        UseCanAccessCallbackOptions
+        UseCanAccessCallbackOptions<RecordType>
     >({
         mutationFn: async (
-            params: UseCanAccessCallbackOptions
+            params: UseCanAccessCallbackOptions<RecordType>
         ): Promise<UseCanAccessCallbackResult> => {
             if (!authProvider || !authProvider.canAccess) {
                 return true;

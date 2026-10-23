@@ -9,6 +9,7 @@ import { useCallback } from 'react';
 import {
     SaveButton,
     Form,
+    type FormProps,
     TextInput,
     required,
     useCreate,
@@ -18,14 +19,15 @@ import {
 } from 'react-admin';
 
 import CancelButton from './PostQuickCreateCancelButton';
+import type { Post } from '../types';
 
-const PostQuickCreate = props => {
+const PostQuickCreate = (props: Omit<FormProps<Post>, 'children'>) => {
     const [create] = useCreate();
     const notify = useNotify();
 
     const { onCancel, onCreate } = useCreateSuggestionContext();
     const handleSave = useCallback(
-        values => {
+        (values: Partial<Post>) => {
             create(
                 'posts',
                 { data: values },
@@ -33,8 +35,8 @@ const PostQuickCreate = props => {
                     onSuccess: data => {
                         onCreate(data);
                     },
-                    onError: (error: Error) => {
-                        notify(error.message, { type: 'error' });
+                    onError: (error: unknown) => {
+                        notify((error as Error).message, { type: 'error' });
                     },
                 }
             );

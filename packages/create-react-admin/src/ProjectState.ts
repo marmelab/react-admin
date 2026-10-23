@@ -9,18 +9,15 @@ export type ProjectConfiguration = {
         | 'install'
         | 'run-install'
         | 'finish';
-    dataProvider: string;
-    authProvider: string;
+    dataProvider?: string;
+    authProvider?: string;
     resources?: string[];
     messages: string[];
-    installer: string;
+    installer?: string;
 };
 
 export const InitialProjectConfiguration: ProjectConfiguration = {
     name: '',
     step: 'name',
-    dataProvider: '',
-    authProvider: '',
     messages: [],
-    installer: '',
 };

@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-        "baseUrl": ".",
         "outDir": "lib",
         "rootDir": "src",
         "declaration": true,
@@ -9,7 +8,7 @@
         "lib": ["es2017", "dom"],
         "target": "es2016",
         "module": "esnext",
-        "moduleResolution": "node",
+        "moduleResolution": "bundler",
         "allowSyntheticDefaultImports": true,
         "esModuleInterop": true,
         "skipLibCheck": true,
