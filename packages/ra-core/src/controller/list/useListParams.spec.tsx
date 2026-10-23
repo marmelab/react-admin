@@ -14,7 +14,7 @@ import {
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
 import { memoryStore } from '../../store';
-import { parseQueryString, stringifyQueryString } from '../../util/queryString';
+import { parse, stringify } from '../../util/vendor/queryString';
 
 describe('useListParams', () => {
     describe('getQuery', () => {
@@ -222,7 +222,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
                                 filter: JSON.stringify({ foo: 'bar' }),
                                 sort: 'id',
@@ -263,7 +263,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 displayedFilters: JSON.stringify({ foo: true }),
                                 filter: JSON.stringify({ foo: 'bar' }),
                                 sort: 'id',
@@ -305,7 +305,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
@@ -349,7 +349,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 displayedFilters: JSON.stringify({
                                     'foo.bar': true,
                                 }),
@@ -423,7 +423,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 filter: JSON.stringify({}),
                                 sort: 'id',
                                 order: 'ASC',
@@ -488,7 +488,7 @@ describe('useListParams', () => {
             fireEvent.click(screen.getByText('set filters'));
 
             await waitFor(() => {
-                expect(parseQueryString(locationSearchValue)).toEqual({
+                expect(parse(locationSearchValue)).toEqual({
                     displayedFilters: '[]',
                     filter: '{"x":"y"}',
                     foo: 'bar',
@@ -563,7 +563,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 filter: JSON.stringify({}),
                                 sort: 'id',
                                 order: 'ASC',
@@ -608,7 +608,7 @@ describe('useListParams', () => {
                     pathname: '/',
                     search:
                         '?' +
-                        stringifyQueryString({
+                        stringify({
                             filter: JSON.stringify({}),
                             sort: 'id',
                             order: 'ASC',
@@ -628,7 +628,7 @@ describe('useListParams', () => {
                         {
                             search:
                                 '?' +
-                                stringifyQueryString({
+                                stringify({
                                     filter: JSON.stringify({}),
                                     sort: 'id',
                                     order: 'ASC',
@@ -667,7 +667,7 @@ describe('useListParams', () => {
                         pathname: '/',
                         search:
                             '?' +
-                            stringifyQueryString({
+                            stringify({
                                 filter: JSON.stringify({}),
                                 sort: 'id',
                                 order: 'ASC',
