@@ -32,6 +32,9 @@ import {
     CreateItemLabelRendered,
     FilterSelectedOptionsFalse,
     GetOptionDisabled,
+    RenderInput,
+    RenderInputFieldRef,
+    RenderInputWithGroups,
 } from './AutocompleteInput.stories';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { AutocompleteArrayInput } from './AutocompleteArrayInput';
@@ -709,6 +712,44 @@ describe('<AutocompleteInput />', () => {
                 expect(inputElement.value).toBe('Female');
             });
         });
+    });
+
+    it('should allow to override the input rendering with renderInput', async () => {
+        render(<RenderInput />);
+        const input = (await screen.findByLabelText(
+            'Custom author input'
+        )) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('Leo Tolstoy');
+        });
+        screen.getByText('Rendered with a custom renderInput');
+        fireEvent.focus(input);
+        await screen.findByText('Victor Hugo');
+    });
+
+    it('should keep the form field ref when using renderInput', async () => {
+        render(<RenderInputFieldRef />);
+        const input = await screen.findByLabelText('Author');
+        fireEvent.click(screen.getByText('Focus author'));
+        await waitFor(() => {
+            expect(document.activeElement).toBe(input);
+        });
+    });
+
+    it('should allow to render grouped options with a custom renderInput', async () => {
+        render(<RenderInputWithGroups />);
+        const input = (await screen.findByLabelText(
+            'Author'
+        )) as HTMLInputElement;
+        await waitFor(() => {
+            expect(input.value).toBe('Leo Tolstoy');
+        });
+        // the selected option is rendered as a custom component
+        screen.getByText('Russian');
+        fireEvent.focus(input);
+        // group headers are shown in the suggestions list
+        await screen.findByText('French');
+        screen.getByText('English');
     });
 
     it('should show the suggestions on focus', async () => {
