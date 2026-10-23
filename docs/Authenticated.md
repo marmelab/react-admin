@@ -13,7 +13,7 @@ Use it as an alternative to the [`useAuthenticated()`](./useAuthenticated.md) ho
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const App = () => (
     <Admin authProvider={authProvider}>

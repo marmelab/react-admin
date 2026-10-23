@@ -10,7 +10,7 @@ The `<WithPermissions>` component calls `useAuthenticated()` and `useGetPermissi
 {% raw %}
 ```jsx
 import { Admin, CustomRoutes, WithPermissions } from "react-admin";
-import { Route } from "react-router-dom";
+import { Route } from "react-router";
 
 const App = () => (
     <Admin authProvider={authProvider}>

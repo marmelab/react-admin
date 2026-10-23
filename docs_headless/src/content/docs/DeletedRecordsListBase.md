@@ -22,7 +22,7 @@ However, you need to define the route to reach this component manually using [`<
 ```tsx
 // in src/App.js
 import { CoreAdmin, CustomRoutes } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsListBase, DeletedRecordRepresentation } from '@react-admin/ra-core-ee';
 
 export const App = () => (
@@ -302,7 +302,7 @@ In the example below, the deleted records lists store their list parameters sepa
 
 ```tsx
 import { CoreAdmin, CustomRoutes } from 'ra-core';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsListBase } from '@react-admin/ra-core-ee';
 
 const Admin = () => {

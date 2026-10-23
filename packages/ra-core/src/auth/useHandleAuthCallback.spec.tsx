@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
 import { useHandleAuthCallback } from './useHandleAuthCallback';
