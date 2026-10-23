@@ -207,12 +207,23 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
                     .filter(filterCallback);
             }
             if (sort.field) {
+                const direction = sort.order === 'ASC' ? 1 : -1;
                 tempData = tempData.sort((a, b) => {
-                    if (get(a, sort.field) > get(b, sort.field)) {
-                        return sort.order === 'ASC' ? 1 : -1;
+                    const aValue = get(a, sort.field);
+                    const bValue = get(b, sort.field);
+                    // null and undefined are not comparable, so they are
+                    // sorted as the highest values to keep the order total
+                    if (aValue == null || bValue == null) {
+                        if (aValue == null && bValue == null) {
+                            return 0;
+                        }
+                        return aValue == null ? direction : -direction;
                     }
-                    if (get(a, sort.field) < get(b, sort.field)) {
-                        return sort.order === 'ASC' ? -1 : 1;
+                    if (aValue > bValue) {
+                        return direction;
+                    }
+                    if (aValue < bValue) {
+                        return -direction;
                     }
                     return 0;
                 });
