@@ -19,7 +19,7 @@ import {
     BooleanInput,
     Pagination,
 } from '../../test-ui';
-import { stringifyQueryString } from '../../util/queryString';
+import { stringify } from '../../util/vendor/queryString';
 
 export default { title: 'ra-core/controller/list/useSavedQueries' };
 
@@ -72,7 +72,7 @@ const SavedQueries = () => {
 
     const applyQuery = (savedQuery: SavedQuery) => {
         navigate({
-            search: stringifyQueryString({
+            search: stringify({
                 filter: JSON.stringify(savedQuery.value.filter),
                 sort: savedQuery.value.sort?.field,
                 order: savedQuery.value.sort?.order,

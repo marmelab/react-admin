@@ -15,7 +15,7 @@ import queryReducer, {
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import { useIsMounted } from '../../util/hooks';
-import { parseQueryString, stringifyQueryString } from '../../util/queryString';
+import { parse, stringify } from '../../util/vendor/queryString';
 
 export interface ListParams {
     sort: string;
@@ -171,7 +171,7 @@ export const useListParams = ({
         }
         navigate(
             {
-                search: `?${stringifyQueryString({
+                search: `?${stringify({
                     ...query,
                     filter: JSON.stringify(query.filter),
                     displayedFilters: JSON.stringify(query.displayedFilters),
@@ -218,7 +218,7 @@ export const useListParams = ({
                         // the useEffect above will apply the changes to the params in the store
                         navigate(
                             {
-                                search: `?${stringifyQueryString({
+                                search: `?${stringify({
                                     ...tempParams.current,
                                     filter: JSON.stringify(
                                         tempParams.current.filter
@@ -345,7 +345,7 @@ const parseObject = (query, field) => {
 };
 
 export const parseQueryFromLocation = ({ search }): Partial<ListParams> => {
-    const query = parseQueryString(search);
+    const query = parse(search);
     parseObject(query, 'filter');
     parseObject(query, 'displayedFilters');
     return query;

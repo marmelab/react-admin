@@ -32,10 +32,12 @@
  * Modifications:
  * - Converted to TypeScript: added the `ArrayFormat`, `ParseOptions` and
  *   `StringifyOptions` types (adapted from the upstream base.d.ts) and typed
- *   overload signatures for `parse()` and `stringify()`. The function bodies
- *   and private helpers are left untyped, except for an `any[]` annotation on
- *   the `splitOnFirst()` destructuring in `parse()` (needed with
- *   strictNullChecks).
+ *   overload signatures for `parse()` and `stringify()`, plus a `ParsedQuery`
+ *   return type for `parse()` (react-admin only calls it with the default
+ *   options, so values are always strings, nulls or arrays of them). The
+ *   function bodies and private helpers are left untyped, except for an
+ *   `any[]` annotation on the `splitOnFirst()` destructuring in `parse()`
+ *   (needed with strictNullChecks).
  * - Kept only `parse()` and `stringify()` and the private helpers they use.
  *   Removed `extract()`, `parseUrl()`, `stringifyUrl()`, `pick()`, `exclude()`,
  *   and the `removeHash()`, `getHash()`, `getUrlWithoutQuery()` helpers and the
@@ -496,10 +498,9 @@ function parseValue(value, options, type) {
     return value;
 }
 
-export function parse(
-    query: string,
-    options?: ParseOptions
-): Record<string, any>;
+export type ParsedQuery = Record<string, string | null | (string | null)[]>;
+
+export function parse(query: string, options?: ParseOptions): ParsedQuery;
 export function parse(query, options) {
     options = {
         decode: true,

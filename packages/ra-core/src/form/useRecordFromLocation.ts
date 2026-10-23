@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import isEqual from 'lodash/isEqual.js';
 import { RaRecord } from '../types';
 import { useLocation, RouterLocation } from '../routing';
-import { parseQueryString } from '../util/queryString';
+import { parse } from '../util/vendor/queryString';
 
 /**
  * A hook that returns the record to use to override the values in a form
@@ -66,7 +66,7 @@ export const getRecordFromLocation = (
     }
     if (search) {
         try {
-            const searchParams = parseQueryString(search);
+            const searchParams = parse(search);
             const source = searchParams[searchSource];
             if (source) {
                 if (Array.isArray(source)) {
