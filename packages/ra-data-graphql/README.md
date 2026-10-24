@@ -28,14 +28,17 @@ Below is a rough graph summarizing how the data flows:
 Install with:
 
 ```sh
-npm install --save graphql ra-data-graphql
+npm install --save graphql rxjs ra-data-graphql
 ```
 
 or
 
 ```sh
-yarn add graphql ra-data-graphql
+yarn add graphql rxjs ra-data-graphql
 ```
+
+This package is built on Apollo Client 4, which requires `graphql` 16 or later and
+`rxjs` 7.3 or later. Both are peer dependencies, so your application provides them.
 
 ## Usage
 

@@ -14,14 +14,17 @@ built with [Apollo](https://www.apollodata.com/) and tailored to target a simple
 Install with:
 
 ```sh
-npm install --save graphql ra-data-graphql-simple
+npm install --save graphql rxjs ra-data-graphql-simple
 ```
 
 or
 
 ```sh
-yarn add graphql ra-data-graphql-simple
+yarn add graphql rxjs ra-data-graphql-simple
 ```
+
+This package is built on Apollo Client 4, which requires `graphql` 16 or later and
+`rxjs` 7.3 or later. Both are peer dependencies, so your application provides them.
 
 ## Usage
 
