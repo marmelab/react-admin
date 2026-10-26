@@ -540,7 +540,7 @@ describe('<DatagridRow />', () => {
     });
 
     describe('accessibility', () => {
-        it('should expose a clickable row as a focusable button with an accessible name', () => {
+        it('should make a clickable row focusable', () => {
             render(
                 <RecordContextProvider value={defaultRecord}>
                     <DatagridRow {...defaultProps} rowClick="edit">
@@ -548,11 +548,12 @@ describe('<DatagridRow />', () => {
                     </DatagridRow>
                 </RecordContextProvider>
             );
-            const row = screen.getByRole('button', { name: 'ra.action.open' });
-            expect(row).toHaveAttribute('tabindex', '0');
+            const row = screen.getByText('hello').closest('tr')!;
+            row.focus();
+            expect(row).toHaveFocus();
         });
 
-        it('should not expose a non clickable row as a button', () => {
+        it('should not make a non clickable row focusable', () => {
             render(
                 <RecordContextProvider value={defaultRecord}>
                     <DatagridRow {...defaultProps} rowClick={false}>
@@ -560,9 +561,9 @@ describe('<DatagridRow />', () => {
                     </DatagridRow>
                 </RecordContextProvider>
             );
-            expect(screen.queryByRole('button')).toBeNull();
-            const row = screen.getByText('hello').closest('tr');
-            expect(row).not.toHaveAttribute('tabindex');
+            const row = screen.getByText('hello').closest('tr')!;
+            row.focus();
+            expect(row).not.toHaveFocus();
         });
 
         it.each([{ key: 'Enter' }, { key: ' ' }])(
@@ -578,7 +579,9 @@ describe('<DatagridRow />', () => {
                         </RecordContextProvider>
                     </LocationSpy>
                 );
-                fireEvent.keyDown(screen.getByRole('button'), { key });
+                fireEvent.keyDown(screen.getByText('hello').closest('tr')!, {
+                    key,
+                });
                 await waitFor(() => {
                     expect(spy).toHaveBeenCalledWith(
                         expect.objectContaining({ pathname: '/posts/15' })
@@ -586,5 +589,23 @@ describe('<DatagridRow />', () => {
                 });
             }
         );
+
+        it('should not trigger the row click when pressing a key on a control inside the row', () => {
+            const rowClick = jest.fn();
+            render(
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow
+                        {...defaultProps}
+                        rowClick={rowClick}
+                        hasBulkActions
+                        onToggleItem={jest.fn()}
+                    >
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
+            );
+            fireEvent.keyDown(screen.getByRole('checkbox'), { key: ' ' });
+            expect(rowClick).not.toHaveBeenCalled();
+        });
     });
 });

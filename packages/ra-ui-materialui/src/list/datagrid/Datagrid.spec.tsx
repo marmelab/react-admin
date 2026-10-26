@@ -19,6 +19,7 @@ import { Datagrid } from './Datagrid';
 import {
     AccessControl,
     FullApp,
+    RowStyle,
     SelectAllButton,
     Standalone,
 } from './Datagrid.stories';
@@ -327,6 +328,14 @@ describe('<Datagrid />', () => {
             expect(contextValue.onToggleItem).toHaveBeenCalledTimes(3);
             expect(contextValue.onSelect).toHaveBeenCalledTimes(1);
         });
+    });
+
+    it('should apply rowStyle to the rows', async () => {
+        render(<RowStyle />);
+        const row = (await screen.findByText('Pride and Predjudice')).closest(
+            'tr'
+        );
+        expect(row).toHaveStyle({ backgroundColor: '#eee' });
     });
 
     it('should display a message when there is no result', () => {

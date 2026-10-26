@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import {
+    fireEvent,
+    render,
+    screen,
+    waitFor,
+    within,
+} from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import {
@@ -389,20 +395,21 @@ describe('DataTable', () => {
         });
     });
     describe('accessibility', () => {
-        it('should expose clickable rows as focusable buttons', async () => {
+        it('should make clickable rows focusable', async () => {
             render(<FullApp rowClick="expand" />);
-            await screen.findByText('War and Peace');
-            const row = screen.getByText('War and Peace').closest('tr');
-            expect(row).toHaveAttribute('role', 'button');
-            expect(row).toHaveAttribute('tabindex', '0');
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            )!;
+            row.focus();
+            expect(row).toHaveFocus();
         });
-        it('should not expose non clickable rows as buttons', async () => {
+        it('should not make non clickable rows focusable', async () => {
             render(<RowClickFalse />);
             const row = (await screen.findByText('War and Peace')).closest(
                 'tr'
-            );
-            expect(row).not.toHaveAttribute('role');
-            expect(row).not.toHaveAttribute('tabindex');
+            )!;
+            row.focus();
+            expect(row).not.toHaveFocus();
         });
         it.each([{ key: 'Enter' }, { key: ' ' }])(
             'should trigger the row click when pressing $key',
@@ -416,5 +423,15 @@ describe('DataTable', () => {
                 await screen.findByText('Expand: War and Peace');
             }
         );
+        it('should not trigger the row click when pressing a key on a control inside the row', async () => {
+            render(<FullApp rowClick="expand" />);
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            );
+            fireEvent.keyDown(within(row!).getByRole('checkbox'), {
+                key: ' ',
+            });
+            expect(screen.queryByText('Expand: War and Peace')).toBeNull();
+        });
     });
 });
