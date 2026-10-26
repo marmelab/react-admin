@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import isEqual from 'lodash/isEqual.js';
 import { RaRecord } from '../types';
 import { useLocation, RouterLocation } from '../routing';
-import { parse } from '../util/vendor/queryString';
+import { parse } from '../util/queryString';
 
 /**
  * A hook that returns the record to use to override the values in a form

@@ -29,6 +29,8 @@ jobs:
       run: make lint        
     - name: Build
       run: make build
+    - name: Check that the ra-core CommonJS build does not require the ESM-only query-string
+      run: "! grep -q 'require(\"query-string\")' packages/ra-core/dist/util/queryString.cjs"
     - name: Zip packages build artifact
       run: zip packages-build.zip -r examples/data-generator/dist packages/*/dist
     - name: Upload packages build artifact

@@ -14,7 +14,7 @@ import {
 import { SORT_DESC, SORT_ASC } from './queryReducer';
 import { TestMemoryRouter } from '../../routing';
 import { memoryStore } from '../../store';
-import { parse, stringify } from '../../util/vendor/queryString';
+import { parse, stringify } from '../../util/queryString';
 
 describe('useListParams', () => {
     describe('getQuery', () => {

@@ -709,7 +709,7 @@ const dataProvider = {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
 -       return fetch(url, { method: 'GET' });
 +       return fetchJson(url, { method: 'GET' });
     },
@@ -833,7 +833,6 @@ Here is an example implementation, that you can use as a base for your own Data 
 
 ```js
 import { fetchUtils } from 'ra-core';
-import { stringify } from 'query-string';
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
@@ -847,7 +846,7 @@ export default {
             range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
             filter: JSON.stringify(params.filter),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
@@ -865,7 +864,7 @@ export default {
         const query = {
             filter: JSON.stringify({ ids: params.ids }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const { json } = await httpClient(url, { signal: params.signal });
         return { data: json };
     },
@@ -881,7 +880,7 @@ export default {
                 [params.target]: params.id,
             }),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const { json, headers } = await httpClient(url, { signal: params.signal });
         return {
             data: json,
@@ -910,7 +909,7 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const { json } = await httpClient(url, {
             method: 'PUT',
             body: JSON.stringify(params.data),
@@ -930,7 +929,7 @@ export default {
         const query = {
             filter: JSON.stringify({ id: params.ids}),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
         const { json } = await httpClient(url, {
             method: 'DELETE',
             body: JSON.stringify(params.data),

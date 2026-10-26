@@ -695,8 +695,7 @@ For instance, if you have a list of posts ordered by publication date, and you w
 {% raw %}
 ```tsx
 import Button from '@mui/material/Button';
-import { LinkBase } from 'react-admin';
-import { stringify } from 'query-string';
+import { LinkBase, fetchUtils } from 'react-admin';
 
 const SortByViews = () => (
     <Button
@@ -704,7 +703,7 @@ const SortByViews = () => (
         component={LinkBase}
         to={{
             pathname: '/posts',
-            search: stringify({
+            search: fetchUtils.queryParameters({
                 page: 1,
                 perPage: 25,
                 sort: 'nb_views',

@@ -35,7 +35,8 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent"
+        "build": "zshy --silent && yarn build:cjs-query-string",
+        "build:cjs-query-string": "esbuild dist/util/queryString.js --bundle --format=cjs --platform=browser --target=es2020 --outfile=dist/util/queryString.cjs --allow-overwrite --log-level=warning --banner:js=\"/* Bundled from query-string (MIT, https://github.com/sindresorhus/query-string) for the CommonJS build only. */\""
     },
     "devDependencies": {
         "@hookform/resolvers": "^5.2.2",
@@ -47,6 +48,7 @@
         "@types/node": "^20.10.7",
         "@types/node-polyglot": "^0.4.31",
         "@types/react": "^18.3.3",
+        "esbuild": "^0.28.1",
         "expect": "^27.4.6",
         "ignore-styles": "~5.0.1",
         "jscodeshift": "^0.15.2",
@@ -74,6 +76,7 @@
         "inflection": "^3.0.0",
         "jsonexport": "^3.2.0",
         "lodash": "^4.17.21",
+        "query-string": "^9.5.1",
         "react-error-boundary": "^4.0.13",
         "react-is": "^18.2.0 || ^19.0.0"
     },

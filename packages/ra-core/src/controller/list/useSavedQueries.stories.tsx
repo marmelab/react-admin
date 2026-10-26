@@ -19,7 +19,7 @@ import {
     BooleanInput,
     Pagination,
 } from '../../test-ui';
-import { stringify } from '../../util/vendor/queryString';
+import { stringify } from '../../util/queryString';
 
 export default { title: 'ra-core/controller/list/useSavedQueries' };
 

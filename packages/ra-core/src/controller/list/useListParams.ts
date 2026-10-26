@@ -15,7 +15,7 @@ import queryReducer, {
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import { useIsMounted } from '../../util/hooks';
-import { parse, stringify } from '../../util/vendor/queryString';
+import { parse, stringify } from '../../util/queryString';
 
 export interface ListParams {
     sort: string;

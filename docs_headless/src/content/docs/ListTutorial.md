@@ -475,13 +475,13 @@ For instance, if you have a list of posts ordered by publication date, and you w
 
 ```tsx
 import { Link } from 'react-router-dom';
-import { stringify } from 'query-string';
+import { fetchUtils } from 'ra-core';
 
 const SortByViews = () => (
     <Link
         to={{
             pathname: '/posts',
-            search: stringify({
+            search: fetchUtils.queryParameters({
                 page: 1,
                 perPage: 25,
                 sort: 'nb_views',
