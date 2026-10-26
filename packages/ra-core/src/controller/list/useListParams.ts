@@ -1,4 +1,6 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
+import queryString from 'query-string';
+const { parse, stringify } = queryString;
 import lodashDebounce from 'lodash/debounce.js';
 import isEqual from 'lodash/isEqual.js';
 import { useStore } from '../../store';
@@ -15,7 +17,6 @@ import queryReducer, {
 import { SortPayload, FilterPayload } from '../../types';
 import removeEmpty from '../../util/removeEmpty';
 import { useIsMounted } from '../../util/hooks';
-import { parse, stringify } from '../../util/vendor/queryString';
 
 export interface ListParams {
     sort: string;

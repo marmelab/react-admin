@@ -1,5 +1,6 @@
 import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
+import queryString from 'query-string';
 import isEqual from 'lodash/isEqual.js';
 import {
     TestMemoryRouter,
@@ -19,7 +20,6 @@ import {
     BooleanInput,
     Pagination,
 } from '../../test-ui';
-import { stringify } from '../../util/vendor/queryString';
 
 export default { title: 'ra-core/controller/list/useSavedQueries' };
 
@@ -72,7 +72,7 @@ const SavedQueries = () => {
 
     const applyQuery = (savedQuery: SavedQuery) => {
         navigate({
-            search: stringify({
+            search: queryString.stringify({
                 filter: JSON.stringify(savedQuery.value.filter),
                 sort: savedQuery.value.sort?.field,
                 order: savedQuery.value.sort?.order,
