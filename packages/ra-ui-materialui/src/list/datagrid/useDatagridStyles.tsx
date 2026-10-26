@@ -53,6 +53,10 @@ export const DatagridRoot = styled('div', {
     [`& .${DatagridClasses.row}`]: {},
     [`& .${DatagridClasses.clickableRow}`]: {
         cursor: 'pointer',
+        '&:focus-visible': {
+            outline: `2px solid ${(theme.vars || theme).palette.primary.main}`,
+            outlineOffset: -2,
+        },
     },
     [`& .${DatagridClasses.rowEven}`]: {},
     [`& .${DatagridClasses.rowOdd}`]: {},

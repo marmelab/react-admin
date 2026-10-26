@@ -410,6 +410,14 @@ describe('DataTable', () => {
             )!;
             row.focus();
             expect(row).not.toHaveFocus();
+            expect(row).not.toHaveAccessibleDescription();
+        });
+        it('should describe the row action to screen readers', async () => {
+            render(<FullApp rowClick="expand" />);
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            );
+            expect(row).toHaveAccessibleDescription('Expand');
         });
         it.each([{ key: 'Enter' }, { key: ' ' }])(
             'should trigger the row click when pressing $key',

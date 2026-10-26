@@ -27,6 +27,7 @@ import DatagridCell from './DatagridCell';
 import ExpandRowButton from './ExpandRowButton';
 import { DatagridClasses } from './useDatagridStyles';
 import { useDatagridContext } from './useDatagridContext';
+import { useRowClickDescription } from './useRowClickDescription';
 import { RowClickFunction } from '../types';
 import type { DatagridField } from './types';
 
@@ -166,6 +167,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
         ]
     );
     const isRowClickable = Boolean(rowClick ?? hasDetailView);
+    const rowClickDescription = useRowClickDescription(rowClick);
 
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent<HTMLTableRowElement>) => {
@@ -194,6 +196,9 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 onClick={handleClick}
                 onKeyDown={isRowClickable ? handleKeyDown : undefined}
                 tabIndex={isRowClickable ? 0 : undefined}
+                aria-description={
+                    isRowClickable ? rowClickDescription : undefined
+                }
                 {...rest}
             >
                 {expand && (

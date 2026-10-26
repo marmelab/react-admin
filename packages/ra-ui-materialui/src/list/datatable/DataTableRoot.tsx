@@ -53,6 +53,10 @@ export const DataTableRoot = styled('div', {
     [`& .${DataTableClasses.row}`]: {},
     [`& .${DataTableClasses.clickableRow}`]: {
         cursor: 'pointer',
+        '&:focus-visible': {
+            outline: `2px solid ${(theme.vars || theme).palette.primary.main}`,
+            outlineOffset: -2,
+        },
     },
     [`& .${DataTableClasses.rowEven}`]: {},
     [`& .${DataTableClasses.rowOdd}`]: {},
