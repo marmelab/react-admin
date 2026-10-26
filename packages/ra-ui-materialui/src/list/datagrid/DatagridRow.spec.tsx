@@ -5,6 +5,7 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
     ResourceDefinitionContextProvider,
     useRecordContext,
@@ -540,35 +541,19 @@ describe('<DatagridRow />', () => {
     });
 
     describe('accessibility', () => {
-        it('should make a clickable row focusable', () => {
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow {...defaultProps} rowClick="edit">
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            const row = screen.getByText('hello').closest('tr')!;
-            row.focus();
-            expect(row).toHaveFocus();
-        });
+        const tabTo = async (user, element: HTMLElement) => {
+            for (let i = 0; i < 20 && document.activeElement !== element; i++) {
+                await user.tab();
+            }
+        };
 
-        it('should not make a non clickable row focusable', () => {
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow {...defaultProps} rowClick={false}>
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            const row = screen.getByText('hello').closest('tr')!;
-            row.focus();
-            expect(row).not.toHaveFocus();
-        });
-
-        it.each([{ key: 'Enter' }, { key: ' ' }])(
-            'should trigger the row click when pressing $key',
+        it.each([
+            { name: 'Enter', key: '{Enter}' },
+            { name: 'Space', key: ' ' },
+        ])(
+            'should let keyboard users reach a clickable row with Tab and activate it with $name',
             async ({ key }) => {
+                const user = userEvent.setup();
                 const spy = jest.fn();
                 render(
                     <LocationSpy spy={spy}>
@@ -579,9 +564,10 @@ describe('<DatagridRow />', () => {
                         </RecordContextProvider>
                     </LocationSpy>
                 );
-                fireEvent.keyDown(screen.getByText('hello').closest('tr')!, {
-                    key,
-                });
+                const row = screen.getByText('hello').closest('tr')!;
+                await tabTo(user, row);
+                expect(row).toHaveFocus();
+                await user.keyboard(key);
                 await waitFor(() => {
                     expect(spy).toHaveBeenCalledWith(
                         expect.objectContaining({ pathname: '/posts/15' })
@@ -590,21 +576,40 @@ describe('<DatagridRow />', () => {
             }
         );
 
-        it('should not trigger the row click when pressing a key on a control inside the row', () => {
+        it('should not let keyboard users reach a non clickable row', async () => {
+            const user = userEvent.setup();
+            render(
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow {...defaultProps} rowClick={false}>
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
+            );
+            const row = screen.getByText('hello').closest('tr')!;
+            await tabTo(user, row);
+            expect(row).not.toHaveFocus();
+        });
+
+        it('should let keyboard users select a row with Space on its checkbox without triggering the row click', async () => {
+            const user = userEvent.setup();
             const rowClick = jest.fn();
+            const onToggleItem = jest.fn();
             render(
                 <RecordContextProvider value={defaultRecord}>
                     <DatagridRow
                         {...defaultProps}
                         rowClick={rowClick}
                         hasBulkActions
-                        onToggleItem={jest.fn()}
+                        onToggleItem={onToggleItem}
                     >
                         <TitleField />
                     </DatagridRow>
                 </RecordContextProvider>
             );
-            fireEvent.keyDown(screen.getByRole('checkbox'), { key: ' ' });
+            const checkbox = screen.getByRole('checkbox');
+            await tabTo(user, checkbox);
+            await user.keyboard(' ');
+            expect(onToggleItem).toHaveBeenCalled();
             expect(rowClick).not.toHaveBeenCalled();
         });
     });
