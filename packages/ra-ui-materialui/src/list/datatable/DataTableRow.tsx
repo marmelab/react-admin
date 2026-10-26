@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect,
     useCallback,
+    useId,
 } from 'react';
 import clsx from 'clsx';
 import {
@@ -163,6 +164,9 @@ export const DataTableRow = React.memo(
         );
         const isRowClickable = Boolean(rowClick ?? hasDetailView);
         const { storeKey } = useDataTableStoreContext();
+        // Chrome doesn't name table rows from their content: labelling the row
+        // with itself makes screen readers read its cells when it gets focus
+        const rowElementId = useId();
 
         const handleKeyDown = useCallback(
             (event: React.KeyboardEvent<HTMLTableRowElement>) => {
@@ -190,6 +194,8 @@ export const DataTableRow = React.memo(
                     onClick={handleClick}
                     onKeyDown={isRowClickable ? handleKeyDown : undefined}
                     tabIndex={isRowClickable ? 0 : undefined}
+                    id={isRowClickable ? rowElementId : undefined}
+                    aria-labelledby={isRowClickable ? rowElementId : undefined}
                     aria-describedby={
                         isRowClickable
                             ? getRowClickDescriptionId(storeKey)

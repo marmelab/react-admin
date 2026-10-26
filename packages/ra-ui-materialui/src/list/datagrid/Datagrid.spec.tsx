@@ -335,12 +335,13 @@ describe('<Datagrid />', () => {
         { rowClick: 'expand', description: 'Expand' },
         { rowClick: () => 'edit', description: 'Open' },
     ])(
-        'should describe the row action to screen readers ($description)',
+        'should announce the row content and its action to screen readers ($description)',
         async ({ rowClick, description }) => {
             render(<FullApp rowClick={rowClick} />);
             const row = (await screen.findByText('War and Peace')).closest(
                 'tr'
             );
+            expect(row).toHaveAccessibleName(/War and Peace/);
             expect(row).toHaveAccessibleDescription(description);
         }
     );

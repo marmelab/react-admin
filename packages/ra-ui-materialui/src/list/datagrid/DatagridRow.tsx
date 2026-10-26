@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect,
     useCallback,
+    useId,
     memo,
     FC,
     ReactNode,
@@ -166,6 +167,9 @@ const DatagridRow: React.ForwardRefExoticComponent<
         ]
     );
     const isRowClickable = Boolean(rowClick ?? hasDetailView);
+    // Chrome doesn't name table rows from their content: labelling the row
+    // with itself makes screen readers read its cells when it gets focus
+    const rowElementId = useId();
 
     const handleKeyDown = useCallback(
         (event: React.KeyboardEvent<HTMLTableRowElement>) => {
@@ -194,6 +198,8 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 onClick={handleClick}
                 onKeyDown={isRowClickable ? handleKeyDown : undefined}
                 tabIndex={isRowClickable ? 0 : undefined}
+                id={isRowClickable ? rowElementId : undefined}
+                aria-labelledby={isRowClickable ? rowElementId : undefined}
                 aria-describedby={
                     isRowClickable ? context.rowClickDescriptionId : undefined
                 }

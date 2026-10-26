@@ -830,7 +830,7 @@ export const PostList = () => (
 - `false` to do nothing
 - a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
-Clickable rows are keyboard accessible: users can focus them with the Tab key and trigger the row action with Enter or Space. Screen readers announce the action (e.g. "Edit") as the row description.
+Clickable rows are keyboard accessible: users can focus them with the Tab key and trigger the row action with Enter or Space. When a row gets the focus, screen readers read its content followed by the action (e.g. "Edit").
 
 **Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows redirecting to either the Edit or Show view after checking a condition on the record. For example:
 
