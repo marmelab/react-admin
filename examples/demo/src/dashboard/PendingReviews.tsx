@@ -18,8 +18,10 @@ import {
     useGetList,
     useTranslate,
     useIsDataLoaded,
-    fetchUtils,
 } from 'react-admin';
+
+import queryString from 'query-string';
+const { stringify } = queryString;
 
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';
@@ -51,7 +53,7 @@ const PendingReviews = () => {
         <CardWithIcon
             to={{
                 pathname: '/reviews',
-                search: fetchUtils.queryParameters({
+                search: stringify({
                     filter: JSON.stringify({ status: 'pending' }),
                 }),
             }}

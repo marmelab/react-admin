@@ -23,6 +23,9 @@
     "scripts": {
         "build": "zshy --silent"
     },
+    "dependencies": {
+        "query-string": "^9.5.1"
+    },
     "devDependencies": {
         "ra-core": "^5.15.5",
         "typescript": "^5.1.3",

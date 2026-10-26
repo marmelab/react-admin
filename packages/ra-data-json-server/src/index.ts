@@ -1,3 +1,5 @@
+import queryString from 'query-string';
+const { stringify } = queryString;
 import { fetchUtils, DataProvider } from 'ra-core';
 
 /**
@@ -48,7 +50,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             _end: page != null && perPage != null ? page * perPage : undefined,
             _embed: params?.meta?.embed,
         };
-        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         const { headers, json } = await httpClient(url, {
             signal: params?.signal,
@@ -81,7 +83,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             id: params.ids,
             _embed: params?.meta?.embed,
         };
-        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
         const { json } = await httpClient(url, { signal: params?.signal });
         return { data: json };
     },
@@ -98,7 +100,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             _end: page * perPage,
             _embed: params?.meta?.embed,
         };
-        const url = `${apiUrl}/${resource}?${fetchUtils.queryParameters(query)}`;
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
 
         const { headers, json } = await httpClient(url, {
             signal: params?.signal,

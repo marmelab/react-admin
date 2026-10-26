@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { memo, ReactNode } from 'react';
 import Queue from '@mui/icons-material/Queue';
+import queryString from 'query-string';
+const { stringify } = queryString;
 import {
     useResourceContext,
     useRecordContext,
     useCreatePath,
     LinkBase,
-    fetchUtils,
 } from 'ra-core';
 import {
     ComponentsOverrides,
@@ -43,7 +44,7 @@ export const CloneButton = React.forwardRef(function CloneButton(
                 record
                     ? {
                           pathname,
-                          search: fetchUtils.queryParameters({
+                          search: stringify({
                               source: JSON.stringify(omitId(record)),
                           }),
                       }

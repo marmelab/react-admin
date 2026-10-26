@@ -31,8 +31,9 @@ import {
     extractValidSavedQueries,
     useSavedQueries,
     useNavigate,
-    fetchUtils,
 } from 'ra-core';
+import queryString from 'query-string';
+const { stringify } = queryString;
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';
@@ -229,7 +230,7 @@ export const FilterButton = (inProps: FilterButtonProps) => {
                         <MenuItem
                             onClick={(): void => {
                                 navigate({
-                                    search: fetchUtils.queryParameters({
+                                    search: stringify({
                                         filter: JSON.stringify(
                                             savedQuery.value.filter
                                         ),
