@@ -1,5 +1,9 @@
 import { useTranslate } from 'ra-core';
 
+// DataTable requires a unique storeKey per page, so it doubles as a unique id prefix
+export const getRowClickDescriptionId = (storeKey: string) =>
+    `${storeKey}-row-click-description`;
+
 /**
  * Describe the row click action to screen readers.
  * Functions and custom paths can't be resolved before the click, hence the generic 'Open'.

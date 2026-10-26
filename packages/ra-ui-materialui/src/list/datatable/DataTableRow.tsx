@@ -4,7 +4,6 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    useContext,
 } from 'react';
 import clsx from 'clsx';
 import {
@@ -18,6 +17,7 @@ import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import {
     useDataTableCallbacksContext,
     useDataTableConfigContext,
+    useDataTableStoreContext,
     useExpanded,
     useResourceContext,
     useRecordContext,
@@ -27,8 +27,8 @@ import {
 } from 'ra-core';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
+import { getRowClickDescriptionId } from '../datagrid/useRowClickDescription';
 import { DataTableClasses } from './DataTableRoot';
-import { RowClickDescriptionIdContext } from './RowClickDescriptionIdContext';
 import { SelectRowCheckbox } from './SelectRowCheckbox';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
@@ -162,7 +162,7 @@ export const DataTableRow = React.memo(
             ]
         );
         const isRowClickable = Boolean(rowClick ?? hasDetailView);
-        const rowClickDescriptionId = useContext(RowClickDescriptionIdContext);
+        const { storeKey } = useDataTableStoreContext();
 
         const handleKeyDown = useCallback(
             (event: React.KeyboardEvent<HTMLTableRowElement>) => {
@@ -191,7 +191,9 @@ export const DataTableRow = React.memo(
                     onKeyDown={isRowClickable ? handleKeyDown : undefined}
                     tabIndex={isRowClickable ? 0 : undefined}
                     aria-describedby={
-                        isRowClickable ? rowClickDescriptionId : undefined
+                        isRowClickable
+                            ? getRowClickDescriptionId(storeKey)
+                            : undefined
                     }
                     {...rest}
                 >
