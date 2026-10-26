@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect,
     useCallback,
+    useContext,
 } from 'react';
 import clsx from 'clsx';
 import {
@@ -26,8 +27,8 @@ import {
 } from 'ra-core';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
-import { useRowClickDescription } from '../datagrid/useRowClickDescription';
 import { DataTableClasses } from './DataTableRoot';
+import { RowClickDescriptionIdContext } from './RowClickDescriptionIdContext';
 import { SelectRowCheckbox } from './SelectRowCheckbox';
 
 const computeNbColumns = (expand, children, hasBulkActions) =>
@@ -161,7 +162,7 @@ export const DataTableRow = React.memo(
             ]
         );
         const isRowClickable = Boolean(rowClick ?? hasDetailView);
-        const rowClickDescription = useRowClickDescription(rowClick);
+        const rowClickDescriptionId = useContext(RowClickDescriptionIdContext);
 
         const handleKeyDown = useCallback(
             (event: React.KeyboardEvent<HTMLTableRowElement>) => {
@@ -189,8 +190,8 @@ export const DataTableRow = React.memo(
                     onClick={handleClick}
                     onKeyDown={isRowClickable ? handleKeyDown : undefined}
                     tabIndex={isRowClickable ? 0 : undefined}
-                    aria-description={
-                        isRowClickable ? rowClickDescription : undefined
+                    aria-describedby={
+                        isRowClickable ? rowClickDescriptionId : undefined
                     }
                     {...rest}
                 >

@@ -564,28 +564,7 @@ describe('<DatagridRow />', () => {
             const row = screen.getByText('hello').closest('tr')!;
             row.focus();
             expect(row).not.toHaveFocus();
-            expect(row).not.toHaveAccessibleDescription();
         });
-
-        it.each([
-            { rowClick: 'edit', description: 'ra.action.edit' },
-            { rowClick: 'expand', description: 'ra.action.expand' },
-            { rowClick: () => 'edit', description: 'ra.action.open' },
-        ])(
-            'should describe the row action to screen readers ($description)',
-            ({ rowClick, description }) => {
-                render(
-                    <RecordContextProvider value={defaultRecord}>
-                        <DatagridRow {...defaultProps} rowClick={rowClick}>
-                            <TitleField />
-                        </DatagridRow>
-                    </RecordContextProvider>
-                );
-                expect(
-                    screen.getByText('hello').closest('tr')
-                ).toHaveAccessibleDescription(description);
-            }
-        );
 
         it.each([{ key: 'Enter' }, { key: ' ' }])(
             'should trigger the row click when pressing $key',

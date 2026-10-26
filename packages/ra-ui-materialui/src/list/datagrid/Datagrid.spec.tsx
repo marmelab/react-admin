@@ -330,6 +330,27 @@ describe('<Datagrid />', () => {
         });
     });
 
+    it.each([
+        { rowClick: 'edit', description: 'Edit' },
+        { rowClick: 'expand', description: 'Expand' },
+        { rowClick: () => 'edit', description: 'Open' },
+    ])(
+        'should describe the row action to screen readers ($description)',
+        async ({ rowClick, description }) => {
+            render(<FullApp rowClick={rowClick} />);
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            );
+            expect(row).toHaveAccessibleDescription(description);
+        }
+    );
+
+    it('should not describe non clickable rows', async () => {
+        render(<FullApp rowClick={false} />);
+        const row = (await screen.findByText('War and Peace')).closest('tr');
+        expect(row).not.toHaveAccessibleDescription();
+    });
+
     it('should apply rowStyle to the rows', async () => {
         render(<RowStyle />);
         const row = (await screen.findByText('Pride and Predjudice')).closest(

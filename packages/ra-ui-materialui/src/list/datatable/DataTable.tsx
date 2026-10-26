@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
     isValidElement,
+    useId,
     type FC,
     type ComponentType,
     type ReactNode,
@@ -38,6 +39,8 @@ import { DataTableColumn } from './DataTableColumn';
 import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { ColumnsSelector } from './ColumnsSelector';
 import { DataTableRowSxContext } from './DataTableRowSxContext';
+import { RowClickDescriptionIdContext } from './RowClickDescriptionIdContext';
+import { useRowClickDescription } from '../datagrid/useRowClickDescription';
 
 const DefaultFoot = (_props: { children: ReactNode }) => null;
 const PREFIX = 'RaDataTable';
@@ -162,6 +165,9 @@ export const DataTable = React.forwardRef(function DataTable<
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
+    const rowClickDescriptionId = useId();
+    const rowClickDescription = useRowClickDescription(props.rowClick);
+
     const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
     const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
     const columns = columnRanks
@@ -192,37 +198,44 @@ export const DataTable = React.forwardRef(function DataTable<
             }
         >
             <DataTableRowSxContext.Provider value={rowSx}>
-                <DataTableRoot
-                    sx={sx}
-                    className={clsx(DataTableClasses.root, className)}
+                <RowClickDescriptionIdContext.Provider
+                    value={rowClickDescriptionId}
                 >
-                    {/* the test on onToggleItem prevents error when Datable is used in standalone mode */}
-                    {onToggleItem &&
-                        (bulkActionsToolbar ??
-                            (bulkActionButtons !== false && (
-                                <BulkActionsToolbar>
-                                    {isValidElement(bulkActionButtons)
-                                        ? bulkActionButtons
-                                        : defaultBulkActionButtons}
-                                </BulkActionsToolbar>
-                            )))}
-                    <div className={DataTableClasses.tableWrapper}>
-                        <Table
-                            ref={ref}
-                            className={DataTableClasses.table}
-                            size={size}
-                            {...sanitizeRestProps(rest)}
-                        >
-                            <DataTableRenderContext.Provider value="header">
-                                <TableHead>{columns}</TableHead>
-                            </DataTableRenderContext.Provider>
-                            <TableBody>{columns}</TableBody>
-                            <DataTableRenderContext.Provider value="footer">
-                                <TableFoot>{columns}</TableFoot>
-                            </DataTableRenderContext.Provider>
-                        </Table>
-                    </div>
-                </DataTableRoot>
+                    <DataTableRoot
+                        sx={sx}
+                        className={clsx(DataTableClasses.root, className)}
+                    >
+                        {/* the test on onToggleItem prevents error when Datable is used in standalone mode */}
+                        {onToggleItem &&
+                            (bulkActionsToolbar ??
+                                (bulkActionButtons !== false && (
+                                    <BulkActionsToolbar>
+                                        {isValidElement(bulkActionButtons)
+                                            ? bulkActionButtons
+                                            : defaultBulkActionButtons}
+                                    </BulkActionsToolbar>
+                                )))}
+                        <div className={DataTableClasses.tableWrapper}>
+                            <Table
+                                ref={ref}
+                                className={DataTableClasses.table}
+                                size={size}
+                                {...sanitizeRestProps(rest)}
+                            >
+                                <DataTableRenderContext.Provider value="header">
+                                    <TableHead>{columns}</TableHead>
+                                </DataTableRenderContext.Provider>
+                                <TableBody>{columns}</TableBody>
+                                <DataTableRenderContext.Provider value="footer">
+                                    <TableFoot>{columns}</TableFoot>
+                                </DataTableRenderContext.Provider>
+                            </Table>
+                        </div>
+                        <span id={rowClickDescriptionId} hidden>
+                            {rowClickDescription}
+                        </span>
+                    </DataTableRoot>
+                </RowClickDescriptionIdContext.Provider>
             </DataTableRowSxContext.Provider>
             <DataTableRenderContext.Provider value="columnsSelector">
                 <ColumnsSelector>{children}</ColumnsSelector>
