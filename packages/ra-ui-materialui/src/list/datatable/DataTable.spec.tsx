@@ -12,9 +12,11 @@ import {
     Empty,
     Expand,
     ExpandSingle,
+    FullApp,
     IsRowExpandable,
     IsRowSelectable,
     NonPrimitiveData,
+    RowClickFalse,
     StandaloneDynamic,
     StandaloneStatic,
 } from './DataTable.stories';
@@ -385,5 +387,34 @@ describe('DataTable', () => {
             expect(checkboxes[1].getAttribute('disabled')).toEqual(null);
             expect(checkboxes[2].getAttribute('disabled')).toEqual('');
         });
+    });
+    describe('accessibility', () => {
+        it('should expose clickable rows as focusable buttons', async () => {
+            render(<FullApp rowClick="expand" />);
+            await screen.findByText('War and Peace');
+            const row = screen.getByText('War and Peace').closest('tr');
+            expect(row).toHaveAttribute('role', 'button');
+            expect(row).toHaveAttribute('tabindex', '0');
+        });
+        it('should not expose non clickable rows as buttons', async () => {
+            render(<RowClickFalse />);
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            );
+            expect(row).not.toHaveAttribute('role');
+            expect(row).not.toHaveAttribute('tabindex');
+        });
+        it.each([{ key: 'Enter' }, { key: ' ' }])(
+            'should trigger the row click when pressing $key',
+            async ({ key }) => {
+                render(<FullApp rowClick="expand" />);
+                const row = (await screen.findByText('War and Peace')).closest(
+                    'tr'
+                );
+                expect(screen.queryByText('Expand: War and Peace')).toBeNull();
+                fireEvent.keyDown(row!, { key });
+                await screen.findByText('Expand: War and Peace');
+            }
+        );
     });
 });

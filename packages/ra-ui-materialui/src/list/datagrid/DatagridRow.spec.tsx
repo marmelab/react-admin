@@ -538,4 +538,53 @@ describe('<DatagridRow />', () => {
             );
         });
     });
+
+    describe('accessibility', () => {
+        it('should expose a clickable row as a focusable button with an accessible name', () => {
+            render(
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow {...defaultProps} rowClick="edit">
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
+            );
+            const row = screen.getByRole('button', { name: 'ra.action.open' });
+            expect(row).toHaveAttribute('tabindex', '0');
+        });
+
+        it('should not expose a non clickable row as a button', () => {
+            render(
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow {...defaultProps} rowClick={false}>
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
+            );
+            expect(screen.queryByRole('button')).toBeNull();
+            const row = screen.getByText('hello').closest('tr');
+            expect(row).not.toHaveAttribute('tabindex');
+        });
+
+        it.each([{ key: 'Enter' }, { key: ' ' }])(
+            'should trigger the row click when pressing $key',
+            async ({ key }) => {
+                const spy = jest.fn();
+                render(
+                    <LocationSpy spy={spy}>
+                        <RecordContextProvider value={defaultRecord}>
+                            <DatagridRow {...defaultProps} rowClick="edit">
+                                <TitleField />
+                            </DatagridRow>
+                        </RecordContextProvider>
+                    </LocationSpy>
+                );
+                fireEvent.keyDown(screen.getByRole('button'), { key });
+                await waitFor(() => {
+                    expect(spy).toHaveBeenCalledWith(
+                        expect.objectContaining({ pathname: '/posts/15' })
+                    );
+                });
+            }
+        );
+    });
 });
