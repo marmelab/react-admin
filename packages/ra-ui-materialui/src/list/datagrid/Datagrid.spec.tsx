@@ -331,9 +331,9 @@ describe('<Datagrid />', () => {
     });
 
     it.each([
-        { rowClick: 'edit', description: 'Edit' },
-        { rowClick: 'expand', description: 'Expand' },
-        { rowClick: () => 'edit', description: 'Open' },
+        { rowClick: 'edit', description: 'Press Enter to edit' },
+        { rowClick: 'expand', description: 'Press Enter to expand' },
+        { rowClick: () => 'edit', description: 'Press Enter to open' },
     ])(
         'should announce the row content and its action to screen readers ($description)',
         async ({ rowClick, description }) => {

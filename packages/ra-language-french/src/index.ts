@@ -148,6 +148,13 @@ const frenchMessages: TranslationMessages = {
             next: 'Aller à la prochaine page',
             previous: 'Aller à la page précédente',
             skip_nav: 'Aller au contenu',
+            row_click: {
+                edit: 'Appuyez sur Entrée pour éditer',
+                show: 'Appuyez sur Entrée pour afficher',
+                expand: 'Appuyez sur Entrée pour étendre',
+                toggle_selection: 'Appuyez sur Entrée pour sélectionner',
+                open: 'Appuyez sur Entrée pour ouvrir',
+            },
         },
         sort: {
             sort_by: 'Trier par %{field_lower_first} %{order}',

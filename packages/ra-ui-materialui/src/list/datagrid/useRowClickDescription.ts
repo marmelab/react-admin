@@ -5,23 +5,31 @@ export const getRowClickDescriptionId = (storeKey: string) =>
     `${storeKey}-row-click-description`;
 
 /**
- * Describe the row click action to screen readers.
- * Functions and custom paths can't be resolved before the click, hence the generic 'Open'.
+ * Hint read by screen readers after the content of a focused clickable row.
+ * Functions and custom paths can't be resolved before the click, hence the generic 'open'.
  */
 export const useRowClickDescription = (rowClick: unknown) => {
     const translate = useTranslate();
     switch (rowClick) {
         case 'edit':
-            return translate('ra.action.edit', { _: 'Edit' });
+            return translate('ra.navigation.row_click.edit', {
+                _: 'Press Enter to edit',
+            });
         case 'show':
-            return translate('ra.action.show', { _: 'Show' });
+            return translate('ra.navigation.row_click.show', {
+                _: 'Press Enter to view',
+            });
         case 'expand':
-            return translate('ra.action.expand', { _: 'Expand' });
+            return translate('ra.navigation.row_click.expand', {
+                _: 'Press Enter to expand',
+            });
         case 'toggleSelection':
-            return translate('ra.action.select_row', {
-                _: 'Select this row',
+            return translate('ra.navigation.row_click.toggle_selection', {
+                _: 'Press Enter to select',
             });
         default:
-            return translate('ra.action.open', { _: 'Open' });
+            return translate('ra.navigation.row_click.open', {
+                _: 'Press Enter to open',
+            });
     }
 };

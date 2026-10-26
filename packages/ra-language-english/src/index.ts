@@ -142,6 +142,13 @@ const englishMessages: TranslationMessages = {
             previous: 'Go to previous page',
             page_rows_per_page: 'Rows per page:',
             skip_nav: 'Skip to content',
+            row_click: {
+                edit: 'Press Enter to edit',
+                show: 'Press Enter to view',
+                expand: 'Press Enter to expand',
+                toggle_selection: 'Press Enter to select',
+                open: 'Press Enter to open',
+            },
         },
         sort: {
             sort_by: 'Sort by %{field_lower_first} %{order}',

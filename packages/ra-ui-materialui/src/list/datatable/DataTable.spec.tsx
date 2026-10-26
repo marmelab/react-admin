@@ -433,9 +433,10 @@ describe('DataTable', () => {
             render(<FullApp rowClick="expand" />);
             const row = (await screen.findByText('War and Peace')).closest(
                 'tr'
-            );
+            )!;
             expect(row).toHaveAccessibleName(/War and Peace/);
-            expect(row).toHaveAccessibleDescription('Expand');
+            expect(row).toHaveAccessibleDescription('Press Enter to expand');
+            within(row).getByLabelText('Select this row');
         });
         it('should let keyboard users select a row with Space on its checkbox without triggering the row click', async () => {
             const user = userEvent.setup();
