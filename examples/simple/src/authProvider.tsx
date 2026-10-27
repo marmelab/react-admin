@@ -7,7 +7,7 @@ const DEFAULT_IDENTITY = {
 };
 
 const accessControlStrategies: Record<
-    string,
+    'admin' | 'user' | 'default',
     (params: { resource: string; action: string }) => boolean
 > = {
     admin: () => {
@@ -102,8 +102,12 @@ const authProvider: AuthProvider = {
         });
     },
     canAccess: async ({ resource, action }) => {
-        const role = localStorage.getItem('role') || 'default';
-        return accessControlStrategies[role]({ resource, action });
+        const role = localStorage.getItem('role');
+        const strategy =
+            role === 'admin' || role === 'user'
+                ? accessControlStrategies[role]
+                : accessControlStrategies.default;
+        return strategy({ resource, action });
     },
 };
 

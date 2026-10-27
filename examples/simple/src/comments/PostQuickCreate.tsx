@@ -22,7 +22,7 @@ import CancelButton from './PostQuickCreateCancelButton';
 import type { Post } from '../types';
 
 const PostQuickCreate = (props: Omit<FormProps<Post>, 'children'>) => {
-    const [create] = useCreate();
+    const [create] = useCreate<Post, Error>();
     const notify = useNotify();
 
     const { onCancel, onCreate } = useCreateSuggestionContext();
@@ -35,8 +35,8 @@ const PostQuickCreate = (props: Omit<FormProps<Post>, 'children'>) => {
                     onSuccess: data => {
                         onCreate(data);
                     },
-                    onError: (error: unknown) => {
-                        notify((error as Error).message, { type: 'error' });
+                    onError: error => {
+                        notify(error.message, { type: 'error' });
                     },
                 }
             );

@@ -19,6 +19,7 @@ import {
 } from 'react-admin';
 
 import Aside from './Aside';
+import type { User } from '../types';
 
 /**
  * Custom Toolbar for the Edit form
@@ -55,7 +56,7 @@ const UserEditForm = () => {
     }
     if (!save) return null;
 
-    const newSave = (values: any) =>
+    const newSave = (values: Partial<User>) =>
         new Promise(resolve => {
             if (values.name === 'test') {
                 return resolve({

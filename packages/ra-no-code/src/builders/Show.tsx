@@ -19,8 +19,11 @@ export const Show = () => (
 export const ShowForm = () => {
     const resource = useResourceContext();
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource!);
+    const [resourceConfiguration] = useResourceConfiguration(resource);
 
+    if (!resourceConfiguration) {
+        return null;
+    }
     return (
         <SimpleShowLayout>
             {(resourceConfiguration.fields ?? [])

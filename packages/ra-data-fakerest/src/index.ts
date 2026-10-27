@@ -229,11 +229,9 @@ export default (data, loggingEnabled = false, delay?: Delay): DataProvider => {
     const handle = async (type, resource, params): Promise<any> => {
         const collection = database.getCollection(resource);
         if (!collection && type !== 'create') {
-            const error = new UndefinedResourceError(
+            throw new UndefinedResourceError(
                 `Undefined collection "${resource}"`
             );
-            error.code = 1; // make that error detectable
-            throw error;
         }
         let response;
         try {
@@ -352,5 +350,5 @@ const removePrefetchedData = (data, prefetchParam?: string[]) => {
 const cleanupData = <T>(data: T): T => JSON.parse(JSON.stringify(data));
 
 class UndefinedResourceError extends Error {
-    code!: number;
+    code = 1; // make that error detectable
 }

@@ -32,7 +32,6 @@ module.exports = {
         '^.+\\.[tj]sx?$': [
             'ts-jest',
             {
-                isolatedModules: true,
                 useESM: true,
             },
         ],

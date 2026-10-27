@@ -35,8 +35,7 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent",
-        "typecheck": "tsc --noEmit"
+        "build": "zshy --silent"
     },
     "devDependencies": {
         "@hookform/resolvers": "^5.2.2",

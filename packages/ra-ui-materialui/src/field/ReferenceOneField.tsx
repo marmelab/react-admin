@@ -109,10 +109,9 @@ export interface ReferenceOneFieldProps<
     emptyText?: ReactNode;
     empty?: ReactNode;
     offline?: ReactNode;
-    queryOptions?: Omit<
-        UseGetManyReferenceHookOptions<ReferenceRecordType>,
-        'queryKey' | 'queryFn'
-    > & { meta?: any };
+    queryOptions?: UseGetManyReferenceHookOptions<ReferenceRecordType> & {
+        meta?: any;
+    };
 }
 
 // disable sorting on this field by default as its default source prop ('id')

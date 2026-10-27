@@ -8,7 +8,6 @@ import {
     useGetOne,
     useUpdate,
     UseGetOneHookValue,
-    HttpError,
     UseGetOneOptions,
     UseUpdateOptions,
 } from '../../dataProvider';
@@ -23,6 +22,7 @@ import {
     SaveHandlerCallbacks,
     useMutationMiddlewares,
 } from '../saveContext';
+import { hasValidationErrors } from '../saveContext/hasValidationErrors';
 
 /**
  * Prepare data for the Edit view.
@@ -199,11 +199,10 @@ export const useEditController = <
                 const [error] = args;
                 // Don't trigger a notification if this is a validation error
                 // (notification will be handled by the useNotifyIsFormInvalid hook)
-                const validationErrors = (error as HttpError)?.body?.errors;
-                const hasValidationErrors =
-                    !!validationErrors &&
-                    Object.keys(validationErrors).length > 0;
-                if (!hasValidationErrors || mutationMode !== 'pessimistic') {
+                if (
+                    !hasValidationErrors(error) ||
+                    mutationMode !== 'pessimistic'
+                ) {
                     notify(
                         typeof error === 'string'
                             ? error
@@ -270,8 +269,8 @@ export const useEditController = <
                         }
                     );
                 } catch (error) {
-                    if ((error as HttpError).body?.errors != null) {
-                        return (error as HttpError).body.errors;
+                    if (hasValidationErrors(error)) {
+                        return error.body.errors;
                     }
                 }
             }),

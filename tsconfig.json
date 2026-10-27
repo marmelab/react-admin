@@ -15,13 +15,13 @@
         "sourceMap": true /* Generates corresponding '.map' file. */,
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         // "outDir": "./lib",                        /* Redirect output structure to the directory. */
-        "rootDir": "./" /* TypeScript 6 requires this to be explicit; each package overrides it with "src". */,
+        "rootDir": "./" /* ts-jest compiles specs with this config, and TypeScript 6 fails with TS5011 without an explicit rootDir. Packages override it with "src". */,
         // "composite": true,                     /* Enable project compilation */
         // "removeComments": true,                /* Do not emit comments to output. */
         // "noEmit": true,                        /* Do not emit outputs. */
         // "importHelpers": true,                 /* Import emit helpers from 'tslib'. */
         // "downlevelIteration": true,            /* Provide full support for iterables in 'for-of', spread, and destructuring when targeting 'ES5' or 'ES3'. */
-        // "isolatedModules": true,               /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */
+        "isolatedModules": true /* Transpile each file as a separate module (similar to 'ts.transpileModule'). */,
 
         /* Strict Type-Checking Options */
         "strict": true /* Enable all strict type-checking options. */,

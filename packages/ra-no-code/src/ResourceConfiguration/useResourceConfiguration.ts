@@ -13,28 +13,30 @@ import { useResourcesConfiguration } from './useResourcesConfiguration';
  *
  * helpers.update({ label: 'Clients' });
  * helpers.remove();
- * @returns {[ResourceConfiguration, ResourceDefinitionStateActions]}
+ * @returns {[ResourceConfiguration | undefined, ResourceDefinitionStateActions]}
  */
 export const useResourceConfiguration = (
-    name: string
-): [ResourceConfiguration, ResourceDefinitionStateActions] => {
+    name: string | undefined
+): [ResourceConfiguration | undefined, ResourceDefinitionStateActions] => {
     const [resources, helpers] = useResourcesConfiguration();
 
     const update = useCallback(
         newDefinition => {
+            if (name == null) return;
             helpers.updateResource(name, newDefinition);
         },
         [helpers, name]
     );
 
     const remove = useCallback(() => {
+        if (name == null) return;
         helpers.removeResource(name);
     }, [helpers, name]);
 
     const context = useMemo<
-        [ResourceConfiguration, ResourceDefinitionStateActions]
+        [ResourceConfiguration | undefined, ResourceDefinitionStateActions]
     >(
-        () => [resources[name], { update, remove }],
+        () => [name != null ? resources[name] : undefined, { update, remove }],
         [name, remove, resources, update]
     );
 

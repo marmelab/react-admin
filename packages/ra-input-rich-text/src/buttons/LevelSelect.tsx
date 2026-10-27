@@ -23,22 +23,23 @@ export const LevelSelect = (props: LevelSelectProps) => {
     );
     const { size } = props;
 
-    const selectedOption = useEditorState({
-        editor,
-        selector: ({ editor }) => {
-            if (!editor) return options[0];
-            return (
-                options.find(option => {
-                    if (option.value === 'paragraph') {
-                        return editor.isActive('paragraph');
-                    }
-                    return editor.isActive('heading', {
-                        level: (option as HeadingLevelOption).level,
-                    });
-                }) ?? options[0]
-            );
-        },
-    });
+    const selectedOption =
+        useEditorState({
+            editor,
+            selector: ({ editor }) => {
+                if (!editor) return options[0];
+                return (
+                    options.find(option => {
+                        if (option.value === 'paragraph') {
+                            return editor.isActive('paragraph');
+                        }
+                        return editor.isActive('heading', {
+                            level: (option as HeadingLevelOption).level,
+                        });
+                    }) ?? options[0]
+                );
+            },
+        }) ?? options[0];
 
     const handleMenuItemClick = (
         event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -94,13 +95,9 @@ export const LevelSelect = (props: LevelSelectProps) => {
                         onClick={handleClickListItem}
                     >
                         <ListItemText
-                            primary={translate(
-                                (selectedOption ?? options[0]).label,
-                                {
-                                    _: (selectedOption ?? options[0])
-                                        .defaultLabel,
-                                }
-                            )}
+                            primary={translate(selectedOption.label, {
+                                _: selectedOption.defaultLabel,
+                            })}
                         />
                         <ArrowDropDownIcon />
                     </ListItemButton>

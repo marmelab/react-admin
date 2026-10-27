@@ -21,8 +21,7 @@
     "bugs": "https://github.com/marmelab/react-admin/issues",
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent",
-        "typecheck": "tsc --noEmit"
+        "build": "zshy --silent"
     },
     "dependencies": {
         "i18next": "^23.5.1",

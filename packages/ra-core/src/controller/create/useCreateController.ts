@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 
 import { useAuthenticated, useRequireAccess } from '../../auth';
-import { HttpError, useCreate, UseCreateOptions } from '../../dataProvider';
+import { useCreate, UseCreateOptions } from '../../dataProvider';
 import { useRedirect, RedirectionSideEffect } from '../../routing';
 import { useNotify } from '../../notification';
 import {
@@ -9,6 +9,7 @@ import {
     SaveHandlerCallbacks,
     useMutationMiddlewares,
 } from '../saveContext';
+import { hasValidationErrors } from '../saveContext/hasValidationErrors';
 import { useTranslate } from '../../i18n';
 import { Identifier, MutationMode, RaRecord, TransformData } from '../../types';
 import {
@@ -111,10 +112,7 @@ export const useCreateController = <
             const [error] = args;
             // Don't trigger a notification if this is a validation error
             // (notification will be handled by the useNotifyIsFormInvalid hook)
-            const validationErrors = (error as HttpError)?.body?.errors;
-            const hasValidationErrors =
-                !!validationErrors && Object.keys(validationErrors).length > 0;
-            if (!hasValidationErrors || mutationMode !== 'pessimistic') {
+            if (!hasValidationErrors(error) || mutationMode !== 'pessimistic') {
                 notify(
                     typeof error === 'string'
                         ? error
@@ -171,16 +169,8 @@ export const useCreateController = <
                         }
                     );
                 } catch (error) {
-                    if (
-                        error instanceof HttpError ||
-                        (typeof error === 'object' &&
-                            error !== null &&
-                            error.hasOwnProperty('body'))
-                    ) {
-                        const { body } = error as { body?: { errors?: any } };
-                        if (body?.errors != null) {
-                            return body.errors;
-                        }
+                    if (hasValidationErrors(error)) {
+                        return error.body.errors;
                     }
                 }
             }),

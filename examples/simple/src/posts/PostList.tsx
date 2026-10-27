@@ -62,9 +62,7 @@ const exporter = (posts: Post[]) => {
         ...post,
         backlinks: (post.backlinks ?? []).map(backlink => backlink.url),
     }));
-    return jsonExport(data, (err: any, csv: string) =>
-        downloadCSV(csv, 'posts')
-    );
+    return jsonExport(data, (_err, csv) => downloadCSV(csv, 'posts'));
 };
 
 const postListMobileActions = (
@@ -109,7 +107,7 @@ const postListActions = (
     </TopToolbar>
 );
 
-const rowClick = (_id: Identifier, _resource: string, record: any) => {
+const rowClick = (_id: Identifier, _resource: string, record: Post) => {
     if (record.commentable) {
         return 'edit';
     }

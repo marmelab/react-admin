@@ -1,10 +1,4 @@
-import {
-    alpha,
-    createTheme,
-    PaletteOptions,
-    Theme,
-    ThemeOptions,
-} from '@mui/material';
+import { alpha, createTheme, PaletteOptions, Theme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 /**
@@ -13,7 +7,7 @@ import { grey } from '@mui/material/colors';
  * Uses generous margins, outlined inputs and buttons, no uppercase, and an acid color palette.
  */
 
-const componentsOverrides = (theme: Theme): ThemeOptions['components'] => {
+const componentsOverrides = (theme: Theme): Theme['components'] => {
     const shadows = [
         alpha(theme.palette.primary.main, 0.2),
         alpha(theme.palette.primary.main, 0.1),
@@ -219,7 +213,7 @@ const createRadiantTheme = (palette: PaletteOptions) => {
         },
     };
     const theme = createTheme(themeOptions);
-    theme.components = componentsOverrides(theme) as Theme['components'];
+    theme.components = componentsOverrides(theme);
     return theme;
 };
 

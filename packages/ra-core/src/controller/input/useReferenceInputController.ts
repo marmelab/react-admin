@@ -128,10 +128,10 @@ export const useReferenceInputController = <RecordType extends RaRecord = any>(
         id: currentValue,
         reference,
         options: {
+            // @ts-expect-error the queryOptions for getList (otherQueryOptions) are not compatible with the ones for getMany
             enabled: currentValue != null && currentValue !== '',
             meta,
-            // the queryOptions for getMany and getList are not compatible
-            ...(otherQueryOptions as UseQueryOptions<RecordType[]>),
+            ...otherQueryOptions,
         },
     });
 

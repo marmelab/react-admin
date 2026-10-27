@@ -62,8 +62,10 @@ const OptionRenderer = (props: any) => {
     );
 };
 
-const inputText = (record: Post | { id: '@@ra-create'; name: string }) =>
-    'name' in record ? record.name : `${record.title} - ${record.id}`;
+const inputText = (record: Post) =>
+    record.id === '@@ra-create'
+        ? record.name
+        : `${record.title} - ${record.id}`;
 
 const CreatePost = () => {
     const { filter, onCancel, onCreate } = useCreateSuggestionContext();

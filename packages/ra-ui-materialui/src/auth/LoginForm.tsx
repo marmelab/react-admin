@@ -24,7 +24,7 @@ export const LoginForm = (inProps: LoginFormProps) => {
 
     const submit = (values: FieldValues) => {
         setLoading(true);
-        login(values as FormData, redirectTo)
+        login(values, redirectTo)
             .then(() => {
                 setLoading(false);
             })
@@ -130,11 +130,6 @@ export interface LoginFormProps {
     className?: string;
     sx?: SxProps<Theme>;
     children?: React.ReactNode;
-}
-
-interface FormData {
-    username: string;
-    password: string;
 }
 
 declare module '@mui/material/styles' {

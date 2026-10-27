@@ -27,12 +27,13 @@ export const LinkButtons = (props: Omit<ToggleButtonProps, 'value'>) => {
         }
 
         const url = window.prompt('URL');
+        if (url == null) return;
 
         editor
             .chain()
             .focus()
             .extendMarkRange('link')
-            .setLink({ href: url as string })
+            .setLink({ href: url })
             .run();
     };
 

@@ -17,9 +17,9 @@ export interface UseReferenceOneFieldControllerParams<
     reference: string;
     target: string;
     filter?: any;
-    queryOptions?: Omit<
-        UseGetManyReferenceHookOptions<ReferenceRecordType, ErrorType>,
-        'queryFn' | 'queryKey'
+    queryOptions?: UseGetManyReferenceHookOptions<
+        ReferenceRecordType,
+        ErrorType
     > & { meta?: any };
     record?: RecordType;
     sort?: SortPayload;

@@ -20,8 +20,11 @@ export const Create = () => (
 export const CreateForm = (props: Omit<SimpleFormProps, 'children'>) => {
     const resource = useResourceContext(props);
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource!);
+    const [resourceConfiguration] = useResourceConfiguration(resource);
 
+    if (!resourceConfiguration) {
+        return null;
+    }
     return (
         <SimpleForm {...props}>
             {(resourceConfiguration.fields ?? [])

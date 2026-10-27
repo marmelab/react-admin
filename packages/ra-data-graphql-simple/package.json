@@ -29,8 +29,7 @@
     ],
     "license": "MIT",
     "scripts": {
-        "build": "zshy --silent",
-        "typecheck": "tsc --noEmit"
+        "build": "zshy --silent"
     },
     "dependencies": {
         "@apollo/client": "^3.3.19",

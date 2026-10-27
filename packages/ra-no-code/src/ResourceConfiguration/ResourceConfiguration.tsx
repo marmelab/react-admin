@@ -30,12 +30,10 @@ import { FieldConfigurationTab } from './FieldConfigurationTab';
 
 export const ResourceConfigurationPage = () => {
     const { resource } = useParams<'resource'>();
-    const [resourceConfiguration, actions] = useResourceConfiguration(
-        resource!
-    );
+    const [resourceConfiguration, actions] = useResourceConfiguration(resource);
     const [activeField, setActiveField] = useState<FieldConfiguration>();
 
-    const save = (values: ResourceConfiguration) => {
+    const save = (values: Partial<ResourceConfiguration>) => {
         actions.update(values);
     };
     const saveContext = {
@@ -43,7 +41,7 @@ export const ResourceConfigurationPage = () => {
     };
 
     const handleTabChange = (event, newValue) => {
-        const newField = resourceConfiguration.fields?.find(
+        const newField = resourceConfiguration?.fields?.find(
             f => f.props.source === newValue
         );
         setActiveField(newField);
@@ -62,10 +60,7 @@ export const ResourceConfigurationPage = () => {
     return (
         <RecordContextProvider value={resourceConfiguration}>
             <SaveContextProvider value={saveContext}>
-                <Form
-                    onSubmit={values => save(values as ResourceConfiguration)}
-                    defaultValues={resourceConfiguration}
-                >
+                <Form onSubmit={save} defaultValues={resourceConfiguration}>
                     <StyledCard>
                         <CardHeader
                             avatar={

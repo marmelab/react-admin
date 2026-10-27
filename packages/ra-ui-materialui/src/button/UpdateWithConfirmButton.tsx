@@ -149,12 +149,7 @@ export const UpdateWithConfirmButton = React.forwardRef(
                     label={<>{label}</>}
                     // If users provide a ReactNode as label, its their responsibility to also provide an aria-label should they need it
                     aria-label={typeof label === 'string' ? label : undefined}
-                    {...sanitizeRestProps(
-                        rest as Omit<
-                            UpdateWithConfirmButtonProps,
-                            'resource' | 'selectedIds' | 'icon' | 'data'
-                        >
-                    )}
+                    {...sanitizeRestProps(rest)}
                 >
                     {icon}
                 </StyledButton>
@@ -171,13 +166,16 @@ export const UpdateWithConfirmButton = React.forwardRef(
     }
 );
 
-const sanitizeRestProps = ({
+const sanitizeRestProps = <
+    RecordType extends RaRecord = any,
+    MutationOptionsError extends Error = Error,
+>({
     label,
     mutationOptions,
     ...rest
 }: Omit<
-    UpdateWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon' | 'data'
+    UpdateWithConfirmButtonProps<RecordType, MutationOptionsError>,
+    'selectedIds' | 'icon' | 'data'
 >) => rest;
 
 export interface UpdateWithConfirmButtonProps<

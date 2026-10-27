@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createElement, ComponentType } from 'react';
-import { CoreAdminUI, CoreAdminUIProps, type CatchAllComponent } from 'ra-core';
+import { CoreAdminUI, CoreAdminUIProps } from 'ra-core';
 import { CssBaseline } from '@mui/material';
 
 import {
@@ -18,8 +18,7 @@ export const AdminUI = ({
     accessDenied = AccessDenied,
     authCallbackPage = AuthCallback,
     authenticationError = AuthenticationError,
-    // <CoreAdminRoutes> renders the catchAll without props; NotFound gets its title from the context
-    catchAll = NotFound as CatchAllComponent,
+    catchAll = NotFound,
     error = Error,
     layout = DefaultLayout,
     loading = LoadingPage,

@@ -21,8 +21,11 @@ export const List = () => (
 export const Datagrid = (props: Omit<DatagridProps, 'children'>) => {
     const resource = useResourceContext(props);
     const [resources] = useResourcesConfiguration();
-    const [resourceConfiguration] = useResourceConfiguration(resource!);
+    const [resourceConfiguration] = useResourceConfiguration(resource);
 
+    if (!resourceConfiguration) {
+        return null;
+    }
     return (
         <RaDatagrid rowClick="edit" {...props}>
             {(resourceConfiguration.fields ?? [])

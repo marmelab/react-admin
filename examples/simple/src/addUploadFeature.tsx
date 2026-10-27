@@ -1,14 +1,16 @@
 import type { DataProvider, UpdateParams } from 'react-admin';
+import type { Picture, Post } from './types';
 
-type Picture = { rawFile?: File; src?: string; title?: string };
+const isNewPicture = (p: Picture): p is Picture & { rawFile: File } =>
+    p.rawFile instanceof File;
 
 /**
  * For posts update only, convert uploaded image in base 64 and attach it to
  * the `picture` sent property, with `src` and `title` attributes.
  */
-const addUploadCapabilities = (dataProvider: DataProvider) => ({
+const addUploadCapabilities = (dataProvider: DataProvider): DataProvider => ({
     ...dataProvider,
-    update: (resource: string, params: UpdateParams) => {
+    update: (resource: string, params: UpdateParams<Post>) => {
         if (resource !== 'posts' || !params.data.pictures) {
             // fallback to the default implementation
             return dataProvider.update(resource, params);
@@ -16,11 +18,9 @@ const addUploadCapabilities = (dataProvider: DataProvider) => ({
         // The posts edition form uses a file upload widget for the pictures field.
         // Freshly dropped pictures are File objects
         // and must be converted to base64 strings
-        const newPictures = params.data.pictures.filter(
-            (p: Picture) => p.rawFile instanceof File
-        );
+        const newPictures = params.data.pictures.filter(isNewPicture);
         const formerPictures = params.data.pictures.filter(
-            (p: Picture) => !(p.rawFile instanceof File)
+            p => !isNewPicture(p)
         );
 
         return Promise.all(newPictures.map(convertFileToBase64))
@@ -50,10 +50,10 @@ const addUploadCapabilities = (dataProvider: DataProvider) => ({
  * That's not the most optimized way to store images in production, but it's
  * enough to illustrate the idea of data provider decoration.
  */
-const convertFileToBase64 = (file: Picture) =>
+const convertFileToBase64 = (file: Picture & { rawFile: File }) =>
     new Promise((resolve, reject) => {
         const reader = new FileReader();
-        reader.readAsDataURL(file.rawFile as File);
+        reader.readAsDataURL(file.rawFile);
 
         reader.onload = () => resolve(reader.result);
         reader.onerror = reject;

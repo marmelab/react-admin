@@ -10,7 +10,6 @@ import type {
     RaRecord,
     CreateParams,
     Identifier,
-    DataProvider,
     MutationMode,
     CreateResult,
 } from '../types';
@@ -196,27 +195,13 @@ export const useCreate = <
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        (customMutationFn
-                            ? (resource, params) =>
-                                  customMutationFnWithDataProviderResult(
-                                      resource,
-                                      params as Omit<
-                                          UseCreateMutateParams<RecordType>,
-                                          'resource'
-                                      >
-                                  )
-                            : dataProviderCreate.bind(
-                                  dataProvider
-                              )) as DataProvider['create']
+                        customMutationFnWithDataProviderResult
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useCreate:
                         // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
                         const { resource, ...params } = args;
-                        return mutateWithMiddlewares(
-                            resource as string,
-                            params as CreateParams<RecordType>
-                        ) as Promise<CreateResult<ResultRecordType>>;
+                        return mutateWithMiddlewares(resource, params);
                     };
                 }
 
@@ -300,8 +285,7 @@ export type UseCreateOptions<
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <
-        CreateFunctionType extends
-            DataProvider['create'] = DataProvider['create'],
+        CreateFunctionType extends (...args: any[]) => any,
     >(
         mutate: CreateFunctionType
     ) => (

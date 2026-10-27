@@ -14,7 +14,6 @@ import type {
     MutationMode,
     GetListResult as OriginalGetListResult,
     GetInfiniteListResult,
-    DataProvider,
     UpdateManyResult,
 } from '../types';
 import { useMutationWithMutationMode } from './useMutationWithMutationMode';
@@ -130,7 +129,13 @@ export const useUpdateMany = <
     >(
         { resource, ...params },
         {
-            ...mutationOptions,
+            // dataProvider.updateMany may resolve without data, but the public types
+            // of useUpdateMany promise an array of ids to keep backward compatibility
+            ...(mutationOptions as UseMutationOptions<
+                Array<RecordType['id']> | undefined,
+                MutationError,
+                Partial<UseUpdateManyMutateParams<RecordType>>
+            >),
             mutationKey: [resource, 'updateMany', params],
             mutationMode,
             mutationFn: ({ resource, ...params }) =>
@@ -243,27 +248,13 @@ export const useUpdateMany = <
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        (customMutationFn
-                            ? (resource, params) =>
-                                  customMutationFnWithDataProviderResult(
-                                      resource,
-                                      params as Omit<
-                                          UseUpdateManyMutateParams<RecordType>,
-                                          'resource'
-                                      >
-                                  )
-                            : dataProviderUpdateMany.bind(
-                                  dataProvider
-                              )) as DataProvider['updateMany']
+                        customMutationFnWithDataProviderResult
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useUpdateMany:
                         // The mutation function must have the same signature as before (resource, params) and not ({ resource, params })
                         const { resource, ...params } = args;
-                        return mutateWithMiddlewares(
-                            resource as string,
-                            params as UpdateManyParams<RecordType>
-                        ) as Promise<UpdateManyResult<RecordType>>;
+                        return mutateWithMiddlewares(resource, params);
                     };
                 }
 
@@ -295,7 +286,14 @@ export const useUpdateMany = <
             );
         }
     );
-    return [updateMany, mutationResult];
+    return [
+        updateMany as UseUpdateManyResult<
+            RecordType,
+            boolean,
+            MutationError
+        >[0],
+        mutationResult,
+    ];
 };
 
 export interface UseUpdateManyMutateParams<RecordType extends RaRecord = any> {
@@ -311,7 +309,7 @@ export type UseUpdateManyOptions<
     MutationError = unknown,
 > = Omit<
     UseMutationOptions<
-        Array<RecordType['id']> | undefined,
+        Array<RecordType['id']>,
         MutationError,
         Partial<UseUpdateManyMutateParams<RecordType>>
     >,
@@ -319,12 +317,11 @@ export type UseUpdateManyOptions<
 > & {
     mutationFn?: (
         params: Partial<UseUpdateManyMutateParams<RecordType>>
-    ) => Promise<Array<RecordType['id']> | undefined>;
+    ) => Promise<Array<RecordType['id']>>;
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <
-        UpdateFunctionType extends
-            DataProvider['updateMany'] = DataProvider['updateMany'],
+        UpdateFunctionType extends (...args: any[]) => any,
     >(
         mutate: UpdateFunctionType
     ) => (
@@ -341,14 +338,12 @@ export type UseUpdateManyResult<
         resource?: string,
         params?: Partial<UpdateManyParams<RecordType>>,
         options?: MutateOptions<
-            Array<RecordType['id']> | undefined,
+            Array<RecordType['id']>,
             MutationError,
             Partial<UseUpdateManyMutateParams<RecordType>>,
             unknown
         > & { mutationMode?: MutationMode; returnPromise?: TReturnPromise }
-    ) => Promise<
-        TReturnPromise extends true ? Array<RecordType['id']> | undefined : void
-    >,
+    ) => Promise<TReturnPromise extends true ? Array<RecordType['id']> : void>,
     UseMutationResult<
         Array<RecordType['id']> | undefined,
         MutationError,

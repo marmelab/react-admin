@@ -1,9 +1,4 @@
-import {
-    createTheme,
-    PaletteOptions,
-    Theme,
-    ThemeOptions,
-} from '@mui/material';
+import { createTheme, PaletteOptions, Theme } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
 /**
@@ -12,7 +7,7 @@ import { grey } from '@mui/material/colors';
  * Uses a small font size, reduced spacing, text buttons, standard variant inputs, pale colors.
  */
 
-const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
+const componentsOverrides = (theme: Theme): Theme['components'] => ({
     MuiAlert: {
         defaultProps: {
             variant: 'outlined' as const,
@@ -30,7 +25,7 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
         variants: [
             {
                 props: {},
-                style: ({ theme }: { theme: Theme }) => ({
+                style: ({ theme }) => ({
                     [theme.breakpoints.down('sm')]: { width: '100%' },
                 }),
             },
@@ -237,7 +232,7 @@ const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
         variants: [
             {
                 props: {},
-                style: ({ theme }: { theme: Theme }) => ({
+                style: ({ theme }) => ({
                     [theme.breakpoints.down('sm')]: { width: '100%' },
                 }),
             },
@@ -382,7 +377,7 @@ const createNanoTheme = (palette: PaletteOptions) => {
         },
     };
     const theme = createTheme(themeOptions);
-    theme.components = componentsOverrides(theme) as Theme['components'];
+    theme.components = componentsOverrides(theme);
     return theme;
 };
 

@@ -320,9 +320,12 @@ export const buildArgs = (
     );
     const args = query.args
         .filter(a => validVariables.includes(a.name))
-        .reduce<
-            ArgumentNode[]
-        >((acc, arg) => [...acc, gqlTypes.argument(gqlTypes.name(arg.name), gqlTypes.variable(gqlTypes.name(arg.name)))], []);
+        .map(arg =>
+            gqlTypes.argument(
+                gqlTypes.name(arg.name),
+                gqlTypes.variable(gqlTypes.name(arg.name))
+            )
+        );
 
     return args;
 };
@@ -341,15 +344,12 @@ export const buildApolloArgs = (
 
     const args = query.args
         .filter(a => validVariables.includes(a.name))
-        .reduce<VariableDefinitionNode[]>((acc, arg) => {
-            return [
-                ...acc,
-                gqlTypes.variableDefinition(
-                    gqlTypes.variable(gqlTypes.name(arg.name)),
-                    getGqlType(arg.type)
-                ),
-            ];
-        }, []);
+        .map(arg =>
+            gqlTypes.variableDefinition(
+                gqlTypes.variable(gqlTypes.name(arg.name)),
+                getGqlType(arg.type)
+            )
+        );
 
     return args;
 };

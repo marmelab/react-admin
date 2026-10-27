@@ -5,6 +5,7 @@ import {
     Layout,
     Menu,
     InspectorButton,
+    type LayoutProps,
     TitlePortal,
 } from 'react-admin';
 import '../assets/app.css';
@@ -25,7 +26,7 @@ const MyMenu = () => (
     </Menu>
 );
 
-export default ({ children }: { children?: React.ReactNode }) => (
+export default ({ children }: LayoutProps) => (
     <>
         <Layout appBar={MyAppBar} menu={MyMenu}>
             {children}

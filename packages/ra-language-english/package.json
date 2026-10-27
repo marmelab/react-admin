@@ -17,8 +17,7 @@
     "types": "./dist/index.d.cts",
     "type": "module",
     "scripts": {
-        "build": "zshy --silent",
-        "typecheck": "tsc --noEmit"
+        "build": "zshy --silent"
     },
     "dependencies": {
         "ra-core": "^5.15.3"

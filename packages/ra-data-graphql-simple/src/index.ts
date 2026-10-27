@@ -58,7 +58,6 @@ export default (
                           ids.map(id =>
                               defaultDataProvider.delete(resource, {
                                   id,
-                                  previousData: undefined,
                                   ...otherParams,
                               })
                           )
@@ -78,7 +77,7 @@ export default (
                               defaultDataProvider.update(resource, {
                                   id,
                                   data: data,
-                                  previousData: undefined,
+                                  previousData: null,
                                   ...otherParams,
                               })
                           )
