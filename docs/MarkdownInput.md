@@ -8,6 +8,7 @@ title: 'The MarkdownInput Component'
 This [Enterprise Edition](https://react-admin-ee.marmelab.com)<img class="icon" src="./img/premium.svg" alt="React Admin Enterprise Edition icon" /> component allows to edit and preview Markdown data, based on [Milkdown](https://milkdown.dev/). To be used in Edit and Create views.
 
 <video controls autoplay playsinline muted loop>
+  <source src="./img/markdown-input.webm" type="video/webm"/>
   <source src="./img/markdown-input.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
