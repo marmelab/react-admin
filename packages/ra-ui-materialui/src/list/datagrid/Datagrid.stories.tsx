@@ -110,6 +110,17 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const RowHeader = () => (
+    <Wrapper>
+        <Datagrid>
+            <TextField source="id" />
+            <TextField source="title" rowHeader />
+            <TextField source="author" />
+            <TextField source="year" />
+        </Datagrid>
+    </Wrapper>
+);
+
 const ExpandPanel = () => {
     const book = useRecordContext();
     return (

@@ -26,6 +26,7 @@ export const DataTableCell = React.memo(
                 disableSort,
                 render,
                 field,
+                rowHeader,
                 source,
                 sortByOrder,
                 label,
@@ -64,6 +65,8 @@ export const DataTableCell = React.memo(
                         `column-${source}`
                     )}
                     sx={sxValue}
+                    component={rowHeader ? 'th' : undefined}
+                    scope={rowHeader ? 'row' : undefined}
                     {...rest}
                 >
                     {children ??

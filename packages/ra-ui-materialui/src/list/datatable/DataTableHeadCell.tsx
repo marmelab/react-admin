@@ -44,6 +44,7 @@ export const DataTableHeadCell = React.memo(
                 headerClassName,
                 field,
                 render,
+                rowHeader,
                 source,
                 label,
                 sortByOrder,

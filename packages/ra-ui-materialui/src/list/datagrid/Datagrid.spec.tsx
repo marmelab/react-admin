@@ -19,6 +19,7 @@ import { Datagrid } from './Datagrid';
 import {
     AccessControl,
     FullApp,
+    RowHeader,
     RowStyle,
     SelectAllButton,
     Standalone,
@@ -336,6 +337,17 @@ describe('<Datagrid />', () => {
             'tr'
         );
         expect(row).toHaveStyle({ backgroundColor: '#eee' });
+    });
+
+    it('should render rowHeader fields as row headers', async () => {
+        render(<RowHeader />);
+        await screen.findByText('War and Peace');
+        expect(
+            screen.getAllByRole('rowheader').map(cell => cell.textContent)
+        ).toContain('War and Peace');
+        expect(
+            screen.getByRole('columnheader', { name: /title/i })
+        ).toBeDefined();
     });
 
     it('should display a message when there is no result', () => {

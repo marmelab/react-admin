@@ -144,6 +144,17 @@ export const Basic = () => (
     </Wrapper>
 );
 
+export const RowHeader = () => (
+    <Wrapper i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}>
+        <DataTable>
+            <DataTable.Col source="id" />
+            <DataTable.Col source="title" rowHeader />
+            <DataTable.Col label="Author" source="author.name" />
+            <DataTable.Col source="year" />
+        </DataTable>
+    </Wrapper>
+);
+
 export const Columns = () => (
     <Wrapper>
         <DataTable

@@ -15,6 +15,7 @@ import {
     IsRowExpandable,
     IsRowSelectable,
     NonPrimitiveData,
+    RowHeader,
     StandaloneDynamic,
     StandaloneStatic,
 } from './DataTable.stories';
@@ -42,6 +43,16 @@ describe('DataTable', () => {
         screen.getByText('Title');
         screen.getByText('Author');
         screen.getByText('Year');
+    });
+    it('should render rowHeader columns as row headers', async () => {
+        render(<RowHeader />);
+        await screen.findByText('War and Peace');
+        expect(
+            screen.getAllByRole('rowheader').map(cell => cell.textContent)
+        ).toContain('War and Peace');
+        expect(
+            screen.getByRole('columnheader', { name: /title/i })
+        ).toBeDefined();
     });
     it('should render non React primitive data without crashing', async () => {
         render(<NonPrimitiveData />);

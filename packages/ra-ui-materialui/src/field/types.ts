@@ -24,6 +24,12 @@ export interface FieldProps<
     headerClassName?: string;
 
     /**
+     * Render the cell as a row header when used inside <Datagrid>, so that screen readers
+     * announce it when users move between the other cells of the row.
+     */
+    rowHeader?: boolean;
+
+    /**
      * Label to use as column header when using <Datagrid> or <SimpleShowLayout>.
      * Defaults to the capitalized field name. Set to false to disable the label.
      *

@@ -11,6 +11,7 @@ export const sanitizeFieldRestProps: (props: any) => any = ({
     record,
     refetch,
     resource,
+    rowHeader,
     sortable,
     sortBy,
     sortByOrder,
