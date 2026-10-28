@@ -427,15 +427,13 @@ describe('DataTable', () => {
             )!;
             await tabTo(user, row);
             expect(row).not.toHaveFocus();
-            expect(row).not.toHaveAccessibleDescription();
         });
-        it('should announce the row content and its action to screen readers', async () => {
+        it('should announce the content of clickable rows to screen readers', async () => {
             render(<FullApp rowClick="expand" />);
             const row = (await screen.findByText('War and Peace')).closest(
                 'tr'
             )!;
             expect(row).toHaveAccessibleName(/War and Peace/);
-            expect(row).toHaveAccessibleDescription('Press Enter to expand');
             within(row).getByLabelText('Select this row');
         });
         it('should let keyboard users select a row with Space on its checkbox without triggering the row click', async () => {

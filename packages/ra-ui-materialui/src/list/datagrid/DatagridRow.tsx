@@ -200,9 +200,6 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 tabIndex={isRowClickable ? 0 : undefined}
                 id={isRowClickable ? rowElementId : undefined}
                 aria-labelledby={isRowClickable ? rowElementId : undefined}
-                aria-describedby={
-                    isRowClickable ? context.rowClickDescriptionId : undefined
-                }
                 {...rest}
             >
                 {expand && (

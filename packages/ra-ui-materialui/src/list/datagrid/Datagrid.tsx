@@ -9,7 +9,6 @@ import {
     FC,
     ComponentType,
     useMemo,
-    useId,
 } from 'react';
 import {
     sanitizeListRestProps,
@@ -31,7 +30,6 @@ import DatagridLoading from './DatagridLoading';
 import DatagridBody, { PureDatagridBody } from './DatagridBody';
 import { RowClickFunction } from '../types';
 import DatagridContextProvider from './DatagridContextProvider';
-import { useRowClickDescription } from './useRowClickDescription';
 import {
     DatagridClasses,
     DatagridPrefix,
@@ -170,12 +168,9 @@ export const Datagrid: React.ForwardRefExoticComponent<
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
-    const rowClickDescriptionId = useId();
-    const rowClickDescription = useRowClickDescription(rowClick);
-
     const contextValue = useMemo(
-        () => ({ isRowExpandable, expandSingle, rowClickDescriptionId }),
-        [isRowExpandable, expandSingle, rowClickDescriptionId]
+        () => ({ isRowExpandable, expandSingle }),
+        [isRowExpandable, expandSingle]
     );
 
     const lastSelected = useRef(null);
@@ -307,9 +302,6 @@ export const Datagrid: React.ForwardRefExoticComponent<
                             )}
                         </Table>
                     </div>
-                    <span id={rowClickDescriptionId} hidden>
-                        {rowClickDescription}
-                    </span>
                 </DatagridRoot>
             </OptionalResourceContextProvider>
         </DatagridContextProvider>

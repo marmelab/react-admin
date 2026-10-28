@@ -38,10 +38,6 @@ import { DataTableColumn } from './DataTableColumn';
 import { DataTableNumberColumn } from './DataTableNumberColumn';
 import { ColumnsSelector } from './ColumnsSelector';
 import { DataTableRowSxContext } from './DataTableRowSxContext';
-import {
-    getRowClickDescriptionId,
-    useRowClickDescription,
-} from '../datagrid/useRowClickDescription';
 
 const DefaultFoot = (_props: { children: ReactNode }) => null;
 const PREFIX = 'RaDataTable';
@@ -166,8 +162,6 @@ export const DataTable = React.forwardRef(function DataTable<
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
-    const rowClickDescription = useRowClickDescription(props.rowClick);
-
     const storeKey = props.storeKey || `${resourceFromContext}.datatable`;
     const [columnRanks] = useStore<number[]>(`${storeKey}_columnRanks`);
     const columns = columnRanks
@@ -228,9 +222,6 @@ export const DataTable = React.forwardRef(function DataTable<
                             </DataTableRenderContext.Provider>
                         </Table>
                     </div>
-                    <span id={getRowClickDescriptionId(storeKey)} hidden>
-                        {rowClickDescription}
-                    </span>
                 </DataTableRoot>
             </DataTableRowSxContext.Provider>
             <DataTableRenderContext.Provider value="columnsSelector">

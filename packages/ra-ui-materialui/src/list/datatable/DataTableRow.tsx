@@ -18,7 +18,6 @@ import { type ComponentsOverrides, styled } from '@mui/material/styles';
 import {
     useDataTableCallbacksContext,
     useDataTableConfigContext,
-    useDataTableStoreContext,
     useExpanded,
     useResourceContext,
     useRecordContext,
@@ -28,7 +27,6 @@ import {
 } from 'ra-core';
 
 import ExpandRowButton from '../datagrid/ExpandRowButton';
-import { getRowClickDescriptionId } from '../datagrid/useRowClickDescription';
 import { DataTableClasses } from './DataTableRoot';
 import { SelectRowCheckbox } from './SelectRowCheckbox';
 
@@ -163,7 +161,6 @@ export const DataTableRow = React.memo(
             ]
         );
         const isRowClickable = Boolean(rowClick ?? hasDetailView);
-        const { storeKey } = useDataTableStoreContext();
         // Chrome doesn't name table rows from their content: labelling the row
         // with itself makes screen readers read its cells when it gets focus
         const rowElementId = useId();
@@ -196,11 +193,6 @@ export const DataTableRow = React.memo(
                     tabIndex={isRowClickable ? 0 : undefined}
                     id={isRowClickable ? rowElementId : undefined}
                     aria-labelledby={isRowClickable ? rowElementId : undefined}
-                    aria-describedby={
-                        isRowClickable
-                            ? getRowClickDescriptionId(storeKey)
-                            : undefined
-                    }
                     {...rest}
                 >
                     {expand && (

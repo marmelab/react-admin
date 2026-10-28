@@ -330,26 +330,10 @@ describe('<Datagrid />', () => {
         });
     });
 
-    it.each([
-        { rowClick: 'edit', description: 'Press Enter to edit' },
-        { rowClick: 'expand', description: 'Press Enter to expand' },
-        { rowClick: () => 'edit', description: 'Press Enter to open' },
-    ])(
-        'should announce the row content and its action to screen readers ($description)',
-        async ({ rowClick, description }) => {
-            render(<FullApp rowClick={rowClick} />);
-            const row = (await screen.findByText('War and Peace')).closest(
-                'tr'
-            );
-            expect(row).toHaveAccessibleName(/War and Peace/);
-            expect(row).toHaveAccessibleDescription(description);
-        }
-    );
-
-    it('should not describe non clickable rows', async () => {
-        render(<FullApp rowClick={false} />);
+    it('should announce the content of clickable rows to screen readers', async () => {
+        render(<FullApp rowClick="edit" />);
         const row = (await screen.findByText('War and Peace')).closest('tr');
-        expect(row).not.toHaveAccessibleDescription();
+        expect(row).toHaveAccessibleName(/War and Peace/);
     });
 
     it('should apply rowStyle to the rows', async () => {
