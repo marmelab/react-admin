@@ -830,7 +830,7 @@ export const PostList = () => (
 - `false` to do nothing
 - a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
-Clickable rows are keyboard accessible: users can focus them with the Tab key and trigger the row action with Enter or Space. But screen readers don't announce table rows as links or buttons, so their users can't tell that a row is clickable. To make the list accessible, add a column with a button doing the same as the row click, e.g. an `<EditButton>` for `rowClick="edit"` or a `<ShowButton>` for `rowClick="show"`:
+**Tip**: Row clicks only work with a mouse: keyboard users can't focus table rows, and screen readers don't announce them as links or buttons. To make the list accessible, add a column with a button doing the same as the row click, e.g. an `<EditButton>` for `rowClick="edit"` or a `<ShowButton>` for `rowClick="show"`:
 
 ```tsx
 import { List, DataTable, EditButton } from 'react-admin';
@@ -847,7 +847,7 @@ export const PostList = () => (
 );
 ```
 
-`rowClick="expand"` and `rowClick="toggleSelection"` need no extra column: the expand button and the selection checkbox already offer the same action to screen reader users.
+`rowClick="toggleSelection"` needs no extra column: the selection checkbox already offers the same action.
 
 **Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows redirecting to either the Edit or Show view after checking a condition on the record. For example:
 

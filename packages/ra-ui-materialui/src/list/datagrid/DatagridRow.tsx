@@ -4,7 +4,6 @@ import React, {
     useState,
     useEffect,
     useCallback,
-    useId,
     memo,
     FC,
     ReactNode,
@@ -166,22 +165,6 @@ const DatagridRow: React.ForwardRefExoticComponent<
             getPathForRecord,
         ]
     );
-    const isRowClickable = Boolean(rowClick ?? hasDetailView);
-    // Chrome doesn't name table rows from their content: labelling the row
-    // with itself makes screen readers read its cells when it gets focus
-    const rowElementId = useId();
-
-    const handleKeyDown = useCallback(
-        (event: React.KeyboardEvent<HTMLTableRowElement>) => {
-            // let controls inside the row (checkbox, buttons, links) handle their own keys
-            if (event.target !== event.currentTarget) return;
-            if (event.key === 'Enter' || event.key === ' ') {
-                event.preventDefault();
-                handleClick(event as any);
-            }
-        },
-        [handleClick]
-    );
 
     return (
         <>
@@ -190,16 +173,12 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 className={clsx(className, {
                     [DatagridClasses.expandable]: expandable,
                     [DatagridClasses.selectable]: selectable,
-                    [DatagridClasses.clickableRow]: isRowClickable,
+                    [DatagridClasses.clickableRow]: rowClick ?? hasDetailView,
                 })}
-                key={record.id}
+                key={id}
                 style={style}
                 hover={hover}
                 onClick={handleClick}
-                onKeyDown={isRowClickable ? handleKeyDown : undefined}
-                tabIndex={isRowClickable ? 0 : undefined}
-                id={isRowClickable ? rowElementId : undefined}
-                aria-labelledby={isRowClickable ? rowElementId : undefined}
                 {...rest}
             >
                 {expand && (

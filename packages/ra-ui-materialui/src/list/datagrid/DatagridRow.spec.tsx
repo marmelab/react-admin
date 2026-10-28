@@ -5,7 +5,6 @@ import {
     screen,
     waitFor,
 } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
 import {
     ResourceDefinitionContextProvider,
     useRecordContext,
@@ -537,80 +536,6 @@ describe('<DatagridRow />', () => {
             expect(spy).toHaveBeenCalledWith(
                 expect.objectContaining({ pathname: '/' })
             );
-        });
-    });
-
-    describe('accessibility', () => {
-        const tabTo = async (user, element: HTMLElement) => {
-            for (let i = 0; i < 20 && document.activeElement !== element; i++) {
-                await user.tab();
-            }
-        };
-
-        it.each([
-            { name: 'Enter', key: '{Enter}' },
-            { name: 'Space', key: ' ' },
-        ])(
-            'should let keyboard users reach a clickable row with Tab and activate it with $name',
-            async ({ key }) => {
-                const user = userEvent.setup();
-                const spy = jest.fn();
-                render(
-                    <LocationSpy spy={spy}>
-                        <RecordContextProvider value={defaultRecord}>
-                            <DatagridRow {...defaultProps} rowClick="edit">
-                                <TitleField />
-                            </DatagridRow>
-                        </RecordContextProvider>
-                    </LocationSpy>
-                );
-                const row = screen.getByText('hello').closest('tr')!;
-                await tabTo(user, row);
-                expect(row).toHaveFocus();
-                await user.keyboard(key);
-                await waitFor(() => {
-                    expect(spy).toHaveBeenCalledWith(
-                        expect.objectContaining({ pathname: '/posts/15' })
-                    );
-                });
-            }
-        );
-
-        it('should not let keyboard users reach a non clickable row', async () => {
-            const user = userEvent.setup();
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow {...defaultProps} rowClick={false}>
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            const row = screen.getByText('hello').closest('tr')!;
-            await tabTo(user, row);
-            expect(row).not.toHaveFocus();
-        });
-
-        it('should let keyboard users select a row with Space on its checkbox without triggering the row click', async () => {
-            const user = userEvent.setup();
-            const rowClick = jest.fn();
-            const onToggleItem = jest.fn();
-            render(
-                <RecordContextProvider value={defaultRecord}>
-                    <DatagridRow
-                        {...defaultProps}
-                        rowClick={rowClick}
-                        hasBulkActions
-                        onToggleItem={onToggleItem}
-                    >
-                        <TitleField />
-                    </DatagridRow>
-                </RecordContextProvider>
-            );
-            const checkbox = screen.getByRole('checkbox');
-            await tabTo(user, checkbox);
-            await user.keyboard(' ');
-            expect(onToggleItem).toHaveBeenCalled();
-            expect(rowClick).not.toHaveBeenCalled();
         });
     });
 });

@@ -330,12 +330,6 @@ describe('<Datagrid />', () => {
         });
     });
 
-    it('should announce the content of clickable rows to screen readers', async () => {
-        render(<FullApp rowClick="edit" />);
-        const row = (await screen.findByText('War and Peace')).closest('tr');
-        expect(row).toHaveAccessibleName(/War and Peace/);
-    });
-
     it('should apply rowStyle to the rows', async () => {
         render(<RowStyle />);
         const row = (await screen.findByText('Pride and Predjudice')).closest(

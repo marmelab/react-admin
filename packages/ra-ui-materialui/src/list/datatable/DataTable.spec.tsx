@@ -1,11 +1,4 @@
-import {
-    fireEvent,
-    render,
-    screen,
-    waitFor,
-    within,
-} from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { QueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import {
@@ -19,11 +12,9 @@ import {
     Empty,
     Expand,
     ExpandSingle,
-    FullApp,
     IsRowExpandable,
     IsRowSelectable,
     NonPrimitiveData,
-    RowClickFalse,
     StandaloneDynamic,
     StandaloneStatic,
 } from './DataTable.stories';
@@ -393,61 +384,6 @@ describe('DataTable', () => {
             const checkboxes = await screen.findAllByRole('checkbox');
             expect(checkboxes[1].getAttribute('disabled')).toEqual(null);
             expect(checkboxes[2].getAttribute('disabled')).toEqual('');
-        });
-    });
-    describe('accessibility', () => {
-        const tabTo = async (user, element: HTMLElement) => {
-            for (let i = 0; i < 50 && document.activeElement !== element; i++) {
-                await user.tab();
-            }
-        };
-
-        it.each([
-            { name: 'Enter', key: '{Enter}' },
-            { name: 'Space', key: ' ' },
-        ])(
-            'should let keyboard users reach a clickable row with Tab and activate it with $name',
-            async ({ key }) => {
-                const user = userEvent.setup();
-                render(<FullApp rowClick="expand" />);
-                const row = (await screen.findByText('War and Peace')).closest(
-                    'tr'
-                )!;
-                await tabTo(user, row);
-                expect(row).toHaveFocus();
-                await user.keyboard(key);
-                await screen.findByText('Expand: War and Peace');
-            }
-        );
-        it('should not let keyboard users reach a non clickable row', async () => {
-            const user = userEvent.setup();
-            render(<RowClickFalse />);
-            const row = (await screen.findByText('War and Peace')).closest(
-                'tr'
-            )!;
-            await tabTo(user, row);
-            expect(row).not.toHaveFocus();
-        });
-        it('should announce the content of clickable rows to screen readers', async () => {
-            render(<FullApp rowClick="expand" />);
-            const row = (await screen.findByText('War and Peace')).closest(
-                'tr'
-            )!;
-            expect(row).toHaveAccessibleName(/War and Peace/);
-            within(row).getByLabelText('Select this row');
-        });
-        it('should let keyboard users select a row with Space on its checkbox without triggering the row click', async () => {
-            const user = userEvent.setup();
-            render(<FullApp rowClick="expand" />);
-            const row = (await screen.findByText('War and Peace')).closest(
-                'tr'
-            )!;
-            await tabTo(user, within(row).getByRole('checkbox'));
-            await user.keyboard(' ');
-            await waitFor(() => {
-                expect(within(row).getByRole('checkbox')).toBeChecked();
-            });
-            expect(screen.queryByText('Expand: War and Peace')).toBeNull();
         });
     });
 });

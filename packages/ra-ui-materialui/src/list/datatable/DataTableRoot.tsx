@@ -53,12 +53,6 @@ export const DataTableRoot = styled('div', {
     [`& .${DataTableClasses.row}`]: {},
     [`& .${DataTableClasses.clickableRow}`]: {
         cursor: 'pointer',
-        // not all browsers paint outlines on <tr>, but they all paint its background
-        '&:focus-visible': {
-            backgroundColor: (theme.vars || theme).palette.action.focus,
-            outline: `2px solid ${(theme.vars || theme).palette.primary.main}`,
-            outlineOffset: -2,
-        },
     },
     [`& .${DataTableClasses.rowEven}`]: {},
     [`& .${DataTableClasses.rowOdd}`]: {},
