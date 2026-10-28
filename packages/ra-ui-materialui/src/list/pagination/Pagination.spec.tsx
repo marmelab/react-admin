@@ -2,7 +2,9 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen } from '@testing-library/react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { ListPaginationContext } from 'ra-core';
+import { I18nContextProvider, ListPaginationContext } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import frenchMessages from 'ra-language-french';
 
 import { Pagination } from './Pagination';
 import { DeviceTestWrapper } from '../../layout';
@@ -235,6 +237,35 @@ describe('<Pagination />', () => {
             expect(
                 screen.queryByText('ra.navigation.page_rows_per_page')
             ).toBeNull();
+        });
+
+        it('should translate the navigation buttons labels', () => {
+            render(
+                <DeviceTestWrapper width="sm">
+                    <I18nContextProvider
+                        value={polyglotI18nProvider(() => frenchMessages, 'fr')}
+                    >
+                        <ListPaginationContext.Provider
+                            value={
+                                {
+                                    ...defaultProps,
+                                    page: 2,
+                                    perPage: 5,
+                                    total: 15,
+                                } as any
+                            }
+                        >
+                            <Pagination />
+                        </ListPaginationContext.Provider>
+                    </I18nContextProvider>
+                </DeviceTestWrapper>
+            );
+            expect(
+                screen.queryByLabelText('Aller à la page précédente')
+            ).not.toBeNull();
+            expect(
+                screen.queryByLabelText('Aller à la prochaine page')
+            ).not.toBeNull();
         });
     });
 
