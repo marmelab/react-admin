@@ -32,6 +32,7 @@ module.exports = {
         '^.+\\.[tj]sx?$': [
             'ts-jest',
             {
+                tsconfig: { rootDir: '.' },
                 useESM: true,
             },
         ],

@@ -15,7 +15,7 @@
         "sourceMap": true /* Generates corresponding '.map' file. */,
         // "outFile": "./",                       /* Concatenate and emit output to single file. */
         // "outDir": "./lib",                        /* Redirect output structure to the directory. */
-        "rootDir": "./" /* ts-jest compiles specs with this config, and TypeScript 6 fails with TS5011 without an explicit rootDir. Packages override it with "src". */,
+        // "rootDir": "./",                       /* Specify the root directory of input files. Use to control the output directory structure with --outDir. */
         // "composite": true,                     /* Enable project compilation */
         // "removeComments": true,                /* Do not emit comments to output. */
         // "noEmit": true,                        /* Do not emit outputs. */

@@ -864,7 +864,6 @@ const StyledAutocomplete = styled(Autocomplete, {
         },
 }));
 
-// @ts-ignore
 export interface AutocompleteInputProps<
     OptionType extends any = RaRecord,
     Multiple extends boolean | undefined = false,
@@ -881,7 +880,7 @@ export interface AutocompleteInputProps<
                 DisableClearable,
                 SupportCreate
             >,
-            'onChange' | 'options' | 'renderInput'
+            'defaultValue' | 'onBlur' | 'onChange' | 'options' | 'renderInput'
         > {
     children?: ReactNode;
     debounce?: number;
