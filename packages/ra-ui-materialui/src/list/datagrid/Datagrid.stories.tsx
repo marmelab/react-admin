@@ -19,11 +19,13 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import { Box, Checkbox, TableCell, TableRow, styled } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { FieldProps, TextField } from '../../field';
+import { FieldProps, TextField, WrapperField } from '../../field';
 import {
     BulkDeleteButton,
     BulkExportButton,
+    EditButton,
     SelectAllButton as RaSelectAllButton,
+    ShowButton,
 } from '../../button';
 import { Datagrid, DatagridProps } from './Datagrid';
 import { ShowGuesser, SimpleShowLayout, EditGuesser } from '../../detail';
@@ -652,6 +654,42 @@ const ExpandDetails = () => {
 
     return <div>Expand: {record?.title}</div>;
 };
+
+export const Accessible = ({
+    rowClick,
+}: {
+    rowClick?: DatagridRowProps['rowClick'];
+}) => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        store={memoryStore()}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <Datagrid aria-label="Books" rowClick={rowClick}>
+                            <TextField source="id" />
+                            <TextField source="title" rowHeader />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                            <WrapperField label="Actions">
+                                <ShowButton />
+                                <EditButton />
+                            </WrapperField>
+                        </Datagrid>
+                    </List>
+                )}
+                edit={EditGuesser}
+                show={ShowGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+Accessible.argTypes = FullApp.argTypes;
 
 const MyDatagridRow = ({
     onToggleItem,
