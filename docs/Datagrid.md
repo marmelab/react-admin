@@ -409,7 +409,7 @@ export const UserList = () => (
 );
 ```
 
-`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column.
+`<Datagrid>` also inspects its children for `headerClassName` and `cellClassName` props, and gives the class names to the headers and the cells of that column. A child with [the `rowHeader` prop](./Fields.md#rowheader) renders its cells as row headers.
 
 Finally, `<Datagrid>` inspects children for props that indicate how it should be sorted (see [the Customizing The Sort Order For Columns section](#customizing-column-sort)) below.
 

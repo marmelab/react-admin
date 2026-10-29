@@ -124,6 +124,7 @@ All Field components accept the following props:
 | [`source`](#source)           | Required | `string`                       | -        | Name of the property to display                                                                                                                         |
 | [`label`](#label)             | Optional | `string` &#124; `ReactElement` | `source` | Used as a Datagrid column header or in a Show layout                                                                                                    |
 | [`record`](#record)           | Optional | `Object`                       | -        | Object containing the properties to display, to override the record from the current `RecordContext`                                                    |
+| [`rowHeader`](#rowheader)     | Optional | `boolean`                      | `false`  | When used in a `Datagrid`, renders the cells of the column as row headers, for screen readers                                                           |
 | [`sortable`](#sortable)       | Optional | `boolean`                      | `true`   | When used in a `List`, should the list be sortable using the `source` attribute? Setting it to `false` disables the click handler on the column header. |
 | [`sortBy`](#sortby)           | Optional | `string`                       | `source` | When used in a `List`, specifies the actual `source` to be used for sorting when the user clicks the column header                                      |
 | [`sortByOrder`](#sortbyorder) | Optional | `ASC` &#124; `DESC`            | `ASC`    | When used in a `List`, specifies the sort order to be used for sorting when the user clicks the column header                                           |
@@ -187,6 +188,18 @@ By default, fields use the `record` from the `RecordContext`. But you can overri
 <TextField source="title" record={{ id: 123, title: "Hello" }} />
 ```
 {% endraw %}
+
+## `rowHeader`
+
+When used in a [`<Datagrid>`](./Datagrid.md), set `rowHeader` on the field that identifies each record, like its title or name. Its cells become row headers (`<th scope="row">`), so screen readers announce them when users move to the other cells of the row.
+
+```jsx
+<Datagrid>
+    <TextField source="id" />
+    <TextField source="title" rowHeader />
+    <DateField source="published_at" />
+</Datagrid>
+```
 
 ## `sortable`
 

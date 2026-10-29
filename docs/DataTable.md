@@ -1018,6 +1018,7 @@ export const PostList = () => (
 | `headerClassName` | Optional   | string                    | -          | The class name of the header cell.                                                                      |
 | `label`           | Optional   | string                    | -          | The column label, displayed in the header.                                                              |
 | `render`          | Optional   | (record) => ReactNode     | -          | A function to render the column content.                                                                |
+| `rowHeader`       | Optional   | boolean                   | `false`    | Set to true to render the cells as row headers, for screen readers.                                     |
 | `sortByOrder`     | Optional   | `"ASC"` &#124; `"DESC"`   | `"ASC"`    | The order to use for sorting the column.                                                                |
 | `source`          | Optional   | string                    | -          | The source of the column, used for sorting and to read the data from the record when there is no child. |
 | `sx`              | Optional   | SxProps                   | -          | The styles to apply to the column.                                                                      |
@@ -1226,6 +1227,14 @@ To define a custom rendering function, you can pass a `render` prop to `<DataTab
 ```
 
 **Note**: The `render` prop is ignored if you pass a child to `<DataTable.Col>`.
+
+### `rowHeader`
+
+Set `rowHeader` on the column that identifies each record, like its title or name. Its cells become row headers (`<th scope="row">`), so screen readers announce them when users move to the other cells of the row.
+
+```tsx
+<DataTable.Col source="title" rowHeader />
+```
 
 ### `sortByOrder`
 
