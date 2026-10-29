@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { QueryClient } from '@tanstack/react-query';
 import * as React from 'react';
 import {
@@ -211,6 +212,17 @@ describe('DataTable', () => {
             await waitFor(() => {
                 expect(screen.queryByTestId('ExpandPanel')).toBeFalsy();
             });
+        });
+        it('should let keyboard users toggle the panel', async () => {
+            render(<Expand />);
+            const [, firstRowCheckbox] = await screen.findAllByRole('checkbox');
+            firstRowCheckbox.focus();
+            await userEvent.tab({ shift: true });
+            expect(
+                screen.getAllByRole('button', { name: 'ra.action.expand' })[1]
+            ).toHaveFocus();
+            await userEvent.keyboard('{Enter}');
+            await screen.findByTestId('ExpandPanel');
         });
     });
     describe('expandSingle', () => {

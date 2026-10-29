@@ -6,6 +6,7 @@ import {
     waitFor,
     within,
 } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import {
     CoreAdminContext,
     testDataProvider,
@@ -18,6 +19,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
 import {
     AccessControl,
+    Expand,
     FullApp,
     RowHeader,
     RowStyle,
@@ -125,6 +127,18 @@ describe('<Datagrid />', () => {
         expect(screen.queryAllByTestId('ExpandMoreIcon')).toHaveLength(
             defaultData.length
         );
+    });
+
+    it('should let keyboard users toggle the expand panel', async () => {
+        render(<Expand />);
+        const [, firstRowCheckbox] = await screen.findAllByRole('checkbox');
+        firstRowCheckbox.focus();
+        await userEvent.tab({ shift: true });
+        expect(
+            screen.getAllByRole('button', { name: 'ra.action.expand' })[1]
+        ).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        await screen.findByTestId('ExpandPanel');
     });
 
     it('should accept a custom bulkActionsToolbar', async () => {
