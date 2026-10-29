@@ -285,7 +285,10 @@ export type UseCreateOptions<
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <
-        CreateFunctionType extends (...args: any[]) => any,
+        CreateFunctionType extends (
+            resource: string | undefined,
+            params: Omit<UseCreateMutateParams<RecordType>, 'resource'>
+        ) => Promise<CreateResult<ResultRecordType>>,
     >(
         mutate: CreateFunctionType
     ) => (

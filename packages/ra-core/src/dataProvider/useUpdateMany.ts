@@ -321,7 +321,10 @@ export type UseUpdateManyOptions<
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <
-        UpdateFunctionType extends (...args: any[]) => any,
+        UpdateFunctionType extends (
+            resource: string | undefined,
+            params: Omit<UseUpdateManyMutateParams<RecordType>, 'resource'>
+        ) => Promise<UpdateManyResult<RecordType>>,
     >(
         mutate: UpdateFunctionType
     ) => (
