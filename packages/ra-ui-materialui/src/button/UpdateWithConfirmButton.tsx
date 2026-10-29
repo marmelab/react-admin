@@ -166,13 +166,16 @@ export const UpdateWithConfirmButton = React.forwardRef(
     }
 );
 
-const sanitizeRestProps = ({
+const sanitizeRestProps = <
+    RecordType extends RaRecord = any,
+    MutationOptionsError extends Error = Error,
+>({
     label,
     mutationOptions,
     ...rest
 }: Omit<
-    UpdateWithConfirmButtonProps,
-    'resource' | 'selectedIds' | 'icon' | 'data'
+    UpdateWithConfirmButtonProps<RecordType, MutationOptionsError>,
+    'selectedIds' | 'icon' | 'data'
 >) => rest;
 
 export interface UpdateWithConfirmButtonProps<

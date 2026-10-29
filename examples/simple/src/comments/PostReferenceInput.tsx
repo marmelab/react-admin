@@ -25,7 +25,7 @@ const PostReferenceInput = () => {
     const postId = useWatch({ name: 'post_id' });
 
     const handleShowClick = useCallback(
-        event => {
+        (event: React.MouseEvent) => {
             event.preventDefault();
             setShowPreviewDialog(true);
         },

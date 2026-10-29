@@ -13,9 +13,9 @@ export const SelectInputChoice = ({
     label,
     description,
 }: {
-    isSelected: boolean;
+    isSelected?: boolean;
     label: string;
-    description: string;
+    description?: string;
 }) => {
     return (
         <Stack>

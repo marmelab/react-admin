@@ -1,8 +1,9 @@
 import {
     IntrospectionField,
     IntrospectionInputObjectType,
+    IntrospectionInputTypeRef,
+    IntrospectionInputValue,
     IntrospectionNamedTypeRef,
-    IntrospectionNonNullTypeRef,
     IntrospectionType,
 } from 'graphql';
 import {
@@ -110,10 +111,7 @@ const sanitizeValue = (type: IntrospectionType, value: any) => {
     return value;
 };
 
-const castType = (
-    value: any,
-    type: IntrospectionType | IntrospectionNonNullTypeRef
-) => {
+const castType = (value: any, type: IntrospectionInputTypeRef) => {
     const realType = type.kind === 'NON_NULL' ? type.ofType : type;
     switch (
         `${realType.kind}:${(realType as IntrospectionNamedTypeRef).name}`
@@ -145,7 +143,7 @@ const prepareParams = (
 
     Object.keys(params).forEach(key => {
         const param = params[key];
-        let arg = null;
+        let arg: IntrospectionInputValue | undefined;
 
         if (!param) {
             result[key] = param;
@@ -271,6 +269,9 @@ const buildGetListVariables =
                     const resourceField = resource.type.fields.find(
                         f => f.name === parts[0]
                     );
+                    if (!resourceField) {
+                        return { ...acc, [key]: params.filter[key] };
+                    }
                     const type = getFinalType(
                         resourceField.type
                     ) as IntrospectionType;

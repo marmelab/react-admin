@@ -22,9 +22,12 @@ export const CreateForm = (props: Omit<SimpleFormProps, 'children'>) => {
     const [resources] = useResourcesConfiguration();
     const [resourceConfiguration] = useResourceConfiguration(resource);
 
+    if (!resourceConfiguration) {
+        return null;
+    }
     return (
         <SimpleForm {...props}>
-            {resourceConfiguration.fields
+            {(resourceConfiguration.fields ?? [])
                 .filter(definition => definition.views.includes('create'))
                 .map(definition =>
                     getInputFromFieldDefinition(definition, resources)

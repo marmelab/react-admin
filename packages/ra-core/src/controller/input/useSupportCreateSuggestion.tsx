@@ -54,7 +54,7 @@ export const useSupportCreateSuggestion = (
     return {
         createId: createValue,
         createHintId: createHintValue,
-        getCreateItem: (filter: string) => {
+        getCreateItem: (filter?: string) => {
             filterRef.current = filter;
 
             return set(

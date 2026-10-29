@@ -218,13 +218,10 @@ export default function App(props: Props) {
     );
 }
 
-const sanitizeName = (name?: string) => {
-    return name
-        ? name
-              .trim()
-              .toLowerCase()
-              .replace(/\s+/g, '-')
-              .replace(/^[._]/, '')
-              .replace(/[^a-z\d\-~]+/g, '-')
-        : undefined;
-};
+const sanitizeName = (name = '') =>
+    name
+        .trim()
+        .toLowerCase()
+        .replace(/\s+/g, '-')
+        .replace(/^[._]/, '')
+        .replace(/[^a-z\d\-~]+/g, '-');

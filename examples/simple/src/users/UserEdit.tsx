@@ -12,19 +12,21 @@ import {
     TabbedForm,
     TextInput,
     Toolbar,
+    type ToolbarProps,
     TopToolbar,
     useCanAccess,
     useSaveContext,
 } from 'react-admin';
 
 import Aside from './Aside';
+import type { User } from '../types';
 
 /**
  * Custom Toolbar for the Edit form
  *
  * Save with undo, but delete with confirm
  */
-const UserEditToolbar = props => {
+const UserEditToolbar = (props: ToolbarProps) => {
     return (
         <Toolbar
             sx={{ display: 'flex', justifyContent: 'space-between' }}
@@ -54,7 +56,7 @@ const UserEditForm = () => {
     }
     if (!save) return null;
 
-    const newSave = values =>
+    const newSave = (values: Partial<User>) =>
         new Promise(resolve => {
             if (values.name === 'test') {
                 return resolve({

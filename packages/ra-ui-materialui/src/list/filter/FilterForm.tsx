@@ -13,6 +13,7 @@ import {
 import * as React from 'react';
 import {
     type HtmlHTMLAttributes,
+    isValidElement,
     type ReactNode,
     useCallback,
     useEffect,
@@ -48,7 +49,13 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
 
     useEffect(() => {
         if (!filters) return;
-        filters.forEach((filter: React.ReactElement) => {
+        filters.forEach(filter => {
+            if (
+                !isValidElement<{ alwaysOn?: boolean; defaultValue?: unknown }>(
+                    filter
+                )
+            )
+                return;
             if (filter.props.alwaysOn && filter.props.defaultValue) {
                 throw new Error(
                     'Cannot use alwaysOn and defaultValue on a filter input. Please set the filterDefaultValues props on the <List> element instead.'
@@ -62,7 +69,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
         const values = filterValues;
         return filters.filter(
             (filterElement): filterElement is React.ReactElement => {
-                if (!React.isValidElement(filterElement)) {
+                if (!isValidElement(filterElement)) {
                     return false;
                 }
 

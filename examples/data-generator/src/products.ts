@@ -166,7 +166,7 @@ const productReferences = {
 export const generateProducts = (db: Db): Product[] => {
     let id = 0;
 
-    return db.categories.reduce(
+    return db.categories.reduce<Product[]>(
         (acc, category) => [
             ...acc,
             ...Array.from(Array(10).keys()).map(index => {

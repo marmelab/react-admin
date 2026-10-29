@@ -6,6 +6,7 @@ import {
     useListContext,
     EditButton,
     Title,
+    type Identifier,
 } from 'react-admin';
 import {
     Box,
@@ -19,6 +20,7 @@ import {
 } from '@mui/material';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
+import type { Tag } from '../types';
 
 const TagList = () => (
     <ListBase perPage={1000}>
@@ -34,9 +36,9 @@ const TagList = () => (
 );
 
 const Tree = () => {
-    const { data, defaultTitle } = useListContext();
-    const [openChildren, setOpenChildren] = useState<string[]>([]);
-    const toggleNode = node =>
+    const { data, defaultTitle } = useListContext<Tag>();
+    const [openChildren, setOpenChildren] = useState<Identifier[]>([]);
+    const toggleNode = (node: Tag) =>
         setOpenChildren(state => {
             if (state.includes(node.id)) {
                 return [
@@ -49,7 +51,7 @@ const Tree = () => {
     const roots = data
         ? data.filter(node => typeof node.parent_id === 'undefined')
         : [];
-    const getChildNodes = root =>
+    const getChildNodes = (root: Tag) =>
         data ? data.filter(node => node.parent_id === root.id) : [];
 
     return (
@@ -69,7 +71,19 @@ const Tree = () => {
     );
 };
 
-const SubTree = ({ level, root, getChildNodes, openChildren, toggleNode }) => {
+const SubTree = ({
+    level,
+    root,
+    getChildNodes,
+    openChildren,
+    toggleNode,
+}: {
+    level: number;
+    root: Tag;
+    getChildNodes: (root: Tag) => Tag[];
+    openChildren: Identifier[];
+    toggleNode: (node: Tag) => void;
+}) => {
     const childNodes = getChildNodes(root);
     const hasChildren = childNodes.length > 0;
     const open = openChildren.includes(root.id);

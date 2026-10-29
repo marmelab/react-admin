@@ -125,11 +125,11 @@ export const InPlaceEditor = <
         { state: 'reading' }
     );
 
-    const record = useRecordContext();
+    const record = useRecordContext<RecordType>();
     const resource = useResourceContext(props);
     const notify = useNotify();
     const translate = useTranslate();
-    const [update] = useUpdate();
+    const [update] = useUpdate<RecordType, ErrorType>();
 
     const {
         meta: mutationMeta,

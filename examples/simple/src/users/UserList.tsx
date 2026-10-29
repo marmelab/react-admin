@@ -4,6 +4,7 @@ import { useMediaQuery, Theme } from '@mui/material';
 import * as React from 'react';
 import {
     BulkDeleteWithConfirmButton,
+    type BulkDeleteWithConfirmButtonProps,
     CanAccess,
     DataTable,
     List,
@@ -28,7 +29,7 @@ const getUserFilters = (canSeeRole: boolean) => {
     return filters;
 };
 
-const UserBulkActionButtons = props => (
+const UserBulkActionButtons = (props: BulkDeleteWithConfirmButtonProps) => (
     <BulkDeleteWithConfirmButton {...props} />
 );
 

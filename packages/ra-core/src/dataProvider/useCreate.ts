@@ -10,7 +10,6 @@ import type {
     RaRecord,
     CreateParams,
     Identifier,
-    DataProvider,
     MutationMode,
     CreateResult,
 } from '../types';
@@ -196,16 +195,7 @@ export const useCreate = <
                     // Immediately get the function with middlewares applied so that even if the middlewares gets unregistered (because of a redirect for instance),
                     // we still have them applied when users have called the mutate function.
                     const mutateWithMiddlewares = getMutateWithMiddlewares(
-                        customMutationFn
-                            ? (resource, params) =>
-                                  customMutationFnWithDataProviderResult(
-                                      resource,
-                                      params as Omit<
-                                          UseCreateMutateParams<RecordType>,
-                                          'resource'
-                                      >
-                                  )
-                            : dataProviderCreate.bind(dataProvider)
+                        customMutationFnWithDataProviderResult
                     );
                     return args => {
                         // This is necessary to avoid breaking changes in useCreate:
@@ -295,8 +285,10 @@ export type UseCreateOptions<
     mutationMode?: MutationMode;
     returnPromise?: boolean;
     getMutateWithMiddlewares?: <
-        CreateFunctionType extends
-            DataProvider['create'] = DataProvider['create'],
+        CreateFunctionType extends (
+            resource: string | undefined,
+            params: Omit<UseCreateMutateParams<RecordType>, 'resource'>
+        ) => Promise<CreateResult<ResultRecordType>>,
     >(
         mutate: CreateFunctionType
     ) => (

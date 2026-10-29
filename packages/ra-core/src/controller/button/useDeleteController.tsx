@@ -1,7 +1,12 @@
 import { useCallback, useMemo } from 'react';
 import { useFormContext } from 'react-hook-form';
+import { MutateOptions } from '@tanstack/react-query';
 
-import { useDelete, UseDeleteOptions } from '../../dataProvider/useDelete';
+import {
+    useDelete,
+    UseDeleteMutateParams,
+    UseDeleteOptions,
+} from '../../dataProvider/useDelete';
 import { useUnselect } from '../list/useUnselect';
 import { useRecordContext } from '../record/useRecordContext';
 import { useRedirect, RedirectionSideEffect } from '../../routing/useRedirect';
@@ -140,7 +145,13 @@ export const useDeleteController = <
             },
             {
                 mutationMode,
-                ...otherMutationOptions,
+                // dataProvider.delete may resolve without data, but the public type
+                // of mutationOptions promises a record to keep backward compatibility
+                ...(otherMutationOptions as MutateOptions<
+                    RecordType | undefined,
+                    ErrorType,
+                    Partial<UseDeleteMutateParams<RecordType>>
+                >),
             }
         );
     }, [

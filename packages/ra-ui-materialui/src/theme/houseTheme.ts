@@ -4,7 +4,6 @@ import {
     darken,
     Theme,
     PaletteOptions,
-    ThemeOptions,
 } from '@mui/material';
 import { grey } from '@mui/material/colors';
 
@@ -14,7 +13,7 @@ import { grey } from '@mui/material/colors';
  * Uses rounded corners, blurry backdrop, large padding, and a bright color palette.
  */
 
-const componentsOverrides = (theme: Theme): ThemeOptions['components'] => ({
+const componentsOverrides = (theme: Theme): Theme['components'] => ({
     MuiBackdrop: {
         styleOverrides: {
             root: {

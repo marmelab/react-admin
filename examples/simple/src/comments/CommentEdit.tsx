@@ -14,6 +14,7 @@ import {
     CreateButton,
     DateInput,
     EditContextProvider,
+    type EditProps,
     useEditController,
     Link as RaLink,
     ReferenceInput,
@@ -28,6 +29,7 @@ import {
     useCreatePath,
     useRecordContext,
 } from 'react-admin';
+import type { Post } from '../types';
 
 const LinkToRelatedPost = () => {
     const record = useRecordContext();
@@ -60,7 +62,7 @@ const OptionRenderer = (props: any) => {
     );
 };
 
-const inputText = record =>
+const inputText = (record: Post) =>
     record.id === '@@ra-create'
         ? record.name
         : `${record.title} - ${record.id}`;
@@ -108,7 +110,7 @@ const CreatePost = () => {
     );
 };
 
-const CommentEdit = props => {
+const CommentEdit = (props: EditProps) => {
     const controllerProps = useEditController(props);
     const { resource, record, save } = controllerProps;
 

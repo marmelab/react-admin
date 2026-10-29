@@ -23,22 +23,23 @@ export const LevelSelect = (props: LevelSelectProps) => {
     );
     const { size } = props;
 
-    const selectedOption = useEditorState({
-        editor,
-        selector: ({ editor }) => {
-            if (!editor) return options[0];
-            return (
-                options.find(option => {
-                    if (option.value === 'paragraph') {
-                        return editor.isActive('paragraph');
-                    }
-                    return editor.isActive('heading', {
-                        level: (option as HeadingLevelOption).level,
-                    });
-                }) ?? options[0]
-            );
-        },
-    });
+    const selectedOption =
+        useEditorState({
+            editor,
+            selector: ({ editor }) => {
+                if (!editor) return options[0];
+                return (
+                    options.find(option => {
+                        if (option.value === 'paragraph') {
+                            return editor.isActive('paragraph');
+                        }
+                        return editor.isActive('heading', {
+                            level: (option as HeadingLevelOption).level,
+                        });
+                    }) ?? options[0]
+                );
+            },
+        }) ?? options[0];
 
     const handleMenuItemClick = (
         event: React.MouseEvent<HTMLLIElement, MouseEvent>,
@@ -47,10 +48,10 @@ export const LevelSelect = (props: LevelSelectProps) => {
         setAnchorElement(null);
         const selectedItem = options[index];
         if (selectedItem.value === 'paragraph') {
-            editor.chain().focus().setParagraph().run();
+            editor?.chain().focus().setParagraph().run();
         } else if (selectedItem.value === 'heading') {
             editor
-                .chain()
+                ?.chain()
                 .focus()
                 .setHeading({ level: selectedItem.level })
                 .run();

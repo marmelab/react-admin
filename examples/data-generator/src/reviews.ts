@@ -16,7 +16,7 @@ export const generateReviews = (db: Db): Review[] => {
 
     return db.orders
         .filter(order => reviewers.indexOf(order.customer_id) !== -1)
-        .reduce(
+        .reduce<Review[]>(
             (acc, order) => [
                 ...acc,
                 ...order.basket
@@ -24,11 +24,11 @@ export const generateReviews = (db: Db): Review[] => {
                     .map(product => {
                         const date = randomDate(order.date);
                         const status = isAfter(aMonthAgo, date)
-                            ? weightedArrayElement(
+                            ? weightedArrayElement<Review['status']>(
                                   ['accepted', 'rejected'],
                                   [3, 1]
                               )
-                            : weightedArrayElement(
+                            : weightedArrayElement<Review['status']>(
                                   ['pending', 'accepted', 'rejected'],
                                   [5, 3, 1]
                               );

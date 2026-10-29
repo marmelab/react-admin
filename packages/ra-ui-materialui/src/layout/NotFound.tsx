@@ -9,7 +9,12 @@ import { type MUIStyledCommonProps } from '@mui/system';
 import Button from '@mui/material/Button';
 import HotTub from '@mui/icons-material/HotTub';
 import History from '@mui/icons-material/History';
-import { useAuthenticated, useDefaultTitle, useTranslate } from 'ra-core';
+import {
+    type TitleComponent,
+    useAuthenticated,
+    useDefaultTitle,
+    useTranslate,
+} from 'ra-core';
 
 import { Title } from './Title';
 import { Loading } from './Loading';
@@ -46,19 +51,25 @@ export const NotFound = (inProps: NotFoundProps) => {
 };
 
 export interface NotFoundProps
-    extends React.DetailedHTMLProps<
-            React.HTMLAttributes<HTMLDivElement>,
-            HTMLDivElement
+    extends Omit<
+            React.DetailedHTMLProps<
+                React.HTMLAttributes<HTMLDivElement>,
+                HTMLDivElement
+            >,
+            'title'
         >,
-        MUIStyledCommonProps<Theme> {}
+        MUIStyledCommonProps<Theme> {
+    title?: TitleComponent;
+}
 
 const sanitizeRestProps = ({
     staticContext,
     history,
     location,
     match,
+    title,
     ...rest
-}: any): NotFoundProps => rest;
+}: any): Omit<NotFoundProps, 'title'> => rest;
 
 const PREFIX = 'RaNotFound';
 

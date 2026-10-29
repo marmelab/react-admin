@@ -1,5 +1,4 @@
 import React, { ReactNode } from 'react';
-import { UseQueryOptions } from '@tanstack/react-query';
 import { Typography } from '@mui/material';
 import {
     LinkToType,
@@ -7,6 +6,7 @@ import {
     SortPayload,
     RaRecord,
     ReferenceOneFieldBase,
+    UseGetManyReferenceHookOptions,
     UseReferenceResult,
 } from 'ra-core';
 import { useThemeProps } from '@mui/material/styles';
@@ -109,13 +109,9 @@ export interface ReferenceOneFieldProps<
     emptyText?: ReactNode;
     empty?: ReactNode;
     offline?: ReactNode;
-    queryOptions?: Omit<
-        UseQueryOptions<{
-            data: ReferenceRecordType[];
-            total: number;
-        }>,
-        'queryKey'
-    > & { meta?: any };
+    queryOptions?: UseGetManyReferenceHookOptions<ReferenceRecordType> & {
+        meta?: any;
+    };
 }
 
 // disable sorting on this field by default as its default source prop ('id')

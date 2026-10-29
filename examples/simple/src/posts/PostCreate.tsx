@@ -213,7 +213,7 @@ const CreateUser = () => {
     const [value, setValue] = React.useState(filter || '');
     const [create] = useCreate();
 
-    const handleSubmit = event => {
+    const handleSubmit = (event: React.FormEvent) => {
         event.preventDefault();
         create(
             'users',

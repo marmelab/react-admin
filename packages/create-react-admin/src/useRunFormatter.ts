@@ -9,7 +9,7 @@ export const useRunFormatter = () => {
         const command = execa(`${state.installer}`, ['run', 'format'], {
             cwd: `./${state.name}`,
         });
-        command.stderr.pipe(stderr);
+        command.stderr?.pipe(stderr);
 
         await command;
     };

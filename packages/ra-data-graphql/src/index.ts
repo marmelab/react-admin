@@ -216,8 +216,9 @@ const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
 
         return (
             client
-                // @ts-ignore
+                // @ts-expect-error getOptions() returns query options, whose fetchPolicy is wider than the mutation one
                 .mutate(apolloQuery)
+                // @ts-expect-error mutate() resolves a FetchResult, not an ApolloQueryResult
                 .then(parseResponse)
                 .catch(handleError)
         );
