@@ -169,13 +169,14 @@ export const ResettableTextField = forwardRef(
         return (
             <StyledTextField
                 value={value}
-                InputProps={inputProps}
                 disabled={disabled || readOnly}
                 variant={variant}
                 margin={margin}
                 className={className}
                 {...rest}
-                {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+                {...(muiMajor >= 6
+                    ? { slotProps: mergedSlotProps }
+                    : { InputProps: inputProps })}
                 inputRef={ref}
             />
         );

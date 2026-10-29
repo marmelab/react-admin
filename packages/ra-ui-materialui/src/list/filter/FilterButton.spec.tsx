@@ -92,6 +92,24 @@ describe('<FilterButton />', () => {
             expect(checkboxes[2].getAttribute('aria-checked')).toBe('false');
         }, 7000);
 
+        it('should display the added filters in the order they were added', async () => {
+            render(<Basic />);
+
+            fireEvent.click(await screen.findByLabelText('Add filter'));
+            fireEvent.click(screen.getAllByRole('menuitemcheckbox')[2]);
+            await screen.findByRole('textbox', { name: 'Body' });
+
+            fireEvent.click(screen.getByLabelText('Add filter'));
+            fireEvent.click(screen.getAllByRole('menuitemcheckbox')[0]);
+            await screen.findByRole('textbox', { name: 'Title' });
+
+            expect(
+                screen
+                    .getAllByRole('textbox')
+                    .map(input => input.getAttribute('name'))
+            ).toEqual(['q', 'body', 'title']);
+        });
+
         it('should remove the checked state of the menu item when removing its matching filter', async () => {
             render(<Basic />);
 

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
-import { useFormContext } from 'react-hook-form';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { createTheme } from '@mui/material/styles';
 
@@ -10,6 +9,7 @@ import { Create } from '../detail';
 import { SimpleForm } from '../form';
 import { BooleanInput } from './BooleanInput';
 import { TextInput } from './TextInput';
+import { SetFocusButton } from './common';
 
 export default { title: 'ra-ui-materialui/input/BooleanInput' };
 
@@ -79,13 +79,6 @@ const Wrapper = ({ children, defaultTheme = 'light', theme = undefined }) => (
         </Create>
     </AdminContext>
 );
-
-const SetFocusButton = ({ source }) => {
-    const { setFocus } = useFormContext();
-    return (
-        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
-    );
-};
 
 export const SetFocus = () => (
     <AdminContext defaultTheme="light">

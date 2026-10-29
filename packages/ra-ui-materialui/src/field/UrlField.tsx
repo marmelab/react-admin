@@ -7,7 +7,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useFieldValue, useTranslate, genericMemo } from 'ra-core';
+import { useFieldValue, useTranslate, genericMemo, getSafeUrl } from 'ra-core';
 
 import { FieldProps } from './types';
 
@@ -41,7 +41,7 @@ const UrlFieldImpl = <
     return (
         <StyledLink
             className={className}
-            href={value}
+            href={getSafeUrl(value)}
             onClick={stopPropagation}
             variant="body2"
             {...sanitizeFieldRestProps(rest)}

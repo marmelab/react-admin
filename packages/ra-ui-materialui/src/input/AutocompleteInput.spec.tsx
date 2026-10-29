@@ -26,6 +26,7 @@ import {
     InsideReferenceInputOnChange,
     WithInputProps,
     OnCreate,
+    OnCreateWithAutoSelect,
     OnCreateSlow,
     CreateLabel,
     CreateItemLabel,
@@ -260,6 +261,39 @@ describe('<AutocompleteInput />', () => {
             });
             expect(screen.queryByText('Default')).toBeNull();
             await screen.findByText('No options');
+        });
+
+        it('should not display the emptyText when multiple is true', async () => {
+            const mock = jest
+                .spyOn(console, 'warn')
+                .mockImplementation(() => {});
+            render(
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <SimpleForm onSubmit={jest.fn()}>
+                            <AutocompleteInput
+                                emptyText="Default"
+                                {...defaultProps}
+                                choices={[{ id: 2, name: 'foo' }]}
+                                multiple
+                            />
+                        </SimpleForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            );
+            fireEvent.click(
+                await screen.findByLabelText('resources.users.fields.role')
+            );
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option').length).toEqual(1);
+            });
+            expect(screen.queryByText('Default')).toBeNull();
+            expect(mock).toHaveBeenCalledWith(
+                expect.stringContaining(
+                    'emptyText and emptyValue are not supported when multiple is true'
+                )
+            );
+            mock.mockRestore();
         });
     });
 
@@ -1212,6 +1246,18 @@ describe('<AutocompleteInput />', () => {
     });
 
     describe('onCreate', () => {
+        it('should keep a clicked choice on blur when autoSelect is enabled', async () => {
+            render(<OnCreateWithAutoSelect />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+
+            fireEvent.focus(input);
+            fireEvent.click(await screen.findByText('Victor Hugo'));
+            fireEvent.blur(input);
+
+            expect(input.value).toEqual('Victor Hugo');
+        });
         it("shouldn't include an option with the create label when the input is empty", async () => {
             render(<OnCreate />);
             const input = (await screen.findByLabelText(

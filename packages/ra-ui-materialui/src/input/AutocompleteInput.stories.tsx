@@ -375,6 +375,12 @@ OnCreate.argTypes = {
     },
 };
 
+export const OnCreateWithAutoSelect = () => (
+    <Wrapper>
+        <OnCreateInput autoSelect autoHighlight />
+    </Wrapper>
+);
+
 const AutocompleteWithCreateInReferenceInput = () => {
     const [create] = useCreate();
     const handleCreateAuthor = async (authorName?: string) => {

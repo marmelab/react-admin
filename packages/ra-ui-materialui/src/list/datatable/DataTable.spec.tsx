@@ -300,6 +300,13 @@ describe('DataTable', () => {
             fireEvent.click(checkboxes[2]);
             await screen.findByText('2 items selected');
         });
+        it('should render a labelled checkbox to select the entire page', async () => {
+            render(<Basic />);
+            fireEvent.click(
+                await screen.findByRole('checkbox', { name: 'Select all' })
+            );
+            await screen.findByText('Select all');
+        });
         it('should reveal select all button when selecting the entire page', async () => {
             render(<Basic />);
             const checkboxes = await screen.findAllByRole('checkbox');

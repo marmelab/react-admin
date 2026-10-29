@@ -11,7 +11,8 @@ import {
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
-import { useForkRef, major as muiMajor } from '@mui/material';
+import { getShrinkLabelProps } from './getShrinkLabelProps';
+import { useForkRef } from '@mui/material';
 
 /**
  * Form input to edit a Date string value in the "YYYY-MM-DD" format (e.g. '2021-06-23').
@@ -67,6 +68,7 @@ export const DateInput = (props: DateInputProps) => {
         variant,
         disabled,
         readOnly,
+        InputLabelProps,
         ...rest
     } = useThemeProps({
         props: props,
@@ -188,16 +190,6 @@ export const DateInput = (props: DateInputProps) => {
     const { ref, name } = field;
     const inputRef = useForkRef(ref, localInputRef);
 
-    const mergedSlotProps = {
-        // @ts-expect-error slotProps do not yet exist in MUI v5
-        ...rest.slotProps,
-        inputLabel: {
-            ...defaultInputLabelProps,
-            // @ts-expect-error slotProps do not yet exist in MUI v5
-            ...rest.slotProps?.inputLabel,
-        },
-    };
-
     return (
         <StyledTextField
             id={id}
@@ -234,9 +226,12 @@ export const DateInput = (props: DateInputProps) => {
                     />
                 ) : null
             }
-            InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+            {...getShrinkLabelProps(
+                InputLabelProps,
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                rest.slotProps
+            )}
         />
     );
 };
@@ -261,7 +256,6 @@ const convertDateToString = (value: Date) => {
 };
 
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-const defaultInputLabelProps = { shrink: true };
 
 /**
  * Convert a form state value to a date string for the `<input type="date">` value.

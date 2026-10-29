@@ -29,3 +29,4 @@ export * from './hooks';
 export * from './shallowEqual';
 export * from './useCheckForApplicationUpdate';
 export * from './genericMemo';
+export * from './getSafeUrl';

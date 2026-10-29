@@ -1,6 +1,6 @@
 {
     "name": "ra-data-fakerest",
-    "version": "5.15.3",
+    "version": "5.15.5",
     "description": "JSON Server data provider for react-admin",
     "zshy": "./src/index.ts",
     "main": "./dist/index.cjs",
@@ -41,7 +41,7 @@
     "devDependencies": {
         "@types/jest": "^29.5.2",
         "expect": "^27.4.6",
-        "ra-core": "^5.15.3",
+        "ra-core": "^5.15.5",
         "typescript": "^6.0.3",
         "zshy": "^0.5.0"
     },
@@ -51,14 +51,9 @@
     "gitHead": "19dcb264898c8e01c408eb66ce02c50b67c851ab",
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/index.cjs"
-            }
+            "types": "./dist/index.d.cts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
         }
     }
 }

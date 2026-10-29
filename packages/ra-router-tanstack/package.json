@@ -1,6 +1,6 @@
 {
     "name": "ra-router-tanstack",
-    "version": "5.15.3",
+    "version": "5.15.5",
     "description": "TanStack Router provider for react-admin",
     "files": [
         "*.md",
@@ -24,7 +24,7 @@
     "devDependencies": {
         "@tanstack/history": "^1.0.0",
         "@tanstack/react-router": "^1.143.11",
-        "ra-core": "^5.15.3",
+        "ra-core": "^5.15.5",
         "typescript": "^6.0.3",
         "zshy": "^0.5.0"
     },
@@ -37,14 +37,9 @@
     },
     "exports": {
         ".": {
-            "import": {
-                "types": "./dist/index.d.ts",
-                "default": "./dist/index.js"
-            },
-            "require": {
-                "types": "./dist/index.d.cts",
-                "default": "./dist/index.cjs"
-            }
+            "types": "./dist/index.d.cts",
+            "import": "./dist/index.js",
+            "require": "./dist/index.cjs"
         }
     }
 }

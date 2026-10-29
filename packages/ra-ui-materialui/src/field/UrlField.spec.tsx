@@ -5,7 +5,7 @@ import { I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { UrlField } from './UrlField';
-import { Themed } from './UrlField.stories';
+import { Themed, UnsafeUrl } from './UrlField.stories';
 
 const url = 'https://en.wikipedia.org/wiki/HAL_9000';
 
@@ -79,6 +79,25 @@ describe('<UrlField />', () => {
         );
 
         expect(getByText('Not found')).not.toBeNull();
+    });
+
+    it('should not render a clickable link for javascript: URLs', () => {
+        const consoleError = jest
+            .spyOn(console, 'error')
+            .mockImplementation(() => {});
+        render(<UnsafeUrl />);
+        const link = screen.getByText('javascript:alert(document.cookie)');
+        expect(link.getAttribute('href')).toBeNull();
+        expect(consoleError).toHaveBeenCalledWith(
+            'Blocked unsafe URL: "javascript:alert(document.cookie)"'
+        );
+        consoleError.mockRestore();
+    });
+
+    it('should render relative URLs as links', () => {
+        render(<UrlField record={{ id: 123, url: '/posts/1' }} source="url" />);
+        const link = screen.getByText('/posts/1') as HTMLAnchorElement;
+        expect(link.getAttribute('href')).toEqual('/posts/1');
     });
 
     it('should be customized by a theme', async () => {

@@ -7,11 +7,11 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { major as muiMajor } from '@mui/material';
 
 import { CommonInputProps } from './CommonInputProps';
 import { sanitizeInputRestProps } from './sanitizeInputRestProps';
 import { InputHelperText } from './InputHelperText';
+import { getShrinkLabelProps } from './getShrinkLabelProps';
 
 /**
  * Converts a time string without timezone to a date object
@@ -66,6 +66,7 @@ export const TimeInput = (props: TimeInputProps) => {
         parse = parseTime,
         validate,
         variant,
+        InputLabelProps,
         ...rest
     } = useThemeProps({
         props: props,
@@ -89,16 +90,6 @@ export const TimeInput = (props: TimeInputProps) => {
     const { error, invalid } = fieldState;
 
     const renderHelperText = helperText !== false || invalid;
-
-    const mergedSlotProps = {
-        // @ts-expect-error slotProps do not yet exist in MUI v5
-        ...rest.slotProps,
-        inputLabel: {
-            ...defaultInputLabelProps,
-            // @ts-expect-error slotProps do not yet exist in MUI v5
-            ...rest.slotProps?.inputLabel,
-        },
-    };
 
     return (
         <StyledTextField
@@ -130,9 +121,12 @@ export const TimeInput = (props: TimeInputProps) => {
                     />
                 ) : null
             }
-            InputLabelProps={defaultInputLabelProps}
             {...sanitizeInputRestProps(rest)}
-            {...(muiMajor >= 6 ? { slotProps: mergedSlotProps } : {})}
+            {...getShrinkLabelProps(
+                InputLabelProps,
+                // @ts-expect-error slotProps do not yet exist in MUI v5
+                rest.slotProps
+            )}
         />
     );
 };
@@ -159,7 +153,6 @@ const convertDateToString = (value: Date) => {
 
 // hh:mm
 const timeRegex = /^\d{2}:\d{2}$/;
-const defaultInputLabelProps = { shrink: true };
 
 /**
  * Converts a date from the dataProvider, with timezone, to a time string

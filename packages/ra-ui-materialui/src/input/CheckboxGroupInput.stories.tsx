@@ -11,7 +11,6 @@ import {
     testDataProvider,
     useRecordContext,
 } from 'ra-core';
-import { useFormContext } from 'react-hook-form';
 
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
@@ -20,6 +19,7 @@ import { CheckboxGroupInput } from './CheckboxGroupInput';
 import { ReferenceArrayInput } from './ReferenceArrayInput';
 import { TextInput } from './TextInput';
 import { Admin } from 'react-admin';
+import { SetFocusButton } from './common';
 
 export default { title: 'ra-ui-materialui/input/CheckboxGroupInput' };
 
@@ -305,13 +305,6 @@ export const TranslateChoice = () => {
                 </SimpleForm>
             </Edit>
         </AdminContext>
-    );
-};
-
-const SetFocusButton = ({ source }) => {
-    const { setFocus } = useFormContext();
-    return (
-        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
     );
 };
 

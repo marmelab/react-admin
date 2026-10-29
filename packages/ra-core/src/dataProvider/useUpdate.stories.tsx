@@ -6,7 +6,7 @@ import fakeRestDataProvider from 'ra-data-fakerest';
 import { CoreAdmin, CoreAdminContext, Resource } from '../core';
 import { useUpdate } from './useUpdate';
 import { useGetOne } from './useGetOne';
-import type { MutationMode as MutationModeType } from '../types';
+import type { DataProvider, MutationMode as MutationModeType } from '../types';
 import {
     EditBase,
     ListBase,
@@ -21,9 +21,15 @@ import { useTakeUndoableMutation } from './undo';
 
 export default { title: 'ra-core/dataProvider/useUpdate' };
 
-export const MutationMode = ({ timeout = 1000 }) => {
+export const MutationMode = ({
+    timeout = 1000,
+    dataProvider,
+}: {
+    timeout?: number;
+    dataProvider?: DataProvider;
+}) => {
     const posts = [{ id: 1, title: 'Hello', author: 'John Doe' }];
-    const dataProvider = {
+    const defaultDataProvider = {
         getOne: (resource, params) => {
             return Promise.resolve({
                 data: posts.find(p => p.id === params.id),
@@ -44,7 +50,7 @@ export const MutationMode = ({ timeout = 1000 }) => {
     return (
         <CoreAdminContext
             queryClient={new QueryClient()}
-            dataProvider={dataProvider}
+            dataProvider={dataProvider ?? defaultDataProvider}
         >
             <MutationModeCore />
         </CoreAdminContext>

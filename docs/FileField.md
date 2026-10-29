@@ -20,6 +20,8 @@ import { FileField } from 'react-admin';
 
 This field is also often used within a [`<FileInput />`](./FileInput.md) component to display preview.
 
+**Tip**: To prevent XSS attacks, `<FileField>` doesn't render a clickable link when the file URL uses the `javascript:` protocol. It displays the title as plain text instead, and logs an error in the console.
+
 ## Properties
 
 | Prop       | Required | Type                      | Default      | Description                                                                                                                                            |
