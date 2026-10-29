@@ -67,6 +67,37 @@ describe('<FilterForm />', () => {
         expect(screen.queryAllByLabelText('Name')).toHaveLength(1);
     });
 
+    it('should display the filters in the order they were added', () => {
+        const filters = [
+            <TextInput source="q" label="Search" alwaysOn />,
+            <TextInput source="title" label="Title" />,
+            <TextInput source="body" label="Body" />,
+            <TextInput source="author" label="Author" />,
+        ];
+
+        render(
+            <AdminContext>
+                <ListContextProvider
+                    value={{
+                        ...defaultListContext,
+                        displayedFilters: {
+                            body: true,
+                            author: true,
+                            title: true,
+                        },
+                    }}
+                >
+                    <FilterForm filters={filters} />
+                </ListContextProvider>
+            </AdminContext>
+        );
+        expect(
+            screen
+                .getAllByRole('textbox')
+                .map(input => input.getAttribute('name'))
+        ).toEqual(['q', 'body', 'author', 'title']);
+    });
+
     it('should retain key values in the form inputs', () => {
         // As key is not rendered, we just test that the React warning doesn't occur.
         const origError = console.error;

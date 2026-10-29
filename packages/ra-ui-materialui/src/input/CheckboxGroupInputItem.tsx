@@ -11,6 +11,7 @@ import {
     type FormControlLabelProps,
 } from '@mui/material';
 import { type ChoicesProps, useChoices } from 'ra-core';
+import { useSwitchBaseInputRefProps } from './useSwitchBaseInputRefProps';
 
 export const CheckboxGroupInputItem = (
     inProps: CheckboxGroupInputItemProps
@@ -45,6 +46,7 @@ export const CheckboxGroupInputItem = (
 
     const choiceName = getChoiceText(choice);
     const disabled = getDisableValue(choice);
+    const checkboxProps = useSwitchBaseInputRefProps(inputRef, options ?? {});
 
     return (
         <StyledFormControlLabel
@@ -52,7 +54,6 @@ export const CheckboxGroupInputItem = (
             key={getChoiceValue(choice)}
             onChange={onChange}
             className={className}
-            inputRef={inputRef}
             control={
                 <Checkbox
                     id={`${id}_${getChoiceValue(choice)}`}
@@ -66,7 +67,7 @@ export const CheckboxGroupInputItem = (
                     }
                     value={String(getChoiceValue(choice))}
                     disabled={disabled}
-                    {...options}
+                    {...checkboxProps}
                 />
             }
             label={choiceName}

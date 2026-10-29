@@ -72,3 +72,16 @@ export const Themed = () => {
         </AdminContext>
     );
 };
+
+export const UnsafeUrl = () => (
+    <AdminContext>
+        <Paper sx={{ p: 2 }}>
+            <Stack direction="row">
+                <UrlField
+                    record={{ value: 'javascript:alert(document.cookie)' }}
+                    source="value"
+                />
+            </Stack>
+        </Paper>
+    </AdminContext>
+);

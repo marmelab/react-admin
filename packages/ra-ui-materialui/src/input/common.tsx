@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useWatch } from 'react-hook-form';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { DataProvider } from 'ra-core';
 
 export const FormInspector = ({ name = 'title' }) => {
@@ -11,6 +11,15 @@ export const FormInspector = ({ name = 'title' }) => {
                 {JSON.stringify(value)} ({typeof value})
             </code>
         </div>
+    );
+};
+
+export const SetFocusButton = ({ source }) => {
+    const { setFocus } = useFormContext();
+    return (
+        <button type="button" onClick={() => setFocus(source)}>
+            Set focus on {source}
+        </button>
     );
 };
 

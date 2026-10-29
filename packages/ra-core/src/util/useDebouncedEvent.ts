@@ -1,7 +1,13 @@
 import * as React from 'react';
-import { useCallback, useRef } from 'react';
+import { useMemo, useRef } from 'react';
 import debounce from 'lodash/debounce.js';
 import { useEvent } from './useEvent';
+
+export interface DebouncedEvent<Args extends unknown[], Return> {
+    (...args: Args): Return | undefined;
+    cancel: () => void;
+    flush: () => Return | undefined;
+}
 
 // allow the hook to work in SSR
 const useLayoutEffect =
@@ -17,12 +23,17 @@ const useLayoutEffect =
 export const useDebouncedEvent = <Args extends unknown[], Return>(
     callback: (...args: Args) => Return,
     delay: number
-) => {
+): DebouncedEvent<Args, Return> => {
     // Create a ref that stores the debounced callback
-    const debouncedCallbackRef = useRef<(...args: Args) => Return | undefined>(
-        () => {
-            throw new Error('Cannot call an event handler while rendering.');
-        }
+    const debouncedCallbackRef = useRef<DebouncedEvent<Args, Return>>(
+        Object.assign(
+            () => {
+                throw new Error(
+                    'Cannot call an event handler while rendering.'
+                );
+            },
+            { cancel: () => {}, flush: () => undefined }
+        )
     );
 
     // Keep a stable ref to the callback (in case it's an inline function for instance)
@@ -30,13 +41,24 @@ export const useDebouncedEvent = <Args extends unknown[], Return>(
 
     // Whenever callback or delay changes, we need to update the debounced callback
     useLayoutEffect(() => {
-        debouncedCallbackRef.current = debounce(stableCallback, delay);
+        const debounced = debounce(stableCallback, delay);
+        debouncedCallbackRef.current = debounced;
+        return () => {
+            debounced.flush();
+        };
     }, [stableCallback, delay]);
 
-    // The function returned by useCallback will invoke the debounced callback
+    // The function returned by useMemo will invoke the debounced callback
     // Its dependencies array is empty, so it never changes across re-renders
-    return useCallback(
-        (...args: Args) => debouncedCallbackRef.current(...args),
+    return useMemo(
+        () =>
+            Object.assign(
+                (...args: Args) => debouncedCallbackRef.current(...args),
+                {
+                    cancel: () => debouncedCallbackRef.current.cancel(),
+                    flush: () => debouncedCallbackRef.current.flush(),
+                }
+            ),
         []
     );
 };

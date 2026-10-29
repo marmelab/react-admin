@@ -8,7 +8,7 @@ import { NumberInput } from './NumberInput';
 import { AdminContext } from '../AdminContext';
 import { Create, Edit } from '../detail';
 import { SimpleForm, Toolbar } from '../form';
-import { FormInspector } from './common';
+import { FormInspector, SetFocusButton } from './common';
 import { TextInput } from './TextInput';
 import { SaveButton } from '../button';
 
@@ -325,13 +325,6 @@ export const ShouldUnregister = () => (
         <NumberInput source="views" shouldUnregister />
     </Wrapper>
 );
-
-const SetFocusButton = ({ source }) => {
-    const { setFocus } = useFormContext();
-    return (
-        <button onClick={() => setFocus(source)}>Set focus on {source}</button>
-    );
-};
 
 export const SetFocus = () => (
     <Wrapper>

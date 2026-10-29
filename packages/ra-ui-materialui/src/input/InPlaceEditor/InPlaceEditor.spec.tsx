@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-import { Basic } from './InPlaceEditor.stories';
+import { Basic, FocusOutside } from './InPlaceEditor.stories';
 
 describe('InPlaceEditor', () => {
     it('should render the field value on mount', async () => {
@@ -22,6 +22,30 @@ describe('InPlaceEditor', () => {
         fireEvent.change(input, { target: { value: 'Jane Doe' } });
         fireEvent.blur(input);
         await screen.findByText('Jane Doe');
+    });
+
+    it('should save when focus moves to an element outside the editor', async () => {
+        render(<FocusOutside />);
+        const value = await screen.findByText('John Doe');
+        value.click();
+        const input = await screen.findByDisplayValue('John Doe');
+        fireEvent.change(input, { target: { value: 'Jane Doe' } });
+        fireEvent.blur(input, {
+            relatedTarget: screen.getByRole('button', { name: 'Next' }),
+        });
+        await screen.findByText('Jane Doe');
+    });
+    it('should cancel when focus moves to an element outside the editor with cancelOnBlur', async () => {
+        render(<FocusOutside cancelOnBlur />);
+        const value = await screen.findByText('John Doe');
+        value.click();
+        const input = await screen.findByDisplayValue('John Doe');
+        fireEvent.change(input, { target: { value: 'Jane Doe' } });
+        fireEvent.blur(input, {
+            relatedTarget: screen.getByRole('button', { name: 'Next' }),
+        });
+        await screen.findByText('John Doe');
+        expect(screen.queryByDisplayValue('Jane Doe')).toBeNull();
     });
     it('should revert to the previous version on error', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});

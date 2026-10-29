@@ -7,8 +7,8 @@
         "test": "yarn node ./start.js"
     },
     "devDependencies": {
-        "cypress": "^15.8.1",
+        "cypress": "^15.21.1",
         "cypress-vite": "^1.10.2",
-        "express": "^4.22.1"
+        "express": "^5.2.1"
     }
 }

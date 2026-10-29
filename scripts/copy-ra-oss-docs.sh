@@ -13,8 +13,8 @@ echo "Copying to the root folder..."
 cp ./docs/*.html ${RA_DOC_PATH}
 cp ./docs/_layouts/*.html ${RA_DOC_PATH}/_layouts
 cp ./docs/*.md ${RA_DOC_PATH}
-cp ./docs/img/* -r ${RA_DOC_PATH}/img
-cp ./docs/assets/* -r ${RA_DOC_PATH}/assets
+cp -r ./docs/img/* ${RA_DOC_PATH}/img
+cp -r ./docs/assets/* ${RA_DOC_PATH}/assets
 cp ./docs/css/* ${RA_DOC_PATH}/css
 cp ./docs/js/* ${RA_DOC_PATH}/js
 

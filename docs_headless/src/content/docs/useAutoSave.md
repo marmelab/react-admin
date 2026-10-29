@@ -13,7 +13,7 @@ Note that you **must** add the `resetOptions` prop with `{ keepDirtyValues: true
 **Note**: `useAutoSave` is not compatible with the default `warnWhenUnsavedChanges` prop of the react-admin form components. However, it implements its own similar mechanism which is enabled by default.
 You can disable it with the [`disableWarnWhenUnsavedChanges` prop](#disablewarnwhenunsavedchanges).
 
-**Note**: Due to limitations in react-router, this equivalent of `warnWhenUnsavedChanges` only works if you use the default router provided by react-admin, or if you use a [Data Router with react-router v6](https://reactrouter.com/6.22.3/routers/picking-a-router) or [with react-router v7](https://reactrouter.com/7.2.0/start/framework/custom).
+**Note**: This equivalent of `warnWhenUnsavedChanges` needs a router that supports navigation blocking. It works with the default router provided by react-admin. If you set up your own react-router router, it must be a [Data Router](https://reactrouter.com/6.22.3/routers/picking-a-router).
 If not, you'll need to use the `disableWarnWhenUnsavedChanges` prop.
 
 ```tsx

@@ -1,5 +1,46 @@
 # Changelog
 
+## 5.15.5
+
+* Fix `UrlField` and `FileField` may execute JS code on click ([#11409](https://github.com/marmelab/react-admin/pull/11409)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix `fetchJson` crashes on plain object headers ([#11407](https://github.com/marmelab/react-admin/pull/11407)) ([lprnmns](https://github.com/lprnmns))
+* Fix `FilterForm` shows added filters in arbitrary order ([#11406](https://github.com/marmelab/react-admin/pull/11406)) ([lprnmns](https://github.com/lprnmns))
+* Fix `useDebouncedEvent` pending calls surviving unmount and `delay` changes ([#11400](https://github.com/marmelab/react-admin/pull/11400)) ([Copilot](https://github.com/apps/copilot-swe-agent))
+* Fix unknown props on DOM element warnings with MUI v9 ([#11394](https://github.com/marmelab/react-admin/pull/11394)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `useCanAccess` throws "Maximum update depth exceeded" error when many checks resolve at once ([#11393](https://github.com/marmelab/react-admin/pull/11393)) ([paour](https://github.com/paour))
+* Remove unused `DatagridInput` ([#11383](https://github.com/marmelab/react-admin/pull/11383)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Fix broken Broadcom API Hub screenshot in Demos page ([#11384](https://github.com/marmelab/react-admin/pull/11384)) ([pysnooLab](https://github.com/pysnooLab))
+* [Doc] Clarify page-level vs field-level RBAC permissions ([#11382](https://github.com/marmelab/react-admin/pull/11382)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [TypeScript] Fix `<DeleteWithConfirmButton>` does not accept the component prop ([#11386](https://github.com/marmelab/react-admin/pull/11386)) ([bipul724](https://github.com/bipul724))
+* Bump smol-toml from 1.7.0 to 1.9.0 ([#11405](https://github.com/marmelab/react-admin/pull/11405)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump sharp from 0.35.4 to 0.35.5 ([#11404](https://github.com/marmelab/react-admin/pull/11404)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump prosemirror-view from 1.41.7 to 1.42.6 ([#11403](https://github.com/marmelab/react-admin/pull/11403)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump nx from 23.2.0 to 23.3.0 ([#11402](https://github.com/marmelab/react-admin/pull/11402)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump proxy-addr from 2.0.7 to 2.0.8 ([#11401](https://github.com/marmelab/react-admin/pull/11401)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump source-map-js from 1.2.1 to 1.2.2 ([#11398](https://github.com/marmelab/react-admin/pull/11398)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump seroval from 1.5.6 to 1.6.9 ([#11397](https://github.com/marmelab/react-admin/pull/11397)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump dompurify from 3.4.13 to 3.4.16 ([#11396](https://github.com/marmelab/react-admin/pull/11396)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump markdown-it from 14.2.0 to 14.3.2 ([#11391](https://github.com/marmelab/react-admin/pull/11391)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump fast-uri from 3.1.7 to 3.1.8 ([#11390](https://github.com/marmelab/react-admin/pull/11390)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump ip-address from 10.4.0 to 10.7.2 ([#11389](https://github.com/marmelab/react-admin/pull/11389)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
+## 5.15.4
+
+* Fix Maximum update depth exceeded in `<TabbedForm>` under React 19 ([#11379](https://github.com/marmelab/react-admin/pull/11379)) ([Sophran-fbj](https://github.com/Sophran-fbj))
+* Fix `<PrevNextButtons storeKey={false}>` being ignored ([#11371](https://github.com/marmelab/react-admin/pull/11371)) ([Sophran-fbj](https://github.com/Sophran-fbj))
+* [Docs] Fix custom field uses `defaultProps` for labels ([#11367](https://github.com/marmelab/react-admin/pull/11367)) ([jabrailkhalil](https://github.com/jabrailkhalil))
+* Fix `<AutocompleteInput>` clearing mouse selections on blur ([#11364](https://github.com/marmelab/react-admin/pull/11364)) ([lprnmns](https://github.com/lprnmns))
+* [Doc] Update Form RBAC to mention `showDisabled` and `showReadOnly` ([#11381](https://github.com/marmelab/react-admin/pull/11381)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update RA Core EE documentation ([#11365](https://github.com/marmelab/react-admin/pull/11365)) ([jonathanarnault](https://github.com/jonathanarnault))
+* [Chore] Bump dev dependencies ([#11361](https://github.com/marmelab/react-admin/pull/11361)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* build(deps): bump devalue from 5.8.1 to 5.9.2 ([#11376](https://github.com/marmelab/react-admin/pull/11376)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump json-graphql-server from 3.1.2 to 3.3.2 ([#11375](https://github.com/marmelab/react-admin/pull/11375)) ([fzaninotto](https://github.com/fzaninotto))
+* Bump react-router-dom from 6.30.4 to 6.30.6 ([#11374](https://github.com/marmelab/react-admin/pull/11374)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump sharp from 0.35.3 to 0.35.4 ([#11373](https://github.com/marmelab/react-admin/pull/11373)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump astro from 7.1.6 to 7.2.8 ([#11369](https://github.com/marmelab/react-admin/pull/11369)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* Bump react-router from 7.1.1 to 7.18.3 in demo ([#11363](https://github.com/marmelab/react-admin/pull/11363)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Bump @nivo/bar from 0.88 to 0.99 in demo ([#11362](https://github.com/marmelab/react-admin/pull/11362)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.15.3
 
 * Fix `<DataTable>` calls `useCanAccess` even when bulk delete is disabled ([#11352](https://github.com/marmelab/react-admin/pull/11352)) ([lprnmns](https://github.com/lprnmns))

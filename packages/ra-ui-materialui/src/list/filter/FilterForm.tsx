@@ -67,7 +67,7 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
     const getShownFilters = () => {
         if (!filters) return [];
         const values = filterValues;
-        return filters.filter(
+        const shownFilters = filters.filter(
             (filterElement): filterElement is React.ReactElement => {
                 if (!isValidElement(filterElement)) {
                     return false;
@@ -81,6 +81,17 @@ export const FilterFormBase = (props: FilterFormBaseProps) => {
                 );
             }
         );
+        // show the filters added by the user in the order they were added
+        // (the displayedFilters keys keep their insertion order), after the
+        // alwaysOn filters and the ones shown only because they have a value
+        const displayedOrder = Object.keys(displayedFilters).filter(
+            source => displayedFilters[source]
+        );
+        const getRank = (filterElement: React.ReactElement) =>
+            filterElement.props.alwaysOn
+                ? -1
+                : displayedOrder.indexOf(filterElement.props.source);
+        return shownFilters.sort((a, b) => getRank(a) - getRank(b));
     };
 
     const handleHide = useCallback(

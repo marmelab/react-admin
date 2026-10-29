@@ -316,6 +316,15 @@ If you provided a React element for the optionText prop, you must also provide t
 
     useEffect(() => {
         warning(
+            multiple &&
+                (props.emptyText !== undefined ||
+                    props.emptyValue !== undefined),
+            `emptyText and emptyValue are not supported when multiple is true (e.g. in <AutocompleteArrayInput>): the empty value of a multi-valued input is an empty array, so it needs no empty choice. These props are ignored.`
+        );
+    }, [multiple, props.emptyText, props.emptyValue]);
+
+    useEffect(() => {
+        warning(
             /* eslint-disable eqeqeq */
             shouldRenderSuggestions != undefined && noOptionsText == undefined,
             `When providing a shouldRenderSuggestions function, we recommend you also provide the noOptionsText prop and set it to a text explaining users why no options are displayed. It supports translation keys.`
@@ -619,6 +628,13 @@ If you provided a React element for the optionText prop, you must also provide t
         (event: any, newValue: any, reason: AutocompleteChangeReason) => {
             // This prevents auto-submitting a form inside a dialog passed to the `create` prop
             event.preventDefault();
+            if (
+                reason === 'blur' &&
+                typeof newValue === 'string' &&
+                doesQueryMatchSelection(newValue)
+            ) {
+                return;
+            }
             if (reason === 'createOption') {
                 // When users press the enter key after typing a new value, we can handle it as if they clicked on the create option
                 handleChangeWithCreateSupport(
@@ -634,7 +650,12 @@ If you provided a React element for the optionText prop, you must also provide t
                 newValue != null ? newValue : emptyValue
             );
         },
-        [emptyValue, getCreateItem, handleChangeWithCreateSupport]
+        [
+            doesQueryMatchSelection,
+            emptyValue,
+            getCreateItem,
+            handleChangeWithCreateSupport,
+        ]
     );
 
     const oneSecondHasPassed = useTimeout(1000, filterValue);
@@ -720,26 +741,57 @@ If you provided a React element for the optionText prop, you must also provide t
                 filterSelectedOptions
                 disabled={disabled || readOnly}
                 renderInput={params => {
-                    const mergedTextFieldProps = {
+                    const {
+                        InputProps: paramsInputProps,
+                        inputProps: paramsHtmlInputProps,
+                        InputLabelProps: paramsInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
+                        slotProps: paramsSlotProps,
+                        ...textFieldParams
+                    } = params;
+                    const {
+                        InputProps: userInputProps,
+                        inputProps: userHtmlInputProps,
+                        InputLabelProps: userInputLabelProps,
+                        // @ts-expect-error slotProps do not yet exist in MUI v5
+                        slotProps: userSlotProps,
+                        ...textFieldProps
+                    } = TextFieldProps ?? {};
+                    const input = {
                         readOnly,
-                        ...params.InputProps,
-                        ...TextFieldProps?.InputProps,
+                        ...paramsInputProps,
+                        ...paramsSlotProps?.input,
+                        ...userInputProps,
+                        ...userSlotProps?.input,
                     };
-                    // @ts-expect-error slotProps do not yet exist in MUI v5
-                    const mergedSlotProps = TextFieldProps?.slotProps
-                        ? {
-                              slotProps: {
-                                  // @ts-expect-error slotProps do not yet exist in MUI v5
-                                  ...TextFieldProps?.slotProps,
-                                  input: {
-                                      readOnly,
-                                      ...params.InputProps,
-                                      // @ts-expect-error slotProps do not yet exist in MUI v5
-                                      ...TextFieldProps?.slotProps?.input,
+                    const htmlInput = {
+                        ...paramsHtmlInputProps,
+                        ...paramsSlotProps?.htmlInput,
+                        ...userHtmlInputProps,
+                        ...userSlotProps?.htmlInput,
+                    };
+                    const inputLabel = {
+                        ...paramsInputLabelProps,
+                        ...paramsSlotProps?.inputLabel,
+                        ...userInputLabelProps,
+                        ...userSlotProps?.inputLabel,
+                    };
+                    const mergedSlotProps =
+                        muiMajor >= 6
+                            ? {
+                                  slotProps: {
+                                      ...paramsSlotProps,
+                                      ...userSlotProps,
+                                      input,
+                                      htmlInput,
+                                      inputLabel,
                                   },
-                              },
-                          }
-                        : undefined;
+                              }
+                            : {
+                                  InputProps: input,
+                                  inputProps: htmlInput,
+                                  InputLabelProps: inputLabel,
+                              };
                     return (
                         <TextField
                             name={field.name}
@@ -772,9 +824,8 @@ If you provided a React element for the optionText prop, you must also provide t
                                 [AutocompleteInputClasses.emptyLabel]:
                                     label === false || label === '',
                             })}
-                            {...params}
-                            {...TextFieldProps}
-                            InputProps={mergedTextFieldProps}
+                            {...textFieldParams}
+                            {...textFieldProps}
                             {...mergedSlotProps}
                             size={size}
                             inputRef={handleInputRef}
