@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { render, fireEvent, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 
 import { Expand } from './Datagrid.stories';
 
@@ -28,5 +29,17 @@ describe('ExpandAllButton', () => {
 
         collapse();
         expectExpandedRows(0);
+    });
+
+    it('should let keyboard users expand all rows', async () => {
+        render(<Expand />);
+        const [selectAllCheckbox] = await screen.findAllByRole('checkbox');
+        selectAllCheckbox.focus();
+        await userEvent.tab({ shift: true });
+        expect(
+            screen.getAllByRole('button', { name: 'ra.action.expand' })[0]
+        ).toHaveFocus();
+        await userEvent.keyboard('{Enter}');
+        expect(await screen.findAllByTestId('ExpandPanel')).toHaveLength(5);
     });
 });
