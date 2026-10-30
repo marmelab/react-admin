@@ -40,6 +40,7 @@ import {
     CreateButton,
     EditButton,
     SelectAllButton as RaSelectAllButton,
+    ShowButton,
 } from '../../button';
 import { ShowGuesser, SimpleShowLayout, EditGuesser } from '../../detail';
 import { AdminUI } from '../../AdminUI';
@@ -856,6 +857,46 @@ const ExpandDetails = () => {
 
     return <Box p={2}>Expand: {record?.title}</Box>;
 };
+
+export const Accessible = ({
+    rowClick,
+}: {
+    rowClick?: DataTableProps['rowClick'];
+}) => (
+    <AdminContext
+        dataProvider={dataProvider}
+        i18nProvider={polyglotI18nProvider(() => defaultMessages, 'en')}
+        store={memoryStore()}
+    >
+        <AdminUI>
+            <Resource
+                name="books"
+                list={() => (
+                    <List>
+                        <DataTable
+                            aria-label="Books"
+                            expand={<ExpandDetails />}
+                            rowClick={rowClick}
+                        >
+                            <DataTable.Col source="id" />
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author.name" />
+                            <DataTable.Col source="year" />
+                            <DataTable.Col label="Actions">
+                                <ShowButton />
+                                <EditButton />
+                            </DataTable.Col>
+                        </DataTable>
+                    </List>
+                )}
+                edit={EditGuesser}
+                show={ShowGuesser}
+            />
+        </AdminUI>
+    </AdminContext>
+);
+
+Accessible.argTypes = FullApp.argTypes;
 
 export const AccessControl = ({
     allowedAction = 'show',
