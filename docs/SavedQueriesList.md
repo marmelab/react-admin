@@ -7,8 +7,8 @@ storybook_path: ra-ui-materialui-list-filter-savedquerieslist--basic
 # `<SavedQueriesList>`
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
-  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  <source src="./img/saved-queries-list.webm" type="video/webm"/>
+  <source src="./img/saved-queries-list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
