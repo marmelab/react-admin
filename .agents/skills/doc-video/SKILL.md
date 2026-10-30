@@ -62,7 +62,7 @@ Only Motion's Export produces the MP4 file, so this one step is the user's. Once
    ffmpeg -i docs/img/my-component.mp4 -c:v libvpx-vp9 -crf 30 -b:v 0 -an docs/img/my-component.webm
    ```
 
-3. Add the video in the component documentation page, in place of the existing screenshot if there is one (e.g. `![FileInput](./img/file-input.png)`). Delete the replaced image from `docs/img/` if no other page uses it (search `docs/` for its name):
+3. Add the video in the component documentation page, in place of the existing screenshot or video if there is one (e.g. `![FileInput](./img/file-input.png)`). Delete the replaced file from `docs/img/` if no other page uses it (search `docs/` for its name):
 
    ```html
    <video controls autoplay playsinline muted loop>
