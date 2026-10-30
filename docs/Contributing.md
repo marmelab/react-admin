@@ -57,7 +57,7 @@ make docker-doc
 
 And then browse to [http://localhost:4000/documentation.html](http://localhost:4000/documentation.html).
 
-To illustrate a component with a video, follow the [Adding Videos To The Documentation](./DocumentationVideos.md) guide.
+To illustrate a component with a video, use the [doc-video skill](https://github.com/marmelab/react-admin/blob/master/.agents/skills/doc-video/SKILL.md) in Claude Desktop.
 
 ### Testing Your Changes In The Example Apps
 
