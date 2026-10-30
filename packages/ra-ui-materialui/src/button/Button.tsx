@@ -5,6 +5,7 @@ import {
     Tooltip,
     IconButton,
     useMediaQuery,
+    Breakpoint,
     Theme,
 } from '@mui/material';
 import {
@@ -42,6 +43,7 @@ export const Button = React.forwardRef(function Button<
     const props = useThemeProps({ props: inProps, name: PREFIX });
     const {
         alignIcon = 'left',
+        breakpoint = 'sm',
         children,
         className,
         disabled,
@@ -61,11 +63,12 @@ export const Button = React.forwardRef(function Button<
     }
     const linkParams = getLinkParams(locationDescriptor);
 
-    const isXSmall = useMediaQuery((theme: Theme) =>
-        theme.breakpoints.down('sm')
+    const isBelowBreakpoint = useMediaQuery((theme: Theme) =>
+        theme.breakpoints.down(breakpoint || 'xs')
     );
+    const shrink = breakpoint !== false && isBelowBreakpoint;
 
-    return isXSmall ? (
+    return shrink ? (
         label && !disabled ? (
             <Tooltip title={translatedLabel}>
                 <IconButton
@@ -123,6 +126,7 @@ export const Button = React.forwardRef(function Button<
 
 interface Props<RootComponent extends React.ElementType> {
     alignIcon?: 'left' | 'right';
+    breakpoint?: Breakpoint | false;
     children?: React.ReactNode;
     className?: string;
     component?: RootComponent;
