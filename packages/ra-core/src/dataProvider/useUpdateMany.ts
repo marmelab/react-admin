@@ -19,6 +19,7 @@ import type {
 } from '../types';
 import { useMutationWithMutationMode } from './useMutationWithMutationMode';
 import { useEvent } from '../util';
+import removeUndefined from '../util/removeUndefined';
 
 /**
  * Get a callback to call the dataProvider.updateMany() method, the result and the loading state.
@@ -142,11 +143,8 @@ export const useUpdateMany = <
                     mutationMode === 'undoable'
                         ? Date.now() + 1000 * 5
                         : Date.now();
-                // Stringify and parse the data to remove undefined values.
-                // If we don't do this, an update with { id: undefined } as payload
-                // would remove the id from the record, which no real data provider does.
                 const clonedData = params?.data
-                    ? JSON.parse(JSON.stringify(params?.data))
+                    ? removeUndefined(params.data)
                     : undefined;
 
                 const updateColl = (old: RecordType[]) => {

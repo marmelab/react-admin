@@ -2,6 +2,7 @@ import escapePath from './escapePath';
 import FieldTitle, { FieldTitleProps } from './FieldTitle';
 import removeEmpty from './removeEmpty';
 import removeKey from './removeKey';
+import removeUndefined from './removeUndefined';
 import Ready from './Ready';
 import warning from './warning';
 import useWhyDidYouUpdate from './useWhyDidYouUpdate';
@@ -18,6 +19,7 @@ export {
     Ready,
     removeEmpty,
     removeKey,
+    removeUndefined,
     warning,
     useWhyDidYouUpdate,
     getMutationMode,
