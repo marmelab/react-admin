@@ -57,6 +57,8 @@ make docker-doc
 
 And then browse to [http://localhost:4000/documentation.html](http://localhost:4000/documentation.html).
 
+To illustrate a component with a video, follow the [Adding Videos To The Documentation](./DocumentationVideos.md) guide.
+
 ### Testing Your Changes In The Example Apps
 
 There are several examples inside the `examples` folder. They all use a fake REST API, so you can run them without setting up a backend.
