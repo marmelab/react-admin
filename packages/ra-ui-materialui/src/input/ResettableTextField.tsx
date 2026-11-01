@@ -16,6 +16,21 @@ import {
 import ClearIcon from '@mui/icons-material/Clear';
 import { useTranslate } from 'ra-core';
 
+export const mergeHtmlInputSlotProps = <OwnerState,>(
+    htmlInputProps: object,
+    htmlInputSlot: object | ((ownerState: OwnerState) => object) | undefined,
+    isRequired = false
+) => {
+    const requiredProps = isRequired ? { 'aria-required': true } : {};
+    return typeof htmlInputSlot === 'function'
+        ? (ownerState: OwnerState) => ({
+              ...htmlInputProps,
+              ...htmlInputSlot(ownerState),
+              ...requiredProps,
+          })
+        : { ...htmlInputProps, ...htmlInputSlot, ...requiredProps };
+};
+
 /**
  * An override of the default Material UI TextField which is resettable
  */
@@ -167,9 +182,10 @@ export const ResettableTextField = forwardRef(
         // not the browser's native validation. This marks inputs with a
         // `required()` validator as required for assistive technologies
         // without triggering native browser validation. See issue #9585.
+        const isAriaRequired = ariaRequired === true || ariaRequired === 'true';
         const htmlInputProps = {
             ...htmlInputPropsFromConsumer,
-            ...(ariaRequired ? { 'aria-required': true } : {}),
+            ...(isAriaRequired ? { 'aria-required': true } : {}),
         };
         const hasHtmlInputProps = Object.keys(htmlInputProps).length > 0;
 
@@ -177,13 +193,11 @@ export const ResettableTextField = forwardRef(
         const htmlInputSlot = rest.slotProps?.htmlInput;
         // slotProps.htmlInput may be an object or, in MUI v6+, a callback
         // receiving the owner state. Preserve the caller's form when merging.
-        const mergedHtmlInputSlot =
-            typeof htmlInputSlot === 'function'
-                ? ownerState => ({
-                      ...htmlInputProps,
-                      ...htmlInputSlot(ownerState),
-                  })
-                : { ...htmlInputProps, ...htmlInputSlot };
+        const mergedHtmlInputSlot = mergeHtmlInputSlotProps(
+            htmlInputProps,
+            htmlInputSlot,
+            isAriaRequired
+        );
 
         const mergedSlotProps = {
             // @ts-expect-error slotProps do not yet exist in MUI v5
