@@ -54,6 +54,56 @@ describe('<useList />', () => {
         });
     });
 
+    it('should sort records without a value as the highest values', async () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: 'c' },
+            { id: 2, title: null },
+            { id: 3, title: 'a' },
+            { id: 4 },
+            { id: 5, title: 'b' },
+        ];
+
+        const { getByText } = render(
+            <Sort
+                data={data}
+                sort={{ field: 'title', order: 'ASC' }}
+                callback={callback}
+            />
+        );
+
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sort: { field: 'title', order: 'ASC' },
+                    data: [
+                        { id: 3, title: 'a' },
+                        { id: 5, title: 'b' },
+                        { id: 1, title: 'c' },
+                        { id: 2, title: null },
+                        { id: 4 },
+                    ],
+                })
+            );
+        });
+
+        fireEvent.click(getByText('Sort by title DESC'));
+        await waitFor(() => {
+            expect(callback).toHaveBeenCalledWith(
+                expect.objectContaining({
+                    sort: { field: 'title', order: 'DESC' },
+                    data: [
+                        { id: 2, title: null },
+                        { id: 4 },
+                        { id: 1, title: 'c' },
+                        { id: 5, title: 'b' },
+                        { id: 3, title: 'a' },
+                    ],
+                })
+            );
+        });
+    });
+
     it('should apply pagination correctly', async () => {
         const callback = jest.fn();
         render(<Basic page={2} perPage={5} callback={callback} />);
