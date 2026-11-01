@@ -208,25 +208,11 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             if (sort.field) {
                 const direction = sort.order === 'ASC' ? 1 : -1;
-                tempData = tempData.sort((a, b) => {
-                    const aValue = get(a, sort.field);
-                    const bValue = get(b, sort.field);
-                    // null and undefined are not comparable, so they are
-                    // sorted as the highest values to keep the order total
-                    if (aValue == null || bValue == null) {
-                        if (aValue == null && bValue == null) {
-                            return 0;
-                        }
-                        return aValue == null ? direction : -direction;
-                    }
-                    if (aValue > bValue) {
-                        return direction;
-                    }
-                    if (aValue < bValue) {
-                        return -direction;
-                    }
-                    return 0;
-                });
+                tempData = tempData.sort(
+                    (a, b) =>
+                        direction *
+                        compareValues(get(a, sort.field), get(b, sort.field))
+                );
             }
 
             return tempData;
@@ -342,6 +328,24 @@ export type UseListValue<
     RecordType extends RaRecord = any,
     ErrorType = Error,
 > = ListControllerResult<RecordType, ErrorType>;
+
+// null and undefined are not comparable with < and >, so they are sorted as
+// the highest values to keep the order consistent
+const compareValues = (aValue: any, bValue: any) => {
+    if (aValue == null || bValue == null) {
+        if (aValue == null && bValue == null) {
+            return 0;
+        }
+        return aValue == null ? 1 : -1;
+    }
+    if (aValue > bValue) {
+        return 1;
+    }
+    if (aValue < bValue) {
+        return -1;
+    }
+    return 0;
+};
 
 const defaultFilter = {};
 const defaultFilterCallback = (record: RaRecord) => Boolean(record);
