@@ -1,5 +1,12 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, ReactNode } from 'react';
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+    ReactNode,
+} from 'react';
 import {
     useNavigate as useReactRouterNavigate,
     useLocation,
@@ -64,9 +71,24 @@ const useNavigate = (): RouterNavigateFunction => {
     }, []) as RouterNavigateFunction;
 };
 
+const RouterChildrenContext = createContext<ReactNode>(null);
+
+const RouterChildren = () => <>{useContext(RouterChildrenContext)}</>;
+
 /**
  * Internal router component that creates a HashRouter.
  * Only used when not already inside a router context.
+ *
+ * The router is created once: recreating it on every render would discard its
+ * state, e.g. a pending navigation blocked by useBlocker, or a navigation
+ * triggered while the component rendering <Admin> rerenders.
+ *
+ * As the router keeps the route element it was created with, that element
+ * reads the children from a context rather than closing over them, so that
+ * children updates still reach the router.
+ *
+ * The basename can only be set at creation time, so RouterWrapper remounts
+ * this component when the basename changes.
  */
 const InternalRouter = ({
     children,
@@ -75,18 +97,25 @@ const InternalRouter = ({
     children: ReactNode;
     basename?: string;
 }) => {
-    const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
-        basename,
-        future: {
-            v7_fetcherPersist: false,
-            v7_normalizeFormMethod: false,
-            v7_partialHydration: false,
-            v7_relativeSplatPath: false,
-            v7_skipActionErrorRevalidation: false,
-        },
-    });
+    const [router] = useState(() =>
+        createHashRouter([{ path: '*', element: <RouterChildren /> }], {
+            basename,
+            future: {
+                v7_fetcherPersist: false,
+                v7_normalizeFormMethod: false,
+                v7_partialHydration: false,
+                v7_relativeSplatPath: false,
+                v7_skipActionErrorRevalidation: false,
+            },
+        })
+    );
     return (
-        <ReactRouterProvider router={router} future={routerProviderFuture} />
+        <RouterChildrenContext.Provider value={children}>
+            <ReactRouterProvider
+                router={router}
+                future={routerProviderFuture}
+            />
+        </RouterChildrenContext.Provider>
     );
 };
 
@@ -101,7 +130,11 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
         return <>{children}</>;
     }
 
-    return <InternalRouter basename={basename}>{children}</InternalRouter>;
+    return (
+        <InternalRouter key={basename} basename={basename}>
+            {children}
+        </InternalRouter>
+    );
 };
 
 /**
