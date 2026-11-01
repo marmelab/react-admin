@@ -75,16 +75,18 @@ const InternalRouter = ({
     children: ReactNode;
     basename?: string;
 }) => {
-    const router = createHashRouter([{ path: '*', element: <>{children}</> }], {
-        basename,
-        future: {
-            v7_fetcherPersist: false,
-            v7_normalizeFormMethod: false,
-            v7_partialHydration: false,
-            v7_relativeSplatPath: false,
-            v7_skipActionErrorRevalidation: false,
-        },
-    });
+    const [router] = React.useState(() =>
+        createHashRouter([{ path: '*', element: <>{children}</> }], {
+            basename,
+            future: {
+                v7_fetcherPersist: false,
+                v7_normalizeFormMethod: false,
+                v7_partialHydration: false,
+                v7_relativeSplatPath: false,
+                v7_skipActionErrorRevalidation: false,
+            },
+        })
+    );
     return (
         <ReactRouterProvider router={router} future={routerProviderFuture} />
     );
