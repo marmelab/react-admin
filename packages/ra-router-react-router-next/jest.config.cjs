@@ -1,12 +1,13 @@
 const path = require('path');
 const fs = require('fs');
 
-// Package-local jest config for ra-router-react-router-next, wired into the root
-// config via `projects`.
+// Package-local jest config for ra-router-react-router-next. The root jest config
+// ignores this package; it runs separately through the
+// `test-unit-react-router-next` scripts.
 //
 // React Router v8 is ESM-only and uses `import.meta`, and it requires React 19.
 // Neither fits the default CJS jest project, so this config:
-//   - runs in ESM mode (the root test scripts pass `NODE_OPTIONS=--experimental-vm-modules`),
+//   - runs in ESM mode (the `test-unit-react-router-next` scripts pass `NODE_OPTIONS=--experimental-vm-modules`),
 //   - transforms `react-router` (it ships untranspiled ESM) and emits ES modules,
 //   - forces React 19 (a devDependency of this package) as a single instance across
 //     the whole tree (ra-core included) to avoid duplicate-React hook errors.

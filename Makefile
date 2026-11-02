@@ -170,11 +170,11 @@ test: build test-unit lint test-e2e ## launch all tests
 test-unit: ## launch unit tests
 	@if [ "$(CI)" != "true" ]; then \
 		echo "Running unit tests..."; \
-		yarn test-unit; \
+		yarn test-unit && yarn test-unit-react-router-next; \
 	fi
 	@if [ "$(CI)" = "true" ]; then \
 		echo "Running unit tests in CI..."; \
-		yarn test-unit-ci; \
+		yarn test-unit-ci && yarn test-unit-react-router-next-ci; \
 	fi
 
 test-unit-watch: ## launch unit tests and watch for changes
