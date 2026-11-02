@@ -33,7 +33,7 @@
         "serve-offline": "cd examples/ra-offline && yarn serve"
     },
     "devDependencies": {
-        "@eslint/js": "^9.23.0",
+        "@eslint/js": "^9.39.5",
         "@octokit/core": "^6.1.4",
         "@storybook/addon-docs": "^10.5.5",
         "@storybook/react-vite": "^10.5.5",
@@ -45,7 +45,7 @@
         "cross-env": "^5.2.0",
         "date-fns": "^3.6.0",
         "dotenv": "^16.4.7",
-        "eslint": "^9.23.0",
+        "eslint": "^9.39.5",
         "eslint-config-prettier": "^10.1.1",
         "eslint-import-resolver-typescript": "^4.3.2",
         "eslint-plugin-cypress": "^4.2.0",
@@ -95,6 +95,7 @@
     "resolutions": {
         "minimist": "^1.2.6",
         "ejs": "^3.1.7",
+        "undici@7.29.0": "7.30.1",
         "@types/react": "^18.3.3",
         "@types/react-dom": "^18.3.0"
     },
