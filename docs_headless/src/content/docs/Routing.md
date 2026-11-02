@@ -161,7 +161,7 @@ See [the troubleshooting section](#troubleshooting) for a solution.
 
 ## Using A Different Router Library
 
-Ra-core supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) as an alternative.
+Ra-core supports multiple routing libraries through its router abstraction layer. By default, it uses react-router with a [HashRouter](https://reactrouter.com/en/routers/create-hash-router). You can also use [TanStack Router](./TanStackRouter.md) or [React Router v8](./ReactRouterV8.md) as an alternative.
 
 To use TanStack Router:
 

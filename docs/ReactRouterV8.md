@@ -21,6 +21,8 @@ yarn add ra-router-react-router-next react-router@^8
 
 React Router v8 requires React 19. Make sure your application uses `react@^19.2.7` and `react-dom@^19.2.7`.
 
+**Note:** For backward compatibility, React Router v6/v7 remains the default router, so `ra-core` always depends on the default `ra-router-react-router` adapter, which brings its own copy of `react-router` v7. As a consequence, an application using `ra-router-react-router-next` installs both React Router v7 and v8, and the v7 copy ends up in the application bundle. The application only uses React Router v8 at runtime, but the bundle is larger. This will be fixed in react-admin v6, when `ra-router-react-router-next` becomes the default adapter.
+
 ## Configuration
 
 Set the `<Admin routerProvider>` to `reactRouterNextProvider`:
