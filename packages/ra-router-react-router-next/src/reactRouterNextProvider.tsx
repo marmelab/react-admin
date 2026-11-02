@@ -222,7 +222,7 @@ export const reactRouterNextProvider: RouterProvider = {
     // Components
     Link,
     Navigate,
-    Route,
+    Route: Route as RouterProvider['Route'],
     Routes,
     Outlet,
 

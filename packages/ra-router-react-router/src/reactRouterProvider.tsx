@@ -40,6 +40,13 @@ type RouterNavigateFunction = (
     options?: { replace?: boolean; state?: any }
 ) => void;
 
+interface RouterRouteProps {
+    path?: string;
+    element?: ReactNode;
+    children?: ReactNode;
+    index?: boolean;
+}
+
 interface RouterWrapperProps {
     basename?: string;
     children: ReactNode;
@@ -266,7 +273,7 @@ export const reactRouterProvider = {
     // Components
     Link,
     Navigate,
-    Route,
+    Route: Route as React.ComponentType<RouterRouteProps>,
     Routes,
     Outlet,
 

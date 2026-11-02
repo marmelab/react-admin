@@ -46,11 +46,11 @@ module.exports = {
         '^.+\\.[tj]sx?$': [
             'ts-jest',
             {
-                isolatedModules: true,
                 useESM: true,
                 // Emit ES modules so jest's ESM runtime can load them (the root
                 // tsconfig targets CommonJS, which would emit `exports.*`).
                 tsconfig: {
+                    rootDir: '.',
                     module: 'ESNext',
                     target: 'ESNext',
                 },
