@@ -29,8 +29,6 @@ const ExpandAllButton = ({
                 expanded ? 'ra.action.close' : 'ra.action.expand'
             )}
             aria-expanded={expanded}
-            tabIndex={-1}
-            aria-hidden="true"
             onClick={toggleExpanded}
             size="small"
         >

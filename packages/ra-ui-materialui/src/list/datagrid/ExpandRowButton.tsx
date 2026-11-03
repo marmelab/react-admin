@@ -17,8 +17,6 @@ const ExpandRowButton = ({
             )}
             aria-expanded={expanded}
             aria-controls={expandContentId}
-            tabIndex={-1}
-            aria-hidden="true"
             component="div"
             {...props}
             size="small"
