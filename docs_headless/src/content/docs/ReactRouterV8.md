@@ -56,9 +56,77 @@ That's it! Ra-core will now use React Router v8 for all routing operations.
 
 When using `reactRouterNextProvider` without an existing React Router, ra-core creates its own hash router automatically (URLs like `/#/posts`). This is called **standalone mode**. This is the simplest setup and requires no additional configuration.
 
+If you set the `<CoreAdmin basename>` prop in standalone mode, the hash router applies it to every route, so write paths without it (e.g. `<LinkBase to="/posts">`, not `<LinkBase to="/admin/posts">`).
+
 ## Embedded Mode
 
 If your application already uses React Router, you can embed ra-core inside it. Ra-core detects the existing router context and uses it instead of creating its own.
+
+```jsx
+import * as React from 'react';
+import { createHashRouter, RouterProvider, Outlet, Link } from 'react-router';
+import { CoreAdmin, Resource } from 'ra-core';
+import { reactRouterNextProvider } from 'ra-router-react-router-next';
+import { dataProvider } from './dataProvider';
+import { PostList, PostEdit } from './posts';
+
+const Layout = () => (
+    <div>
+        <nav>
+            <Link to="/">Home</Link>
+            <Link to="/admin">Admin</Link>
+        </nav>
+        <Outlet />
+    </div>
+);
+
+const StoreAdmin = () => (
+    <CoreAdmin
+        dataProvider={dataProvider}
+        routerProvider={reactRouterNextProvider}
+        basename="/admin"
+    >
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </CoreAdmin>
+);
+
+const router = createHashRouter([
+    {
+        path: '/',
+        element: <Layout />,
+        children: [
+            { index: true, element: <div>Welcome to my app!</div> },
+            // Mount ra-core at /admin. The splat matches /admin/posts, /admin/posts/1, etc.
+            { path: 'admin/*', element: <StoreAdmin /> },
+        ],
+    },
+]);
+
+const App = () => <RouterProvider router={router} />;
+
+export default App;
+```
+
+**Important**: When embedding ra-core, set the `basename` prop to match the path where ra-core is mounted. In the example above, ra-core is mounted at `/admin`, so `basename="/admin"`.
+
+### Links Under The Basename
+
+In embedded mode, `ra-router-react-router-next` adds the basename to the absolute paths you pass to ra-core's routing components and hooks (`<LinkBase>`, `<Navigate>`, `useNavigate`), unless the path already starts with the basename. This is the same behavior as the [TanStack Router adapter](./TanStackRouter.md). With `basename="/admin"`:
+
+```jsx
+import { LinkBase } from 'ra-core';
+
+// Points to /admin/posts/1/show
+<LinkBase to="/posts/1/show">Post #1</LinkBase>
+// Points to /admin/posts (already prefixed, left as is)
+<LinkBase to="/admin/posts">Posts</LinkBase>
+// Points to /admin/, not to the host app's home page
+<LinkBase to="/">Home</LinkBase>
+```
+
+To link to a route of the host application from inside ra-core, use React Router's own `<Link>` (`import { Link } from 'react-router'`), which doesn't add the basename.
+
+**Note:** The default `ra-router-react-router` adapter (React Router v6/v7) behaves differently: it leaves absolute paths untouched. Only the paths built by ra-core itself (with `useCreatePath`, redirections, and authentication redirects) include the basename, so `<LinkBase to="/posts/1/show">` points to `/posts/1/show` in the host application. If you migrate an embedded app from the default adapter, check the hand-written links that point outside ra-core, as they now point inside it.
 
 ## When To Use This Package
 

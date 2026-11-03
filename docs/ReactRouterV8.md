@@ -51,9 +51,77 @@ That's it! React-admin will now use React Router v8 for all routing operations.
 
 When using `reactRouterNextProvider` without an existing React Router, react-admin creates its own hash router automatically (URLs like `/#/posts`). This is called **standalone mode**. This is the simplest setup and requires no additional configuration.
 
+If you set the `<Admin basename>` prop in standalone mode, the hash router applies it to every route, so write paths without it (e.g. `<Link to="/posts">`, not `<Link to="/admin/posts">`).
+
 ## Embedded Mode
 
 If your application already uses React Router, you can embed react-admin inside it. React-admin detects the existing router context and uses it instead of creating its own.
+
+```tsx
+import * as React from 'react';
+import { createHashRouter, RouterProvider, Outlet, Link } from 'react-router';
+import { Admin, Resource } from 'react-admin';
+import { reactRouterNextProvider } from 'ra-router-react-router-next';
+import { dataProvider } from './dataProvider';
+import { PostList, PostEdit } from './posts';
+
+const Layout = () => (
+    <div>
+        <nav>
+            <Link to="/">Home</Link>
+            <Link to="/admin">Admin</Link>
+        </nav>
+        <Outlet />
+    </div>
+);
+
+const StoreAdmin = () => (
+    <Admin
+        dataProvider={dataProvider}
+        routerProvider={reactRouterNextProvider}
+        basename="/admin"
+    >
+        <Resource name="posts" list={PostList} edit={PostEdit} />
+    </Admin>
+);
+
+const router = createHashRouter([
+    {
+        path: '/',
+        element: <Layout />,
+        children: [
+            { index: true, element: <div>Welcome to my app!</div> },
+            // Mount react-admin at /admin. The splat matches /admin/posts, /admin/posts/1, etc.
+            { path: 'admin/*', element: <StoreAdmin /> },
+        ],
+    },
+]);
+
+const App = () => <RouterProvider router={router} />;
+
+export default App;
+```
+
+**Important**: When embedding react-admin, set the `basename` prop to match the path where react-admin is mounted. In the example above, react-admin is mounted at `/admin`, so `basename="/admin"`.
+
+### Links Under The Basename
+
+In embedded mode, `ra-router-react-router-next` adds the basename to the absolute paths you pass to react-admin's routing components and hooks (`<Link>`, `<LinkBase>`, `<Navigate>`, `useNavigate`), unless the path already starts with the basename. This is the same behavior as the [TanStack Router adapter](./TanStackRouter.md). With `basename="/admin"`:
+
+```tsx
+import { Link } from 'react-admin';
+
+// Points to /admin/posts/1/show
+<Link to="/posts/1/show">Post #1</Link>
+// Points to /admin/posts (already prefixed, left as is)
+<Link to="/admin/posts">Posts</Link>
+// Points to /admin/, not to the host app's home page
+<Link to="/">Home</Link>
+```
+
+To link to a route of the host application from inside react-admin, use React Router's own `<Link>` (`import { Link } from 'react-router'`), which doesn't add the basename.
+
+**Note:** The default `ra-router-react-router` adapter (React Router v6/v7) behaves differently: it leaves absolute paths untouched. Only the paths built by react-admin itself (with `useCreatePath`, redirections, and authentication redirects) include the basename, so `<Link to="/posts/1/show">` points to `/posts/1/show` in the host application. If you migrate an embedded admin from the default adapter, check the hand-written links that point outside react-admin, as they now point inside it.
 
 ## When To Use This Package
 
