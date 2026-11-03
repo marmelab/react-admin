@@ -32,9 +32,11 @@ RouterProviderContext
     │   ├── Components: Link, Navigate, Route, Routes, Outlet
     │   └── Utilities: matchPath, RouterWrapper
     │
-    ├── reactRouterProvider (default implementation)
+    ├── reactRouterProvider (default implementation, in the ra-router-react-router package)
     │
-    └── tanStackRouterProvider (alternative implementation)
+    ├── reactRouterNextProvider (opt-in implementation for react-router v8, in the ra-router-react-router-next package)
+    │
+    └── tanStackRouterProvider (alternative implementation, in the ra-router-tanstack package)
 ```
 
 ### Context Flow
@@ -119,7 +121,7 @@ export const myRouterProvider: RouterProvider = {
 
 2. **Route/Routes translation**: If your router uses configuration-based routing (like TanStack Router), implement a translation layer that accepts JSX-based `<Route>` elements.
 
-3. **Duck-typing for Route detection**: The Routes component should use duck-typing to detect Route elements, not strict type checking. This allows users to import Route from react-router-dom.
+3. **Duck-typing for Route detection**: The Routes component should use duck-typing to detect Route elements, not strict type checking. This allows users to import Route from react-router.
 
 ```typescript
 // Good: duck-typing
@@ -139,7 +141,7 @@ The abstraction maintains full backward compatibility with react-admin's existin
 
 1. **Default provider**: `reactRouterProvider` is the default, so existing apps work without changes
 2. **Import from react-admin**: Hooks like `useNavigate`, `useLocation`, `useParams` can be imported from `react-admin`
-3. **react-router imports still work**: Users can still import directly from react-router-dom if they prefer
+3. **react-router imports still work**: Users can still import directly from react-router if they prefer
 
 ## Key Files Reference
 
@@ -147,6 +149,7 @@ The abstraction maintains full backward compatibility with react-admin's existin
 |------|---------|
 | `RouterProvider.ts` | The interface contract all adapters must implement |
 | `RouterProviderContext.tsx` | Context and `useRouterProvider` hook |
-| `adapters/reactRouterProvider.tsx` | Default implementation using react-router |
-| `adapters/tanStackRouterProvider.tsx` | Alternative implementation using TanStack Router |
+| `ra-router-react-router` (package) | Default implementation using react-router v6/v7 (`reactRouterProvider`) |
+| `ra-router-react-router-next` (package) | Opt-in implementation for react-router v8 (`reactRouterNextProvider`) |
+| `ra-router-tanstack` (package) | Alternative implementation using TanStack Router |
 | `AdminRouter.tsx` | High-level component that sets up routing for Admin |

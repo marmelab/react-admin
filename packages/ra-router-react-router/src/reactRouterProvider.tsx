@@ -7,23 +7,45 @@ import {
     useBlocker,
     useMatch,
     useInRouterContext,
-    Link,
     Navigate,
     Route,
     Routes,
     Outlet,
     matchPath,
-    createHashRouter,
     RouterProvider as ReactRouterProvider,
     UNSAFE_DataRouterContext,
     UNSAFE_DataRouterStateContext,
     type FutureConfig,
-} from 'react-router-dom';
-import type {
-    RouterProvider,
-    RouterWrapperProps,
-    RouterNavigateFunction,
-} from '../RouterProvider';
+} from 'react-router';
+import { Link, createHashRouter } from 'react-router-dom';
+
+// These types are used in the RouterProvider interface definition in ra-core.
+// To avoid a circular build dependency (ra-core -> ra-router-react-router -> ra-core),
+// this package redeclares necessary types. These types should exactly mirror the
+// types in ra-core's RouterProvider interface.
+type RouterNavigateFunction = (
+    to: string | Partial<Location> | number,
+    options?: { replace?: boolean; state?: any }
+) => void;
+
+interface RouterRouteProps {
+    path?: string;
+    element?: ReactNode;
+    children?: ReactNode;
+    index?: boolean;
+}
+
+interface RouterWrapperProps {
+    basename?: string;
+    children: ReactNode;
+}
+
+type UseParams = <
+    T extends Record<string, string | undefined> = Record<
+        string,
+        string | undefined
+    >,
+>() => T;
 
 const routerProviderFuture: Partial<
     Pick<FutureConfig, 'v7_startTransition' | 'v7_relativeSplatPath'>
@@ -108,11 +130,11 @@ const RouterWrapper = ({ basename, children }: RouterWrapperProps) => {
  * Default router provider using react-router-dom.
  * This provider is used by default when no custom routerProvider is provided to <Admin>.
  */
-export const reactRouterProvider: RouterProvider = {
+export const reactRouterProvider = {
     // Hooks
     useNavigate,
     useLocation,
-    useParams: useParams as RouterProvider['useParams'],
+    useParams: useParams as UseParams,
     useBlocker,
     useMatch,
     useInRouterContext,
@@ -121,7 +143,7 @@ export const reactRouterProvider: RouterProvider = {
     // Components
     Link,
     Navigate,
-    Route: Route as RouterProvider['Route'],
+    Route: Route as React.ComponentType<RouterRouteProps>,
     Routes,
     Outlet,
 

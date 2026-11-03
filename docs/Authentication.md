@@ -95,7 +95,7 @@ When you add custom pages, they are accessible to anonymous users by default. To
 
 ```jsx
 import { Admin, CustomRoutes, useAuthenticated } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const RestrictedPage = () => {
     const { isPending } = useAuthenticated(); // redirects to login if not authenticated
@@ -127,7 +127,7 @@ Alternatively, use the [`<Authenticated>` component](./Authenticated.md) to disp
 
 ```jsx
 import { Admin, CustomRoutes, Authenticated } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const RestrictedPage = () => (
     <Authenticated>

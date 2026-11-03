@@ -6,8 +6,11 @@ import {
     Location,
     useNavigate,
     NavigateFunction,
-} from 'react-router-dom';
-import type { InitialEntry } from '@remix-run/router';
+} from 'react-router';
+
+// Redefining `InitialEntry` type locally to keep `TestMemoryRouter` compatible across
+// react-router v6/v7/v8 because v8 no longer depends on `@remix-run/router`
+type InitialEntry = string | Partial<Location>;
 
 const UseLocation = ({
     locationCallback,

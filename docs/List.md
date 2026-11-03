@@ -1048,7 +1048,7 @@ import {
     List,
     DataTable,
 } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 const NewerBooks = () => (
     <List

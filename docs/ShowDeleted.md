@@ -14,7 +14,7 @@ It is intended to be used with [`detailComponents`](./DeletedRecordsList.md#deta
 {% raw %}
 ```tsx
 import { Admin, CustomRoutes, SimpleShowLayout, TextField } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import { DeletedRecordsList, ShowDeleted } from '@react-admin/ra-soft-delete';
 
 const ShowDeletedBook = () => (
