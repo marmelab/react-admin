@@ -125,19 +125,26 @@ export default App;
 
 ## Links Under The Basename
 
-`ra-router-react-router-next` adds the basename to the absolute paths you pass to react-admin's routing components and hooks (`<Link>`, `<LinkBase>`, `<Navigate>`, `useNavigate`), so write paths without it. This is the same behavior as the [TanStack Router adapter](./TanStackRouter.md). With `basename="/admin"`:
+In standalone mode, the router adds the basename to every path, so write paths without it. With `basename="/admin"`, `<Link to="/posts/1/show">` points to `/admin/posts/1/show`.
+
+In embedded mode, `ra-router-react-router-next` leaves absolute paths untouched, like the default `ra-router-react-router` adapter. Only the paths built by react-admin itself (with `useCreatePath`, redirections, and authentication redirects) include the basename. Use `useCreatePath` to link to react-admin pages:
 
 ```tsx
-import { Link } from 'react-admin';
+import { Link, useCreatePath } from 'react-admin';
 
-// Points to /admin/posts/1/show
-<Link to="/posts/1/show">Post #1</Link>
-// Points to the react-admin home page, not to the host app's home page
-<Link to="/">Home</Link>
+const Dashboard = () => {
+    const createPath = useCreatePath();
+    return (
+        <>
+            {/* Points to /admin/posts/1/show */}
+            <Link to={createPath({ resource: 'posts', type: 'show', id: 1 })}>
+                Post #1
+            </Link>
+            {/* Points to the host app's home page */}
+            <Link to="/">Home</Link>
+        </>
+    );
+};
 ```
 
-In embedded mode, a path that already starts with the basename is left as is: `<Link to="/admin/posts">` points to `/admin/posts`. In standalone mode, the router adds the basename to every path, so the same link points to `/admin/admin/posts`.
-
-To link to a route of the host application from inside react-admin, use React Router's own `<Link>` (`import { Link } from 'react-router'`), which doesn't add the basename.
-
-**Note:** The default `ra-router-react-router` adapter (React Router v6/v7) behaves differently: it leaves absolute paths untouched. Only the paths built by react-admin itself (with `useCreatePath`, redirections, and authentication redirects) include the basename, so in embedded mode `<Link to="/posts/1/show">` points to `/posts/1/show` in the host application. If you migrate an embedded admin from the default adapter, check the hand-written links that point outside react-admin, as they now point inside it.
+**Note:** The [TanStack Router adapter](./TanStackRouter.md) behaves differently in embedded mode: it adds the basename to absolute paths that don't already start with it, so `<Link to="/posts/1/show">` points to `/admin/posts/1/show`.

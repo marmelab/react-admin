@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useContext, useEffect, useRef, forwardRef, ReactNode } from 'react';
+import { useContext, useEffect, useRef, ReactNode } from 'react';
 import {
     useNavigate as useReactRouterNavigate,
     useLocation,
@@ -7,8 +7,8 @@ import {
     useBlocker,
     useMatch,
     useInRouterContext,
-    Link as ReactRouterLink,
-    Navigate as ReactRouterNavigate,
+    Link,
+    Navigate,
     Route,
     Routes,
     Outlet,
@@ -18,13 +18,10 @@ import {
     UNSAFE_DataRouterContext,
     UNSAFE_DataRouterStateContext,
 } from 'react-router';
-import { useBasename } from 'ra-core';
 import type {
     RouterProvider,
     RouterWrapperProps,
     RouterNavigateFunction,
-    RouterLinkProps,
-    RouterNavigateProps,
 } from 'ra-core';
 
 /**
@@ -48,7 +45,6 @@ const useCanBlock = (): boolean => {
  */
 const useNavigate = (): RouterNavigateFunction => {
     const navigate = useReactRouterNavigate();
-    const basename = useBasename();
     const navigateRef = useRef<RouterNavigateFunction>(
         navigate as RouterNavigateFunction
     );
@@ -58,111 +54,9 @@ const useNavigate = (): RouterNavigateFunction => {
     }, [navigate]);
 
     // Return a stable function that always calls the latest navigate
-    return React.useCallback(
-        (...args: Parameters<RouterNavigateFunction>) => {
-            const [to, ...rest] = args;
-
-            // Handle numeric navigation (go back/forward)
-            if (typeof to === 'number') {
-                return navigateRef.current(to, ...rest);
-            }
-
-            // Helper to prepend basename to absolute paths
-            // Only prepend if path doesn't already start with basename
-            const resolvePath = (path: string) => {
-                if (!basename || !path.startsWith('/')) return path;
-                // Don't prepend if path already includes basename
-                if (path.startsWith(basename + '/') || path === basename) {
-                    return path;
-                }
-                return `${basename}${path}`;
-            };
-
-            // Handle object navigation { pathname?, search?, hash?, state? }
-            // This covers both { pathname: '/foo' } and { search: '?bar=1' }
-            if (typeof to === 'object' && to !== null) {
-                // If no pathname provided, keep current pathname
-                return navigateRef.current(
-                    to.pathname
-                        ? { ...to, pathname: resolvePath(to.pathname) }
-                        : to,
-                    ...rest
-                );
-            }
-
-            // Handle string path
-            const resolvedPath = resolvePath(to as string);
-            return navigateRef.current(resolvedPath, ...rest);
-        },
-        [basename]
-    ) as RouterNavigateFunction;
-};
-
-const Link = forwardRef<HTMLAnchorElement, RouterLinkProps>(
-    ({ to, ...rest }, ref) => {
-        const basename = useBasename();
-
-        // Helper to prepend basename to absolute paths
-        const resolvePath = (path: string) => {
-            if (!basename || !path.startsWith('/')) return path;
-            if (path.startsWith(basename + '/') || path === basename) {
-                return path;
-            }
-            return `${basename}${path}`;
-        };
-
-        // Handle object `to` (e.g., { pathname: '/path', search: '?foo=bar' })
-        let resolvedTo: typeof to;
-        if (typeof to === 'object' && to !== null) {
-            // If no pathname provided, keep it as-is to stay on current page
-            resolvedTo = to.pathname
-                ? { ...to, pathname: resolvePath(to.pathname) }
-                : to;
-        } else {
-            resolvedTo = resolvePath(to as string);
-        }
-        return <ReactRouterLink ref={ref} to={resolvedTo} {...rest} />;
-    }
-);
-Link.displayName = 'Link';
-
-const Navigate = ({ to, ...rest }: RouterNavigateProps) => {
-    const basename = useBasename();
-    const currentLocation = useLocation();
-
-    // Handle both string and object forms of `to`
-    let resolvedPath: string;
-
-    if (typeof to === 'string') {
-        resolvedPath = to;
-    } else {
-        // If no pathname provided, use current pathname to stay on current page
-        resolvedPath = to.pathname ?? currentLocation.pathname;
-
-        // Append search and hash directly to the path to preserve the raw
-        // query string format
-        if (to.search) {
-            resolvedPath += to.search.startsWith('?')
-                ? to.search
-                : `?${to.search}`;
-        }
-        if (to.hash) {
-            resolvedPath += to.hash.startsWith('#') ? to.hash : `#${to.hash}`;
-        }
-    }
-
-    // Prepend basename to the path
-    // Only prepend if path doesn't already start with basename
-    if (basename && resolvedPath.startsWith('/')) {
-        if (
-            !resolvedPath.startsWith(basename + '/') &&
-            resolvedPath !== basename
-        ) {
-            resolvedPath = `${basename}${resolvedPath}`;
-        }
-    }
-
-    return <ReactRouterNavigate to={resolvedPath} {...rest} />;
+    return React.useCallback((...args: Parameters<RouterNavigateFunction>) => {
+        return navigateRef.current(...args);
+    }, []) as RouterNavigateFunction;
 };
 
 /**

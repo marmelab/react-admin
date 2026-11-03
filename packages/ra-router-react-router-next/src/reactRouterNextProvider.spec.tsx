@@ -7,6 +7,16 @@ import {
     cleanup,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import fakeDataProvider from 'ra-data-fakerest';
+import { RouterProvider, createHashRouter } from 'react-router';
+import {
+    CoreAdmin,
+    LinkBase,
+    ListBase,
+    Resource,
+    useCreatePath,
+    useNavigate,
+} from 'ra-core';
 import {
     Basic,
     EmbeddedInReactRouter,
@@ -31,7 +41,7 @@ import {
 } from './reactRouterNextProvider.stories';
 import { reactRouterNextProvider } from './reactRouterNextProvider';
 
-const { matchPath } = reactRouterNextProvider;
+const { matchPath, Navigate } = reactRouterNextProvider;
 
 describe('reactRouterNextProvider', () => {
     // Reset hash before each test to ensure clean state
@@ -540,9 +550,186 @@ describe('reactRouterNextProvider', () => {
                     ).toBeInTheDocument();
                 });
             });
+
+            describe('with a basename', () => {
+                // The hash router carries the basename, so links and
+                // navigation must apply it exactly once.
+                const dataProvider = fakeDataProvider({
+                    posts: [{ id: 1, title: 'Post #1' }],
+                });
+
+                const PostList = () => {
+                    const navigate = useNavigate();
+                    const [redirect, setRedirect] = React.useState(false);
+                    return (
+                        <ListBase
+                            resource="posts"
+                            render={({ data }) => (
+                                <>
+                                    {data?.map(record => (
+                                        <LinkBase
+                                            key={record.id}
+                                            to={`/posts/${record.id}/show`}
+                                        >
+                                            {record.title}
+                                        </LinkBase>
+                                    ))}
+                                    <button
+                                        onClick={() =>
+                                            navigate('/posts/1/show')
+                                        }
+                                    >
+                                        Navigate to Post #1
+                                    </button>
+                                    <button onClick={() => setRedirect(true)}>
+                                        Redirect to Post #1
+                                    </button>
+                                    {redirect && (
+                                        <Navigate to="/posts/1/show" />
+                                    )}
+                                </>
+                            )}
+                        />
+                    );
+                };
+
+                const PostShow = () => <h2>Post Details</h2>;
+
+                const StandaloneWithBasename = () => (
+                    <CoreAdmin
+                        routerProvider={reactRouterNextProvider}
+                        dataProvider={dataProvider}
+                        basename="/admin"
+                    >
+                        <Resource
+                            name="posts"
+                            list={PostList}
+                            show={PostShow}
+                        />
+                    </CoreAdmin>
+                );
+
+                beforeEach(() => {
+                    window.location.hash = '#/admin/posts';
+                });
+
+                it('should apply the basename once to Link', async () => {
+                    render(<StandaloneWithBasename />);
+                    const link = await screen.findByText('Post #1');
+                    expect(link.getAttribute('href')).toBe(
+                        '#/admin/posts/1/show'
+                    );
+                });
+
+                it('should apply the basename once to useNavigate', async () => {
+                    render(<StandaloneWithBasename />);
+                    fireEvent.click(
+                        await screen.findByText('Navigate to Post #1')
+                    );
+                    await waitFor(() => {
+                        expect(window.location.hash).toBe(
+                            '#/admin/posts/1/show'
+                        );
+                    });
+                    await screen.findByText('Post Details');
+                });
+
+                it('should apply the basename once to Navigate', async () => {
+                    render(<StandaloneWithBasename />);
+                    fireEvent.click(
+                        await screen.findByText('Redirect to Post #1')
+                    );
+                    await waitFor(() => {
+                        expect(window.location.hash).toBe(
+                            '#/admin/posts/1/show'
+                        );
+                    });
+                    await screen.findByText('Post Details');
+                });
+            });
         });
 
         describe('embedded mode', () => {
+            describe('with a basename', () => {
+                // As in upstream react-admin, ra-core applies the basename
+                // (useCreatePath, useRedirect, auth hooks); the adapter
+                // leaves hand-written absolute paths untouched.
+                const dataProvider = fakeDataProvider({
+                    posts: [{ id: 1, title: 'Post #1' }],
+                });
+
+                const PostList = () => {
+                    const createPath = useCreatePath();
+                    return (
+                        <ListBase
+                            resource="posts"
+                            render={({ data }) => (
+                                <>
+                                    {data?.map(record => (
+                                        <LinkBase
+                                            key={record.id}
+                                            to={createPath({
+                                                resource: 'posts',
+                                                type: 'show',
+                                                id: record.id,
+                                            })}
+                                        >
+                                            {record.title}
+                                        </LinkBase>
+                                    ))}
+                                    <LinkBase to="/">Back to host</LinkBase>
+                                </>
+                            )}
+                        />
+                    );
+                };
+
+                const EmbeddedWithBasename = () => {
+                    const router = React.useMemo(
+                        () =>
+                            createHashRouter([
+                                {
+                                    path: '/admin/*',
+                                    element: (
+                                        <CoreAdmin
+                                            routerProvider={
+                                                reactRouterNextProvider
+                                            }
+                                            dataProvider={dataProvider}
+                                            basename="/admin"
+                                        >
+                                            <Resource
+                                                name="posts"
+                                                list={PostList}
+                                            />
+                                        </CoreAdmin>
+                                    ),
+                                },
+                            ]),
+                        []
+                    );
+                    return <RouterProvider router={router} />;
+                };
+
+                beforeEach(() => {
+                    window.location.hash = '#/admin/posts';
+                });
+
+                it('should apply the basename once to paths from useCreatePath', async () => {
+                    render(<EmbeddedWithBasename />);
+                    const link = await screen.findByText('Post #1');
+                    expect(link.getAttribute('href')).toBe(
+                        '#/admin/posts/1/show'
+                    );
+                });
+
+                it('should not apply the basename to hand-written absolute paths', async () => {
+                    render(<EmbeddedWithBasename />);
+                    const link = await screen.findByText('Back to host');
+                    expect(link.getAttribute('href')).toBe('#/');
+                });
+            });
+
             it('should render home page initially', async () => {
                 render(<EmbeddedInReactRouter />);
                 await waitFor(() => {

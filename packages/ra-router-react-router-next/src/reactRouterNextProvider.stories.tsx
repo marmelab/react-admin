@@ -16,6 +16,7 @@ import {
     EditBase,
     CreateBase,
     useRecordContext,
+    useCreatePath,
     CoreAdmin,
     Resource,
     CustomRoutes,
@@ -55,38 +56,56 @@ const dataProvider = fakeDataProvider(
     process.env.NODE_ENV === 'development'
 );
 
-const PostList = () => (
-    <ListBase resource="posts">
-        <div style={{ padding: 20 }}>
-            <h2>Posts</h2>
-            <SimpleList
-                render={record => (
-                    <LinkBase to={`/posts/${record.id}/show`}>
-                        {record.title}
-                    </LinkBase>
-                )}
-            />
-            <CreateButton />
-        </div>
-    </ListBase>
-);
-
-const PostShow = () => (
-    <ShowBase
-        resource="posts"
-        render={({ record }) => (
+// Links use useCreatePath so that they carry the basename when react-admin
+// is embedded under a sub path (see EmbeddedInReactRouter)
+const PostList = () => {
+    const createPath = useCreatePath();
+    return (
+        <ListBase resource="posts">
             <div style={{ padding: 20 }}>
-                <h2>Post Details</h2>
-                <SimpleShowLayout>
-                    <span>ID: {record?.id}</span>
-                    <span>Title: {record?.title}</span>
-                    <span>Body: {record?.body}</span>
-                </SimpleShowLayout>
-                <LinkBase to="/posts">Back to list</LinkBase>
+                <h2>Posts</h2>
+                <SimpleList
+                    render={record => (
+                        <LinkBase
+                            to={createPath({
+                                resource: 'posts',
+                                type: 'show',
+                                id: record.id,
+                            })}
+                        >
+                            {record.title}
+                        </LinkBase>
+                    )}
+                />
+                <CreateButton />
             </div>
-        )}
-    />
-);
+        </ListBase>
+    );
+};
+
+const PostShow = () => {
+    const createPath = useCreatePath();
+    return (
+        <ShowBase
+            resource="posts"
+            render={({ record }) => (
+                <div style={{ padding: 20 }}>
+                    <h2>Post Details</h2>
+                    <SimpleShowLayout>
+                        <span>ID: {record?.id}</span>
+                        <span>Title: {record?.title}</span>
+                        <span>Body: {record?.body}</span>
+                    </SimpleShowLayout>
+                    <LinkBase
+                        to={createPath({ resource: 'posts', type: 'list' })}
+                    >
+                        Back to list
+                    </LinkBase>
+                </div>
+            )}
+        />
+    );
+};
 
 const PostEdit = () => (
     <EditBase resource="posts">
