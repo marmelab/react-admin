@@ -1,5 +1,5 @@
 import HttpError from './HttpError';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 export interface Options extends RequestInit {
     user?: {

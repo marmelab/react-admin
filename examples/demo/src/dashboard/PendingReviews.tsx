@@ -20,7 +20,7 @@ import {
     useIsDataLoaded,
 } from 'react-admin';
 
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 import CardWithIcon from './CardWithIcon';
 import StarRatingField from '../reviews/StarRatingField';

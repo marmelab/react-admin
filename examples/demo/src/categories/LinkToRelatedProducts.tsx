@@ -2,7 +2,7 @@ import * as React from 'react';
 import Button from '@mui/material/Button';
 import { Link } from 'react-router-dom';
 import { useTranslate, useRecordContext } from 'react-admin';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 import products from '../products';
 import { Category } from '../types';

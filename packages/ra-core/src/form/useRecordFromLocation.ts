@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { parse } from 'query-string';
+import { parse } from '@marmelab/query-string';
 import isEqual from 'lodash/isEqual.js';
 import { RaRecord } from '../types';
 import { useLocation, RouterLocation } from '../routing';

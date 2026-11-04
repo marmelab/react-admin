@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useEffect, useState, useRef } from 'react';
-import { parse, stringify } from 'query-string';
+import { parse, stringify } from '@marmelab/query-string';
 import lodashDebounce from 'lodash/debounce.js';
 import isEqual from 'lodash/isEqual.js';
 import { useStore } from '../../store';
