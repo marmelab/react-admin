@@ -3992,6 +3992,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@marmelab/decode-uri-component@npm:^0.2.3":
+  version: 0.2.3
+  resolution: "@marmelab/decode-uri-component@npm:0.2.3"
+  checksum: ece18ec91eaa479be97e734359b9095816b2b3f9804157e37a908059d654e70cba68d47f7487903664417f2024d4d783c01ecd27b9b845aa5ff450ee7c5eb7e8
+  languageName: node
+  linkType: hard
+
+"@marmelab/query-string@npm:^7.1.4":
+  version: 7.1.4
+  resolution: "@marmelab/query-string@npm:7.1.4"
+  dependencies:
+    "@marmelab/decode-uri-component": "npm:^0.2.3"
+    filter-obj: "npm:^1.1.0"
+    split-on-first: "npm:^1.0.0"
+    strict-uri-encode: "npm:^2.0.0"
+  checksum: c98534d72ddcd1c8a3b93d399959a2f1042ad849d776d3ae920ceff194f9b50f4288a04447d022cf50d58db6a782bb31baeabe187a9e39d2f2f19a694a73968a
+  languageName: node
+  linkType: hard
+
 "@mdx-js/mdx@npm:^3.1.1":
   version: 3.1.1
   resolution: "@mdx-js/mdx@npm:3.1.1"
@@ -10879,13 +10898,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"decode-uri-component@npm:^0.2.2":
-  version: 0.2.2
-  resolution: "decode-uri-component@npm:0.2.2"
-  checksum: 1f4fa54eb740414a816b3f6c24818fbfcabd74ac478391e9f4e2282c994127db02010ce804f3d08e38255493cfe68608b3f5c8e09fd6efc4ae46c807691f7a31
-  languageName: node
-  linkType: hard
-
 "dedent@npm:1.7.2, dedent@npm:^1.0.0":
   version: 1.7.2
   resolution: "dedent@npm:1.7.2"
@@ -11010,6 +11022,7 @@ __metadata:
   resolution: "demo@workspace:examples/demo"
   dependencies:
     "@apollo/client": "npm:^3.12.4"
+    "@marmelab/query-string": "npm:^7.1.4"
     "@mui/icons-material": "npm:^7.0.0"
     "@mui/material": "npm:^7.0.0"
     "@types/jest": "npm:^29.5.2"
@@ -11028,7 +11041,6 @@ __metadata:
     inflection: "npm:^3.0.0"
     json-graphql-server: "npm:^3.3.2"
     msw: "npm:^2.10.4"
-    query-string: "npm:^7.1.3"
     ra-data-graphql: "npm:^5.0.0"
     ra-data-graphql-simple: "npm:^5.0.0"
     ra-data-simple-rest: "npm:^5.0.0"
@@ -20036,18 +20048,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"query-string@npm:^7.1.3":
-  version: 7.1.3
-  resolution: "query-string@npm:7.1.3"
-  dependencies:
-    decode-uri-component: "npm:^0.2.2"
-    filter-obj: "npm:^1.1.0"
-    split-on-first: "npm:^1.0.0"
-    strict-uri-encode: "npm:^2.0.0"
-  checksum: a896c08e9e0d4f8ffd89a572d11f668c8d0f7df9c27c6f49b92ab31366d3ba0e9c331b9a620ee747893436cd1f2f821a6327e2bc9776bde2402ac6c270b801b2
-  languageName: node
-  linkType: hard
-
 "querystring@npm:0.2.0":
   version: 0.2.0
   resolution: "querystring@npm:0.2.0"
@@ -20109,6 +20109,7 @@ __metadata:
   resolution: "ra-core@workspace:packages/ra-core"
   dependencies:
     "@hookform/resolvers": "npm:^5.2.2"
+    "@marmelab/query-string": "npm:^7.1.4"
     "@tanstack/react-query": "npm:^5.90.2"
     "@tanstack/react-query-devtools": "npm:^5.90.2"
     "@testing-library/react": "npm:^15.0.7"
@@ -20125,7 +20126,6 @@ __metadata:
     jscodeshift: "npm:^0.15.2"
     jsonexport: "npm:^3.2.0"
     lodash: "npm:^4.17.21"
-    query-string: "npm:^7.1.3"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
@@ -20201,7 +20201,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-data-json-server@workspace:packages/ra-data-json-server"
   dependencies:
-    query-string: "npm:^7.1.3"
+    "@marmelab/query-string": "npm:^7.1.4"
     ra-core: "npm:^5.15.5"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -20239,7 +20239,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "ra-data-simple-rest@workspace:packages/ra-data-simple-rest"
   dependencies:
-    query-string: "npm:^7.1.3"
+    "@marmelab/query-string": "npm:^7.1.4"
     ra-core: "npm:^5.15.5"
     typescript: "npm:^5.1.3"
     zshy: "npm:^0.5.0"
@@ -20423,6 +20423,7 @@ __metadata:
   resolution: "ra-ui-materialui@workspace:packages/ra-ui-materialui"
   dependencies:
     "@faker-js/faker": "npm:^10.0.0"
+    "@marmelab/query-string": "npm:^7.1.4"
     "@mui/icons-material": "npm:^5.16.12"
     "@mui/material": "npm:^5.16.12"
     "@mui/system": "npm:^5.16.12"
@@ -20446,7 +20447,6 @@ __metadata:
     inflection: "npm:^3.0.0"
     jsonexport: "npm:^3.2.0"
     lodash: "npm:~4.18.1"
-    query-string: "npm:^7.1.3"
     ra-core: "npm:^5.15.5"
     ra-i18n-polyglot: "npm:^5.15.5"
     ra-language-english: "npm:^5.15.5"

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { memo, ReactNode } from 'react';
 import Queue from '@mui/icons-material/Queue';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 import {
     useResourceContext,
     useRecordContext,

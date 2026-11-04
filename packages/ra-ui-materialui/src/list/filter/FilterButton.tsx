@@ -32,7 +32,7 @@ import {
     useSavedQueries,
     useNavigate,
 } from 'ra-core';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 import { FilterButtonMenuItem } from './FilterButtonMenuItem';
 import { Button } from '../../button';

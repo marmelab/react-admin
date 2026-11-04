@@ -696,7 +696,7 @@ For instance, if you have a list of posts ordered by publication date, and you w
 ```tsx
 import Button from '@mui/material/Button';
 import { LinkBase } from 'react-admin';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 const SortByViews = () => (
     <Button

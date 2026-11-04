@@ -1,4 +1,4 @@
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 import { fetchUtils, DataProvider } from 'ra-core';
 
 /**

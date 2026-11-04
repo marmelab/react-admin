@@ -1,6 +1,6 @@
 import * as React from 'react';
 import fakeRestDataProvider from 'ra-data-fakerest';
-import queryString from 'query-string';
+import queryString from '@marmelab/query-string';
 import isEqual from 'lodash/isEqual.js';
 import {
     TestMemoryRouter,

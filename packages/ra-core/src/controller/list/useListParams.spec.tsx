@@ -1,7 +1,7 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { stringify, parse } from 'query-string';
+import { stringify, parse } from '@marmelab/query-string';
 import { CoreAdminContext } from '../../core';
 
 import { testDataProvider } from '../../dataProvider';
