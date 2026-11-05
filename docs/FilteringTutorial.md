@@ -207,8 +207,8 @@ If you use the FilterList, you'll probably need a search input. As the FilterLis
 Finally, a filter sidebar is the ideal place to display the user's favorite filters. Check [the `<SavedQueriesList>` documentation](./SavedQueriesList.md) for more information.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
-  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  <source src="./img/saved-queries-list.webm" type="video/webm"/>
+  <source src="./img/saved-queries-list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -414,8 +414,8 @@ export default {
 ## Saved Queries: Let Users Save Filter And Sort
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
-  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  <source src="./img/saved-queries-list.webm" type="video/webm"/>
+  <source src="./img/saved-queries-list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
