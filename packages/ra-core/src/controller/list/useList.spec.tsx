@@ -3,6 +3,7 @@ import expect from 'expect';
 import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 
 import { Basic, SelectAll, Sort } from './useList.stories';
+import { useListContext } from './useListContext';
 
 describe('<useList />', () => {
     it('should apply sorting correctly', async () => {
@@ -265,6 +266,28 @@ describe('<useList />', () => {
     });
 
     describe('filter', () => {
+        it('should never render children with the previous filter when the filter prop changes', () => {
+            const renderedTitles: string[][] = [];
+            const TitlesRecorder = () => {
+                const { data } = useListContext();
+                renderedTitles.push(data.map(record => record.title));
+                return null;
+            };
+
+            const { rerender } = render(
+                <Basic filter={{ title: 'War and Peace' }}>
+                    <TitlesRecorder />
+                </Basic>
+            );
+            rerender(
+                <Basic filter={{ title: 'The Hobbit' }}>
+                    <TitlesRecorder />
+                </Basic>
+            );
+
+            expect(renderedTitles).toEqual([['War and Peace'], ['The Hobbit']]);
+        });
+
         it('should filter string data based on the filter props', () => {
             const callback = jest.fn();
             render(

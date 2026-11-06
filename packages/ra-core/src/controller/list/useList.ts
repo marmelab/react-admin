@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 
@@ -106,7 +106,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // filter logic
-    const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
@@ -153,12 +152,11 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // handle filter prop change
-    useEffect(() => {
-        if (!isEqual(filter, filterRef.current)) {
-            filterRef.current = filter;
-            setFilterValues(filter);
-        }
-    }, [filter]);
+    const [prevFilter, setPrevFilter] = useState(filter);
+    if (filter !== prevFilter && !isEqual(filter, prevFilter)) {
+        setPrevFilter(filter);
+        setFilterValues(filter);
+    }
 
     const applyFilterAndSort = useCallback(
         (records: RecordType[]) => {
