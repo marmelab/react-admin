@@ -133,6 +133,104 @@ describe('<useList />', () => {
         });
     });
 
+    it('should apply filter, sort and pagination on the first render', () => {
+        const callback = jest.fn();
+        render(
+            <Basic
+                filter={{ q: 'The' }}
+                sort={{ field: 'title', order: 'ASC' }}
+                perPage={2}
+                callback={callback}
+            />
+        );
+
+        expect(callback.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                data: [
+                    { id: 6, title: 'And Then There Were None' },
+                    { id: 7, title: 'Dream of the Red Chamber' },
+                ],
+                total: 6,
+                hasNextPage: true,
+            })
+        );
+    });
+
+    it('should not mutate the data prop when sorting', () => {
+        const callback = jest.fn();
+        const data = [
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ];
+
+        render(
+            <Basic
+                data={data}
+                filter={null}
+                sort={{ field: 'title', order: 'DESC' }}
+                callback={callback}
+            />
+        );
+
+        expect(callback.mock.calls[0][0].data).toEqual([
+            { id: 2, title: 'world' },
+            { id: 1, title: 'hello' },
+        ]);
+        expect(data).toEqual([
+            { id: 1, title: 'hello' },
+            { id: 2, title: 'world' },
+        ]);
+    });
+
+    it('should return an empty list with a total of 0 when there is no data', () => {
+        const callback = jest.fn();
+        const { rerender } = render(
+            <Basic data={undefined} callback={callback} />
+        );
+        rerender(<Basic data={undefined} callback={callback} />);
+
+        expect(callback.mock.calls[0][0]).toEqual(
+            expect.objectContaining({
+                isPending: false,
+                error: null,
+                data: [],
+                total: 0,
+                hasNextPage: false,
+            })
+        );
+        expect(callback.mock.calls[1][0].data).toBe(
+            callback.mock.calls[0][0].data
+        );
+    });
+
+    it('should return an empty list with a total of 0 when data becomes undefined', () => {
+        const callback = jest.fn();
+        const { rerender } = render(<Basic callback={callback} />);
+        rerender(<Basic data={undefined} callback={callback} />);
+
+        expect(callback).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isPending: false,
+                data: [],
+                total: 0,
+            })
+        );
+    });
+
+    it('should not return data nor total while pending', () => {
+        const callback = jest.fn();
+        const { rerender } = render(<Basic callback={callback} />);
+        rerender(<Basic isPending callback={callback} />);
+
+        expect(callback).toHaveBeenLastCalledWith(
+            expect.objectContaining({
+                isPending: true,
+                data: undefined,
+                total: undefined,
+            })
+        );
+    });
+
     it('should be usable with asynchronously fetched data', () => {
         const callback = jest.fn();
         const data = [

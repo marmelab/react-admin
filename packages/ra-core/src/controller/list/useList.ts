@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 
@@ -72,14 +72,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         exporter = defaultExporter,
     } = props;
     const resource = useResourceContext(props);
-
-    const [finalItems, setFinalItems] = useState<{
-        data?: RecordType[];
-        total?: number;
-    }>(() => ({
-        data,
-        total: data ? data.length : undefined,
-    }));
 
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
@@ -208,7 +200,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             if (sort.field) {
                 const direction = sort.order === 'ASC' ? 1 : -1;
-                tempData = tempData.sort(
+                tempData = [...tempData].sort(
                     (a, b) =>
                         direction *
                         compareValues(get(a, sort.field), get(b, sort.field))
@@ -221,20 +213,18 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // We do all the data processing (filtering, sorting, paginating) client-side
-    useEffect(
+    const finalItems = useMemo<{ data?: RecordType[]; total?: number }>(
         () => {
-            if (isPending || !data) return;
+            if (isPending) return {};
+            if (!data) return { data: emptyArray, total: 0 };
             const filteredAndSorted = applyFilterAndSort(data);
-            const filteredLength = filteredAndSorted.length;
-            const paginatedData = filteredAndSorted.slice(
-                (page - 1) * perPage,
-                page * perPage
-            );
-
-            setFinalItems({
-                data: paginatedData,
-                total: filteredLength,
-            });
+            return {
+                data: filteredAndSorted.slice(
+                    (page - 1) * perPage,
+                    page * perPage
+                ),
+                total: filteredAndSorted.length,
+            };
         }, // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,7 +233,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             isPending,
             page,
             perPage,
-            setFinalItems,
         ]
     );
 
@@ -268,14 +257,14 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
 
     return {
         sort,
-        data: isPending ? undefined : finalItems?.data ?? [],
+        data: finalItems.data,
         defaultTitle: '',
         error: error ?? null,
         displayedFilters,
         exporter,
         filterValues,
         hasNextPage:
-            finalItems?.total == null
+            finalItems.total == null
                 ? false
                 : page * perPage < finalItems.total,
         hasPreviousPage: page > 1,
@@ -299,7 +288,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems?.total,
+        total: finalItems.total,
         getData,
     } as UseListValue<RecordType, ErrorType>;
 };
@@ -349,3 +338,4 @@ const compareValues = (aValue: any, bValue: any) => {
 
 const defaultFilter = {};
 const defaultFilterCallback = (record: RaRecord) => Boolean(record);
+const emptyArray = [];
