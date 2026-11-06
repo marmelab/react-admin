@@ -5,7 +5,7 @@ import {
     type Theme,
     useThemeProps,
 } from '@mui/material/styles';
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
     Button,
     Snackbar,
@@ -61,6 +61,8 @@ export const Notification = (inProps: NotificationProps) => {
         NotificationPayload | undefined
     >(undefined);
     const translate = useTranslate();
+    // An undoable notification must take only its own mutation, either on undo or on exit
+    const isMutationTaken = useRef(false);
 
     useEffect(() => {
         if (notifications.length && !currentNotification) {
@@ -96,7 +98,8 @@ export const Notification = (inProps: NotificationProps) => {
     const handleExited = useCallback(() => {
         if (
             currentNotification &&
-            currentNotification.notificationOptions?.undoable
+            currentNotification.notificationOptions?.undoable &&
+            !isMutationTaken.current
         ) {
             const mutation = takeMutation();
             if (mutation) {
@@ -106,10 +109,15 @@ export const Notification = (inProps: NotificationProps) => {
                 undoableEventEmitter.emit('end', { isUndo: false });
             }
         }
+        isMutationTaken.current = false;
         setCurrentNotification(undefined);
     }, [currentNotification, takeMutation]);
 
     const handleUndo = useCallback(() => {
+        if (isMutationTaken.current) {
+            return;
+        }
+        isMutationTaken.current = true;
         const mutation = takeMutation();
         if (mutation) {
             mutation({ isUndo: true });
