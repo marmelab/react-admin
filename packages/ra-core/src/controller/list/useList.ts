@@ -153,6 +153,10 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
 
     // handle filter prop change
     const [prevFilter, setPrevFilter] = useState(filter);
+    // Updating the state during render (and not in an effect) lets React
+    // restart the render before committing it, so that children never see
+    // the previous filter values.
+    // @see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
     if (filter !== prevFilter && !isEqual(filter, prevFilter)) {
         setPrevFilter(filter);
         setFilterValues(filter);
