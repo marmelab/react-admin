@@ -123,6 +123,52 @@ export const i18nProvider = polyglotI18nProvider(
 
 Beware that users from all around the world may use your application, so make sure the `i18nProvider` returns default messages, even for unknown locales.
 
+## Enterprise Edition Translations
+
+The [Enterprise Edition](https://marmelab.com/ra-enterprise/) features provided by `@react-admin/ra-core-ee` (e.g. [History](./HistoryFeatures.md), [Realtime](./RealtimeFeatures.md), [Soft Delete](./SoftDeleteDataProvider.md), or [Relationships](./ReferenceManyToManyInputBase.md)) use their own translation messages. `@react-admin/ra-core-ee` provides English and French translations for these messages.
+
+As you may not use all the features, `getEnglishTranslations` and `getFrenchTranslations` let you pick only the translations of the modules you need. Merge them with the ra-core translations in your `i18nProvider`:
+
+```tsx
+// in src/i18nProvider.ts
+import { mergeTranslations } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import en from 'ra-language-english';
+import fr from 'ra-language-french';
+import { getEnglishTranslations, getFrenchTranslations } from '@react-admin/ra-core-ee';
+
+const translations = {
+    en: mergeTranslations(en, getEnglishTranslations('ra-realtime', 'ra-relationships')),
+    fr: mergeTranslations(fr, getFrenchTranslations('ra-realtime', 'ra-relationships')),
+};
+
+export const i18nProvider = polyglotI18nProvider(
+    locale => translations[locale],
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' }
+    ],
+);
+```
+
+Pass the modules matching the features you use: `ra-history`, `ra-realtime`, `ra-relationships`, and/or `ra-soft-delete`.
+
+To customize these messages, merge your own translations on top of them. The `RaCoreEETranslations` type describes the available keys:
+
+```tsx
+import { mergeTranslations, type TranslationMessages } from 'ra-core';
+import en from 'ra-language-english';
+import { getEnglishTranslations, type RaCoreEETranslations } from '@react-admin/ra-core-ee';
+
+const customEnglishMessages: TranslationMessages & RaCoreEETranslations<['ra-realtime']> =
+    mergeTranslations(
+        en,
+        getEnglishTranslations('ra-realtime'),
+        { 'ra-realtime': { notification: { record: { updated: 'Someone else modified this record' } } } }
+    );
+```
+
 ## Silencing Translation Warnings
 
 By default, the `polyglotI18nProvider` logs a warning in the console each time it is called with a message that can't be found in the current translations. This is a Polyglot feature that helps to track missing translation messages.
