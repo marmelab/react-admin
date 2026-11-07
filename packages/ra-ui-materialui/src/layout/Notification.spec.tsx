@@ -5,6 +5,7 @@ import { major as muiMajor } from '@mui/material';
 import {
     ConsecutiveNotifications,
     ConsecutiveUndoable,
+    ConsecutiveUndoableDeleteButtons,
     CustomNotificationWithAction,
 } from './Notification.stories';
 
@@ -57,6 +58,30 @@ describe('<Notification />', () => {
         screen.getByText('ra.action.undo').click();
         // the second delete hasn't been called
         expect(deleteOne).toHaveBeenCalledTimes(1);
+    });
+    it('should not confirm the next undoable mutation when undoing the current one', async () => {
+        const deleteOne = jest
+            .fn()
+            .mockImplementation((_resource, { id }) =>
+                Promise.resolve({ data: { id } })
+            );
+        const dataProvider = { delete: deleteOne } as any;
+        render(
+            <ConsecutiveUndoableDeleteButtons dataProvider={dataProvider} />
+        );
+        fireEvent.click(await screen.findByText('Delete post 1'));
+        const firstUndo = await screen.findByText('ra.action.undo');
+        // DeleteButton stops the click propagation, so the first notification stays open
+        fireEvent.click(screen.getByText('Delete post 2'));
+        expect(firstUndo.isConnected).toBe(true);
+
+        fireEvent.click(firstUndo);
+        await waitFor(() => expect(firstUndo.isConnected).toBe(false));
+        const secondUndo = await screen.findByText('ra.action.undo');
+        fireEvent.click(secondUndo);
+        await waitFor(() => expect(secondUndo.isConnected).toBe(false));
+        await new Promise(resolve => setTimeout(resolve, 100));
+        expect(deleteOne).not.toHaveBeenCalled();
     });
     it('allows custom notifications to close themselves', async () => {
         const consoleLog = jest.spyOn(console, 'log').mockImplementation();

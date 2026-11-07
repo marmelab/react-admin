@@ -8,6 +8,8 @@ import {
 } from 'ra-core';
 import { Alert, Button, SnackbarContent, Stack } from '@mui/material';
 
+import { AdminContext } from '../AdminContext';
+import { DeleteButton } from '../button';
 import { Notification } from './Notification';
 
 export default {
@@ -225,6 +227,33 @@ export const ConsecutiveUndoable = ({
         </Stack>
         <Notification />
     </CoreAdminContext>
+);
+
+export const ConsecutiveUndoableDeleteButtons = ({
+    dataProvider = {
+        delete: async (_resource, { id }) => {
+            console.log('delete post', id);
+            return { data: { id } };
+        },
+    } as any,
+}) => (
+    <AdminContext dataProvider={dataProvider}>
+        <Stack spacing={2} direction="row" m={2}>
+            <DeleteButton
+                resource="posts"
+                record={{ id: 1 }}
+                label="Delete post 1"
+                redirect={false}
+            />
+            <DeleteButton
+                resource="posts"
+                record={{ id: 2 }}
+                label="Delete post 2"
+                redirect={false}
+            />
+        </Stack>
+        <Notification />
+    </AdminContext>
 );
 
 const CustomNotificationWithActionContent = props => {
