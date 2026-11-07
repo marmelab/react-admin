@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useQueryClient, UseQueryOptions } from '@tanstack/react-query';
 import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
@@ -121,7 +121,6 @@ export const useReferenceManyFieldController = <
     );
 
     // filter logic
-    const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
@@ -178,12 +177,16 @@ export const useReferenceManyFieldController = <
         [setDisplayedFilters, setFilterValues, setPage, debouncedSetFilters]
     );
     // handle filter prop change
-    useEffect(() => {
-        if (!isEqual(filter, filterRef.current)) {
-            filterRef.current = filter;
-            setFilterValues(filter);
-        }
-    }, [filter]);
+    const [prevFilter, setPrevFilter] = useState(filter);
+    // Updating the state during render (and not in an effect) lets React
+    // restart the render before committing it, so that children never see
+    // the previous filter values.
+    // @see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+    if (filter !== prevFilter && !isEqual(filter, prevFilter)) {
+        setPrevFilter(filter);
+        setFilterValues(filter);
+        setPage(1);
+    }
 
     const recordValue = get(record, source) as Identifier;
     const {

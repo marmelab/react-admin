@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import get from 'lodash/get.js';
 import isEqual from 'lodash/isEqual.js';
 
@@ -73,14 +73,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     } = props;
     const resource = useResourceContext(props);
 
-    const [finalItems, setFinalItems] = useState<{
-        data?: RecordType[];
-        total?: number;
-    }>(() => ({
-        data,
-        total: data ? data.length : undefined,
-    }));
-
     // pagination logic
     const { page, setPage, perPage, setPerPage } = usePaginationState({
         page: initialPage,
@@ -114,7 +106,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // filter logic
-    const filterRef = useRef(filter);
     const [displayedFilters, setDisplayedFilters] = useState<{
         [key: string]: boolean;
     }>({});
@@ -161,12 +152,16 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // handle filter prop change
-    useEffect(() => {
-        if (!isEqual(filter, filterRef.current)) {
-            filterRef.current = filter;
-            setFilterValues(filter);
-        }
-    }, [filter]);
+    const [prevFilter, setPrevFilter] = useState(filter);
+    // Updating the state during render (and not in an effect) lets React
+    // restart the render before committing it, so that children never see
+    // the previous filter values.
+    // @see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+    if (filter !== prevFilter && !isEqual(filter, prevFilter)) {
+        setPrevFilter(filter);
+        setFilterValues(filter);
+        setPage(1);
+    }
 
     const applyFilterAndSort = useCallback(
         (records: RecordType[]) => {
@@ -208,6 +203,9 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             if (sort.field) {
                 const direction = sort.order === 'ASC' ? 1 : -1;
+                if (tempData === records) {
+                    tempData = [...tempData];
+                }
                 tempData = tempData.sort(
                     (a, b) =>
                         direction *
@@ -221,20 +219,18 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     // We do all the data processing (filtering, sorting, paginating) client-side
-    useEffect(
+    const finalItems = useMemo<{ data?: RecordType[]; total?: number }>(
         () => {
-            if (isPending || !data) return;
+            if (isPending) return {};
+            if (!data) return { data: [], total: 0 };
             const filteredAndSorted = applyFilterAndSort(data);
-            const filteredLength = filteredAndSorted.length;
-            const paginatedData = filteredAndSorted.slice(
-                (page - 1) * perPage,
-                page * perPage
-            );
-
-            setFinalItems({
-                data: paginatedData,
-                total: filteredLength,
-            });
+            return {
+                data: filteredAndSorted.slice(
+                    (page - 1) * perPage,
+                    page * perPage
+                ),
+                total: filteredAndSorted.length,
+            };
         }, // eslint-disable-next-line react-hooks/exhaustive-deps
         [
             // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -243,7 +239,6 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             isPending,
             page,
             perPage,
-            setFinalItems,
         ]
     );
 
@@ -268,14 +263,14 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
 
     return {
         sort,
-        data: isPending ? undefined : finalItems?.data ?? [],
+        data: finalItems.data,
         defaultTitle: '',
         error: error ?? null,
         displayedFilters,
         exporter,
         filterValues,
         hasNextPage:
-            finalItems?.total == null
+            finalItems.total == null
                 ? false
                 : page * perPage < finalItems.total,
         hasPreviousPage: page > 1,
@@ -299,7 +294,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
         setPerPage,
         setSort,
         showFilter,
-        total: finalItems?.total,
+        total: finalItems.total,
         getData,
     } as UseListValue<RecordType, ErrorType>;
 };
