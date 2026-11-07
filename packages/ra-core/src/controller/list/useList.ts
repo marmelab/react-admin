@@ -160,6 +160,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     if (filter !== prevFilter && !isEqual(filter, prevFilter)) {
         setPrevFilter(filter);
         setFilterValues(filter);
+        setPage(1);
     }
 
     const applyFilterAndSort = useCallback(
@@ -202,7 +203,10 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
             }
             if (sort.field) {
                 const direction = sort.order === 'ASC' ? 1 : -1;
-                tempData = [...tempData].sort(
+                if (tempData === records) {
+                    tempData = [...tempData];
+                }
+                tempData = tempData.sort(
                     (a, b) =>
                         direction *
                         compareValues(get(a, sort.field), get(b, sort.field))
@@ -218,7 +222,7 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     const finalItems = useMemo<{ data?: RecordType[]; total?: number }>(
         () => {
             if (isPending) return {};
-            if (!data) return { data: emptyArray, total: 0 };
+            if (!data) return { data: [], total: 0 };
             const filteredAndSorted = applyFilterAndSort(data);
             return {
                 data: filteredAndSorted.slice(
@@ -340,4 +344,3 @@ const compareValues = (aValue: any, bValue: any) => {
 
 const defaultFilter = {};
 const defaultFilterCallback = (record: RaRecord) => Boolean(record);
-const emptyArray = [];

@@ -288,6 +288,21 @@ describe('<useList />', () => {
             expect(renderedTitles).toEqual([['War and Peace'], ['The Hobbit']]);
         });
 
+        it('should go back to the first page when the filter prop changes', async () => {
+            const { rerender } = render(<Basic page={3} perPage={2} />);
+            await screen.findByText('5 - The Lord of the Rings');
+
+            rerender(<Basic page={3} perPage={2} filter={{ q: 'The' }} />);
+
+            await screen.findByText('2 - The Little Prince');
+            expect(
+                screen.queryByText('5 - The Lord of the Rings')
+            ).not.toBeNull();
+            expect(
+                screen.queryByText('6 - And Then There Were None')
+            ).toBeNull();
+        });
+
         it('should filter string data based on the filter props', () => {
             const callback = jest.fn();
             render(
