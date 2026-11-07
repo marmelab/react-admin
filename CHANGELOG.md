@@ -1,5 +1,30 @@
 # Changelog
 
+## 5.15.6
+
+* Fix blank page when the app rerenders during logout ([#11435](https://github.com/marmelab/react-admin/pull/11435)) ([fzaninotto](https://github.com/fzaninotto))
+* Fix Pagination buttons aria-labels are not translated on small screens ([#11429](https://github.com/marmelab/react-admin/pull/11429)) ([Singmin](https://github.com/Singmin))
+* Fix useList not sorting records that have no value for the sort field ([#11413](https://github.com/marmelab/react-admin/pull/11413)) ([lprnmns](https://github.com/lprnmns))
+* Fix `<InPlaceEditor>` ignores blur when focus moves outside the editor ([#11342](https://github.com/marmelab/react-admin/pull/11342)) ([Aayush5154](https://github.com/Aayush5154))
+* Fix `<DataTable>` `rowClick` accessibility ([#11341](https://github.com/marmelab/react-admin/pull/11341)) ([forurmah](https://github.com/forurmah))
+* Fix `<AutocompleteArrayInput>` silently ignoring emptyText and emptyValue ([#11325](https://github.com/marmelab/react-admin/pull/11325)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add Enterprise Edition section to translation setup ([#11439](https://github.com/marmelab/react-admin/pull/11439)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update ra-markdown videos ([#11432](https://github.com/marmelab/react-admin/pull/11432)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Update MarkdownInput and MarkdownField for Milkdown ([#11428](https://github.com/marmelab/react-admin/pull/11428)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* [Doc] Add Drizzle to the data providers list ([#11425](https://github.com/marmelab/react-admin/pull/11425)) ([mshd](https://github.com/mshd))
+* build(deps): bump dompurify and handlebars ([#11424](https://github.com/marmelab/react-admin/pull/11424)) ([fzaninotto](https://github.com/fzaninotto))
+* build(deps): bump markdown-it from 14.3.2 to 14.3.3 ([#11423](https://github.com/marmelab/react-admin/pull/11423)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump @graphql-tools/utils from 12.0.1 to 12.1.0 ([#11421](https://github.com/marmelab/react-admin/pull/11421)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump serialize-javascript from 7.0.7 to 7.1.4 ([#11420](https://github.com/marmelab/react-admin/pull/11420)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump astro from 7.2.8 to 7.3.3 ([#11418](https://github.com/marmelab/react-admin/pull/11418)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump body-parser from 2.3.0 to 2.4.0 ([#11416](https://github.com/marmelab/react-admin/pull/11416)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump fast-uri from 3.1.8 to 3.1.9 ([#11415](https://github.com/marmelab/react-admin/pull/11415)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps): bump devalue from 5.9.2 to 5.9.4 ([#11410](https://github.com/marmelab/react-admin/pull/11410)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps-dev) bump eslint, brace-expansion, systeminformation, seroval and undici ([#11436](https://github.com/marmelab/react-admin/pull/11436)) ([ThieryMichel](https://github.com/ThieryMichel))
+* build(deps-dev): bump zod from 4.3.6 to 4.6.6 ([#11419](https://github.com/marmelab/react-admin/pull/11419)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps-dev): bump storybook from 10.5.5 to 10.6.2 ([#11417](https://github.com/marmelab/react-admin/pull/11417)) ([dependabot[bot]](https://github.com/apps/dependabot))
+* build(deps-dev): bump vite from 8.1.5 to 8.1.6 ([#11414](https://github.com/marmelab/react-admin/pull/11414)) ([dependabot[bot]](https://github.com/apps/dependabot))
+
 ## 5.15.5
 
 * Fix `UrlField` and `FileField` may execute JS code on click ([#11409](https://github.com/marmelab/react-admin/pull/11409)) ([fzaninotto](https://github.com/fzaninotto))
