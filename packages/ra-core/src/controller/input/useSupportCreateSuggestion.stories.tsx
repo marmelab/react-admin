@@ -41,14 +41,14 @@ export const UseSupportCreateSuggestion = (
         | 'createValue'
         | 'createHintValue'
         | 'optionText'
-    > & { withCreateElement?: boolean }
+    > & { withCreateElement?: boolean; onCreateReturnsNothing?: boolean }
 ) => {
     const [value, setValue] = React.useState<string>('');
     const [filter, setFilter] = React.useState<string>('');
     const [createParams, setCreateParams] = React.useState<any>(null);
     const [onCreateParams, setOnCreateParams] = React.useState<any>(null);
 
-    const { withCreateElement, ...rest } = options;
+    const { withCreateElement, onCreateReturnsNothing, ...rest } = options;
 
     const {
         createId,
@@ -60,12 +60,15 @@ export const UseSupportCreateSuggestion = (
     } = useSupportCreateSuggestion({
         filter,
         handleChange: eventOrValue => {
-            setValue(eventOrValue?.target?.value ?? eventOrValue.id);
+            setValue(
+                eventOrValue?.target?.value ?? eventOrValue?.id ?? eventOrValue
+            );
         },
         onCreate: withCreateElement
             ? undefined
             : arg => {
                   setOnCreateParams(arg);
+                  if (onCreateReturnsNothing) return;
                   return { id: 'new_id_from_onCreate' };
               },
         create: withCreateElement ? <CreateElement /> : undefined,
@@ -152,4 +155,5 @@ UseSupportCreateSuggestion.argTypes = {
     createHintValue: { control: 'text' },
     optionText: { control: 'text' },
     withCreateElement: { control: 'boolean' },
+    onCreateReturnsNothing: { control: 'boolean' },
 };
