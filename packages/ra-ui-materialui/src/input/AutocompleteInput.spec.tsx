@@ -28,6 +28,7 @@ import {
     OnCreate,
     OnCreateWithAutoSelect,
     OnCreateSlow,
+    OnCreatePrompt,
     CreateLabel,
     CreateItemLabel,
     CreateItemLabelRendered,
@@ -1540,6 +1541,32 @@ describe('<AutocompleteInput />', () => {
             expect(input.value).not.toBe('Create x');
             expect(input.value).toBe('x');
         }, 10000);
+
+        it('should keep the current value when onCreate returns nothing', async () => {
+            const promptSpy = jest
+                .spyOn(window, 'prompt')
+                .mockImplementation(() => null);
+            render(<OnCreatePrompt />);
+            const input = (await screen.findByLabelText(
+                'Author'
+            )) as HTMLInputElement;
+            await waitFor(() => {
+                expect(input.value).toBe('Leo Tolstoy');
+            });
+            fireEvent.focus(input);
+            fireEvent.change(input, { target: { value: 'x' } });
+            fireEvent.click(await screen.findByText('Create x'));
+            await waitFor(() => {
+                expect(promptSpy).toHaveBeenCalled();
+            });
+            await waitFor(() => {
+                expect(screen.queryAllByRole('option')).toHaveLength(0);
+            });
+            expect(input.value).toBe('x');
+            // the field value did not change, so the form is still pristine
+            expect(screen.getByLabelText('Save')).toBeDisabled();
+            promptSpy.mockRestore();
+        });
 
         it('should include an option with the custom createLabel when the input is empty and optionText is a string', async () => {
             render(<CreateLabel optionText="full_name" />);

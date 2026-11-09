@@ -84,6 +84,22 @@ describe('useSupportCreateSuggestion', () => {
         });
         fireEvent.click(await screen.findByText('Simulate click on create'));
         await screen.findByText('"foo"');
+        expect(screen.getByLabelText('Autocomplete value')).toHaveValue(
+            'new_id_from_onCreate'
+        );
+    });
+
+    it('keeps the current value when onCreate returns nothing', async () => {
+        render(<UseSupportCreateSuggestion onCreateReturnsNothing />);
+        fireEvent.change(await screen.findByLabelText('Autocomplete value'), {
+            target: { value: 'bar' },
+        });
+        fireEvent.change(await screen.findByLabelText('Autocomplete filter'), {
+            target: { value: 'foo' },
+        });
+        fireEvent.click(await screen.findByText('Simulate click on create'));
+        await screen.findByText('"foo"');
+        expect(screen.getByLabelText('Autocomplete value')).toHaveValue('bar');
     });
 
     it('renders the create element with the filter as default value when the createItem is clicked', async () => {

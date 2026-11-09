@@ -93,8 +93,8 @@ export const useSupportCreateSuggestion = (
                     const newSuggestion = await onCreate(filter);
                     if (newSuggestion) {
                         handleChange(newSuggestion);
-                        return;
                     }
+                    return;
                 } else {
                     setRenderOnCreate(true);
                     return;
