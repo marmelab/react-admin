@@ -5,6 +5,8 @@ import { FieldValues, UseFormSetError } from 'react-hook-form';
  * format compatible with react-hook-form. It's used to handle submission errors. Only useful when
  * you are implementing a custom form without leveraging our Form component.
  *
+ * A field can map to a string, or to an array of strings (which are joined into a single message).
+ *
  * @example
  * const MyForm = () => {
  *     const { register, handleSubmit, setError } = useForm();
@@ -25,11 +27,24 @@ export const setSubmissionErrors = (
 ) => {
     const setErrorFromObject = (errors: FieldValues, rootPath: string) => {
         Object.entries(errors).forEach(([name, error]) => {
-            if (typeof error === 'object') {
-                setErrorFromObject(error, `${rootPath}${name}.`);
+            const path = `${rootPath}${name}`;
+            if (error == null) {
                 return;
             }
-            setError(`${rootPath}${name}`, {
+            if (isStringArray(error)) {
+                if (error.length > 0) {
+                    setError(path, {
+                        type: 'server',
+                        message: error.join(', '),
+                    });
+                }
+                return;
+            }
+            if (typeof error === 'object') {
+                setErrorFromObject(error, `${path}.`);
+                return;
+            }
+            setError(path, {
                 type: 'server',
                 message: error.toString(),
             });
@@ -37,3 +52,6 @@ export const setSubmissionErrors = (
     };
     setErrorFromObject(errors, '');
 };
+
+const isStringArray = (value: unknown): value is string[] =>
+    Array.isArray(value) && value.every(item => typeof item === 'string');
