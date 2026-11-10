@@ -33,7 +33,9 @@ export default defineConfig(async () => {
                 `../../packages/${packageJson.name}/src`
             );
         }
-    } catch {}
+    } catch {
+        /* empty */
+    }
 
     return {
         plugins: [react()],

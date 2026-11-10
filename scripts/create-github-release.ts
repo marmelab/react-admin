@@ -2,7 +2,7 @@ import 'dotenv/config';
 import { Octokit } from '@octokit/core';
 import fs from 'fs';
 import path from 'path';
-import escapeRegExp from 'lodash/escapeRegExp';
+import escapeRegExp from 'lodash/escapeRegExp.js';
 
 const main = async () => {
     if (process.env.RELEASE_DRY_RUN) {
