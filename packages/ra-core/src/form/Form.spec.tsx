@@ -21,6 +21,7 @@ import {
     NullValue,
     InNonDataRouter,
     ServerSideValidation,
+    ServerSideValidationWithMessageArrays,
     MultiRoutesForm,
     WarnWhenUnsavedChangesWithDelete,
 } from './Form.stories';
@@ -906,6 +907,14 @@ describe('Form', () => {
         fireEvent.click(screen.getByText('Submit'));
         await screen.findByText('Required');
         await screen.findByText('ra.message.invalid_form');
+    });
+
+    it('should support server side validation errors given as an array of messages', async () => {
+        render(<ServerSideValidationWithMessageArrays />);
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText(
+            'The title is too short, The title must be unique'
+        );
     });
 
     it('should support using a custom global message with server side validation', async () => {

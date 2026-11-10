@@ -96,4 +96,52 @@ describe('setSubmissionErrors', () => {
             type: 'server',
         });
     });
+    it('sets a single error on the field for an array of string messages', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors(
+            { label: ['Too short', 'Invalid characters'] },
+            setError
+        );
+
+        expect(setError).toHaveBeenCalledTimes(1);
+        expect(setError).toHaveBeenCalledWith('label', {
+            message: 'Too short, Invalid characters',
+            type: 'server',
+        });
+    });
+    it('ignores null and undefined values', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors(
+            { title: 'Required', body: null, author: undefined },
+            setError
+        );
+
+        expect(setError).toHaveBeenCalledTimes(1);
+        expect(setError).toHaveBeenCalledWith('title', {
+            message: 'Required',
+            type: 'server',
+        });
+    });
+    it('ignores empty arrays', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors({ tags: [] }, setError);
+
+        expect(setError).not.toHaveBeenCalled();
+    });
+    it('supports arrays of string messages in nested paths', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors(
+            { user: { email: ['Invalid', 'Already taken'] } },
+            setError
+        );
+
+        expect(setError).toHaveBeenCalledWith('user.email', {
+            message: 'Invalid, Already taken',
+            type: 'server',
+        });
+    });
 });

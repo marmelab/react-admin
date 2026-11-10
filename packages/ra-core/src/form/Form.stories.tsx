@@ -545,6 +545,27 @@ export const ServerSideValidation = () => {
     );
 };
 
+export const ServerSideValidationWithMessageArrays = () => {
+    const save = React.useCallback(values => {
+        if (values.title.length < 10) {
+            return {
+                title: ['The title is too short', 'The title must be unique'],
+            };
+        }
+    }, []);
+    return (
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <SaveContextProvider value={{ save }}>
+                <Form record={{ id: 1, title: 'Hello' }}>
+                    <Input source="title" />
+                    <button type="submit">Submit</button>
+                </Form>
+                <Notifications />
+            </SaveContextProvider>
+        </CoreAdminContext>
+    );
+};
+
 export const MultiRoutesForm = ({
     url,
     initialRecord,
