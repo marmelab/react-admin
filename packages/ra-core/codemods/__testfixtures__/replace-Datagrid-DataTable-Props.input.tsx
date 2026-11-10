@@ -10,7 +10,7 @@ const PostPanel = () => {
     return <div dangerouslySetInnerHTML={{ __html: record.body }} />;
 };
 
-const postRowStyle = (record, index) => ({
+const postRowStyle = record => ({
     backgroundColor: record.nb_views >= 500 ? '#efe' : 'white',
 });
 
