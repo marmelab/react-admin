@@ -1,6 +1,6 @@
 {
   "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "eslint --fix --max-warnings 0 --no-warn-ignored"
   ],
   "*.{json,css,md}": [
       "prettier"
