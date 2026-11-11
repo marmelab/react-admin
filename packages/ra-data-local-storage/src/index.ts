@@ -1,6 +1,18 @@
 /* eslint-disable eqeqeq */
 import fakeRestProvider from 'ra-data-fakerest';
-import { DataProvider, RaRecord } from 'ra-core';
+import {
+    CreateParams,
+    DataProvider,
+    DeleteManyParams,
+    DeleteParams,
+    GetListParams,
+    GetManyParams,
+    GetManyReferenceParams,
+    GetOneParams,
+    RaRecord,
+    UpdateManyParams,
+    UpdateParams,
+} from 'ra-core';
 import pullAt from 'lodash/pullAt.js';
 
 /**
@@ -40,7 +52,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
     let data = localStorageData ? JSON.parse(localStorageData) : defaultData;
 
     // change data by executing callback, then persist in localStorage
-    const updateLocalStorage = callback => {
+    const updateLocalStorage = (callback: () => void) => {
         // modify localStorage after the next tick
         setTimeout(() => {
             callback();
@@ -66,7 +78,10 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
 
     return {
         // read methods are just proxies to FakeRest
-        getList: <RecordType extends RaRecord = any>(resource, params) =>
+        getList: <RecordType extends RaRecord = any>(
+            resource: string,
+            params: GetListParams
+        ) =>
             baseDataProvider
                 .getList<RecordType>(resource, params)
                 .catch(error => {
@@ -77,13 +92,17 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                         throw error;
                     }
                 }),
-        getOne: <RecordType extends RaRecord = any>(resource, params) =>
-            baseDataProvider.getOne<RecordType>(resource, params),
-        getMany: <RecordType extends RaRecord = any>(resource, params) =>
-            baseDataProvider.getMany<RecordType>(resource, params),
+        getOne: <RecordType extends RaRecord = any>(
+            resource: string,
+            params: GetOneParams<any>
+        ) => baseDataProvider.getOne<RecordType>(resource, params),
+        getMany: <RecordType extends RaRecord = any>(
+            resource: string,
+            params: GetManyParams<RecordType>
+        ) => baseDataProvider.getMany<RecordType>(resource, params),
         getManyReference: <RecordType extends RaRecord = any>(
-            resource,
-            params
+            resource: string,
+            params: GetManyReferenceParams
         ) =>
             baseDataProvider
                 .getManyReference<RecordType>(resource, params)
@@ -97,11 +116,14 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                 }),
 
         // update methods need to persist changes in localStorage
-        update: <RecordType extends RaRecord = any>(resource, params) => {
+        update: <RecordType extends RaRecord = any>(
+            resource: string,
+            params: UpdateParams<any>
+        ) => {
             checkResource(resource);
             updateLocalStorage(() => {
                 const index = data[resource]?.findIndex(
-                    record => record.id == params.id
+                    (record: RaRecord) => record.id == params.id
                 );
                 data[resource][index] = {
                     ...data[resource][index],
@@ -110,12 +132,12 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             });
             return baseDataProvider.update<RecordType>(resource, params);
         },
-        updateMany: (resource, params) => {
+        updateMany: (resource: string, params: UpdateManyParams<any>) => {
             checkResource(resource);
             updateLocalStorage(() => {
                 params.ids.forEach(id => {
                     const index = data[resource]?.findIndex(
-                        record => record.id == id
+                        (record: RaRecord) => record.id == id
                     );
                     data[resource][index] = {
                         ...data[resource][index],
@@ -126,8 +148,8 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
             return baseDataProvider.updateMany(resource, params);
         },
         create: <RecordType extends Omit<RaRecord, 'id'> = any>(
-            resource,
-            params
+            resource: string,
+            params: CreateParams<any>
         ) => {
             checkResource(resource);
             // we need to call the fakerest provider first to get the generated id
@@ -143,21 +165,26 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
                     return response;
                 });
         },
-        delete: <RecordType extends RaRecord = any>(resource, params) => {
+        delete: <RecordType extends RaRecord = any>(
+            resource: string,
+            params: DeleteParams<RecordType>
+        ) => {
             checkResource(resource);
             updateLocalStorage(() => {
                 const index = data[resource]?.findIndex(
-                    record => record.id == params.id
+                    (record: RaRecord) => record.id == params.id
                 );
                 pullAt(data[resource], [index]);
             });
             return baseDataProvider.delete<RecordType>(resource, params);
         },
-        deleteMany: (resource, params) => {
+        deleteMany: (resource: string, params: DeleteManyParams<any>) => {
             checkResource(resource);
             updateLocalStorage(() => {
                 const indexes = params.ids.map(id =>
-                    data[resource]?.findIndex(record => record.id == id)
+                    data[resource]?.findIndex(
+                        (record: RaRecord) => record.id == id
+                    )
                 );
                 pullAt(data[resource], indexes);
             });
@@ -166,7 +193,7 @@ export default (params?: LocalStorageDataProviderParams): DataProvider => {
     };
 };
 
-const checkResource = resource => {
+const checkResource = (resource: string) => {
     if (['__proto__', 'constructor', 'prototype'].includes(resource)) {
         // protection against prototype pollution
         throw new Error(`Invalid resource key: ${resource}`);
