@@ -39,6 +39,7 @@ export const DataTableBase = function DataTable<
     const {
         sort,
         data,
+        error,
         isPending,
         onSelect,
         onToggleItem,
@@ -157,8 +158,12 @@ export const DataTableBase = function DataTable<
                          * Instead of displaying the table header
                          * with zero data rows, the DataTable
                          * displays the empty component.
+                         * If the data couldn't be fetched, the error is
+                         * already notified, so the DataTable renders nothing.
                          */
-                        empty ?? null
+                        error ? null : (
+                            empty ?? null
+                        )
                     ) : (
                         /**
                          * After the initial load, if the data for the list

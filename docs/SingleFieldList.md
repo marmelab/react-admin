@@ -113,6 +113,8 @@ When the list is empty, `<SingleFieldList>` displays nothing. You can customize 
 <SingleFieldList empty={<p>Nothing to display</p>} />
 ```
 
+If fetching the data fails, `<SingleFieldList>` doesn't render the `empty` element, as the error is already displayed in a notification.
+
 ## `linkType`
 
 The `<SingleFieldList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.

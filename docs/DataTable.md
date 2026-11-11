@@ -507,6 +507,8 @@ When rendered inside an empty list with no records, `<DataTable>` displays a mes
 
 You can customize this message via react-admin's [translation system](./Translation.md), by setting a custom translation for the `ra.navigation.no_results` key.
 
+If fetching the data fails, `<DataTable>` renders nothing instead of the empty message, as the error is already displayed in a notification.
+
 ```tsx
 const messages = {
     ra: {
