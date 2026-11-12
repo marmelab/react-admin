@@ -124,6 +124,24 @@ describe('setSubmissionErrors', () => {
             type: 'server',
         });
     });
+    it('sets a single error on the field for an <ArrayInput> of scalar items', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors({ tags: ['', 'Invalid tag', ''] }, setError);
+
+        expect(setError).toHaveBeenCalledTimes(1);
+        expect(setError).toHaveBeenCalledWith('tags', {
+            message: 'Invalid tag',
+            type: 'server',
+        });
+    });
+    it('ignores arrays containing only empty messages', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors({ tags: ['', ''] }, setError);
+
+        expect(setError).not.toHaveBeenCalled();
+    });
     it('ignores empty arrays', () => {
         const setError = jest.fn();
 

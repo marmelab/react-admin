@@ -32,10 +32,11 @@ export const setSubmissionErrors = (
                 return;
             }
             if (isStringArray(error)) {
-                if (error.length > 0) {
+                const messages = error.filter(Boolean);
+                if (messages.length > 0) {
                     setError(path, {
                         type: 'server',
-                        message: error.join(', '),
+                        message: messages.join(', '),
                     });
                 }
                 return;
