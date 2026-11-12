@@ -25,6 +25,9 @@ export const setSubmissionErrors = (
 ) => {
     const setErrorFromObject = (errors: FieldValues, rootPath: string) => {
         Object.entries(errors).forEach(([name, error]) => {
+            if (error == null) {
+                return;
+            }
             if (typeof error === 'object') {
                 setErrorFromObject(error, `${rootPath}${name}.`);
                 return;
