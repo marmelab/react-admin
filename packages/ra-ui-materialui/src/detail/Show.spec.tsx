@@ -28,6 +28,7 @@ import {
     WithRenderProp,
     Offline,
     FetchError,
+    RedirectOnError,
 } from './Show.stories';
 import { Show } from './Show';
 import { Alert } from '@mui/material';
@@ -268,5 +269,10 @@ describe('<Show />', () => {
         render(<FetchError />);
         fireEvent.click(await screen.findByText('Reject loading'));
         await screen.findByText('List view');
+    });
+    it('should redirect to the redirectOnError target when an error happens', async () => {
+        render(<RedirectOnError redirectOnError={() => '/not-found'} />);
+        fireEvent.click(await screen.findByText('Moby-Dick (fails to load)'));
+        await screen.findByText('Not Found');
     });
 });

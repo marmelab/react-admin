@@ -94,7 +94,7 @@ export const Edit = <RecordType extends RaRecord = any>(
             disableAuthentication={disableAuthentication}
             authLoading={authLoading}
             loading={loading}
-            // Disable redirect on error as it is handled by EditView to display the error in the EditView container
+            // When an error component is provided, don't redirect by default so EditView can display it in the EditView container
             redirectOnError={redirectOnError ?? (error ? false : undefined)}
             // Disable offline support from EditBase as it is handled by EditView to keep the EditView container
             offline={false}

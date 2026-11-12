@@ -6,12 +6,16 @@ import {
     TestMemoryRouter,
     IsOffline,
     GetOneResult,
+    GetOneParams,
+    HttpError,
 } from 'ra-core';
+import fakeRestDataProvider from 'ra-data-fakerest';
 import { Alert, Box, Card, Stack, ThemeOptions } from '@mui/material';
 import { deepmerge } from '@mui/utils';
 import { onlineManager } from '@tanstack/react-query';
 
 import { Layout } from '../layout';
+import { DataTable, List } from '../list';
 import { TextField } from '../field';
 import { Labeled } from '../Labeled';
 import { SimpleShowLayout } from './SimpleShowLayout';
@@ -435,6 +439,84 @@ FetchError.argTypes = {
         mapping: {
             default: undefined,
             custom: <CustomError />,
+        },
+    },
+};
+
+const booksDataProvider = fakeRestDataProvider({
+    books: [
+        { id: 1, title: 'War and Peace', author: 'Leo Tolstoy', year: 1869 },
+        {
+            id: 2,
+            title: 'Pride and Prejudice',
+            author: 'Jane Austen',
+            year: 1813,
+        },
+        {
+            id: 3,
+            title: 'Moby-Dick (fails to load)',
+            author: 'Herman Melville',
+            year: 1851,
+        },
+        {
+            id: 4,
+            title: 'Madame Bovary',
+            author: 'Gustave Flaubert',
+            year: 1857,
+        },
+    ],
+});
+
+// Book 3 is listed but can't be loaded, e.g. because it was deleted in the meantime
+const redirectOnErrorDataProvider = {
+    ...booksDataProvider,
+    getOne: (resource: string, params: GetOneParams) =>
+        String(params.id) === '3'
+            ? Promise.reject(new HttpError('Not found', 404))
+            : booksDataProvider.getOne(resource, params),
+};
+
+export const RedirectOnError = ({
+    redirectOnError,
+}: Pick<ShowProps, 'redirectOnError'>) => (
+    <TestMemoryRouter initialEntries={['/books']}>
+        <Admin dataProvider={redirectOnErrorDataProvider}>
+            <Resource
+                name="books"
+                list={
+                    <List>
+                        <DataTable rowClick="show">
+                            <DataTable.Col source="title" />
+                            <DataTable.Col source="author" />
+                            <DataTable.Col source="year" />
+                        </DataTable>
+                    </List>
+                }
+                show={
+                    <Show redirectOnError={redirectOnError}>
+                        <SimpleShowLayout>
+                            <TextField source="title" />
+                            <TextField source="author" />
+                            <TextField source="year" />
+                        </SimpleShowLayout>
+                    </Show>
+                }
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
+RedirectOnError.args = {
+    redirectOnError: 'not found page',
+};
+
+RedirectOnError.argTypes = {
+    redirectOnError: {
+        control: { type: 'radio' },
+        options: ['list', 'false', 'not found page'],
+        mapping: {
+            false: false,
+            'not found page': () => '/not-found',
         },
     },
 };
