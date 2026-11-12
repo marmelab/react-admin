@@ -21,6 +21,7 @@ import {
     NullValue,
     InNonDataRouter,
     ServerSideValidation,
+    ServerSideValidationWithNullErrors,
     MultiRoutesForm,
     WarnWhenUnsavedChangesWithDelete,
 } from './Form.stories';
@@ -918,6 +919,15 @@ describe('Form', () => {
         await screen.findByText(
             'There are validation errors. Please fix them.'
         );
+    });
+
+    it('should ignore null values in server side validation errors', async () => {
+        render(<ServerSideValidationWithNullErrors />);
+        fireEvent.change(screen.getByLabelText('body'), {
+            target: { value: 'Too short' },
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        await screen.findByText('The body must be at least 20 characters long');
     });
 
     it.each([
