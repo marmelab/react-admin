@@ -16,6 +16,8 @@ export default defineConfig([
         '**/lib',
         '**/esm',
         '**/prism.js',
+        '**/*.min.js',
+        '**/__testfixtures__',
         'packages/create-react-admin/templates/**/*',
     ]),
     {

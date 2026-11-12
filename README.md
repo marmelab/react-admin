@@ -248,7 +248,7 @@ Unit tests use `jest`, so you should be able to run a subset of tests, or run te
 yarn jest
 ```
 
-Besides, tests related to the modified files are run automatically at commit using a git pre-commit hook. This means you won't be able to commit your changes if they break the tests. 
+Besides, the staged JS and TS files are linted (and fixed when possible) at commit using a git pre-commit hook. This means you won't be able to commit your changes if they still contain ESLint errors or warnings.
 
 When working on the end-to-end tests, you can leverage [cypress](https://www.cypress.io/) runner by starting the simple example yourself (`make run-simple` or `yarn run-simple`) and starting cypress in another terminal (`make test-e2e-local` or `yarn test-e2e-local`).
 

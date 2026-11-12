@@ -34,7 +34,7 @@ const main = async () => {
             const packageJson = JSON.parse(
                 fs.readFileSync(packageJsonPath, 'utf-8')
             );
-            let updatedDependencies = [];
+            const updatedDependencies = [];
             for (const raPackage of raPackages) {
                 for (const dependencyType of dependencyTypes) {
                     if (packageJson[dependencyType]?.[raPackage]) {
