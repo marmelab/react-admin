@@ -75,6 +75,7 @@ export const Show = <RecordType extends RaRecord = any>(
         authLoading = defaultAuthLoading,
         loading,
         error,
+        redirectOnError,
         ...rest
     } = props;
 
@@ -92,8 +93,8 @@ export const Show = <RecordType extends RaRecord = any>(
             resource={resource}
             authLoading={authLoading}
             loading={loading}
-            // Disable redirect on error as it is handled by ShowView to display the error in the ShowView container
-            redirectOnError={error ? false : undefined}
+            // When an error component is provided, don't redirect by default so ShowView can display it in the ShowView container
+            redirectOnError={redirectOnError ?? (error ? false : undefined)}
             // Disable offline support from ShowBase as it is handled by ShowView to keep the ShowView container
             offline={false}
         >
