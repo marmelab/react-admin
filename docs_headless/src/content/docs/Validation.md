@@ -413,6 +413,8 @@ Server-side validation is supported out of the box for `pessimistic` mode only. 
 
 **Tip**: The returned validation errors might have any validation format we support (simple strings, translation strings or translation objects with a `message` attribute) for each key. However `root.serverError` does not accept translation objects.
 
+**Tip**: Keys with a `null` or `undefined` value are ignored, so your API can return `null` for the fields that are valid.
+
 **Tip**: If your data provider leverages React Admin's [`httpClient`](../data-fetching/DataProviderWriting.html#example-rest-implementation), all error response bodies are wrapped and thrown as `HttpError`. This means your API only needs to return an invalid response with a json body containing the `errors` key.
 
 ```js
