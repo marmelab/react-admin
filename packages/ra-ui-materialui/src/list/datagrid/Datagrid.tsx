@@ -158,6 +158,7 @@ export const Datagrid: React.ForwardRefExoticComponent<
     const {
         sort,
         data,
+        error,
         isPending,
         onSelect,
         onToggleItem,
@@ -232,8 +233,13 @@ export const Datagrid: React.ForwardRefExoticComponent<
      * Once loaded, the data for the list may be empty. Instead of
      * displaying the table header with zero data rows,
      * the Datagrid displays the empty component.
+     * If the data couldn't be fetched, the error is already
+     * notified, so the Datagrid renders nothing.
      */
     if (data == null || data.length === 0 || total === 0) {
+        if (error) {
+            return null;
+        }
         return empty === undefined ? (
             <ListNoResults resource={resource} />
         ) : (

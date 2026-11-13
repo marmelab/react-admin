@@ -533,7 +533,7 @@ export const StyledComponent = () => (
 );
 
 export const ErrorInFetch = () => (
-    <TestMemoryRouter>
+    <AdminContext>
         <ListContextProvider
             value={
                 {
@@ -541,14 +541,16 @@ export const ErrorInFetch = () => (
                 } as any
             }
         >
-            <Datagrid>
-                <TextField source="id" />
-                <TextField source="title" />
-                <TextField source="author" />
-                <TextField source="year" />
-            </Datagrid>
+            <ResourceContextProvider value="books">
+                <Datagrid>
+                    <TextField source="id" />
+                    <TextField source="title" />
+                    <TextField source="author" />
+                    <TextField source="year" />
+                </Datagrid>
+            </ResourceContextProvider>
         </ListContextProvider>
-    </TestMemoryRouter>
+    </AdminContext>
 );
 
 export const RowClickFalse = () => (

@@ -117,6 +117,18 @@ export const Empty = ({ listContext = { data: [] } }) => (
     </ListContextProvider>
 );
 
+export const ErrorInFetch = () => (
+    <TestMemoryRouter>
+        <ResourceContextProvider value="books">
+            <ListContextProvider
+                value={{ error: new Error('Error in dataProvider') } as any}
+            >
+                <SingleFieldList empty={<div>No genres</div>} />
+            </ListContextProvider>
+        </ResourceContextProvider>
+    </TestMemoryRouter>
+);
+
 export const Loading = () => (
     <ListContextProvider value={{ isLoading: true } as any}>
         <SingleFieldList />

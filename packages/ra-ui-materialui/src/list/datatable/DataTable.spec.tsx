@@ -11,6 +11,7 @@ import {
     Basic,
     Columns,
     Empty,
+    ErrorInFetch,
     Expand,
     ExpandSingle,
     IsRowExpandable,
@@ -23,6 +24,11 @@ import { DataTable } from './DataTable';
 import { AdminContext } from '../../AdminContext';
 
 describe('DataTable', () => {
+    it('should not display the no results message when the list fetch failed', () => {
+        render(<ErrorInFetch />);
+        expect(screen.queryByText('ra.navigation.no_results')).toBeNull();
+    });
+
     it('should render one row per record in the list', async () => {
         render(<Basic />);
         await waitFor(() => {
