@@ -96,4 +96,30 @@ describe('setSubmissionErrors', () => {
             type: 'server',
         });
     });
+    it('ignores null and undefined errors', () => {
+        const setError = jest.fn();
+
+        setSubmissionErrors(
+            {
+                title: 'invalid',
+                body: null,
+                author: undefined,
+                metadata: {
+                    slug: null,
+                    summary: 'invalid too',
+                },
+            },
+            setError
+        );
+
+        expect(setError).toHaveBeenCalledTimes(2);
+        expect(setError).toHaveBeenCalledWith('title', {
+            message: 'invalid',
+            type: 'server',
+        });
+        expect(setError).toHaveBeenCalledWith('metadata.summary', {
+            message: 'invalid too',
+            type: 'server',
+        });
+    });
 });

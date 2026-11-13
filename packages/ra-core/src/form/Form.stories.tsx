@@ -545,6 +545,37 @@ export const ServerSideValidation = () => {
     );
 };
 
+export const ServerSideValidationWithNullErrors = () => {
+    const save = React.useCallback(values => {
+        const errors = {
+            title: values.title ? null : 'The title is required',
+            body:
+                values.body?.length >= 20
+                    ? null
+                    : 'The body must be at least 20 characters long',
+        };
+        return errors.title || errors.body ? errors : undefined;
+    }, []);
+    return (
+        <CoreAdminContext i18nProvider={defaultI18nProvider}>
+            <SaveContextProvider value={{ save }}>
+                <Form
+                    record={{
+                        id: 1,
+                        title: 'Hello world',
+                        body: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                    }}
+                >
+                    <Input source="title" />
+                    <Input source="body" />
+                    <button type="submit">Submit</button>
+                </Form>
+                <Notifications />
+            </SaveContextProvider>
+        </CoreAdminContext>
+    );
+};
+
 export const MultiRoutesForm = ({
     url,
     initialRecord,
