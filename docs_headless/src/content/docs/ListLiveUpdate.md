@@ -94,6 +94,7 @@ const PostList = () => {
     const handleEventReceived = (event) => {
         const count = get(event, 'payload.ids.length', 1);
         notify(`${count} items updated by another user`);
+
         refresh();
     };
 
