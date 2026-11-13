@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useCallback, useRef } from 'react';
+import { useReducer, useCallback, useState } from 'react';
 import { PaginationPayload } from '../types';
 
 /**
@@ -51,21 +51,21 @@ export default (
         ...defaultPagination,
         ...initialPagination,
     });
-    const isFirstRender = useRef(true);
-
     const setPerPage = useCallback(
         perPage => setPagination({ perPage, page: 1 }),
         []
     );
     const setPage = useCallback(page => setPagination({ page }), []);
 
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
+    const [prevPerPage, setPrevPerPage] = useState(initialPagination.perPage);
+    // Updating the state during render (and not in an effect) lets React
+    // restart the render before committing it, so that children never see
+    // the previous perPage.
+    // @see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+    if (initialPagination.perPage !== prevPerPage) {
+        setPrevPerPage(initialPagination.perPage);
         setPerPage(initialPagination.perPage || 25);
-    }, [initialPagination.perPage, setPerPage]);
+    }
 
     return {
         page: pagination.page,

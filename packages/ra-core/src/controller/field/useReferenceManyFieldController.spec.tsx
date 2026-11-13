@@ -282,6 +282,45 @@ describe('useReferenceManyFieldController', () => {
         });
     });
 
+    it('should fetch the first page with the new filter when the filter prop changes', async () => {
+        const dataProvider = testDataProvider({
+            getManyReference: jest
+                .fn()
+                .mockResolvedValue({ data: [], total: 0 }),
+        });
+        const ControllerWrapper = ({ filter }) => (
+            <CoreAdminContext dataProvider={dataProvider}>
+                <ReferenceManyFieldController
+                    resource="authors"
+                    source="id"
+                    record={{ id: 123, name: 'James Joyce' }}
+                    reference="books"
+                    target="author_id"
+                    page={3}
+                    filter={filter}
+                >
+                    {() => null}
+                </ReferenceManyFieldController>
+            </CoreAdminContext>
+        );
+
+        const { rerender } = render(
+            <ControllerWrapper filter={{ genre: 'novel' }} />
+        );
+        rerender(<ControllerWrapper filter={{ genre: 'poetry' }} />);
+
+        await waitFor(() => {
+            expect(dataProvider.getManyReference).toHaveBeenCalledWith(
+                'books',
+                expect.objectContaining({
+                    pagination: { page: 1, perPage: 25 },
+                    filter: { genre: 'poetry' },
+                })
+            );
+        });
+        expect(dataProvider.getManyReference).toHaveBeenCalledTimes(2);
+    });
+
     it('should take only last change in case of a burst of setFilters calls (case of inputs being currently edited)', async () => {
         const childFunction = ({ setFilters, filterValues }) => (
             <input
