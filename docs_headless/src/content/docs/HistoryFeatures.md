@@ -16,6 +16,51 @@ npm install --save @react-admin/ra-core-ee
 yarn add @react-admin/ra-core-ee
 ```
 
+## I18N
+
+The history features use specific translation messages (for notifications, buttons, dialogs, etc.). `@react-admin/ra-core-ee` provides English and French translations for these messages. Use `getEnglishTranslations` and `getFrenchTranslations` to add them to your [`i18nProvider`](./TranslationSetup.md):
+
+```tsx
+import { CoreAdmin, mergeTranslations } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import { getEnglishTranslations, getFrenchTranslations } from '@react-admin/ra-core-ee';
+
+const i18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, getFrenchTranslations('ra-history'))
+            : mergeTranslations(englishMessages, getEnglishTranslations('ra-history')),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+export const MyApp = () => (
+    <CoreAdmin i18nProvider={i18nProvider}>
+        ...
+    </CoreAdmin>
+);
+```
+
+To customize the messages, merge your own translations on top of the default ones. Use the `RaCoreEETranslations` type to see which keys are available:
+
+```tsx
+import { mergeTranslations, type TranslationMessages } from 'ra-core';
+import englishMessages from 'ra-language-english';
+import { getEnglishTranslations, type RaCoreEETranslations } from '@react-admin/ra-core-ee';
+
+const customEnglishMessages: TranslationMessages & RaCoreEETranslations<['ra-history']> =
+    mergeTranslations(
+        englishMessages,
+        getEnglishTranslations('ra-history'),
+        { 'ra-history': { on_save: { title: 'Save a new revision' } } }
+    );
+```
+
 ## Data Provider Requirements
 
 `ra-core-ee` relies on the `dataProvider` to read, create and delete revisions. In order to use the history features, you must add 3 new methods to your data provider: `getRevisions`, `addRevision` and `deleteRevisions`.
