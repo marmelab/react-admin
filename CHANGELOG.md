@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.15.7
+
+* Fix `<Show>` doesn't honor the `redirectOnError` prop ([#11450](https://github.com/marmelab/react-admin/pull/11450)) ([ThieryMichel](https://github.com/ThieryMichel))
+* Fix `<AutocompleteInput>` field value becomes "@@ra-create" when onCreate returns nothing ([#11444](https://github.com/marmelab/react-admin/pull/11444)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+* Fix `<Notification>` Undo commits the next queued undoable mutation ([#11443](https://github.com/marmelab/react-admin/pull/11443)) ([Karanvir1729](https://github.com/Karanvir1729))
+* [Chore] Update pre-commit hook to fail on ESLint warnings ([#11445](https://github.com/marmelab/react-admin/pull/11445)) ([erwanMarmelab](https://github.com/erwanMarmelab))
+
 ## 5.15.6
 
 * Fix blank page when the app rerenders during logout ([#11435](https://github.com/marmelab/react-admin/pull/11435)) ([fzaninotto](https://github.com/fzaninotto))
