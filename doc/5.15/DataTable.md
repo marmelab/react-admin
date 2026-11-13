@@ -830,6 +830,25 @@ export const PostList = () => (
 - `false` to do nothing
 - a function `(id, resource, record) => path` that may return any of the above values or a custom path
 
+**Tip**: Row clicks aren't keyboard-accessible: keyboard users can't focus table rows, and screen readers don't announce them as links or buttons. To make the list accessible, add a column with a button doing the same as the row click, e.g. an `<EditButton>` for `rowClick="edit"` or a `<ShowButton>` for `rowClick="show"`:
+
+```tsx
+import { List, DataTable, EditButton } from 'react-admin';
+
+export const PostList = () => (
+    <List>
+        <DataTable rowClick="edit">
+            <DataTable.Col source="title" />
+            <DataTable.Col>
+                <EditButton />
+            </DataTable.Col>
+        </DataTable>
+    </List>
+);
+```
+
+Neither `rowClick="expand"` nor `rowClick="toggleSelection"` needs an extra column: the expand button and the selection checkbox already offer the same action.
+
 **Tip**: If you pass a function, it can return `'edit'`, `'show'`, `false` or a router path. This allows redirecting to either the Edit or Show view after checking a condition on the record. For example:
 
 ```tsx

@@ -838,7 +838,7 @@ Here is an example implementation, that you can use as a base for your own Data 
 
 ```js
 import { fetchUtils } from 'react-admin';
-import { stringify } from 'query-string';
+import { stringify } from '@marmelab/query-string';
 
 const apiUrl = 'https://my.api.com/';
 const httpClient = fetchUtils.fetchJson;
