@@ -105,7 +105,7 @@ export const FormatButtons = (props: ToggleButtonGroupProps) => {
 
 const FormatValues = ['bold', 'italic', 'underline', 'strike', 'code'];
 
-const FormatActions = {
+const FormatActions: Record<string, (editor: Editor) => boolean> = {
     bold: (editor: Editor) => editor.chain().focus().toggleBold().run(),
     italic: (editor: Editor) => editor.chain().focus().toggleItalic().run(),
     underline: (editor: Editor) =>
