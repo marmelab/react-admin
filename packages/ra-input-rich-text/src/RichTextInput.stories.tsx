@@ -443,7 +443,7 @@ const MentionList = (props: {
 }) => {
     const [selectedIndex, setSelectedIndex] = React.useState(0);
 
-    const selectItem = index => {
+    const selectItem = (index: number) => {
         const item = props.items[index];
 
         if (item) {
@@ -502,9 +502,9 @@ const MentionList = (props: {
         </Paper>
     );
 };
-const suggestions = tags => {
+const suggestions = (tags: string[]) => {
     return {
-        items: ({ query }) => {
+        items: ({ query }: { query: string }) => {
             return tags
                 .filter(item =>
                     item.toLowerCase().startsWith(query.toLowerCase())
@@ -536,7 +536,7 @@ const suggestions = tags => {
             };
 
             return {
-                onStart: props => {
+                onStart: (props: any) => {
                     component = new ReactRenderer(MentionList, {
                         props: { ...props, onKeyDownRef },
                         editor: props.editor,
@@ -556,7 +556,7 @@ const suggestions = tags => {
                     }
                 },
 
-                onUpdate(props) {
+                onUpdate(props: any) {
                     if (component) {
                         component.updateProps({ ...props, onKeyDownRef });
                     }
@@ -566,7 +566,7 @@ const suggestions = tags => {
                     }
                 },
 
-                onKeyDown(props) {
+                onKeyDown(props: any) {
                     if (props.event.key === 'Escape') {
                         if (floatingEl) {
                             floatingEl.style.display = 'none';
