@@ -4,6 +4,7 @@
         "outDir": "dist",
         "rootDir": "src",
         "allowJs": false,
+        "noImplicitAny": true,
         "strictNullChecks": true
     },
     "exclude": ["**/*.spec.ts", "**/*.spec.tsx", "**/*.spec.js"],
