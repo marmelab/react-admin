@@ -10,6 +10,7 @@ import { Typography, TypographyProps, CircularProgress } from '@mui/material';
 import ErrorIcon from '@mui/icons-material/Error';
 
 import { Link } from '../Link';
+import { getFilterSearch } from './getFilterSearch';
 
 /**
  * Fetch and render the number of records of a given resource
@@ -71,7 +72,7 @@ export const Count = (props: CountProps) => {
         <Link
             to={{
                 pathname: createPath({ resource, type: 'list' }),
-                search: filter ? `filter=${JSON.stringify(filter)}` : undefined,
+                search: filter ? getFilterSearch(filter) : undefined,
             }}
             variant="body2"
             onClick={e => e.stopPropagation()}

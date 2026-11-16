@@ -623,7 +623,9 @@ const CreateRelatedCommentButton = () => {
         <CreateButton
             resource="comments"
             to={{
-                search: `?source=${JSON.stringify({ post_id: record.id })}`,
+                search: `?source=${encodeURIComponent(
+                    JSON.stringify({ post_id: record.id })
+                )}`,
             }}
         />
     );
