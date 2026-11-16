@@ -69,7 +69,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     },
 
     getOne: async (resource, params) => {
-        let url = `${apiUrl}/${resource}/${params.id}`;
+        let url = `${apiUrl}/${resource}/${encodeURIComponent(params.id)}`;
         if (params?.meta?.embed) {
             url += `?_embed=${params.meta.embed}`;
         }
@@ -121,7 +121,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     update: async (resource, params) => {
         const { json } = await httpClient(
-            `${apiUrl}/${resource}/${params.id}`,
+            `${apiUrl}/${resource}/${encodeURIComponent(params.id)}`,
             {
                 method: 'PUT',
                 body: JSON.stringify(params.data),
@@ -134,7 +134,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     updateMany: async (resource, params) => {
         const responses = await Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
                     method: 'PUT',
                     body: JSON.stringify(params.data),
                 })
@@ -153,7 +153,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     delete: async (resource, params) => {
         const { json } = await httpClient(
-            `${apiUrl}/${resource}/${params.id}`,
+            `${apiUrl}/${resource}/${encodeURIComponent(params.id)}`,
             { method: 'DELETE' }
         );
         return { data: json };
@@ -163,7 +163,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     deleteMany: async (resource, params) => {
         const responses = await Promise.all(
             params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
                     method: 'DELETE',
                 })
             )
