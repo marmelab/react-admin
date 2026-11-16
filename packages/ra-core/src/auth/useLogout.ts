@@ -97,7 +97,9 @@ const useLogout = (): Logout => {
                         newLocationOptions = {
                             state: {
                                 nextPathname: locationRef.current.pathname,
-                                nextSearch: locationRef.current.search,
+                                nextSearch: removeSourceParam(
+                                    locationRef.current.search
+                                ),
                             },
                         };
                     }
@@ -162,3 +164,14 @@ type Logout = (
 ) => Promise<any>;
 
 export default useLogout;
+
+// the source param may contain a whole record (e.g. with <CloneButton>), so it isn't kept after login
+const removeSourceParam = (search: string) => {
+    const params = new URLSearchParams(search);
+    if (!params.has('source')) {
+        return search;
+    }
+    params.delete('source');
+    const otherParams = params.toString();
+    return otherParams ? `?${otherParams}` : '';
+};
