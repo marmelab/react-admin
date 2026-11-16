@@ -7,6 +7,7 @@ import {
     WithLazyLoadedLanguages,
     TranslateComponent,
     TranslateWithReactElement,
+    UntranslatedText,
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
@@ -88,5 +89,11 @@ describe('i18next i18nProvider', () => {
                 'Hello, <strong>John</strong>! Welcome to <em>react-admin</em>.'
             );
         });
+    });
+
+    test('should render untranslated text as is', async () => {
+        render(<UntranslatedText />);
+
+        await screen.findByText('Post $t(ra.auth.sign_in)');
     });
 });

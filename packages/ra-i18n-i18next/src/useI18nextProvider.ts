@@ -107,11 +107,17 @@ export const getI18nProvider = async (
     return {
         translate: (key: string, options: any = {}) => {
             const { _: defaultValue, ...otherOptions } = options || {};
-            return translate(key, {
+            const translateOptions = {
                 defaultValue,
                 count: options.smart_count,
                 ...otherOptions,
-            }).toString();
+            };
+            // the key may be untranslated text (e.g. an API error message or a record value),
+            // which must be rendered as is
+            if (!i18nextInstance.exists(key, translateOptions)) {
+                translateOptions.nest = false;
+            }
+            return translate(key, translateOptions).toString();
         },
         changeLocale: async (newLocale: string) => {
             await i18nextInstance.loadLanguages(newLocale);
