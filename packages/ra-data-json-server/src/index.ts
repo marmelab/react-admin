@@ -102,6 +102,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     },
 
     getManyReference: async (resource, params) => {
+        // stringify() omits a key whose value is an empty array, which would drop the target filter
+        if (Array.isArray(params.id) && params.id.length === 0) {
+            return { data: [], total: 0 };
+        }
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {

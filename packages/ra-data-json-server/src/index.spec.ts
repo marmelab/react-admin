@@ -129,4 +129,52 @@ describe('Data JSON Server Client', () => {
             }
         );
     });
+    describe('getManyReference', () => {
+        const params = {
+            target: 'post_id',
+            filter: {},
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'id', order: 'ASC' as const },
+        };
+        const httpClient = jest.fn().mockResolvedValue({
+            headers: new Headers({ 'x-total-count': '1' }),
+            json: [{ id: 1 }],
+        });
+        beforeEach(() => {
+            httpClient.mockClear();
+        });
+
+        it('should filter by target', async () => {
+            const client = jsonServerClient(
+                'http://localhost:3000',
+                httpClient
+            );
+
+            const result = await client.getManyReference('comments', {
+                ...params,
+                id: 12,
+            });
+
+            expect(httpClient).toHaveBeenCalledWith(
+                'http://localhost:3000/comments?_end=10&_order=ASC&_sort=id&_start=0&post_id=12',
+                expect.any(Object)
+            );
+            expect(result).toEqual({ data: [{ id: 1 }], total: 1 });
+        });
+
+        it('should return no record when the id is an empty array', async () => {
+            const client = jsonServerClient(
+                'http://localhost:3000',
+                httpClient
+            );
+
+            const result = await client.getManyReference('comments', {
+                ...params,
+                id: [] as any,
+            });
+
+            expect(httpClient).not.toHaveBeenCalled();
+            expect(result).toEqual({ data: [], total: 0 });
+        });
+    });
 });
