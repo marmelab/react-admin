@@ -195,6 +195,8 @@ const buildGraphQLProvider = (options: Options): GraphqlDataProvider => {
                     fetchOptions: {
                         signal: params?.signal,
                     },
+                    // each call sends its own request; react-query already deduplicates identical calls
+                    queryDeduplication: false,
                 },
                 apolloQuery.context
             );
