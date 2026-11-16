@@ -10,6 +10,7 @@ import {
     useListParams,
     getQuery,
     getNumberOrDefault,
+    parseQueryFromLocation,
     ListParamsOptions,
 } from './useListParams';
 import { SORT_DESC, SORT_ASC } from './queryReducer';
@@ -167,6 +168,31 @@ describe('useListParams', () => {
                 },
             });
         });
+    });
+
+    describe('parseQueryFromLocation', () => {
+        const nestedFilter = (depth: number) =>
+            '{"a":'.repeat(depth) + '1' + '}'.repeat(depth);
+
+        it('should accept a filter with a reasonable nesting depth', () => {
+            expect(
+                parseQueryFromLocation({
+                    search: `?filter=${encodeURIComponent(nestedFilter(10))}`,
+                })
+            ).toEqual({ filter: JSON.parse(nestedFilter(10)) });
+        });
+
+        it.each([2500, 5000])(
+            'should ignore a filter or displayedFilters nested %d levels deep',
+            depth => {
+                const nested = encodeURIComponent(nestedFilter(depth));
+                expect(
+                    parseQueryFromLocation({
+                        search: `?filter=${nested}&displayedFilters=${nested}&page=2`,
+                    })
+                ).toEqual({ page: '2' });
+            }
+        );
     });
 
     describe('getNumberOrDefault', () => {

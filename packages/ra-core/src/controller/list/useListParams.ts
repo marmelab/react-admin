@@ -334,10 +334,24 @@ export const useListParams = ({
     ];
 };
 
+// deeper values would overflow the call stack of the recursive functions handling list params
+const MAX_PARAM_DEPTH = 100;
+
+const isDeeperThan = (value: any, maxDepth: number): boolean =>
+    value != null &&
+    typeof value === 'object' &&
+    (maxDepth === 0 ||
+        Object.values(value).some(child => isDeeperThan(child, maxDepth - 1)));
+
 const parseObject = (query, field) => {
     if (query[field] && typeof query[field] === 'string') {
         try {
-            query[field] = JSON.parse(query[field]);
+            const value = JSON.parse(query[field]);
+            if (isDeeperThan(value, MAX_PARAM_DEPTH)) {
+                delete query[field];
+            } else {
+                query[field] = value;
+            }
         } catch {
             delete query[field];
         }
