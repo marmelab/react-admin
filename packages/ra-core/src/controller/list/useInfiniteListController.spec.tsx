@@ -8,7 +8,7 @@ import {
     act,
 } from '@testing-library/react';
 
-import { testDataProvider } from '../../dataProvider';
+import { fetchUtils, testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
 import {
     useInfiniteListController,
@@ -415,6 +415,44 @@ describe('useInfiniteListController', () => {
             );
             expect(children).toHaveBeenCalledTimes(2);
         });
+
+        it.each([
+            [{ 'author.id': 1 }, { 'author.id': 0, author: { id: 2 } }],
+            [{ author: { id: 1 } }, { author: 0, 'author.id': 2 }],
+        ])(
+            'should put the permanent filter %j after the location filter %j',
+            async (permanentFilter, locationFilter) => {
+                const getList = jest
+                    .fn()
+                    .mockImplementation(() =>
+                        Promise.resolve({ data: [], total: 0 })
+                    );
+                const dataProvider = testDataProvider({ getList });
+
+                render(
+                    <TestMemoryRouter
+                        initialEntries={[
+                            `/posts?filter=${JSON.stringify(locationFilter)}`,
+                        ]}
+                    >
+                        <CoreAdminContext dataProvider={dataProvider}>
+                            <InfiniteListController
+                                {...defaultProps}
+                                filter={permanentFilter}
+                            />
+                        </CoreAdminContext>
+                    </TestMemoryRouter>
+                );
+
+                await waitFor(() => {
+                    expect(getList).toHaveBeenCalledTimes(1);
+                });
+                // data providers flattening compound keys keep the last one
+                expect(
+                    fetchUtils.flattenObject(getList.mock.calls[0][1].filter)
+                ).toEqual({ 'author.id': 1 });
+            }
+        );
     });
 
     describe('showFilter', () => {
