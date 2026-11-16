@@ -421,10 +421,14 @@ export const getQuery = ({
         query.page = 1;
     }
 
+    // ignore non-positive values, which would make the list controllers loop between pages
+    const parsedPage = getNumberOrDefault(query.page, 1);
+    const parsedPerPage = getNumberOrDefault(query.perPage, 10);
+
     return {
         ...query,
-        page: getNumberOrDefault(query.page, 1),
-        perPage: getNumberOrDefault(query.perPage, 10),
+        page: parsedPage > 0 ? parsedPage : 1,
+        perPage: parsedPerPage > 0 ? parsedPerPage : perPage ?? 10,
     } as ListParams;
 };
 

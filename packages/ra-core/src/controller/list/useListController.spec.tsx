@@ -550,6 +550,42 @@ describe('useListController', () => {
                 );
             });
         });
+        it('should ignore a non-positive perPage from the location', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 1 }], total: 1 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <TestMemoryRouter
+                    initialEntries={['/posts?perPage=-1&filter=%7B%7D']}
+                >
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({ page: 1, perPage: 10, total: 1 })
+                );
+            });
+            // leave enough time for a page change to be dispatched and fetched
+            await new Promise(resolve => setTimeout(resolve, 500));
+            expect(getList).toHaveBeenCalledTimes(1);
+            expect(getList).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({
+                    pagination: { page: 1, perPage: 10 },
+                })
+            );
+        });
     });
 
     describe('getListControllerProps', () => {

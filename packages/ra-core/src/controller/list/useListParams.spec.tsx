@@ -168,6 +168,56 @@ describe('useListParams', () => {
                 },
             });
         });
+        it('Ignores non-positive page and perPage values from the location', () => {
+            const query = getQuery({
+                queryFromLocation: {
+                    page: '-3',
+                    perPage: '-1',
+                    filter: {},
+                },
+                params: {},
+                filterDefaultValues: {},
+                perPage: 50,
+                sort: {
+                    field: 'company',
+                    order: SORT_DESC,
+                },
+            });
+
+            expect(query).toEqual({
+                page: 1,
+                perPage: 50,
+                sort: 'company',
+                order: SORT_DESC,
+                filter: {},
+            });
+        });
+        it('Ignores non-positive page and perPage values from the store', () => {
+            const query = getQuery({
+                queryFromLocation: {},
+                params: {
+                    page: 0,
+                    perPage: -1,
+                    sort: 'city',
+                    order: SORT_DESC,
+                    filter: {},
+                },
+                filterDefaultValues: {},
+                perPage: 50,
+                sort: {
+                    field: 'company',
+                    order: SORT_DESC,
+                },
+            });
+
+            expect(query).toEqual({
+                page: 1,
+                perPage: 50,
+                sort: 'city',
+                order: SORT_DESC,
+                filter: {},
+            });
+        });
     });
 
     describe('parseQueryFromLocation', () => {
