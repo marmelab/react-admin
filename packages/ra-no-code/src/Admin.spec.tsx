@@ -133,4 +133,48 @@ describe('Admin', () => {
         await screen.findByText('Orders', { selector: '#react-admin-title *' });
         await screen.findByText('1-10 of 12');
     }, 10000);
+
+    it('should not write on inherited properties when importing a CSV with path headers', async () => {
+        window.localStorage.clear();
+        window.location.hash = '';
+        const file = new File(
+            [
+                'id,address.city,address.valueOf.extra,city,city.isPrototypeOf.extra,country.propertyIsEnumerable.extra,tags.0,tags.push.extra,toLocaleString[extra]\n' +
+                    '1,Paris,yes,Paris,yes,yes,a,yes,true\n' +
+                    '2,Rome,yes,Rome,yes,yes,b,yes\n',
+            ],
+            'people.csv',
+            { type: 'text/csv' }
+        );
+        render(
+            <ApplicationContext.Provider
+                value={{
+                    application: { name: 'test', created_at: new Date() },
+                    onExit: () => {},
+                }}
+            >
+                <Admin />
+            </ApplicationContext.Provider>
+        );
+        try {
+            userEvents.upload(await screen.findByLabelText('CSV File'), file);
+            await screen.findByDisplayValue('people');
+            fireEvent.click(screen.getByText('Import'));
+            await screen.findByText('People', {
+                selector: '#react-admin-title *',
+            });
+            await screen.findByText('1-2 of 2');
+            expect(Object.keys({}.valueOf)).toEqual([]);
+            expect(Object.keys({}.isPrototypeOf)).toEqual([]);
+            expect(Object.keys({}.propertyIsEnumerable)).toEqual([]);
+            expect(Object.keys([].push)).toEqual([]);
+            expect(Object.keys({}.toLocaleString)).toEqual([]);
+        } finally {
+            delete ({}.valueOf as any).extra;
+            delete ({}.isPrototypeOf as any).extra;
+            delete ({}.propertyIsEnumerable as any).extra;
+            delete ([].push as any).extra;
+            delete ({}.toLocaleString as any).extra;
+        }
+    }, 10000);
 });

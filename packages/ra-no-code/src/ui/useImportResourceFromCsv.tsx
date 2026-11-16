@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
 import { getValuesFromRecords, RaRecord, useDataProvider } from 'react-admin';
+import isObject from 'lodash/isObject.js';
 import set from 'lodash/set.js';
+import toPath from 'lodash/toPath.js';
 
 import {
     useResourcesConfiguration,
@@ -87,10 +89,30 @@ const sanitizeRecords = (
     );
 };
 
+// lodash set() follows inherited properties (except __proto__, constructor and prototype),
+// so a path such as 'address.toString.foo' would write on a shared built-in
+const pathFollowsInheritedProperty = (record, path: string) => {
+    let current = record;
+    return toPath(path)
+        .slice(0, -1)
+        .some(key => {
+            // set() replaces missing and primitive values by a new object or array
+            const object = isObject(current) ? current : {};
+            current = object[key];
+            return (
+                key in object &&
+                !Object.prototype.hasOwnProperty.call(object, key)
+            );
+        });
+};
+
 const sanitizeRecord = (records, values, field) => {
     if (field.split('.').length > 1) {
         return records.map(record => {
             const { [field]: pathField, ...newRecord } = record;
+            if (pathFollowsInheritedProperty(newRecord, field)) {
+                return newRecord;
+            }
             return set(newRecord, field, record[field]);
         });
     }
@@ -102,9 +124,11 @@ const sanitizeRecord = (records, values, field) => {
             ['false', 'true'].includes(value.toString().toLowerCase())
         )
     ) {
-        return records.map(record =>
-            set(record, field, Boolean(record[field]))
-        );
+        // field is a key here, not a path
+        return records.map(record => ({
+            ...record,
+            [field]: Boolean(record[field]),
+        }));
     }
 
     return records;
