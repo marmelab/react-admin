@@ -41,7 +41,7 @@ const EmailFieldImpl = <
     return (
         <StyledLink
             className={className}
-            href={`mailto:${value}`}
+            href={getMailtoUrl(value)}
             onClick={stopPropagation}
             variant="body2"
             {...sanitizeFieldRestProps(rest)}
@@ -58,6 +58,16 @@ export interface EmailFieldProps<
     RecordType extends Record<string, any> = Record<string, any>,
 > extends FieldProps<RecordType>,
         Omit<LinkProps, 'textAlign'> {}
+
+// "?", "&", "=", "#" and "%" are legal in an email address but are delimiters
+// in a mailto: URL, so they are percent-encoded. "," and ";" are kept to
+// separate several addresses.
+// @see https://www.rfc-editor.org/rfc/rfc6068#section-2
+const getMailtoUrl = (value: any) =>
+    `mailto:${String(value).replace(
+        /[^\w@.+\-,;\u0080-\uffff]/g,
+        encodeURIComponent
+    )}`;
 
 // useful to prevent click bubbling in a Datagrid with rowClick
 const stopPropagation = e => e.stopPropagation();
