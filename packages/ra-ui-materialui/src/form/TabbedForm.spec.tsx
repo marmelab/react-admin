@@ -237,6 +237,39 @@ describe('<TabbedForm />', () => {
         ).toEqual(true);
     });
 
+    it('should let users open every tab when the tab part of the location contains encoded characters', () => {
+        // MUI warns that no tab header matches the location
+        jest.spyOn(console, 'error').mockImplementation(() => {});
+        render(
+            <TestMemoryRouter initialEntries={['/%20']}>
+                <AdminContext dataProvider={testDataProvider()}>
+                    <ResourceContextProvider value="posts">
+                        <TabbedForm>
+                            <TabbedForm.Tab label="tab1">
+                                <TextInput source="title" />
+                            </TabbedForm.Tab>
+                            <TabbedForm.Tab label="tab2">
+                                <TextInput source="description" />
+                            </TabbedForm.Tab>
+                        </TabbedForm>
+                    </ResourceContextProvider>
+                </AdminContext>
+            </TestMemoryRouter>
+        );
+
+        fireEvent.click(screen.getAllByRole('tab')[1]);
+        expect(
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.description')
+            )
+        ).toEqual(false);
+        expect(
+            isInaccessible(
+                screen.getByLabelText('resources.posts.fields.title')
+            )
+        ).toEqual(true);
+    });
+
     it('should not sync tabs with location if syncWithLocation is false', () => {
         let location;
         render(
