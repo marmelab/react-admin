@@ -1,5 +1,19 @@
 import { stringify } from '@marmelab/query-string';
-import { fetchUtils, DataProvider } from 'ra-core';
+import { fetchUtils, DataProvider, Identifier } from 'ra-core';
+
+/**
+ * Encode a record identifier as one segment of the request path.
+ * Throws if the identifier is not a valid path segment.
+ */
+const encodeId = (id: Identifier) => {
+    const encodedId = encodeURIComponent(id);
+    if (encodedId === '' || encodedId === '.' || encodedId === '..') {
+        throw new Error(
+            `The json-server data provider cannot build a URL for the identifier "${id}"`
+        );
+    }
+    return encodedId;
+};
 
 /**
  * Maps react-admin queries to a json-server powered REST API
@@ -69,7 +83,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     },
 
     getOne: async (resource, params) => {
-        let url = `${apiUrl}/${resource}/${params.id}`;
+        let url = `${apiUrl}/${resource}/${encodeId(params.id)}`;
         if (params?.meta?.embed) {
             url += `?_embed=${params.meta.embed}`;
         }
@@ -88,6 +102,10 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
     },
 
     getManyReference: async (resource, params) => {
+        // stringify() omits a key whose value is an empty array, which would drop the target filter
+        if (Array.isArray(params.id) && params.id.length === 0) {
+            return { data: [], total: 0 };
+        }
         const { page, perPage } = params.pagination;
         const { field, order } = params.sort;
         const query = {
@@ -121,7 +139,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     update: async (resource, params) => {
         const { json } = await httpClient(
-            `${apiUrl}/${resource}/${params.id}`,
+            `${apiUrl}/${resource}/${encodeId(params.id)}`,
             {
                 method: 'PUT',
                 body: JSON.stringify(params.data),
@@ -132,9 +150,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     // json-server doesn't handle filters on UPDATE route, so we fallback to calling UPDATE n times instead
     updateMany: async (resource, params) => {
+        const urls = params.ids.map(
+            id => `${apiUrl}/${resource}/${encodeId(id)}`
+        );
         const responses = await Promise.all(
-            params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+            urls.map(url =>
+                httpClient(url, {
                     method: 'PUT',
                     body: JSON.stringify(params.data),
                 })
@@ -153,7 +174,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     delete: async (resource, params) => {
         const { json } = await httpClient(
-            `${apiUrl}/${resource}/${params.id}`,
+            `${apiUrl}/${resource}/${encodeId(params.id)}`,
             { method: 'DELETE' }
         );
         return { data: json };
@@ -161,9 +182,12 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
 
     // json-server doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
     deleteMany: async (resource, params) => {
+        const urls = params.ids.map(
+            id => `${apiUrl}/${resource}/${encodeId(id)}`
+        );
         const responses = await Promise.all(
-            params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${id}`, {
+            urls.map(url =>
+                httpClient(url, {
                     method: 'DELETE',
                 })
             )
