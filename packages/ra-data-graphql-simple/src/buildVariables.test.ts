@@ -153,6 +153,31 @@ describe('buildVariables', () => {
             });
         });
 
+        it('should not let the data override the id param', () => {
+            const params = {
+                id: 'post1',
+                data: {
+                    id: 'post2',
+                    title: 'Foo',
+                },
+            };
+            const queryType = {
+                args: [],
+            };
+
+            expect(
+                buildVariables(introspectionResult)(
+                    { type: { name: 'Post' } },
+                    UPDATE,
+                    params,
+                    queryType
+                )
+            ).toEqual({
+                id: 'post1',
+                title: 'Foo',
+            });
+        });
+
         it('should return correct meta', () => {
             const params = {
                 id: 'post1',

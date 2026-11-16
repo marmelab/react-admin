@@ -334,6 +334,10 @@ const buildCreateUpdateVariables = (
 ) =>
     Object.keys(data).reduce(
         (acc, key) => {
+            if (key === 'id' && id !== undefined) {
+                return acc;
+            }
+
             if (Array.isArray(data[key])) {
                 const arg = queryType.args.find(a => a.name === `${key}Ids`);
 
