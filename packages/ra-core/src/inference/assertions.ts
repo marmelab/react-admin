@@ -16,6 +16,16 @@ export const isBooleanString = (value: any) =>
 export const valuesAreBooleanString = (values: any[]) =>
     values.every(isBooleanString);
 
+// Field names come from the records: reject those that would make the guessed
+// resource name leave its path in API URLs (URL parsers turn \ into /, drop tabs
+// and newlines, and decode %2e as a dot). A leading / would turn
+// `${apiUrl}/${resource}` into a protocol-relative URL when apiUrl is empty.
+const pathEscapingCharacters = /[?#%\\\t\n\r]/;
+export const isResourceName = (name: string) =>
+    !pathEscapingCharacters.test(name) &&
+    !name.startsWith('/') &&
+    !name.split('/').includes('..');
+
 export const isString = (value: any) => typeof value === 'string';
 export const valuesAreString = (values: any[]) => values.every(isString);
 

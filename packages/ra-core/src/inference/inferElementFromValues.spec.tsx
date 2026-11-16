@@ -55,6 +55,48 @@ describe('inferElementFromValues', () => {
             inferElementFromValues('fooId', ['foo', 'bar'], types).getElement()
         ).toEqual(<Good source="fooId" reference="foos" />);
     });
+    it.each([
+        ['admin/user_id', 'admin/users'],
+        ['author.userId', 'author.users'],
+    ])(
+        'should keep the path of the field name %s in the reference',
+        (fieldName, reference) => {
+            const types = {
+                reference: { component: Good },
+                string: { component: Bad },
+            };
+            expect(
+                inferElementFromValues(
+                    fieldName,
+                    ['foo', 'bar'],
+                    types
+                ).getElement()
+            ).toEqual(<Good source={fieldName} reference={reference} />);
+        }
+    );
+    it.each([
+        '../users_id',
+        'a/../../userId',
+        'users?role=admin&_ids',
+        'users#_id',
+        '%2e%2e/userIds',
+        '..\\users_id',
+        '.\t./users_id',
+        '/evil.example/tag_id',
+    ])('should not turn the field name %s into a resource name', fieldName => {
+        const types = {
+            reference: { component: Bad },
+            referenceArray: { component: Bad },
+            string: { component: Good },
+        };
+        expect(
+            inferElementFromValues(
+                fieldName,
+                ['foo', 'bar'],
+                types
+            ).getElement()
+        ).toEqual(<Good source={fieldName} />);
+    });
     it('should return a reference array field for field named *_ids', () => {
         const types = {
             referenceArray: { component: Good },
