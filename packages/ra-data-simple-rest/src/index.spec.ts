@@ -245,4 +245,36 @@ describe('Data Simple REST Client', () => {
             );
         });
     });
+    describe('invalid identifiers', () => {
+        it.each(['.', '..', ''])(
+            'should not send a request for the id "%s"',
+            async id => {
+                const httpClient = jest.fn().mockResolvedValue({ json: {} });
+                const client = simpleClient(
+                    'http://localhost:3000',
+                    httpClient
+                );
+                const data = { body: '' };
+
+                const error = 'cannot build a URL';
+
+                await expect(client.getOne('posts', { id })).rejects.toThrow(
+                    error
+                );
+                await expect(
+                    client.update('posts', { id, data, previousData: { id } })
+                ).rejects.toThrow(error);
+                await expect(
+                    client.updateMany('posts', { ids: [1, id], data })
+                ).rejects.toThrow(error);
+                await expect(client.delete('posts', { id })).rejects.toThrow(
+                    error
+                );
+                await expect(
+                    client.deleteMany('posts', { ids: [1, id] })
+                ).rejects.toThrow(error);
+                expect(httpClient).not.toHaveBeenCalled();
+            }
+        );
+    });
 });

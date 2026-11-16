@@ -1,5 +1,19 @@
 import { stringify } from '@marmelab/query-string';
-import { fetchUtils, DataProvider } from 'ra-core';
+import { fetchUtils, DataProvider, Identifier } from 'ra-core';
+
+/**
+ * Encode a record identifier as one segment of the request path.
+ * Throws if the identifier is not a valid path segment.
+ */
+const encodeId = (id: Identifier) => {
+    const encodedId = encodeURIComponent(id);
+    if (encodedId === '' || encodedId === '.' || encodedId === '..') {
+        throw new Error(
+            `The simple REST data provider cannot build a URL for the identifier "${id}"`
+        );
+    }
+    return encodedId;
+};
 
 /**
  * Maps react-admin queries to a simple REST API
@@ -97,7 +111,7 @@ export default (
                 '?' + stringify({ embed: JSON.stringify(params.meta.embed) });
         }
         const { json } = await httpClient(
-            `${apiUrl}/${resource}/${encodeURIComponent(params.id)}${query}`,
+            `${apiUrl}/${resource}/${encodeId(params.id)}${query}`,
             { signal: params?.signal }
         );
         return { data: json };
@@ -171,24 +185,28 @@ export default (
         });
     },
 
-    update: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
+    update: async (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${encodeId(params.id)}`, {
             method: 'PUT',
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
 
     // simple-rest doesn't handle provide an updateMany route, so we fallback to calling update n times instead
-    updateMany: (resource, params) =>
-        Promise.all(
-            params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
+    updateMany: async (resource, params) => {
+        const urls = params.ids.map(
+            id => `${apiUrl}/${resource}/${encodeId(id)}`
+        );
+        return Promise.all(
+            urls.map(url =>
+                httpClient(url, {
                     method: 'PUT',
                     body: JSON.stringify(params.data),
                 })
             )
         ).then(responses => ({
             data: responses.map(({ json }) => json.id),
-        })),
+        }));
+    },
 
     create: (resource, params) =>
         httpClient(`${apiUrl}/${resource}`, {
@@ -196,8 +214,8 @@ export default (
             body: JSON.stringify(params.data),
         }).then(({ json }) => ({ data: json })),
 
-    delete: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${encodeURIComponent(params.id)}`, {
+    delete: async (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${encodeId(params.id)}`, {
             method: 'DELETE',
             headers: new Headers({
                 'Content-Type': 'text/plain',
@@ -205,10 +223,13 @@ export default (
         }).then(({ json }) => ({ data: json })),
 
     // simple-rest doesn't handle filters on DELETE route, so we fallback to calling DELETE n times instead
-    deleteMany: (resource, params) =>
-        Promise.all(
-            params.ids.map(id =>
-                httpClient(`${apiUrl}/${resource}/${encodeURIComponent(id)}`, {
+    deleteMany: async (resource, params) => {
+        const urls = params.ids.map(
+            id => `${apiUrl}/${resource}/${encodeId(id)}`
+        );
+        return Promise.all(
+            urls.map(url =>
+                httpClient(url, {
                     method: 'DELETE',
                     headers: new Headers({
                         'Content-Type': 'text/plain',
@@ -217,5 +238,6 @@ export default (
             )
         ).then(responses => ({
             data: responses.map(({ json }) => json.id),
-        })),
+        }));
+    },
 });
