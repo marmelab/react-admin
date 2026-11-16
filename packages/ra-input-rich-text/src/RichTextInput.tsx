@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -100,7 +100,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
         fieldState,
         formState: { isSubmitted },
     } = useInput({ ...props, source, defaultValue });
-    const content = typeof field.value === 'string' ? field.value : '';
+    const { value, onChange } = field;
+    const content = typeof value === 'string' ? value : '';
 
     const editor = useEditor(
         {
@@ -118,7 +119,9 @@ export const RichTextInput = (props: RichTextInputProps) => {
         [disabled, editorOptions, readOnly, id]
     );
 
-    const { error, invalid, isTouched } = fieldState;
+    const { error, invalid, isDirty, isTouched } = fieldState;
+    // the last value the editor gave to the form
+    const editorValue = useRef<string>();
 
     useEffect(() => {
         // Tiptap v3's Editor.destroy() sets commandManager to null, and the
@@ -135,7 +138,16 @@ export const RichTextInput = (props: RichTextInputProps) => {
             parseOptions: { preserveWhitespace: true },
         });
         editor.commands.setTextSelection({ from, to });
-    }, [editor, content]);
+
+        // The editor drops the markup it doesn't support, so a value prefilled
+        // in the form (e.g. from the location) is replaced by what the editor shows.
+        // An unedited record value (not dirty) is left as is.
+        if (!isDirty || value === editorValue.current) return;
+        editorValue.current = editor.isEmpty ? '' : editor.getHTML();
+        if (editorValue.current !== value) {
+            onChange(editorValue.current);
+        }
+    }, [editor, content, value, onChange, isDirty]);
 
     useEffect(() => {
         if (!editor) {
@@ -144,12 +156,14 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
         const handleEditorUpdate = () => {
             if (editor.isEmpty) {
+                editorValue.current = '';
                 field.onChange('');
                 field.onBlur();
                 return;
             }
 
             const html = editor.getHTML();
+            editorValue.current = html;
             field.onChange(html);
             field.onBlur();
         };

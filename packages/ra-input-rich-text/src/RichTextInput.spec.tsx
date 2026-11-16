@@ -2,7 +2,11 @@ import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { Basic, EditorRecreation } from './RichTextInput.stories';
+import {
+    Basic,
+    EditorRecreation,
+    PrefilledFromLocation,
+} from './RichTextInput.stories';
 
 describe('<RichTextInput />', () => {
     it('should update its content when fields value changes and add a trailing break to it', async () => {
@@ -60,6 +64,31 @@ describe('<RichTextInput />', () => {
         expect(first.style.backgroundColor).toEqual('');
         expect(screen.getByText('second').style.backgroundColor).toEqual(
             'rgb(255, 204, 0)'
+        );
+    });
+
+    it('should replace a value prefilled from the location with the editor content', async () => {
+        render(<PrefilledFromLocation />);
+
+        await waitFor(() => {
+            expect(
+                screen.getByText(/body value in form/).textContent
+            ).toContain('"<p>War and Peace</p><p>Leo Tolstoy1869</p>"');
+        });
+    });
+
+    it('should leave an unedited record value as is', async () => {
+        const body =
+            '<p>War and Peace</p><table><tbody><tr><td>Leo Tolstoy</td><td>1869</td></tr></tbody></table>';
+        const { container } = render(<Basic record={{ id: 123, body }} />);
+
+        await waitFor(() => {
+            expect(container.querySelector('.ProseMirror')?.innerHTML).toEqual(
+                '<p>War and Peace</p><p>Leo Tolstoy1869</p>'
+            );
+        });
+        expect(screen.getByText(/body value in form/).textContent).toContain(
+            JSON.stringify(body)
         );
     });
 
