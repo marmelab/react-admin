@@ -5,7 +5,7 @@ title: "The RichTextInput Component"
 
 # `<RichTextInput>`
 
-`<RichTextInput>` lets users edit rich text in a WYSIWYG editor, and store the result as HTML. It is powered by [TipTap](https://www.tiptap.dev/).
+`<RichTextInput>` lets users edit rich text in a WYSIWYG editor, and store the result as HTML. It is powered by [TipTap](https://www.tiptap.dev/). The input value must be an HTML string: other values are ignored.
 
 <video controls autoplay playsinline muted loop>
   <source src="./img/rich-text-input.mp4" type="video/mp4"/>

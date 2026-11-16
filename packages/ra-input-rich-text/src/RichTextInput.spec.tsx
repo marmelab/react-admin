@@ -25,6 +25,44 @@ describe('<RichTextInput />', () => {
         });
     });
 
+    it('should only load string values in the editor', async () => {
+        const record = {
+            id: 123,
+            body: {
+                type: 'doc',
+                content: [
+                    {
+                        type: 'paragraph',
+                        content: [{ type: 'text', text: 'From JSON' }],
+                    },
+                ],
+            },
+        };
+        const { container } = render(<Basic record={record} />);
+
+        await waitFor(() => {
+            expect(container.querySelector('.ProseMirror')).not.toBeNull();
+        });
+        expect(container.querySelector('.ProseMirror')?.textContent).toEqual(
+            ''
+        );
+    });
+
+    it('should only render plain highlight colors', async () => {
+        const record = {
+            id: 123,
+            body: '<p><mark data-color="red; font-weight: bold">first</mark> <mark data-color="#ffcc00">second</mark></p>',
+        };
+        render(<Basic record={record} />);
+
+        const first = await screen.findByText('first');
+        expect(first.style.fontWeight).toEqual('');
+        expect(first.style.backgroundColor).toEqual('');
+        expect(screen.getByText('second').style.backgroundColor).toEqual(
+            'rgb(255, 204, 0)'
+        );
+    });
+
     it('should update its content when the editor is recreated while the field value changes', async () => {
         const { container } = render(<EditorRecreation />);
 

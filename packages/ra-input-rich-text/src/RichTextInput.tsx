@@ -7,7 +7,13 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { Image } from '@tiptap/extension-image';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
+import {
+    Attributes,
+    Editor,
+    EditorContent,
+    EditorOptions,
+    useEditor,
+} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import { useInput, useResourceContext } from 'ra-core';
@@ -94,12 +100,13 @@ export const RichTextInput = (props: RichTextInputProps) => {
         fieldState,
         formState: { isSubmitted },
     } = useInput({ ...props, source, defaultValue });
+    const content = typeof field.value === 'string' ? field.value : '';
 
     const editor = useEditor(
         {
             ...editorOptions,
             editable: !disabled && !readOnly,
-            content: field.value,
+            content,
             editorProps: {
                 ...editorOptions?.editorProps,
                 attributes: {
@@ -123,12 +130,12 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
         const { from, to } = editor.state.selection;
 
-        editor.commands.setContent(field.value, {
+        editor.commands.setContent(content, {
             emitUpdate: false,
             parseOptions: { preserveWhitespace: true },
         });
         editor.commands.setTextSelection({ from, to });
-    }, [editor, field.value]);
+    }, [editor, content]);
 
     useEffect(() => {
         if (!editor) {
@@ -189,6 +196,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
     );
 };
 
+const PLAIN_COLOR = /^[#\w\s(),.%/-]+$/;
+
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
@@ -204,7 +213,26 @@ export const DefaultEditorOptions: Partial<EditorOptions> = {
         }),
         TextStyle, // Required by Color
         Color,
-        Highlight.configure({ multicolor: true }),
+        Highlight.extend({
+            addAttributes() {
+                const attributes: Attributes = this.parent?.() ?? {};
+                const renderColor = attributes.color?.renderHTML;
+                if (!renderColor) {
+                    return attributes;
+                }
+                return {
+                    ...attributes,
+                    color: {
+                        ...attributes.color,
+                        // the color is written in the style attribute as is
+                        renderHTML: attrs =>
+                            PLAIN_COLOR.test(attrs.color ?? '')
+                                ? renderColor(attrs)
+                                : {},
+                    },
+                };
+            },
+        }).configure({ multicolor: true }),
     ],
 };
 
