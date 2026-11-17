@@ -56,7 +56,7 @@ export const PostList = () => (
 
 ## `empty`
 
-It's possible that a `<SimpleList>` will have no records to display. If the `<SimpleList>`'s parent component does not handle the empty state, the `<SimpleList>` will display a message indicating there are no results. This message is translatable with the key `ra.navigation.no_results`.
+It's possible that a `<SimpleList>` will have no records to display. If the `<SimpleList>`'s parent component does not handle the empty state, the `<SimpleList>` will display a message indicating there are no results. This message is translatable with the key `ra.navigation.no_results`. If fetching the data fails, the `<SimpleList>` renders nothing instead, as the error is already displayed in a notification.
 
 You can customize the empty state by passing  a component to the `empty` prop:
 

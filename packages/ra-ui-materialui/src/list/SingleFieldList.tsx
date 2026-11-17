@@ -70,7 +70,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
         direction = 'row',
         ...rest
     } = props;
-    const { data, total, isPending } = useListContextWithProps(props);
+    const { data, error, total, isPending } = useListContextWithProps(props);
     const resource = useResourceContext(props);
     const createPath = useCreatePath();
 
@@ -79,7 +79,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
     }
 
     if (data == null || data.length === 0 || total === 0) {
-        return empty ?? null;
+        return error ? null : empty ?? null;
     }
 
     return (

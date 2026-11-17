@@ -19,6 +19,7 @@ import { ThemeProvider, createTheme } from '@mui/material';
 import { Datagrid } from './Datagrid';
 import {
     AccessControl,
+    ErrorInFetch,
     Expand,
     FullApp,
     SelectAllButton,
@@ -352,6 +353,11 @@ describe('<Datagrid />', () => {
             </Wrapper>
         );
         expect(screen.queryByText('ra.navigation.no_results')).not.toBeNull();
+    });
+
+    it('should not display the no results message when the list fetch failed', () => {
+        render(<ErrorInFetch />);
+        expect(screen.queryByText('ra.navigation.no_results')).toBeNull();
     });
 
     describe('Access control', () => {

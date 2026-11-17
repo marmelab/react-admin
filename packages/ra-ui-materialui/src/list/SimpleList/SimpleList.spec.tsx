@@ -17,6 +17,7 @@ import { AdminContext } from '../../AdminContext';
 import { SimpleList } from './SimpleList';
 import { TextField } from '../../field/TextField';
 import {
+    ErrorInFetch,
     LinkType,
     NoPrimaryText,
     RowClick,
@@ -46,6 +47,11 @@ const Wrapper = ({ children }: any) => (
 );
 
 describe('<SimpleList />', () => {
+    it('should not display the no results message when the list fetch failed', () => {
+        render(<ErrorInFetch />);
+        expect(screen.queryByText('No results found.')).toBeNull();
+    });
+
     it('should render a list of items which provide a record context', async () => {
         render(
             <ListContext.Provider

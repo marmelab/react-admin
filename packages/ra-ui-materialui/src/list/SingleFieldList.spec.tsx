@@ -5,7 +5,7 @@ import { ListContext, ResourceContextProvider } from 'ra-core';
 import { AdminContext } from '../AdminContext';
 import { SingleFieldList } from './SingleFieldList';
 import { ChipField } from '../field';
-import { Divider, Empty } from './SingleFieldList.stories';
+import { Divider, Empty, ErrorInFetch } from './SingleFieldList.stories';
 
 describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
@@ -196,5 +196,10 @@ describe('<SingleFieldList />', () => {
         expect(
             item.closest('.MuiStack-root').querySelectorAll('[data-separator]')
         ).toHaveLength(2);
+    });
+
+    it('should not render the empty component when the list fetch failed', () => {
+        render(<ErrorInFetch />);
+        expect(screen.queryByText('No genres')).toBeNull();
     });
 });
