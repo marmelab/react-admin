@@ -1,4 +1,10 @@
-import { ApolloClient, ApolloError } from '@apollo/client';
+import {
+    ApolloClient,
+    ApolloError,
+    ApolloLink,
+    InMemoryCache,
+    Observable,
+} from '@apollo/client';
 import { GraphQLError } from 'graphql';
 import gql from 'graphql-tag';
 
@@ -47,6 +53,41 @@ describe('GraphQL data provider', () => {
                 }
                 fail('expected data provider to throw an error');
             });
+        });
+    });
+    describe('query', () => {
+        it('sends a request for each query, even when an identical query is in flight', async () => {
+            const sendResponses: (() => void)[] = [];
+            const link = new ApolloLink(
+                () =>
+                    new Observable(observer => {
+                        const request = sendResponses.length + 1;
+                        sendResponses.push(() => {
+                            observer.next({ data: { request } });
+                            observer.complete();
+                        });
+                    })
+            );
+            const dataProvider = buildDataProvider({
+                client: new ApolloClient({ link, cache: new InMemoryCache() }),
+                introspection: false,
+                buildQuery: () => () => ({
+                    query: gql`
+                        query {
+                            request
+                        }
+                    `,
+                    parseResponse: response => ({ data: response.data }),
+                }),
+            });
+            const firstResponse = dataProvider.getOne('posts', { id: 1 });
+            await new Promise(resolve => setTimeout(resolve));
+            const secondResponse = dataProvider.getOne('posts', { id: 1 });
+            await new Promise(resolve => setTimeout(resolve));
+            expect(sendResponses).toHaveLength(2);
+            sendResponses.forEach(sendResponse => sendResponse());
+            expect(await firstResponse).toEqual({ data: { request: 1 } });
+            expect(await secondResponse).toEqual({ data: { request: 2 } });
         });
     });
     describe('getIntrospection', () => {

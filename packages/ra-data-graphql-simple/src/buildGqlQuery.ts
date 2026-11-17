@@ -89,15 +89,19 @@ export default (introspectionResults: IntrospectionResult) =>
         resource: IntrospectedResource,
         raFetchMethod: string,
         queryType: IntrospectionField,
-        variables: any
+        variables: any,
+        options?: { sparseFields?: SparseField[] }
     ) => {
         const { sortField, sortOrder, ...metaVariables } = variables;
 
         const apolloArgs = buildApolloArgs(queryType, variables);
         const args = buildArgs(queryType, variables);
 
-        const sparseFields = metaVariables.meta?.sparseFields;
-        if (sparseFields) delete metaVariables.meta.sparseFields;
+        const sparseFields = options
+            ? options.sparseFields
+            : metaVariables.meta?.sparseFields;
+        if (sparseFields && metaVariables.meta?.sparseFields === sparseFields)
+            delete metaVariables.meta.sparseFields;
 
         const metaArgs = buildArgs(queryType, metaVariables);
 

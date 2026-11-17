@@ -322,6 +322,8 @@ const buildQuery = (
 
 Do not override this `fetchPolicy`.
 
+For the same reason, every query is sent with [`queryDeduplication`](https://www.apollographql.com/docs/react/api/core/ApolloClient#queryDeduplication) set to `false` in its context, so that each call sends its own request. React-admin already deduplicates identical calls.
+
 ## Contributing
 
 Run the tests with this command:

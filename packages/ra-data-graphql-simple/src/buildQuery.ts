@@ -45,7 +45,8 @@ export const buildQueryFactory =
                 resource,
                 raFetchType,
                 queryType,
-                variables
+                variables,
+                { sparseFields: params?.meta?.sparseFields }
             );
             const parseResponse = getResponseParserImpl(introspectionResults)(
                 raFetchType,
