@@ -174,7 +174,7 @@ The `<Search>` component accepts the following props:
 | `keyboard ShortcutIcon`| Optional | `boolean` or `ReactElement`                                                       | `<span>Ctrl+k</span>` or `<span>⌘+k</span>` | Disable or configure the keyboard shortcut icon.                                      |
 | `isInAppBar`           | Optional | `boolean`                                                                         | `true`                                      | Apply a dedicated style to the `<AppBar>` if true                                     |
 | `options`              | Optional | `Object`                                                                          | -                                           | An object containing options to apply to the search.                                  |
-| `queryOptions`         | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                                           | `react-query` options for the search query                                            |
+| `queryOptions`         | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) | -                                           | `react-query` options for the search query                                            |
 | `wait`                 | Optional | `number`                                                                          | 500                                         | The delay of debounce for the search to launch after typing in ms.                    |
 | `withKeyboard Shortcut`| Optional | `boolean` or [`Keys`](https://react-hotkeys-hook.vercel.app/)                     | `false`                                     | Enable or configure a shortcut to open and access the search input and their results. |
 
@@ -279,7 +279,7 @@ An object containing options to apply to the search:
 
 ## `queryOptions`
 
-`<Search>` accepts a [`queryOptions` prop](https://tanstack.com/query/v3/docs/framework/react/reference/useQuery) to pass options to the react-query client.
+`<Search>` accepts a [`queryOptions` prop](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) to pass options to the react-query client.
 This can be useful e.g. to override the default side effects such as `onSuccess` or `onError`.
 
 

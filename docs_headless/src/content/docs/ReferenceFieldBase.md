@@ -66,7 +66,7 @@ It uses `dataProvider.getMany()` instead of `dataProvider.getOne()` [for perform
 | `render`  | Optional |  `(context) => ReactNode`         | -        | Function that takes the referenceFieldContext and renders the referenced record. |
 | `empty`     | Optional | `ReactNode`         | -        | What to render when the field has no value or when the reference is missing |
 | `offline`   | Optional | `ReactNode`         | -        | What to render when there is no network connectivity when loading the record |
-| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
+| `queryOptions`     | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery)                       | `{}`                             | `react-query` client options                                                                   |
 | `record`    | Optional | `RaRecord` | - | The current record |
 | `sortBy`    | Optional | `string \| Function` | `source` | Name of the field to use for sorting when used in a Datagrid |
 

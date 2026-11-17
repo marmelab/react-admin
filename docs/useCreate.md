@@ -116,7 +116,7 @@ const [create, { isPending, error }] = useCreate(
 
 ```
 
-Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook. This includes:
+Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) hook. This includes:
 
 - `gcTime`,
 - `networkMode`,
@@ -126,7 +126,7 @@ Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s
 - `mutationKey`,
 - `throwOnError`.
 
-Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options.
+Check [the useMutation documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) for a detailed description of all options.
 
 **Tip**: In react-admin components that use `useCreate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useCreate`, e.g., to display a notification or redirect to another page.
 
@@ -195,7 +195,7 @@ const handleClick = () => {
 };
 ```
 
-For a detailed description of the mutation state, check React-query's [`useMutation` documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation).
+For a detailed description of the mutation state, check React-query's [`useMutation` documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
 
 Since `useCreate` is mainly used in event handlers, success and error side effects are usually handled in the `onSuccess` and `onError` callbacks. In most cases, the mutation state is just used to disable the save button while the mutation is pending.
 

@@ -45,7 +45,7 @@ import {
  * This hook uses react-query useMutation under the hood.
  * This means the state object contains mutate, isIdle, reset and other react-query methods.
  *
- * @see https://tanstack.com/query/v5/docs/react/reference/useMutation
+ * @see https://tanstack.com/query/v5/docs/framework/react/reference/useMutation
  *
  * @example // set params when calling the create callback
  *

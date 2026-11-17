@@ -79,7 +79,7 @@ const BookDetails = () => {
 | `filter`       | Optional | `Object`                                    | `{}`                             | Used to filter referenced records                                                   |
 | `link`         | Optional | `string | Function`                         | `edit`                           | Target of the link wrapping the rendered child. Set to `false` to disable the link. |
 | `offline`      | Optional | `ReactNode`                         | -                                | The text or element to display when there is no network connectivity                   |
-| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options |
+| `queryOptions` | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) | `{}` | `react-query` client options |
 | `sort`         | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'ASC' }`  | Used to order referenced records                                                    |
 
 `<ReferenceOneFieldBase>` also accepts the [common field props](./Fields.md#common-field-props).
@@ -220,7 +220,7 @@ You can customize this error message by passing a React element or a string to t
 
 ## `queryOptions`
 
-`<ReferenceOneFieldBase>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v5/docs/react/reference/useQuery) via the `queryOptions` prop.
+`<ReferenceOneFieldBase>` uses `react-query` to fetch the related record. You can set [any of `useQuery` options](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) via the `queryOptions` prop.
 
 For instance, if you want to disable the refetch on window focus for this query, you can use:
 
