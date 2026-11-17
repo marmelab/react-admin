@@ -54,7 +54,7 @@ export const useMutationWithMutationMode = <
          *   [['posts', 'getMany'], [{ id: 1, title: 'Hello' }]],
          * ]
          *
-         * @see https://tanstack.com/query/v5/docs/react/reference/QueryClient#queryclientgetqueriesdata
+         * @see https://tanstack.com/query/v5/docs/framework/react/reference/QueryClient#getqueriesdata
          */
         (queryKeys: Array<QueryKey>) =>
             queryKeys.reduce(

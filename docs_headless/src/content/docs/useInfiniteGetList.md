@@ -11,7 +11,7 @@ This hook calls `dataProvider.getList()` when the component mounts. It returns a
 </video>
 
 
-It is based on react-query's [`useInfiniteQuery`](https://tanstack.com/query/v5/docs/react/reference/useInfiniteQuery) hook.
+It is based on react-query's [`useInfiniteQuery`](https://tanstack.com/query/v5/docs/framework/react/reference/useInfiniteQuery) hook.
 
 ## Syntax
 
@@ -87,7 +87,7 @@ const LatestNews = () => {
 };
 ```
 
-Check [react-query's `useInfiniteQuery` documentation](https://tanstack.com/query/v5/docs/react/reference/useInfiniteQuery) for more details and examples.
+Check [react-query's `useInfiniteQuery` documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useInfiniteQuery) for more details and examples.
 
 ## `resource`
 
