@@ -390,7 +390,7 @@ const PostBulkUpdateButton = () => (
 
 ### `mutationOptions` and `meta`
 
-The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://react-query.tanstack.com/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
+The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
 
 {% raw %}
 ```tsx

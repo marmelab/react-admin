@@ -137,7 +137,7 @@ Ra-core provides the **best-in-class documentation**, demo apps, and support. Er
 
 That probably explains why more than 3,000 new apps are published every month using ra-core.
 
-So ra-core is not just the assembly of [React Query](https://react-query.tanstack.com/), [react-hook-form](https://react-hook-form.com/), and [react-router](https://reacttraining.com/react-router/). It's a **framework** made to speed up and facilitate the development of single-page apps in React, with a headless core that can work with any UI library.
+So ra-core is not just the assembly of [React Query](https://tanstack.com/query/v5/), [react-hook-form](https://react-hook-form.com/), and [react-router](https://reacttraining.com/react-router/). It's a **framework** made to speed up and facilitate the development of single-page apps in React, with a headless core that can work with any UI library.
 
 ## Basic CRUD
 

@@ -108,7 +108,7 @@ Check [the `ra-search` documentation](https://react-admin-ee.marmelab.com/docume
 | `disableHighlight`    | Optional | `boolean`                                                                         | `false`                | Disable the highlight of the search term of each result.                                                           |
 | `onNavigate`   | Optional | `function`                                                                        | `() => undefined`                                                               | A callback function to run when the user navigate to a result.                                     |
 | `options`      | Optional | `Object`                                                                          | -                                                                               | An object containing options to apply to the search.                                               |
-| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v3/docs/react/reference/useQuery) | -                                                                               | `react-query` options for the search query                                                         |
+| `queryOptions` | Optional | [`UseQuery Options`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) | -                                                                               | `react-query` options for the search query                                                         |
 | `wait`         | Optional | `number`                                                                          | 500                                                                             | The delay of debounce for the search to launch after typing in ms.                                 |
 
 ## `children`
@@ -192,7 +192,7 @@ An object containing options to apply to the search:
 
 ## `queryOptions`
 
-`<SearchWithResult>` accepts a [`queryOptions` prop](https://tanstack.com/query/v3/docs/framework/react/reference/useQuery) to pass options to the react-query client.
+`<SearchWithResult>` accepts a [`queryOptions` prop](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) to pass options to the react-query client.
 This can be useful e.g. to override the default side effects such as `onSuccess` or `onError`.
 
 
