@@ -11,6 +11,7 @@ import {
 } from '../../dataProvider';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
+import { applyPermanentFilter } from './applyPermanentFilter';
 import { useListParams } from './useListParams';
 import { useSelectAll } from './useSelectAll';
 import { defaultExporter } from '../../export';
@@ -137,7 +138,7 @@ export const useListController = <
                 perPage: query.perPage,
             },
             sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
+            filter: applyPermanentFilter(query.filter, filter),
             meta,
         },
         {
@@ -213,7 +214,7 @@ export const useListController = <
     const onSelectAll = useSelectAll({
         resource,
         sort: { field: query.sort, order: query.order },
-        filter: { ...query.filter, ...filter },
+        filter: applyPermanentFilter(query.filter, filter),
         disableSyncWithStore: storeKey === false,
         storeKey: storeKey === false ? undefined : storeKey,
     });
@@ -227,9 +228,7 @@ export const useListController = <
                 maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
             const { data } = await dataProvider.getList(resource, {
                 sort: currentSort,
-                filter: filter
-                    ? { ...query.filterValues, ...filter }
-                    : query.filterValues,
+                filter: applyPermanentFilter(query.filterValues, filter),
                 pagination: { page: 1, perPage: limit },
                 meta: metaOverride ?? meta,
             });

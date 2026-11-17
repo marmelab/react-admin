@@ -7,7 +7,7 @@ import {
     screen,
     act,
 } from '@testing-library/react';
-import { testDataProvider } from '../../dataProvider';
+import { fetchUtils, testDataProvider } from '../../dataProvider';
 import { memoryStore } from '../../store';
 import { CoreAdminContext } from '../../core';
 import { TestMemoryRouter } from '../../routing';
@@ -333,6 +333,44 @@ describe('useListController', () => {
             );
             expect(children).toHaveBeenCalledTimes(3);
         });
+
+        it.each([
+            [{ 'author.id': 1 }, { 'author.id': 0, author: { id: 2 } }],
+            [{ author: { id: 1 } }, { author: 0, 'author.id': 2 }],
+        ])(
+            'should put the permanent filter %j after the location filter %j',
+            async (permanentFilter, locationFilter) => {
+                const getList = jest
+                    .fn()
+                    .mockImplementation(() =>
+                        Promise.resolve({ data: [], total: 0 })
+                    );
+                const dataProvider = testDataProvider({ getList });
+
+                render(
+                    <TestMemoryRouter
+                        initialEntries={[
+                            `/posts?filter=${JSON.stringify(locationFilter)}`,
+                        ]}
+                    >
+                        <CoreAdminContext dataProvider={dataProvider}>
+                            <ListController
+                                {...defaultProps}
+                                filter={permanentFilter}
+                            />
+                        </CoreAdminContext>
+                    </TestMemoryRouter>
+                );
+
+                await waitFor(() => {
+                    expect(getList).toHaveBeenCalledTimes(1);
+                });
+                // data providers flattening compound keys keep the last one
+                expect(
+                    fetchUtils.flattenObject(getList.mock.calls[0][1].filter)
+                ).toEqual({ 'author.id': 1 });
+            }
+        );
     });
 
     describe('showFilter', () => {
@@ -511,6 +549,42 @@ describe('useListController', () => {
                     })
                 );
             });
+        });
+        it('should ignore a non-positive perPage from the location', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [{ id: 1 }], total: 1 })
+                );
+            const dataProvider = testDataProvider({ getList });
+            const children = jest.fn().mockReturnValue(<span>children</span>);
+            const props = {
+                ...defaultProps,
+                children,
+            };
+            render(
+                <TestMemoryRouter
+                    initialEntries={['/posts?perPage=-1&filter=%7B%7D']}
+                >
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController {...props} />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+            await waitFor(() => {
+                expect(children).toHaveBeenCalledWith(
+                    expect.objectContaining({ page: 1, perPage: 10, total: 1 })
+                );
+            });
+            // leave enough time for a page change to be dispatched and fetched
+            await new Promise(resolve => setTimeout(resolve, 500));
+            expect(getList).toHaveBeenCalledTimes(1);
+            expect(getList).toHaveBeenCalledWith(
+                'posts',
+                expect.objectContaining({
+                    pagination: { page: 1, perPage: 10 },
+                })
+            );
         });
     });
 

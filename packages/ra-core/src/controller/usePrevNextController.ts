@@ -8,6 +8,7 @@ import { useDataProvider } from '../dataProvider';
 import { useStore } from '../store';
 import { FilterPayload, RaRecord, SortPayload } from '../types';
 import { ListParams, SORT_ASC } from './list';
+import { applyPermanentFilter } from './list/applyPermanentFilter';
 import { useRecordContext } from './record';
 import { useCreatePath } from '../routing';
 
@@ -154,7 +155,7 @@ export const usePrevNextController = <RecordType extends RaRecord = any>(
         field: listParams.sort,
         order: listParams.order,
     };
-    const filter = { ...listParams.filter, ...permanentFilter };
+    const filter = applyPermanentFilter(listParams.filter, permanentFilter);
     const { meta, ...otherQueryOptions } = queryOptions;
     const params = { pagination, sort, filter, meta };
 

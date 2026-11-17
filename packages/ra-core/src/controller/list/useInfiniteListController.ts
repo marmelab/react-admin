@@ -11,6 +11,7 @@ import { useDataProvider, useInfiniteGetList } from '../../dataProvider';
 import { defaultExporter } from '../../export';
 import { useResourceContext, useGetResourceLabel } from '../../core';
 import { useRecordSelection } from './useRecordSelection';
+import { applyPermanentFilter } from './applyPermanentFilter';
 import { useListParams } from './useListParams';
 import { useSelectAll } from './useSelectAll';
 import type { UseInfiniteGetListOptions } from '../../dataProvider';
@@ -131,7 +132,7 @@ export const useInfiniteListController = <
                 perPage: query.perPage,
             },
             sort: { field: query.sort, order: query.order },
-            filter: { ...query.filter, ...filter },
+            filter: applyPermanentFilter(query.filter, filter),
             meta,
         },
         {
@@ -157,7 +158,7 @@ export const useInfiniteListController = <
     const onSelectAll = useSelectAll({
         resource,
         sort: { field: query.sort, order: query.order },
-        filter: { ...query.filter, ...filter },
+        filter: applyPermanentFilter(query.filter, filter),
     });
 
     // change page if there is no data
@@ -224,9 +225,7 @@ export const useInfiniteListController = <
                 maxResults ?? (total != null ? total : DEFAULT_MAX_RESULTS);
             const { data } = await dataProvider.getList(resource, {
                 sort: currentSort,
-                filter: filter
-                    ? { ...query.filterValues, ...filter }
-                    : query.filterValues,
+                filter: applyPermanentFilter(query.filterValues, filter),
                 pagination: { page: 1, perPage: limit },
                 meta: metaOverride ?? meta,
             });
