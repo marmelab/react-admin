@@ -114,7 +114,7 @@ You can tweak how `<ReferenceArrayInputBase>` fetches the possible values using 
 | `offline`          | Optional | `ReactNode`                                 | -                                  | What to render when there is no network connectivity when loading the record |
 | `page`             | Optional | `number`                                    | 1                                  | The current page number                                                                                             |
 | `perPage`          | Optional | `number`                                    | 25                                 | Number of suggestions to show                                                                                       |
-| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options     |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) | `{}` | `react-query` client options     |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field: 'id', order: 'DESC' }`   | How to order the list of suggestions                                                                                |
 
 ## `children`

@@ -103,7 +103,7 @@ const { data } = useGetOne<Product>('products', { id: 123 });
 
 ## Query Options
 
-Query hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery) hook. The third argument of query hooks is an `options` object letting you override `useQuery` options:
+Query hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useQuery`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) hook. The third argument of query hooks is an `options` object letting you override `useQuery` options:
 
 ```jsx
 const { isPending, error, data } = useGetOne(
@@ -119,7 +119,7 @@ const { isPending, error, data } = useGetOne(
 // });
 ```
 
-Check [the useQuery documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for a detailed description of all options:
+Check [the useQuery documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) for a detailed description of all options:
 
 - `gcTime`,
 - `enabled`,
@@ -210,7 +210,7 @@ const ApproveButton = () => {
 
 ## Mutation Options
 
-Mutation hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook. The third argument of mutation hooks is an `options` object letting you override `useMutation` options:
+Mutation hooks are powered by [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) hook. The third argument of mutation hooks is an `options` object letting you override `useMutation` options:
 
 ```jsx
 const [update, { data, isPending, error }] = useUpdate(
@@ -230,7 +230,7 @@ const [update, { data, isPending, error }] = useUpdate(
 // });
 ```
 
-Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options:
+Check [the useMutation documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) for a detailed description of all options:
 
 - `gcTime`,
 - `meta`,
@@ -425,8 +425,8 @@ See [Why You Need React Query](https://tkdodo.eu/blog/why-you-want-react-query) 
 
 React Query offers 2 main hooks to interact with the `dataProvider`:
 
-* [`useQuery`](https://tanstack.com/query/v5/docs/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
-* [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
+* [`useQuery`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery): fetches the dataProvider on mount. This is for *read* queries.
+* [`useMutation`](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation): fetches the dataProvider when you call a callback. This is for *write* queries, and *read* queries that execute on user interaction.
 
 Both these hooks accept a query *key* (identifying the query in the cache), and a query *function* (executing the query and returning a Promise). Internally, react-admin uses an array of arguments as the query key.
 
@@ -488,7 +488,7 @@ const { data, isPending, isFetching, isLoading } = useGetOne('users', { id: reco
 
 Which one should you use? The short answer is: use `isPending`. Read on to understand why.
 
-The source of these three variables is [React Query](https://tanstack.com/query/v5/docs/react/reference/useQuery). Here is how they define these variables:
+The source of these three variables is [React Query](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery). Here is how they define these variables:
 
 - `isPending`: The query has no data
 - `isFetching`: The query function was called and didn't respond yet. This includes background refetching.

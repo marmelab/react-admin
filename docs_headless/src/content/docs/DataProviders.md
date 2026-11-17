@@ -57,7 +57,7 @@ For your own API, look for a compatible data provider in the list of [supported 
 
 ## React-Query Options
 
-Ra-core uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
+Ra-core uses [React Query](https://tanstack.com/query/v5/) to fetch, cache, and update data. Internally, the `<CoreAdmin>` component creates a react-query [`QueryClient`](https://tanstack.com/query/v5/docs/framework/react/reference/QueryClient) on mount, using [react-query's "aggressive but sane" defaults](https://tanstack.com/query/v5/docs/react/guides/important-defaults):
 
 * Queries consider cached data as stale
 * Stale queries are refetched automatically in the background when:
@@ -95,7 +95,7 @@ const App = () => (
 );
 ```
 
-To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/react/reference/useMutation) sections.
+To know which options you can pass to the `QueryClient` constructor, check the [react-query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/QueryClient) and the [query options](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) and [mutation options](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) sections.
 
 The settings that ra-core developers often overwrite are:
 

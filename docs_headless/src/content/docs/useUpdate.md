@@ -2,7 +2,7 @@
 title: "useUpdate"
 ---
 
-`useUpdate` provides a callback to call `dataProvider.update()` on demand and update a single record based on its `id` and a `data` argument. It uses React-query's [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook under the hood.
+`useUpdate` provides a callback to call `dataProvider.update()` on demand and update a single record based on its `id` and a `data` argument. It uses React-query's [`useMutation`](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) hook under the hood.
 
 ## Syntax
 
@@ -128,7 +128,7 @@ const [update, { isPending }] = useUpdate(
 );
 ```
 
-Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/react/reference/useMutation) hook. This includes:
+Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s [`useMutation`](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) hook. This includes:
 
 - `gcTime`,
 - `networkMode`,
@@ -138,7 +138,7 @@ Additional options are passed to [React Query](https://tanstack.com/query/v5/)'s
 - `mutationKey`,
 - `throwOnError`.
 
-Check [the useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) for a detailed description of all options.
+Check [the useMutation documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) for a detailed description of all options.
 
 **Tip**: In ra-core components that use `useUpdate`, you can override the mutation options using the `mutationOptions` prop. This is very common when using mutation hooks like `useUpdate`, e.g., to display a notification or redirect to another page.
 
@@ -217,7 +217,7 @@ const handleClick = () => {
 };
 ```
 
-For a detailed description of the mutation state, check React-query's [`useMutation` documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation).
+For a detailed description of the mutation state, check React-query's [`useMutation` documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation).
 
 Since `useUpdate` is mainly used in event handlers, success and error side effects are usually handled in the `onSuccess` and `onError` callbacks. In most cases, the mutation state is just used to disable the update button while the mutation is pending.
 

@@ -316,7 +316,7 @@ const PostList = () => (
 | `children`        | Required (*) | Element  | -               | A form component to render inside the Dialog                                                                                       |
 | `DialogProps`     | -            | Object   | -               | Additional props to pass to the [MUI Dialog](https://mui.com/material-ui/react-dialog/)                                            |
 | `mutationMode`    | -            | `string` | `'pessimistic'` | The mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                |
-| `mutationOptions` | -            | Object   | -               | Mutation options passed to [React Query](https://tanstack.com/query/v5/docs/react/reference/useMutation) when calling `updateMany` |
+| `mutationOptions` | -            | Object   | -               | Mutation options passed to [React Query](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) when calling `updateMany` |
 
 
 ### `children`
@@ -1753,7 +1753,7 @@ const PostEditActions = () => (
 ```
 {% endraw %}
 
-You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/react/reference/useMutation) in the react-query website for a list of the possible options.
+You can also use `mutationOptions` to override success or error side effects, by setting the `mutationOptions` prop. Refer to the [useMutation documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) in the react-query website for a list of the possible options.
 
 Let's see an example with the success side effect. By default, when the action succeeds, react-admin shows a notification, and refreshes the view. You can override this behavior and pass custom success side effects by providing a `mutationOptions` prop with an `onSuccess` key:
 

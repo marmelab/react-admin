@@ -103,7 +103,7 @@ You can tweak how `<ReferenceInputBase>` fetches the possible values using the `
 | `page`             | Optional | `number`                                    | 1                                | The current page number                                                                        |
 | `perPage`          | Optional | `number`                                    | 25                               | Number of suggestions to show                                                                  |
 | `offline`          | Optional | `ReactNode`                                 | -                                | What to render when there is no network connectivity when loading the record                  |
-| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/react/reference/useQuery) | `{}` | `react-query` client options                                                                   |
+| `queryOptions`     | Optional | [`UseQueryOptions`](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) | `{}` | `react-query` client options                                                                   |
 | `sort`             | Optional | `{ field: String, order: 'ASC' or 'DESC' }` | `{ field:'id', order:'DESC' }` | How to order the list of suggestions                                                           |
 
 ## `children`

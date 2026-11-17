@@ -166,7 +166,7 @@ const { data } = useInfiniteGetList(
 );
 ```
 
-Additional options are passed to react-query's `useQuery` hook. Check the [react-query documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for more information.
+Additional options are passed to react-query's `useQuery` hook. Check the [react-query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) for more information.
 
 ## Infinite Scrolling
 

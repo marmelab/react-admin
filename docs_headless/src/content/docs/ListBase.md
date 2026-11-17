@@ -481,7 +481,7 @@ export const PostList = () => (
 
 ## `queryOptions`
 
-`<ListBase>` accepts a `queryOptions` prop to pass [query options](./DataProviders.md#react-query-options) to the react-query client. Check react-query's [`useQuery` documentation](https://tanstack.com/query/v5/docs/react/reference/useQuery) for the list of available options.
+`<ListBase>` accepts a `queryOptions` prop to pass [query options](./DataProviders.md#react-query-options) to the react-query client. Check react-query's [`useQuery` documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useQuery) for the list of available options.
 
 This can be useful e.g. to pass [a custom `meta`](./Actions.md#meta-parameter) to the `dataProvider.getList()` call.
 
