@@ -251,9 +251,10 @@ export const useList = <RecordType extends RaRecord = any, ErrorType = Error>(
     );
 
     const onSelectAll = useCallback(() => {
-        const allIds = data?.map(({ id }) => id) || [];
+        // only select the records matching the filters, regardless of pagination
+        const allIds = data ? applyFilterAndSort(data).map(({ id }) => id) : [];
         selectionModifiers.select(allIds);
-    }, [data, selectionModifiers]);
+    }, [applyFilterAndSort, data, selectionModifiers]);
 
     const getData = useCallback(
         async ({ maxResults }: GetDataOptions = {}) => {

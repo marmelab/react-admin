@@ -295,6 +295,20 @@ describe('<useList />', () => {
                 );
             });
         });
+        it('should not select the records excluded by the filter', async () => {
+            render(<SelectAll filter={{ id: [1, 2, 3] }} perPage={2} />);
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: []'
+                );
+            });
+            fireEvent.click(screen.getByRole('button', { name: 'Select All' }));
+            await waitFor(() => {
+                expect(screen.getByTestId('selected_ids').textContent).toBe(
+                    'Selected ids: [1,2,3]'
+                );
+            });
+        });
     });
 
     it('should store its selection under the resource in context', async () => {
