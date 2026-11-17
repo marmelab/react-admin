@@ -3,6 +3,8 @@ import expect from 'expect';
 import { fireEvent, render, waitFor, screen } from '@testing-library/react';
 
 import { Basic, SelectAll, Sort } from './useList.stories';
+import { ResourceContextProvider } from '../../core';
+import { StoreContextProvider, memoryStore } from '../../store';
 
 describe('<useList />', () => {
     it('should apply sorting correctly', async () => {
@@ -293,5 +295,19 @@ describe('<useList />', () => {
                 );
             });
         });
+    });
+
+    it('should store its selection under the resource in context', async () => {
+        const store = memoryStore();
+        render(
+            <StoreContextProvider value={store}>
+                <ResourceContextProvider value="posts">
+                    <Basic />
+                </ResourceContextProvider>
+            </StoreContextProvider>
+        );
+        fireEvent.click(screen.getAllByRole('checkbox')[0]);
+        await screen.findByText('Selected ids: [1]');
+        expect(store.getItem('posts.selectedIds')).toEqual([1]);
     });
 });

@@ -162,6 +162,8 @@ export const PostShow = () => (
 );
 ```
 
+**Tip**: The selection is specific to this field and to the current record: it isn't shared with the other lists of the reference resource.
+
 Alternatively, you can use [the `render` prop](#render) to render the related records in a custom way:
 
 ```tsx

@@ -3,6 +3,8 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     CoreAdminContext,
     ResourceContextProvider,
+    StoreContextProvider,
+    memoryStore,
     testDataProvider,
     useListContext,
 } from 'ra-core';
@@ -157,6 +159,54 @@ describe('<ArrayField />', () => {
                 )
             ).toBeTruthy();
         });
+    });
+
+    it('should not store its selection under the resource in context', async () => {
+        const store = memoryStore();
+        render(
+            <StoreContextProvider value={store}>
+                <ResourceContextProvider value="posts">
+                    <ListContext />
+                </ResourceContextProvider>
+            </StoreContextProvider>
+        );
+        const chip = screen.getByText('Resurrection');
+        chip.click();
+        await waitFor(() => {
+            expect(
+                (chip.parentNode as HTMLElement).className.includes(
+                    'MuiChip-colorPrimary'
+                )
+            ).toBeTruthy();
+        });
+        expect(store.getItem('posts.selectedIds')).toBeUndefined();
+    });
+
+    it('should unselect the items removed from the array', async () => {
+        const Selection = () => {
+            const { onToggleItem, selectedIds } = useListContext();
+            return (
+                <button onClick={() => onToggleItem(1)}>
+                    Selection: {JSON.stringify(selectedIds)}
+                </button>
+            );
+        };
+        const { rerender } = render(
+            <ArrayField
+                source="arr"
+                record={{ id: 123, arr: [{ id: 1 }, { id: 2 }] }}
+            >
+                <Selection />
+            </ArrayField>
+        );
+        fireEvent.click(screen.getByText('Selection: []'));
+        await screen.findByText('Selection: [1]');
+        rerender(
+            <ArrayField source="arr" record={{ id: 123, arr: [{ id: 2 }] }}>
+                <Selection />
+            </ArrayField>
+        );
+        await screen.findByText('Selection: []');
     });
 
     it('should expose getData with the full list', async () => {

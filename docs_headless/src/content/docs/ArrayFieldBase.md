@@ -98,6 +98,8 @@ const BacklinksField = () => (
 );
 ```
 
+**Tip**: The selection is specific to this field and to the current record: it isn't shared with the lists of the current resource. Call `onUnselectItems` from the list context to clear it.
+
 ## `exporter`
 
 If one of the children exposes an export action through the list context, you can customize the export behavior with the `exporter` prop, or disable it entirely by passing `false`.

@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { type ReactNode } from 'react';
+import { type ReactNode, useMemo } from 'react';
 
+import { useResourceContext } from '../../core';
 import type { Exporter, FilterPayload, SortPayload } from '../../types';
 import { genericMemo } from '../../util/genericMemo';
 import { useFieldValue } from '../../util/useFieldValue';
 import { ListContextProvider, useList } from '../list';
+import { useRecordContext } from '../record';
 import type { BaseFieldProps } from './types';
 
 /**
@@ -33,20 +35,36 @@ const ArrayFieldBaseImpl = <
 >(
     props: ArrayFieldBaseProps<RecordType>
 ) => {
-    const { children, resource, perPage, sort, filter, exporter } = props;
+    const { children, source, perPage, sort, filter, exporter } = props;
     const data = useFieldValue(props) || emptyArray;
+    const resource = useResourceContext(props);
+    const record = useRecordContext(props);
     const listContext = useList({
         data,
-        resource,
+        // the items aren't records of the resource, so they get their own selection
+        resource: resource && `${resource}.${source}.${record?.id}`,
         perPage,
         sort,
         filter,
         exporter,
     });
 
+    // ignore the selected items that are no longer in the array
+    const selectedIds = useMemo(
+        () =>
+            listContext.selectedIds.filter(id =>
+                data.some(item => item.id === id)
+            ),
+        [data, listContext.selectedIds]
+    );
+
     return (
         <ListContextProvider
-            value={{ ...listContext, disableDefaultBulkActions: true }}
+            value={{
+                ...listContext,
+                selectedIds,
+                disableDefaultBulkActions: true,
+            }}
         >
             {children}
         </ListContextProvider>

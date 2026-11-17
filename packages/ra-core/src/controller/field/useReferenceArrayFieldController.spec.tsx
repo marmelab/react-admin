@@ -4,7 +4,8 @@ import { render, waitFor, screen, fireEvent } from '@testing-library/react';
 
 import { useReferenceArrayFieldController } from './useReferenceArrayFieldController';
 import { testDataProvider } from '../../dataProvider';
-import { CoreAdminContext } from '../../core';
+import { CoreAdminContext, ResourceContextProvider } from '../../core';
+import { memoryStore } from '../../store';
 import { Basic } from './useReferenceArrayFieldController.stories';
 
 const ReferenceArrayFieldController = props => {
@@ -204,5 +205,76 @@ describe('<useReferenceArrayFieldController />', () => {
                 );
             });
         });
+    });
+
+    it('should keep its selection specific to the record', async () => {
+        const store = memoryStore();
+        render(
+            <CoreAdminContext dataProvider={dataProvider} store={store}>
+                <ResourceContextProvider value="foo">
+                    {[1, 2].map(id => (
+                        <ReferenceArrayFieldController
+                            key={id}
+                            reference="bar"
+                            record={{ id, barIds: [1, 2] }}
+                            source="barIds"
+                        >
+                            {({ onToggleItem, selectedIds }) => (
+                                <button onClick={() => onToggleItem(1)}>
+                                    Record {id} selection:{' '}
+                                    {JSON.stringify(selectedIds)}
+                                </button>
+                            )}
+                        </ReferenceArrayFieldController>
+                    ))}
+                </ResourceContextProvider>
+            </CoreAdminContext>
+        );
+        fireEvent.click(screen.getByText('Record 1 selection: []'));
+        await screen.findByText('Record 1 selection: [1]');
+        screen.getByText('Record 2 selection: []');
+        expect(store.getItem('foo.selectedIds')).toBeUndefined();
+        expect(store.getItem('bar.selectedIds')).toBeUndefined();
+    });
+
+    it('should unselect the records that no longer exist', async () => {
+        const bars = [
+            { id: 1, title: 'bar1' },
+            { id: 2, title: 'bar2' },
+        ];
+        render(
+            <CoreAdminContext
+                dataProvider={testDataProvider({
+                    getMany: jest.fn(() =>
+                        Promise.resolve({ data: [...bars] })
+                    ),
+                })}
+            >
+                <ResourceContextProvider value="foo">
+                    <ReferenceArrayFieldController
+                        reference="bar"
+                        record={{ id: 1, barIds: [1, 2] }}
+                        source="barIds"
+                    >
+                        {({ onToggleItem, refetch, selectedIds }) => (
+                            <>
+                                <button onClick={() => onToggleItem(1)}>
+                                    Select 1
+                                </button>
+                                <button onClick={() => refetch()}>
+                                    Refetch
+                                </button>
+                                <p>Selection: {JSON.stringify(selectedIds)}</p>
+                            </>
+                        )}
+                    </ReferenceArrayFieldController>
+                </ResourceContextProvider>
+            </CoreAdminContext>
+        );
+        fireEvent.click(screen.getByText('Select 1'));
+        await screen.findByText('Selection: [1]');
+        bars.shift();
+        fireEvent.click(screen.getByText('Refetch'));
+        await screen.findByText('Selection: []');
     });
 });
