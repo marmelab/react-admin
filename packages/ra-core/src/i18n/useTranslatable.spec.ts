@@ -38,5 +38,34 @@ describe('useTranslatable', () => {
             const recordForLocale = getRecordForLocale(record, 'fr');
             expect(recordForLocale).toEqual(undefined);
         });
+
+        it('should not modify the original record', () => {
+            const json =
+                '{"tags":{"en":["a","b"],"fr":["c"]},"title":{"en":{"en":{"a":1},"b":{"c":2}}}}';
+            const record = JSON.parse(json);
+            getRecordForLocale(record, 'en');
+            expect(record).toEqual(JSON.parse(json));
+            expect(Object.keys(record.tags.en)).toEqual(['0', '1']);
+        });
+
+        it('should not modify nested objects of the original record', () => {
+            const json = '{"title":{"en":{"en":{"x":{"en":1}},"x":{"en":2}}}}';
+            const record = JSON.parse(json);
+            getRecordForLocale(record, 'en');
+            expect(record).toEqual(JSON.parse(json));
+        });
+
+        it('should not overwrite a translated value with nested translations', () => {
+            const record = {
+                title: {
+                    en: 'Hello',
+                    fr: 'Bonjour',
+                    notes: { en: 'Greeting' },
+                },
+            };
+            expect(getRecordForLocale(record, 'en')).toEqual({
+                title: 'Hello',
+            });
+        });
     });
 });

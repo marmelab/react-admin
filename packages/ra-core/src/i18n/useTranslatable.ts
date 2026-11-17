@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import set from 'lodash/set.js';
 import get from 'lodash/get.js';
+import has from 'lodash/has.js';
 import cloneDeep from 'lodash/cloneDeep.js';
 import { TranslatableContextValue } from './TranslatableContext';
 import { useLocaleState } from './useLocaleState';
@@ -60,11 +61,12 @@ export const getRecordForLocale = (record: {} | undefined, locale: string) => {
     const paths = getRecordPaths(record);
 
     // For each path, if a path ends with the locale, set the value of the path without the locale
-    // to the value of the path with the locale
+    // to the value of the path with the locale.
+    // Paths under a value already replaced by its translation no longer exist and are skipped.
     const recordForLocale = paths.reduce((acc, path) => {
-        if (path.includes(locale)) {
+        if (path[path.length - 1] === locale && has(acc, path)) {
             const pathWithoutLocale = path.slice(0, -1);
-            const value = get(record, path);
+            const value = get(acc, path);
             return set(acc, pathWithoutLocale, value);
         }
         return acc;
