@@ -136,10 +136,14 @@ export const DataTable = React.forwardRef(function DataTable<
         name: PREFIX,
     });
     const resourceFromContext = useResourceContext(props);
+    const { onToggleItem, disableDefaultBulkActions } =
+        useListContextWithProps(props);
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
         action: 'delete',
-        ...(props.bulkActionButtons === false ? { enabled: false } : {}),
+        ...(props.bulkActionButtons === false || disableDefaultBulkActions
+            ? { enabled: false }
+            : {}),
     });
 
     const {
@@ -151,14 +155,14 @@ export const DataTable = React.forwardRef(function DataTable<
         empty,
         expand,
         bulkActionsToolbar,
-        bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
+        bulkActionButtons = canDelete && !disableDefaultBulkActions
+            ? defaultBulkActionButtons
+            : false,
         rowSx,
         size = 'small',
         sx,
         ...rest
     } = props;
-
-    const { onToggleItem } = useListContextWithProps(props);
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
@@ -203,7 +207,8 @@ export const DataTable = React.forwardRef(function DataTable<
                                 <BulkActionsToolbar>
                                     {isValidElement(bulkActionButtons)
                                         ? bulkActionButtons
-                                        : defaultBulkActionButtons}
+                                        : !disableDefaultBulkActions &&
+                                          defaultBulkActionButtons}
                                 </BulkActionsToolbar>
                             )))}
                     <div className={DataTableClasses.tableWrapper}>

@@ -16,12 +16,12 @@ import { Card, ThemeProvider, createTheme } from '@mui/material';
 
 import { AdminContext } from '../AdminContext';
 import { ArrayField } from './ArrayField';
-import { DataTable, SingleFieldList } from '../list';
+import { DataTable, Datagrid, SingleFieldList } from '../list';
 import { ChipField } from './ChipField';
 import { SimpleShowLayout } from '../detail';
 import { TextField } from './TextField';
 import { Pagination } from '../list/pagination';
-import { ExportButton } from '../button';
+import { Button, ExportButton } from '../button';
 
 export default { title: 'ra-ui-materialui/fields/ArrayField' };
 
@@ -257,3 +257,100 @@ export const InShowLayout = () => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+const backlinks = [
+    {
+        id: 1,
+        date: '2012-08-10T00:00:00.000Z',
+        url: 'http://example.com/foo/bar.html',
+    },
+    {
+        id: 2,
+        date: '2012-08-14T00:00:00.000Z',
+        url: 'https://blog.johndoe.com/2012/08/12/foobar.html',
+    },
+];
+
+const CopyUrlsButton = () => {
+    const { data, selectedIds } = useListContext();
+    return (
+        <Button
+            label="Copy URLs"
+            onClick={() =>
+                navigator.clipboard.writeText(
+                    data
+                        .filter(item => selectedIds.includes(item.id))
+                        .map(item => item.url)
+                        .join('\n')
+                )
+            }
+        />
+    );
+};
+
+export const BulkActionButtons = ({
+    iterator = 'DataTable',
+    bulkActionButtons = 'default',
+}: {
+    iterator?: 'DataTable' | 'Datagrid';
+    bulkActionButtons?: 'default' | 'custom' | 'true';
+}) => {
+    const iteratorBulkActionButtons = {
+        default: undefined,
+        custom: <CopyUrlsButton />,
+        true: true,
+    }[bulkActionButtons];
+    return (
+        <TestMemoryRouter>
+            <AdminContext>
+                <ResourceContextProvider value="posts">
+                    <RecordContextProvider
+                        value={{
+                            id: 123,
+                            title: 'Lorem Ipsum Sit Amet',
+                            backlinks,
+                        }}
+                    >
+                        <Card sx={{ m: 1, p: 1 }}>
+                            <SimpleShowLayout>
+                                <TextField source="title" />
+                                <ArrayField source="backlinks">
+                                    {iterator === 'DataTable' ? (
+                                        <DataTable
+                                            bulkActionButtons={
+                                                iteratorBulkActionButtons
+                                            }
+                                        >
+                                            <DataTable.Col source="date" />
+                                            <DataTable.Col source="url" />
+                                        </DataTable>
+                                    ) : (
+                                        <Datagrid
+                                            bulkActionButtons={
+                                                iteratorBulkActionButtons
+                                            }
+                                        >
+                                            <TextField source="date" />
+                                            <TextField source="url" />
+                                        </Datagrid>
+                                    )}
+                                </ArrayField>
+                            </SimpleShowLayout>
+                        </Card>
+                    </RecordContextProvider>
+                </ResourceContextProvider>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+BulkActionButtons.argTypes = {
+    iterator: {
+        options: ['DataTable', 'Datagrid'],
+        control: { type: 'select' },
+    },
+    bulkActionButtons: {
+        options: ['default', 'custom', 'true'],
+        control: { type: 'select' },
+    },
+};

@@ -45,7 +45,9 @@ const ArrayFieldBaseImpl = <
     });
 
     return (
-        <ListContextProvider value={listContext}>
+        <ListContextProvider
+            value={{ ...listContext, disableDefaultBulkActions: true }}
+        >
             {children}
         </ListContextProvider>
     );

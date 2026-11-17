@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     CoreAdminContext,
     ResourceContextProvider,
@@ -12,7 +12,7 @@ import { ArrayField } from './ArrayField';
 import { NumberField } from './NumberField';
 import { TextField } from './TextField';
 import { Datagrid, SimpleList } from '../list';
-import { ListContext } from './ArrayField.stories';
+import { BulkActionButtons, ListContext } from './ArrayField.stories';
 
 describe('<ArrayField />', () => {
     const sort = { field: 'id', order: 'ASC' };
@@ -192,4 +192,42 @@ describe('<ArrayField />', () => {
 
         await screen.findByText('count:2');
     });
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should not show the default bulk actions in a %s',
+        async iterator => {
+            render(<BulkActionButtons iterator={iterator} />);
+            await screen.findByText('http://example.com/foo/bar.html');
+            expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
+        }
+    );
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should show the bulk actions passed to a %s',
+        async iterator => {
+            render(
+                <BulkActionButtons
+                    iterator={iterator}
+                    bulkActionButtons="custom"
+                />
+            );
+            await screen.findByText('http://example.com/foo/bar.html');
+            expect(screen.getAllByRole('checkbox')).toHaveLength(3);
+        }
+    );
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should not fall back to the default bulk actions when a %s gets bulkActionButtons={true}',
+        async iterator => {
+            render(
+                <BulkActionButtons
+                    iterator={iterator}
+                    bulkActionButtons="true"
+                />
+            );
+            fireEvent.click((await screen.findAllByRole('checkbox'))[1]);
+            await screen.findByText('ra.action.bulk_actions');
+            expect(screen.queryByLabelText('ra.action.delete')).toBeNull();
+        }
+    );
 });

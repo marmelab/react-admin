@@ -263,6 +263,8 @@ const PostShow = () => (
 
 **Tip**: The selection logic uses the `id` field for each collection element, so the above example assumes that the `tags` field contains objects like `{ id: 123, name: 'bar' }`.
 
+**Tip**: As the collection elements aren't records of the current resource, `<DataTable>` and `<Datagrid>` don't show their default bulk delete button inside an `<ArrayField>`. Pass your own [`bulkActionButtons`](./DataTable.md#bulkactionbuttons) to act on the selected elements.
+
 Check [the `useListContext` documentation](./useListContext.md) for more information on the list context values.
 
 ## Rendering An Array Of Strings
