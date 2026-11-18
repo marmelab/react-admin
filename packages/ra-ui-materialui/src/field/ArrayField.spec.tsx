@@ -1,8 +1,10 @@
 import * as React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import {
     CoreAdminContext,
     ResourceContextProvider,
+    StoreContextProvider,
+    memoryStore,
     testDataProvider,
     useListContext,
 } from 'ra-core';
@@ -12,7 +14,7 @@ import { ArrayField } from './ArrayField';
 import { NumberField } from './NumberField';
 import { TextField } from './TextField';
 import { Datagrid, SimpleList } from '../list';
-import { ListContext } from './ArrayField.stories';
+import { BulkActionButtons, ListContext } from './ArrayField.stories';
 
 describe('<ArrayField />', () => {
     const sort = { field: 'id', order: 'ASC' };
@@ -159,6 +161,54 @@ describe('<ArrayField />', () => {
         });
     });
 
+    it('should not store its selection under the resource in context', async () => {
+        const store = memoryStore();
+        render(
+            <StoreContextProvider value={store}>
+                <ResourceContextProvider value="posts">
+                    <ListContext />
+                </ResourceContextProvider>
+            </StoreContextProvider>
+        );
+        const chip = screen.getByText('Resurrection');
+        chip.click();
+        await waitFor(() => {
+            expect(
+                (chip.parentNode as HTMLElement).className.includes(
+                    'MuiChip-colorPrimary'
+                )
+            ).toBeTruthy();
+        });
+        expect(store.getItem('posts.selectedIds')).toBeUndefined();
+    });
+
+    it('should unselect the items removed from the array', async () => {
+        const Selection = () => {
+            const { onToggleItem, selectedIds } = useListContext();
+            return (
+                <button onClick={() => onToggleItem(1)}>
+                    Selection: {JSON.stringify(selectedIds)}
+                </button>
+            );
+        };
+        const { rerender } = render(
+            <ArrayField
+                source="arr"
+                record={{ id: 123, arr: [{ id: 1 }, { id: 2 }] }}
+            >
+                <Selection />
+            </ArrayField>
+        );
+        fireEvent.click(screen.getByText('Selection: []'));
+        await screen.findByText('Selection: [1]');
+        rerender(
+            <ArrayField source="arr" record={{ id: 123, arr: [{ id: 2 }] }}>
+                <Selection />
+            </ArrayField>
+        );
+        await screen.findByText('Selection: []');
+    });
+
     it('should expose getData with the full list', async () => {
         const ListContextWatcher = () => {
             const { getData } = useListContext();
@@ -192,4 +242,42 @@ describe('<ArrayField />', () => {
 
         await screen.findByText('count:2');
     });
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should not show the default bulk actions in a %s',
+        async iterator => {
+            render(<BulkActionButtons iterator={iterator} />);
+            await screen.findByText('http://example.com/foo/bar.html');
+            expect(screen.queryAllByRole('checkbox')).toHaveLength(0);
+        }
+    );
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should show the bulk actions passed to a %s',
+        async iterator => {
+            render(
+                <BulkActionButtons
+                    iterator={iterator}
+                    bulkActionButtons="custom"
+                />
+            );
+            await screen.findByText('http://example.com/foo/bar.html');
+            expect(screen.getAllByRole('checkbox')).toHaveLength(3);
+        }
+    );
+
+    it.each(['DataTable', 'Datagrid'] as const)(
+        'should not fall back to the default bulk actions when a %s gets bulkActionButtons={true}',
+        async iterator => {
+            render(
+                <BulkActionButtons
+                    iterator={iterator}
+                    bulkActionButtons="true"
+                />
+            );
+            fireEvent.click((await screen.findAllByRole('checkbox'))[1]);
+            await screen.findByText('ra.action.bulk_actions');
+            expect(screen.queryByLabelText('ra.action.delete')).toBeNull();
+        }
+    );
 });

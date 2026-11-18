@@ -591,6 +591,14 @@ export interface ListControllerBaseResult<RecordType extends RaRecord = any> {
     isLoading?: boolean;
     isPaused?: boolean;
     isPlaceholderData?: boolean;
+    /**
+     * True when the records don't belong to the resource in context (e.g. the
+     * items of an <ArrayField>), so that iterators don't default to bulk actions
+     * on that resource
+     *
+     * @internal
+     */
+    disableDefaultBulkActions?: boolean;
 }
 
 export interface ListControllerLoadingResult<RecordType extends RaRecord = any>

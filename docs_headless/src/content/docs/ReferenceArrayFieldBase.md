@@ -127,6 +127,8 @@ const TagList = (props: { children: React.ReactNode }) => {
 };
 ```
 
+**Tip**: The selection of the `ListContext` is specific to this field and to the current record: it isn't shared with the other lists of the reference resource.
+
 ## `empty`
 
 By default, `<ReferenceArrayFieldBase>` renders its children when the related records list is empty. You can customize what is rendered by providing your own component via the `empty` prop:

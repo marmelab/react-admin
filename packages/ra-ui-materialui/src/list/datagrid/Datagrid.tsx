@@ -128,6 +128,17 @@ export const Datagrid: React.ForwardRefExoticComponent<
         props: inProps,
     });
     const resourceFromContext = useResourceContext(props);
+    const {
+        sort,
+        data,
+        disableDefaultBulkActions,
+        isPending,
+        onSelect,
+        onToggleItem,
+        selectedIds,
+        setSort,
+        total,
+    } = useListContextWithProps(props);
     const { canAccess: canDelete } = useCanAccess({
         resource: resourceFromContext,
         action: 'delete',
@@ -141,7 +152,9 @@ export const Datagrid: React.ForwardRefExoticComponent<
         empty,
         expand,
         bulkActionsToolbar,
-        bulkActionButtons = canDelete ? defaultBulkActionButtons : false,
+        bulkActionButtons = canDelete && !disableDefaultBulkActions
+            ? defaultBulkActionButtons
+            : false,
         hover,
         isRowSelectable,
         isRowExpandable,
@@ -154,17 +167,6 @@ export const Datagrid: React.ForwardRefExoticComponent<
         expandSingle = false,
         ...rest
     } = props;
-
-    const {
-        sort,
-        data,
-        isPending,
-        onSelect,
-        onToggleItem,
-        selectedIds,
-        setSort,
-        total,
-    } = useListContextWithProps(props);
 
     const hasBulkActions = !!bulkActionButtons !== false;
 
@@ -258,7 +260,8 @@ export const Datagrid: React.ForwardRefExoticComponent<
                             <BulkActionsToolbar>
                                 {isValidElement(bulkActionButtons)
                                     ? bulkActionButtons
-                                    : defaultBulkActionButtons}
+                                    : !disableDefaultBulkActions &&
+                                      defaultBulkActionButtons}
                             </BulkActionsToolbar>
                         ) : null)}
                     <div className={DatagridClasses.tableWrapper}>

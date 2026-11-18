@@ -1,4 +1,6 @@
+import { useMemo } from 'react';
 import get from 'lodash/get.js';
+import { useResourceContext } from '../../core';
 import { Exporter, RaRecord, SortPayload } from '../../types';
 import { useGetManyAggregate } from '../../dataProvider';
 import { ListControllerResult, useList } from '../list';
@@ -74,6 +76,7 @@ export const useReferenceArrayFieldController = <
         source,
         queryOptions = {},
     } = props;
+    const resource = useResourceContext(props);
     const notify = useNotify();
     const value = get(record, source);
     const { meta, ...otherQueryOptions } = queryOptions;
@@ -126,13 +129,25 @@ export const useReferenceArrayFieldController = <
         isPlaceholderData,
         page,
         perPage,
+        // the selection is specific to this field and record
+        resource: resource && `${resource}.${source}.${record?.id}`,
         sort,
     });
+
+    // ignore the selected records that are no longer referenced, e.g. deleted ones
+    const selectedIds = useMemo(
+        () =>
+            listProps.selectedIds.filter(id =>
+                data?.some(record => record.id === id)
+            ),
+        [data, listProps.selectedIds]
+    );
 
     return {
         ...listProps,
         defaultTitle: undefined,
         refetch,
         resource: reference,
+        selectedIds,
     };
 };

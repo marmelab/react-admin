@@ -71,6 +71,7 @@ const MyComponent = () => {
 * [`isPending`](#ispending)
 * [`page`](#page)
 * [`perPage`](#perpage)
+* [`resource`](#resource)
 * [`sort`](#sort)
 
 ## `data`
@@ -248,6 +249,22 @@ const { total, data } = useList({
 //    { id: 2, name: 'Sylvester' }, 
 // ]
 ```
+
+## `resource`
+
+`useList` keeps the record selection in [the Store](./Store.md), under the name of the current resource (read from the `ResourceContext`). The selection is shared with the other lists of that resource (e.g. a `<ListBase>`), and it persists when the component unmounts. Without a current resource, the selection is kept in a local state.
+
+`useList` therefore expects `data` to contain records of the current resource. If it contains records of another resource, pass the name of that resource:
+
+```jsx
+const { data, isPending } = useGetList(
+    'tags',
+    { pagination: { page: 1, perPage: 10 } },
+);
+const listContext = useList({ data, isPending, resource: 'tags' });
+```
+
+**Tip**: If the data doesn't contain records of a resource (e.g. an array of embedded objects), pass a name of your own as `resource` to give the list its own selection.
 
 ## `sort`
 
