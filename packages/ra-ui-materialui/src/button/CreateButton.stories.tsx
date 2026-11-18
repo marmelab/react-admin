@@ -3,6 +3,10 @@ import polyglotI18nProvider from 'ra-i18n-polyglot';
 import englishMessages from 'ra-language-english';
 import frenchMessages from 'ra-language-french';
 import { Tooltip } from '@mui/material';
+import {
+    DeviceTestWrapper,
+    type DeviceTestWrapperProps,
+} from '../layout/DeviceTestWrapper';
 
 import {
     AuthProvider,
@@ -74,6 +78,27 @@ export const Basic = ({ buttonProps }: { buttonProps?: any }) => (
         </AdminContext>
     </TestMemoryRouter>
 );
+
+export const Breakpoint = ({
+    width,
+}: {
+    width?: DeviceTestWrapperProps['width'];
+}) => {
+    const MaybeDeviceTestWrapper = width ? DeviceTestWrapper : React.Fragment;
+    const wrapperProps = (width ? { width } : {}) as DeviceTestWrapperProps;
+
+    return (
+        <TestMemoryRouter>
+            <AdminContext i18nProvider={defaultI18nProvider()}>
+                <MaybeDeviceTestWrapper {...wrapperProps}>
+                    <ResourceContextProvider value="books">
+                        <CreateButton breakpoint={false} />
+                    </ResourceContextProvider>
+                </MaybeDeviceTestWrapper>
+            </AdminContext>
+        </TestMemoryRouter>
+    );
+};
 
 export const WithTooltip = () => (
     <TestMemoryRouter>
