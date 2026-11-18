@@ -114,12 +114,12 @@ export const FieldsSelector = ({
                 }}
             >
                 <Button size="small" onClick={handleHideAll}>
-                    {translate('ra.inspector.hideAll', {
+                    {translate('ra.configurable.inspector.hideAll', {
                         _: 'Hide All',
                     })}
                 </Button>
                 <Button size="small" onClick={handleShowAll}>
-                    {translate('ra.inspector.showAll', {
+                    {translate('ra.configurable.inspector.showAll', {
                         _: 'Show All',
                     })}
                 </Button>
