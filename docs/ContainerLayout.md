@@ -97,7 +97,7 @@ import {
     ListGuesser,
     EditGuesser,
 } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 import {
     ContainerLayout,
     HorizontalMenu,

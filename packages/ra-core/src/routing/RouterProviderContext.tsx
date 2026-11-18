@@ -1,6 +1,6 @@
 import { createContext, useContext } from 'react';
+import { reactRouterProvider } from 'ra-router-react-router';
 import type { RouterProvider } from './RouterProvider';
-import { reactRouterProvider } from './adapters/reactRouterProvider';
 
 /**
  * Context for providing the router provider throughout the application.

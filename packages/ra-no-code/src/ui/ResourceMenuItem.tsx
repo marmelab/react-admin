@@ -1,10 +1,9 @@
-import React, { forwardRef } from 'react';
+import React from 'react';
 import { styled } from '@mui/material/styles';
-import { MenuItemLink, MenuItemLinkProps } from 'react-admin';
+import { LinkBase, MenuItemLink, MenuItemLinkProps } from 'react-admin';
 import { IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
 import DefaultIcon from '@mui/icons-material/ViewList';
-import { NavLink, NavLinkProps } from 'react-router-dom';
 import { ResourceConfiguration } from '../ResourceConfiguration';
 
 const PREFIX = 'ResourceMenuItem';
@@ -48,7 +47,7 @@ export const ResourceMenuItem = (
                 {...rest}
             />
             <IconButton
-                component={NavLinkRef}
+                component={LinkBase}
                 to={{
                     pathname: `/configure/${resource.name}`,
                 }}
@@ -60,7 +59,3 @@ export const ResourceMenuItem = (
         </Root>
     );
 };
-
-const NavLinkRef = forwardRef<HTMLAnchorElement, NavLinkProps>((props, ref) => (
-    <NavLink ref={ref} {...props} />
-));

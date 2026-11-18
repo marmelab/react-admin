@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Admin, AutocompleteInput, CardContentInner } from 'react-admin';
 import {
     CustomRoutes,
+    LinkBase as Link,
     Resource,
     useListContext,
     TestMemoryRouter,
@@ -27,7 +28,6 @@ import { ListActions } from './ListActions';
 import { DataTable } from './datatable';
 import { SearchInput, TextInput } from '../input';
 import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
 import { BulkDeleteButton, ListButton, SelectAllButton } from '../button';
 import { ShowGuesser } from '../detail';
 import TopToolbar from '../layout/TopToolbar';

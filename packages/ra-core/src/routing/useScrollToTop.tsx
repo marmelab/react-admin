@@ -7,7 +7,7 @@ import { useLocation } from './useLocation';
  * @see CoreAdminRouter where it's enabled by default
  *
  * @example // usage in buttons
- * import { Link } from 'react-router-dom';
+ * import { LinkBase as Link } from 'ra-core';
  * import { Button } from '@mui/material';
  *
  * const FooButton = () => (

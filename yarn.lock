@@ -5779,6 +5779,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@remix-run/route-pattern@npm:^0.22.1":
+  version: 0.22.1
+  resolution: "@remix-run/route-pattern@npm:0.22.1"
+  checksum: 752fd1b76ce5c1c40648ab6a731c18b88ecd16e43d4333a7eb724c852df775761ed70d0caef7da7d2360425886d62b5d6d47e707f15bc922669d1c66b757cd33
+  languageName: node
+  linkType: hard
+
 "@remix-run/router@npm:1.23.4":
   version: 1.23.4
   resolution: "@remix-run/router@npm:1.23.4"
@@ -10271,6 +10278,13 @@ __metadata:
   version: 2.0.0
   resolution: "cookie-es@npm:2.0.0"
   checksum: 3b2459030a5ad2bc715aeb27a32f274340670bfc5031ac29e1fba804212517411bb617880d3fe66ace2b64dfb28f3049e2d1ff40d4bec342154ccdd124deaeaa
+  languageName: node
+  linkType: hard
+
+"cookie-es@npm:^3.1.1":
+  version: 3.1.1
+  resolution: "cookie-es@npm:3.1.1"
+  checksum: 62cf0c325cc547b52477b351e9b5d068b3ffc74f7d143cdf7af854648dd1015fca3aed1498b355365e24b0746333f0b15688ed3a535abecc5ed0a046ae956a84
   languageName: node
   linkType: hard
 
@@ -20163,6 +20177,7 @@ __metadata:
     jsonexport: "npm:^3.2.0"
     lodash: "npm:^4.17.21"
     query-string: "npm:^7.1.3"
+    ra-router-react-router: "npm:^5.15.5"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-error-boundary: "npm:^4.0.13"
@@ -20179,8 +20194,10 @@ __metadata:
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: ^7.72.0
-    react-router: ^6.28.1 || ^7.1.1
-    react-router-dom: ^6.28.1 || ^7.1.1
+    react-router: ^6.28.1 || ^7.1.1 || ^8.0.0
+  peerDependenciesMeta:
+    react-router:
+      optional: true
   languageName: unknown
   linkType: soft
 
@@ -20391,7 +20408,6 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-dropzone: "npm:^14.2.3"
     react-router: "npm:^6.22.0"
-    react-router-dom: "npm:^6.22.0"
     typescript: "npm:^6.0.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -20399,6 +20415,7 @@ __metadata:
     "@mui/material": ^5.16.12 || ^6.0.0 || ^7.0.0 || ^9.0.0
     react: ^18.0.0 || ^19.0.0
     react-dom: ^18.0.0 || ^19.0.0
+    react-router: ^6.28.1 || ^7.1.1 || ^8.0.0
   languageName: unknown
   linkType: soft
 
@@ -20434,6 +20451,39 @@ __metadata:
     typescript-eslint: "npm:^8.68.0"
     vite: "npm:^8.1.5"
     vite-plugin-pwa: "npm:^1.3.0"
+  languageName: unknown
+  linkType: soft
+
+"ra-router-react-router-next@workspace:packages/ra-router-react-router-next":
+  version: 0.0.0-use.local
+  resolution: "ra-router-react-router-next@workspace:packages/ra-router-react-router-next"
+  dependencies:
+    react: "npm:^19.2.7"
+    react-dom: "npm:^19.2.7"
+    react-router: "npm:^8.0.0"
+    typescript: "npm:^6.0.3"
+    zshy: "npm:^0.5.0"
+  peerDependencies:
+    ra-core: ^5.0.0
+    react: ^19.2.7
+    react-dom: ^19.2.7
+    react-router: ^8.0.0
+  languageName: unknown
+  linkType: soft
+
+"ra-router-react-router@npm:^5.15.5, ra-router-react-router@workspace:packages/ra-router-react-router":
+  version: 0.0.0-use.local
+  resolution: "ra-router-react-router@workspace:packages/ra-router-react-router"
+  dependencies:
+    react-router: "npm:^6.28.1"
+    react-router-dom: "npm:^6.28.1"
+    typescript: "npm:^6.0.3"
+    zshy: "npm:^0.5.0"
+  peerDependencies:
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+    react-router: ^6.28.1 || ^7.1.1
+    react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -20495,7 +20545,6 @@ __metadata:
     react-hotkeys-hook: "npm:^5.1.0"
     react-is: "npm:^18.2.0 || ^19.0.0"
     react-router: "npm:^6.28.1"
-    react-router-dom: "npm:^6.28.1"
     react-transition-group: "npm:^4.4.5"
     typescript: "npm:^6.0.3"
     zshy: "npm:^0.5.0"
@@ -20511,8 +20560,6 @@ __metadata:
     react-dom: ^18.0.0 || ^19.0.0
     react-hook-form: "*"
     react-is: ^18.0.0 || ^19.0.0
-    react-router: ^6.28.1 || ^7.1.1
-    react-router-dom: ^6.28.1 || ^7.1.1
   languageName: unknown
   linkType: soft
 
@@ -20674,10 +20721,10 @@ __metadata:
     ra-data-fakerest: "npm:^5.15.5"
     ra-i18n-polyglot: "npm:^5.15.5"
     ra-language-english: "npm:^5.15.5"
+    ra-router-react-router: "npm:^5.15.5"
     ra-ui-materialui: "npm:^5.15.5"
     react-hook-form: "npm:^7.72.0"
     react-router: "npm:^6.28.1"
-    react-router-dom: "npm:^6.28.1"
     typescript: "npm:^6.0.3"
     zshy: "npm:^0.5.0"
   peerDependencies:
@@ -20744,6 +20791,17 @@ __metadata:
   peerDependencies:
     react: ^18.3.1
   checksum: a752496c1941f958f2e8ac56239172296fcddce1365ce45222d04a1947e0cc5547df3e8447f855a81d6d39f008d7c32eab43db3712077f09e3f67c4874973e85
+  languageName: node
+  linkType: hard
+
+"react-dom@npm:^19.2.7":
+  version: 19.3.1
+  resolution: "react-dom@npm:19.3.1"
+  dependencies:
+    scheduler: "npm:^0.28.0"
+  peerDependencies:
+    react: ^19.3.1
+  checksum: 382700916313b2ebc46acee80642f300bb8601eac6a9e7fefade5b8b30e66b05bf3aaa56a3c964589fcd578d27b486e847470c2697d879264e766661ff49fac7
   languageName: node
   linkType: hard
 
@@ -20887,7 +20945,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router-dom@npm:^6.22.0, react-router-dom@npm:^6.28.1":
+"react-router-dom@npm:^6.28.1":
   version: 6.30.6
   resolution: "react-router-dom@npm:6.30.6"
   dependencies:
@@ -20939,6 +20997,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-router@npm:^8.0.0":
+  version: 8.5.1
+  resolution: "react-router@npm:8.5.1"
+  dependencies:
+    "@remix-run/route-pattern": "npm:^0.22.1"
+    cookie-es: "npm:^3.1.1"
+  peerDependencies:
+    "@types/react": ">=19.2.0"
+    "@types/react-dom": ">=19.2.0"
+    react: ">=19.2.7"
+    react-dom: ">=19.2.7"
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 07503a26d5c5669d84d044e59e3a7f97dad36946dbb9ade14f243f187096bc12cea5bf7401f8681c602d9100238cef752bd3d0e6a742e1c0794e2abd20662368
+  languageName: node
+  linkType: hard
+
 "react-simple-animate@npm:^3.3.12, react-simple-animate@npm:^3.5.3":
   version: 3.5.3
   resolution: "react-simple-animate@npm:3.5.3"
@@ -20986,6 +21066,13 @@ __metadata:
   dependencies:
     loose-envify: "npm:^1.1.0"
   checksum: 283e8c5efcf37802c9d1ce767f302dd569dd97a70d9bb8c7be79a789b9902451e0d16334b05d73299b20f048cbc3c7d288bbbde10b701fa194e2089c237dbea3
+  languageName: node
+  linkType: hard
+
+"react@npm:^19.2.7":
+  version: 19.3.1
+  resolution: "react@npm:19.3.1"
+  checksum: f0ed036d1223562c09c8347858ca712733ea6e27a30db709ee9c3f3f176d3e9e767afce735d59956addf3d030102e256bba82dea635fc1bdb0e01107e98fef10
   languageName: node
   linkType: hard
 
@@ -22104,6 +22191,13 @@ __metadata:
   version: 0.27.0
   resolution: "scheduler@npm:0.27.0"
   checksum: 4f03048cb05a3c8fddc45813052251eca00688f413a3cee236d984a161da28db28ba71bd11e7a3dd02f7af84ab28d39fb311431d3b3772fed557945beb00c452
+  languageName: node
+  linkType: hard
+
+"scheduler@npm:^0.28.0":
+  version: 0.28.0
+  resolution: "scheduler@npm:0.28.0"
+  checksum: 783c8e5ce89d41273a02ed6dc0e3d24bd60e05c9e8f7e3adfc6c82e7c69935500d90e343f1ee26d592fc7504e8a2532573c6368def3e93bfe812391fa53efaf4
   languageName: node
   linkType: hard
 

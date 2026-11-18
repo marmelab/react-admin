@@ -744,7 +744,7 @@ Let's say that this custom page is added to the app under the `/settings` URL:
 ```jsx
 // in src/App.jsx
 import { Admin, Resource, CustomRoutes, } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 import { MyLayout } from './MyLayout';
 import { UserPreferences } from './UserPreferences';
@@ -854,7 +854,7 @@ For instance, the screencast at the top of this page shows a `songs` resource ne
 
 ```jsx
 import { Admin, Resource } from 'react-admin';
-import { Route } from 'react-router-dom';
+import { Route } from 'react-router';
 
 export const App = () => (
     <Admin dataProvider={dataProvider}>
