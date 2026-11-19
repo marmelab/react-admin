@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
+import { I18nContextProvider, I18nProvider } from 'ra-core';
 
 import { Basic, Omit, PreferenceKey } from './SimpleFormConfigurable.stories';
 
@@ -42,6 +43,34 @@ describe('<SimpleFormConfigurable>', () => {
             expect(screen.queryAllByDisplayValue('War and Peace')).toHaveLength(
                 1
             );
+        });
+    });
+    describe('i18n', () => {
+        it('should translate the inspector title and buttons with the ra.configurable messages', async () => {
+            const messages: Record<string, string> = {
+                'ra.configurable.SimpleForm.title': 'Translated form',
+                'ra.configurable.inspector.hideAll': 'Translated hide all',
+                'ra.configurable.inspector.showAll': 'Translated show all',
+            };
+            const i18nProvider: I18nProvider = {
+                translate: (key, options) => messages[key] ?? options?._ ?? key,
+                changeLocale: () => Promise.resolve(),
+                getLocale: () => 'en',
+            };
+            render(
+                <I18nContextProvider value={i18nProvider}>
+                    <Basic />
+                </I18nContextProvider>
+            );
+            screen.getByLabelText('Configure mode').click();
+            await screen.findByText('Inspector');
+            fireEvent.mouseOver(
+                screen.getAllByDisplayValue('War and Peace')[0]
+            );
+            await screen.getByTitle('ra.configurable.customize').click();
+            await screen.findByText('Translated form');
+            expect(screen.queryByText('Translated hide all')).not.toBeNull();
+            expect(screen.queryByText('Translated show all')).not.toBeNull();
         });
     });
 });

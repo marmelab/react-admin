@@ -21,7 +21,7 @@ export const SimpleListEditor = (props: SimpleListEditorProps) => {
         defaultTertiatyText = '',
     } = props;
 
-    useSetInspectorTitle('ra.inspector.SimpleList.title', { _: 'List' });
+    useSetInspectorTitle('ra.configurable.SimpleList.title', { _: 'List' });
     const translate = useTranslate();
 
     const primaryTextField = usePreferenceInput(
