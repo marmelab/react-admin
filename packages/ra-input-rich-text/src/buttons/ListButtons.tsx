@@ -85,7 +85,7 @@ const getInnermostListType = (editor: Editor): string | undefined => {
     return parentList?.node.type.name;
 };
 
-const ListActions = {
+const ListActions: Record<string, (editor: Editor) => boolean> = {
     bulletList: (editor: Editor) =>
         editor.chain().focus().toggleBulletList().run(),
     orderedList: (editor: Editor) =>
