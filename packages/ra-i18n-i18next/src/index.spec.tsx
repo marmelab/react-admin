@@ -7,6 +7,7 @@ import {
     WithLazyLoadedLanguages,
     TranslateComponent,
     TranslateWithReactElement,
+    UntranslatedText,
 } from './index.stories';
 
 describe('i18next i18nProvider', () => {
@@ -53,6 +54,8 @@ describe('i18next i18nProvider', () => {
 
         // Check interpolation
         await screen.findByText('1-1 of 1');
+        // Check nesting
+        await screen.findByText('Blog post title');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
         await screen.findByText('Blog post Lorem Ipsum');
@@ -88,5 +91,11 @@ describe('i18next i18nProvider', () => {
                 'Hello, <strong>John</strong>! Welcome to <em>react-admin</em>.'
             );
         });
+    });
+
+    test('should render untranslated text as is', async () => {
+        render(<UntranslatedText />);
+
+        await screen.findByText('Post $t(ra.auth.sign_in)');
     });
 });

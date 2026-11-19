@@ -104,7 +104,7 @@ export const WithCustomTranslations = () => {
                                 name_one: 'Blog post',
                                 name_other: 'Blog posts',
                                 fields: {
-                                    title: 'Title',
+                                    title: '$t(resources.posts.name_one) title',
                                 },
                             },
                         },
@@ -285,3 +285,35 @@ const dataProvider = fakeRestDataProvider({
     posts: [{ id: 1, title: 'Lorem Ipsum' }],
     comments: [{ id: 1, body: 'Sic dolor amet...' }],
 });
+
+export const UntranslatedText = () => {
+    const i18nProvider = useI18nextProvider({
+        options: {
+            resources: {
+                en: {
+                    translation:
+                        convertRaTranslationsToI18next(englishMessages),
+                },
+            },
+        },
+    });
+
+    if (!i18nProvider) return null;
+
+    return (
+        <TestMemoryRouter initialEntries={['/posts/1']}>
+            <Admin
+                dataProvider={fakeRestDataProvider({
+                    posts: [{ id: 1, title: '$t(ra.auth.sign_in)' }],
+                })}
+                i18nProvider={i18nProvider}
+            >
+                <Resource
+                    name="posts"
+                    list={<ListGuesser enableLog={false} />}
+                    edit={<EditGuesser enableLog={false} />}
+                />
+            </Admin>
+        </TestMemoryRouter>
+    );
+};
