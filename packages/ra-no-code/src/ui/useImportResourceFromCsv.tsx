@@ -93,13 +93,13 @@ const sanitizeRecords = (
     );
 };
 
-// set() also follows inherited properties, which are not record data
+// Returns true if the path goes through a property that the record inherits instead of owning
 const pathFollowsInheritedProperty = (record, path: string) => {
     let current = record;
     return toPath(path)
         .slice(0, -1)
         .some(key => {
-            // set() replaces missing and primitive values by a new object or array
+            // a missing or primitive value becomes a new object when the column is written
             const object = isObject(current) ? current : {};
             current = object[key];
             return (
