@@ -3,6 +3,7 @@ import { useQuery, UseQueryOptions } from '@tanstack/react-query';
 import { useRedirect, useLocation } from '../routing';
 import { AuthRedirectResult } from '../types';
 import useAuthProvider from './useAuthProvider';
+import { removeSourceParam } from './useLogout';
 import { useEvent } from '../util';
 
 /**
@@ -54,7 +55,7 @@ export const useHandleAuthCallback = (
                 );
                 const redirectTo =
                     (data as AuthRedirectResult)?.redirectTo ??
-                    previousLocation;
+                    (previousLocation && removeSourceParam(previousLocation));
                 if (redirectTo === false) {
                     return;
                 }

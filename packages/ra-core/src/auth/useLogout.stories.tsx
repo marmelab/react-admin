@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Route, Routes } from 'react-router';
+import { Route, Routes, useLocation } from 'react-router';
 import { TestMemoryRouter } from '../routing/TestMemoryRouter';
 import { CoreAdminContext } from '../core/CoreAdminContext';
 import useLogout from './useLogout';
@@ -10,8 +10,10 @@ export default {
 
 export const Redirect = ({
     redirectTo,
+    search = '',
 }: {
     redirectTo: 'default' | 'authProvider.logout' | 'caller';
+    search?: string;
 }) => {
     const authProvider = {
         logout: () =>
@@ -23,11 +25,11 @@ export const Redirect = ({
     } as any;
 
     return (
-        <TestMemoryRouter key={redirectTo}>
+        <TestMemoryRouter key={redirectTo} initialEntries={[`/${search}`]}>
             <CoreAdminContext authProvider={authProvider}>
                 <Routes>
                     <Route path="/" element={<div>Page</div>} />
-                    <Route path="/login" element={<div>Login</div>} />
+                    <Route path="/login" element={<LoginPage />} />
                     <Route
                         path="/logout_redirect"
                         element={<div>Custom from authProvider.logout</div>}
@@ -65,6 +67,16 @@ Redirect.argTypes = {
             type: 'radio',
         },
     },
+};
+
+const LoginPage = () => {
+    const location = useLocation();
+    return (
+        <>
+            <div>Login</div>
+            <p>Search after login: {location.state?.nextSearch}</p>
+        </>
+    );
 };
 
 const LogoutButton = ({ redirectTo }: { redirectTo?: string }) => {

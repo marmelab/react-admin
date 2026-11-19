@@ -72,4 +72,18 @@ describe('useLogout', () => {
         fireEvent.click(screen.getByText('Logout'));
         await screen.findByText('Custom from useLogout caller');
     });
+    it('should not keep the source param for after login', async () => {
+        render(
+            <Redirect
+                redirectTo="default"
+                search={`?source=${encodeURIComponent(
+                    JSON.stringify({ title: 'Hello' })
+                )}&foo=bar`}
+            />
+        );
+        await screen.findByText('Page');
+        fireEvent.click(screen.getByText('Logout'));
+        await screen.findByText('Login');
+        await screen.findByText('Search after login: ?foo=bar');
+    });
 });
