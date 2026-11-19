@@ -129,6 +129,58 @@ describe('Data JSON Server Client', () => {
             }
         );
     });
+    describe('query parameters limit', () => {
+        const getFilter = (length: number) =>
+            Object.fromEntries(
+                Array.from({ length }, (_, index) => [`field${index}`, index])
+            );
+        const params = {
+            pagination: { page: 1, perPage: 10 },
+            sort: { field: 'id', order: 'ASC' as const },
+        };
+        const httpClient = jest.fn().mockResolvedValue({
+            headers: new Headers({ 'x-total-count': '0' }),
+            json: [],
+        });
+        beforeEach(() => {
+            httpClient.mockClear();
+        });
+
+        it('should send up to 1000 query parameters', async () => {
+            const client = jsonServerClient(
+                'http://localhost:3000',
+                httpClient
+            );
+
+            await client.getList('posts', {
+                ...params,
+                filter: getFilter(996),
+            });
+
+            expect(httpClient).toHaveBeenCalledTimes(1);
+        });
+
+        it('should not send a request with more than 1000 query parameters', async () => {
+            const client = jsonServerClient(
+                'http://localhost:3000',
+                httpClient
+            );
+            const error = 'cannot send more than 1000 query parameters';
+
+            await expect(
+                client.getList('posts', { ...params, filter: getFilter(997) })
+            ).rejects.toThrow(error);
+            await expect(
+                client.getManyReference('comments', {
+                    ...params,
+                    target: 'post_id',
+                    id: 12,
+                    filter: getFilter(996),
+                })
+            ).rejects.toThrow(error);
+            expect(httpClient).not.toHaveBeenCalled();
+        });
+    });
     describe('getManyReference', () => {
         const params = {
             target: 'post_id',
