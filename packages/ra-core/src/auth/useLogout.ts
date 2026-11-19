@@ -166,12 +166,12 @@ type Logout = (
 export default useLogout;
 
 // the source param may contain a whole record (e.g. with <CloneButton>), so it isn't kept after login
-const removeSourceParam = (search: string) => {
-    const params = new URLSearchParams(search);
-    if (!params.has('source')) {
-        return search;
-    }
-    params.delete('source');
-    const otherParams = params.toString();
-    return otherParams ? `?${otherParams}` : '';
-};
+// accepts a search string or a full URL (where the search may come after the hash)
+export const removeSourceParam = (url: string) =>
+    url.replace(/\?[^#]*/g, search => {
+        const params = search
+            .slice(1)
+            .split('&')
+            .filter(param => !param.startsWith('source='));
+        return params.length ? `?${params.join('&')}` : '';
+    });

@@ -1,10 +1,13 @@
 import * as React from 'react';
 import expect from 'expect';
 import { render, screen, waitFor } from '@testing-library/react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router-dom';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 
-import { useHandleAuthCallback } from './useHandleAuthCallback';
+import {
+    PreviousLocationStorageKey,
+    useHandleAuthCallback,
+} from './useHandleAuthCallback';
 import { AuthContext } from './AuthContext';
 import { AuthProvider } from '../types';
 
@@ -43,6 +46,7 @@ const authProvider: AuthProvider = {
 describe('useHandleAuthCallback', () => {
     afterEach(() => {
         jest.clearAllMocks();
+        localStorage.removeItem(PreviousLocationStorageKey);
     });
 
     it('should redirect to the home route by default when the callback was successfully handled', async () => {
@@ -90,6 +94,33 @@ describe('useHandleAuthCallback', () => {
             </TestMemoryRouter>
         );
         await screen.findByText('Test');
+    });
+
+    it('should redirect to the previous location without its source param', async () => {
+        localStorage.setItem(
+            PreviousLocationStorageKey,
+            `/test?source=${encodeURIComponent(
+                JSON.stringify({ title: 'Hello' })
+            )}&foo=bar`
+        );
+        const Test = () => <div>Test{useLocation().search}</div>;
+        render(
+            <TestMemoryRouter initialEntries={['/auth-callback']}>
+                <AuthContext.Provider value={authProvider}>
+                    <QueryClientProvider client={new QueryClient()}>
+                        <Routes>
+                            <Route path="/" element={<div>Home</div>} />
+                            <Route path="/test" element={<Test />} />
+                            <Route
+                                path="/auth-callback"
+                                element={<TestComponent />}
+                            />
+                        </Routes>
+                    </QueryClientProvider>
+                </AuthContext.Provider>
+            </TestMemoryRouter>
+        );
+        await screen.findByText('Test?foo=bar');
     });
 
     it('should use custom useQuery options such as onError', async () => {
