@@ -38,4 +38,28 @@ describe('<Count />', () => {
             signal: undefined,
         });
     });
+    it('should encode the filter in the link', async () => {
+        render(
+            <Wrapper
+                dataProvider={{
+                    getList: () => Promise.resolve({ data: [], total: 3 }),
+                }}
+            >
+                <Count
+                    resource="posts"
+                    filter={{ tag: 'c++#&perPage=1' }}
+                    link
+                />
+            </Wrapper>
+        );
+        const href = (
+            await screen.findByRole('link', { name: '3' })
+        ).getAttribute('href') as string;
+        const { searchParams, hash } = new URL(href, 'http://localhost');
+        expect(hash).toEqual('');
+        expect(Array.from(searchParams.keys())).toEqual(['filter']);
+        expect(JSON.parse(searchParams.get('filter') as string)).toEqual({
+            tag: 'c++#&perPage=1',
+        });
+    });
 });

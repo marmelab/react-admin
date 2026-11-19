@@ -383,7 +383,11 @@ const CreateRelatedCommentButton = () => {
     const navigate = useNavigate();
     
     const handleClick = () => {
-        navigate(`/comments/create?source=${JSON.stringify({ post_id: record.id })}`);
+        navigate(
+            `/comments/create?source=${encodeURIComponent(
+                JSON.stringify({ post_id: record.id })
+            )}`
+        );
     };
 
     return (

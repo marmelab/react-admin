@@ -20,6 +20,7 @@ import { FieldProps } from './types';
 import { sanitizeFieldRestProps } from './sanitizeFieldRestProps';
 import { Link } from '../Link';
 import { Offline } from '../Offline';
+import { getFilterSearch } from '../list/getFilterSearch';
 
 /**
  * Fetch and render the number of records related to the current one
@@ -85,10 +86,10 @@ export const ReferenceManyCount = <RecordType extends RaRecord = RaRecord>(
                             resource: reference,
                             type: 'list',
                         }),
-                        search: `filter=${JSON.stringify({
+                        search: getFilterSearch({
                             ...(filter || {}),
                             [target]: get(record, source),
-                        })}`,
+                        }),
                     }}
                     onClick={e => e.stopPropagation()}
                 >
