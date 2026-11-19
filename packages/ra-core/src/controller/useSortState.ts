@@ -1,4 +1,4 @@
-import { useReducer, useEffect, useRef, useCallback } from 'react';
+import { useReducer, useState, useCallback } from 'react';
 
 import { SORT_ASC, SORT_DESC } from './list/queryReducer';
 import { SortPayload } from '../types';
@@ -102,14 +102,18 @@ export const defaultSort = { field: '', order: 'ASC' } as const;
  */
 const useSortState = (initialSort: SortPayload = defaultSort): SortProps => {
     const [sort, dispatch] = useReducer(sortReducer, initialSort);
-    const isFirstRender = useRef(true);
-    useEffect(() => {
-        if (isFirstRender.current) {
-            isFirstRender.current = false;
-            return;
-        }
+    const [prevSort, setPrevSort] = useState(initialSort);
+    // Updating the state during render (and not in an effect) lets React
+    // restart the render before committing it, so that children never see
+    // the previous sort.
+    // @see https://react.dev/learn/you-might-not-need-an-effect#adjusting-some-state-when-a-prop-changes
+    if (
+        initialSort.field !== prevSort.field ||
+        initialSort.order !== prevSort.order
+    ) {
+        setPrevSort(initialSort);
         dispatch({ type: 'SET_SORT', payload: initialSort });
-    }, [initialSort.field, initialSort.order]); // eslint-disable-line react-hooks/exhaustive-deps
+    }
 
     return {
         setSort: useCallback(

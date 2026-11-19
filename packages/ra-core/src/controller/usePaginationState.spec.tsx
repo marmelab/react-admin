@@ -1,4 +1,5 @@
-import { act, renderHook } from '@testing-library/react';
+import * as React from 'react';
+import { act, render, renderHook } from '@testing-library/react';
 
 import usePaginationState from './usePaginationState';
 
@@ -34,6 +35,47 @@ describe('usePaginationState', () => {
             page: 1,
             perPage: 100,
         });
+    });
+
+    it('should never render children with the previous perPage when the perPage prop changes', () => {
+        const renderedPaginations: { page: number; perPage: number }[] = [];
+        const Child = ({
+            page,
+            perPage,
+        }: {
+            page: number;
+            perPage: number;
+        }) => {
+            renderedPaginations.push({ page, perPage });
+            return null;
+        };
+        const Parent = ({ initialPerPage }: { initialPerPage: number }) => {
+            const { page, perPage } = usePaginationState({
+                page: 3,
+                perPage: initialPerPage,
+            });
+            return <Child page={page} perPage={perPage} />;
+        };
+
+        const { rerender } = render(<Parent initialPerPage={50} />);
+        rerender(<Parent initialPerPage={5} />);
+
+        expect(renderedPaginations).toEqual([
+            { page: 3, perPage: 50 },
+            { page: 1, perPage: 5 },
+        ]);
+    });
+
+    it('should fall back to 25 items per page when the perPage prop is removed', () => {
+        const { result, rerender } = renderHook(
+            ({ perPage }: { perPage?: number }) =>
+                usePaginationState({ perPage }),
+            { initialProps: { perPage: 50 } }
+        );
+
+        rerender({ perPage: undefined });
+
+        expect(result.current.pagination).toEqual({ page: 1, perPage: 25 });
     });
 
     it('should provide a setPagination function to update the pagination state (page + perPage)', () => {
