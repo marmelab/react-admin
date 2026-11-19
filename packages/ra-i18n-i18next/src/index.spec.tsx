@@ -54,6 +54,8 @@ describe('i18next i18nProvider', () => {
 
         // Check interpolation
         await screen.findByText('1-1 of 1');
+        // Check nesting
+        await screen.findByText('Blog post title');
         fireEvent.click(await screen.findByText('Lorem Ipsum'));
         // Check singularization
         await screen.findByText('Blog post Lorem Ipsum');

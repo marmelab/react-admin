@@ -104,7 +104,7 @@ export const WithCustomTranslations = () => {
                                 name_one: 'Blog post',
                                 name_other: 'Blog posts',
                                 fields: {
-                                    title: 'Title',
+                                    title: '$t(resources.posts.name_one) title',
                                 },
                             },
                         },
