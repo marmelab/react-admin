@@ -9,6 +9,7 @@ import {
     useResourcesConfiguration,
     getFieldDefinitionsFromRecords,
 } from '../ResourceConfiguration';
+import { getResourceConfiguration } from '../ResourceConfiguration/getResourceConfiguration';
 
 /**
  * This hooks returns a tuple with its first element being a boolean indicating whether an import is ongoing, and the second element a function to call with a resource name and a file to import.
@@ -23,7 +24,10 @@ export const useImportResourceFromCsv = (): [boolean, ImportResource] => {
 
     const importResource = async (resource: string, file: File) => {
         setParsing(true);
-        const resourceAlreadyExists = !!resources[resource];
+        const resourceAlreadyExists = !!getResourceConfiguration(
+            resources,
+            resource
+        );
         const { data, meta } = await parseCSV(file);
         const records = sanitizeRecords(
             data.filter(record => !!record.id),
@@ -89,8 +93,7 @@ const sanitizeRecords = (
     );
 };
 
-// lodash set() follows inherited properties (except __proto__, constructor and prototype),
-// so a path such as 'address.toString.foo' would write on a shared built-in
+// set() also follows inherited properties, which are not record data
 const pathFollowsInheritedProperty = (record, path: string) => {
     let current = record;
     return toPath(path)

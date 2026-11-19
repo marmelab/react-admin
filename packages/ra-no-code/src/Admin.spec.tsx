@@ -134,7 +134,7 @@ describe('Admin', () => {
         await screen.findByText('1-10 of 12');
     }, 10000);
 
-    it('should not write on inherited properties when importing a CSV with path headers', async () => {
+    it('should ignore CSV headers that are not record paths', async () => {
         window.localStorage.clear();
         window.location.hash = '';
         const file = new File(
@@ -176,5 +176,30 @@ describe('Admin', () => {
             delete ([].push as any).extra;
             delete ({}.toLocaleString as any).extra;
         }
-    }, 10000);
+    });
+
+    it('should import a CSV file named after an object method', async () => {
+        window.localStorage.clear();
+        window.location.hash = '';
+        const file = new File(['id,name\n1,Alice\n2,Bob\n'], 'toString.csv', {
+            type: 'text/csv',
+        });
+        render(
+            <ApplicationContext.Provider
+                value={{
+                    application: { name: 'test', created_at: new Date() },
+                    onExit: () => {},
+                }}
+            >
+                <Admin />
+            </ApplicationContext.Provider>
+        );
+        userEvents.upload(await screen.findByLabelText('CSV File'), file);
+        await screen.findByDisplayValue('toString');
+        fireEvent.click(screen.getByText('Import'));
+        await screen.findByText('Tostrings', {
+            selector: '#react-admin-title *',
+        });
+        await screen.findByText('1-2 of 2');
+    });
 });
