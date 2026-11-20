@@ -155,12 +155,13 @@ describe('<RichTextField />', () => {
         ).toEqual('none');
     });
 
-    it('should remove style and form elements by default', async () => {
+    it('should remove style, form and dialog elements by default', async () => {
         const { container } = render(<Secure />);
         await screen.findByText('War and Peace');
         expect(container.querySelector('style')).toBeNull();
         expect(screen.queryByRole('button', { name: 'Search' })).toBeNull();
         expect(container.querySelector('input[name="q"]')).toBeNull();
+        expect(container.querySelector('dialog')).toBeNull();
     });
 
     it.each([

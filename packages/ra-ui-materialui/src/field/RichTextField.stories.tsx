@@ -76,6 +76,7 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
 <img src="x" onerror="document.getElementById('stolendata').value='credentials';" />
 <style>p { color: red; }</style>
 <form><input name="q" /><button>Search</button></form>
+<dialog open><a href="https://evil.example/login">Session expired, please log in again</a></dialog>
 `,
         }}
     >

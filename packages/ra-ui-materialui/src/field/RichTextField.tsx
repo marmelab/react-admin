@@ -89,6 +89,7 @@ const DEFAULT_FORBIDDEN_TAGS = [
     'button',
     'select',
     'textarea',
+    'dialog',
 ];
 
 // DOMPurify gives FORBID_TAGS precedence over ALLOWED_TAGS and ADD_TAGS,
