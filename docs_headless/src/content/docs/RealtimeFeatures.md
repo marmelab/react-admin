@@ -23,6 +23,51 @@ yarn add @react-admin/ra-core-ee
 
 This package supports various realtime infrastructures ([Mercure](https://mercure.rocks/), [API Platform](https://api-platform.com/docs/admin/real-time-mercure/#real-time-updates-with-mercure), [supabase](https://supabase.com/), [Socket.IO](https://socket.io/), [Ably](https://ably.com/), and many more) thanks to the same _adapter_ approach as for CRUD methods. In fact, the `dataProvider` is used to implement the realtime communication (see the [Data Provider Requirements](#data-provider-requirements) section for more information).
 
+## I18N
+
+The realtime features use specific translation messages (for notifications, buttons, dialogs, etc.). `@react-admin/ra-core-ee` provides English and French translations for these messages. Use `getEnglishTranslations` and `getFrenchTranslations` to add them to your [`i18nProvider`](./TranslationSetup.md):
+
+```tsx
+import { CoreAdmin, mergeTranslations } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import { getEnglishTranslations, getFrenchTranslations } from '@react-admin/ra-core-ee';
+
+const i18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, getFrenchTranslations('ra-realtime'))
+            : mergeTranslations(englishMessages, getEnglishTranslations('ra-realtime')),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+export const MyApp = () => (
+    <CoreAdmin i18nProvider={i18nProvider}>
+        ...
+    </CoreAdmin>
+);
+```
+
+To customize the messages, merge your own translations on top of the default ones. Use the `RaCoreEETranslations` type to see which keys are available:
+
+```tsx
+import { mergeTranslations, type TranslationMessages } from 'ra-core';
+import englishMessages from 'ra-language-english';
+import { getEnglishTranslations, type RaCoreEETranslations } from '@react-admin/ra-core-ee';
+
+const customEnglishMessages: TranslationMessages & RaCoreEETranslations<['ra-realtime']> =
+    mergeTranslations(
+        englishMessages,
+        getEnglishTranslations('ra-realtime'),
+        { 'ra-realtime': { notification: { record: { updated: 'Someone else modified this record' } } } }
+    );
+```
+
 ## Features
 
 ### Publish/Subscribe
