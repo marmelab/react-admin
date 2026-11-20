@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { createRequire } from 'module';
 import React from 'react';
 import { render } from 'ink';
 import meow from 'meow';
@@ -73,19 +74,21 @@ const getResources = (flags: typeof cli.flags) => {
     return ['skip'];
 };
 
+const pkg = createRequire(import.meta.url)('../package.json');
+
 const cli = meow(
     `
 	Usage
 	  $ create-react-admin <name>
 
-    Options
+	Options
 	  --interactive    Enable the CLI interactive mode
 	  --data-provider  Set the data provider to use ("fakerest", "simple-rest", "json-server", "supabase" or "none")
 	  --auth-provider  Set the auth provider to use ("local-auth-provider" or "none")
 	  --resource       Add a resource that will be initialized with guessers (can be used multiple times). Set to "skip" to bypass the interactive resource step.
 	  --install        Set the package manager to use for installing dependencies ("yarn", "npm", "bun", "pnpm" or "skip" to bypass the interactive install step)
 
-    Examples
+	Examples
 	  $ npx create-react-admin@latest my-admin
 	  $ npx create-react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 	  $ yarn create react-admin my-admin
@@ -94,6 +97,8 @@ const cli = meow(
 	  $ bun create react-admin@latest my-admin --data-provider json-server --auth-provider local-auth-provider --resource posts --resource comments --install npm
 `,
     {
+        pkg,
+        description: `${pkg.name}\n\n  ${pkg.description}`,
         flags: {
             help: {
                 type: 'boolean',
