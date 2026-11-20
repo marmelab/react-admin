@@ -910,6 +910,42 @@ export const TriggerValidation = () => (
     </TestMemoryRouter>
 );
 
+export const PrefillFromLocation = ({
+    dataProvider: dataProviderProp = dataProvider,
+}: {
+    dataProvider?: any;
+}) => (
+    <TestMemoryRouter
+        initialEntries={[
+            `/books/create?source=${encodeURIComponent(
+                JSON.stringify({
+                    title: 'War and Peace',
+                    authors: [{ name: 'Leo Tolstoy', role: 'head_writer' }],
+                    isbn: '978-0140447934',
+                })
+            )}`,
+        ]}
+    >
+        <Admin dataProvider={dataProviderProp}>
+            <Resource
+                name="books"
+                create={() => (
+                    <Create>
+                        <SimpleForm>
+                            <TextInput source="title" />
+                            <ArrayInput source="authors">
+                                <SimpleFormIterator>
+                                    <TextInput source="name" />
+                                </SimpleFormIterator>
+                            </ArrayInput>
+                        </SimpleForm>
+                    </Create>
+                )}
+            />
+        </Admin>
+    </TestMemoryRouter>
+);
+
 const CreateGlobalValidationInFormTab = () => {
     return (
         <Create

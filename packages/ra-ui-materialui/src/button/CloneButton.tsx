@@ -49,7 +49,11 @@ export const CloneButton = React.forwardRef(function CloneButton(
                       }
                     : pathname
             }
-            state={{ _scrollToTop: scrollToTop }}
+            state={{
+                _scrollToTop: scrollToTop,
+                // values from the location search are only submitted for the fields that have an input
+                record: record ? omitId(record) : undefined,
+            }}
             label={label}
             onClick={stopPropagation}
             {...sanitizeRestProps(rest)}

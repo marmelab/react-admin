@@ -595,7 +595,7 @@ const ApproveButton = () => {
 };
 ```
 
-Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet.
+Should you use the location `state` or the location `search`? The latter modifies the URL, so it's only necessary if you want to build cross-application links (e.g. from one admin to the other). In general, using the location `state` is a safe bet. Also, the values from the location `search` are only submitted for the fields that have an input in the form, while all the values from the location `state` are submitted. To also submit other fields from the location `search`, list them in the [`allowedLocationFields`](./Form.md#allowedlocationfields) prop of the form. This also applies to the `id`, which is ignored even when the form has an input for it.
 
 You can detect prefilled values by leveraging the [`useRecordFromLocation`](./useRecordFromLocation.md) hook:
 
