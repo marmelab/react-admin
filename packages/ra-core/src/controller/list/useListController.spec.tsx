@@ -371,6 +371,41 @@ describe('useListController', () => {
                 ).toEqual({ 'author.id': 1 });
             }
         );
+
+        it('should ignore the location filter using a bracket notation for a permanent filter field', async () => {
+            const getList = jest
+                .fn()
+                .mockImplementation(() =>
+                    Promise.resolve({ data: [], total: 0 })
+                );
+            const dataProvider = testDataProvider({ getList });
+
+            render(
+                <TestMemoryRouter
+                    initialEntries={[
+                        `/posts?filter=${JSON.stringify({
+                            q: 'hello',
+                            'is_published[]': false,
+                        })}`,
+                    ]}
+                >
+                    <CoreAdminContext dataProvider={dataProvider}>
+                        <ListController
+                            {...defaultProps}
+                            filter={{ is_published: true }}
+                        />
+                    </CoreAdminContext>
+                </TestMemoryRouter>
+            );
+
+            await waitFor(() => {
+                expect(getList).toHaveBeenCalledTimes(1);
+            });
+            expect(getList.mock.calls[0][1].filter).toEqual({
+                q: 'hello',
+                is_published: true,
+            });
+        });
     });
 
     describe('showFilter', () => {
