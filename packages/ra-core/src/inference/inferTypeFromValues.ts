@@ -2,6 +2,7 @@ import getValuesFromRecords from './getValuesFromRecords';
 
 import {
     isObject,
+    isResourceName,
     valuesAreArray,
     valuesAreBoolean,
     valuesAreDate,
@@ -63,7 +64,10 @@ export const inferTypeFromValues = (
     if (name === 'id') {
         return { type: 'id', props: { source: name } };
     }
-    if (name.substr(name.length - 3) === '_id') {
+    if (
+        name.substr(name.length - 3) === '_id' &&
+        isResourceName(name.substr(0, name.length - 3))
+    ) {
         return {
             type: 'reference',
             props: {
@@ -73,7 +77,10 @@ export const inferTypeFromValues = (
             children: { type: 'referenceChild' },
         };
     }
-    if (name.substr(name.length - 2) === 'Id') {
+    if (
+        name.substr(name.length - 2) === 'Id' &&
+        isResourceName(name.substr(0, name.length - 2))
+    ) {
         return {
             type: 'reference',
             props: {
@@ -83,7 +90,10 @@ export const inferTypeFromValues = (
             children: { type: 'referenceChild' },
         };
     }
-    if (name.substr(name.length - 4) === '_ids') {
+    if (
+        name.substr(name.length - 4) === '_ids' &&
+        isResourceName(name.substr(0, name.length - 4))
+    ) {
         return {
             type: 'referenceArray',
             props: {
@@ -93,7 +103,10 @@ export const inferTypeFromValues = (
             children: { type: 'referenceArrayChild' },
         };
     }
-    if (name.substr(name.length - 3) === 'Ids') {
+    if (
+        name.substr(name.length - 3) === 'Ids' &&
+        isResourceName(name.substr(0, name.length - 3))
+    ) {
         return {
             type: 'referenceArray',
             props: {

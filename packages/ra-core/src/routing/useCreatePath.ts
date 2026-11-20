@@ -90,4 +90,5 @@ export interface CreatePathParams {
     id?: Identifier;
 }
 
-export const removeDoubleSlashes = (path: string) => path.replace('//', '/');
+export const removeDoubleSlashes = (path: string) =>
+    path.replace(/\/{2,}/g, '/');

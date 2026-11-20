@@ -87,6 +87,15 @@ const MatchedPathContext = React.createContext<string>('');
  */
 const ParamsContext = React.createContext<Record<string, string>>({});
 
+// like react-router, fall back to the raw value when the percent-encoding is malformed
+const safelyDecodeURIComponent = (value: string): string => {
+    try {
+        return decodeURIComponent(value);
+    } catch {
+        return value;
+    }
+};
+
 /**
  * Standalone path matcher similar to react-router's.
  *
@@ -182,7 +191,7 @@ const matchPath = (
 
         if (pathSegment.startsWith(':')) {
             const paramName = pathSegment.slice(1);
-            params[paramName] = decodeURIComponent(pathnameSegment);
+            params[paramName] = safelyDecodeURIComponent(pathnameSegment);
         } else {
             if (pathSegment !== pathnameSegment) {
                 return null;
@@ -194,7 +203,7 @@ const matchPath = (
     if (hasSplat) {
         const remainingSegments = pathnameSegments.slice(pathSegments.length);
         const splatValue = remainingSegments.join('/');
-        params['*'] = decodeURIComponent(splatValue);
+        params['*'] = safelyDecodeURIComponent(splatValue);
     }
 
     let matchedLength = pathSegments.length;
