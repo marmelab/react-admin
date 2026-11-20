@@ -78,6 +78,20 @@ export const Basic = (props: Partial<SimpleFormProps>) => (
     </AdminContext>
 );
 
+export const PrefilledFromLocation = () => (
+    <TestMemoryRouter
+        initialEntries={[
+            `/?source=${encodeURIComponent(
+                JSON.stringify({
+                    body: '<p>War and Peace</p><table><tbody><tr><td>Leo Tolstoy</td><td>1869</td></tr></tbody></table>',
+                })
+            )}`,
+        ]}
+    >
+        <Basic />
+    </TestMemoryRouter>
+);
+
 export const Disabled = (props: Partial<SimpleFormProps>) => (
     <AdminContext i18nProvider={i18nProvider}>
         <ResourceContextProvider value="posts">

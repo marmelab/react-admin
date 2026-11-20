@@ -60,7 +60,10 @@ const RichTextFieldImpl = <
             ) : (
                 <span
                     dangerouslySetInnerHTML={{
-                        __html: purify.sanitize(value, purifyOptions || {}),
+                        __html: purify.sanitize(
+                            value,
+                            getPurifyOptions(purifyOptions)
+                        ),
                     }}
                 />
             )}
@@ -77,6 +80,40 @@ export const RichTextField = genericMemo(RichTextFieldImpl);
 export type PurifyOptions = purify.Config & {
     RETURN_DOM_FRAGMENT?: false | undefined;
     RETURN_DOM?: false | undefined;
+};
+
+const DEFAULT_FORBIDDEN_TAGS = [
+    'style',
+    'form',
+    'input',
+    'button',
+    'select',
+    'textarea',
+    'dialog',
+];
+
+// DOMPurify gives FORBID_TAGS precedence over ALLOWED_TAGS and ADD_TAGS,
+// so the default forbidden tags must exclude the tags the user allows
+const getPurifyOptions = (purifyOptions: PurifyOptions = {}): PurifyOptions => {
+    const {
+        ALLOWED_TAGS = [],
+        ADD_TAGS = [],
+        FORBID_TAGS = [],
+    } = purifyOptions;
+    const allowedTags = [
+        ...ALLOWED_TAGS,
+        ...(Array.isArray(ADD_TAGS) ? ADD_TAGS : []),
+    ].map(tag => tag.toLowerCase());
+    const isAllowed = (tag: string) =>
+        allowedTags.includes(tag) ||
+        (typeof ADD_TAGS === 'function' && ADD_TAGS(tag));
+    return {
+        ...purifyOptions,
+        FORBID_TAGS: [
+            ...DEFAULT_FORBIDDEN_TAGS.filter(tag => !isAllowed(tag)),
+            ...FORBID_TAGS,
+        ],
+    };
 };
 
 export interface RichTextFieldProps<
