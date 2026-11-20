@@ -83,6 +83,7 @@ Here are all the props you can set on the `<TabbedForm>` component:
 | Prop                      | Required | Type               | Default | Description                                                |
 | ------------------------- | -------- | ------------------ | ------- | ---------------------------------------------------------- |
 | `children`                | Required | `element`          | -       | The form content.                                          |
+| `allowedLocationFields`   | Optional | `string[]`         | -       | Fields submitted from the location `search` even without an input. |
 | `component`               | Optional | `elementType`      | `CardContent` | The component used to wrap the form.                |
 | `defaultValues`           | Optional | `object| function` | -       | The default values of the record.                          |
 | `id`                      | Optional | `string`           | -       | The id of the underlying `<form>` tag.                     |
@@ -120,6 +121,23 @@ export const PostEdit = () => (
     </Edit>
 );
 ```
+
+## `allowedLocationFields`
+
+The values passed in the `source` parameter of the location `search` are only submitted for the fields that have an input in the form. To also submit other fields, list them in the `allowedLocationFields` prop:
+
+```jsx
+// link to approve a post: /posts/123?source={"status":"approved"}
+export const PostEdit = () => (
+    <Edit>
+        <TabbedForm allowedLocationFields={['status']}>
+            ...
+        </TabbedForm>
+    </Edit>
+);
+```
+
+See [the `<Form allowedLocationFields>` prop](./Form.md#allowedlocationfields) for details.
 
 ## `component`
 

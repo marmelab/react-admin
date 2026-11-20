@@ -234,7 +234,7 @@ export const InPlaceEditor = <
                 );
             case 'editing':
                 return (
-                    <Form onSubmit={handleSave}>
+                    <Form onSubmit={handleSave} disablePrefillFromLocation>
                         <Box
                             onKeyDown={handleKeyDown}
                             onBlur={handleBlur}

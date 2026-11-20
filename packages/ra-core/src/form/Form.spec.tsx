@@ -22,6 +22,7 @@ import {
     InNonDataRouter,
     ServerSideValidation,
     MultiRoutesForm,
+    PrefillFromLocation,
     WarnWhenUnsavedChangesWithDelete,
 } from './Form.stories';
 import { mergeTranslations } from '../i18n';
@@ -1009,6 +1010,83 @@ describe('Form', () => {
             ).toEqual(false);
         }
     );
+
+    describe('prefill from location', () => {
+        const userFromLocation = {
+            id: 2,
+            name: 'Jane Doe',
+            role: 'admin',
+            nickname: 'jane',
+            address: { city: 'Lyon', zip: '69001' },
+            'address.city': 'Nancy',
+        };
+        const submit = async (button = 'Submit') => {
+            fireEvent.click(screen.getByText(button));
+            const submittedValues =
+                await screen.findByLabelText('Submitted values');
+            return JSON.parse(submittedValues.textContent!);
+        };
+
+        it.each(['Submit', 'Save'])(
+            'should only submit the values from the location search that have an input (%s)',
+            async button => {
+                render(<PrefillFromLocation />);
+                await screen.findByDisplayValue('Jane Doe');
+                await screen.findByDisplayValue('Lyon');
+                expect(await submit(button)).toEqual({
+                    id: 1,
+                    name: 'Jane Doe',
+                    role: 'user',
+                    address: { city: 'Lyon', zip: '75001' },
+                });
+            }
+        );
+        it('should submit all the values from the location state', async () => {
+            render(
+                <PrefillFromLocation
+                    url={{ pathname: '/', state: { record: userFromLocation } }}
+                />
+            );
+            await screen.findByDisplayValue('Jane Doe');
+            expect(await submit()).toEqual(userFromLocation);
+        });
+        it('should submit the values from the location search listed in allowedLocationFields', async () => {
+            render(
+                <PrefillFromLocation
+                    allowedLocationFields={['role', 'address']}
+                />
+            );
+            await screen.findByDisplayValue('Jane Doe');
+            expect(await submit()).toEqual({
+                id: 1,
+                name: 'Jane Doe',
+                role: 'admin',
+                address: { city: 'Lyon', zip: '69001' },
+            });
+        });
+        it('should not take the id from the location search even when it has an input', async () => {
+            render(<PrefillFromLocation />);
+            await screen.findByDisplayValue('Jane Doe');
+            expect(screen.getByLabelText('id')).toHaveValue('1');
+            expect((await submit()).id).toEqual(1);
+        });
+        it('should take the id from the location search when it is listed in allowedLocationFields', async () => {
+            render(<PrefillFromLocation allowedLocationFields={['id']} />);
+            await screen.findByDisplayValue('Jane Doe');
+            expect(screen.getByLabelText('id')).toHaveValue('2');
+            expect((await submit()).id).toEqual(2);
+        });
+        it('should not prefill the form when disablePrefillFromLocation is true', async () => {
+            render(<PrefillFromLocation disablePrefillFromLocation />);
+            await screen.findByDisplayValue('John Doe');
+            expect(await submit()).toEqual({
+                id: 1,
+                name: 'John Doe',
+                role: 'user',
+                address: { city: 'Paris', zip: '75001' },
+            });
+        });
+    });
 
     describe('warnWhenUnsavedChanges with a delete button', () => {
         it.each(['undoable', 'pessimistic', 'optimistic'] as const)(

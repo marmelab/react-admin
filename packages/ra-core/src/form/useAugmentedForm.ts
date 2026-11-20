@@ -6,6 +6,7 @@ import {
     useRef,
 } from 'react';
 import {
+    Control,
     FieldValues,
     SubmitHandler,
     useForm,
@@ -13,6 +14,8 @@ import {
 } from 'react-hook-form';
 import merge from 'lodash/merge.js';
 import { RaRecord } from '../types';
+import { useLocation } from '../routing';
+import { useEvent } from '../util';
 import { SaveHandler, useRecordContext, useSaveContext } from '../controller';
 import getFormInitialValues from './getFormInitialValues';
 import {
@@ -22,7 +25,11 @@ import {
 import { setSubmissionErrors } from './validation/setSubmissionErrors';
 import { useNotifyIsFormInvalid } from './validation/useNotifyIsFormInvalid';
 import { sanitizeEmptyValues as sanitizeValues } from './sanitizeEmptyValues';
-import { useRecordFromLocation } from './useRecordFromLocation';
+import {
+    getRecordFromLocation,
+    useRecordFromLocation,
+} from './useRecordFromLocation';
+import { ignoreValuesWithoutInput } from './ignoreValuesWithoutInput';
 
 /**
  * Wrapper around react-hook-form's useForm
@@ -49,6 +56,8 @@ export const useAugmentedForm = <RecordType = any>(
         sanitizeEmptyValues,
         validate,
         disableInvalidFormNotification,
+        allowedLocationFields,
+        disablePrefillFromLocation,
         ...rest
     } = props;
     const saveContext = useSaveContext();
@@ -75,13 +84,41 @@ export const useAugmentedForm = <RecordType = any>(
           ? getSimpleValidationResolver(validate)
           : undefined;
 
-    const form = useForm({
+    const baseForm = useForm({
         criteriaMode,
         defaultValues: defaultValuesIncludingRecord,
         reValidateMode,
         resolver: finalResolver,
         ...rest,
     });
+
+    // The values from the location search are only submitted for the fields that have an input,
+    // or that are listed in allowedLocationFields
+    const recordFromLocationSearch = useRef<Partial<RaRecord> | null>(null);
+    const { handleSubmit: baseHandleSubmit, control } = baseForm;
+    const ignoreLocationValuesWithoutInput = useEvent((values: FieldValues) =>
+        ignoreValuesWithoutInput(
+            values,
+            recordFromLocationSearch.current,
+            defaultValuesIncludingRecord,
+            [...getInputNames(control), ...(allowedLocationFields ?? [])]
+        )
+    );
+    const handleSubmitWithoutIgnoredValues = useCallback<
+        typeof baseHandleSubmit
+    >(
+        (onValid, onInvalid) =>
+            baseHandleSubmit(
+                (values, event) =>
+                    onValid(ignoreLocationValuesWithoutInput(values), event),
+                onInvalid
+            ),
+        [baseHandleSubmit, ignoreLocationValuesWithoutInput]
+    );
+    const form = {
+        ...baseForm,
+        handleSubmit: handleSubmitWithoutIgnoredValues,
+    };
 
     const formRef = useRef(form);
     const { reset, formState } = form;
@@ -103,16 +140,37 @@ export const useAugmentedForm = <RecordType = any>(
     useNotifyIsFormInvalid(form.control, !disableInvalidFormNotification);
 
     const recordFromLocation = useRecordFromLocation();
+    const location = useLocation();
+    const isRecordFromLocationState =
+        getRecordFromLocation({ ...location, search: '' }) != null;
+    const isIdAllowedFromLocation = !!allowedLocationFields?.includes('id');
     const recordFromLocationApplied = useRef(false);
     useEffect(() => {
-        if (!isReady) return;
+        if (!isReady || disablePrefillFromLocation) return;
         if (recordFromLocation && !recordFromLocationApplied.current) {
-            reset(merge({}, defaultValuesIncludingRecord, recordFromLocation), {
+            // the record identifier is only taken from the location search when it is allowed explicitly
+            const { id, ...recordFromLocationWithoutId } = recordFromLocation;
+            const valuesFromLocation =
+                isRecordFromLocationState || isIdAllowedFromLocation
+                    ? recordFromLocation
+                    : recordFromLocationWithoutId;
+            reset(merge({}, defaultValuesIncludingRecord, valuesFromLocation), {
                 keepDefaultValues: true,
             });
             recordFromLocationApplied.current = true;
+            recordFromLocationSearch.current = isRecordFromLocationState
+                ? null
+                : valuesFromLocation;
         }
-    }, [defaultValuesIncludingRecord, recordFromLocation, reset, isReady]);
+    }, [
+        defaultValuesIncludingRecord,
+        disablePrefillFromLocation,
+        isIdAllowedFromLocation,
+        isRecordFromLocationState,
+        recordFromLocation,
+        reset,
+        isReady,
+    ]);
 
     // submit callbacks
     const handleSubmit = useCallback(
@@ -139,11 +197,11 @@ export const useAugmentedForm = <RecordType = any>(
             if (!event.defaultPrevented) {
                 // Prevent outer forms to receive the event
                 event.stopPropagation();
-                form.handleSubmit(handleSubmit)(event);
+                handleSubmitWithoutIgnoredValues(handleSubmit)(event);
             }
             return;
         },
-        [form, handleSubmit]
+        [handleSubmitWithoutIgnoredValues, handleSubmit]
     );
 
     return {
@@ -152,6 +210,13 @@ export const useAugmentedForm = <RecordType = any>(
         formHandleSubmit,
     };
 };
+
+// react-hook-form has no public API listing the registered inputs.
+// An array input only covers the values that the inputs of its items cover.
+const getInputNames = (control: Control<any>) =>
+    Array.from(control._names.mount).filter(
+        name => !control._names.array.has(name)
+    );
 
 export type UseAugmentedFormProps<RecordType = any> =
     UseFormOwnProps<RecordType> &
@@ -171,4 +236,6 @@ export interface UseFormOwnProps<RecordType = any> {
     onSubmit?: SubmitHandler<FieldValues> | SaveHandler<RecordType>;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
+    allowedLocationFields?: string[];
+    disablePrefillFromLocation?: boolean;
 }

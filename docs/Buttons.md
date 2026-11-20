@@ -657,7 +657,7 @@ To override the style of all instances of `<Button>` using the [application-wide
 
 ## `<CloneButton>`
 
-The `<CloneButton>` can be added anywhere there is a `RecordContext` to redirect users to the record's resource create page. The create page form will be prefilled with the record values (except the `id`).
+The `<CloneButton>` can be added anywhere there is a `RecordContext` to redirect users to the record's resource create page. The create page form will be prefilled with the record values (except the `id`). If users open the clone link in a new tab, only the values of the fields that have an input in the create form are saved.
 
 ### Usage
 
