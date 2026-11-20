@@ -479,7 +479,7 @@ const customEnglishMessages: TranslationMessages = mergeTranslations(
 
 const i18nCustomProvider = polyglotI18nProvider(locale => {
     if (locale === 'fr') {
-        return mergeTranslations(frenchMessages, raRealTimeLanguageFrench);
+        return mergeTranslations(frenchMessages, raRelationshipsLanguageFrench);
     }
     return customEnglishMessages;
 }, 'en');

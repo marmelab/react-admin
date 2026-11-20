@@ -22,6 +22,51 @@ yarn add @react-admin/ra-core-ee
 
 You will need an active Enterprise Edition license to use this package. Please refer to the [Enterprise Edition documentation](https://react-admin-ee.marmelab.com) for more details.
 
+## I18N
+
+The soft delete features use specific translation messages (for notifications, buttons, dialogs, etc.). `@react-admin/ra-core-ee` provides English and French translations for these messages. Use `getEnglishTranslations` and `getFrenchTranslations` to add them to your [`i18nProvider`](./TranslationSetup.md):
+
+```tsx
+import { CoreAdmin, mergeTranslations } from 'ra-core';
+import polyglotI18nProvider from 'ra-i18n-polyglot';
+import englishMessages from 'ra-language-english';
+import frenchMessages from 'ra-language-french';
+import { getEnglishTranslations, getFrenchTranslations } from '@react-admin/ra-core-ee';
+
+const i18nProvider = polyglotI18nProvider(
+    locale =>
+        locale === 'fr'
+            ? mergeTranslations(frenchMessages, getFrenchTranslations('ra-soft-delete'))
+            : mergeTranslations(englishMessages, getEnglishTranslations('ra-soft-delete')),
+    'en',
+    [
+        { locale: 'en', name: 'English' },
+        { locale: 'fr', name: 'Français' },
+    ]
+);
+
+export const MyApp = () => (
+    <CoreAdmin i18nProvider={i18nProvider}>
+        ...
+    </CoreAdmin>
+);
+```
+
+To customize the messages, merge your own translations on top of the default ones. Use the `RaCoreEETranslations` type to see which keys are available:
+
+```tsx
+import { mergeTranslations, type TranslationMessages } from 'ra-core';
+import englishMessages from 'ra-language-english';
+import { getEnglishTranslations, type RaCoreEETranslations } from '@react-admin/ra-core-ee';
+
+const customEnglishMessages: TranslationMessages & RaCoreEETranslations<['ra-soft-delete']> =
+    mergeTranslations(
+        englishMessages,
+        getEnglishTranslations('ra-soft-delete'),
+        { 'ra-soft-delete': { action: { soft_delete: 'Move to trash' } } }
+    );
+```
+
 ## Usage
 
 `ra-core-ee` contains base components and hooks to implement soft deletion in your application.
