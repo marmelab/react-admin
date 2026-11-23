@@ -38,6 +38,8 @@ If your API is on another domain as the JS code, you'll need to whitelist this h
 Access-Control-Expose-Headers: X-Total-Count
 ```
 
+**Note**: `getList` and `getManyReference` throw an error when the query contains more than 1000 parameters, as servers usually ignore the parameters beyond that limit.
+
 ## Usage
 
 ```jsx

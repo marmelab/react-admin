@@ -15,6 +15,23 @@ const encodeId = (id: Identifier) => {
     return encodedId;
 };
 
+// Servers usually read the first 1000 parameters of a query string, and ignore the others
+const MAX_QUERY_PARAMETERS = 1000;
+
+/**
+ * Build the query string of a list request.
+ * Throws if the query has more parameters than what servers read.
+ */
+const getListQueryString = (query: any) => {
+    const queryString = stringify(query);
+    if (queryString.split('&').length > MAX_QUERY_PARAMETERS) {
+        throw new Error(
+            `The json-server data provider cannot send more than ${MAX_QUERY_PARAMETERS} query parameters`
+        );
+    }
+    return queryString;
+};
+
 /**
  * Maps react-admin queries to a json-server powered REST API
  *
@@ -63,7 +80,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             _end: page != null && perPage != null ? page * perPage : undefined,
             _embed: params?.meta?.embed,
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${getListQueryString(query)}`;
 
         const { headers, json } = await httpClient(url, {
             signal: params?.signal,
@@ -117,7 +134,7 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson): DataProvider => ({
             _end: page * perPage,
             _embed: params?.meta?.embed,
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?${getListQueryString(query)}`;
 
         const { headers, json } = await httpClient(url, {
             signal: params?.signal,
