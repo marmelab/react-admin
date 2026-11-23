@@ -1,11 +1,11 @@
 import * as React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import { ListContext, ResourceContextProvider } from 'ra-core';
 
 import { AdminContext } from '../AdminContext';
 import { SingleFieldList } from './SingleFieldList';
 import { ChipField } from '../field';
-import { Divider, Empty } from './SingleFieldList.stories';
+import { Divider, Empty, Link } from './SingleFieldList.stories';
 
 describe('<SingleFieldList />', () => {
     it('should render a link to the Edit page of the related record by default', () => {
@@ -174,6 +174,29 @@ describe('<SingleFieldList />', () => {
             expect(linkElements).toHaveLength(0);
             expect(screen.queryByText('foo')).not.toBeNull();
             expect(screen.queryByText('bar')).not.toBeNull();
+        });
+    });
+
+    describe('link', () => {
+        it('should accept edit, show, false, or a function', async () => {
+            render(<Link />);
+            await waitFor(() => {
+                expect(
+                    screen
+                        .getAllByRole('link')
+                        .map(link => link.getAttribute('href'))
+                ).toEqual([
+                    '/books/2',
+                    '/books/4',
+                    '/books/1',
+                    '/books/2/show',
+                    '/books/4/show',
+                    '/books/1/show',
+                    '/genres/2/show',
+                    '/genres/4/show',
+                    '/genres/1/show',
+                ]);
+            });
         });
     });
 

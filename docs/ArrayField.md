@@ -56,7 +56,7 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <ArrayField source="tags">
-                <SingleFieldList linkType={false}>
+                <SingleFieldList link={false}>
                     <ChipField source="name" size="small" />
                 </SingleFieldList>
             </ArrayField>
@@ -93,7 +93,7 @@ const PostShow = () => (
 ```jsx
 {/* using SingleFieldList as child */}
 <ArrayField source="tags">
-    <SingleFieldList linkType={false}>
+    <SingleFieldList link={false}>
         <ChipField source="name" />
     </SingleFieldList>
 </ArrayField>
@@ -217,7 +217,7 @@ By default, `<ArrayField>` displays the items in the order they are stored in th
 
 ```jsx
 <ArrayField source="tags" sort={{ field: 'name', order: 'ASC' }}>
-    <SingleFieldList linkType={false}>
+    <SingleFieldList link={false}>
         <ChipField source="name" />
     </SingleFieldList>
 </ArrayField>
@@ -252,7 +252,7 @@ const PostShow = () => (
         <SimpleShowLayout>
             <TextField source="title" />
             <ArrayField source="tags">
-                <SingleFieldList linkType={false}>
+                <SingleFieldList link={false}>
                     <SelectedChip />
                 </SingleFieldList>
             </ArrayField>

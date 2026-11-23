@@ -11,9 +11,12 @@ import {
     sanitizeListRestProps,
     useListContextWithProps,
     useResourceContext,
+    type LinkToFunctionType,
+    type LinkToType,
     type RaRecord,
     RecordRepresentation,
     useCreatePath,
+    useGetPathForRecord,
     RecordContextProvider,
 } from 'ra-core';
 
@@ -35,24 +38,31 @@ import { Link } from '../Link';
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
- * @example Customize the link type
+ * @example Customize the link
  * // By default, it includes a link to the <Edit> page of the related record
  * // (`/orders/:id` in the previous example).
- * // Set the linkType prop to "show" to link to the <Show> page instead.
+ * // Set the link prop to "show" to link to the <Show> page instead.
  * <ReferenceManyField reference="books" target="author_id">
- *     <SingleFieldList linkType="show">
+ *     <SingleFieldList link="show">
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
  *
  * @example Disable the link
  * // You can also prevent `<SingleFieldList>` from adding link to children by
- * // setting `linkType` to false.
+ * // setting `link` to false.
  * <ReferenceManyField reference="books" target="author_id">
- *     <SingleFieldList linkType={false}>
+ *     <SingleFieldList link={false}>
  *         <ChipField source="title" />
  *     </SingleFieldList>
  * </ReferenceManyField>
+ *
+ * @example Compute the link for each record
+ * <ArrayField source="tags">
+ *     <SingleFieldList link={record => `/tags/${record.tag_id}/show`}>
+ *         <ChipField source="name" />
+ *     </SingleFieldList>
+ * </ArrayField>
  */
 export const SingleFieldList = <RecordType extends RaRecord = any>(
     inProps: SingleFieldListProps<RecordType>
@@ -66,6 +76,7 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
         children,
         empty,
         linkType = 'edit',
+        link = linkType,
         gap = 1,
         direction = 'row',
         ...rest
@@ -89,51 +100,75 @@ export const SingleFieldList = <RecordType extends RaRecord = any>(
             className={className}
             {...sanitizeListRestProps(rest)}
         >
-            {data.map((record, rowIndex) => {
-                const resourceLinkPath = !linkType
-                    ? false
-                    : createPath({
-                          resource,
-                          type: linkType,
-                          id: record.id,
-                      });
-
-                if (resourceLinkPath) {
-                    return (
-                        <RecordContextProvider
-                            value={record}
-                            key={record.id ?? `row${rowIndex}`}
+            {data.map((record, rowIndex) => (
+                <RecordContextProvider
+                    value={record}
+                    key={record.id ?? `row${rowIndex}`}
+                >
+                    {typeof link === 'function' ? (
+                        <FunctionLinkItem link={link} resource={resource}>
+                            {children}
+                        </FunctionLinkItem>
+                    ) : (
+                        <SingleFieldListItem
+                            path={
+                                link &&
+                                createPath({
+                                    resource,
+                                    type: link,
+                                    id: record.id,
+                                })
+                            }
                         >
-                            <Link
-                                className={SingleFieldListClasses.link}
-                                to={resourceLinkPath}
-                                onClick={stopPropagation}
-                            >
-                                {children || (
-                                    <DefaultChildComponent clickable />
-                                )}
-                            </Link>
-                        </RecordContextProvider>
-                    );
-                }
-
-                return (
-                    <RecordContextProvider
-                        value={record}
-                        key={record.id ?? `row${rowIndex}`}
-                    >
-                        {children || <DefaultChildComponent />}
-                    </RecordContextProvider>
-                );
-            })}
+                            {children}
+                        </SingleFieldListItem>
+                    )}
+                </RecordContextProvider>
+            ))}
         </Root>
     );
 };
+
+const FunctionLinkItem = ({
+    link,
+    resource,
+    children,
+}: {
+    link: LinkToFunctionType<any>;
+    resource?: string;
+    children?: React.ReactNode;
+}) => {
+    const path = useGetPathForRecord({ link, resource });
+    return <SingleFieldListItem path={path}>{children}</SingleFieldListItem>;
+};
+
+const SingleFieldListItem = ({
+    path,
+    children,
+}: {
+    path?: string | false;
+    children?: React.ReactNode;
+}) =>
+    path ? (
+        <Link
+            className={SingleFieldListClasses.link}
+            to={path}
+            onClick={stopPropagation}
+        >
+            {children || <DefaultChildComponent clickable />}
+        </Link>
+    ) : (
+        <>{children || <DefaultChildComponent />}</>
+    );
 
 export interface SingleFieldListProps<RecordType extends RaRecord = any>
     extends StackProps {
     className?: string;
     empty?: React.ReactNode;
+    link?: LinkToType<RecordType>;
+    /**
+     * @deprecated use link instead
+     */
     linkType?: string | false;
     children?: React.ReactNode;
     // can be injected when using the component without context
