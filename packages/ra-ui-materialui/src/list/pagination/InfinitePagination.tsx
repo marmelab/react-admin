@@ -1,10 +1,6 @@
 import * as React from 'react';
-import { useEffect, useRef } from 'react';
-import {
-    useInfinitePaginationContext,
-    useListContext,
-    useEvent,
-} from 'ra-core';
+import { useContext, useEffect, useRef } from 'react';
+import { InfinitePaginationContext, useListContext, useEvent } from 'ra-core';
 import { Box, CircularProgress, type SxProps, type Theme } from '@mui/material';
 import { Offline } from '../../Offline';
 
@@ -31,14 +27,15 @@ export const InfinitePagination = ({
     sx,
 }: InfinitePaginationProps) => {
     const { isPaused, isPending } = useListContext();
-    const { fetchNextPage, hasNextPage, isFetchingNextPage } =
-        useInfinitePaginationContext();
+    const infinitePaginationContext = useContext(InfinitePaginationContext);
 
-    if (!fetchNextPage) {
+    if (!infinitePaginationContext) {
         throw new Error(
             'InfinitePagination must be used inside an InfinitePaginationContext, usually created by <InfiniteList>. You cannot use it as child of a <List> component.'
         );
     }
+    const { fetchNextPage, hasNextPage, isFetchingNextPage } =
+        infinitePaginationContext;
 
     const [hasRequestedNextPage, setHasRequestedNextPage] =
         React.useState(false);

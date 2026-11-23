@@ -8,8 +8,10 @@ import {
 /**
  * Hook to read the infinite pagination callbacks from the InfinitePaginationContext.
  *
- * Must be used within a <InfinitePaginationContext.Provider> (e.g. as a descendent of <InfiniteList>
- * or <InfiniteListBase>).
+ * Meant to be used within an <InfinitePaginationContext.Provider> (e.g. as a descendent of <InfiniteList>
+ * or <InfiniteListBase>). Outside of it, returns default values with no next or previous page.
+ * To know whether a component is rendered inside an InfinitePaginationContext, read the context
+ * with useContext(InfinitePaginationContext) instead: it is undefined outside of it.
  *
  * @typedef {Object} InfinitePaginationContextValue
  * @prop {Function} fetchNextPage a callback to fetch the next page
@@ -20,4 +22,14 @@ import {
  * @see useInfiniteListController for how the callbacks are built
  */
 export const useInfinitePaginationContext =
-    (): InfinitePaginationContextValue => useContext(InfinitePaginationContext);
+    (): InfinitePaginationContextValue =>
+        useContext(InfinitePaginationContext) ?? defaultContextValue;
+
+const defaultContextValue: InfinitePaginationContextValue = {
+    hasNextPage: false,
+    fetchNextPage: () => Promise.reject('not implemented'),
+    isFetchingNextPage: false,
+    hasPreviousPage: false,
+    fetchPreviousPage: () => Promise.reject('not implemented'),
+    isFetchingPreviousPage: false,
+};
