@@ -28,6 +28,34 @@ describe('inferTypeFromValues', () => {
             children: { type: 'referenceChild' },
         });
     });
+    it.each([
+        ['admin/user_id', 'admin/users'],
+        ['author.userId', 'author.users'],
+    ])(
+        'should keep the path of the field name %s in the reference',
+        (fieldName, reference) => {
+            expect(inferTypeFromValues(fieldName, ['foo', 'bar'])).toEqual({
+                type: 'reference',
+                props: { source: fieldName, reference },
+                children: { type: 'referenceChild' },
+            });
+        }
+    );
+    it.each([
+        '../users_id',
+        'a/../../userId',
+        'users?role=admin&_ids',
+        'users#_id',
+        '%2e%2e/userIds',
+        '..\\users_id',
+        '.\t./users_id',
+        '/evil.example/tag_id',
+    ])('should not turn the field name %s into a resource name', fieldName => {
+        expect(inferTypeFromValues(fieldName, ['foo', 'bar'])).toEqual({
+            type: 'string',
+            props: { source: fieldName },
+        });
+    });
     it('should return a reference array field for field named *_ids', () => {
         expect(inferTypeFromValues('foo_ids', ['foo', 'bar'])).toEqual({
             type: 'referenceArray',

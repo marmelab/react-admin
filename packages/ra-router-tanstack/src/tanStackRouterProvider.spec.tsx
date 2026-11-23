@@ -231,6 +231,19 @@ describe('tanStackRouterProvider', () => {
                     }
                 );
             });
+
+            it('should not throw on params with malformed percent-encoding', () => {
+                expect(matchPath('/posts/:id', '/posts/%')).toEqual({
+                    params: { id: '%' },
+                    pathname: '/posts/%',
+                    pathnameBase: '/posts/%',
+                });
+                expect(matchPath('/posts/:id', '/posts/%E0%A4%A')).toEqual({
+                    params: { id: '%E0%A4%A' },
+                    pathname: '/posts/%E0%A4%A',
+                    pathnameBase: '/posts/%E0%A4%A',
+                });
+            });
         });
 
         describe('splat patterns (path/*)', () => {
@@ -273,6 +286,19 @@ describe('tanStackRouterProvider', () => {
                     params: { '*': 'path/to/file name.txt' },
                     pathname: '/files/path%2Fto%2Ffile%20name.txt',
                     pathnameBase: '/files',
+                });
+            });
+
+            it('should not throw on splat with malformed percent-encoding', () => {
+                expect(matchPath('/posts/*', '/posts/%')).toEqual({
+                    params: { '*': '%' },
+                    pathname: '/posts/%',
+                    pathnameBase: '/posts',
+                });
+                expect(matchPath('/posts/*', '/posts/1/%E0%A4%A')).toEqual({
+                    params: { '*': '1/%E0%A4%A' },
+                    pathname: '/posts/1/%E0%A4%A',
+                    pathnameBase: '/posts',
                 });
             });
         });

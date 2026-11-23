@@ -50,6 +50,17 @@ describe('useCreatePath', () => {
         screen.getByText('/posts/1234');
     });
 
+    it('never creates protocol-relative links', () => {
+        render(
+            <UseCreatePath
+                resource="//example.com/posts"
+                type="edit"
+                id="1234"
+            />
+        );
+        screen.getByText('/example.com/posts/1234');
+    });
+
     it('creates valid links when used without a basename', async () => {
         render(
             <TestMemoryRouter>

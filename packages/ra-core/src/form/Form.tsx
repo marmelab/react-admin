@@ -52,6 +52,13 @@ import { useAugmentedForm } from './useAugmentedForm';
  * @link https://react-hook-form.com/docs/useformcontext
  */
 export function Form<RecordType = any>(props: FormProps<RecordType>) {
+    const record = useRecordContext(props);
+    // Remount the form when the record changes (e.g. with <PrevNextButtons>), as mounted
+    // inputs keep their initial value for the fields the new record doesn't define
+    return <FormForRecord<RecordType> key={record?.id} {...props} />;
+}
+
+function FormForRecord<RecordType = any>(props: FormProps<RecordType>) {
     const {
         children,
         id,

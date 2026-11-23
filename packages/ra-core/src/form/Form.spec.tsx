@@ -244,6 +244,29 @@ describe('Form', () => {
         expect(screen.queryByDisplayValue('User Modified Record 1')).toBeNull();
     });
 
+    it('should not keep the values of the previous record for the fields the new record lacks', async () => {
+        const onSubmit = jest.fn();
+        const MyForm = ({ record }) => (
+            <CoreAdminContext>
+                <Form onSubmit={onSubmit} record={record}>
+                    <Input source="name" />
+                    <button type="submit">Submit</button>
+                </Form>
+            </CoreAdminContext>
+        );
+        const { rerender } = render(<MyForm record={{ id: 1, name: 'Foo' }} />);
+        expect(screen.getByDisplayValue('Foo')).not.toBeNull();
+
+        rerender(<MyForm record={{ id: 2 }} />);
+        await waitFor(() => {
+            expect(screen.queryByDisplayValue('Foo')).toBeNull();
+        });
+        fireEvent.click(screen.getByText('Submit'));
+        await waitFor(() => {
+            expect(onSubmit).toHaveBeenCalledWith({ id: 2 }, expect.anything());
+        });
+    });
+
     it('should update Form state on submit', async () => {
         let isSubmitting;
 

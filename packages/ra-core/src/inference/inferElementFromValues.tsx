@@ -5,6 +5,7 @@ import InferredElement from './InferredElement';
 
 import {
     isObject,
+    isResourceName,
     valuesAreArray,
     valuesAreBoolean,
     valuesAreDate,
@@ -85,7 +86,11 @@ const inferElementFromValues = (
     if (name === 'id' && hasType('id', types)) {
         return new InferredElement(types.id, { source: name });
     }
-    if (name.substr(name.length - 3) === '_id' && hasType('reference', types)) {
+    if (
+        name.substr(name.length - 3) === '_id' &&
+        isResourceName(name.substr(0, name.length - 3)) &&
+        hasType('reference', types)
+    ) {
         const reference = pluralize(name.substr(0, name.length - 3));
         return (
             types.reference &&
@@ -95,7 +100,11 @@ const inferElementFromValues = (
             })
         );
     }
-    if (name.substr(name.length - 2) === 'Id' && hasType('reference', types)) {
+    if (
+        name.substr(name.length - 2) === 'Id' &&
+        isResourceName(name.substr(0, name.length - 2)) &&
+        hasType('reference', types)
+    ) {
         const reference = pluralize(name.substr(0, name.length - 2));
         return (
             types.reference &&
@@ -107,6 +116,7 @@ const inferElementFromValues = (
     }
     if (
         name.substr(name.length - 4) === '_ids' &&
+        isResourceName(name.substr(0, name.length - 4)) &&
         hasType('referenceArray', types)
     ) {
         const reference = pluralize(name.substr(0, name.length - 4));
@@ -120,6 +130,7 @@ const inferElementFromValues = (
     }
     if (
         name.substr(name.length - 3) === 'Ids' &&
+        isResourceName(name.substr(0, name.length - 3)) &&
         hasType('referenceArray', types)
     ) {
         const reference = pluralize(name.substr(0, name.length - 3));
