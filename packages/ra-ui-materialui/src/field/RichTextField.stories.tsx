@@ -49,11 +49,12 @@ export const InSimpleShowLayout = () => (
 const DomPurifyInspector = () => {
     useTimeout(100); // force a redraw after the lazy loading of dompurify
     const dompurifyRemoved = dompurify.removed
-        .map(
-            removal =>
-                `removed attribute ${
-                    removal.attribute.name
-                } from tag <${removal.from.tagName.toLowerCase()}>`
+        .map(removal =>
+            'attribute' in removal
+                ? `removed attribute ${
+                      removal.attribute?.name
+                  } from tag <${removal.from.tagName.toLowerCase()}>`
+                : `removed tag <${removal.element.nodeName.toLowerCase()}>`
         )
         .join(', ');
     return <em>{dompurifyRemoved}</em>;
@@ -73,6 +74,9 @@ published serially, then in its entirety in 1869.
 It is regarded as one of Tolstoy's finest literary achievements and remains a classic of world literature.
 </p>
 <img src="x" onerror="document.getElementById('stolendata').value='credentials';" />
+<style>p { color: red; }</style>
+<form><input name="q" /><button>Search</button></form>
+<dialog open><a href="https://evil.example/login">Session expired, please log in again</a></dialog>
 `,
         }}
     >
@@ -134,6 +138,25 @@ It is regarded as one of Tolstoy's finest literary achievements and remains a cl
         }}
     >
         <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
+    </Wrapper>
+);
+
+export const AllowedTags = ({
+    purifyOptions = { ADD_TAGS: ['input'] },
+}: Pick<RichTextFieldProps, 'purifyOptions'>) => (
+    <Wrapper
+        record={{
+            id: 1,
+            body: `
+<p>Reading list:</p>
+<ul>
+<li><input type="checkbox" checked disabled /> War and Peace</li>
+<li><input type="checkbox" disabled /> Anna Karenina</li>
+</ul>
+`,
+        }}
+    >
+        <RichTextField source="body" purifyOptions={purifyOptions} />
     </Wrapper>
 );
 

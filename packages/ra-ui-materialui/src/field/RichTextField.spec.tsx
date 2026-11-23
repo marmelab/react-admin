@@ -5,7 +5,7 @@ import { RecordContextProvider, I18nContextProvider } from 'ra-core';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 
 import { RichTextField, removeTags } from './RichTextField';
-import { Secure, Themed } from './RichTextField.stories';
+import { AllowedTags, Secure, Themed } from './RichTextField.stories';
 
 describe('stripTags', () => {
     it('should strip HTML tags from input', () => {
@@ -153,6 +153,38 @@ describe('<RichTextField />', () => {
         expect(
             (container.querySelector('#stolendata') as HTMLInputElement)?.value
         ).toEqual('none');
+    });
+
+    it('should remove style, form and dialog elements by default', async () => {
+        const { container } = render(<Secure />);
+        await screen.findByText('War and Peace');
+        expect(container.querySelector('style')).toBeNull();
+        expect(screen.queryByRole('button', { name: 'Search' })).toBeNull();
+        expect(container.querySelector('input[name="q"]')).toBeNull();
+        expect(container.querySelector('dialog')).toBeNull();
+    });
+
+    it.each([
+        ['an array', ['input']],
+        ['an uppercase array', ['INPUT']],
+        ['a function', (tag: string) => tag === 'input'],
+    ])(
+        'should allow the default forbidden tags passed in ADD_TAGS as %s',
+        async (_, ADD_TAGS) => {
+            render(<AllowedTags purifyOptions={{ ADD_TAGS }} />);
+            await screen.findByText('War and Peace');
+            expect(screen.getAllByRole('checkbox')).toHaveLength(2);
+        }
+    );
+
+    it('should allow the default forbidden tags passed in ALLOWED_TAGS', async () => {
+        render(
+            <AllowedTags
+                purifyOptions={{ ALLOWED_TAGS: ['p', 'ul', 'li', 'input'] }}
+            />
+        );
+        await screen.findByText('War and Peace');
+        expect(screen.getAllByRole('checkbox')).toHaveLength(2);
     });
 
     it('should translate emptyText', () => {

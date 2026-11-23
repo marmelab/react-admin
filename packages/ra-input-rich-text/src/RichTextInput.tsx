@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useRef } from 'react';
 import { FormHelperText } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Color } from '@tiptap/extension-color';
@@ -7,7 +7,13 @@ import { Highlight } from '@tiptap/extension-highlight';
 import { Image } from '@tiptap/extension-image';
 import { TextAlign } from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
-import { Editor, EditorContent, EditorOptions, useEditor } from '@tiptap/react';
+import {
+    Attributes,
+    Editor,
+    EditorContent,
+    EditorOptions,
+    useEditor,
+} from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import clsx from 'clsx';
 import { useInput, useResourceContext } from 'ra-core';
@@ -94,12 +100,14 @@ export const RichTextInput = (props: RichTextInputProps) => {
         fieldState,
         formState: { isSubmitted },
     } = useInput({ ...props, source, defaultValue });
+    const { value, onChange } = field;
+    const content = typeof value === 'string' ? value : '';
 
     const editor = useEditor(
         {
             ...editorOptions,
             editable: !disabled && !readOnly,
-            content: field.value,
+            content,
             editorProps: {
                 ...editorOptions?.editorProps,
                 attributes: {
@@ -111,7 +119,9 @@ export const RichTextInput = (props: RichTextInputProps) => {
         [disabled, editorOptions, readOnly, id]
     );
 
-    const { error, invalid, isTouched } = fieldState;
+    const { error, invalid, isDirty, isTouched } = fieldState;
+    // the last value the editor gave to the form
+    const editorValue = useRef<string>();
 
     useEffect(() => {
         // Tiptap v3's Editor.destroy() sets commandManager to null, and the
@@ -123,12 +133,21 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
         const { from, to } = editor.state.selection;
 
-        editor.commands.setContent(field.value, {
+        editor.commands.setContent(content, {
             emitUpdate: false,
             parseOptions: { preserveWhitespace: true },
         });
         editor.commands.setTextSelection({ from, to });
-    }, [editor, field.value]);
+
+        // The editor drops the markup it doesn't support, so a value prefilled
+        // in the form (e.g. from the location) is replaced by what the editor shows.
+        // An unedited record value (not dirty) is left as is.
+        if (!isDirty || value === editorValue.current) return;
+        editorValue.current = editor.isEmpty ? '' : editor.getHTML();
+        if (editorValue.current !== value) {
+            onChange(editorValue.current);
+        }
+    }, [editor, content, value, onChange, isDirty]);
 
     useEffect(() => {
         if (!editor) {
@@ -137,12 +156,14 @@ export const RichTextInput = (props: RichTextInputProps) => {
 
         const handleEditorUpdate = () => {
             if (editor.isEmpty) {
+                editorValue.current = '';
                 field.onChange('');
                 field.onBlur();
                 return;
             }
 
             const html = editor.getHTML();
+            editorValue.current = html;
             field.onChange(html);
             field.onBlur();
         };
@@ -189,6 +210,8 @@ export const RichTextInput = (props: RichTextInputProps) => {
     );
 };
 
+const PLAIN_COLOR = /^[#\w\s(),.%/-]+$/;
+
 export const DefaultEditorOptions: Partial<EditorOptions> = {
     extensions: [
         StarterKit,
@@ -204,7 +227,26 @@ export const DefaultEditorOptions: Partial<EditorOptions> = {
         }),
         TextStyle, // Required by Color
         Color,
-        Highlight.configure({ multicolor: true }),
+        Highlight.extend({
+            addAttributes() {
+                const attributes: Attributes = this.parent?.() ?? {};
+                const renderColor = attributes.color?.renderHTML;
+                if (!renderColor) {
+                    return attributes;
+                }
+                return {
+                    ...attributes,
+                    color: {
+                        ...attributes.color,
+                        // the color is written in the style attribute as is
+                        renderHTML: attrs =>
+                            PLAIN_COLOR.test(attrs.color ?? '')
+                                ? renderColor(attrs)
+                                : {},
+                    },
+                };
+            },
+        }).configure({ multicolor: true }),
     ],
 };
 

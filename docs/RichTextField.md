@@ -10,7 +10,7 @@ This component displays some HTML content. The content is "rich" (i.e. unescaped
 
 ![RichTextField](./img/rich-text-field.png)
 
-This component leverages [the `dangerouslySetInnerHTML` attribute](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html), but uses [the DomPurify library](https://github.com/cure53/DOMPurify) to sanitize the HTML before rendering it. It means it is **safe from Cross-Site Scripting (XSS) attacks** - but it's still a good practice to sanitize the value server-side.
+This component leverages [the `dangerouslySetInnerHTML` attribute](https://react.dev/reference/react-dom/components/common#dangerously-setting-the-inner-html), but uses [the DomPurify library](https://github.com/cure53/DOMPurify) to sanitize the HTML before rendering it. It means it is **safe from Cross-Site Scripting (XSS) attacks** - but it's still a good practice to sanitize the value server-side. By default, `<RichTextField>` also removes the `style`, `form`, `input`, `button`, `select`, `textarea` and `dialog` elements.
 
 ## Usage
 
@@ -51,6 +51,16 @@ For instance, you can use the `ADD_ATTR` option to allow additional attributes, 
 import { RichTextField } from 'react-admin';
 
 <RichTextField source="body" purifyOptions={{ ADD_ATTR: ['target'] }} />
+```
+{% endraw %}
+
+By default, `<RichTextField>` forbids the `style`, `form`, `input`, `button`, `select`, `textarea` and `dialog` tags. The tags you pass in `FORBID_TAGS` are forbidden in addition to these. To allow some of these tags, pass them in `ADD_TAGS` (or in `ALLOWED_TAGS`):
+
+{% raw %}
+```jsx
+import { RichTextField } from 'react-admin';
+
+<RichTextField source="body" purifyOptions={{ ADD_TAGS: ['input'] }} />
 ```
 {% endraw %}
 
