@@ -84,12 +84,12 @@ You can customize how each record is displayed by passing a Field component as c
 
 `<SingleFieldList>` accepts the following props:
 
-| Prop        | Required | Type                      | Default | Description                                     |
-| ----------- | -------- | ------------------------- | ------- | ----------------------------------------------- |
-| `children`  | Optional | `ReactNode`               |         | React element to render for each record         |
-| `empty`     | Optional | `ReactNode`               |         | React element to display when the list is empty |
-| `linkType`  | Optional | `'edit' | 'show' | false` | `edit`  | The target of the link on each item             |
-| `sx`        | Optional | `object`                  |         | The sx props of the Material UI Box component   |
+| Prop        | Required | Type                                 | Default | Description                                     |
+| ----------- | -------- | ------------------------------------ | ------- | ----------------------------------------------- |
+| `children`  | Optional | `ReactNode`                          |         | React element to render for each record         |
+| `empty`     | Optional | `ReactNode`                          |         | React element to display when the list is empty |
+| `link`      | Optional | `'edit' | 'show' | false | function` | `edit`  | The target of the link on each item             |
+| `sx`        | Optional | `object`                             |         | The sx props of the Material UI Box component   |
 
 Additional props are passed down to the underlying [Material UI `<Stack>` component](https://mui.com/material-ui/react-stack/).
 
@@ -113,9 +113,9 @@ When the list is empty, `<SingleFieldList>` displays nothing. You can customize 
 <SingleFieldList empty={<p>Nothing to display</p>} />
 ```
 
-## `linkType`
+## `link`
 
-The `<SingleFieldList>` items link to the edition page by default. You can set the `linkType` prop to `show` to link to the `<Show>` page instead.
+The `<SingleFieldList>` items link to the edition page by default. You can set the `link` prop to `show` to link to the `<Show>` page instead.
 
 ```jsx
 // Display all the tags for the current post
@@ -124,15 +124,28 @@ The `<SingleFieldList>` items link to the edition page by default. You can set t
     reference="tags"
     source="tags"
 >
-    <SingleFieldList linkType="show" />
+    <SingleFieldList link="show" />
 </ReferenceArrayField>
 ```
 
-`linkType` accepts the following values:
+`link` accepts the following values:
 
-* `linkType="edit"`: links to the edit page. This is the default behavior.
-* `linkType="show"`: links to the show page.
-* `linkType={false}`: does not create any link.
+* `link="edit"`: links to the edit page. This is the default behavior.
+* `link="show"`: links to the show page.
+* `link={false}`: does not create any link.
+* `link={(record, resource) => path}`: links to the path returned by the function. The function can also return `'edit'`, `'show'`, or `false`.
+
+A function is useful when the link depends on the record. For instance, to link embedded records to the resource they reference:
+
+```jsx
+<ArrayField source="tags">
+    <SingleFieldList link={record => `/tags/${record.tag_id}/show`}>
+        <ChipField source="name" />
+    </SingleFieldList>
+</ArrayField>
+```
+
+**Tip**: This prop used to be called `linkType`. `linkType` still works, but is deprecated.
 
 ## `sx`: CSS API
 

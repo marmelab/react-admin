@@ -7,6 +7,7 @@ import {
     TestMemoryRouter,
 } from 'ra-core';
 import { Typography, Divider as MuiDivider } from '@mui/material';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 import { SingleFieldList } from './SingleFieldList';
 import { ChipField } from '../field/ChipField';
@@ -35,26 +36,28 @@ const Wrapper = ({
         data,
     });
     return (
-        <TestMemoryRouter>
-            <ResourceDefinitionContextProvider
-                definitions={{
-                    books: {
-                        name: 'books',
-                        hasList: true,
-                        hasEdit: true,
-                        hasShow: true,
-                        hasCreate: true,
-                        recordRepresentation: 'name',
-                    },
-                }}
-            >
-                <ResourceContextProvider value="books">
-                    <ListContextProvider value={listContextValue}>
-                        {children}
-                    </ListContextProvider>
-                </ResourceContextProvider>
-            </ResourceDefinitionContextProvider>
-        </TestMemoryRouter>
+        <QueryClientProvider client={new QueryClient()}>
+            <TestMemoryRouter>
+                <ResourceDefinitionContextProvider
+                    definitions={{
+                        books: {
+                            name: 'books',
+                            hasList: true,
+                            hasEdit: true,
+                            hasShow: true,
+                            hasCreate: true,
+                            recordRepresentation: 'name',
+                        },
+                    }}
+                >
+                    <ResourceContextProvider value="books">
+                        <ListContextProvider value={listContextValue}>
+                            {children}
+                        </ListContextProvider>
+                    </ResourceContextProvider>
+                </ResourceDefinitionContextProvider>
+            </TestMemoryRouter>
+        </QueryClientProvider>
     );
 };
 const Title = ({ children }) => (
@@ -94,14 +97,16 @@ export const Children = () => (
     </Wrapper>
 );
 
-export const LinkType = () => (
+export const Link = () => (
     <Wrapper>
         <Title>Default (Edit link)</Title>
         <SingleFieldList />
         <Title>Show link</Title>
-        <SingleFieldList linkType="show" />
+        <SingleFieldList link="show" />
         <Title>No link</Title>
-        <SingleFieldList linkType={false} />
+        <SingleFieldList link={false} />
+        <Title>Function link</Title>
+        <SingleFieldList link={record => `/genres/${record.id}/show`} />
     </Wrapper>
 );
 
