@@ -11,20 +11,20 @@ const escapeFormula = (value: string) =>
         ? `'${value}`
         : value;
 
-// jsonexport doesn't quote a value with a lone \r, which spreadsheets read as
-// a line break
-const escapeValue = (value: string) =>
-    escapeFormula(value).replace(/\r(?!\n)/g, '\n');
-
-// jsonexport doesn't quote the headers, which come from the record keys
-const escapeHeader = (header: string) => {
-    const text = escapeFormula(header);
-    return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-};
+// With forceTextDelimiter, jsonexport wraps the headers in quotes before
+// calling mapHeaders, without escaping the quotes they contain
+const escapeHeader = (header: string) =>
+    `"${escapeFormula(header.slice(1, -1)).replace(/"/g, '""')}"`;
 
 export const defaultExporter: Exporter = (data, _, __, resource) =>
     jsonExport(
         data,
-        { typeHandlers: { String: escapeValue }, mapHeaders: escapeHeader },
+        {
+            typeHandlers: { String: escapeFormula },
+            mapHeaders: escapeHeader,
+            // spreadsheets using another separator (e.g. ; in some locales)
+            // would otherwise split cells inside unquoted values
+            forceTextDelimiter: true,
+        },
         (err, csv) => downloadCSV(csv, resource)
     );

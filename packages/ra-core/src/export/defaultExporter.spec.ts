@@ -17,7 +17,7 @@ describe('defaultExporter', () => {
                 { id: 2, title: 'World, "quoted"', views: 3, price: '+2' },
             ])
         ).toEqual(
-            'id,title,views,price\n1,Hello,-5,-1.5\n2,"World, ""quoted""",3,+2'
+            '"id","title","views","price"\n"1","Hello","-5","-1.5"\n"2","World, ""quoted""","3","+2"'
         );
         expect((downloadCSV as jest.Mock).mock.calls[0][1]).toEqual('posts');
     });
@@ -34,14 +34,20 @@ describe('defaultExporter', () => {
                 },
             ]).split('\n')
         ).toEqual([
-            "id,name,phone,handle,'-note",
-            "1,'== Title ==,'+33 6 12 34 56 78,'@alice,'\t-x",
+            `"id","name","phone","handle","'-note"`,
+            `"1","'== Title ==","'+33 6 12 34 56 78","'@alice","'\t-x"`,
         ]);
+    });
+
+    it('should quote the values containing another separator', () => {
+        expect(exportToCsv([{ id: 1, name: 'foo;=bar' }])).toEqual(
+            '"id","name"\n"1","foo;=bar"'
+        );
     });
 
     it('should quote the values containing a lone carriage return', () => {
         expect(exportToCsv([{ id: 1, name: 'Bob\r2', role: 'admin' }])).toEqual(
-            'id,name,role\n1,"Bob\n2",admin'
+            '"id","name","role"\n"1","Bob\r2","admin"'
         );
     });
 
@@ -55,9 +61,9 @@ describe('defaultExporter', () => {
             },
         ]);
         expect(csv.split('\n')).toEqual([
-            'id,title,"meta.x',
+            '"id","title","meta.x',
             'y,z","meta.a,b","say ""hi"""',
-            '1,Hello,true,1,3',
+            '"1","Hello","true","1","3"',
         ]);
     });
 });
