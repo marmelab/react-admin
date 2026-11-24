@@ -14180,19 +14180,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"i18next@npm:^26.0.7":
-  version: 26.3.0
-  resolution: "i18next@npm:26.3.0"
-  peerDependencies:
-    typescript: ^5 || ^6
-  peerDependenciesMeta:
-    typescript:
-      optional: true
-  checksum: e5dc29171d9a05746b31ad68e179ce2f36459c0a20d2d6733837961fe9492d1b48706804fa12059aa91dbb004655cb54ade817eb9e72371649f26d6dba1ca211
-  languageName: node
-  linkType: hard
-
-"i18next@npm:^26.3.4":
+"i18next@npm:^26.0.7, i18next@npm:^26.3.4":
   version: 26.3.4
   resolution: "i18next@npm:26.3.4"
   peerDependencies:
