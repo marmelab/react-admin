@@ -18,6 +18,22 @@ You might prefer this package over `ra-i18n-polyglot` when:
 npm install --save ra-i18n-i18next
 ```
 
+### Upgrading To 5.16
+
+Starting with version 5.16, `ra-i18n-i18next` requires i18next 26.3.4 or later. If your application imports `i18next` directly (e.g. to pass a custom [`i18nextInstance`](#i18nextinstance)), upgrade it to the same version:
+
+```sh
+npm install --save i18next@^26.3.4
+```
+
+i18next 24 to 26 removed some initialization options. If you pass them in `options`, replace them:
+
+- `initImmediate`: use `initAsync` instead
+- `interpolation.format`: use the [built-in formatter](https://www.i18next.com/translation-function/formatting) instead
+- `compatibilityJSON: 'v3'`: convert your translations to the v4 JSON format with [i18next-v4-format-converter](https://github.com/i18next/i18next-v4-format-converter)
+
+See the [i18next changelog](https://github.com/i18next/i18next/blob/master/CHANGELOG.md) for the full list of changes.
+
 ## Usage
 
 ```tsx
