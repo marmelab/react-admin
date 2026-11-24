@@ -186,6 +186,8 @@ export const BookList = () => (
 );
 ```
 
+**Tip**: Outside of an `<InfiniteListBase>`, `useInfinitePaginationContext` returns default values with no next or previous page. To know whether a component is rendered inside an `<InfiniteListBase>`, read the `InfinitePaginationContext` with `useContext(InfinitePaginationContext)` instead: it is `undefined` outside of an `<InfiniteListBase>`.
+
 ## Showing The Record Count
 
 You can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:

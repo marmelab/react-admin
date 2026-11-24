@@ -177,6 +177,16 @@ export const BookList = () => (
 
 {% endraw %}
 
+**Tip**: Outside of an `<InfiniteList>`, `useInfinitePaginationContext` returns default values with no next or previous page. To know whether a component is rendered inside an `<InfiniteList>` (e.g. to reuse the same pagination component in a `<List>`), read the `InfinitePaginationContext` directly: it is `undefined` outside of an `<InfiniteList>`.
+
+```jsx
+import { useContext } from 'react';
+import { InfinitePaginationContext, Pagination } from 'react-admin';
+
+const AdaptivePagination = () =>
+    useContext(InfinitePaginationContext) ? <LoadMore /> : <Pagination />;
+```
+
 ## Showing The Record Count
 
 One drawback of the `<InfiniteList>` component is that it doesn't show the number of results. To fix this, you can use `useListContext` to access the `total` property of the list, and render the total number of results in a sticky footer:

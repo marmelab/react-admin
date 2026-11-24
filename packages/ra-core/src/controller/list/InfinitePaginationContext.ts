@@ -12,7 +12,7 @@ import { InfiniteListControllerResult } from './useInfiniteListController';
 
  * @example
  *
- * import { useListController, ListPaginationContext } from 'ra-core';
+ * import { useInfiniteListController, InfinitePaginationContext } from 'ra-core';
  *
  * const List = props => {
  *     const { fetchNextPage, fetchPreviousPage } = useInfiniteListController(props);
@@ -23,15 +23,9 @@ import { InfiniteListControllerResult } from './useInfiniteListController';
  *     );
  * };
  */
-export const InfinitePaginationContext =
-    createContext<InfinitePaginationContextValue>({
-        hasNextPage: false,
-        fetchNextPage: () => Promise.reject('not implemented'),
-        isFetchingNextPage: false,
-        hasPreviousPage: false,
-        fetchPreviousPage: () => Promise.reject('not implemented'),
-        isFetchingPreviousPage: false,
-    });
+export const InfinitePaginationContext = createContext<
+    InfinitePaginationContextValue | undefined
+>(undefined);
 
 InfinitePaginationContext.displayName = 'InfinitePaginationContext';
 
