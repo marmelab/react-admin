@@ -1,4 +1,10 @@
 import {
+    ApolloClient,
+    ApolloLink,
+    InMemoryCache,
+    Observable,
+} from '@apollo/client';
+import {
     introspectSchema,
     isResourceExcluded,
     isResourceIncluded,
@@ -240,6 +246,50 @@ describe('introspection', () => {
                     [DELETE]: { name: 'deleteIHavePartialCrud' },
                 },
             ]);
+        });
+    });
+
+    describe('introspectSchema with an Apollo cache', () => {
+        // Some servers (e.g. pg_graphql) return the name of the type as the
+        // __typename of its introspection entry instead of "__Type".
+        const bigFloat = {
+            kind: 'SCALAR',
+            name: 'BigFloat',
+            description: 'A high precision floating point value',
+            fields: null,
+            interfaces: [],
+            possibleTypes: null,
+            enumValues: [],
+            inputFields: null,
+            __typename: 'BigFloat',
+        };
+        const schema = {
+            queryType: { name: 'Query', kind: 'OBJECT', __typename: '__Type' },
+            mutationType: null,
+            subscriptionType: null,
+            directives: [],
+            types: [bigFloat],
+            __typename: '__Schema',
+        };
+        const link = new ApolloLink(
+            () =>
+                new Observable(observer => {
+                    observer.next({ data: { __schema: schema } });
+                    observer.complete();
+                })
+        );
+
+        it('keeps the fields of types whose __typename is not __Type', async () => {
+            const client = new ApolloClient({
+                cache: new InMemoryCache(),
+                link,
+            });
+
+            const introspectionResults = await introspectSchema(client, {
+                operationNames: {},
+            });
+
+            expect(introspectionResults.types).toEqual([bigFloat]);
         });
     });
 });

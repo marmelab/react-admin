@@ -55,7 +55,9 @@ const fetchSchema = (
 ): Promise<IntrospectionSchema> =>
     client
         .query<IntrospectionQuery>({
-            fetchPolicy: 'network-only',
+            // Skip the cache entirely: reading the result back through it drops the
+            // fields of types whose __typename is not __Type (e.g. pg_graphql)
+            fetchPolicy: 'no-cache',
             query: gql`
                 ${getIntrospectionQuery()}
             `,
