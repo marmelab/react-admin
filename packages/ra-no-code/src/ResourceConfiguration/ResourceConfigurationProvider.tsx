@@ -7,6 +7,7 @@ import {
     ResourceConfigurationContext,
     ResourceConfigurationContextValue,
 } from './ResourceConfigurationContext';
+import { getResourceConfiguration } from './getResourceConfiguration';
 
 export const ResourceConfigurationProvider = ({
     children,
@@ -46,7 +47,7 @@ export const ResourceConfigurationProvider = ({
         (resource: ResourceConfiguration) => {
             setResources(current => {
                 const allResources = current || {};
-                if (allResources[resource.name]) {
+                if (getResourceConfiguration(allResources, resource.name)) {
                     return allResources;
                 }
                 return {
@@ -62,14 +63,14 @@ export const ResourceConfigurationProvider = ({
         (name: string, newResource: Partial<ResourceConfiguration>) => {
             setResources(current => {
                 const allResources = current || {};
-                const resource = allResources[name];
+                const resource = getResourceConfiguration(allResources, name);
                 if (!resource) {
                     return allResources;
                 }
                 const nextResources: ResourceConfigurationMap = {
                     ...current,
                     [name]: {
-                        ...current[name],
+                        ...resource,
                         ...newResource,
                     },
                 };
@@ -83,7 +84,10 @@ export const ResourceConfigurationProvider = ({
         (name: string) => {
             setResources(current => {
                 const allResources = current || {};
-                const resourceToRemove = allResources[name];
+                const resourceToRemove = getResourceConfiguration(
+                    allResources,
+                    name
+                );
 
                 if (!resourceToRemove) {
                     return allResources;

@@ -1,5 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { ResourceConfiguration } from './ResourceConfigurationContext';
+import { getResourceConfiguration } from './getResourceConfiguration';
 import { useResourcesConfiguration } from './useResourcesConfiguration';
 
 /**
@@ -34,7 +35,7 @@ export const useResourceConfiguration = (
     const context = useMemo<
         [ResourceConfiguration, ResourceDefinitionStateActions]
     >(
-        () => [resources[name], { update, remove }],
+        () => [getResourceConfiguration(resources, name), { update, remove }],
         [name, remove, resources, update]
     );
 

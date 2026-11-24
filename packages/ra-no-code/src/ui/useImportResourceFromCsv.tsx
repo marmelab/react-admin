@@ -1,12 +1,15 @@
 import { useState } from 'react';
 import { parse } from 'papaparse';
 import { getValuesFromRecords, RaRecord, useDataProvider } from 'react-admin';
+import isObject from 'lodash/isObject.js';
 import set from 'lodash/set.js';
+import toPath from 'lodash/toPath.js';
 
 import {
     useResourcesConfiguration,
     getFieldDefinitionsFromRecords,
 } from '../ResourceConfiguration';
+import { getResourceConfiguration } from '../ResourceConfiguration/getResourceConfiguration';
 
 /**
  * This hooks returns a tuple with its first element being a boolean indicating whether an import is ongoing, and the second element a function to call with a resource name and a file to import.
@@ -21,7 +24,10 @@ export const useImportResourceFromCsv = (): [boolean, ImportResource] => {
 
     const importResource = async (resource: string, file: File) => {
         setParsing(true);
-        const resourceAlreadyExists = !!resources[resource];
+        const resourceAlreadyExists = !!getResourceConfiguration(
+            resources,
+            resource
+        );
         const { data, meta } = await parseCSV(file);
         const records = sanitizeRecords(
             data.filter(record => !!record.id),
@@ -87,24 +93,48 @@ const sanitizeRecords = (
     );
 };
 
+// Returns true if the path goes through a property that the record inherits instead of owning
+const pathFollowsInheritedProperty = (record, path: string) => {
+    let current = record;
+    return toPath(path)
+        .slice(0, -1)
+        .some(key => {
+            // a missing or primitive value becomes a new object when the column is written
+            const object = isObject(current) ? current : {};
+            current = object[key];
+            return (
+                key in object &&
+                !Object.prototype.hasOwnProperty.call(object, key)
+            );
+        });
+};
+
 const sanitizeRecord = (records, values, field) => {
     if (field.split('.').length > 1) {
         return records.map(record => {
             const { [field]: pathField, ...newRecord } = record;
+            if (pathFollowsInheritedProperty(newRecord, field)) {
+                return newRecord;
+            }
             return set(newRecord, field, record[field]);
         });
     }
 
-    const fieldValues = values[field];
+    // a header can be missing from the records, e.g. __proto__
+    const fieldValues = Object.prototype.hasOwnProperty.call(values, field)
+        ? values[field]
+        : [];
 
     if (
         fieldValues.some(value =>
             ['false', 'true'].includes(value.toString().toLowerCase())
         )
     ) {
-        return records.map(record =>
-            set(record, field, Boolean(record[field]))
-        );
+        // field is a key here, not a path
+        return records.map(record => ({
+            ...record,
+            [field]: Boolean(record[field]),
+        }));
     }
 
     return records;
