@@ -22,8 +22,8 @@ Here is a form toolbar that displays the lock status of the current record:
 const FormToolbar = () => {
     const resource = useResourceContext();
     const record = useRecordContext();
-    const { isLoading: identityLoading, identity } = useGetIdentity();
-    const { isLoading: lockLoading, data: lock } = useGetLock(resource, {
+    const { isPending: identityLoading, identity } = useGetIdentity();
+    const { isPending: lockLoading, data: lock } = useGetLock(resource, {
         id: record.id,
     });
 

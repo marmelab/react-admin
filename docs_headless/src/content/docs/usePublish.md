@@ -34,7 +34,7 @@ import { useInput, useGetIdentity } from 'ra-core';
 import { usePublish } from '@react-admin/ra-core-ee';
 
 const MessageInput = ({ channel }) => {
-    const [publish, { isLoading }] = usePublish();
+    const [publish, { isPending }] = usePublish();
     const { id, field, fieldState } = useInput({ source: 'message' });
     const { identity } = useGetIdentity();
 
@@ -75,13 +75,13 @@ See the [CRUD events](https://react-admin-ee.marmelab.com/documentation/ra-realt
 `usePublish` returns an array with the following values:
 
 -   `publish`: The callback to publish an event to a topic.
--   `state`: The state of the mutation ([see react-query documentation](https://react-query-v3.tanstack.com/reference/useMutation)). Notable properties:
-    -   `isLoading`: Whether the mutation is loading.
+-   `state`: The state of the mutation ([see react-query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation)). Notable properties:
+    -   `isPending`: Whether the mutation is in progress.
     -   `error`: The error if the mutation failed.
     -   `data`: The published event if the mutation succeeded.
 
 ```tsx
-const [publish, { isLoading, error, data }] = usePublish();
+const [publish, { isPending, error, data }] = usePublish();
 ```
 
 ## Callback Parameters
@@ -90,7 +90,7 @@ The `publish` callback accepts the following parameters:
 
 -   `topic`: The topic to publish the event on.
 -   `event`: The event to publish. It must contain a `type` property.
--   `options`: `useMutation` options ([see react-query documentation](https://react-query-v3.tanstack.com/reference/useMutation)). Notable properties:
+-   `options`: `useMutation` options ([see react-query documentation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation)). Notable properties:
     -   `onSuccess`: A callback to call when the event is published. It receives the published event as its first argument.
     -   `onError`: A callback to call when the event could not be published. It receives the error as its first argument.
     -   `retry`: Whether to retry on failure. Defaults to `0`.

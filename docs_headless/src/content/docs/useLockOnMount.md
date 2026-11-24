@@ -30,10 +30,10 @@ import { EditBase, Form } from 'ra-core';
 import { useLockOnMount } from '@react-admin/ra-core-ee';
 
 const LockStatus = () => {
-    const { isLocked, error, isLoading } = useLockOnMount();
+    const { isLocked, error, isPending } = useLockOnMount();
     return (
         <div>
-            {isLoading && <p>Locking post...</p>}
+            {isPending && <p>Locking post...</p>}
             {error && (
                 <p>
                     <div>Failed to lock</div>
@@ -74,23 +74,23 @@ const PostEdit = () => (
 You can call `useLockOnMount` with no parameter, and it will guess the resource and record id from the context (or the route):
 
 ```tsx
-const { isLocked, error, isLoading } = useLockOnMount();
+const { isLocked, error, isPending } = useLockOnMount();
 ```
 
 Or you can provide them explicitly:
 
 ```tsx
-const { isLocked, error, isLoading } = useLockOnMount({
+const { isLocked, error, isPending } = useLockOnMount({
     resource: 'venues',
     id: 123,
     identity: 'John Doe',
 });
 ```
 
-**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://react-query-v3.tanstack.com/guides/mutations#retry) to try again later:
+**Tip**: If the record can't be locked because another user is already locking it, you can use [`react-query`'s retry feature](https://tanstack.com/query/v5/docs/framework/react/guides/mutations#retry) to try again later:
 
 ```tsx
-const { isLocked, error, isLoading } = useLockOnMount({
+const { isLocked, error, isPending } = useLockOnMount({
     lockMutationOptions: {
         // retry every 5 seconds, until the lock is acquired
         retry: true,
