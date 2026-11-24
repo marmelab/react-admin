@@ -30,10 +30,10 @@ import { useLockOnMount } from '@react-admin/ra-core-ee';
 import { Alert, AlertTitle, Box, Button } from '@material-ui/core';
 
 const LockStatus = () => {
-    const [doLock, { data, error, isLoading }] = useLockOnCall();
+    const [doLock, { data, error, isPending }] = useLockOnCall();
     return (
         <div>
-            {isLoading ? (
+            {isPending ? (
                 <div>Locking post...</div>
             ) : error ? (
                 <div>
@@ -79,7 +79,7 @@ const PostEdit = () => (
 const LockButton = ({ resource, id, identity }) => {
     const [doLock, lockMutation] = useLockOnCall({ resource, id, identity });
     return (
-        <button onClick={() => {doLock();}} disabled={lockMutation.isLoading}>
+        <button onClick={() => {doLock();}} disabled={lockMutation.isPending}>
             Lock
         </button>
     );

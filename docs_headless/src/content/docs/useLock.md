@@ -17,7 +17,7 @@ yarn add @react-admin/ra-core-ee
 ## Usage
 
 ```tsx
-const [lock, { isLoading, error }] = useLock(
+const [lock, { isPending, error }] = useLock(
     resource,
     { id, identity, meta },
     options

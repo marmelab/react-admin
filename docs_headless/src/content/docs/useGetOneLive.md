@@ -22,10 +22,10 @@ import { useGetOneLive } from '@react-admin/ra-core-ee';
 
 const UserProfile = () => {
     const record = useRecordContext();
-    const { data, isLoading, error } = useGetOneLive('users', {
+    const { data, isPending, error } = useGetOneLive('users', {
         id: record.id,
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {

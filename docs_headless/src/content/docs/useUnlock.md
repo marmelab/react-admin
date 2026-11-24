@@ -17,7 +17,7 @@ yarn add @react-admin/ra-core-ee
 ## Usage
 
 ```tsx
-const [unlock, { isLoading, error }] = useUnlock(
+const [unlock, { isPending, error }] = useUnlock(
     resource,
     { id, identity, meta },
     options

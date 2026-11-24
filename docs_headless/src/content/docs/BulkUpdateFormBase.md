@@ -42,7 +42,7 @@ const UserList = () => (
 | ----------------- | ------------- | -------- | --------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `children`        | Required (\*) | Element  | -               | A form component                                                                                                                   |
 | `mutationMode`    | -             | `string` | `'pessimistic'` | The mutation mode (`'undoable'`, `'pessimistic'` or `'optimistic'`)                                                                |
-| `mutationOptions` | -             | Object   | -               | Mutation options passed to [react-query](https://tanstack.com/query/v3/docs/react/reference/useMutation) when calling `updateMany` |
+| `mutationOptions` | -             | Object   | -               | Mutation options passed to [react-query](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation) when calling `updateMany` |
 
 ## `children`
 
@@ -84,7 +84,7 @@ const UserRoleBulkUpdateForm = () => (
 
 ## `mutationOptions` and `meta`
 
-The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://react-query.tanstack.com/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
+The `mutationOptions` prop can be used to pass options to the [react-query mutation](https://tanstack.com/query/v5/docs/framework/react/reference/useMutation#options) used to call the dataProvider's `updateMany` method.
 
 ```tsx
 import * as React from 'react';

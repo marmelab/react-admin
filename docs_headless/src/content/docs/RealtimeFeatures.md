@@ -215,7 +215,7 @@ import { useGetLockLive } from '@react-admin/ra-core-ee';
 import { TextInput, SelectInput } from 'your-ra-ui-library';
 
 export const NewMessageForm = () => {
-    const [create, { isLoading: isCreating }] = useCreate();
+    const [create, { isPending: isCreating }] = useCreate();
     const record = useRecordContext();
 
     const { data: lock } = useGetLockLive('tickets', { id: record.id });

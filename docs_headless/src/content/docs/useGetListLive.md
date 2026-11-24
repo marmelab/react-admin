@@ -20,11 +20,11 @@ yarn add @react-admin/ra-core-ee
 import { useGetListLive } from '@react-admin/ra-core-ee';
 
 const LatestNews = () => {
-    const { data, total, isLoading, error } = useGetListLive('posts', {
+    const { data, total, isPending, error } = useGetListLive('posts', {
         pagination: { page: 1, perPage: 10 },
         sort: { field: 'published_at', order: 'DESC' },
     });
-    if (isLoading) {
+    if (isPending) {
         return <div>Loading...</div>;
     }
     if (error) {
