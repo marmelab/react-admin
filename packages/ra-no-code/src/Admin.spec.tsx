@@ -202,4 +202,36 @@ describe('Admin', () => {
         });
         await screen.findByText('1-2 of 2');
     });
+
+    it('should import CSV headers named after an object method', async () => {
+        window.localStorage.clear();
+        window.location.hash = '';
+        const file = new File(
+            [
+                'id,name,constructor,toString,__proto__\n' +
+                    '1,Alice,a,b,c\n' +
+                    '2,Bob,d,e,f\n',
+            ],
+            'people.csv',
+            { type: 'text/csv' }
+        );
+        render(
+            <ApplicationContext.Provider
+                value={{
+                    application: { name: 'test', created_at: new Date() },
+                    onExit: () => {},
+                }}
+            >
+                <Admin />
+            </ApplicationContext.Provider>
+        );
+        userEvents.upload(await screen.findByLabelText('CSV File'), file);
+        await screen.findByDisplayValue('people');
+        fireEvent.click(screen.getByText('Import'));
+        await screen.findByText('People', {
+            selector: '#react-admin-title *',
+        });
+        await screen.findByText('1-2 of 2');
+        await screen.findByText('Alice');
+    });
 });

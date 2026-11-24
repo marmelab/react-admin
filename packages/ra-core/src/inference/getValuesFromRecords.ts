@@ -27,7 +27,7 @@
 export default (records: any[]) =>
     records.reduce((values, record) => {
         Object.keys(record).forEach(fieldName => {
-            if (!values[fieldName]) {
+            if (!Object.prototype.hasOwnProperty.call(values, fieldName)) {
                 values[fieldName] = [];
             }
             if (record[fieldName] != null) {

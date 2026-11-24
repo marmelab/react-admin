@@ -31,6 +31,17 @@ describe('getValuesFromRecords', () => {
         });
     });
 
+    it('should accept fields named after an object method', () => {
+        const records = [
+            { constructor: 'a', toString: 'b' },
+            { constructor: 'c', toString: 'd' },
+        ];
+        expect(getValuesFromRecords(records)).toEqual({
+            constructor: ['a', 'c'],
+            toString: ['b', 'd'],
+        });
+    });
+
     it('should keep duplicate values', () => {
         const records = [
             { a: 1, b: 1 },

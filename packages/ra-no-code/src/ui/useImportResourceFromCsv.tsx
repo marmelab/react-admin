@@ -120,7 +120,10 @@ const sanitizeRecord = (records, values, field) => {
         });
     }
 
-    const fieldValues = values[field];
+    // a header can be missing from the records, e.g. __proto__
+    const fieldValues = Object.prototype.hasOwnProperty.call(values, field)
+        ? values[field]
+        : [];
 
     if (
         fieldValues.some(value =>
