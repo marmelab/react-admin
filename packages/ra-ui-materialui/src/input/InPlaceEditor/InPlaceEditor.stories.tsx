@@ -37,8 +37,9 @@ const Wrapper = ({
         process.env.NODE_ENV !== 'test',
         500
     ),
+    initialEntries = undefined as string[] | undefined,
 }) => (
-    <TestMemoryRouter>
+    <TestMemoryRouter initialEntries={initialEntries}>
         <QueryClientProvider client={new QueryClient()}>
             <DataProviderContext.Provider value={dataProvider}>
                 <UndoableMutationsContextProvider>
@@ -64,12 +65,14 @@ export const Basic = ({
     mutationMode,
     notifyOnSuccess,
     showButtons,
+    initialEntries,
 }: {
     delay?: number;
     updateFails?: boolean;
     mutationMode?: 'optimistic' | 'pessimistic' | 'undoable';
     notifyOnSuccess?: boolean;
     showButtons?: boolean;
+    initialEntries?: string[];
 }) => {
     const dataProvider = fakeRestDataProvider(
         { users: [{ id: 1, name: 'John Doe', age: 25, type: 'customer' }] },
@@ -91,7 +94,10 @@ export const Basic = ({
     };
 
     return (
-        <Wrapper dataProvider={sometimesFailsDataProvider}>
+        <Wrapper
+            dataProvider={sometimesFailsDataProvider}
+            initialEntries={initialEntries}
+        >
             <Typography color="secondary">Text above</Typography>
             <InPlaceEditor
                 source="name"

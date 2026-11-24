@@ -27,6 +27,7 @@ import {
     Reset,
     ConditionalArrayInputValidationContent,
     TriggerValidation,
+    PrefillFromLocation,
 } from './ArrayInput.stories';
 
 describe('<ArrayInput />', () => {
@@ -313,6 +314,34 @@ describe('<ArrayInput />', () => {
 
     // Reproduces the WizardForm scenario where validation is triggered when
     // navigating between steps without the user having interacted with the field.
+    it('should only submit the values from the location search that have an input', async () => {
+        const create = jest.fn((_resource, params) =>
+            Promise.resolve({ data: { ...params.data, id: 2 } })
+        );
+        render(
+            <PrefillFromLocation
+                dataProvider={testDataProvider({
+                    create,
+                    getOne: () => Promise.resolve({ data: { id: 2 } }) as any,
+                })}
+            />
+        );
+        await screen.findByDisplayValue('War and Peace');
+        await screen.findByDisplayValue('Leo Tolstoy');
+        fireEvent.click(screen.getByLabelText('Save'));
+        await waitFor(() => {
+            expect(create).toHaveBeenCalledWith(
+                'books',
+                expect.objectContaining({
+                    data: {
+                        title: 'War and Peace',
+                        authors: [{ name: 'Leo Tolstoy' }],
+                    },
+                })
+            );
+        });
+    });
+
     it('should display the error after validation is triggered programmatically without user interaction', async () => {
         render(<TriggerValidation />);
 

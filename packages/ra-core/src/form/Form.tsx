@@ -138,4 +138,6 @@ export interface FormOwnProps<RecordType = any> {
     warnWhenUnsavedChanges?: boolean;
     sanitizeEmptyValues?: boolean;
     disableInvalidFormNotification?: boolean;
+    allowedLocationFields?: string[];
+    disablePrefillFromLocation?: boolean;
 }

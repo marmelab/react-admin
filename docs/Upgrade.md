@@ -78,6 +78,8 @@ React-admin v5 mostly focuses on removing deprecated features and upgrading depe
 - [Misc](#misc)
     - [`data-generator-retail` commands Have Been Renamed to orders](#data-generator-retail-commands-have-been-renamed-to-orders)
     - [Support For PropTypes Was Removed](#support-for-proptypes-was-removed)
+- [Upgrading to 5.16](#upgrading-to-516)
+    - [Form Prefill From Location Search](#form-prefill-from-location-search)
 
 ## IE11 Is No Longer Supported
 
@@ -1459,6 +1461,41 @@ The `data-generator-retail` package has been updated to provide types for all it
 ### Support For PropTypes Was Removed
 
 React-admin no longer supports ([deprecated React PropTypes](https://legacy.reactjs.org/blog/2017/04/07/react-v15.5.0.html#new-deprecation-warnings)). We encourage you to switch to TypeScript to type component props.
+
+## Upgrading to 5.16
+
+### Form Prefill From Location Search
+
+Forms (including `<LoginForm>`) now only submit the values from the location `search` (e.g. `?source={"title":"Hello"}`) for fields with an input mounted at submit time. Other fields keep their initial value (from the record or `defaultValues`). Values from the location `state` are unaffected, so `<CloneButton>` works as before, except when its link is opened in a new tab.
+
+To submit fields without an input (including conditional inputs and array item properties), list them in the new [`allowedLocationFields`](./Form.md#allowedlocationfields) prop:
+
+```diff
+// /posts/123?source={"status":"approved"}
+-<SimpleForm>
++<SimpleForm allowedLocationFields={['status']}>
+     <TextInput source="title" />
+ </SimpleForm>
+```
+
+The `id` is no longer read from the location `search`, even when the form has an input for it. Add `'id'` to `allowedLocationFields` to restore it.
+
+`<LoginForm>` doesn't accept `allowedLocationFields`. To pass extra location values to `authProvider.login()`, use a custom login form based on `<Form allowedLocationFields>`.
+
+Custom submit code must go through `handleSubmit`, as `getValues()` still returns all the values from the location:
+
+```diff
+-const { getValues } = useFormContext();
++const { handleSubmit } = useFormContext();
+ const handleClick = e => {
+     e.preventDefault();
+-    const { id, ...data } = getValues();
+-    update('posts', { id, data });
++    handleSubmit(({ id, ...data }) => update('posts', { id, data }))(e);
+ };
+```
+
+`<InPlaceEditor>` is no longer prefilled from the location. Other forms that shouldn't be (e.g. a form in a list or show page) can opt out with the new [`disablePrefillFromLocation`](./Form.md#disableprefillfromlocation) prop.
 
 ## Upgrading to v4
 

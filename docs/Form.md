@@ -50,7 +50,9 @@ Here are all the props you can set on the `<Form>` component:
 
 | Prop                             | Required | Type              | Default | Description                                                                |
 | -------------------------------- | -------- | ----------------- | ------- | -------------------------------------------------------------------------- |
+| `allowedLocationFields`          | Optional | `string[]`        | -       | Fields submitted from the location `search` even without an input.         |
 | `defaultValues`                  | Optional | `object|function` | -       | The default values of the record.                                          |
+| `disablePrefillFromLocation`     | Optional | `boolean`         | -       | Set to `true` to ignore the values from the location.                      |
 | `id`                             | Optional | `string`          | -       | The id of the underlying `<form>` tag.                                     |
 | `noValidate`                     | Optional | `boolean`         | -       | Set to `true` to disable the browser's default validation.                 |
 | `onSubmit`                       | Optional | `function`        | `save`  | A callback to call when the form is submitted.                             |
@@ -60,6 +62,31 @@ Here are all the props you can set on the `<Form>` component:
 | `disableInvalidFormNotification` | Optional | `boolean`         | -       | Set to `true` to disable the notification on submitting an invalid form.   |
 
 Additional props are passed to [the `useForm` hook](https://react-hook-form.com/docs/useform).
+
+## `allowedLocationFields`
+
+The form can be prefilled from the location, as explained in [the `<Create>` documentation](./Create.md#prefilling-the-form). The values passed in the `source` parameter of the location `search` are only submitted for the fields that have an input in the form. To also submit other fields, list them in the `allowedLocationFields` prop:
+
+```jsx
+// link to approve a post: /posts/123?source={"status":"approved"}
+export const PostEdit = () => (
+    <Edit>
+        <Form allowedLocationFields={['status']}>
+            <Stack>
+                <TextInput source="title" />
+                <RichTextInput source="body" />
+                <SaveButton />
+            </Stack>
+        </Form>
+    </Edit>
+);
+```
+
+A field name also covers its nested fields: `allowedLocationFields={['address']}` covers `address.city` and `address.zip`.
+
+The `id` from the location `search` is ignored, even when the form has an input for it, unless it is listed in `allowedLocationFields`.
+
+The values passed in the location `state` are always submitted.
 
 ## `defaultValues`
 
@@ -85,6 +112,23 @@ export const PostCreate = () => (
 **Tip**: You can include properties in the form `defaultValues` that are not listed as input components, like the `created_at` property in the previous example.
 
 **Tip**: React-admin also allows to define default values at the input level. See the [Setting default Values](./Forms.md#default-values) section.
+
+## `disablePrefillFromLocation`
+
+By default, the form applies the values passed in the location `state` or `search`, as explained in [the `<Create>` documentation](./Create.md#prefilling-the-form). Set the `disablePrefillFromLocation` prop to `true` to ignore them:
+
+```jsx
+const PostTitleForm = () => (
+    <Form disablePrefillFromLocation>
+        <Stack>
+            <TextInput source="title" />
+            <SaveButton />
+        </Stack>
+    </Form>
+);
+```
+
+[`<InPlaceEditor>`](./InPlaceEditor.md) sets this prop on its form.
 
 ## `id`
 

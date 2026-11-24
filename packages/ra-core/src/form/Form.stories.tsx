@@ -2,6 +2,7 @@ import * as React from 'react';
 import {
     useController,
     UseControllerProps,
+    useFormContext,
     useFormState,
 } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -678,4 +679,106 @@ const Tab = ({
             {children}
         </div>
     );
+};
+
+const userFromLocation = {
+    id: 2,
+    name: 'Jane Doe',
+    role: 'admin',
+    nickname: 'jane',
+    address: { city: 'Lyon', zip: '69001' },
+    'address.city': 'Nancy',
+};
+
+// like <SaveButton type="button">
+const SaveWithHandleSubmit = ({
+    onSave,
+}: {
+    onSave: (values: any) => void;
+}) => {
+    const { handleSubmit } = useFormContext();
+    return (
+        <button type="button" onClick={handleSubmit(onSave)}>
+            Save
+        </button>
+    );
+};
+
+export const PrefillFromLocation = ({
+    url = `/?source=${encodeURIComponent(JSON.stringify(userFromLocation))}`,
+    allowedLocationFields,
+    disablePrefillFromLocation,
+}: {
+    url?: any;
+    allowedLocationFields?: string[];
+    disablePrefillFromLocation?: boolean;
+}) => {
+    const [submittedValues, setSubmittedValues] = React.useState<any>();
+    return (
+        <TestMemoryRouter
+            key={JSON.stringify({
+                url,
+                allowedLocationFields,
+                disablePrefillFromLocation,
+            })}
+            initialEntries={[url]}
+        >
+            <CoreAdminContext i18nProvider={defaultI18nProvider}>
+                <Form
+                    record={{
+                        id: 1,
+                        name: 'John Doe',
+                        role: 'user',
+                        address: { city: 'Paris', zip: '75001' },
+                    }}
+                    onSubmit={values => setSubmittedValues(values)}
+                    allowedLocationFields={allowedLocationFields}
+                    disablePrefillFromLocation={disablePrefillFromLocation}
+                >
+                    <Input source="id" />
+                    <Input source="name" />
+                    <Input source="address.city" />
+                    <button type="submit">Submit</button>
+                    <SaveWithHandleSubmit onSave={setSubmittedValues} />
+                </Form>
+                {submittedValues && (
+                    <pre aria-label="Submitted values">
+                        {JSON.stringify(submittedValues, null, 2)}
+                    </pre>
+                )}
+            </CoreAdminContext>
+        </TestMemoryRouter>
+    );
+};
+
+PrefillFromLocation.args = {
+    url: 'location search',
+    allowedLocationFields: 'none',
+    disablePrefillFromLocation: false,
+};
+
+PrefillFromLocation.argTypes = {
+    url: {
+        options: ['location search', 'location state'],
+        mapping: {
+            'location search': `/?source=${encodeURIComponent(JSON.stringify(userFromLocation))}`,
+            'location state': {
+                pathname: '/',
+                state: { record: userFromLocation },
+            },
+        },
+        control: { type: 'select' },
+    },
+    allowedLocationFields: {
+        options: ['none', 'role', 'role and address'],
+        mapping: {
+            none: undefined,
+            role: ['role'],
+            'role and address': ['role', 'address'],
+        },
+        control: { type: 'select' },
+    },
+    disablePrefillFromLocation: {
+        control: { type: 'boolean' },
+    },
 };

@@ -23,6 +23,24 @@ describe('InPlaceEditor', () => {
         fireEvent.blur(input);
         await screen.findByText('Jane Doe');
     });
+    it('should not prefill the input from the location', async () => {
+        render(
+            <Basic
+                delay={0}
+                initialEntries={[
+                    `/?source=${JSON.stringify({ name: 'Jane Doe' })}`,
+                ]}
+            />
+        );
+        const value = await screen.findByText('John Doe');
+        value.click();
+        const input = await screen.findByDisplayValue('John Doe');
+        // wait for the form to be ready
+        await new Promise(resolve => setTimeout(resolve, 100));
+        expect(screen.queryByDisplayValue('Jane Doe')).toBeNull();
+        fireEvent.blur(input);
+        await screen.findByText('John Doe');
+    });
 
     it('should save when focus moves to an element outside the editor', async () => {
         render(<FocusOutside />);
