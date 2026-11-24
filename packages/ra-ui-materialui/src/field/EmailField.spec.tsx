@@ -76,6 +76,31 @@ describe('<EmailField />', () => {
         expect(link.innerHTML).toEqual(halUrl);
     });
 
+    it('should encode the mailto delimiters in the value', () => {
+        const email = 'alice%40example.com?subject=hello&cc=bob@example.com';
+        const record = { id: 123, email };
+        const { getByText } = render(
+            <EmailField record={record} source="email" />
+        );
+        const link = getByText(email) as HTMLAnchorElement;
+        expect(link.href).toEqual(
+            'mailto:alice%2540example.com%3Fsubject%3Dhello%26cc%3Dbob@example.com'
+        );
+        expect(link.search).toEqual('');
+        expect(link.hash).toEqual('');
+        expect(decodeURIComponent(link.pathname)).toEqual(email);
+    });
+
+    it('should keep several addresses in the mailto link', () => {
+        const emails = 'foo@bar.com,baz@bar.com;qux@bar.com';
+        const record = { id: 123, email: emails };
+        const { getByText } = render(
+            <EmailField record={record} source="email" />
+        );
+        const link = getByText(emails) as HTMLAnchorElement;
+        expect(link.href).toEqual(`mailto:${emails}`);
+    });
+
     it('should use custom className', () => {
         const { getByText } = render(
             <EmailField

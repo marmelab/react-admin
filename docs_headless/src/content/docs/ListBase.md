@@ -320,7 +320,7 @@ By default, clicking an export button will:
 2. Transform the result into a CSV string,
 3. Download the CSV file.
 
-The columns of the CSV file match all the fields of the records in the `dataProvider` response. If you want to customize the result, pass a custom `exporter` function to the `<ListBase>`. This function will receive the data from the `dataProvider` and is in charge of transforming, converting, and downloading the file.
+The columns of the CSV file match all the fields of the records in the `dataProvider` response. Every cell is enclosed in double quotes, and text values starting with `=`, `+`, `-`, `@`, a tab or a carriage return (except signed numbers) are prefixed with a single quote, so that spreadsheet applications display them as text. If you want to customize the result, pass a custom `exporter` function to the `<ListBase>`. This function will receive the data from the `dataProvider` and is in charge of transforming, converting, and downloading the file.
 
 **Tip**: For CSV conversion, you can import [jsonexport](https://github.com/kauegimenes/jsonexport#browser-import-examples), a JSON to CSV converter which is already a ra-core dependency. And for CSV download, take advantage of ra-core's `downloadCSV` function.
 

@@ -35,6 +35,33 @@ describe('<ReferenceManyCount />', () => {
         ).toHaveAttribute('href', '/comments?filter={"post_id":1}');
     });
 
+    it('should encode the record value in the link', async () => {
+        render(
+            <Wrapper
+                dataProvider={{
+                    getManyReference: () =>
+                        Promise.resolve({ data: [], total: 3 }),
+                }}
+            >
+                <ReferenceManyCount
+                    record={{ id: 'c++#&perPage=1%22' }}
+                    reference="comments"
+                    target="post_id"
+                    link
+                />
+            </Wrapper>
+        );
+        const href = (
+            await screen.findByRole('link', { name: '3' })
+        ).getAttribute('href') as string;
+        const { searchParams, hash } = new URL(href, 'http://localhost');
+        expect(hash).toEqual('');
+        expect(Array.from(searchParams.keys())).toEqual(['filter']);
+        expect(JSON.parse(searchParams.get('filter') as string)).toEqual({
+            post_id: 'c++#&perPage=1%22',
+        });
+    });
+
     it('should render an error icon when the request fails', async () => {
         jest.spyOn(console, 'error').mockImplementation(() => {});
         render(<ErrorState />);

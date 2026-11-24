@@ -62,7 +62,9 @@ const LinkToRelatedProducts = () => {
         <Link
             to={{
                 pathname: '/posts',
-                search: `filter=${JSON.stringify({ category_id: record.id })}`,
+                search: `filter=${encodeURIComponent(
+                    JSON.stringify({ category_id: record.id })
+                )}`,
             }}
         >
             All posts with the category {record.name}
