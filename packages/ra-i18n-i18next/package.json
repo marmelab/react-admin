@@ -24,7 +24,7 @@
         "build": "zshy --silent"
     },
     "dependencies": {
-        "i18next": "^23.5.1",
+        "i18next": "^26.3.4",
         "lodash": "^4.17.21",
         "ra-core": "^5.15.5",
         "react-i18next": "^14.1.1"
