@@ -4,7 +4,7 @@ import {
     styled,
     useThemeProps,
 } from '@mui/material/styles';
-import { useCallback, useRef, type ChangeEvent } from 'react';
+import { useCallback, useRef, type ChangeEvent, type ReactNode } from 'react';
 import clsx from 'clsx';
 import {
     Select,
@@ -28,6 +28,7 @@ import {
     useGetRecordRepresentation,
     type SupportCreateSuggestionOptions,
     useSupportCreateSuggestion,
+    useTranslate,
 } from 'ra-core';
 import { InputHelperText } from './InputHelperText';
 
@@ -115,6 +116,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         onCreate,
         options = defaultOptions,
         optionText,
+        emptyText = '',
         optionValue = 'id',
         parse,
         resource: resourceProp,
@@ -129,6 +131,7 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
     } = props;
 
     const inputLabel = useRef(null);
+    const translate = useTranslate();
 
     const {
         allChoices,
@@ -164,6 +167,14 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
         ...rest,
     });
 
+    const renderEmptyItemOption = useCallback(() => {
+        return typeof emptyText === 'string'
+            ? emptyText === ''
+                ? ' '
+                : translate(emptyText, { _: emptyText })
+            : emptyText;
+    }, [emptyText, translate]);
+
     const getRecordRepresentation = useGetRecordRepresentation(resource);
 
     const { getChoiceText, getChoiceValue, getDisableValue } = useChoices({
@@ -180,6 +191,10 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
             // We might receive an event from the mui component
             // In this case, it will be the choice id
             if (eventOrChoice?.target) {
+                if (eventOrChoice.target.value.includes('')) {
+                    field.onChange([]);
+                    return;
+                }
                 // when used with different IDs types, unselection leads to double selection with both types
                 // instead of the value being removed from the array
                 // e.g. we receive eventOrChoice.target.value = [1, '2', 2] instead of [1] after removing 2
@@ -360,6 +375,9 @@ export const SelectArrayInput = (inProps: SelectArrayInputProps) => {
                     value={finalValue}
                     {...outlinedInputProps}
                 >
+                    {emptyText && (
+                        <MenuItem value="">{renderEmptyItemOption()}</MenuItem>
+                    )}
                     {finalChoices.map(renderMenuItem)}
                 </Select>
                 {renderHelperText ? (
@@ -384,6 +402,7 @@ export type SelectArrayInputProps = ChoicesProps &
         InputLabelProps?: Omit<InputLabelProps, 'htmlFor' | 'id' | 'ref'>;
         source?: string;
         onChange?: (event: ChangeEvent<HTMLInputElement> | RaRecord) => void;
+        emptyText?: ReactNode;
     };
 
 const sanitizeRestProps = ({
