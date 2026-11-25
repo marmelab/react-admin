@@ -839,6 +839,8 @@ const postRowClick = (id: Identifier, resource: string, record: RaRecord) => rec
 
 **Tip**: `rowClick` accepts async functions, allowing you to call an external API to determine the action to trigger.
 
+**Tip**: A click that selects text does nothing, so users can drag over a value in a row to copy it without leaving the list.
+
 ## `rowSx`
 
 You can customize the styles of rows and cells in `<DataTable>` (applied to the `<DataTableRow>` element) based on the record, thanks to the `rowSx` prop, which expects a function.

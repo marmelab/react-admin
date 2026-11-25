@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect,
     useCallback,
+    useRef,
 } from 'react';
 import clsx from 'clsx';
 import {
@@ -117,8 +118,19 @@ export const DataTableRow = React.memo(
 
         const getPathForRecord = useGetPathForRecordCallback();
 
+        const selectionOnMouseDown = useRef('');
+        const handleMouseDown = () => {
+            selectionOnMouseDown.current =
+                window.getSelection()?.toString() ?? '';
+        };
+
         const handleClick = useCallback(
             async event => {
+                // A click that selected text (e.g. to copy a value) does nothing
+                const selection = window.getSelection()?.toString();
+                if (selection && selection !== selectionOnMouseDown.current) {
+                    return;
+                }
                 event.persist();
                 const temporaryLink =
                     typeof rowClick === 'function'
@@ -172,6 +184,7 @@ export const DataTableRow = React.memo(
                     })}
                     key={record.id}
                     hover={hover}
+                    onMouseDown={handleMouseDown}
                     onClick={handleClick}
                     {...rest}
                 >

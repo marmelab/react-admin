@@ -139,6 +139,38 @@ describe('<DatagridRow />', () => {
             }
         );
 
+        it('should ignore a click that selects text', () => {
+            const rowClick = jest.fn(() => 'edit');
+            render(
+                <RecordContextProvider value={defaultRecord}>
+                    <DatagridRow {...defaultProps} rowClick={rowClick}>
+                        <TitleField />
+                    </DatagridRow>
+                </RecordContextProvider>
+            );
+            const row = screen.getByText('hello').closest('tr');
+            if (!row) {
+                throw new Error('row not found');
+            }
+            const getSelection = jest.spyOn(window, 'getSelection');
+            const select = (text: string) =>
+                getSelection.mockReturnValue({
+                    toString: () => text,
+                } as Selection);
+
+            select('');
+            fireEvent.mouseDown(row);
+            select('hel');
+            fireEvent.click(row);
+            expect(rowClick).not.toHaveBeenCalled();
+
+            // a click on text selected earlier still works
+            fireEvent.mouseDown(row);
+            fireEvent.click(row);
+            expect(rowClick).toHaveBeenCalledTimes(1);
+            getSelection.mockRestore();
+        });
+
         it.each([
             { rowClick: 'show', description: 'passed directly' },
             {
