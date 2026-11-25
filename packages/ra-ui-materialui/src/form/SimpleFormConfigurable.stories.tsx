@@ -11,6 +11,7 @@ import { ThemeProvider, createTheme, Box, Paper } from '@mui/material';
 import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
 import polyglotI18nProvider from 'ra-i18n-polyglot';
 import en from 'ra-language-english';
+import fr from 'ra-language-french';
 
 import { Inspector, InspectorButton } from '../preferences';
 import { NumberInput, TextInput } from '../input';
@@ -93,17 +94,22 @@ export const PreferenceKey = () => (
     </Wrapper>
 );
 
-const translations = { en };
-const i18nProvider = polyglotI18nProvider(locale => translations[locale], 'en');
+const translations = { en, fr };
 
-export const I18N = () => (
-    <I18nContextProvider value={i18nProvider}>
-        <Wrapper>
-            <SimpleFormConfigurable record={data} resource="books">
-                <TextInput source="title" />
-                <TextInput source="author" />
-                <NumberInput source="year" />
-            </SimpleFormConfigurable>
-        </Wrapper>
-    </I18nContextProvider>
-);
+export const I18N = ({ locale = 'en' }: { locale?: string }) => {
+    const i18nProvider = React.useMemo(
+        () => polyglotI18nProvider(lang => translations[lang], locale),
+        [locale]
+    );
+    return (
+        <I18nContextProvider value={i18nProvider}>
+            <Wrapper>
+                <SimpleFormConfigurable record={data} resource="books">
+                    <TextInput source="title" />
+                    <TextInput source="author" />
+                    <NumberInput source="year" />
+                </SimpleFormConfigurable>
+            </Wrapper>
+        </I18nContextProvider>
+    );
+};

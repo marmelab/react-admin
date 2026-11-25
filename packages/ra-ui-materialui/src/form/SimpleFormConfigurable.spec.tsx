@@ -2,7 +2,12 @@ import * as React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import expect from 'expect';
 
-import { Basic, Omit, PreferenceKey } from './SimpleFormConfigurable.stories';
+import {
+    Basic,
+    I18N,
+    Omit,
+    PreferenceKey,
+} from './SimpleFormConfigurable.stories';
 
 describe('<SimpleFormConfigurable>', () => {
     const enterConfigurationMode = async () => {
@@ -42,6 +47,20 @@ describe('<SimpleFormConfigurable>', () => {
             expect(screen.queryAllByDisplayValue('War and Peace')).toHaveLength(
                 1
             );
+        });
+    });
+    describe('i18n', () => {
+        it('should translate the inspector title and buttons with the ra.configurable messages', async () => {
+            render(<I18N locale="fr" />);
+            screen.getByLabelText('Configurer cette page').click();
+            await screen.findByText('Inspecteur');
+            fireEvent.mouseOver(
+                screen.getAllByDisplayValue('War and Peace')[0]
+            );
+            await screen.getByTitle('Personnaliser').click();
+            await screen.findByText('Formulaire');
+            expect(screen.queryByText('Masquer tout')).not.toBeNull();
+            expect(screen.queryByText('Afficher tout')).not.toBeNull();
         });
     });
 });
