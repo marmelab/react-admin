@@ -67,7 +67,7 @@ If you need nested forms to edit e.g. variants of a product, use the `<Reference
 If your app relies heavily on filters, you can offer your users the ability to save their favorite filters. The `<SavedQueriesList>` component lets users save the current filter and sort parameters, and retrieve them later. #list https://marmelab.com/react-admin/FilteringTutorial.html#saved-queries-let-users-save-filter-and-sort
 
 <video controls autoplay muted loop>
-  <source src="https://marmelab.com/react-admin/img/SavedQueriesList.webm" type="video/webm">
+  <source src="https://marmelab.com/react-admin/img/saved-queries-list.webm" type="video/webm">
   Your browser does not support the video tag.
 </video>
 

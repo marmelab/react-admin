@@ -508,8 +508,8 @@ Check the following chapters to learn more about each search and filtering compo
 Users often apply the same filters over and over again. Saved Queries **let users save a combination of filters** and sort parameters into a new, personal filter, that persists between sessions.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
-  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  <source src="./img/saved-queries-list.webm" type="video/webm"/>
+  <source src="./img/saved-queries-list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
@@ -1418,8 +1418,8 @@ End-users tweak the UI to their liking, and **they expect these preferences to b
 For instance, the Saved Queries feature lets users **save a combination of filters** and sort parameters into a new, personal filter.
 
 <video controls autoplay playsinline muted loop>
-  <source src="./img/SavedQueriesList.webm" type="video/webm"/>
-  <source src="./img/SavedQueriesList.mp4" type="video/mp4"/>
+  <source src="./img/saved-queries-list.webm" type="video/webm"/>
+  <source src="./img/saved-queries-list.mp4" type="video/mp4"/>
   Your browser does not support the video tag.
 </video>
 
