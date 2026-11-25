@@ -82,7 +82,7 @@ export const AlignmentButtons = (props: ToggleButtonGroupProps) => {
 
 const AlignmentValues = ['left', 'center', 'right', 'justify', 'code'];
 
-const AlignmentActions = {
+const AlignmentActions: Record<string, (editor: Editor) => boolean> = {
     left: (editor: Editor) => editor.chain().focus().setTextAlign('left').run(),
     center: (editor: Editor) =>
         editor.chain().focus().setTextAlign('center').run(),
