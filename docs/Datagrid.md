@@ -729,6 +729,8 @@ const postRowClick = (id: Identifier, resource: string, record: RaRecord) =>
     .then(permissions => permissions === 'admin' ? 'edit' : 'show');
 ```
 
+**Tip**: A click that selects text does nothing, so users can drag over a value in a row to copy it without leaving the list.
+
 ## `rowStyle`
 
 *Deprecated - use [`rowSx`](#rowsx) instead.*

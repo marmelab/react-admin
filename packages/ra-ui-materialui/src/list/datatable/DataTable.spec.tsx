@@ -155,6 +155,48 @@ describe('DataTable', () => {
             });
         });
     });
+    describe('rowClick', () => {
+        it('should ignore a click that selects text', async () => {
+            const rowClick = jest.fn(() => 'edit');
+            render(
+                <TestMemoryRouter>
+                    <AdminContext>
+                        <DataTable
+                            data={[{ id: 1, title: 'War and Peace' }]}
+                            total={1}
+                            resource="books"
+                            rowClick={rowClick}
+                        >
+                            <DataTable.Col source="title" />
+                        </DataTable>
+                    </AdminContext>
+                </TestMemoryRouter>
+            );
+            const row = (await screen.findByText('War and Peace')).closest(
+                'tr'
+            );
+            if (!row) {
+                throw new Error('row not found');
+            }
+            const getSelection = jest.spyOn(window, 'getSelection');
+            const select = (text: string) =>
+                getSelection.mockReturnValue({
+                    toString: () => text,
+                } as Selection);
+
+            select('');
+            fireEvent.mouseDown(row);
+            select('War');
+            fireEvent.click(row);
+            expect(rowClick).not.toHaveBeenCalled();
+
+            // a click on text selected earlier still works
+            fireEvent.mouseDown(row);
+            fireEvent.click(row);
+            expect(rowClick).toHaveBeenCalledTimes(1);
+            getSelection.mockRestore();
+        });
+    });
     describe('empty', () => {
         it('should render the default empty result message', async () => {
             render(<Empty />);

@@ -4,6 +4,7 @@ import React, {
     useState,
     useEffect,
     useCallback,
+    useRef,
     memo,
     FC,
     ReactNode,
@@ -123,8 +124,18 @@ const DatagridRow: React.ForwardRefExoticComponent<
 
     const getPathForRecord = useGetPathForRecordCallback();
 
+    const selectionOnMouseDown = useRef('');
+    const handleMouseDown = () => {
+        selectionOnMouseDown.current = window.getSelection()?.toString() ?? '';
+    };
+
     const handleClick = useCallback(
         async event => {
+            // A click that selected text (e.g. to copy a value) does nothing
+            const selection = window.getSelection()?.toString();
+            if (selection && selection !== selectionOnMouseDown.current) {
+                return;
+            }
             event.persist();
             const temporaryLink =
                 typeof rowClick === 'function'
@@ -178,6 +189,7 @@ const DatagridRow: React.ForwardRefExoticComponent<
                 key={id}
                 style={style}
                 hover={hover}
+                onMouseDown={handleMouseDown}
                 onClick={handleClick}
                 {...rest}
             >
